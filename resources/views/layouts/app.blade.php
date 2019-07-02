@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
 {{-- <base href="../../../"> --}}
 <meta charset="utf-8" />
 <title>Metronic | Empty Page</title>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="description" content="Page with empty content">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -60,9 +61,6 @@
 <!--begin::Global Theme Styles(used by all pages) -->
 <link href="{{ asset('/assets/css/demo1/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
-<!--end::Global Theme Styles -->
-
-<!--begin::Layout Skins(used by all pages) -->
 <link href="{{ asset('/assets/css/demo1/skins/header/base/light.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/css/demo1/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/css/demo1/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
@@ -72,9 +70,6 @@
 <link rel="shortcut icon" href="{{ asset('/assets/media/logos/favicon.ico') }}" />
 </head>
 
-<!-- end::Head -->
-
-<!-- begin::Body -->
 <body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--fixed kt-subheader--enabled kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
 
 <!-- begin:: Page -->
@@ -83,7 +78,7 @@
 <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
     <div class="kt-header-mobile__logo">
         <a href="demo1/index.html">
-            <img alt="Logo" src="./assets/media/logos/logo-light.png" />
+            <img alt="Logo" src="{{ asset('/assets/media/logos/logo-light.png') }}" />
         </a>
     </div>
     <div class="kt-header-mobile__toolbar">
@@ -1018,13 +1013,7 @@
 <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
 
-<!--end::Page Vendors -->
-
-<!--begin::Page Scripts(used by this page) -->
-<script src="{{ asset('/assets/js/demo1/pages/dashboard.js') }}" type="text/javascript"></script>
-
-<!--end::Page Scripts -->
+{{-- <script src="{{ asset('/assets/js/demo1/pages/dashboard.js') }}" type="text/javascript"></script> --}}
+@yield('script')
 </body>
-
-<!-- end::Body -->
 </html>
