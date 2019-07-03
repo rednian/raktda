@@ -17,6 +17,13 @@ class EventController extends Controller
         return view('permits.event.index');
     }
 
+    public function addEvent()
+    {
+        return view('permits.event.create');
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -24,7 +31,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -46,7 +53,7 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
