@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use OwenIt\Auditing\Contracts\Auditable;
 use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +22,8 @@ class User extends Authenticatable implements Auditable
 
     protected $table = 'user';
 
+    protected $primaryKey = 'user_id';
+
     protected $fillable = [
         'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby'
     ];
@@ -37,4 +40,16 @@ class User extends Authenticatable implements Auditable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+    {
+        return User::find(Auth::user()->user_id)->roles;
+        // return $this->role->role_id == 1 ? true : false;
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Roles::class, 'roleuser', 'role_id', 'user_id');
+    }
+
 }
