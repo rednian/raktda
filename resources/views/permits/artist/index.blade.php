@@ -118,46 +118,7 @@ Artists
                         <td><button class="btn btn-default">Pending</button></td>
                         <td><a href="#">Details</a></td>
                     </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Nixie Sailor</td>
-                        <td>Singer</td>
-                        <td>American</td>
-                        <td>+971 55826584</td>
-                        <td>nsailor0@livejournal.com</td>
-                        <td><button class="btn btn-danger">Rejected</button></td>
-                        <td><a href="#">Details</a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Nixie Sailor</td>
-                        <td>Singer</td>
-                        <td>American</td>
-                        <td>+971 55826584</td>
-                        <td>nsailor0@livejournal.com</td>
-                        <td><button class="btn btn-default">Pending</button></td>
-                        <td><a href="#">Details</a></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Nixie Sailor</td>
-                        <td>Singer</td>
-                        <td>American</td>
-                        <td>+971 55826584</td>
-                        <td>nsailor0@livejournal.com</td>
-                        <td><button class="btn btn-default">Pending</button></td>
-                        <td><a href="#">Details</a></td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>Nixie Sailor</td>
-                        <td>Singer</td>
-                        <td>American</td>
-                        <td>+971 55826584</td>
-                        <td>nsailor0@livejournal.com</td>
-                        <td><button class="btn btn-default">Pending</button></td>
-                        <td><a href="#">Details</a></td>
-                    </tr>
+
 
                 </tbody>
             </table>
@@ -254,16 +215,7 @@ Artists
                         <td><button class="btn btn-default">Extend</button></td>
                         <td><a href="#">Details</a></td>
                     </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Nixie Sailor</td>
-                        <td>Singer</td>
-                        <td>American</td>
-                        <td>+971 55826584</td>
-                        <td>nsailor0@livejournal.com</td>
-                        <td><button class="btn btn-default">Extend</button></td>
-                        <td><a href="#">Details</a></td>
-                    </tr>
+
 
                 </tbody>
             </table>

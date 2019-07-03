@@ -27,7 +27,7 @@ Events
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <div class="dropdown dropdown-inline">
-                            <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
+                            <a href='add_new_event' class="btn btn-brand btn-elevate btn-icon-sm">
                                 <i class="la la-plus"></i>
                                 New Event Permit
                             </a>
@@ -118,7 +118,7 @@ Events
                         <td>Entertainment Events / Without Ticket</td>
                         <td>15-05-xx</td>
                         <td>9:00 AM - <br />4:00 PM</td>
-                        <td><button class="btn btn-success">Payment</button></td>
+                        <td><button class="btn btn-danger">Rejected</button></td>
                         <td><a href="#">Details</a></td>
                     </tr>
                 </tbody>
@@ -205,7 +205,7 @@ Events
                         <td>Entertainment Events / Without Ticket</td>
                         <td>15-05-xx</td>
                         <td>9:00 AM - <br /> 4:00 PM</td>
-                        <td><button class="btn btn-success">Payment</button></td>
+                        <td><button class="btn btn-default">Extend</button></td>
                         <td><a href="#">Details</a></td>
                     </tr>
                     <tr>
@@ -216,7 +216,7 @@ Events
                         <td>Entertainment Events / Without Ticket</td>
                         <td>15-05-xx</td>
                         <td>9:00 AM - <br />4:00 PM</td>
-                        <td><button class="btn btn-success">Payment</button></td>
+                        <td><button class="btn btn-default">Extend</button></td>
                         <td><a href="#">Details</a></td>
                     </tr>
                 </tbody>
