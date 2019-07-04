@@ -18,8 +18,6 @@ class HomeController extends Controller
 
     public function index()
     {  
-        $user = Auth::user();
-        return $user->roles;
         return view('home');
     }
 }

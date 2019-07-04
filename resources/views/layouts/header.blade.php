@@ -222,15 +222,12 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
                 <div class="kt-header__topbar-user">
                     <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span>
-                    <span class="kt-header__topbar-username kt-hidden-mobile">NRS infoways</span>
+                    <span class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords(Auth::user()->NameEn )}}</span>
 
                 </div>
             </div>
             <div
                 class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-md">
-
-
-
                 <!--begin: Navigation -->
                 <div class="kt-notification">
                     <a href="#" class="kt-notification__item">
@@ -265,11 +262,9 @@
 
                     </div>
                 </div>
-
                 <!--end: Navigation -->
             </div>
         </div>
-
         <!--end: User Bar -->
     </div>
 
