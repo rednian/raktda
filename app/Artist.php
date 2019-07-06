@@ -7,15 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Artist extends Model
 {
     protected $table = 'artist';
-    protected $primaryKey = 'artist_id'
+    protected $primaryKey = 'artist_id';
     protected $fillable = [
-        'artist_name', 'artist_nationality', 'artist_uid_number', 'artist_passport_number',
-        'artist_birthdate', 'artist_mobile', 'artist_phone_number', 'artist_email', 'artist_status',
-        'updated_by', 'created_by', 'deleted_by', 'company_id'
+        'name', 'nationality', 'passport_number', 'uid_number', 'birthdate', 'mobile_number', 
+        'phone_numer', 'email', 'company_id', 'created_by', 'updated_by', 'deleted_by'
     ];
 
-    public function company()
+    public function document()
     {
-        return $this->belongsTo(Company::class, 'company_id');
+        return $this->hasMany(ArtistDocument::class, 'artist_id');
     }
 }
