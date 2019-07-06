@@ -12,7 +12,7 @@ class Profession extends Model
         protected $table = 'profession';
         protected $primaryKey = 'prof_id';
         protected $fillable = [
-            'prof_name_en', 'prof_name_ar',. 'created_by', 'updated_by', 'deleted_by'
+            'prof_name_en', 'prof_name_ar', 'prof_amount', 'created_by', 'updated_by', 'deleted_by'
         ]
 
 }

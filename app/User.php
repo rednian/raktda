@@ -43,8 +43,7 @@ class User extends Authenticatable implements Auditable
 
     public function isAdmin()
     {
-        return User::find(Auth::user()->user_id)->roles;
-        // return $this->role->role_id == 1 ? true : false;
+        return $this->type == 1 ? true : false;
     }
 
     public function roles()
