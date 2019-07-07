@@ -111,14 +111,11 @@
                         class="kt-menu__link-text">User Management</span></a>
 
             </li>
-            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-                data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i
-                        class="kt-menu__link-icon flaticon-settings-1"></i><span
-                        class="kt-menu__link-text">Settings</span></a>
-
+            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                <a href="{{ route('settings.index') }}" class="kt-menu__link kt-menu__toggle">
+                    <i class="kt-menu__link-icon flaticon-settings-1"></i>
+                    <span class="kt-menu__link-text">Settings</span></a>
             </li>
-
-
         </ul>
     </div>
 </div>

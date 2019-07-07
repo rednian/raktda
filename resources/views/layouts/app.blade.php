@@ -55,6 +55,7 @@ WebFont.load({
 <link href="{{ asset('/assets/css/demo1/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/css/demo1/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/css/demo1/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('/assets/vendors/custom/validator/css/bootstrapValidator.min.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Layout Skins -->
 <link rel="shortcut icon" href="{{ asset('/assets/media/logos/favicon.ico') }}" />
 </head>
@@ -83,15 +84,16 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 <!-- end:: Header Mobile -->
 <div class="kt-grid kt-grid--hor kt-grid--root">
 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
-    @if (Auth::user()->roles->first()->NameEn == 'admin')
+    @if (Auth::user()->type == 1)
         @include('layouts.sidebar-admin')
-    @elseif(Auth::user()->roles->first()->NameEn == 'company')
+    @elseif(Auth::user()->type == 0)
         @include('layouts.sidebar')
     @endif
 
     <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
         @include('layouts.header')
-        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-content kt-grid__item kt-grid__item--fluid" id="content">
+
             @yield('content')
         </div>
         @include('layouts.footer')
@@ -564,6 +566,7 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 <script src="{{ asset('/assets/vendors/general/jquery.repeater/src/jquery.input.js')}}" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/general/jquery.repeater/src/repeater.js')}}" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/general/dompurify/dist/purify.js')}}" type="text/javascript"></script>
+{{-- <script src="{{ asset('/assets/vendors/custom/validator/js/bootstrapValidator.min.js')}}" type="text/javascript"></script> --}}
 
 <!--end:: Global Optional Vendors -->
 
@@ -572,11 +575,98 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors(used by this page) -->
+{{-- <script src="{{ asset('/assets/js/demo1/pages/crud/forms/validation/form-controls.js') }}" type="text/javascript"></script> --}}
 <script src="{{ asset('/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
 <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $(document).bind("ajaxSend", function(){
+            // $.LoadingOverlay("show", {
+            //     image: "{{ asset('images/loading.gif') }}",
+            //     size: 10
+            // });
+        }).bind("ajaxSuccess", function(event, request, settings, data){
+            // $.LoadingOverlay("hide");
+            if(data.hasOwnProperty('message')){
+                // new PNotify({
+                //     title: data.message[2],
+                //     text: data.message[1],
+                //     type: data.message[0],
+                // });
+            }
+        }).bind("ajaxError", function(event, request, settings, data){
+            // $.LoadingOverlay("hide");
+            // new PNotify({
+            //     title: 'Error',
+            //     text: data,
+            //     type: 'error'
+            // });
+        });
+
+        @if (Session::has('message'))
+        // new PNotify({
+        //     title: '{{Session::get('message')[2]}}',
+        //     text: '{{Session::get('message')[1]}}',
+        //     type: '{{Session::get('message')[0]}}'
+        });
+        @endif
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.extend( true, $.fn.dataTable.defaults, {
+            pageLength: 50,
+            deferRender: true,
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            ajax: {
+                global: false
+            },
+            pagingType: 'full_numbers',
+            language: {
+                infoFiltered: '',
+                lengthMenu: "Show _MENU_",
+                processing: '<span class="fa fa-spinner fa-spin fa-3x text-info"></span>',
+            paginate: {
+                    previous: '<i class="fa fa-chevron-left"></i>',
+                    next: '<i class="fa fa-chevron-right"></i>',
+                }
+            },
+            // buttons: [
+
+            //     {
+            //     extend:    'csv',
+            //         text:      '<i class="fa fa-file-excel-o text-success"></i>',
+            //         titleAttr: 'export excel',
+            //         className:'btn btn-sm btn-default',
+            //         exportOptions: {
+            //             columns: 'th:not(:last-child)'
+            //         }
+            //     },
+            //     {
+            //         extend:    'pdf',
+            //         text:      '<i class="fa fa-file-pdf-o text-danger"></i>',
+            //         titleAttr: 'export pdf',
+            //         className:'btn btn-sm btn-default',
+            //         exportOptions: {
+            //             columns: 'th:not(:last-child)'
+            //         }
+            //     },
+            // ],
+
+        });
+
+    });
+</script>
 {{-- <script src="{{ asset('/assets/js/demo1/pages/dashboard.js') }}" type="text/javascript"></script> --}}
 @yield('script')
+
 </body>
 
 </html>

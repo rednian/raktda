@@ -16,11 +16,12 @@ class CreateProfessionsTable extends Migration
         Schema::create('profession', function (Blueprint $table) {
             $table->bigIncrements('prof_id');
             $table->string('prof_name_en');
-            $table->string('prof_name_ar');
+            $table->string('prof_name_ar')->nullable();
             $table->string('prof_amount');
+            $table->string('prof_description')->nullable();
             $table->string('created_by');
-            $table->string('updated_by');
-            $table->string('deleted_by');
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
