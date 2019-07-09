@@ -10,23 +10,23 @@ use App\Http\Controllers\Controller;
 
 class ArtistProfessionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        return abort(404);
+    }
+
+    public function datatable()
+    {
+        $profession =  Profession::all();
+        return Datatables::of($profession)->make(true);
     }
 
     public function isexist(Request $request)
     {
         if($request->ajax()){
-            $valid = false;
             $profession = Profession::where('prof_name_en',$request->prof_name_en)->exists();
-            $valid = $profession ? false : true;
-             return response()->json($valid);
+             return response()->json(($profession ? false : true));
         }
     }
 
@@ -41,54 +41,32 @@ class ArtistProfessionController extends Controller
         try {
             $request['created_by'] = Auth::user()->user_id;
             $profession = Profession::create($request->all());
+             $result = ['success', 'Artists profession has been save successfully ', 'Success'];
         } catch (Exception $e) {
-            
+             $result = ['error', $e->getMessage(), 'Error'];
         }
-       
-
-        return redirect()->back();   
+         return redirect()->back()->with('message', $result);  
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //

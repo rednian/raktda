@@ -78,6 +78,9 @@
                   }
                 }
               }
+            },
+            prof_amount: {
+              required: true,
             }
           }
         });

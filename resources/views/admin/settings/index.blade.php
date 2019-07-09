@@ -34,11 +34,12 @@
                             <div class="clearfix"></div>
                             <section class="row">
                                 <div class="col-sm-12">
-                                    <table class="table table-striped- table-bordered table-hover table-checkable" id="artist-profession">
+                                    <table class="table table-striped- table-bordered table-condensed table-hover table-checkable" id="artist-profession">
                                         <thead>
                                             <tr>
                                                 <th>Artist Profession Name</th>
                                                 <th>Profession Fee</th>
+                                                <th>Description</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -248,5 +249,62 @@
 </section>
 @endsection
 @section('script')
+<script type="text/javascript">
+    $(document).ready(function(){
 
+       var profession = $('table#artist-profession').DataTable({
+           processing: true,
+           serverSide: true,
+           ajax: {
+               url: '{{ route('profession.datatable') }}',
+               global: false,
+           },
+    
+           columnDefs: [
+                {targets:  3, className: 'no-wrap',sortable: false},
+                {targets:  1, className: 'no-wrap'}
+           ],
+       
+           columns: [
+               { data: 'prof_name_en', name: 'prof_name_en'},
+               {
+                    render: function (data, type, full, meta){
+                        return 'AED '+ full.prof_amount;
+                    }
+                },  
+               { data: 'prof_description', name: 'prof_description'},
+               {
+                   render: function (data, type, full, meta) {
+                      var url = '{{ url('profession') }}';
+                      return ' <a class="btn btn-link btn-outline-danger btn-sm kt-margin-t-5 kt-margin-b-5">Delete</a>\
+                                <a class="btn btn-link btn-outline-info btn-sm kt-margin-t-5 kt-margin-b-5">Edit</a>';
+
+                   },
+               },
+           ],
+            
+           fnCreatedRow: function(row, data, index){
+
+           }
+           //     $('button.btn-delete', row).click(function(){
+           //         bootbox.confirm('Are you sure you want delete ' + data.supplier_name + '?', function(result){
+           //             if(result == true){
+           //                 $.ajax({
+           //                     url: '{{ url('suppliers') }}/' + data.supplier_id,
+           //                     data: { _method: 'DELETE' },
+           //                     type: 'POST',
+           //                     dataType: 'JSON',
+           //                     success: function(){
+           //                         tblSupplier.ajax.reload(null, false);
+           //                     }
+           //                 });
+           //             }
+           //         })
+           //     });
+           // }
+       });
+       
+        // $("div.toolbar").html($('select[name=supplier_country]'));
+    });
+</script>
 @endsection

@@ -16,7 +16,7 @@ class CompanyMiddleware
      */
     public function handle($request, Closure $next)
     {
-       if(!Auth::user()->isAdmin()){ 
+        if($request->user() && $request->user()->type == 0){
             return $next($request);
         }
         return $next($request);
