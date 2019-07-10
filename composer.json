@@ -15,6 +15,7 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "owen-it/laravel-auditing": "^9.2",
+        "pragmarx/countries": "^0.6.0",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "yajra/laravel-datatables-oracle": "~9.0",
         "zizaco/entrust": "^1.9"

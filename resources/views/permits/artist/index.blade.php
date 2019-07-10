@@ -27,7 +27,7 @@ Artists
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         <div class="dropdown dropdown-inline">
-                            <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
+                            <a href="/company/add_new_artist" class="btn btn-brand btn-elevate btn-icon-sm">
                                 <i class="la la-plus"></i>
                                 New Artist Permit
                             </a>
@@ -118,14 +118,72 @@ Artists
                         <td><button class="btn btn-default">Pending</button></td>
                         <td><a href="#">Details</a></td>
                     </tr>
-
-
                 </tbody>
             </table>
 
+
+
+            <div>
+                <p class="kt-section__content">
+                    <div class="kt-pagination kt-pagination--sm  kt-pagination--brand kt-pagination--circle">
+                        <ul class="kt-pagination__links">
+                            <li class="kt-pagination__link--first">
+                                <a href="#"><i class="fa fa-angle-double-left kt-font-brand"></i></a>
+                            </li>
+                            <li class="kt-pagination__link--next">
+                                <a href="#"><i class="fa fa-angle-left kt-font-brand"></i></a>
+                            </li>
+                            <li>
+                                <a href="#">...</a>
+                            </li>
+                            <li>
+                                <a href="#">29</a>
+                            </li>
+                            <li>
+                                <a href="#">30</a>
+                            </li>
+                            <li>
+                                <a href="#">31</a>
+                            </li>
+                            <li class="kt-pagination__link--active">
+                                <a href="#">32</a>
+                            </li>
+                            <li>
+                                <a href="#">33</a>
+                            </li>
+                            <li>
+                                <a href="#">34</a>
+                            </li>
+                            <li>
+                                <a href="#">...</a>
+                            </li>
+                            <li class="kt-pagination__link--prev">
+                                <a href="#"><i class="fa fa-angle-right kt-font-brand"></i></a>
+                            </li>
+                            <li class="kt-pagination__link--last">
+                                <a href="#"><i class="fa fa-angle-double-right kt-font-brand"></i></a>
+                            </li>
+                        </ul>
+                        <div class="kt-pagination__toolbar">
+                            <select class="form-control kt-font-brand" style="width: 60px;">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span class="pagination__desc">
+                                Displaying 10 of 230 records
+                            </span>
+                        </div>
+                    </div>
+                </p>
+            </div>
             <!--end: Datatable -->
         </div>
     </div>
+
+
 
 
     <div class="kt-portlet kt-portlet--mobile">

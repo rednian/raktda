@@ -8,6 +8,10 @@
             <span class="kt-subheader__breadcrumbs-separator"></span>
             <a href="" class="kt-subheader__breadcrumbs-link">
                 {{$subheading}} </a>
+            @isset($subSubHeading)
+            <span class="kt-subheader__breadcrumbs-separator"></span>
+            <a href="" class="kt-subheader__breadcrumbs-link">{{$subSubHeading}}</a>
+            @endisset
         </div>
     </div>
 </div>

@@ -1,18 +1,19 @@
 @extends('layouts.app')
 
+
 @section('content')
+
 @component('layouts.subheader')
 @slot('heading')
 Permits
 @endslot
 @slot('subheading')
-Event Permit
+Artist Permit
 @endslot
 @slot('subSubHeading')
-Apply New Event Permit
+Apply New Artist Permit
 @endslot
 @endcomponent
-
 
 
 <!-- begin:: Content -->
@@ -50,29 +51,29 @@ Apply New Event Permit
                                 </div>
                             </a>
                             {{-- <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#" style="flex: 0 0 17%;">
-                                    <div class="kt-wizard-v3__nav-body">
-                                        <div class="kt-wizard-v3__nav-label">
-                                            <span>4</span>
-                                        </div>
-                                        <div class="kt-wizard-v3__nav-bar"></div>
+                                <div class="kt-wizard-v3__nav-body">
+                                    <div class="kt-wizard-v3__nav-label">
+                                        <span>4</span>
                                     </div>
-                                </a>
-                                <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#" style="flex: 0 0 17%;">
-                                    <div class="kt-wizard-v3__nav-body">
-                                        <div class="kt-wizard-v3__nav-label">
-                                            <span>5</span>
-                                        </div>
-                                        <div class="kt-wizard-v3__nav-bar"></div>
+                                    <div class="kt-wizard-v3__nav-bar"></div>
+                                </div>
+                            </a>
+                            <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#" style="flex: 0 0 17%;">
+                                <div class="kt-wizard-v3__nav-body">
+                                    <div class="kt-wizard-v3__nav-label">
+                                        <span>5</span>
                                     </div>
-                                </a>
-                                <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#" style="flex: 0 0 17%;">
-                                    <div class="kt-wizard-v3__nav-body">
-                                        <div class="kt-wizard-v3__nav-label">
-                                            <span>6</span>
-                                        </div>
-                                        <div class="kt-wizard-v3__nav-bar"></div>
+                                    <div class="kt-wizard-v3__nav-bar"></div>
+                                </div>
+                            </a>
+                            <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#" style="flex: 0 0 17%;">
+                                <div class="kt-wizard-v3__nav-body">
+                                    <div class="kt-wizard-v3__nav-label">
+                                        <span>6</span>
                                     </div>
-                                </a> --}}
+                                    <div class="kt-wizard-v3__nav-bar"></div>
+                                </div>
+                            </a> --}}
                         </div>
                     </div>
 
@@ -97,7 +98,7 @@ Apply New Event Permit
                                         <div class="card-header" id="headingOne6">
                                             <div class="card-title" data-toggle="collapse" data-target="#collapseOne6"
                                                 aria-expanded="true" aria-controls="collapseOne6">
-                                                <i class="flaticon-pie-chart-1"></i> Event Details Required
+                                                <i class="flaticon-pie-chart-1"></i> Artist Details Required
                                             </div>
                                         </div>
                                         <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -172,7 +173,7 @@ Apply New Event Permit
 
                         <!--begin: Form Wizard Step 2-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-heading kt-heading--md">Event Permit Details</div>
+                            <div class="kt-heading kt-heading--md">Artist Permit Details</div>
 
                             @if($errors->any())
                             <div class="alert alert-danger">
@@ -192,68 +193,102 @@ Apply New Event Permit
 
                             <div class="kt-form__section kt-form__section--first">
                                 <div class="kt-wizard-v3__form">
-                                    <form method="POST" action="/company/apply_event_permit">
+                                    <form method="POST" action="/company/apply_artist_permit">
                                         {{ csrf_field()}}
                                         <div class="row">
                                             <div class="form-group col-4">
-                                                <label>Event Type</label>
-                                                <select type="text" class="form-control " name="event_type">
+                                                <label>Artist Type</label>
+                                                <select type="text" class="form-control " name="artist_type">
                                                     <option value="">Select</option>
-                                                    <option value="Entertainment Events / Without Ticket">Entertainment
-                                                        Events / Without Ticket</option>
+                                                    @foreach ($profession as $pf)
+                                                    <option value={{$pf->id}}>{{$pf->prof_name_en}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
 
                                             <div class="form-group col-4">
                                                 <label>From Date</label>
-                                                <div class="input-group" data-date-format="dd-mm-yyyy"
-                                                    data-date-start-date="+0d">
-                                                    <input type="text" class="form-control date-picker"
-                                                        name="event_permit_from" placeholder="MM/DD/YY">
-                                                    <span class="input-group-btn">
-                                                        <button class="btn default" type="button">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </button>
-                                                    </span>
-                                                </div>
+
+                                                <input type="text" class="form-control date-picker"
+                                                    name="artist_permit_from" data-date-start-date="+0d"
+                                                    placeholder="MM/DD/YY" />
 
                                             </div>
+
+
                                             <div class="form-group col-4 ">
                                                 <label>To Date</label>
-                                                <div class="input-group" data-date-format="dd-mm-yyyy"
-                                                    data-date-start-date="+0d">
-                                                    <input type="text" class="form-control date-picker"
-                                                        name="event_permit_to" placeholder="MM/DD/YY" />
-                                                    <span class="input-group-btn">
-                                                        <button class="btn default" type="button">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </button>
-                                                    </span>
 
-                                                </div>
+                                                <input type="text" class="form-control date-picker"
+                                                    name="artist_permit_to" placeholder="MM/DD/YY"
+                                                    data-date-start-date="+0d" />
+
 
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-4">
-                                                <label>Event Name - EN</label>
-                                                <input type="text" class="form-control" name="event_name_en"
-                                                    placeholder="Event Name - EN">
+                                                <label>Artist Name - EN</label>
+                                                <input type="text" class="form-control" name="artist_name_en"
+                                                    placeholder="Artist Name - EN">
                                             </div>
                                             <div class="form-group col-4">
-                                                <label>Event Name - AR</label>
-                                                <input type="text" class="form-control" name="event_name_ar"
-                                                    placeholder="Event Name - AR">
+                                                <label>Artist Name - AR</label>
+                                                <input type="text" class="form-control" name="artist_name_ar"
+                                                    placeholder="Artist Name - AR">
                                             </div>
 
                                             <div class="form-group col-4">
-                                                <label>Event Venue</label>
-                                                <input type="text" placeholder="Event Venue" class="form-control"
-                                                    name="event_venue">
+                                                <label>Nationality</label>
+                                                <select type="text" class="form-control" name="artist_nationality">
+                                                    <option value="">Select</option>
+                                                    @foreach ($countries as $ct)
+                                                    <option value={{$ct}}>{{$ct}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
                                         </div>
+                                        <div class="row">
 
+                                            <div class="form-group col-4">
+                                                <label>Passport Number</label>
+                                                <input type="text" class="form-control" name="artist_passport"
+                                                    placeholder="Passport Number">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label>UID Number</label>
+                                                <input type="text" class="form-control" name="artist_uid_number"
+                                                    placeholder="UID Number">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label>Date of Birth</label>
+
+                                                <input type="text" class="form-control date-picker"
+                                                    placeholder="MM/DD/YYYY" name="artist_dob" />
+
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="form-group col-4">
+                                                <label>Telephone Number</label>
+                                                <input type="text" class="form-control" name="artist_telephone"
+                                                    placeholder="Telephone Number">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label>Mobile Number</label>
+                                                <input type="text" class="form-control" name="artist_mobile"
+                                                    placeholder="Mobile Number">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label>Email</label>
+                                                <input type="text" class="form-control" placeholder="Email"
+                                                    name="artist_email" />
+                                            </div>
+
+                                        </div>
 
 
                                 </div>
@@ -279,9 +314,9 @@ Apply New Event Permit
                                         <div class="form-group col-4">
                                             <label>Document Type</label>
                                             <select type="text" class="form-control" name="artist_upload_doc_type">
-                                                <option value="">Select</option>
-                                                <option value="Trade License">Trade License</option>
-                                                <option value="Trade License">NOC</option>
+                                                <option value="0">Select</option>
+                                                <option value="1">Passport</option>
+
                                             </select>
                                         </div>
 
@@ -292,16 +327,10 @@ Apply New Event Permit
                                         </div>
                                         <div class="form-group col-4">
                                             <label>Expiry Date</label>
-                                            <input type="date" class="form-control" name="artist_upload_doc_exp_date"
-                                                placeholder="MM/DD/YY">
+                                            <input type="text" class="form-control date-picker"
+                                                name="artist_upload_doc_exp_date" placeholder="MM/DD/YY">
                                         </div>
                                     </div>
-
-
-
-
-
-
 
                                 </div>
                             </div>
@@ -311,72 +340,72 @@ Apply New Event Permit
 
                         <!--begin: Form Wizard Step 4-->
                         {{-- <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                <div class="kt-heading kt-heading--md">Permit Request Applied Successfully
-                </div>
-                <div class="kt-form__section kt-form__section--first">
-                    <div class="kt-wizard-v3__form">
-                        <div class="form-group">
-                            <label>Permit Details</label>
-                            <div class="kt-card">
-                                <h2>Artist Name and details</h2>
-                            </div>
+            <div class="kt-heading kt-heading--md">Permit Request Applied Successfully
+            </div>
+            <div class="kt-form__section kt-form__section--first">
+                <div class="kt-wizard-v3__form">
+                    <div class="form-group">
+                        <label>Permit Details</label>
+                        <div class="kt-card">
+                            <h2>Artist Name and details</h2>
                         </div>
-
                     </div>
+
                 </div>
-            </div> --}}
+            </div>
+        </div> --}}
 
 
                         <!--end: Form Wizard Step 4-->
 
                         <!--begin: Form Wizard Step 5-->
                         {{-- <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                <div class="kt-heading kt-heading--md">Make Payment
-                </div>
-                <div class="kt-form__section kt-form__section--first">
-                    <div class="kt-wizard-v3__review">
-                        <div class="kt-wizard-v3__review-item">
-                            <div class="kt-wizard-v3__review-title">
-                                Permit ID
-                            </div>
-                            <div class="kt-wizard-v3__review-content">
-                                Address Line 1<br />
-                                Address Line 2<br />
-                                Melbourne 3000, VIC, Australia
-                                and Other Details on the Permit
-                            </div>
-                            <div class="kt-wizard-v3__review-content kt-heading">
-                                Total Payable Amount: AED 195
-                            </div>
+            <div class="kt-heading kt-heading--md">Make Payment
+            </div>
+            <div class="kt-form__section kt-form__section--first">
+                <div class="kt-wizard-v3__review">
+                    <div class="kt-wizard-v3__review-item">
+                        <div class="kt-wizard-v3__review-title">
+                            Permit ID
                         </div>
-
+                        <div class="kt-wizard-v3__review-content">
+                            Address Line 1<br />
+                            Address Line 2<br />
+                            Melbourne 3000, VIC, Australia
+                            and Other Details on the Permit
+                        </div>
+                        <div class="kt-wizard-v3__review-content kt-heading">
+                            Total Payable Amount: AED 195
+                        </div>
                     </div>
+
                 </div>
-            </div> --}}
+            </div>
+        </div> --}}
 
                         <!--end: Form Wizard Step 5-->
 
                         <!--begin: Form Wizard Step 5-->
                         {{-- <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                <div class="kt-heading kt-heading--md">Permit Issued Successfully
-                </div>
-                <div class="kt-form__section kt-form__section--first">
-                    <div class="kt-wizard-v3__review">
-                        <div class="kt-wizard-v3__review-item">
-                            <div class="kt-wizard-v3__review-title">
-                                Permit ID
-                            </div>
-                            <div class="kt-wizard-v3__review-content">
-                                Address Line 1<br />
-                                Address Line 2<br />
-                                Melbourne 3000, VIC, Australia
-                                and Other Details on the Permit
-                            </div>
+            <div class="kt-heading kt-heading--md">Permit Issued Successfully
+            </div>
+            <div class="kt-form__section kt-form__section--first">
+                <div class="kt-wizard-v3__review">
+                    <div class="kt-wizard-v3__review-item">
+                        <div class="kt-wizard-v3__review-title">
+                            Permit ID
                         </div>
-
+                        <div class="kt-wizard-v3__review-content">
+                            Address Line 1<br />
+                            Address Line 2<br />
+                            Melbourne 3000, VIC, Australia
+                            and Other Details on the Permit
+                        </div>
                     </div>
+
                 </div>
-            </div> --}}
+            </div>
+        </div> --}}
 
                         <!--end: Form Wizard Step 5-->
 
@@ -410,6 +439,9 @@ Apply New Event Permit
 
 <!-- end:: Content -->
 
+</div>
+
+
 <!-- begin::Scrolltop -->
 <div id="kt_scrolltop" class="kt-scrolltop">
     <i class="fa fa-arrow-up"></i>
@@ -417,34 +449,41 @@ Apply New Event Permit
 
 <!-- end::Scrolltop -->
 
-<div>
 
-    @endsection
+@endsection
 
-    @section('script')
 
-    <script>
-        var KTAppOptions = {
-                    "colors": {
-                        "state": {
-                            "brand": "#5d78ff",
-                            "dark": "#282a3c",
-                            "light": "#ffffff",
-                            "primary": "#5867dd",
-                            "success": "#34bfa3",
-                            "info": "#36a3f7",
-                            "warning": "#ffb822",
-                            "danger": "#fd3995"
-                        },
-                        "base": {
-                            "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
-                            "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
-                        }
-                    }
-                };
-    </script>
+@section('script')
 
-    <link href={{'../assets/css/demo1/pages/general/wizard/wizard-3.css'}} rel="stylesheet" type="text/css" />
-    <script src={{asset('./assets/js/demo1/pages/wizard/wizard-3.js')}} type="text/javascript"></script>
+<script>
+    $('.date-picker').datepicker({
+        format: 'mm/dd/yyyy',
+    });
 
-    @endsection
+    var KTAppOptions = {
+        "colors": {
+            "state": {
+                "brand": "#5d78ff",
+                "dark": "#282a3c",
+                "light": "#ffffff",
+                "primary": "#5867dd",
+                "success": "#34bfa3",
+                "info": "#36a3f7",
+                "warning": "#ffb822",
+                "danger": "#fd3995"
+            },
+            "base": {
+                "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
+                "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
+            }
+        }
+    };
+
+
+
+</script>
+
+<link href={{'../assets/css/demo1/pages/general/wizard/wizard-3.css'}} rel="stylesheet" type="text/css" />
+<script src={{asset('./assets/js/demo1/pages/wizard/wizard-3.js')}} type="text/javascript"></script>
+
+@endsection

@@ -5,7 +5,7 @@
     <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
         <div class="kt-aside__brand-logo">
             <a href="demo1/index.html">
-                <h4 class="text-white">RAK TDA</h4>
+                <h4 class="text-maroon">RAK TDA</h4>
             </a>
         </div>
         <div class="kt-aside__brand-tools">
