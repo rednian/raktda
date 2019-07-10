@@ -89,3 +89,7 @@
     .kt-menu__link-text {
     color: #fff;
 }
+.no-wrap {
+    white-space: nowrap;
+    width: 1%;
+}

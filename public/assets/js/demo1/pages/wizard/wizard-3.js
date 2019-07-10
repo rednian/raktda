@@ -36,39 +36,39 @@ var KTWizard3 = (function() {
             // Validation rules
             rules: {
                 //= Step 1
-                artist_type: {
-                    required: true
-                },
-                artist_permit_from: {
-                    required: true
-                },
-                artist_permit_to: {
-                    required: true
-                },
-                artist_name_en: {
-                    required: true
-                },
-                artist_nationality: {
-                    required: true
-                },
-                artist_passport: {
-                    required: true
-                },
-                artist_uid_number: {
-                    required: true
-                },
-                artist_dob: {
-                    required: true
-                },
-                artist_telephone: {
-                    required: true
-                },
-                artist_mobile: {
-                    required: true
-                },
-                artist_email: {
-                    required: true
-                },
+                // artist_type: {
+                //     required: true
+                // },
+                // artist_permit_from: {
+                //     required: true
+                // },
+                // artist_permit_to: {
+                //     required: true
+                // },
+                // artist_name_en: {
+                //     required: true
+                // },
+                // artist_nationality: {
+                //     required: true
+                // },
+                // artist_passport: {
+                //     required: true
+                // },
+                // artist_uid_number: {
+                //     required: true
+                // },
+                // artist_dob: {
+                //     required: true
+                // },
+                // artist_telephone: {
+                //     required: true
+                // },
+                // artist_mobile: {
+                //     required: true
+                // },
+                // artist_email: {
+                //     required: true
+                // },
 
                 //= Step 2
                 artist_upload_doc_type: {

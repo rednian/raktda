@@ -16,7 +16,8 @@ class AdmminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->isAdmin()){
+    
+        if($request->user() && $request->user()->type == 1){
             return $next($request);
         }
        return $next($request);
