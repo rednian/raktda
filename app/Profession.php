@@ -9,9 +9,9 @@ class Profession extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'profession';
+    protected $table = 'artist_type';
     protected $primaryKey = 'prof_id';
-    protected $fillable = ['prof_name_en', 'prof_name_ar', 'prof_amount', 'prof_description', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['name_en', 'name_ar', 'artist_type_amount', 'artist_permit_code', 'created_by', 'updated_by', 'deleted_by'];
 
     
 

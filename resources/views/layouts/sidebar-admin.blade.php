@@ -105,17 +105,114 @@
                     </ul>
                 </div>
             </li>
-            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-                data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i
-                        class="kt-menu__link-icon flaticon-users-1"></i><span
-                        class="kt-menu__link-text">User Management</span></a>
-
-            </li>
             <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-                <a href="{{ route('settings.index') }}" class="kt-menu__link kt-menu__toggle">
+                <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                    <i class="kt-menu__link-icon flaticon-users-1"></i>
+                    <span class="kt-menu__link-text">User Management</span>
+                </a>
+            </li>   
+            <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('settings*') ? 'kt-menu__item--open': '' }} kt_menu__item--here" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                     <i class="kt-menu__link-icon flaticon-settings-1"></i>
-                    <span class="kt-menu__link-text">Settings</span></a>
-            </li>
+                    <span class="kt-menu__link-text">Settings</span>
+                    <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                </a>
+                <div class="kt-menu__submenu ">
+                    <span class="kt-menu__arrow"></span>
+                        <ul class="kt-menu__subnav">
+                            <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true">
+                                <span class="kt-menu__link">
+                                    <span class="kt-menu__link-text">Settings</span>
+                                </span>
+                            </li>
+                            <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('settings/artist*') ? 'kt-menu__item--open': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                                <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                    <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="kt-menu__link-text">Artist Profession</span>
+                                    <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                                </a>
+                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                    <ul class="kt-menu__subnav">
+                                        <li class="kt-menu__item {{ Request::is('settings/artist/profession/create') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('profession.create') }}" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="kt-menu__link-text">New Artist Profession</span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-menu__item {{ Request::is('settings/artist/profession') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('profession.index') }}" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
+                                                <span class="kt-menu__link-text">Artist Profession List</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('settings/event*') ? 'kt-menu__item--open': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                                <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                    <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="kt-menu__link-text">Event Permit Type</span>
+                                    <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                                </a>
+                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                    <ul class="kt-menu__subnav">
+                                        <li class="kt-menu__item {{ Request::is('settings/event/event_type/create') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('event_type.create') }}" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="kt-menu__link-text">New Event Permit Type</span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-menu__item {{ Request::is('settings/event/event_type') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('event_type.index') }}" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
+                                                <span class="kt-menu__link-text">Event Permit Type</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                                <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                                    <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="kt-menu__link-text">Approval Procedure</span>
+                                    <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                                </a>
+                                <div class="kt-menu__submenu ">
+                                    <span class="kt-menu__arrow"></span>
+                                    <ul class="kt-menu__subnav">
+                                        <li class="kt-menu__item " aria-haspopup="true">
+                                            <a href="demo1/crud/forms/layouts/default-forms.html" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="kt-menu__link-text">New Approval Procedure</span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-menu__item " aria-haspopup="true">
+                                            <a href="demo1/crud/forms/layouts/multi-column-forms.html" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="kt-menu__link-text">Approval Procedure List</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
         </ul>
     </div>
 </div>

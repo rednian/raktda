@@ -11,6 +11,6 @@ $factory->define(Employee::class, function (Faker $faker) {
         // 'emp_company_id'=>$faker->companyNumber,
         'emp_mobile'=>$faker->phoneNumber,
         // 'emp_designation'=>$faker->department,
-        'dep_id'=>1,
+        'dep_id'=>rand(1, 20),
     ];
 });

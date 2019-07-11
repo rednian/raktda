@@ -13,13 +13,15 @@ class ArtistProfessionController extends Controller
 
     public function index()
     {
-        return abort(404);
+        return view('admin.settings.profession.index');
     }
 
-    public function datatable()
+    public function datatable(Request $request)
     {
-        $profession =  Profession::all();
-        return Datatables::of($profession)->make(true);
+        if($request->ajax()){
+         $profession =  Profession::all();
+         return Datatables::of($profession)->make(true);   
+        }
     }
 
     public function isexist(Request $request)
@@ -33,7 +35,7 @@ class ArtistProfessionController extends Controller
  
     public function create()
     {
-        return view('admin.settings.artist-type.create');
+        return view('admin.settings.profession.create');
     }
 
     public function store(Request $request)
