@@ -9,14 +9,14 @@ class Profession extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'profession';
-    protected $primaryKey = 'prof_id';
-    protected $fillable = ['prof_name_en', 'prof_name_ar', 'prof_amount', 'prof_description', 'created_by', 'updated_by', 'deleted_by'];
+    protected $table = 'artist_type';
+    protected $primaryKey = 'artist_type_id';
+    protected $fillable = ['name_en', 'name_ar', 'artist_type_amount', 'created_by', 'updated_by', 'deleted_by'];
 
-    
+
 
     public function artist()
     {
-        return $this->hasMany(Artist::class, 'prof_id');
+        return $this->hasMany(Artist::class, 'artist_type_id');
     }
 }

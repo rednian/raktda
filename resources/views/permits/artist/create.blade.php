@@ -50,7 +50,7 @@ Apply New Artist Permit
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
                             </a>
-                            {{-- <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#" style="flex: 0 0 17%;">
+                            <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
                                         <span>4</span>
@@ -58,7 +58,7 @@ Apply New Artist Permit
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#" style="flex: 0 0 17%;">
+                            <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
                                         <span>5</span>
@@ -66,7 +66,7 @@ Apply New Artist Permit
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#" style="flex: 0 0 17%;">
+                            {{-- <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#" style="flex: 0 0 17%;">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
                                         <span>6</span>
@@ -84,7 +84,7 @@ Apply New Artist Permit
 
                     <!--begin: Form Wizard Form-->
                     {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
-                    <form class="kt-form" id="kt_form" style="width: 90%">
+                    <div class="kt-form w-100 p-5" id="kt_form">
                         <!--begin: Form Wizard Step 1-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content"
                             data-ktwizard-state="current">
@@ -167,6 +167,8 @@ Apply New Artist Permit
                                 <!--end::Accordion-->
                             </div>
 
+
+
                         </div>
 
                         <!--end: Form Wizard Step 1-->
@@ -175,128 +177,100 @@ Apply New Artist Permit
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-heading kt-heading--md">Artist Permit Details</div>
 
-                            @if($errors->any())
-                            <div class="alert alert-danger">
-                                @foreach($errors->all() as $error)
-                                {!! $error !!}<br>
-                                @endforeach
-                            </div>
-                            @endif
+                            <form id="artist_permit_form" name="artist_permit_form" enctype="multipart/form-data">
 
-                            @if (session('status'))
-                            <div class="alert alert-success alert-dismissible">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                        aria-hidden="true">×</span></button>
-                                {{ session('status') }}
-                            </div>
-                            @endif
-
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-                                    <form method="POST" action="/company/apply_artist_permit">
-                                        {{ csrf_field()}}
+                                <div class="kt-form__section kt-form__section--first">
+                                    <div class="kt-wizard-v3__form">
                                         <div class="row">
-                                            <div class="form-group col-4">
+
+                                            <div class="form-group col-3">
                                                 <label>Artist Type</label>
-                                                <select type="text" class="form-control " name="artist_type">
+                                                <select type="text" class="form-control " name="artist_type"
+                                                    id="artist_type">
                                                     <option value="">Select</option>
                                                     @foreach ($profession as $pf)
-                                                    <option value={{$pf->id}}>{{$pf->prof_name_en}}</option>
+                                                    <option value={{$pf->artist_type_id}}>{{$pf->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
 
-                                            <div class="form-group col-4">
+                                            <div class="form-group col-3">
                                                 <label>From Date</label>
-
                                                 <input type="text" class="form-control date-picker"
-                                                    name="artist_permit_from" data-date-start-date="+0d"
-                                                    placeholder="MM/DD/YY" />
-
+                                                    name="artist_permit_from" id="artist_permit_form"
+                                                    data-date-start-date="+0d" placeholder="MM/DD/YY" />
                                             </div>
 
 
-                                            <div class="form-group col-4 ">
+                                            <div class="form-group col-3">
                                                 <label>To Date</label>
-
                                                 <input type="text" class="form-control date-picker"
-                                                    name="artist_permit_to" placeholder="MM/DD/YY"
+                                                    name="artist_permit_to" id="artist_permit_to" placeholder="MM/DD/YY"
                                                     data-date-start-date="+0d" />
-
-
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-4">
+
+                                            <div class="form-group col-3">
                                                 <label>Artist Name - EN</label>
                                                 <input type="text" class="form-control" name="artist_name_en"
-                                                    placeholder="Artist Name - EN">
+                                                    id="artist_name_en" placeholder="Artist Name - EN">
                                             </div>
-                                            <div class="form-group col-4">
+                                            <div class="form-group col-3">
                                                 <label>Artist Name - AR</label>
                                                 <input type="text" class="form-control" name="artist_name_ar"
-                                                    placeholder="Artist Name - AR">
+                                                    id="artist_name_ar" placeholder="Artist Name - AR">
                                             </div>
-
-                                            <div class="form-group col-4">
+                                            <div class="form-group col-3">
                                                 <label>Nationality</label>
-                                                <select type="text" class="form-control" name="artist_nationality">
+                                                <select type="text" class="form-control" name="artist_nationality"
+                                                    id="artist_nationality">
                                                     <option value="">Select</option>
                                                     @foreach ($countries as $ct)
                                                     <option value={{$ct}}>{{$ct}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-
-                                        </div>
-                                        <div class="row">
-
-                                            <div class="form-group col-4">
+                                            <div class="form-group col-3">
+                                                <label>Profession</label>
+                                                <input type="text" class="form-control" placeholder="Profession"
+                                                    name="artist_profession" id="artist_profession" />
+                                            </div>
+                                            <div class="form-group col-3">
                                                 <label>Passport Number</label>
                                                 <input type="text" class="form-control" name="artist_passport"
-                                                    placeholder="Passport Number">
+                                                    id="artist_passport" placeholder="Passport Number">
                                             </div>
-                                            <div class="form-group col-4">
+                                            <div class="form-group col-3">
                                                 <label>UID Number</label>
                                                 <input type="text" class="form-control" name="artist_uid_number"
-                                                    placeholder="UID Number">
+                                                    id="artist_uid_number" placeholder="UID Number">
                                             </div>
-                                            <div class="form-group col-4">
+
+                                            <div class="form-group col-3">
                                                 <label>Date of Birth</label>
-
                                                 <input type="text" class="form-control date-picker"
-                                                    placeholder="MM/DD/YYYY" name="artist_dob" />
-
-
+                                                    placeholder="MM/DD/YYYY" name="artist_dob" id="artist_dob" />
                                             </div>
-                                        </div>
-                                        <div class="row">
-
-                                            <div class="form-group col-4">
+                                            <div class="form-group col-3">
                                                 <label>Telephone Number</label>
                                                 <input type="text" class="form-control" name="artist_telephone"
-                                                    placeholder="Telephone Number">
+                                                    id="artist_telephone" placeholder="Telephone Number">
                                             </div>
-                                            <div class="form-group col-4">
+                                            <div class="form-group col-3">
                                                 <label>Mobile Number</label>
                                                 <input type="text" class="form-control" name="artist_mobile"
-                                                    placeholder="Mobile Number">
+                                                    id="artist_mobile" placeholder="Mobile Number">
                                             </div>
-                                            <div class="form-group col-4">
+                                            <div class="form-group col-3">
                                                 <label>Email</label>
                                                 <input type="text" class="form-control" placeholder="Email"
-                                                    name="artist_email" />
+                                                    name="artist_email" id="artist_email" />
                                             </div>
 
                                         </div>
 
 
+                                    </div>
                                 </div>
-                                <!--begin: Form Actions -->
-
-
-                                <!--end: Form Actions -->
-                            </div>
                         </div>
 
                         <!--end: Form Wizard Step 2-->
@@ -305,88 +279,136 @@ Apply New Artist Permit
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-heading kt-heading--md">Upload Necessary Documents
                                 <span class="float-right">
-                                    <button class="btn btn-warning btn-sm"> + Add New</button>
+                                    <button class="btn btn-warning btn-sm" onclick="add_new_row()"> + Add
+                                        New</button>
                                 </span>
                             </div>
                             <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
+                                <div class="kt-wizard-v3__form" id="document_row">
                                     <div class="row">
                                         <div class="form-group col-4">
-                                            <label>Document Type</label>
-                                            <select type="text" class="form-control" name="artist_upload_doc_type">
-                                                <option value="0">Select</option>
-                                                <option value="1">Passport</option>
-
+                                            <select type="text" class="form-control" name="artist_upload_doc_type"
+                                                id="doc_type_1">
+                                                <option value="passport" selected>Passport</option>
                                             </select>
                                         </div>
-
                                         <div class="form-group col-4">
-                                            <label>Upload File</label>
                                             <input type="file" class="form-control" name="artist_upload_doc_file"
-                                                placeholder="">
+                                                id="doc_file_1" placeholder="">
                                         </div>
-                                        <div class="form-group col-4">
-                                            <label>Expiry Date</label>
+                                        <div class="form-group col-3">
                                             <input type="text" class="form-control date-picker"
-                                                name="artist_upload_doc_exp_date" placeholder="MM/DD/YY">
+                                                name="artist_upload_doc_exp_date" id="doc_exp_date_1"
+                                                placeholder="Expiry">
                                         </div>
                                     </div>
+                                    {{-- <div class="row">
+                                        <div class="form-group col-4">
+                                            <select type="text" class="form-control" name="artist_upload_doc_type[]"
+                                                id="doc_type_1">
+                                                <option value="visa" selected>Visa</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <input type="file" class="form-control" name="artist_upload_doc_file[]"
+                                                id="doc_file_1" placeholder="">
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <input type="text" class="form-control date-picker"
+                                                name="artist_upload_doc_exp_date[]" id="doc_exp_date_1"
+                                                placeholder="Expiry">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-4">
+                                            <select type="text" class="form-control" name="artist_upload_doc_type[]"
+                                                id="doc_type_1">
+                                                <option value="photograph" selected>Photograph</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <input type="file" class="form-control" name="artist_upload_doc_file[]"
+                                                id="doc_file_1" placeholder="">
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-4">
+                                            <select type="text" class="form-control" name="artist_upload_doc_type[]"
+                                                id="doc_type_1">
+                                                <option value="medical" selected>Medical Certificate
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <input type="file" class="form-control" name="artist_upload_doc_file[]"
+                                                id="doc_file_1" placeholder="">
+                                        </div>
+
+                                    </div> --}}
 
                                 </div>
+
+                                <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                    id="submit_btn">
+                                    Submit
+                                </div>
                             </div>
-                        </div>
-
-                        <!--end: Form Wizard Step 3-->
-
-                        <!--begin: Form Wizard Step 4-->
-                        {{-- <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-            <div class="kt-heading kt-heading--md">Permit Request Applied Successfully
-            </div>
-            <div class="kt-form__section kt-form__section--first">
-                <div class="kt-wizard-v3__form">
-                    <div class="form-group">
-                        <label>Permit Details</label>
-                        <div class="kt-card">
-                            <h2>Artist Name and details</h2>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div> --}}
 
 
-                        <!--end: Form Wizard Step 4-->
 
-                        <!--begin: Form Wizard Step 5-->
-                        {{-- <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-            <div class="kt-heading kt-heading--md">Make Payment
-            </div>
-            <div class="kt-form__section kt-form__section--first">
-                <div class="kt-wizard-v3__review">
-                    <div class="kt-wizard-v3__review-item">
-                        <div class="kt-wizard-v3__review-title">
-                            Permit ID
-                        </div>
-                        <div class="kt-wizard-v3__review-content">
-                            Address Line 1<br />
-                            Address Line 2<br />
-                            Melbourne 3000, VIC, Australia
-                            and Other Details on the Permit
-                        </div>
-                        <div class="kt-wizard-v3__review-content kt-heading">
-                            Total Payable Amount: AED 195
-                        </div>
-                    </div>
 
-                </div>
-            </div>
-        </div> --}}
+                            <!--end: Form Wizard Step 3-->
 
-                        <!--end: Form Wizard Step 5-->
+                            <!--begin: Form Wizard Step 4-->
+                            <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                                <div class="kt-heading kt-heading--md">Permit Request Applied Successfully
+                                </div>
+                                <div class="kt-form__section kt-form__section--first">
+                                    <div class="kt-wizard-v3__form">
+                                        <div class="form-group">
+                                            <label>Permit Details</label>
+                                            <div class="kt-card">
+                                                <h2>Artist Name and details</h2>
+                                            </div>
+                                        </div>
 
-                        <!--begin: Form Wizard Step 5-->
-                        {{-- <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!--end: Form Wizard Step 4-->
+
+                            <!--begin: Form Wizard Step 5-->
+                            <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                                <div class="kt-heading kt-heading--md">Make Payment
+                                </div>
+                                <div class="kt-form__section kt-form__section--first">
+                                    <div class="kt-wizard-v3__review">
+                                        <div class="kt-wizard-v3__review-item">
+                                            <div class="kt-wizard-v3__review-title">
+                                                Permit ID
+                                            </div>
+                                            <div class="kt-wizard-v3__review-content">
+                                                Address Line 1<br />
+                                                Address Line 2<br />
+                                                Melbourne 3000, VIC, Australia
+                                                and Other Details on the Permit
+                                            </div>
+                                            <div class="kt-wizard-v3__review-content kt-heading">
+                                                Total Payable Amount: AED 195
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--end: Form Wizard Step 5-->
+
+                            <!--begin: Form Wizard Step 5-->
+                            {{-- <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
             <div class="kt-heading kt-heading--md">Permit Issued Successfully
             </div>
             <div class="kt-form__section kt-form__section--first">
@@ -407,37 +429,39 @@ Apply New Artist Permit
             </div>
         </div> --}}
 
-                        <!--end: Form Wizard Step 5-->
+                            <!--end: Form Wizard Step 5-->
 
-                        <!--begin: Form Actions -->
+                            <!--begin: Form Actions -->
+
+
+
+                            <!--end: Form Actions -->
+
+
+                        </div>
+
                         <div class="kt-form__actions">
                             <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
                                 data-ktwizard-type="action-prev">
                                 Previous
                             </div>
-                            <div class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
-                                data-ktwizard-type="action-submit">
-                                Submit
-                            </div>
+
                             <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
-                                data-ktwizard-type="action-next">
+                                data-ktwizard-type="action-next" id="next_btn">
                                 Next Step
                             </div>
                         </div>
 
-                        <!--end: Form Actions -->
-                    </form>
+                        </form>
 
+                        <!--end: Form Wizard Form-->
+                    </div>
                 </div>
-
-                <!--end: Form Wizard Form-->
             </div>
         </div>
     </div>
-</div>
-</div>
 
-<!-- end:: Content -->
+    <!-- end:: Content -->
 
 </div>
 
@@ -450,15 +474,128 @@ Apply New Artist Permit
 <!-- end::Scrolltop -->
 
 
+
 @endsection
 
 
 @section('script')
 
 <script>
+    $("#submit_btn").bind("click", (e) => {
+        e.preventDefault();
+
+        $('form[id="artist_permit_form"]').validate({
+            rules: {
+                // artist_type: 'required',
+                // artist_permit_from: 'required',
+                // artist_permit_to: 'required',
+                // artist_name_en: 'required',
+                // artist_nationality: 'required',
+                // artist_passport: 'required',
+                // artist_uid_number: 'required',
+                // artist_dob: 'required',
+                // artist_telephone: {
+                //     number: true,
+                //     required : true
+                // } ,
+                // artist_dob: 'required',
+                // artist_profession: 'required',
+                // artist_mobile: {
+                //     number: true,
+                //     required : true
+                // } ,
+                // artist_email: {
+                //     required: true,
+                //     email: true,
+                // },
+                doc_type_1: 'required',
+                doc_file_1: 'required',
+                doc_exp_date_1: 'required'
+            },
+            messages: {
+                // artist_type: 'This field is required',
+                // artist_permit_from: 'This field is required',
+                // artist_permit_to: 'This field is required',
+                // artist_name_en: 'This field is required',
+                // artist_nationality: 'This field is required',
+                // artist_passport: 'This field is required',
+                // artist_uid_number: 'This field is required',
+                // artist_dob: 'This field is required',
+                // artist_telephone: 'This field is required',
+                // artist_profession: 'This field is required',
+                // artist_mobile: 'This field is required',
+                // artist_email: 'Enter a valid email',
+                doc_type_1: 'This field is required',
+                doc_file_1: 'This field is required',
+                doc_exp_date_1: 'This field is required',
+            },
+            submitHandler: function(form) {}
+    });
+
+        // let artist_type = $('#artist_type').val();
+        // let from_date = $('input[name=artist_permit_from]').val();
+        // let to_date = $('input[name=artist_permit_to]').val();
+        // let name_en =  $('input[name=artist_name_en]').val();
+        // let name_ar =  $('input[name=artist_name_ar]').val();
+        // let nationality = $('#artist_nationality').val();
+        // let passport =  $('input[name=artist_passport]').val();
+        // let uid =  $('input[name=artist_uid_number]').val();
+        // let dob =  $('input[name=artist_dob]').val();
+        // let telephone =  $('input[name=artist_telephone]').val();
+        // let mobile =  $('input[name=artist_mobile]').val();
+        // let email =  $('input[name=artist_email]').val();
+        // let profession =  $('input[name=artist_profession]').val();
+
+        //artist_type: artist_type, from_date: from_date, to_date: to_date, name_en: name_en, name_ar: name_ar, nationality: nationality, passport: passport, uid: uid, dob: dob, telephone: telephone, mobile: mobile, email: email, profession: profession
+
+        let doc_type = $('select[id][name="artist_upload_doc_type"]').val();
+        let doc_file = $('input[name="artist_upload_doc_file"]')[0].files ;
+        let doc_exp_date = $('input[name="artist_upload_doc_exp_date"]').val();
+
+        // fileData = new FormData();
+        // fileData.append(doc_file.name,doc_file);
+
+
+        // console.log(doc_type, doc_file, doc_exp_date);
+
+        // return
+
+
+        $.ajax({
+
+        url: '{{url("/company/apply_artist_permit")}}',
+        type: "POST",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                "content"
+            )
+        },
+        dataType: 'application/json',
+        data: {
+            doc_type:doc_type, doc_file:doc_file, doc_exp_date:doc_exp_date
+        },
+        processData:false,
+        success: function() {
+
+        }
+        });
+    });
+
+    // const add_new_row = () => {
+    //     let num = $('#document_row').length;
+    //     let next_num = num + 1 ;
+    //    $('#document_row').append('<div class="row" id="row_'+num+'"><div class="form-group col-4"> <label>Document Type</label> <select type="text" class="form-control" name="artist_upload_doc_type[]" id="doc_type_'+next_num+'"> <option value="0">Select</option> <option value="1">Passport</option> <option value="2">Visa</option> <option value="3">Photograph</option> <option value="4">Medical Certificate</option> </select> </div> <div class="form-group col-4"> <label>Upload File</label> <input type="file" class="form-control" name="artist_upload_doc_file[]" id="doc_file_'+next_num+'" placeholder=""> </div> <div class="form-group col-3"> <label>Expiry Date</label> <input type="text" class="form-control date-picker" name="artist_upload_doc_exp_date[]" id="doc_exp_date_'+next_num+'" placeholder="MM/DD/YY"> </div><i class="fa fa-trash " onclick="del_row('+num+')" style="color:red;margin:auto;"></i></div>');
+    // }
+
     $('.date-picker').datepicker({
         format: 'mm/dd/yyyy',
     });
+
+    const del_row = (id) => {
+
+        $('#row_'+id).remove();
+    }
+
 
     var KTAppOptions = {
         "colors": {
@@ -484,6 +621,6 @@ Apply New Artist Permit
 </script>
 
 <link href={{'../assets/css/demo1/pages/general/wizard/wizard-3.css'}} rel="stylesheet" type="text/css" />
-<script src={{asset('./assets/js/demo1/pages/wizard/wizard-3.js')}} type="text/javascript"></script>
+<script src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
 
 @endsection

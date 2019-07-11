@@ -12,7 +12,7 @@ var KTWizard3 = (function() {
     var initWizard = function() {
         // Initialize form wizard
         wizard = new KTWizard("kt_wizard_v3", {
-            startStep: 1
+            startStep: 3
         });
 
         // Validation before going to next page
@@ -101,7 +101,7 @@ var KTWizard3 = (function() {
     };
 
     var initSubmit = function() {
-        var btn = formEl.find('[data-ktwizard-type="action-submit"]');
+        var btn = formEl.find('[data-ktwizard-type="action-next"]');
 
         btn.on("click", function(e) {
             e.preventDefault();
@@ -112,27 +112,6 @@ var KTWizard3 = (function() {
                 //KTApp.block(formEl);
 
                 // See: http://malsup.com/jquery/form/#ajaxSubmit
-                formEl.ajaxSubmit({
-                    url: '{{route("/company/apply_artist_permit")}}/',
-                    type: "GET",
-                    headers: {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                            "content"
-                        )
-                    },
-                    success: function() {
-                        KTApp.unprogress(btn);
-                        //KTApp.unblock(formEl);
-
-                        swal.fire({
-                            title: "",
-                            text:
-                                "The application has been successfully submitted!",
-                            type: "success",
-                            confirmButtonClass: "btn btn-secondary"
-                        });
-                    }
-                });
             }
         });
     };
@@ -141,7 +120,7 @@ var KTWizard3 = (function() {
         // public functions
         init: function() {
             wizardEl = KTUtil.get("kt_wizard_v3");
-            formEl = $("#kt_form");
+            formEl = $("#artist_permit_form");
 
             initWizard();
             initValidation();

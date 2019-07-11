@@ -45,50 +45,65 @@ class ArtistController extends Controller
     public function store(Request $request)
     {
 
-        //  $request->validate([
-        //     'artist_type'=> 'required',
-        //     'artist_permit_from' => 'required|date',
-        //     'artist_permit_to' => 'required|date',
-        //     'artist_name_en' => 'required',
-        //     'artist_name_ar' => 'nullable',
-        //     'artist_nationality' => 'required',
-        //     'artist_passport' => 'required',
-        //     'artist_uid_number' => 'nullable',
-        //     'artist_dob' => 'required|date',
-        //     'artist_telephone' => 'required|numeric',
-        //     'artist_mobile' => 'required|numeric',
-        //     'artist_email' => 'required|email',
+
+
+
+        // $request->validate([
+        //     'artist_type' => 'required',
+        //     'from_date' => 'required|date',
+        //     'to_date' => 'required|date',
+        //     'name_en' => 'required',
+        //     'name_ar' => 'nullable',
+        //     'nationality' => 'required',
+        //     'passport' => 'required',
+        //     'uid_number' => 'nullable',
+        //     'dob' => 'required|date',
+        //     'telephone' => 'required|numeric',
+        //     'mobile' => 'required|numeric',
+        //     'email' => 'required|email',
         // ]);
 
         // $artist = Artist::create([
-        //     'name' => $request->input('artist_name_en'),
-        //     'nationality' => $request->input('artist_nationality'),
-        //     'passport_number' => $request->input('artist_passport'),
-        //     'uid_number'=> $request->input('artist_uid_number'),
-        //     'birthdate'=> $request->input('artist_dob'),
-        //     'mobile_number'=> $request->input('artist_mobile'),
-        //     'phone_number'=> $request->input('artist_telephone'),
-        //     'email'=> $request->input('artist_email'),
-        //     'created_by'=> 1,
-        //     'company_id'=> 1,
+        //     'name' => $request->input('name_en'),
+        //     'nationality' => $request->input('nationality'),
+        //     'passport_number' => $request->input('passport'),
+        //     'uid_number' => $request->input('uid_number'),
+        //     'birthdate' => $request->input('dob'),
+        //     'mobile_number' => $request->input('mobile'),
+        //     'phone_number' => $request->input('telephone'),
+        //     'email' => $request->input('email'),
+        //     'created_by' => 1,
+        //     'company_id' => 1,
         // ]);
 
 
-
         $request->validate([
-            'artist_upload_doc_type' => 'required',
-            'artist_upload_doc_file' => 'file|required',
-            'artist_upload_doc_exp_date' => 'required|date'
+            'doc_type' => 'required',
+            'doc_file' => 'file|required',
+            'doc_exp_date' => 'required|date',
         ]);
 
+        $extension = $request->file('doc_file')->getClientOriginalExtension();
 
-        $artistDocumet = ArtistDocument::create([
-              'artist_doc_name' => $request->input('artist_upload_doc_type')  ,
-              'artist_doc_path' => $request->input('artist_upload_doc_file')  ,
-              'artist_doc_expired_date' => $request->input('artist_upload_doc_exp_date')  ,
+
+        $artistDocument = ArtistDocument::create([
+            'artist_doc_name' => $request->input('doc_type'),
+            'artist_doc_path' => $request->input('doc_file'),
+            'artist_doc_expired_date' => $request->input('doc_exp_date'),
+            'artist_id' => 1,
+            'created_by' =>  Auth::user()->id
         ]);
 
-        $artist->save();
+        $path = $request->file('doc_file')->storeAs(
+            $extension,
+            $artistDocument->id  . '.' . $extension
+        );
+
+        $artistDocument->path = $path;
+
+        //$artist->save();
+
+        $artistDocument->save();
 
         return redirect('artist_permits');
 
