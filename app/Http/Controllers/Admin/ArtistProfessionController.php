@@ -24,16 +24,16 @@ class ArtistProfessionController extends Controller
 
     public function isexist(Request $request)
     {
-        if($request->ajax()){
-            $profession = Profession::where('prof_name_en',$request->prof_name_en)->exists();
-             return response()->json(($profession ? false : true));
+        if ($request->ajax()) {
+            $profession = Profession::where('prof_name_en', $request->prof_name_en)->exists();
+            return response()->json(($profession ? false : true));
         }
     }
 
- 
+
     public function create()
     {
-        return view('admin.settings.artist-type.create');
+        return view('admin.settings.profession.create');
     }
 
     public function store(Request $request)
@@ -41,11 +41,11 @@ class ArtistProfessionController extends Controller
         try {
             $request['created_by'] = Auth::user()->user_id;
             $profession = Profession::create($request->all());
-             $result = ['success', 'Artists profession has been save successfully ', 'Success'];
+            $result = ['success', 'Artists profession has been save successfully ', 'Success'];
         } catch (Exception $e) {
-             $result = ['error', $e->getMessage(), 'Error'];
+            $result = ['error', $e->getMessage(), 'Error'];
         }
-         return redirect()->back()->with('message', $result);  
+        return redirect()->back()->with('message', $result);
     }
 
 

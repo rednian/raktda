@@ -5,15 +5,15 @@
         <div class="kt-portlet kt-portlet--last kt-portlet--head-lg kt-portlet--responsive-mobile" >
             <div class="kt-portlet__head kt-portlet__head--lg" style="">
                 <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title">New Artist Profession</h3>
+                    <h3 class="kt-portlet__head-title">New Artist Type</h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
                     <a href="{{ URL::previous() }}" class="btn btn-clean kt-margin-r-10">
                         <i class="la la-arrow-left"></i>
                         <span class="kt-hidden-mobile">Back</span>
                     </a>
-                    <a href="{{ route('settings.index') }}" class="btn btn-brand btn-sm">
-                        Profession List
+                    <a href="{{ route('profession.index') }}" class="btn btn-outline-primary btn-sm kt-margin-t-5 kt-margin-b-5">
+                        Artist Type List
                     </a>
                 </div>
             </div>
@@ -37,17 +37,17 @@
                                         </div>
                                     </div>
                                      <div class="form-group row">
-                                        <label class="col-2 col-form-label">Description</label>
+                                        <label class="col-2 col-form-label">Artist Permit Code</label>
                                         <div class="col-4">
-                                            <textarea name="prof_description" class="form-control input-sm" rows="3"></textarea>
+                                            <input class="form-control input-sm" type="text" name="artist_permit_code" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <dib class="div col-2"></dib>
                                         <div class="col-9">
-                                            <button type="submit" class="btn btn-outline-primary btn-sm kt-margin-t-5 kt-margin-b-5">Save</button>
-                                            <button type="submit" class="btn btn-outline-primary btn-sm kt-margin-t-5 kt-margin-b-5">Save & Continue</button>
-                                            <button type="button" class="btn btn-outline-default btn-sm kt-margin-t-5 kt-margin-b-5">Cancel</button>
+                                            <button type="submit" class="btn btn-outline-primary btn-sm">Save</button>
+                                            <button type="submit" class="btn btn-outline-primary btn-sm">Save & Continue</button>
+                                            <button type="reset" class="btn btn-secondary btn-sm">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -65,13 +65,13 @@
 @section('script')
 <script>
     $(document).ready(function(){
-        // url: '{!! route('profession.isexist') !!}',
         $('#frm-profession').validate({
           rules: {
             prof_name_en: {
               required: true,
               remote: {
                  url: '{!! route('profession.isexist') !!}',
+                 // global: false
                 data: {
                   prof_name_en: function() {
                     return $('input[name=prof_name_en]').val();
