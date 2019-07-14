@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProceduresTable extends Migration
+class CreateProcedureApproversTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateProceduresTable extends Migration
      */
     public function up()
     {
-        Schema::create('procedure', function (Blueprint $table) {
-            $table->bigIncrements('prod_id');
-            $table->string('prod_name');
-            $table->string('prod_status');
-            $table->string('prod_type');
-            $table->string('prod_description')->nullable();
+        Schema::create('procedure_approver', function (Blueprint $table) {
+            $table->bigIncrements('proda_id');
+            $table->string('order');
+            $table->unsignedBigInteger('prod_id');
+            $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
+             $table->foreign('prod_id')->references('prod_id')->on('procedure');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -34,6 +34,6 @@ class CreateProceduresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('procedure');
+        Schema::dropIfExists('procedure_approver');
     }
 }
