@@ -14,8 +14,18 @@ class Artist extends Model
         'phone_number', 'email', 'company_id', 'created_by', 'updated_by', 'deleted_by'
     ];
 
-    public function document()
+    public function artistdocument()
     {
-        return $this->hasMany(ArtistDocument::class, 'artist_id');
+        return $this->belongsTo(ArtistDocument::class, 'artist_id');
+    }
+
+    public function artistpermit()
+    {
+        return $this->belongsTo(ArtistPermit::class, 'artist_permit_id');
+    }
+
+    public function artisttype()
+    {
+        return $this->belongsTo(ArtistType::class, 'artist_type_id');
     }
 }

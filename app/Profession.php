@@ -11,9 +11,7 @@ class Profession extends Model
 
     protected $table = 'artist_type';
     protected $primaryKey = 'artist_type_id';
-    protected $fillable = ['name_en', 'name_ar', 'artist_type_amount', 'created_by', 'updated_by', 'deleted_by'];
-
-
+    // protected $fillable = ['artist_type_en', 'artist_type_ar', 'amount', 'created_by', 'updated_by', 'deleted_by'];
 
     public function artist()
     {

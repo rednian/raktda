@@ -12,14 +12,22 @@ var KTWizard3 = (function() {
     var initWizard = function() {
         // Initialize form wizard
         wizard = new KTWizard("kt_wizard_v3", {
-            startStep: 3
+            startStep: 1
         });
+
+        // console.log(wizard.currentStep);
+
+        // if (wizard.currentStep == 3) {
+        //     $("#submit_btn").css("display", "block");
+        // } else {
+        //     $("#submit_btn").css("display", "none");
+        // }
 
         // Validation before going to next page
         wizard.on("beforeNext", function(wizardObj) {
-            if (validator.form() !== true) {
-                wizardObj.stop(); // don't go to the next step
-            }
+            // if (validator.form() !== true) {
+            //     wizardObj.stop(); // don't go to the next step
+            // }
         });
 
         // Change event
