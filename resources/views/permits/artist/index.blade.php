@@ -67,7 +67,8 @@ Artists
         <div class="kt-portlet__body">
 
             <!--begin: Datatable -->
-            <table class="table table-striped- table-bordered table-hover table-checkable" id="applied-artists-table">
+            <table class="table table-striped- table-bordered table-condensed table-hover table-checkable"
+                id="applied-artists-table">
                 <thead>
                     <tr>
 
@@ -267,46 +268,73 @@ Artists
 @section('script')
 <script>
     $(document).ready(function(){
-        var table = $('#applied-artists-table').DataTable({
-        responsive: true,
-        processing: false,
-        serverSide: true,
-        searching: false,
-        pageLength: 5,
-        lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-        ajax:'{{route("company.json_applied_artists_list")}}',
-        order: [[ 4, "desc" ]],
-        columns: [
-            { data: 'name', name: 'name' },
-            { data: 'nationality', name: 'nationality' },
-            { data: 'mobile_number', name: 'mobile' },
-            { data: 'email', name: 'email' },
-            { data: 'created_at', name: 'created_at' },
-            { data: 'action', name: 'action' },
-            { data: 'details', name: 'details' },
-        ]
-    });
+        var table1 = $('#applied-artists-table').DataTable({
+            responsive: true,
+            processing: false,
+            serverSide: true,
+            searching: true,
+            pageLength: 5,
+
+            lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+            ajax:'{{route("company.json_applied_artists_list")}}',
+            order: [[ 4, "desc" ]],
+            columnDefs: [
+                {targets:  0, className: 'no-wrap'},
+                {targets:  3, className: 'no-wrap',sortable: false},
+           ],
+            columns: [
+                { data: 'artist.name', name: 'artist.name' },
+                { data: 'artist.nationality', name: 'artist.nationality' },
+                { data: 'artist.mobile_number', name: 'artist.mobile_number' },
+                { data: 'artist.email', name: 'artist.email' },
+                { data: 'created_at', name: 'created_at' },
+                { data: 'action', name: 'action' },
+                { data: 'details', name: 'details' },
+            ]
+        });
+
+        table1.on('change', '.kt-group-checkable', function() {
+			var set = $(this).closest('table').find('td:first-child .kt-checkable');
+			var checked = $(this).is(':checked');
+
+			$(set).each(function() {
+				if (checked) {
+					$(this).prop('checked', true);
+					$(this).closest('tr').addClass('active');
+				}
+				else {
+					$(this).prop('checked', false);
+					$(this).closest('tr').removeClass('active');
+				}
+			});
+		});
+
+		table1.on('change', 'tbody tr .kt-checkbox', function() {
+			$(this).parents('tr').toggleClass('active');
+		});
 
 
-    var table = $('#existing-artists-table').DataTable({
-        responsive: true,
-        processing: false,
-        serverSide: true,
-        searching: false,
-        pageLength: 5,
-        lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-        ajax:'{{route("company.json_existing_artists_list")}}',
-        order: [[ 4, "desc" ]],
-        columns: [
-            { data: 'name', name: 'name' },
-            { data: 'nationality', name: 'nationality' },
-            { data: 'mobile_number', name: 'mobile' },
-            { data: 'email', name: 'email' },
-            { data: 'created_at', name: 'created_at' },
-            { data: 'action', name: 'action' },
-            { data: 'details', name: 'details' },
-        ]
-    });
+        var table2 = $('#existing-artists-table').DataTable({
+            responsive: true,
+            processing: false,
+            serverSide: true,
+            searching: true,
+            pageLength: 5,
+            lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+            ajax:'{{route("company.json_existing_artists_list")}}',
+            order: [[ 4, "desc" ]],
+            columns: [
+                { data: 'artist.name', name: 'artist.name' },
+                { data: 'artist.nationality', name: 'artist.nationality' },
+                { data: 'artist.mobile_number', name: 'artist.mobile_number' },
+                { data: 'artist.email', name: 'artist.email' },
+                { data: 'created_at', name: 'created_at' },
+                { data: 'action', name: 'action' },
+                { data: 'details', name: 'details' },
+            ]
+        });
+
+
     });
 
     const cancel_permit = (id) => {

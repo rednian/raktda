@@ -97,3 +97,13 @@
     white-space: nowrap;
     width: 1%;
 }
+.kt-widget5 .kt-widget5__item .kt-widget5__content:last-child {
+    justify-content: left;
+    text-align: left;
+}
+.kt-widget5 .kt-widget5__item .kt-widget5__content .kt-widget5__pic img {
+    max-width: 15rem;
+}
+.kt-wizard-v3__nav-label {
+    text-align: center;
+}

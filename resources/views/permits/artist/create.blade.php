@@ -655,7 +655,7 @@ Apply New Artist Permit
 
 </script>
 
-<link href={{'../assets/css/demo1/pages/general/wizard/wizard-3.css'}} rel="stylesheet" type="text/css" />
-<script src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
+
+<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
 
 @endsection

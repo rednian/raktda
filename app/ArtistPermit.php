@@ -18,6 +18,6 @@ class ArtistPermit extends Model
 
     public function artist()
     {
-        return $this->belongsTo(Artist::class, 'artist_permit_id');
+        return $this->hasOne(Artist::class, 'artist_permit_id');
     }
 }

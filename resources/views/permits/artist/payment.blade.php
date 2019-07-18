@@ -95,19 +95,7 @@ Make Payment
 
                         <!--begin: Form Wizard Step 4-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-heading kt-heading--md">Permit Request Applied Successfully
-                            </div>
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-                                    <div class="form-group">
-                                        <label>Permit Details</label>
-                                        <div class="kt-card">
-                                            <h2>Artist Name and details</h2>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
                         </div>
 
 
@@ -115,23 +103,85 @@ Make Payment
 
                         <!--begin: Form Wizard Step 5-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-heading kt-heading--md">Make Payment
+                            <div class="kt-heading kt-heading--md">
                             </div>
                             <div class="kt-form__section kt-form__section--first">
                                 <div class="kt-wizard-v3__review">
                                     <div class="kt-wizard-v3__review-item">
-                                        <div class="kt-wizard-v3__review-title">
-                                            Permit ID
-                                        </div>
+                                        {{-- <div class="kt-wizard-v3__review-title">
+                                             Permit
+                                        </div> --}}
+
                                         <div class="kt-wizard-v3__review-content">
-                                            Address Line 1<br />
-                                            Address Line 2<br />
-                                            Melbourne 3000, VIC, Australia
-                                            and Other Details on the Permit
+
+
+                                            <div class="kt-widget5">
+                                                <div class="kt-widget5__item">
+
+                                                    <div class="kt-widget5__content">
+                                                        <div class="kt-widget5__pic">
+                                                            <img class="kt-widget7__img"
+                                                                src="https://source.unsplash.com/random/"
+                                                                style="height:150px;width:160px;" alt="">
+                                                        </div>
+                                                        <div class="kt-widget5__section">
+                                                            <a href="#" class="kt-widget5__title">
+                                                                {{$artist_details[0]->artist['name']}}
+                                                            </a>
+                                                            <p class="kt-widget5__desc">
+                                                                {{$artist_details[0]->artist['email']}}<br />
+                                                                {{$artist_details[0]->artist['mobile_number']}}
+                                                            </p>
+                                                            <div class="kt-widget5__info">
+
+                                                                <span>Permit Type:</span>
+                                                                <span class="kt-font-info">
+                                                                    {{$artist_details[0]->artist['artisttype']->artist_type_en}}</span>
+                                                                <span>Nationality:</span>
+                                                                <span
+                                                                    class="kt-font-info">{{$artist_details[0]->artist['nationality']}}</span>
+                                                                <span>Passport Number:</span>
+                                                                <span
+                                                                    class="kt-font-info">{{$artist_details[0]->artist['passport_number']}}</span>
+                                                                <span>UID Number:</span>
+                                                                <span
+                                                                    class="kt-font-info">{{$artist_details[0]->artist['uid_number']}}</span>
+                                                                <span>D-O-B:</span>
+                                                                <span
+                                                                    class="kt-font-info">{{$artist_details[0]->artist['birthdate']}}</span>
+                                                                <span>Phone Number:</span>
+                                                                <span
+                                                                    class="kt-font-info">{{$artist_details[0]->artist['phone_number']}}</span>
+                                                                <span>Profession:</span>
+                                                                <span
+                                                                    class="kt-font-info">{{$artist_details[0]->artist['profession']}}</span>
+                                                                <span>Applied On:</span>
+                                                                <span
+                                                                    class="kt-font-info">{{$artist_details[0]->artist['created_at']}}</span>
+                                                                <input type="hidden" name="p_artist_id"
+                                                                    id="{{$artist_details[0]->artist['artist_id']}}">
+                                                                <input type="hidden" name="p_artist_permit_id"
+                                                                    id="{{$artist_details[0]->artist['artist_permit_id']}}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+
                                         </div>
                                         <div class="kt-wizard-v3__review-content kt-heading">
-                                            Total Payable Amount: AED 195
+                                            Total Payable Amount: AED
+                                            {{$artist_details[0]->artist['artisttype']->amount}}
                                         </div>
+                                        {{-- @php
+                                        dd($artist_details);
+                                        @endphp --}}
+
+
                                     </div>
 
                                 </div>
@@ -173,7 +223,7 @@ Make Payment
 
 
                         <div class="kt-form__actions">
-                            <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                            {{-- <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
                                 data-ktwizard-type="action-prev" id="prev_btn">
                                 Previous
                             </div>
@@ -181,6 +231,10 @@ Make Payment
                             <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
                                 data-ktwizard-type="action-next" id="next_btn">
                                 Next Step
+                            </div> --}}
+                            <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                id="pay_btn">
+                                Pay
                             </div>
                         </div>
 
@@ -214,164 +268,35 @@ Make Payment
 @section('script')
 
 <script>
-    $('#next_btn').click(function(){
-        wizard = new KTWizard("kt_wizard_v3");
-        $('#prev_btn').css('display', 'block');
-       if(wizard.currentStep == 2){
-            $('#submit_btn').css('display', 'block');
-            $('#next_btn').css('display','none');
-       }else{
-            $('#submit_btn').css('display', 'none');
-            $('#next_btn').css('display', 'block');
-       }
-    });
-
-    $('#prev_btn').click(function(){
-        wizard = new KTWizard("kt_wizard_v3");
-        console.log(wizard.currentStep);
-       if(wizard.currentStep == 2){
-            $('#prev_btn').css('display', 'none');
-       }else{
-            $('#prev_btn').css('display', 'block');
-            $('#next_btn').css('display', 'block');
-       }
-    });
-
-
-    const isExpiry = (num) => {
-        let val = $('#doc_type_'+num).val();
-        if((val == 'photograph') || (val == 'medical') ){
-            $('#doc_exp_date_'+num).css('display', 'none');
-            $('#doc_issue_date_'+num).css('display', 'none');
-            $('#doc_exp_date_'+num).removeAttr( "required" );
-            $('#doc_issue_date_'+num).removeAttr( "required" );
-        } else {
-            $('#doc_exp_date_'+num).css('display', 'block');
-            $('#doc_issue_date_'+num).css('display', 'block');
-            $('#doc_exp_date_'+num).prop('required',true);
-            $('#doc_issue_date_'+num).prop('required',true);
-        }
-    }
-
-
-    $('.date-picker').datepicker({
-        format: 'mm/dd/yyyy',
-    });
-
-    const del_row = (id) => {
-        $('#row_'+id).remove();
-    }
-
     $(document).ready(function(){
         wizard = new KTWizard("kt_wizard_v3",{
             startStep: 4
         });
+        $('#next_btn').css('display','none');
+        $('#prev_btn').css('display','none');
     })
 
 
-    // $("#submit_btn").bind("click", (e) => {
-    //     e.preventDefault();
-
-    //     $('form[id="artist_permit_form"]').validate({
-    //         rules: {
-                // artist_type: 'required',
-                // artist_permit_from: 'required',
-                // artist_permit_to: 'required',
-                // artist_name_en: 'required',
-                // artist_nationality: 'required',
-                // artist_passport: 'required',
-                // artist_uid_number: 'required',
-                // artist_dob: 'required',
-                // artist_telephone: {
-                //     number: true,
-                //     required : true
-                // } ,
-                // artist_dob: 'required',
-                // artist_profession: 'required',
-                // artist_mobile: {
-                //     number: true,
-                //     required : true
-                // } ,
-                // artist_email: {
-                //     required: true,
-                //     email: true,
-                // },
-            //     doc_type_1: 'required',
-            //     doc_file_1: 'required',
-            //     doc_exp_date_1: 'required'
-            // },
-            // messages: {
-                // artist_type: 'This field is required',
-                // artist_permit_from: 'This field is required',
-                // artist_permit_to: 'This field is required',
-                // artist_name_en: 'This field is required',
-                // artist_nationality: 'This field is required',
-                // artist_passport: 'This field is required',
-                // artist_uid_number: 'This field is required',
-                // artist_dob: 'This field is required',
-                // artist_telephone: 'This field is required',
-                // artist_profession: 'This field is required',
-                // artist_mobile: 'This field is required',
-                // artist_email: 'Enter a valid email',
-    //             doc_type_1: 'This field is required',
-    //             doc_file_1: 'This field is required',
-    //             doc_exp_date_1: 'This field is required',
-    //         },
-    //         submitHandler: function(form) {}
-    // });
-
-        // let artist_type = $('#artist_type').val();
-        // let from_date = $('input[name=artist_permit_from]').val();
-        // let to_date = $('input[name=artist_permit_to]').val();
-        // let name_en =  $('input[name=artist_name_en]').val();
-        // let name_ar =  $('input[name=artist_name_ar]').val();
-        // let nationality = $('#artist_nationality').val();
-        // let passport =  $('input[name=artist_passport]').val();
-        // let uid =  $('input[name=artist_uid_number]').val();
-        // let dob =  $('input[name=artist_dob]').val();
-        // let telephone =  $('input[name=artist_telephone]').val();
-        // let mobile =  $('input[name=artist_mobile]').val();
-        // let email =  $('input[name=artist_email]').val();
-        // let profession =  $('input[name=artist_profession]').val();
-
-        //artist_type: artist_type, from_date: from_date, to_date: to_date, name_en: name_en, name_ar: name_ar, nationality: nationality, passport: passport, uid: uid, dob: dob, telephone: telephone, mobile: mobile, email: email, profession: profession
-
-        // let doc_type = $('select[id][name="artist_upload_doc_type"]').val();
-        // let doc_file = $('input[name="artist_upload_doc_file"]')[0].files ;
-        // let doc_exp_date = $('input[name="artist_upload_doc_exp_date"]').val();
-
-
-        // let doc_type = $('#doc_type_1').val();
-        // let doc_file = $('#doc_file_1')[0].files[0] ;
-        // let doc_exp_date = $('#doc_exp_date_1').val();
-
-        // let fileData = new FormData();
-        // fileData.append(doc_file.name,doc_file);
-
-
-        // console.log(doc_type, fileData, doc_exp_date);
-
-        // return
-
-
-        // $.ajax({
-        //     headers: {
-        //     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-        //         "content"
-        //     )
-        // },
-        // type: "POST",
-        // url: '/company/apply_artist_permit',
-        // // dataType: 'application/json',
-        // processData:false,
-        // data: {
-        //     doc_type:doc_type, doc_file:fileData, doc_exp_date:doc_exp_date
-        // },
-        // success: function(data) {
-        //     console.log(data);
-        // }
-        // });
-    // });
+    $("#pay_btn").bind("click", (e) => {
+        e.preventDefault();
+        let id = $('#p_artist_id').val();
+        let permit_id = $('#p_artist_permit_id').val();
+        $.ajax({
+            headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                "content"
+            )
+        },
+        type: "POST",
+        url: "{{route('company.payment_gateway')}}",
+        // dataType: 'application/json',
+        processData:false,
+        data: {id:id , permit_id:permit_id},
+        success: function(data) {
+            console.log(data);
+        }
+        });
+    });
 
 
 
@@ -399,7 +324,6 @@ Make Payment
 
 </script>
 
-<link href={{'../../assets/css/demo1/pages/general/wizard/wizard-3.css'}} rel="stylesheet" type="text/css" />
-<script src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
+<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
 
 @endsection

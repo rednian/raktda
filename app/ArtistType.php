@@ -15,7 +15,7 @@ class ArtistType extends Model
         'artist_type', 'amount', 'artist_permit_code', 'created_by', 'updated_by', 'deleted_by'
     ];
 
-    
+
 
     public function artist()
     {

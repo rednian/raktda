@@ -23,37 +23,30 @@ class ArtistController extends Controller
      */
     public function index()
     {
-
         return view('permits.artist.index');
     }
 
 
     public function applied_list()
     {
-        // $artists = ArtistPermit::with('artist', 'artist.artisttype')->orderBy('artist_permit.created_at', 'desc');
+        $permits = ArtistPermit::latest();
+        $permits = $permits->with('artist', 'artist.artisttype')->where('company_id', Auth::user()->company_id)->where('permit_status', '!=', 'expired')->get();
 
-        $artists = Artist::with(['artistpermit' => function ($q) {
-            return  $q->where('permit_status', 'new');
-        }, 'artisttype'])->orderBy('artist.created_at', 'desc')->get();
-
-
-        //->where('permit_status', 'new')
-
-        return Datatables::of($artists)->editColumn('created_at', function ($artists) {
-            if ($artists->created_at) {
-                return $artists->created_at->format('d-m-Y');
+        return Datatables::of($permits)->editColumn('created_at', function ($permit) {
+            if ($permit->created_at) {
+                return $permit->created_at->format('d-m-Y / H:i a');
             } else {
-                return 'none';
+                return '';
             }
-        })->addColumn('action', function ($artist) {
-            if ($artist->artistpermit['permit_status'] == 'approved') {
-                return '<a href="' . route('make_payment', $artist->artist_permit_id) . '" class="btn btn-sm btn-success">Payment</a>';
-            } else if ($artist->artistpermit['permit_status'] == 'new') {
-                return '<button onClick="cancel_permit(' . $artist->artist_permit_id . ')" data-toggle="modal" data-target="#cancel_permit" class="btn btn-sm btn-dark">Cancel</a>';
-            } else if ($artist->artistpermit['permit_status'] == 'rejected') {
-                return '<button onClick="rejected_permit(' . $artist->artist_permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="btn btn-sm btn-warning">Rejected</a>';
-            } else if ($artist->artistpermit['permit_status'] == 'cancelled') {
-                return '<button onClick="show_cancelled(' . $artist->artist_permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="btn btn-sm btn-danger">Cancelled</a>';
+        })->addColumn('action', function ($permit) {
+            if ($permit->permit_status == 'approved') {
+                return '<a href="' . route('make_payment', $permit->artist_permit_id) . '" class="btn btn-sm btn-success">Payment</a>';
+            } else if ($permit->permit_status == 'new') {
+                return '<button onClick="cancel_permit(' . $permit->artist_permit_id . ')" data-toggle="modal" data-target="#cancel_permit" class="btn btn-sm btn-dark">Cancel</a>';
+            } else if ($permit->permit_status == 'rejected') {
+                return '<button onClick="rejected_permit(' . $permit->artist_permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="btn btn-sm btn-warning">Rejected</a>';
+            } else if ($permit->permit_status == 'cancelled') {
+                return '<button onClick="show_cancelled(' . $permit->artist_permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="btn btn-sm btn-danger">Cancelled</a>';
             }
         })->addColumn('details', function ($artist) {
             return '<button type="button" target="_blank" class="btn btn-link btn-sm" data-toggle="modal" data-target="#artist_details" onclick="show_details(' . $artist->artist_permit_id . ')">details</button>';
@@ -69,26 +62,26 @@ class ArtistController extends Controller
     }
 
 
+    public function payment_gateway(Request $request)
+    { }
+
+
     public function existing_list()
     {
-        $artists = Artist::with('artistpermit', 'artisttype')->where('artist_permit.permit_status')->orderBy('artist.created_at', 'desc')->get();
+        $permits = ArtistPermit::latest();
+        $permits = $permits->with('artist', 'artist.artisttype')->where('company_id', Auth::user()->company_id)->where('permit_status', 'expired')->get();
 
-        dd($artists);
 
-        //->where('permit_status', '!=', 'new')->orWhereNull('permit_status');
-
-        // $artists = ArtistPermit::with('artist', 'artist.artisttype')->orderBy('artist_permit.created_at', 'desc');
-
-        return Datatables::of($artists)->editColumn('created_at', function ($artists) {
-            if ($artists->artist['created_at']) {
-                return $artists->artist['created_at']->format('d-m-Y');
+        return Datatables::of($permits)->editColumn('created_at', function ($permits) {
+            if ($permits->created_at) {
+                return $permits->created_at->format('d-m-Y');
             } else {
                 return 'none';
             }
-        })->addColumn('action', function ($artist) {
-            return '<a href="' . route('extend_permit', $artist->artist_permit_id) . '"  class="btn btn-sm btn-default">Extend</a>';
-        })->addColumn('details', function ($artist) {
-            return '<button type="button" target="_blank" class="btn btn-link btn-sm" data-toggle="modal" data-target="#artist_details" onclick="show_details(' . $artist->artist_permit_id . ')">details</button>';
+        })->addColumn('action', function ($permit) {
+            return '<a href="' . route('extend_permit', $permit->artist_permit_id) . '"  class="btn btn-sm btn-default">Extend</a>';
+        })->addColumn('details', function ($permit) {
+            return '<button type="button" target="_blank" class="btn btn-link btn-sm" data-toggle="modal" data-target="#artist_details" onclick="show_details(' . $permit->artist_permit_id . ')">details</button>';
         })->rawColumns(['action', 'details'])->make(true);
     }
 
@@ -222,7 +215,8 @@ class ArtistController extends Controller
             'work_location' => $request->input('work_loc'),
             'created_at' => Carbon::now()->toDateTimeString(),
             'permit_status' => 'new',
-            'created_by' => Auth::user()->user_id
+            'created_by' => Auth::user()->user_id,
+            'company_id' => Auth::user()->company_id
         ]);
 
         $artist = Artist::create([
@@ -237,7 +231,7 @@ class ArtistController extends Controller
             'phone_number' => $request->input('telephone'),
             'email' => $request->input('email'),
             'created_by' => Auth::user()->user_id,
-            'company_id' => 1,
+            'company_id' => Auth::user()->company_id,
         ]);
 
         $artist->profession = $request->input('profession');

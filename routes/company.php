@@ -16,6 +16,7 @@ Route::group(['middleware' => 'company'], function () {
     Route::get('/extend_permit/{id?}', 'Company\ArtistController@extend_permit')->name('extend_permit');
     Route::get('/export_applied_artist_permits', 'Company\ArtistController@export_applied_artist_permits')->name('export_applied_artist_permits');
     Route::get('/export_existing_artist_permits', 'Company\ArtistController@export_existing_artist_permits')->name('export_existing_artist_permits');
+    Route::post('/payment_gateway', 'Company\ArtistController@payment_gateway')->name('company.payment_gateway');
 
     Route::post('/cancel_permit', 'Company\ArtistController@cancel_permit')->name('company.cancel_permit');
 

@@ -70,31 +70,32 @@
     <!--begin::Global Theme Styles(used by all pages) -->
     <link href="{{ asset('/assets/css/demo1/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
-    <<<<<<< HEAD <!--begin::Global Theme Styles(used by all pages) -->
-        <link href="{{ asset('/assets/css/demo1/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/css/demo1/skins/header/base/light.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/css/demo1/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/css/demo1/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/css/demo1/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.min.css') }}" rel="stylesheet"
-            type="text/css" />
-        <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />
-        <!--end::Layout Skins -->
-        <link rel="shortcut icon" href="{{ asset('/assets/media/logos/favicon.ico') }}" />
-        <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
-        =======
-        <!--begin::Global Theme Styles(used by all pages) -->
-        <link href="{{ asset('/assets/css/demo1/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/css/demo1/skins/header/base/light.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/css/demo1/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/css/demo1/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/css/demo1/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.min.css') }}" rel="stylesheet"
-            type="text/css" />
-        <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />
-        <!--end::Layout Skins -->
-        <link rel="shortcut icon" href="{{ asset('/assets/media/logos/favicon.ico') }}" />
-        >>>>>>> 99130915f1f60be6b589176b70c8d4b04a09d679
+    <!--begin::Global Theme Styles(used by all pages) -->
+    <link href="{{ asset('/assets/css/demo1/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/css/demo1/skins/header/base/light.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/css/demo1/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/css/demo1/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/css/demo1/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />
+    <!--end::Layout Skins -->
+    <link rel="shortcut icon" href="{{ asset('/assets/media/logos/favicon.ico') }}" />
+    <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
+
+    <!--begin::Global Theme Styles(used by all pages) -->
+    <link href="{{ asset('/assets/css/demo1/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/css/demo1/skins/header/base/light.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/css/demo1/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/css/demo1/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/css/demo1/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href={{   asset('/assets/css/demo1/pages/general/wizard/wizard-3.css') }} rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />
+    <!--end::Layout Skins -->
+    <link rel="shortcut icon" href="{{ asset('/assets/media/logos/favicon.ico') }}" />
+
 </head>
 
 <body
