@@ -1,4 +1,6 @@
-.no-wrap{
-    white-space: nowrap;
-    width: 1%;
+.toolbar, .toolbar2  { float: left; margin-left:20px; }
+.no-wrap{ white-space: nowrap; width: 1%;}
+.kt-wizard-v3 .kt-wizard-v3__wrapper .kt-form {
+    width: 90%;
+    padding: 4rem 0 5rem;
 }

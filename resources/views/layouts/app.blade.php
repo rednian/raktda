@@ -15,12 +15,14 @@ WebFont.load({
     active: function() { sessionStorage.fonts = true; } 
 });
 </script>
+<link href="{{ asset('/assets/css/demo1/pages/general/wizard/wizard-3.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Page Vendors Styles -->
 <!--begin:: Global Mandatory Vendors -->
 <link href="{{ asset('/assets/vendors/general/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" type="text/css" />
 <!--end:: Global Mandatory Vendors -->
 <!--begin:: Global Optional Vendors -->
+
 <link href="{{ asset('/assets/vendors/general/tether/dist/css/tether.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/vendors/general/bootstrap-datetime-picker/css/bootstrap-datetimepicker.css') }}" rel="stylesheet" type="text/css" />
@@ -56,6 +58,7 @@ WebFont.load({
 <link href="{{ asset('/assets/css/demo1/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/css/demo1/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('/assets/vendors/custom/datatables/datatables.checkboxes.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Layout Skins -->
 <link rel="shortcut icon" href="{{ asset('/assets/media/logos/favicon.ico') }}" />
@@ -85,9 +88,9 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 <!-- end:: Header Mobile -->
 <div class="kt-grid kt-grid--hor kt-grid--root">
 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
-    @if (Auth::user()->type == 1)
+    @if (Auth::user() && Auth::user()->type == 1)
         @include('layouts.sidebar-admin')
-    @elseif(Auth::user()->type == 0)
+    @elseif(Auth::user() && Auth::user()->type == 0)
         @include('layouts.sidebar')
     @endif
 
@@ -517,6 +520,8 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 <!--end:: Global Mandatory Vendors -->
 
 <!--begin:: Global Optional Vendors -->
+<script src="{{ asset('assets/vendors/general/bootbox/bootbox.min.js') }}" type="text/javascript"></script>
+
 <script src="{{ asset('/assets/vendors/general/jquery-form/dist/jquery.form.min.js')}}" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/general/block-ui/jquery.blockUI.js')}}" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}" type="text/javascript"></script>
@@ -572,14 +577,15 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 <!--begin::Global Theme Bundle(used by all pages) -->
 <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
+<script src="{{ asset('/assets/vendors/custom/datatables/datatables.select.min.js')}}" type="text/javascript"></script>
+<script src="{{ asset('/assets/vendors/custom/datatables/datatables.checkboxes.min.js')}}" type="text/javascript"></script>
 <!--end::Global Theme Bundle -->
 
 <script src="{{ asset('/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
 <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
-<script type="text/javascript">
+<script>
     $(document).ready(function(){
-
         @if (Session::has('message'))
         $.notify({
             title: '{{Session::get('message')[2]}}',
@@ -639,48 +645,21 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
             }
         });
 
-        // $.extend( true, $.fn.dataTable.defaults, {
-        //     pageLength: 50,
-        //     deferRender: true,
-        //     processing: true,
-        //     serverSide: true,
-        //     destroy: true,
-        //     ajax: {
-        //         global: false
-        //     },
-        //     pagingType: 'full_numbers',
-        //     language: {
-        //         infoFiltered: '',
-        //         lengthMenu: "Show _MENU_",
-        //         processing: '<span class="fa fa-spinner fa-spin fa-3x text-info"></span>',
-        //     paginate: {
-        //             previous: '<i class="fa fa-chevron-left"></i>',
-        //             next: '<i class="fa fa-chevron-right"></i>',
-        //         }
-        //     },
-            // buttons: [
-
-            //     {
-            //     extend:    'csv',
-            //         text:      '<i class="fa fa-file-excel-o text-success"></i>',
-            //         titleAttr: 'export excel',
-            //         className:'btn btn-sm btn-default',
-            //         exportOptions: {
-            //             columns: 'th:not(:last-child)'
-            //         }
-            //     },
-            //     {
-            //         extend:    'pdf',
-            //         text:      '<i class="fa fa-file-pdf-o text-danger"></i>',
-            //         titleAttr: 'export pdf',
-            //         className:'btn btn-sm btn-default',
-            //         exportOptions: {
-            //             columns: 'th:not(:last-child)'
-            //         }
-            //     },
-            // ],
-
-        // });
+     
+        $.extend( true, $.fn.dataTable.defaults, {
+            deferRender: true,
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            deferRender: true,
+            pagingType: 'full_numbers',
+            ajax: { global: false },
+            language: {
+                  // infoFiltered: '',
+                  // lengthMenu: "Show _MENU_",
+                  // processing: '<span class="fa fa-spinner fa-spin fa-3x text-info"></span>',
+            },
+        });
 
     });
 </script>

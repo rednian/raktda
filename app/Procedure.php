@@ -8,10 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Procedure extends Model
 {
      use SoftDeletes;
-     protected $table = 'procedure';
-     protected $primaryKey = 'prod_id';
+     protected $table = 'procedures';
+     protected $primaryKey = 'procedure_id';
      protected $fillable = [
-        'prod_status', 'prod_type',  'prod_name', 'prod_description', 'created_by', 'updated_by', 'deleted_by'
+        'procedure_status', 'procedure_type',  'procedure_name', 'created_by', 'updated_by', 'deleted_by'
     ];
+
+    public function approve()
+    {
+        return $this->hasMany(ProcedureApprover::class, 'procedure_id');
+    }
+
+
 
 }

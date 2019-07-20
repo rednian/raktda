@@ -180,6 +180,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
+        Hoyvoy\CrossDatabase\CrossDatabaseServiceProvider::class,
 
     ],
 

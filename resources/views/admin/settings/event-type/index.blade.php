@@ -21,7 +21,7 @@
                         <thead>
                             <tr>
                                 <th>Code</th>
-                                <th>Event Permit Name</th>
+                                <th>Event Type</th>
                                 <th>Event Fee</th>
                                 <th>Duration</th>
                                 <th>Actions</th>
@@ -51,19 +51,19 @@
            ],
        
            columns: [
-               { data: 'permit_code', name: 'permit_code'},
-               { data: 'name_en', name: 'name_en'},
+               { data: 'event_type_code', name: 'event_type_code'},
+               { data: 'event_type_en', name: 'event_type_en'},
                {
                     render: function (data, type, full, meta){
-                        return 'AED '+ full.amount_fee;
+                        return full.event_type_amount+' AED';
                     }
                 },  
-               { data: 'permit_type', name: 'permit_type'},
+               { data: 'event_duration', name: 'event_duration'},
                {
                    render: function (data, type, full, meta) {
                       var url = '{{ url('profession') }}';
-                      return ' <a class="btn btn-link btn-outline-danger btn-sm kt-margin-t-5 kt-margin-b-5">Delete</a>\
-                                <a class="btn btn-link btn-outline-info btn-sm kt-margin-t-5 kt-margin-b-5">Edit</a>';
+                      return ' <button type="button" class="btn btn-outline-danger btn-delete btn-sm">Delete</button>\
+                                <a class="btn btn-outline-info btn-sm">Edit</a>';
 
                    },
                },
@@ -71,23 +71,24 @@
             
            fnCreatedRow: function(row, data, index){
 
+
+            $('button.btn-delete', row).click(function(){
+                bootbox.confirm('Are you sure you want delete the <span class="text-success"> ' + data.event_type_en + '</span>?', function(result){
+                    if(result){
+                        $.ajax({
+                          url: '{{ url('settings/event/event_type') }}/'+data.event_type_id,
+                          data: {_method: 'delete'},
+                          type: 'post',
+                          dataType: 'json'
+                        }).done(function(response){
+                          event_type.ajax.reload(null, false);
+                      });
+                    }
+                });
+            });
+
            }
-           //     $('button.btn-delete', row).click(function(){
-           //         bootbox.confirm('Are you sure you want delete ' + data.supplier_name + '?', function(result){
-           //             if(result == true){
-           //                 $.ajax({
-           //                     url: '{{ url('suppliers') }}/' + data.supplier_id,
-           //                     data: { _method: 'DELETE' },
-           //                     type: 'POST',
-           //                     dataType: 'JSON',
-           //                     success: function(){
-           //                         tblSupplier.ajax.reload(null, false);
-           //                     }
-           //                 });
-           //             }
-           //         })
-           //     });
-           // }
+
        });
        
         // $("div.toolbar").html($('select[name=supplier_country]'));

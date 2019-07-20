@@ -11,7 +11,7 @@ class ProcedureApprover extends Model
       protected $table = 'procedure_approver';
       protected $primaryKey = 'proda_id';
       protected $fillable = [
-        'order', 'prod_id', 'employee_id', 'created_by', 'updated_by', 'deleted_by'
+        'order', 'procedure_id', 'employee_id', 'created_by', 'updated_by', 'deleted_by'
       ];
 
       public function procedure()

@@ -2,33 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Permit;
 use DataTables;
+use App\Company;
+use App\Artist;
+use App\ArtistPermit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ArtistController extends Controller
 {
+    public function index(Request $request)
+    { 
+       
+        $company = ArtistPermit::artistPermit($request)->groupBy('artist_permit.company_id')->orderBy('company_name',)->get();
+        return view('admin.artist_permit.index',['companies'=>$company]);
+    }
 
-    public function datatable()
+    public function application(Request $request, ArtistPermit $artistPermit)
     {
-        $permit = Permit::join('permit_detail', 'permit_detail.permit_id', '=', 'permit.permit_id')
-                    ->join('artist_permit', 'artist_permit.permit_detail_id', '=', 'permit_detail.permit_detail_id')
-                    ->join('artist', 'artist_permit.artist_id', '=', 'artist.artist_id')
-                    //->join('artist_document', 'artist_document.artist_id', '=', 'artist.artist_id')
-                   // ->join('artist_type', 'artist_permit.artist_type_id', '=', 'artist_type.artist_type_id')
-                   ->join('bls.company', 'bls.company.company_id', '=', 'permit_detail.company_id')
-                    ->where('permit_type', 'artist')->get();
-        return Datatables::of($permit)->make(true);   
-    }   
-
-//--------------------------------------------------------------------------
-// Resource below
-//--------------------------------------------------------------------------
-
-    public function index()
-    {
-        return view('admin.artist_permit.index');
+        return view('admin.artist_permit.application',['artist_permit'=>$artistPermit]);
     }
 
  
@@ -66,4 +58,17 @@ class ArtistController extends Controller
     {
         //
     }
+
+    public function datatableRequest(Request $request)
+    {
+        $permit = ArtistPermit::requestType('new')->orderBy('artist_permit.created_at', 'DESC')->get();
+         return Datatables::of($permit)->make(true);   
+    }
+
+
+    public function datatable(Request $request)
+    { 
+        $permit = ArtistPermit::artistPermit($request)->get();    
+        return Datatables::of($permit)->make(true);   
+    } 
 }
