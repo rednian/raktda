@@ -13,7 +13,6 @@ class ArtistController extends Controller
 {
     public function index(Request $request)
     { 
-       
         $company = ArtistPermit::artistPermit($request)->groupBy('artist_permit.company_id')->orderBy('company_name',)->get();
         return view('admin.artist_permit.index',['companies'=>$company]);
     }

@@ -25,11 +25,11 @@ class User extends Authenticatable implements Auditable
     protected $primaryKey = 'user_id';
 
     protected $fillable = [
-        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby'
+        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'
     ];
 
     protected $auditInclude = [
-        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby'
+        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'
     ];
 
 

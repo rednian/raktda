@@ -21,7 +21,7 @@
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" data-ktwizard-state="pending">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>2</span> Enter Details
+                                    <span>2</span> Documents Uploaded
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>

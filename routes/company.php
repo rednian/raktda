@@ -1,8 +1,7 @@
 <?php
 
-Route::group(['middleware' => 'company'], function () {
 
-    Route::get('dashboard', 'Company\DashboardController@index')->name('company.dashboard');
+    Route::get('{company_name}/dashboard', 'Company\DashboardController@index')->name('company.dashboard');
     Route::resource('artist_permits', 'Company\ArtistController');
     Route::resource('event_permits', 'Company\EventController');
     Route::get('add_new_event', 'Company\EventController@create');
@@ -21,4 +20,3 @@ Route::group(['middleware' => 'company'], function () {
     Route::post('/cancel_permit', 'Company\ArtistController@cancel_permit')->name('company.cancel_permit');
 
     Route::post('show_cancelled', 'Company\ArtistController@show_cancelled')->name('company.show_cancelled');
-});

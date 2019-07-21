@@ -17,12 +17,6 @@ class ArtistPermit extends Model
     ];
 
 
-
-    public function artist()
-    {
-        return $this->hasOne(Artist::class, 'artist_permit_id');
-    }
-
       public function scoperequestType($q, $type)
       {
         return $q->select('*', DB::raw('COUNT(artist_id) as artist_number'), DB::raw('artist_permit.created_at AS submitted_on') )

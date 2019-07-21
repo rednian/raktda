@@ -194,8 +194,8 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
                 <div class="kt-header__topbar-user">
                     <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span>
-                    {{-- <span class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords(Auth::user()->NameEn )}}</span>
-                    --}}
+                    <span class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords(Auth::user()->NameEn )}}</span>
+                   
 
                 </div>
             </div>
