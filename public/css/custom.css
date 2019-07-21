@@ -1,6 +1,118 @@
+
+.kt-aside-menu {
+    background-color: #fda900 !important;
+}
+
+@media (min-width: 1025px) {
+    .kt-aside__brand {
+        background-color: #fff;
+    }
+}
+
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item
+    > .kt-menu__heading
+    .kt-menu__link-text,
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item
+    > .kt-menu__link
+    .kt-menu__link-text {
+    color: #4c4c4c;
+}
+
+.kt-aside {
+    background-color: #fda900;
+}
+
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover
+    > .kt-menu__heading,
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover
+    > .kt-menu__link {
+    background-color: #fff;
+}
+
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover
+    > .kt-menu__heading
+    .kt-menu__link-text,
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover
+    > .kt-menu__link
+    .kt-menu__link-text {
+    color: #80262b;
+}
+
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item.kt-menu__item--open
+    > .kt-menu__heading
+    .kt-menu__link-text,
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item.kt-menu__item--open
+    > .kt-menu__link
+    .kt-menu__link-text {
+    color: #80262b;
+}
+
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item.kt-menu__item--open
+    > .kt-menu__heading,
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item.kt-menu__item--open
+    > .kt-menu__link {
+    background-color: #fff;
+}
+
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item
+    .kt-menu__submenu
+    .kt-menu__item
+    > .kt-menu__heading
+    .kt-menu__link-text,
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item
+    .kt-menu__submenu
+    .kt-menu__item
+    > .kt-menu__link
+    .kt-menu__link-text {
+    color: #fff;
+}
+.no-wrap {
+    white-space: nowrap;
+    width: 1%;
+}
+.no-wrap {
+    white-space: nowrap;
+    width: 1%;
+}
+.kt-widget5 .kt-widget5__item .kt-widget5__content:last-child {
+    justify-content: left;
+    text-align: left;
+}
+.kt-widget5 .kt-widget5__item .kt-widget5__content .kt-widget5__pic img {
+    max-width: 15rem;
+}
+.kt-wizard-v3__nav-label {
+    text-align: center;
+}
+
 .toolbar, .toolbar2  { float: left; margin-left:20px; }
 .no-wrap{ white-space: nowrap; width: 1%;}
 .kt-wizard-v3 .kt-wizard-v3__wrapper .kt-form {
     width: 90%;
     padding: 4rem 0 5rem;
 }
+

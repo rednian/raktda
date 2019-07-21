@@ -18,13 +18,13 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
         Model::unguard();
 
-               $this->call(PermissionsTableSeeder::class);
-               $this->call(RolesTableSeeder::class);
-               $this->call(ConnectRelationshipsSeeder::class);
-               $this->call(ArtistTableSeeder::class);
-               $this->call(EmployeeTableSeeder::class);
-               //$this->call('UsersTableSeeder');
+        $this->call(PermissionsTableSeeder::class);
+        $this->call(RolesTableSeeder::class);
+        $this->call(ConnectRelationshipsSeeder::class);
+        $this->call(ArtistTableSeeder::class);
+        $this->call(EmployeeTableSeeder::class);
+        //$this->call('UsersTableSeeder');
 
-           Model::reguard();
+        Model::reguard();
     }
 }

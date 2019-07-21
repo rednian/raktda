@@ -1,10 +1,14 @@
 <?php
-Route::get('/',function(){ return redirect()->route('login'); })->name('default');
-Auth::routes(['register'=>false]);
+Route::get('/', function () {
+    return redirect()->route('login');
+})->name('default');
+Auth::routes(['register' => false]);
 
-Route::group(['middleware'=>'admin'], function(){
+Route::group(['middleware' => 'admin'], function () {
 
     Route::get('/dashboard', 'admin\DashboardController@index')->name('admin.dashboard');
+    Route::resource('/artist', 'admin\ArtistController');
+
 
 //--------------------------------------------------------------------------
 // Artist Permit
@@ -19,13 +23,15 @@ Route::group(['middleware'=>'admin'], function(){
 // Settings
 //--------------------------------------------------------------------------
 
-    //Approvers
-    Route::resource('settings/approvers','ProcedureApproverController');
 
-    //Events 
+    //Approvers
+    Route::resource('settings/approvers', 'ProcedureApproverController');
+
+    //Events
     Route::get('settings/event/event_type/datatable', 'Admin\EventTypeController@datatable')->name('event_type.datatable');
     Route::get('settings/event/event_type/isexist', 'Admin\EventTypeController@isexist')->name('event_type.isexist');
     Route::resource('settings/event/event_type', 'Admin\EventTypeController');
+
 
     //Artists
     Route::get('/settings/artist/artist_type/datatable', 'Admin\ArtistProfessionController@datatable')->name('artist_type.datatable');
@@ -33,6 +39,5 @@ Route::group(['middleware'=>'admin'], function(){
     Route::resource('settings/artist/artist_type', 'Admin\ArtistProfessionController');
 
   
+
 });
-
-

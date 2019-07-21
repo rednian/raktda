@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
-     use SoftDeletes;
+    use SoftDeletes;
 
     protected $connection = 'bls';
     protected $table = 'employee';

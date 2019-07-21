@@ -22,14 +22,12 @@ class LoginController extends Controller
     public function findUsername()
     {
         $fieldType = filter_var(request()->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        request()->merge([$fieldType=> strtolower(request()->login)]);
-        return$fieldType;
+        request()->merge([$fieldType => strtolower(request()->login)]);
+        return $fieldType;
     }
 
     public function username()
     {
         return  $this->username;
     }
-
-
 }

@@ -7937,6 +7937,10 @@ button.bg-dark:focus {
 .text-white {
   color: #fff !important; }
 
+.text-maroon {
+    color: #80262B !important ;
+}
+
 .text-primary {
   color: #5867dd !important; }
 

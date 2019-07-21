@@ -13,26 +13,28 @@ class ArtistProfessionController extends Controller
 
     public function index()
     {
-        return view('admin.settings.profession.index');
+        return abort(404);
     }
 
-    public function datatable(Request $request)
+    public function datatable()
     {
         if($request->ajax()){
          $ArtistType =  ArtistType::all();
          return Datatables::of($ArtistType)->make(true);   
         }
+
     }
 
     public function isexist(Request $request)
     {
+
         if($request->ajax()){
             $ArtistType = ArtistType::where('artist_type_en',$request->artist_type_en)->exists();
              return response()->json(($ArtistType ? false : true));
         }
     }
 
- 
+
     public function create()
     {
         return view('admin.settings.profession.create');
@@ -45,9 +47,9 @@ class ArtistProfessionController extends Controller
             $ArtistType = ArtistType::create($request->all());
              $result = ['success', 'New Artist Permmit Type has been save successfully ', 'Success'];
         } catch (Exception $e) {
-             $result = ['error', $e->getMessage(), 'Error'];
+            $result = ['error', $e->getMessage(), 'Error'];
         }
-         return redirect()->back()->with('message', $result);  
+        return redirect()->back()->with('message', $result);
     }
 
 

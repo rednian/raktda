@@ -7,13 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class ArtistPermit extends Model
 {
-     // use SoftDeletes; 
-      protected $table = 'artist_permit';
-      protected $primaryKey = 'artist_permit_id';
-      protected $fillable = [
+
+    use SoftDeletes;
+    protected $table = 'artist_permit';
+    protected $primaryKey = 'artist_permit_id';
+    protected $fillable = [
         'work_location', 'permit_status', 'issued_date', 'expired_date',
         'company_id', 'created_by', 'updated_by', 'deleted_by'
-      ];
+    ];
+
+
+
+    public function artist()
+    {
+        return $this->hasOne(Artist::class, 'artist_permit_id');
+    }
 
       public function scoperequestType($q, $type)
       {
