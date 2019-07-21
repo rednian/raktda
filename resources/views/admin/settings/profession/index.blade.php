@@ -5,10 +5,10 @@
         <div class="kt-portlet kt-portlet--height-fluid">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">Artist Type Permits</h3>
+                        <h3 class="kt-portlet__head-title">Artist Permit Type</h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a href="{{ route('profession.create') }}" style="margin-bottom: 2%" class="btn btn-outline-primary btn-elevate btn-icon-sm pull-right btn-sm">New Artist Type</a>
+                        <a href="{{ route('artist_type.create') }}" style="margin-bottom: 2%" class="btn btn-outline-primary btn-elevate btn-icon-sm pull-right btn-sm">New Artist Permit Type</a>
                     </div>
                 </div>
                 <div class="kt-portlet__body">
@@ -31,11 +31,11 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-       var profession = $('table#artist-profession').DataTable({
+       var artistType = $('table#artist-profession').DataTable({
            processing: true,
            serverSide: true,
            ajax: {
-               url: '{{ route('profession.datatable') }}',
+               url: '{{ route('artist_type.datatable') }}',
                global: false,
            },
     
@@ -45,18 +45,18 @@
            ],
        
            columns: [
-               { data: 'artist_permit_code', name: 'artist_permit_code'},
-               { data: 'name_en', name: 'name_en'},
+               { data: 'artist_type_code', name: 'artist_type_code'},
+               { data: 'artist_type_en', name: 'artist_type_en'},
                {
                     render: function (data, type, full, meta){
-                        return 'AED '+ full.artist_type_amount;
+                        return full.amount+' AED';
                     }
                 },  
                {
                    render: function (data, type, full, meta) {
                       var url = '{{ url('profession') }}';
-                      return ' <a class="btn btn-link btn-outline-danger btn-sm kt-margin-t-5 kt-margin-b-5">Delete</a>\
-                                <a class="btn btn-link btn-outline-info btn-sm kt-margin-t-5 kt-margin-b-5">Edit</a>';
+                      return ' <button type="button" class="btn btn-outline-danger btn-delete btn-sm ">Delete</button>\
+                                <a class="btn btn-outline-info btn-sm ">Edit</a>';
 
                    },
                },
@@ -64,23 +64,22 @@
             
            fnCreatedRow: function(row, data, index){
 
+            $('button.btn-delete', row).click(function(){
+                bootbox.confirm('Are you sure you want delete the <span class="text-success"> ' + data.artist_type_en + '</span>?', function(result){
+                    if(result){
+                        $.ajax({
+                          url: '{{ url('settings/artist/artist_type') }}/'+data.artist_type_id,
+                          data: {_method: 'delete'},
+                          type: 'post',
+                          dataType: 'json'
+                        }).done(function(response){
+                          artistType.ajax.reload(null, false);
+                      });
+                    }
+                });
+            });
+
            }
-           //     $('button.btn-delete', row).click(function(){
-           //         bootbox.confirm('Are you sure you want delete ' + data.supplier_name + '?', function(result){
-           //             if(result == true){
-           //                 $.ajax({
-           //                     url: '{{ url('suppliers') }}/' + data.supplier_id,
-           //                     data: { _method: 'DELETE' },
-           //                     type: 'POST',
-           //                     dataType: 'JSON',
-           //                     success: function(){
-           //                         tblSupplier.ajax.reload(null, false);
-           //                     }
-           //                 });
-           //             }
-           //         })
-           //     });
-           // }
        });
        
         // $("div.toolbar").html($('select[name=supplier_country]'));

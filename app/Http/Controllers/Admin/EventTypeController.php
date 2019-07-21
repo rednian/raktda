@@ -27,7 +27,7 @@ class EventTypeController extends Controller
     public function isexist(Request $request)
     {
         if($request->ajax()){
-            $eventType = EventType::where('name_en',$request->name_en)->exists();
+            $eventType = EventType::where('event_type_en',$request->event_type_en)->exists();
              return response()->json(($eventType ? false : true));
         }
     }
@@ -55,37 +55,32 @@ class EventTypeController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-        //
+        try{
+            $eventType = EventType::find($id);
+                if($eventType->delete()){
+                    $eventType->update(['deleted_by'=>Auth::user()->user_id]);
+                    $result = ['success', 'Event Permit Type has been deleted successfully.', 'Success'];
+                }
+
+            }catch(Exception $e){
+                $result = ['error', $e->getMessage(), 'Error'];
+            }
+            return response()->json(['message' => $result]);
+        
     }
 }

@@ -1,3 +1,4 @@
+
 .kt-aside-menu {
     background-color: #fda900 !important;
 }
@@ -107,3 +108,11 @@
 .kt-wizard-v3__nav-label {
     text-align: center;
 }
+
+.toolbar, .toolbar2  { float: left; margin-left:20px; }
+.no-wrap{ white-space: nowrap; width: 1%;}
+.kt-wizard-v3 .kt-wizard-v3__wrapper .kt-form {
+    width: 90%;
+    padding: 4rem 0 5rem;
+}
+

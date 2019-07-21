@@ -12,7 +12,7 @@ class ArtistType extends Model
     protected $table = 'artist_type';
     protected $primaryKey = 'artist_type_id';
     protected $fillable = [
-        'artist_type', 'amount', 'artist_permit_code', 'created_by', 'updated_by', 'deleted_by'
+        'artist_type_en', 'artist_type_ar', 'amount', 'artist_type_code', 'created_by', 'updated_by', 'deleted_by'
     ];
 
 

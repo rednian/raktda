@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Auth;
 use DataTables;
-use App\Profession;
+use App\ArtistType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,15 +18,19 @@ class ArtistProfessionController extends Controller
 
     public function datatable()
     {
-        $profession =  Profession::all();
-        return Datatables::of($profession)->make(true);
+        if($request->ajax()){
+         $ArtistType =  ArtistType::all();
+         return Datatables::of($ArtistType)->make(true);   
+        }
+
     }
 
     public function isexist(Request $request)
     {
-        if ($request->ajax()) {
-            $profession = Profession::where('prof_name_en', $request->prof_name_en)->exists();
-            return response()->json(($profession ? false : true));
+
+        if($request->ajax()){
+            $ArtistType = ArtistType::where('artist_type_en',$request->artist_type_en)->exists();
+             return response()->json(($ArtistType ? false : true));
         }
     }
 
@@ -40,8 +44,8 @@ class ArtistProfessionController extends Controller
     {
         try {
             $request['created_by'] = Auth::user()->user_id;
-            $profession = Profession::create($request->all());
-            $result = ['success', 'Artists profession has been save successfully ', 'Success'];
+            $ArtistType = ArtistType::create($request->all());
+             $result = ['success', 'New Artist Permmit Type has been save successfully ', 'Success'];
         } catch (Exception $e) {
             $result = ['error', $e->getMessage(), 'Error'];
         }
@@ -69,6 +73,17 @@ class ArtistProfessionController extends Controller
 
     public function destroy($id)
     {
-        //
+        try{
+            $ArtistType = ArtistType::find($id);
+
+            if($ArtistType->delete()){
+                $ArtistType->update(['deleted_by'=>Auth::user()->user_id]);
+                $result = ['success', 'Artist Permit Type has been deleted successfully.', 'Success'];
+            }
+
+        }catch(Exception $e){
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+        return response()->json(['message' => $result]);
     }
 }

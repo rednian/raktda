@@ -181,6 +181,8 @@ return [
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Hoyvoy\CrossDatabase\CrossDatabaseServiceProvider::class,
+
 
     ],
 

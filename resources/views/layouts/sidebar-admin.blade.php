@@ -81,13 +81,6 @@
                 <div class="kt-menu__submenu ">
                     <span class="kt-menu__arrow"></span>
                     <ul class="kt-menu__subnav">
-                        <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-                            <a href='/company/event_permits' class="kt-menu__link kt-menu__toggle">
-                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
-                                <span class="kt-menu__link-text">Events Permit</span>
-                            </a>
-                        </li>
-
                         <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('permit/artist') ? 'kt-menu__item--active': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                             <a href='{{ route('artist.index') }}' class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
@@ -95,6 +88,12 @@
                             </a>
                         </li>
 
+                        <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href="#" class="kt-menu__link kt-menu__toggle">
+                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
+                                <span class="kt-menu__link-text">Events Permit</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -123,23 +122,23 @@
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                         <span></span>
                                     </i>
-                                    <span class="kt-menu__link-text">Artist Profession</span>
+                                    <span class="kt-menu__link-text">Artist Type Permit</span>
                                     <i class="kt-menu__ver-arrow la la-angle-right"></i>
                                 </a>
                                 <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                     <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item {{ Request::is('settings/artist/profession/create') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
-                                            <a href="{{ route('profession.create') }}" class="kt-menu__link ">
+                                        <li class="kt-menu__item {{ Request::is('settings/artist/artist_type/create') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('artist_type.create') }}" class="kt-menu__link ">
                                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                                     <span></span>
                                                 </i>
-                                                <span class="kt-menu__link-text">New Artist Profession</span>
+                                                <span class="kt-menu__link-text">New Artist Type Permit</span>
                                             </a>
                                         </li>
-                                        <li class="kt-menu__item {{ Request::is('settings/artist/profession') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
-                                            <a href="{{ route('profession.index') }}" class="kt-menu__link ">
+                                        <li class="kt-menu__item {{ Request::is('settings/artist/artist_type') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('artist_type.index') }}" class="kt-menu__link ">
                                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
-                                                <span class="kt-menu__link-text">Artist Profession List</span>
+                                                <span class="kt-menu__link-text">Artist Type Permit List</span>
                                             </a>
                                         </li>
                                     </ul>

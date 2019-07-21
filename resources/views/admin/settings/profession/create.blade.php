@@ -12,28 +12,28 @@
                         <i class="la la-arrow-left"></i>
                         <span class="kt-hidden-mobile">Back</span>
                     </a>
-                    <a href="{{ route('profession.index') }}" class="btn btn-outline-primary btn-sm kt-margin-t-5 kt-margin-b-5">
+                    <a href="{{ route('artist_type.index') }}" class="btn btn-outline-primary btn-sm kt-margin-t-5 kt-margin-b-5">
                         Artist Type List
                     </a>
                 </div>
             </div>
             <div class="kt-portlet__body">
-                <form class="kt-form" id="frm-profession" method="post" action="{{ route('profession.store') }}">
+                <form class="kt-form" id="frm-artist-type" method="post" action="{{ route('artist_type.store') }}">
                     @csrf
                     <div class="row">
                         <div class="col-xl-8">
                             <div class="kt-section kt-section--first">
                                 <div class="kt-section__body">
                                     <div class="form-group row">
-                                        <label class="col-2 col-form-label">Profession Name <span class="text-danger">*</span></label>
+                                        <label class="col-2 col-form-label">Name <span class="text-danger">*</span></label>
                                         <div class="col-4">
-                                            <input class="form-control input-sm" type="text" name="prof_name_en" autocomplete="off" autofocus>
+                                            <input class="form-control input-sm" type="text" name="artist_type_en" autocomplete="off" autofocus>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-2 col-form-label">Profession Fee <span class="text-danger">*</span></label>
+                                        <label class="col-2 col-form-label">Artist Type Fee <span class="text-danger">*</span></label>
                                         <div class="col-4">
-                                            <input class="form-control input-sm" type="text" name="prof_amount" autocomplete="off">
+                                            <input class="form-control input-sm" type="text" name="amount" autocomplete="off">
                                         </div>
                                     </div>
                                      <div class="form-group row">
@@ -45,9 +45,9 @@
                                     <div class="form-group row">
                                         <dib class="div col-2"></dib>
                                         <div class="col-9">
-                                            <button type="submit" class="btn btn-outline-primary btn-sm">Save</button>
-                                            <button type="submit" class="btn btn-outline-primary btn-sm">Save & Continue</button>
-                                            <button type="reset" class="btn btn-secondary btn-sm">Cancel</button>
+                                            <button type="submit" class="btn btn-outline-success btn-sm">Save & New</button>
+                                            <button type="submit" class="btn btn-outline-success btn-sm">Save & Continue</button>
+                                            <button type="reset" class="btn btn-default btn-sm">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -65,21 +65,21 @@
 @section('script')
 <script>
     $(document).ready(function(){
-        $('#frm-profession').validate({
+        $('#frm-artist-type').validate({
           rules: {
-            prof_name_en: {
+            artist_type_en: {
               required: true,
               remote: {
-                 url: '{!! route('profession.isexist') !!}',
+                 url: '{!! route('artist_type.isexist') !!}',
                  // global: false
                 data: {
-                  prof_name_en: function() {
-                    return $('input[name=prof_name_en]').val();
+                  artist_type_en: function() {
+                    return $('input[name=artist_type_en]').val();
                   }
                 }
               }
             },
-            prof_amount: {
+            amount: {
               required: true,
             }
           }
