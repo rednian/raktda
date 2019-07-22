@@ -15,7 +15,7 @@ Route::group(['middleware' => 'admin'], function () {
   
   Route::get('/permit/artist/datatable', 'Admin\ArtistController@datatable')->name('artist.datatable');
   Route::get('/permit/artist/datatablerequest', 'Admin\ArtistController@datatablerequest')->name('artist.datatablerequest');
-  Route::get('/permit/artist/artist_permit/{artist_permit}', 'Admin\ArtistController@application')->name('artist.application');
+  Route::get('/permit/artist/{artist_permit}', 'Admin\ArtistController@application')->name('artist.application');
   Route::resource('/permit/artist', 'Admin\ArtistController');
     
 //--------------------------------------------------------------------------

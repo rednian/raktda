@@ -10,7 +10,7 @@ class Artist extends Model
     protected $primaryKey = 'artist_id';
     protected $fillable = [
         'name', 'nationality', 'passport_number', 'uid_number', 'birthdate', 'mobile_number',
-        'artist_status', 'profesion', 'artist_type_id', 'permit_id', 'person_code',
+        'artist_status', 'profesion', 'artist_type_id', 'permit_id', 'person_code', 'artist_image', 'artist_image_original', 'artist_image_thumbnail',
         'phone_number', 'email', 'company_id', 'created_by', 'updated_by', 'deleted_by'
     ];
 

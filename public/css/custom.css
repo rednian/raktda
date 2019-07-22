@@ -116,3 +116,8 @@
     padding: 4rem 0 5rem;
 }
 
+.kt-widget2 .kt-widget2__item {
+
+     justify-content: flex-start; 
+}
+

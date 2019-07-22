@@ -95,10 +95,9 @@
                   return ' <span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill">'+full.artist_number+'</span>';
               }
             },
-            // { data: 'artist_number', name: 'artist_number'},
             { 
               render: function(data, type, full, meta){
-                var url = '{{ url('permit/artist') }}/artist_permit/'+full.artist_permit_id;
+                var url = '{{ url('permit/artist') }}/'+full.artist_permit_id;
                 return '<a href="'+url+'" class="btn btn-link btn-sm">Take Action</a>';
               }
             },
