@@ -120,4 +120,10 @@
 
      justify-content: flex-start; 
 }
+@media (min-width: 1025px){
+   .kt-header--fixed.kt-subheader--fixed.kt-subheader--enabled .kt-wrapper {
+     padding-top: 60px !important; 
+} 
+}
+
 

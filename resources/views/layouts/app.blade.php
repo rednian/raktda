@@ -686,8 +686,7 @@
 
 
 
-        // $.extend( true, $.fn.dataTable.defaults, {
-            pageLength: 50,
+        $.extend( true, $.fn.dataTable.defaults, {
             deferRender: true,
             processing: true,
             serverSide: true,

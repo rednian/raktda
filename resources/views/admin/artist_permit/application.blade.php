@@ -4,6 +4,7 @@
     <div class="col-xl-12">
         <div class="kt-portlet">
     <div class="kt-portlet__body kt-portlet__body--fit">
+        
         <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="first">
             <div class="kt-grid__item">
 
@@ -57,8 +58,87 @@
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
                         <div class="kt-form__section kt-form__section--first">
                             @if(!empty($artist_permit))
+                            <section class="row">
+                                <div class="col-md-12">
+                                    <div class="kt-widget kt-widget--user-profile-2">
+                                        <div class="kt-widget__head">
+                                            <div class="kt-widget__media">
+                                                <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light ">
+                                              
+
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__info">
+                                                <a href="#" class="kt-widget__username">
+                                                   {{ ucwords($company->company_name) }}
+                                                </a>
+                                                <span class="kt-widget__desc">{{ $company->contact_person }}</span>
+                                                <span class="kt-widget__desc">i{{ $company->contact_person_designation }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="kt-widget__body">
+                                            <div class="kt-widget__item">
+                                                <div class="kt-widget__contact">
+                                                    <span class="kt-widget__label">Email:</span>
+                                                    <a href="#" class="kt-widget__data">{{ $company->company_email }}</a>
+                                                </div>
+                                                <div class="kt-widget__contact">
+                                                    <span class="kt-widget__label">Mobile:</span>
+                                                    <a href="#" class="kt-widget__data">{{ $company->company_mobile_number }}</a>
+                                                </div>
+                                                <div class="kt-widget__contact">
+                                                    <span class="kt-widget__label">Phone:</span>
+                                                    <a href="#" class="kt-widget__data">{{ $company->company_phone_number }}</a>
+                                                </div>
+                                                <div class="kt-widget__contact">
+                                                    <span class="kt-widget__label">Location:</span>
+                                                    <span class="kt-widget__data">{{ $company->company_address}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <ul class="kt-nav kt-nav--bold kt-nav--md-space kt-margin-t-20 kt-margin-b-20 kt-hidden" role="tablist">
+                                            <li class="kt-nav__item kt-nav__item--active">
+                                                <a class="kt-nav__link active" data-toggle="tab" href="#kt_profile_tab_personal_information" role="tab">
+                                                    <span class="kt-nav__link-icon"><i class="flaticon2-calendar-3"></i></span>
+                                                    <span class="kt-nav__link-text">Personal Information</span>
+                                                </a>
+                                            </li>
+                                            <li class="kt-nav__item">
+                                                <a class="kt-nav__link" data-toggle="tab" href="#kt_profile_tab_account_information" role="tab">
+                                                    <span class="kt-nav__link-icon"><i class="flaticon2-protected"></i></span>
+                                                    <span class="kt-nav__link-text">Acccount Information</span>
+                                                </a>
+                                            </li>
+                                            <li class="kt-nav__item">
+                                                <a class="kt-nav__link" href="#" role="tab" data-toggle="kt-tooltip" title="" data-placement="right" data-original-title="This feature is coming soon!">
+                                                    <span class="kt-nav__link-icon"><i class="flaticon2-hourglass-1"></i></span>
+                                                    <span class="kt-nav__link-text">Payments</span>
+                                                </a>
+                                            </li>
+                                            <li class="kt-nav__separator"></li>
+                                            <li class="kt-nav__item">
+                                                <a class="kt-nav__link" href="#" role="tab" data-toggle="kt-tooltip" title="" data-placement="right" data-original-title="This feature is coming soon!">
+                                                    <span class="kt-nav__link-icon"><i class="flaticon2-bell-2"></i></span>
+                                                    <span class="kt-nav__link-text">Statements</span>
+                                                </a>
+                                            </li>
+                                            <li class="kt-nav__item">
+                                                <a class="kt-nav__link" href="#" role="tab" data-toggle="kt-tooltip" title="" data-placement="right" data-original-title="This feature is coming soon!">
+                                                    <span class="kt-nav__link-icon"><i class="flaticon2-medical-records-1"></i></span>
+                                                    <span class="kt-nav__link-text">Audit Log</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                </div>
+                            </section>
+                                    <hr>
+                                     <h5>Artist Permit Request</h5>
                                 <section class="row">
                                     <div class="col-md-12">
+                                       
                                         <div class="accordion accordion-solid accordion-toggle-plus" id="{{ $artist_permit->permit_status }}">
                                                 @foreach($artist_permit->artist as $key => $artist)
                                                 <div class="card">
@@ -99,17 +179,155 @@
                                                                                     <span></span>
                                                                                 </label>
                                                                             </span>
-                                                                            <div class="kt-widget2__info">
-                                                                                <div class="kt-widget2__title">
-                                                                                    {{ $artist->name }}
-                                                                                    <span class="kt-widget2__username"></span>
-                                                                                    
-                                                                                </div>
+                                                                            <div class="kt-widget2__info float-left">
                                                                                 <a href="#" class="kt-widget2__title">
-                                                                                    Completa Financial Report For Emirates Airlines
-                                                                                    <p></p>
+                                                                                   {{ ucwords($artist->uid_number) }}
                                                                                     </a><a href="#" class="kt-widget2__username">
-                                                                                        By Sean
+                                                                                       UID Number
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </section>
+                                                                <section class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {{ ucwords($artist->passport_number) }}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                        Passport Number
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {{ ucwords($artist->nationality) }}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                       Nationality
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </section>
+                                                                <section class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {{ $artist->birthdate }}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                        Birthdate
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {{ ucwords($artist->mobile_number) }}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                       Mobile Number
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </section>
+                                                                <section class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {{ $artist->email }}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                        Email
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {{ ucwords($artist->phone_number) }}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                       Telephone Number
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </section>
+                                                                <section class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {{ $artist->profession }}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                        Profession
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {!! $artist->person_code ? $artist->person_code : '<i class="text-warning">no person code provided</i>'  !!}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                       Person Code
                                                                                     </a>
                                                                             </div>
                                                                         </div>

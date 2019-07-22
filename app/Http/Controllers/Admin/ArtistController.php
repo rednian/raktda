@@ -13,13 +13,17 @@ class ArtistController extends Controller
 {
     public function index(Request $request)
     { 
-        $company = ArtistPermit::artistPermit($request)->groupBy('artist_permit.company_id')->orderBy('company_name',)->get();
+        $company = ArtistPermit::artistPermit($request)
+                                ->groupBy('artist_permit.company_id')
+                                ->orderBy('company_name',)
+                                ->get();
         return view('admin.artist_permit.index',['companies'=>$company]);
     }
 
     public function application(Request $request, ArtistPermit $artistPermit)
-    {
-        return view('admin.artist_permit.application',['artist_permit'=>$artistPermit]);
+    {   
+        $company = Company::find($artistPermit->company_id);
+        return view('admin.artist_permit.application',['artist_permit'=>$artistPermit, 'company'=>$company]);
     }
 
  
