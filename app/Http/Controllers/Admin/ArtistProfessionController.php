@@ -15,6 +15,7 @@ class ArtistProfessionController extends Controller
     {
         return abort(404);
     }
+    
 
     public function datatable()
     {

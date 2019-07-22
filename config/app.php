@@ -168,18 +168,17 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Barryvdh\DomPDF\ServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Hoyvoy\CrossDatabase\CrossDatabaseServiceProvider::class,
+        'A6digital\Image\DefaultProfileImageServiceProvider'
 
 
 
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Class Aliases

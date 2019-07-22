@@ -3,23 +3,21 @@
 namespace App\Http\Middleware;
 
 use Auth;
+use App\Company;
 use Closure;
 
 class AdmminMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixeds
-     */
+
     public function handle($request, Closure $next)
     {
-    
-        if($request->user() && $request->user()->type == 1){
-            return $next($request);
+        if(Auth::check() && $request->user()->type == 0){
+            $company = Company::find(Auth::user()->EmpClientId);
+            $company_name = explode(' ', $company->company_name);
+
+            return redirect()->route('company.dashboard', str_replace(' ', '_',strtolower($company->company_name)));
         }
-       return $next($request);
+        
+         return $next($request);
     }
 }

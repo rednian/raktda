@@ -13,6 +13,7 @@ WebFont.load({
     google: { "families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"] },
     active: function() { sessionStorage.fonts = true; } 
 });
+
 </script>{{-- 
 <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" /> --}}
 <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.min.css') }}" rel="stylesheet" type="text/css" />
@@ -89,18 +90,13 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 </div>
 
 <!-- end:: Header Mobile -->
+
 <div class="kt-grid kt-grid--hor kt-grid--root">
 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
-    @if (Auth::user() && Auth::user()->type == 1)
         @include('layouts.sidebar-admin')
-    @elseif(Auth::user() && Auth::user()->type == 0)
-        @include('layouts.sidebar')
-    @endif
-
     <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
-        @include('layouts.header')
+        @include('layouts.admin-header')
         <div class="kt-content kt-grid__item kt-grid__item--fluid" id="content">
-
             @yield('content')
         </div>
         @include('layouts.footer')

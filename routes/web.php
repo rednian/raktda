@@ -2,26 +2,27 @@
 Route::get('/', function () {
     return redirect()->route('login');
 })->name('default');
+
 Auth::routes(['register' => false]);
 
 Route::group(['middleware' => 'admin'], function () {
 
     Route::get('/dashboard', 'admin\DashboardController@index')->name('admin.dashboard');
-    Route::resource('/artist', 'admin\ArtistController');
 
 
-//--------------------------------------------------------------------------
-// Artist Permit
-//--------------------------------------------------------------------------
-  
-  Route::get('artist/permit/{artist_permit}', 'Admin\ArtistController@application')->name('artist.application');
-  Route::get('permit/artist/datatable', 'Admin\ArtistController@datatable')->name('artist.datatable');
-  Route::get('permit/artist/datatablerequest', 'Admin\ArtistController@datatablerequest')->name('artist.datatablerequest');
-  Route::resource('permit/artist', 'Admin\ArtistController');
-    
-//--------------------------------------------------------------------------
-// Settings
-//--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    // Artist Permit
+    //--------------------------------------------------------------------------
+
+    Route::get('/permit/artist/datatable', 'Admin\ArtistController@datatable')->name('artist.datatable');
+    Route::get('/permit/artist/datatablerequest', 'Admin\ArtistController@datatablerequest')->name('artist.datatablerequest');
+    Route::get('/permit/artist/{artist_permit}', 'Admin\ArtistController@application')->name('artist.application');
+    Route::resource('/permit/artist', 'Admin\ArtistController');
+
+    //--------------------------------------------------------------------------
+    // Settings
+    //--------------------------------------------------------------------------
 
 
     //Approvers
@@ -37,7 +38,4 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/settings/artist/artist_type/datatable', 'Admin\ArtistProfessionController@datatable')->name('artist_type.datatable');
     Route::get('settings/artist/artist_type/isexist', 'Admin\ArtistProfessionController@isexist')->name('artist_type.isexist');
     Route::resource('settings/artist/artist_type', 'Admin\ArtistProfessionController');
-
-  
-
 });

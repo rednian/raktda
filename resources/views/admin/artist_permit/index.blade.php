@@ -5,7 +5,7 @@
     <div class="kt-portlet kt-portlet--height-fluid">
       <div class="kt-portlet__head">
           <div class="kt-portlet__head-label">
-              <h3 class="kt-portlet__head-title">You have <strong id="request-number" >0</strong> company requested for artist permit.</h3>
+              <h3 class="kt-portlet__head-title">You have <strong id="request-number" class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill">0</strong> company requested for artist permit.</h3>
           </div>
       </div>
       <div class="kt-portlet__body">
@@ -84,15 +84,20 @@
           },
           columnDefs: [
             {targets:  [3,4], className: 'no-wrap',sortable: false},
+            {targets: 4, className: 'text-center'}
           ],
           columns: [
             { data: 'company_name', name: 'company_name'},
             { data: 'company_trade_license', name: 'company_trade_license'},
             { data: 'submitted_on', name: 'submitted_on'},
-            { data: 'artist_number', name: 'artist_number'},
+            {
+              render: function (data, type, full, meta){
+                  return ' <span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill">'+full.artist_number+'</span>';
+              }
+            },
             { 
               render: function(data, type, full, meta){
-                var url = '{{ url('artist/permit') }}/'+full.artist_permit_id;
+                var url = '{{ url('permit/artist') }}/'+full.artist_permit_id;
                 return '<a href="'+url+'" class="btn btn-link btn-sm">Take Action</a>';
               }
             },
@@ -166,7 +171,8 @@
                },
                {
                    render: function (data, type, full, meta) {
-                       url = '{{ url('permit/artist') }}/'+full.artist_id+'/application/'+full.artist_permit_id;
+                    var url = '';
+                       // url = '{{ url('permit/artist') }}/'+full.artist_id+'/application/'+full.artist_permit_id;
                      
                       return '<a class="btn btn-link btn-sm" href="'+url+'">Show Details</a>';
 

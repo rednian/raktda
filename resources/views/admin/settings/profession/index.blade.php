@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin-app')
 @section('content')
 <section class="row">
     <div class="col-xl-12">
@@ -32,11 +32,8 @@
     $(document).ready(function(){
 
        var artistType = $('table#artist-profession').DataTable({
-           processing: true,
-           serverSide: true,
            ajax: {
                url: '{{ route('artist_type.datatable') }}',
-               global: false,
            },
     
            columnDefs: [
