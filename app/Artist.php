@@ -16,7 +16,7 @@ class Artist extends Model
 
     public function artistdocument()
     {
-        return $this->belongsTo(ArtistDocument::class, 'artist_id');
+        return $this->hasMany(ArtistDocument::class, 'artist_id');
     }
 
     public function artistpermit()

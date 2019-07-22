@@ -43,7 +43,7 @@ Artists
                                         <span class="kt-nav__section-text">Choose an option</span>
                                     </li>
                                     <li class="kt-nav__item">
-                                        <a href="#" class="kt-nav__link">
+                                        <a href="#" class="kt-nav__link" onclick="window.print();">
                                             <i class="kt-nav__link-icon la la-print"></i>
                                             <span class="kt-nav__link-text">Print</span>
                                         </a>
@@ -230,7 +230,7 @@ Artists
 
                         </textarea>
                         <input type="hidden" id="cancel_permit_id" name="permit_id">
-                        <input type="submit" class="btn btn-danger pt-2 d-inline float-right" value="Cancel">
+                        <input type="submit" class="btn btn-danger pt-2 d-inline float-right" value="Submit">
                     </form>
                 </div>
             </div>
@@ -274,14 +274,9 @@ Artists
             serverSide: true,
             searching: true,
             pageLength: 5,
-
             lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
             ajax:'{{route("company.json_applied_artists_list")}}',
             order: [[ 4, "desc" ]],
-            columnDefs: [
-                {targets:  0, className: 'no-wrap'},
-                {targets:  3, className: 'no-wrap',sortable: false},
-           ],
             columns: [
                 { data: 'artist.name', name: 'artist.name' },
                 { data: 'artist.nationality', name: 'artist.nationality' },
@@ -293,25 +288,6 @@ Artists
             ]
         });
 
-        table1.on('change', '.kt-group-checkable', function() {
-			var set = $(this).closest('table').find('td:first-child .kt-checkable');
-			var checked = $(this).is(':checked');
-
-			$(set).each(function() {
-				if (checked) {
-					$(this).prop('checked', true);
-					$(this).closest('tr').addClass('active');
-				}
-				else {
-					$(this).prop('checked', false);
-					$(this).closest('tr').removeClass('active');
-				}
-			});
-		});
-
-		table1.on('change', 'tbody tr .kt-checkbox', function() {
-			$(this).parents('tr').toggleClass('active');
-		});
 
 
         var table2 = $('#existing-artists-table').DataTable({
@@ -358,7 +334,7 @@ Artists
     }
 
 
-    const show_details = (id) => {
+     async function show_details(id) {
         $.ajaxSetup({
 			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
 		});

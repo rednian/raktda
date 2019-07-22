@@ -177,7 +177,7 @@ Apply New Artist Permit
                         <!--end: Form Wizard Step 1-->
 
                         <form action="{{route('company.apply_artist_permit')}}" method="POST"
-                            enctype="multipart/form-data">
+                            enctype="multipart/form-data" id="artist_permit_form" novalidate>
                             {{csrf_field()}}
 
 
@@ -205,15 +205,16 @@ Apply New Artist Permit
                                             <div class="form-group col-3">
                                                 <label>From Date</label>
                                                 <input type="text" class="form-control date-picker" name="permit_from"
-                                                    id="permit_form" data-date-start-date="+0d"
-                                                    placeholder="MM/DD/YY" />
+                                                    id="permit_from" data-date-start-date="+0d" placeholder="DD-MM-YYYY"
+                                                    onchange="setToDate()" />
                                             </div>
 
 
                                             <div class="form-group col-3">
                                                 <label>To Date</label>
                                                 <input type="text" class="form-control date-picker" name="permit_to"
-                                                    id="permit_to" placeholder="MM/DD/YY" data-date-start-date="+0d" />
+                                                    id="permit_to" placeholder="DD-MM-YYYY"
+                                                    data-date-start-date="+0d" />
                                             </div>
 
                                             <div class="form-group col-3">
@@ -255,7 +256,8 @@ Apply New Artist Permit
                                             <div class="form-group col-3">
                                                 <label>Date of Birth</label>
                                                 <input type="text" class="form-control date-picker"
-                                                    placeholder="MM/DD/YYYY" name="dob" id="dob" />
+                                                    placeholder="DD-MM-YYYY" data-date-end-date="0d" name="dob"
+                                                    id="dob" />
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Telephone Number</label>
@@ -302,7 +304,7 @@ Apply New Artist Permit
                                         <div class="row doc_row" id="row_1">
                                             <div class="form-group col-3">
                                                 <select type="text" class="form-control" name="doc_type[]"
-                                                    id="doc_type_1" onchange="isExpiry(1)" required>
+                                                    id="doc_type_1" onchange="isExpiry(1)">
                                                     <option value="">Select Document Type</option>
                                                     <option value="passport">Passport</option>
                                                     <option value="visa">Visa</option>
@@ -312,7 +314,7 @@ Apply New Artist Permit
                                             </div>
                                             <div class="form-group col-4">
                                                 <input type="file" class="form-control" name="doc_file[]"
-                                                    id="doc_file_1" placeholder="" required />
+                                                    id="doc_file_1" placeholder="" />
                                             </div>
                                             <div class="form-group col-2">
                                                 <input type="text" class="form-control date-picker"
@@ -332,11 +334,9 @@ Apply New Artist Permit
 
 
                                 <div class="d-flex justify-content-center">
-                                    <button
+                                    <input
                                         class="btn btn-success mb-5 btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
-                                        type="submit" id="submit_btn" style="display:none;">
-                                        Submit
-                                    </button>
+                                        type="submit" id="submit_btn" style="display:none;" />
                                 </div>
 
                             </div>
@@ -350,19 +350,7 @@ Apply New Artist Permit
 
                         <!--begin: Form Wizard Step 4-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-heading kt-heading--md">Permit Request Applied Successfully
-                            </div>
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-                                    <div class="form-group">
-                                        <label>Permit Details</label>
-                                        <div class="kt-card">
-                                            <h2>Artist Name and details</h2>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
                         </div>
 
 
@@ -370,27 +358,7 @@ Apply New Artist Permit
 
                         <!--begin: Form Wizard Step 5-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-heading kt-heading--md">Make Payment
-                            </div>
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__review">
-                                    <div class="kt-wizard-v3__review-item">
-                                        <div class="kt-wizard-v3__review-title">
-                                            Permit ID
-                                        </div>
-                                        <div class="kt-wizard-v3__review-content">
-                                            Address Line 1<br />
-                                            Address Line 2<br />
-                                            Melbourne 3000, VIC, Australia
-                                            and Other Details on the Permit
-                                        </div>
-                                        <div class="kt-wizard-v3__review-content kt-heading">
-                                            Total Payable Amount: AED 195
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
                         </div>
 
                         <!--end: Form Wizard Step 5-->
@@ -467,12 +435,32 @@ Apply New Artist Permit
 @section('script')
 
 <script>
+    $(document).ready(function(){
+        let validationResult = false;
+        var validator;
+    });
+
+    $('#submit_btn').click(function(){
+        $('#doc_type_1').prop('required', true);
+        $('#doc_file_1').prop('required', true);
+    })
+
     $('#next_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
         $('#prev_btn').css('display', 'block');
        if(wizard.currentStep == 2){
-            $('#submit_btn').css('display', 'block');
-            $('#next_btn').css('display','none');
+           if (validator.form())
+           {
+                $('#submit_btn').css('display', 'block');
+                $('#next_btn').css('display','none');
+           }
+           else{
+                wizard.on("beforeNext", function(wizardObj) {
+                    if (validator.form() !== true) {
+                        wizardObj.stop(); // don't go to the next step
+                    }
+                });
+           }
        }else{
             $('#submit_btn').css('display', 'none');
             $('#next_btn').css('display', 'block');
@@ -481,7 +469,6 @@ Apply New Artist Permit
 
     $('#prev_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
-        console.log(wizard.currentStep);
        if(wizard.currentStep == 2){
             $('#prev_btn').css('display', 'none');
        }else{
@@ -517,78 +504,107 @@ Apply New Artist Permit
     }
 
     $('.date-picker').datepicker({
-        format: 'mm/dd/yyyy',
+        format: 'dd-mm-yyyy',
     });
 
     const del_row = (id) => {
         $('#row_'+id).remove();
     }
 
+    const setToDate= () => {
+        var permitFrom = $('#permit_from').val();
+        var da =  permitFrom.split('-');
+        var permitFrom = da[1]+'/'+da[0]+'/'+da[2];
+        var newDate = new Date(permitFrom);
+        newDate.setDate(newDate.getDate() + 30);
 
-    // $("#submit_btn").bind("click", (e) => {
-    //     e.preventDefault();
+        Date.prototype.toInputFormat = function(){
+            var yyyy = this.getFullYear().toString();
+            var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+            var dd  = this.getDate().toString();
+            return    (dd[1]?dd:"0"+dd[0]) + "-" + (mm[1]?mm:"0"+mm[0])  +"-"  + yyyy;
+        }
+        $('#permit_to').val(newDate.toInputFormat());
+    }
 
-    //     $('form[id="artist_permit_form"]').validate({
-    //         rules: {
-                // artist_type: 'required',
-                // artist_permit_from: 'required',
-                // artist_permit_to: 'required',
-                // artist_name_en: 'required',
-                // artist_nationality: 'required',
-                // artist_passport: 'required',
-                // artist_uid_number: 'required',
-                // artist_dob: 'required',
-                // artist_telephone: {
-                //     number: true,
-                //     required : true
-                // } ,
-                // artist_dob: 'required',
-                // artist_profession: 'required',
-                // artist_mobile: {
-                //     number: true,
-                //     required : true
-                // } ,
-                // artist_email: {
-                //     required: true,
-                //     email: true,
-                // },
-            //     doc_type_1: 'required',
-            //     doc_file_1: 'required',
-            //     doc_exp_date_1: 'required'
-            // },
-            // messages: {
-                // artist_type: 'This field is required',
-                // artist_permit_from: 'This field is required',
-                // artist_permit_to: 'This field is required',
-                // artist_name_en: 'This field is required',
-                // artist_nationality: 'This field is required',
-                // artist_passport: 'This field is required',
-                // artist_uid_number: 'This field is required',
-                // artist_dob: 'This field is required',
-                // artist_telephone: 'This field is required',
-                // artist_profession: 'This field is required',
-                // artist_mobile: 'This field is required',
-                // artist_email: 'Enter a valid email',
-    //             doc_type_1: 'This field is required',
-    //             doc_file_1: 'This field is required',
-    //             doc_exp_date_1: 'This field is required',
-    //         },
-    //         submitHandler: function(form) {}
-    // });
+    validator =  $('#artist_permit_form').validate({
+            rules: {
+                permit_type: 'required',
+                permit_from: 'required',
+                permit_to: 'required',
+                name_en: 'required',
+                nationality: 'required',
+                passport: 'required',
+                uid_number: 'required',
+                dob: 'required',
+                telephone: {
+                    number: true,
+                    required : true
+                } ,
+                profession: 'required',
+                mobile: {
+                    number: true,
+                    required : true
+                } ,
+                email: {
+                    required: true,
+                    email: true,
+                },
+                work_loc: 'required'
+            },
+            messages: {
+                permit_type: 'This field is required',
+                permit_from: 'This field is required',
+                permit_to: 'This field is required',
+                name_en: 'This field is required',
+                nationality: 'This field is required',
+                passport: 'This field is required',
+                uid_number: 'This field is required',
+                dob: 'This field is required',
+                telephone: 'This field is required & should be Number',
+                profession: 'This field is required',
+                mobile: {
+                    number: 'Please enter number',
+                    required : 'This field is required'
+                },
+                email: {
+                    required: 'This field is required',
+                    email: 'Enter a valid email',
+                },
+                work_loc: 'This field is required'
+            },
+            invalidHandler: function(event, validator) {
+                KTUtil.scrollTop();
 
-        // let artist_type = $('#artist_type').val();
-        // let from_date = $('input[name=artist_permit_from]').val();
-        // let to_date = $('input[name=artist_permit_to]').val();
-        // let name_en =  $('input[name=artist_name_en]').val();
-        // let name_ar =  $('input[name=artist_name_ar]').val();
+                Swal.fire({
+                    title: "",
+                    text:
+                        "Please fill all the mandatory fields",
+                    type: "error",
+                    confirmButtonClass: "btn btn-secondary"
+                });
+            },
+            // submitHandler: function(form) {
+
+            // }
+        });
+
+
+
+
+        // let permit_type = $('#permit_type').val();
+        // let from_date = $('#permit_from').val();
+        // let to_date = $('#permit_to').val();
+        // let name_en =  $('#name_en').val();
+        // let name_ar =  $('#name_ar').val();
         // let nationality = $('#artist_nationality').val();
-        // let passport =  $('input[name=artist_passport]').val();
-        // let uid =  $('input[name=artist_uid_number]').val();
-        // let dob =  $('input[name=artist_dob]').val();
-        // let telephone =  $('input[name=artist_telephone]').val();
-        // let mobile =  $('input[name=artist_mobile]').val();
-        // let email =  $('input[name=artist_email]').val();
-        // let profession =  $('input[name=artist_profession]').val();
+        // let passport =  $('#passport]').val();
+        // let uid =  $('#uid_number]').val();
+        // let dob =  $('#dob]').val();
+        // let telephone =  $('#telephone]').val();
+        // let mobile =  $('#mobile]').val();
+        // let email =  $('#email]').val();
+        // let profession =  $('#profession]').val();
 
         //artist_type: artist_type, from_date: from_date, to_date: to_date, name_en: name_en, name_ar: name_ar, nationality: nationality, passport: passport, uid: uid, dob: dob, telephone: telephone, mobile: mobile, email: email, profession: profession
 
@@ -630,8 +646,6 @@ Apply New Artist Permit
     // });
 
 
-
-
     var KTAppOptions = {
         "colors": {
             "state": {
@@ -657,5 +671,6 @@ Apply New Artist Permit
 
 
 <script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 @endsection

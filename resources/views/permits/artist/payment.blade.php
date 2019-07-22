@@ -120,9 +120,13 @@ Make Payment
 
                                                     <div class="kt-widget5__content">
                                                         <div class="kt-widget5__pic">
-                                                            <img class="kt-widget7__img"
-                                                                src="https://source.unsplash.com/random/"
+                                                            @foreach($artist_details[0]->artist['artistdocument'] as
+                                                            $doc)
+                                                            @if($doc->doc_name == "photograph")
+                                                            <img class="kt-widget7__img" src="{{$doc->doc_path}}"
                                                                 style="height:150px;width:160px;" alt="">
+                                                            @endif
+                                                            @endforeach
                                                         </div>
                                                         <div class="kt-widget5__section">
                                                             <a href="#" class="kt-widget5__title">
@@ -163,6 +167,11 @@ Make Payment
                                                                 <input type="hidden" name="p_artist_permit_id"
                                                                     id="{{$artist_details[0]->artist['artist_permit_id']}}">
                                                             </div>
+                                                            <div class="kt-wizard-v3__review-content kt-heading">
+                                                                <label for="">Permit Fee:</label>
+                                                                <span><small>AED
+                                                                        {{$artist_details[0]->artist['artisttype']->amount}}</small></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -173,12 +182,11 @@ Make Payment
 
 
                                         </div>
-                                        <div class="kt-wizard-v3__review-content kt-heading">
-                                            Total Payable Amount: AED
-                                            {{$artist_details[0]->artist['artisttype']->amount}}
-                                        </div>
+
+
                                         {{-- @php
                                         dd($artist_details);
+
                                         @endphp --}}
 
 
@@ -274,6 +282,7 @@ Make Payment
         });
         $('#next_btn').css('display','none');
         $('#prev_btn').css('display','none');
+        $('.kt-form__actions').css('float', 'right');
     })
 
 
@@ -287,13 +296,14 @@ Make Payment
                 "content"
             )
         },
-        type: "POST",
+        // type: "POST",
         url: "{{route('company.payment_gateway')}}",
         // dataType: 'application/json',
         processData:false,
-        data: {id:id , permit_id:permit_id},
+        // data: {id:id , permit_id:permit_id},
         success: function(data) {
-            console.log(data);
+            let url = '{{route('company.payment_gateway')}}';
+            $(location).attr('href',url);
         }
         });
     });

@@ -30,7 +30,7 @@ class ArtistController extends Controller
     public function applied_list()
     {
         $permits = ArtistPermit::latest();
-        $permits = $permits->with('artist', 'artist.artisttype')->where('company_id', Auth::user()->company_id)->where('permit_status', '!=', 'expired')->get();
+        $permits = $permits->with('artist', 'artist.artisttype', 'artist.artistdocument')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', '!=', 'expired')->get();
 
         return Datatables::of($permits)->editColumn('created_at', function ($permit) {
             if ($permit->created_at) {
@@ -57,19 +57,21 @@ class ArtistController extends Controller
     {
         $data_bundle['profession'] = Profession::all();
         $data_bundle['countries'] = Countries::all()->pluck('name.common');
-        $data_bundle['artist_details'] = ArtistPermit::with('artist', 'artist.artisttype')->where('artist_permit_id', $id)->get();
+        $data_bundle['artist_details'] = ArtistPermit::with('artist', 'artist.artisttype', 'artist.artistdocument')->where('artist_permit_id', $id)->get();
         return view('permits.artist.payment', $data_bundle);
     }
 
 
     public function payment_gateway(Request $request)
-    { }
+    {
+        return view('permits.artist.paymentgateway');
+    }
 
 
     public function existing_list()
     {
         $permits = ArtistPermit::latest();
-        $permits = $permits->with('artist', 'artist.artisttype')->where('company_id', Auth::user()->company_id)->where('permit_status', 'expired')->get();
+        $permits = $permits->with('artist', 'artist.artisttype', 'artist.artistdocument')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', 'expired')->get();
 
 
         return Datatables::of($permits)->editColumn('created_at', function ($permits) {
@@ -146,7 +148,7 @@ class ArtistController extends Controller
     public function fetch_artist_details(Request $request)
     {
         $id = $request->id;
-        $artists = ArtistPermit::with('artist', 'artist.artisttype')->where('artist_permit_id', $id)->get();
+        $artists = ArtistPermit::with('artist', 'artist.artisttype', 'artist.artistdocument')->where('artist_permit_id', $id)->get();
         return $artists;
     }
 
@@ -216,7 +218,7 @@ class ArtistController extends Controller
             'created_at' => Carbon::now()->toDateTimeString(),
             'permit_status' => 'new',
             'created_by' => Auth::user()->user_id,
-            'company_id' => Auth::user()->company_id
+            'company_id' => Auth::user()->EmpClientId
         ]);
 
         $artist = Artist::create([
@@ -231,7 +233,7 @@ class ArtistController extends Controller
             'phone_number' => $request->input('telephone'),
             'email' => $request->input('email'),
             'created_by' => Auth::user()->user_id,
-            'company_id' => Auth::user()->company_id,
+            'company_id' => Auth::user()->EmpClientId,
         ]);
 
         $artist->profession = $request->input('profession');
@@ -240,9 +242,7 @@ class ArtistController extends Controller
 
         $artist->save();
 
-
         $count = count($request->input('doc_type'));
-
 
         for ($i = 0; $i < $count; $i++) {
 
@@ -272,12 +272,13 @@ class ArtistController extends Controller
                 'expired_date' => $request->input('doc_exp_date')[$i] ? Carbon::parse($request->input('doc_exp_date')[$i])->toDateTimeString() : null,
                 'company_id' => 1,
                 'artist_id' => $artist->artist_id,
-                'created_by' =>  Auth::user()->user_id
+                'created_by' =>  Auth::user()->user_id,
+                'doc_status' => 'active'
             ]);
 
             $path = $request->file('doc_file')[$i]->storeAs(
                 $extension,
-                $artistDocument->id  . '.' . $extension
+                $artistDocument->artist_doc_id  . '.' . $extension
             );
 
             $artistDocument->doc_path = $path;
@@ -288,6 +289,29 @@ class ArtistController extends Controller
         return redirect('company/artist_permits');
         //return redirect()->back()->with( 'status', 'File uploaded' );
 
+    }
+
+
+    public function happiness_meter($id)
+    {
+        return view('permits.happinessmeter', ['id' => $id]);
+    }
+
+
+    public function submit_happiness(Request $request)
+    {
+        $id = $request->permit_id;
+        $rating = $request->rating;
+
+        // $device = Device::findOrFail($id);
+
+        $artists = ArtistPermit::findOrFail($id);
+
+        $artists->update([
+            'meter' => $rating
+        ]);
+
+        return view('permits.happinessmeter', ['id' => $id]);
     }
 
     /**
