@@ -20,6 +20,7 @@ WebFont.load({
 <link href="{{ asset('/assets/vendors/custom/datatables/datatables.checkboxes.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/css/demo1/pages/general/wizard/wizard-3.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('/assets/vendors/custom/file-icons/css/style.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Page Vendors Styles -->
 
 <!--begin:: Global Mandatory Vendors -->
@@ -61,7 +62,6 @@ WebFont.load({
 <link href="{{ asset('/assets/css/demo1/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/css/demo1/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/assets/css/demo1/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
-
 <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />
 
 <!--end::Layout Skins -->
@@ -70,7 +70,6 @@ WebFont.load({
 
 <body
 class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--fixed kt-subheader--enabled kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
-
 <!-- begin:: Page -->
 
 <!-- begin:: Header Mobile -->
@@ -81,14 +80,11 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
     </a>
 </div>
 <div class="kt-header-mobile__toolbar">
-    <button class="kt-header-mobile__toggler kt-header-mobile__toggler--left"
-        id="kt_aside_mobile_toggler"><span></span></button>
+    <button class="kt-header-mobile__toggler kt-header-mobile__toggler--left" id="kt_aside_mobile_toggler"><span></span></button>
     <button class="kt-header-mobile__toggler" id="kt_header_mobile_toggler"><span></span></button>
-    <button class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler"><i
-            class="flaticon-more"></i></button>
+    <button class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler"><i class="flaticon-more"></i></button>
 </div>
 </div>
-
 <!-- end:: Header Mobile -->
 
 <div class="kt-grid kt-grid--hor kt-grid--root">
@@ -521,6 +517,7 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 <!--begin:: Global Optional Vendors -->
 <script src="{{ asset('/assets/js/demo1/pages/wizard/wizard-3.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/vendors/general/bootbox/bootbox.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/vendors/custom/file-icons/index.js') }}" type="text/javascript"></script>
     
 <script src="{{ asset('/assets/vendors/general/jquery-form/dist/jquery.form.min.js')}}" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/general/block-ui/jquery.blockUI.js')}}" type="text/javascript"></script>

@@ -6,6 +6,7 @@ use DataTables;
 use App\Company;
 use App\Artist;
 use App\ArtistPermit;
+use App\Requirement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -20,10 +21,22 @@ class ArtistController extends Controller
         return view('admin.artist_permit.index',['companies'=>$company]);
     }
 
-    public function application(Request $request, ArtistPermit $artistPermit)
+    public function submit_artist(Request $request)
+    {
+        return $request->all();
+    }
+
+    public function artistDetails(Request $request, ArtistPermit $artistPermit)
     {   
         $company = Company::find($artistPermit->company_id);
-        return view('admin.artist_permit.application',['artist_permit'=>$artistPermit, 'company'=>$company]);
+        return view('admin.artist_permit.artist_detail',['artist_permit'=>$artistPermit, 'company'=>$company]);
+    }
+
+    public function artistDocuments(Request $request, ArtistPermit $artistPermit)
+    {
+        
+         $company = Company::find($artistPermit->company_id);
+        return view('admin.artist_permit.artist_documents', ['artist_permit'=>$artistPermit, 'company'=>$company]);
     }
 
  

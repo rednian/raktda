@@ -14,9 +14,14 @@ class Procedure extends Model
         'procedure_status', 'procedure_type',  'procedure_name', 'created_by', 'updated_by', 'deleted_by'
     ];
 
-    public function approve()
+    public function artistPermit()
     {
-        return $this->hasMany(ProcedureApprover::class, 'procedure_id');
+        return $this->belongsToMany(Procedure::class, 'artist_permit_approver', 'procedure_id', 'artist_permit_id');
+    }
+
+    public function approver()
+    {
+        return $this->hasMany(ApproveProcedure::class, 'procedure_id');
     }
 
 

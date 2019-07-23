@@ -78,9 +78,6 @@
         artistPermitRequest = $('table#table-artist-request').DataTable({
           ajax: {
               url: '{{ route('artist.datatablerequest') }}',
-              data: function(d){
-                 // d.type = 'new';
-              }
           },
           columnDefs: [
             {targets:  [3,4], className: 'no-wrap',sortable: false},
@@ -97,7 +94,7 @@
             },
             { 
               render: function(data, type, full, meta){
-                var url = '{{ url('permit/artist') }}/'+full.artist_permit_id;
+                var url = '{{ url('permit/artist') }}/'+full.artist_permit_id+'/artist_details';
                 return '<a href="'+url+'" class="btn btn-link btn-sm">Take Action</a>';
               }
             },

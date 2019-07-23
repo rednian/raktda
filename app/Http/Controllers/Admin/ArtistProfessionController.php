@@ -13,11 +13,11 @@ class ArtistProfessionController extends Controller
 
     public function index()
     {
-        return abort(404);
+       return view('admin.settings.profession.index');
     }
     
 
-    public function datatable()
+    public function datatable(Request $request)
     {
         if($request->ajax()){
          $ArtistType =  ArtistType::all();

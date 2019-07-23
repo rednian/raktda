@@ -16,6 +16,11 @@ class Artist extends Model
         'phone_number', 'email', 'company_id', 'created_by', 'updated_by', 'deleted_by'
     ];
 
+    public function requirement()
+    {
+        return $this->belongsToMany(Requirement::class, 'artist_document', 'artist_id', 'requirement_id');
+    }
+
     public function artistdocument()
     {
         return $this->belongsTo(ArtistDocument::class, 'artist_id');

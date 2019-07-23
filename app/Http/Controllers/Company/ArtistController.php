@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use Illuminate\Http\Request;
+use App\Procedure;
 use App\Http\Controllers\Controller;
 use App\Profession;
 use PragmaRX\Countries\Package\Countries;
@@ -218,6 +219,11 @@ class ArtistController extends Controller
             'created_by' => Auth::user()->user_id,
             'company_id' => Auth::user()->company_id
         ]);
+
+        //set the employee approvers
+        $procedure = Procedure::where('procedure_status', 1)->first();        
+        $artistPermit->approvers()->attach($procedure->procedure_id);
+
 
         $artist = Artist::create([
             'name' => $request->input('name_en'),

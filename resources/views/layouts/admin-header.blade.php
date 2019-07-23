@@ -1,10 +1,7 @@
 <div id="kt_header" class="kt-header kt-grid__item  kt-header--fixed ">
-
     <!-- begin:: Header Menu -->
-    <button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i
-            class="la la-close"></i></button>
+    <button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
     <div class="kt-header-menu-wrapper" id="kt_header_menu_wrapper"></div>
-
     <!-- end:: Header Menu -->
 
     <!-- begin:: Header Topbar -->
@@ -23,7 +20,8 @@
                                 d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z"
                                 id="Path" fill="#000000" fill-rule="nonzero" />
                         </g>
-                    </svg> </span>
+                    </svg>
+                </span>
             </div>
             <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-lg">
                 <div class="kt-quick-search kt-quick-search--inline" id="kt_quick_search_inline">
@@ -36,9 +34,7 @@
                                         class="la la-close kt-quick-search__close"></i></span></div>
                         </div>
                     </form>
-                    <div class="kt-quick-search__wrapper kt-scroll" data-scroll="true" data-height="300"
-                        data-mobile-height="200">
-                    </div>
+                    <div class="kt-quick-search__wrapper kt-scroll" data-scroll="true" data-height="300" data-mobile-height="200"></div>
                 </div>
             </div>
         </div>
@@ -125,8 +121,6 @@
                                         </div>
                                     </div>
                                 </a>
-
-
                             </div>
                         </div>
                         <div class="tab-pane" id="topbar_notifications_logs" role="tabpanel">
@@ -173,13 +167,11 @@
                 <ul class="kt-nav kt-margin-t-10 kt-margin-b-10">
                     <li class="kt-nav__item kt-nav__item--active">
                         <a href="#" class="kt-nav__link">
-
                             <span class="kt-nav__link-text">English</span>
                         </a>
                     </li>
                     <li class="kt-nav__item">
                         <a href="#" class="kt-nav__link">
-
                             <span class="kt-nav__link-text">Arabic</span>
                         </a>
                     </li>
@@ -194,7 +186,7 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
                 <div class="kt-header__topbar-user">
                     <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span>
-                    <span class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords(Auth::user()->NameEn )}}</span>
+                        <span class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords(Auth::user()->NameEn )}}</span>
                 </div>
             </div>
             <div
