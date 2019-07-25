@@ -1,0 +1,13 @@
+#kt_content_company_artist
+    .kt-wizard-v3
+    .kt-wizard-v3__nav
+    .kt-wizard-v3__nav-items
+    .kt-wizard-v3__nav-item {
+    -ms-flex: 0 0 14.5%;
+    flex: 0 0 14.5%;
+}
+
+#addNew_btn {
+    margin: auto;
+    margin-left: 0px;
+}
