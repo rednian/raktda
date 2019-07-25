@@ -120,10 +120,26 @@
 
      justify-content: flex-start; 
 }
+
+
 @media (min-width: 1025px){
    .kt-header--fixed.kt-subheader--fixed.kt-subheader--enabled .kt-wrapper {
-     padding-top: 60px !important; 
-} 
+     /*padding-top: 5% !important; */
+    } 
 }
+
+.kt-wizard-v3 .kt-wizard-v3__nav .kt-wizard-v3__nav-items .kt-wizard-v3__nav-item {
+    -ms-flex: 0 0 25% !important;
+    flex: 0 0 25% !important;
+}
+
+.kt-heading{
+    margin: 0;
+}
+
+/*forms*/
+
+/*align form label to right*/
+.form-group label { text-align: right;}
 
 

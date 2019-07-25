@@ -30,7 +30,7 @@
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" data-ktwizard-state="pending">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>3</span> 
+                                    <span>3</span>  Review and Submit
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -39,7 +39,7 @@
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" data-ktwizard-state="pending">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>4</span> Review and Submit
+                                    <span>4</span> Approve Permit
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -160,7 +160,7 @@
                                                                 <section class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  value="1" name="artist_name[]">
                                                                                     <span></span>
@@ -177,7 +177,7 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  value="1" name="uid_number[]">
                                                                                     <span></span>
@@ -196,7 +196,7 @@
                                                                 <section class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  name="passport_number[]">
                                                                                     <span></span>
@@ -213,7 +213,7 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  name="nationality[]">
                                                                                     <span></span>
@@ -232,7 +232,7 @@
                                                                 <section class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  name="birthdate[]">
                                                                                     <span></span>
@@ -249,7 +249,7 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  name="mobile_number[]">
                                                                                     <span></span>
@@ -268,7 +268,7 @@
                                                                 <section class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  name="email[]">
                                                                                     <span></span>
@@ -285,7 +285,7 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  name="phone_number[]">
                                                                                     <span></span>
@@ -304,7 +304,7 @@
                                                                 <section class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  name="professon[]">
                                                                                     <span></span>
@@ -321,7 +321,7 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="kt-widget2__item">
-                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--warning">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                                 <label>
                                                                                     <input type="checkbox"  name="person_code[]">
                                                                                     <span></span>
@@ -337,6 +337,90 @@
                                                                         </div>
                                                                     </div>
                                                                 </section>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                    </div>
+                                </section>
+                            @endif
+                            
+                            
+                        </div>
+                    </div>
+
+                     <!--begin: Form Wizard Step 2-->
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        <div class="kt-heading kt-heading--md">Uploaded Documents</div>
+                        <div class="kt-form__section kt-form__section--first">
+                            @if(!empty($artist_permit))
+                                <section class="row" style="margin-top: 4%">
+                                    <div class="col-md-12">
+                                       
+                                        <div class="accordion accordion-solid accordion-toggle-plus" id="{{ $artist_permit->permit_status }}">
+                                            <input type="hidden" name="artist_permit_id[]" value="{{ $artist_permit->artist_permit_id }}">
+                                                @foreach($artist_permit->artist as $key => $artist)
+                                                <div class="card">
+                                                    <div class="card-header" id="{{ $artist->uid_number }}">
+                                                        <div class="card-title" data-toggle="collapse" data-target="#{{ $artist->passport_number }}" aria-expanded="true" aria-controls="{{ $artist->passport_number }}">
+                                                            <i class="flaticon-users-1"></i> {{ ucwords($artist->name) }}
+                                                        </div>
+                                                    </div>
+                                                    <div id="{{ $artist->passport_number }}" class="collapse {{ $key == 0 ? 'show': '' }}" aria-labelledby="{{ $artist->uid_number }}" data-parent="#{{ $artist_permit->permit_status }}">
+                                                        <div class="card-body">
+                                                            <div class="form-group row">
+                                                                <label for="">Remarks</label>
+                                                                <input type="hidden" name="artist_id[]" value="{{ $artist->artist_id }}">
+                                                                <textarea name="artist_note[]" id=""  rows="3" class="form-control input-sm"></textarea>
+                                                            </div>
+                                                            <div class="kt-widget2">
+                                                                @if(!empty($requirements))
+                                                                @endif
+                                                                @foreach($requirements as $requirement)
+                                                                    
+                                                                @endforeach
+                                                                
+                                                              {{--   <section class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="birthdate[]">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {{ $artist->birthdate }}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                        Birthdate
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="kt-widget2__item">
+                                                                         <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
+                                                                                <label>
+                                                                                    <input type="checkbox"  name="mobile_number[]">
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </span>
+                                                                            <div class="kt-widget2__info float-left">
+                                                                                <a href="#" class="kt-widget2__title">
+                                                                                   {{ ucwords($artist->mobile_number) }}
+                                                                                    </a><a href="#" class="kt-widget2__username">
+                                                                                       Mobile Number
+                                                                                    </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </section> --}}
+                                                                
+                                                                
                                                                 
                                                             </div>
                                                         </div>

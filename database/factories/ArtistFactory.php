@@ -16,10 +16,7 @@ $factory->define(Artist::class, function (Faker $faker) {
         'mobile_number'=>$faker->phoneNumber,
         'phone_number'=>$faker->phoneNumber,
         'email'=>$faker->email,
-        'company_id'=>rand(62, 84),
-        'artist_permit_id'=>rand(1, 20),
-        'artist_status'=>'active',
-        'profession'=>$faker->jobTitle,
+        'artist_status'=>'block',
 
     ];
 });

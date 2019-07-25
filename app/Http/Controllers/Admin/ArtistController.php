@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use DataTables;
 use App\Company;
 use App\Artist;
+use App\Permit;
 use App\ArtistPermit;
 use App\Requirement;
 use Illuminate\Http\Request;
@@ -14,11 +15,25 @@ class ArtistController extends Controller
 {
     public function index(Request $request)
     { 
-        $company = ArtistPermit::artistPermit($request)
-                                ->groupBy('artist_permit.company_id')
-                                ->orderBy('company_name',)
-                                ->get();
-        return view('admin.artist_permit.index',['companies'=>$company]);
+        $permit = Permit::getBystatus('pending')->get();
+        dd($permit);
+        
+        $data['companies'] = ArtistPermit::artistPermit($request)->groupBy('artist_permit.company_id')->orderBy('company_name',)->get();
+        $data['breadcrumb'] = 'artist.index';
+        $data['page_title'] = 'Artist Permit Dashboard';
+        return view('admin.artist_permit.index', $data);
+    }
+
+    public function applicationDetails(Request $request, $id)
+    {
+        $artistPermit = ArtistPermit::with('artist')->find($id);
+        $company = Company::find($artistPermit->company_id);
+        $data['artist_permit'] = $artistPermit;
+        $data['company'] = $company;
+        $data['breadcrumb'] = ['artist.application.details', $artistPermit];
+        $data['page_title']  = 'Artist Permit Application Details'; 
+
+        return view('admin.artist_permit.application-details', $data);
     }
 
     public function submit_artist(Request $request)
@@ -26,10 +41,17 @@ class ArtistController extends Controller
         return $request->all();
     }
 
-    public function artistDetails(Request $request, ArtistPermit $artistPermit)
+    public function artistDetails(Request $request, $id)
     {   
+        $artistPermit = ArtistPermit::with('artist', 'artist.requirement')->find($id);
         $company = Company::find($artistPermit->company_id);
-        return view('admin.artist_permit.artist_detail',['artist_permit'=>$artistPermit, 'company'=>$company]);
+        $requirements = Requirement::where('requirement_type', 'artist')->where('status', 1)->get();
+
+        return view('admin.artist_permit.artist_detail',[
+                                'artist_permit'=>$artistPermit, 
+                                'company'=>$company,
+                                'requirements'=>$requirements
+                            ]);
     }
 
     public function artistDocuments(Request $request, ArtistPermit $artistPermit)
@@ -83,8 +105,8 @@ class ArtistController extends Controller
 
 
     public function datatable(Request $request)
-    { 
-        $permit = ArtistPermit::artistPermit($request)->get();    
-        return Datatables::of($permit)->make(true);   
+    {
+        $artists = Artist::dataTable()->get();
+        dd($artists);
     } 
 }

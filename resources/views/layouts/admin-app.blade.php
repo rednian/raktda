@@ -92,6 +92,8 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
         @include('layouts.sidebar-admin')
     <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
         @include('layouts.admin-header')
+        {{ !is_array($breadcrumb) ? Breadcrumbs::render($breadcrumb) : Breadcrumbs::render($breadcrumb[0], $breadcrumb[1]) }}
+        
         <div class="kt-content kt-grid__item kt-grid__item--fluid" id="content">
             @yield('content')
         </div>
@@ -518,6 +520,7 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 <script src="{{ asset('/assets/js/demo1/pages/wizard/wizard-3.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/vendors/general/bootbox/bootbox.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/vendors/custom/file-icons/index.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/vendors/custom/validator/js/bootstrapValidator.min.js') }}" type="text/javascript"></script>
     
 <script src="{{ asset('/assets/vendors/general/jquery-form/dist/jquery.form.min.js')}}" type="text/javascript"></script>
 <script src="{{ asset('/assets/vendors/general/block-ui/jquery.blockUI.js')}}" type="text/javascript"></script>
@@ -578,9 +581,9 @@ class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-h
 <script src="{{ asset('/assets/vendors/custom/datatables/datatables.checkboxes.min.js')}}" type="text/javascript"></script>
 <!--end::Global Theme Bundle -->
 
-<script src="{{ asset('/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
-<script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
-<script src="{{ asset('/assets/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script>
+{{-- <script src="{{ asset('/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script> --}}
+{{-- <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script> --}}
+{{-- <script src="{{ asset('/assets/vendors/custom/gmaps/gmaps.js') }}" type="text/javascript"></script> --}}
 {{-- <script src="{{ asset('/js/all.js') }}" type="text/javascript"></script> --}}
 <script>
     $(document).ready(function(){
