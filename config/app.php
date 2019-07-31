@@ -174,10 +174,7 @@ return [
         OwenIt\Auditing\AuditingServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Hoyvoy\CrossDatabase\CrossDatabaseServiceProvider::class,
-        'A6digital\Image\DefaultProfileImageServiceProvider'
-
-
-
+        'A6digital\Image\DefaultProfileImageServiceProvider',
     ],
     /*
     |--------------------------------------------------------------------------

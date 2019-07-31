@@ -12,51 +12,51 @@ use App\Http\Controllers\Controller;
 class ArtistController extends Controller
 {
     public function index(Request $request)
-    { 
+    {
         $company = ArtistPermit::artistPermit($request)
-                                ->groupBy('artist_permit.company_id')
-                                ->orderBy('company_name',)
-                                ->get();
-        return view('admin.artist_permit.index',['companies'=>$company]);
+            ->groupBy('artist_permit.company_id')
+            ->orderBy('company_name')
+            ->get();
+        return view('admin.artist_permit.index', ['companies' => $company]);
     }
 
     public function application(Request $request, ArtistPermit $artistPermit)
-    {   
+    {
         $company = Company::find($artistPermit->company_id);
-        return view('admin.artist_permit.application',['artist_permit'=>$artistPermit, 'company'=>$company]);
+        return view('admin.artist_permit.application', ['artist_permit' => $artistPermit, 'company' => $company]);
     }
 
- 
+
     public function create()
     {
         //
     }
 
- 
+
     public function store(Request $request)
     {
         //
     }
 
-  
+
     public function show($id)
     {
         //
     }
 
- 
+
     public function edit($id)
     {
         //
     }
 
-  
+
     public function update(Request $request, $id)
     {
         //
     }
 
- 
+
     public function destroy($id)
     {
         //
@@ -65,13 +65,13 @@ class ArtistController extends Controller
     public function datatableRequest(Request $request)
     {
         $permit = ArtistPermit::requestType('new')->orderBy('artist_permit.created_at', 'DESC')->get();
-         return Datatables::of($permit)->make(true);   
+        return Datatables::of($permit)->make(true);
     }
 
 
     public function datatable(Request $request)
-    { 
-        $permit = ArtistPermit::artistPermit($request)->get();    
-        return Datatables::of($permit)->make(true);   
-    } 
+    {
+        $permit = ArtistPermit::artistPermit($request)->get();
+        return Datatables::of($permit)->make(true);
+    }
 }

@@ -11,3 +11,18 @@
     margin: auto;
     margin-left: 0px;
 }
+
+#detail-permit {
+    cursor: pointer;
+}
+/*
+.datepicker tbody tr > td.day {
+    color: #b5b5b5a6;
+}
+
+.datepicker tbody tr > td.day.old {
+    color: #b5b5b5a6;
+} */
+.kt-form__section.kt-form__section--first .kt-wizard-v3__form {
+    margin-top: 1em !important;
+}

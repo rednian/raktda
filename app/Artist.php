@@ -7,27 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Artist extends Model
 {
-      use SoftDeletes;
+    use SoftDeletes;
     protected $table = 'artist';
     protected $primaryKey = 'artist_id';
     protected $fillable = [
-        'name', 'nationality', 'passport_number', 'uid_number', 'birthdate', 'mobile_number',
-        'artist_status', 'profesion', 'artist_type_id', 'permit_id', 'person_code', 'artist_image', 'artist_image_original', 'artist_image_thumbnail',
-        'phone_number', 'email', 'company_id', 'created_by', 'updated_by', 'deleted_by'
+        'name', 'nationality', 'passport_number', 'uid_number', 'birthdate', 'mobile_number', 'artist_status',
+        'person_code', 'phone_number', 'email', 'company_id', 'created_by', 'updated_by', 'deleted_by'
     ];
 
-    public function artistdocument()
+    public function artistPermit()
     {
-        return $this->hasMany(ArtistDocument::class, 'artist_id');
+        return $this->hasMany(ArtistPermit::class, 'artist_id');
     }
 
-    public function artistpermit()
+    public function permit()
     {
-        return $this->belongsTo(ArtistPermit::class, 'artist_permit_id');
-    }
-
-    public function artisttype()
-    {
-        return $this->belongsTo(ArtistType::class, 'artist_type_id');
+        return $this->belongsToMany(Permit::class, 'artist_permit', 'artist_id', 'permit_id');
     }
 }

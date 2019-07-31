@@ -19,7 +19,7 @@ Apply New Artist Permit
 
 
 <!-- begin:: Content -->
-<div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+<div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content_company_artist">
     <div class="kt-portlet">
         <div class="kt-portlet__body kt-portlet__body--fit">
             <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
@@ -68,15 +68,22 @@ Apply New Artist Permit
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
                             </div>
-                            {{-- <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#"
-                                style="flex: 0 0 17%;">
+                            <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
                                         <span>6</span>
                                     </div>
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
-                            </div> --}}
+                            </div>
+                            <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#">
+                                <div class="kt-wizard-v3__nav-body">
+                                    <div class="kt-wizard-v3__nav-label">
+                                        <span>7</span>
+                                    </div>
+                                    <div class="kt-wizard-v3__nav-bar"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -111,11 +118,7 @@ Apply New Artist Permit
                                                 terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
                                                 skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
                                                 Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                                single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                                helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-                                                proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
-                                                beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                                                haven't heard of them accusamus labore sustainable VHS.
+
                                             </div>
                                         </div>
                                     </div>
@@ -134,11 +137,7 @@ Apply New Artist Permit
                                                 terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
                                                 skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
                                                 Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                                single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                                helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-                                                proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
-                                                beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                                                haven't heard of them accusamus labore sustainable VHS.
+
                                             </div>
                                         </div>
                                     </div>
@@ -157,11 +156,7 @@ Apply New Artist Permit
                                                 terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
                                                 skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
                                                 Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                                single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                                helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-                                                proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
-                                                beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                                                haven't heard of them accusamus labore sustainable VHS.
+
                                             </div>
                                         </div>
                                     </div>
@@ -176,32 +171,16 @@ Apply New Artist Permit
 
                         <!--end: Form Wizard Step 1-->
 
-                        <form action="{{route('company.apply_artist_permit')}}" method="POST"
-                            enctype="multipart/form-data" id="artist_permit_form" novalidate>
-                            {{csrf_field()}}
+                        <!--begin: Form Wizard Step 3-->
+                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                            <div class="kt-heading kt-heading--md"> Permit Details</div>
 
 
-                            <!--begin: Form Wizard Step 2-->
-                            <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                                <div class="kt-heading kt-heading--md">Artist Permit Details</div>
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="kt-wizard-v3__form">
 
-
-                                <div class="kt-form__section kt-form__section--first">
-                                    <div class="kt-wizard-v3__form">
+                                    <form id="permit_details" method="POST">
                                         <div class="row">
-
-                                            <div class="form-group col-3">
-                                                <label>Artist Type</label>
-                                                <select type="text" class="form-control " name="permit_type"
-                                                    id="permit_type">
-                                                    <option value="">Select</option>
-                                                    @foreach ($profession as $pf)
-                                                    <option value={{$pf->artist_type_id}}>{{$pf->artist_type_en}}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
                                             <div class="form-group col-3">
                                                 <label>From Date</label>
                                                 <input type="text" class="form-control date-picker" name="permit_from"
@@ -217,6 +196,47 @@ Apply New Artist Permit
                                                     data-date-start-date="+0d" />
                                             </div>
 
+
+
+                                            <div class="form-group col-3">
+                                                <label>Work Location</label>
+                                                <input type="text" class="form-control" placeholder="Work Location"
+                                                    name="work_loc" id="work_loc" />
+                                            </div>
+
+                                            <div class="form-group col-3">
+                                                <label>Connected Event ?</label>
+                                                <div class="kt-radio-inline pt-2">
+                                                    <label class="kt-radio">
+                                                        <input type="radio" name="radio2"> Yes
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio">
+                                                        <input type="radio" name="radio2" checked> No
+                                                        <span></span>
+                                                    </label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end: Form Wizard Step 3-->
+
+
+                        <!--begin: Form Wizard Step 3-->
+                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                            <div class="kt-heading kt-heading--md">Artist Details</div>
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="kt-wizard-v3__form">
+                                    <form id="artist_details">
+                                        <input type="hidden" id="artist_number" value={{1}}>
+                                        <div class="row">
                                             <div class="form-group col-3">
                                                 <label>Artist Name - EN</label>
                                                 <input type="text" class="form-control" name="name_en" id="name_en"
@@ -227,10 +247,11 @@ Apply New Artist Permit
                                                 <input type="text" class="form-control" name="name_ar" id="name_ar"
                                                     placeholder="Artist Name - AR">
                                             </div>
-                                            <div class="form-group col-3">
+                                            <div class="form-group col-3 w-100 d-flex flex-column">
                                                 <label>Nationality</label>
                                                 <select type="text" class="form-control" name="nationality"
                                                     id="nationality">
+                                                    {{-- select2  - class for search in select  --}}
                                                     <option value="">Select</option>
                                                     @foreach ($countries as $ct)
                                                     <option value={{$ct}}>{{$ct}}</option>
@@ -239,8 +260,8 @@ Apply New Artist Permit
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Profession</label>
-                                                <input type="text" class="form-control" placeholder="Profession"
-                                                    name="profession" id="profession" />
+                                                <input type="text" class="form-control " name="profession"
+                                                    id="profession" placeholder="Profession" />
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Passport Number</label>
@@ -274,124 +295,77 @@ Apply New Artist Permit
                                                 <input type="text" class="form-control" placeholder="Email" name="email"
                                                     id="email" />
                                             </div>
-                                            <div class="form-group col-3">
-                                                <label>Work Location</label>
-                                                <input type="text" class="form-control" placeholder="Work Location"
-                                                    name="work_loc" id="work_loc" />
-                                            </div>
                                         </div>
-
-
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
-
-                            <!--end: Form Wizard Step 2-->
-
-
-
-                            <!--begin: Form Wizard Step 3-->
-                            <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                                <div class="kt-heading kt-heading--md">Upload Necessary Documents
-                                    <span class="float-right">
-                                        <div class="btn btn-warning btn-sm" onclick="add_new_row()"> + Add
-                                            New</div>
-                                    </span>
-                                </div>
-
-                                <div class="kt-form__section kt-form__section--first">
-                                    <div class="kt-wizard-v3__form" id="document_row">
-                                        <div class="row doc_row" id="row_1">
-                                            <div class="form-group col-3">
-                                                <select type="text" class="form-control" name="doc_type[]"
-                                                    id="doc_type_1" onchange="isExpiry(1)">
-                                                    <option value="">Select Document Type</option>
-                                                    <option value="passport">Passport</option>
-                                                    <option value="visa">Visa</option>
-                                                    <option value="photograph">Photograph</option>
-                                                    <option value="medical">Medical Certificate</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-4">
-                                                <input type="file" class="form-control" name="doc_file[]"
-                                                    id="doc_file_1" placeholder="" />
-                                            </div>
-                                            <div class="form-group col-2">
-                                                <input type="text" class="form-control date-picker"
-                                                    name="doc_issue_date[]" id="doc_issue_date_1"
-                                                    placeholder="Issue Date" />
-                                            </div>
-                                            <div class="form-group col-2">
-                                                <input type="text" class="form-control date-picker"
-                                                    name="doc_exp_date[]" id="doc_exp_date_1"
-                                                    placeholder="Expiry Date" />
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-
-
-                                <div class="d-flex justify-content-center">
-                                    <input
-                                        class="btn btn-success mb-5 btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
-                                        type="submit" id="submit_btn" style="display:none;" />
-                                </div>
-
-                            </div>
-
-
-                        </form>
-
-
+                        </div>
 
                         <!--end: Form Wizard Step 3-->
 
-                        <!--begin: Form Wizard Step 4-->
+
+
+                        <!--begin: Form Wizard Step 3-->
+                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                            <div class="kt-heading kt-heading--md">Upload Documents Required
+                            </div>
+                            <form id="documents_required" method="post">
+                                <input type="hidden" id="requirements_count" value={{count($requirements)}}>
+                                @php
+                                $i = 1;
+                                @endphp
+                                @foreach ($requirements as $req)
+                                <div class="kt-form__section kt-form__section--first">
+                                    <div class="kt-wizard-v3__form" id="document_row">
+                                        <div class="row">
+                                            <div class="form-group col-2">
+                                                <label for="" class="reqName"
+                                                    title="{{$req->requirement_description}}">{{$req->requirement_name}}</label>
+                                                <input type="hidden" value="{{$req->requirement_name}}"
+                                                    id="req_name_{{$i}}">
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <div id="fileuploader_{{$i}}">Upload
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                                value="{{$req->dates_required}}">
+                                            @if($req->dates_required == 1)
+                                            <div class="form-group col-2">
+                                                <input type="text" class="form-control date-picker"
+                                                    name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                    id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
+                                            </div>
+                                            <div class="form-group col-2">
+                                                <input type="text" class="form-control date-picker"
+                                                    name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
+                                                    id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
+                                            </div>
+                                            @endif
+                                        </div>
+
+                                    </div>
+                                </div>
+                                @php
+                                $i++;
+                                @endphp
+                                @endforeach
+                            </form>
+
+
+                        </div>
+
+
+
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
 
                         </div>
 
 
-                        <!--end: Form Wizard Step 4-->
 
-                        <!--begin: Form Wizard Step 5-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
 
                         </div>
-
-                        <!--end: Form Wizard Step 5-->
-
-                        <!--begin: Form Wizard Step 5-->
-                        {{-- <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-            <div class="kt-heading kt-heading--md">Permit Issued Successfully
-            </div>
-            <div class="kt-form__section kt-form__section--first">
-                <div class="kt-wizard-v3__review">
-                    <div class="kt-wizard-v3__review-item">
-                        <div class="kt-wizard-v3__review-title">
-                            Permit ID
-                        </div>
-                        <div class="kt-wizard-v3__review-content">
-                            Address Line 1<br />
-                            Address Line 2<br />
-                            Melbourne 3000, VIC, Australia
-                            and Other Details on the Permit
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div> --}}
-
-                        <!--end: Form Wizard Step 5-->
-
-                        <!--begin: Form Actions -->
-
-
-
-                        <!--end: Form Actions -->
 
 
 
@@ -401,10 +375,21 @@ Apply New Artist Permit
                                 Previous
                             </div>
 
+                            <div class="btn btn-outline-brand btn-pill kt-font-bold kt-font-transform-u" id="addNew_btn"
+                                style="display:none;" onclick="startToFront()">
+                                Add New Artist
+                            </div>
+
+                            <div class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                id="submit_btn" style="display:none;">
+                                Apply
+                            </div>
+
                             <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
                                 data-ktwizard-type="action-next" id="next_btn">
                                 Next Step
                             </div>
+
                         </div>
 
                     </div>
@@ -424,7 +409,6 @@ Apply New Artist Permit
 <div id="kt_scrolltop" class="kt-scrolltop">
     <i class="fa fa-arrow-up"></i>
 </div>
-
 <!-- end::Scrolltop -->
 
 
@@ -435,46 +419,199 @@ Apply New Artist Permit
 @section('script')
 
 <script>
+    var fileUploadFns = [];
+    var artistDetails = new Object();
+    var documentDetails = new Object();
+
     $(document).ready(function(){
-        let validationResult = false;
-        var validator;
+
+
+        localStorage.clear();
+        // upload file
+        for(var i = 1; i <= $('#requirements_count').val(); i++)
+        {
+            fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{route('company.upload_file')}}",
+                method: "POST",
+                allowedTypes: "jpeg,jpg,png,pdf",
+                fileName: "doc_file_"+i,
+                multiple: false,
+                maxFileCount:1,
+                showDelete: true,
+                formData: {id: i, reqName: $('#req_name_'+i).val() , artistNo: $('#artist_number').val()},
+            });
+            $('#fileuploader_'+i+' div').attr('id', 'ajax-upload_'+i);
+            $('#fileuploader_'+i+' + div').attr('id', 'ajax-file-upload_'+i);
+        }
+
+
+        $('.reqName').tooltip();
+        //clear the temp
+        $.ajax({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: "GET",
+            url:"{{route('clear_the_temp')}}"
+        });
     });
 
-    $('#submit_btn').click(function(){
-        $('#doc_type_1').prop('required', true);
-        $('#doc_file_1').prop('required', true);
-    })
 
     $('#next_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
-        $('#prev_btn').css('display', 'block');
+        $('#prev_btn').css('display', 'block'); // to make the prev button display
+        // checking the next page is permit details
        if(wizard.currentStep == 2){
-           if (validator.form())
-           {
-                $('#submit_btn').css('display', 'block');
-                $('#next_btn').css('display','none');
-           }
-           else{
-                wizard.on("beforeNext", function(wizardObj) {
-                    if (validator.form() !== true) {
-                        wizardObj.stop(); // don't go to the next step
-                    }
-                });
-           }
-       }else{
+           stopNext(permitValidator); // validating the permit details page
+           // storing the values of permit details
+           if(permitValidator.form())
+            {
+                var permitDetails = {
+                    fromDate: $('#permit_from').val(),
+                    toDate: $('#permit_to').val(),
+                    workLocation: $('#work_loc').val()
+                }
+                // passing the values to local storage
+                localStorage.setItem('permitDetails', JSON.stringify(permitDetails));
+            }
+       }
+       // checking the next page is artist details
+       if(wizard.currentStep == 3)
+       {
+            stopNext(detailsValidator); // validating the artist details page
+            // object of array storing the artist details
+            var artist_id = $('#artist_number').val() ;
+            if(detailsValidator.form())
+            {
+                $('#submit_btn').css('display', 'block'); // display the submit button
+                $('#next_btn').css('display', 'none'); // hide the next button
+                $('#addNew_btn').css('display', 'block'); // display the add new artist button
+                artistDetails[artist_id] = {
+                    nameEn: $('#name_en').val(),
+                    nameAr:  $('#name_ar').val(),
+                    nationality: $('#nationality').val(),
+                    profession: $('#profession').val(),
+                    passport: $('#passport').val(),
+                    uidNumber: $('#uid_number').val(),
+                    dob: $('#dob').val(),
+                    telephone: $('#telephone').val(),
+                    mobile: $('#mobile').val(),
+                    email: $('#email').val(),
+                }
+
+                localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
+            }
+        }
+    });
+
+
+
+    const docValidation = () => {
+        var artist_number = $('#artist_number').val();
+        var hasFile = true;
+        var hasFileArray = [];
+        documentDetails[artist_number] = {};
+        for(var i = 1; i <= $('#requirements_count').val(); i++)
+        {
+            if($('#ajax-file-upload_'+i).contents().length == 0) {
+                hasFileArray[i] = false;
+                $("#ajax-upload_"+i).css('border', '2px dotted red');
+            }
+            else{
+                hasFileArray[i] = true;
+                $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
+            }
+            documentDetails[artist_number][i] = {
+                issue_date :   $('#doc_issue_date_'+i).val(),
+                exp_date : $('#doc_issue_date_'+i).val()
+            }
+        }
+
+        if(hasFileArray.includes(false)){
+            hasFile = false;
+        } else {
+            hasFile = true;
+        }
+
+        localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
+        return hasFile ;
+    }
+
+    $('#submit_btn').click((e) => {
+
+        var hasFile = docValidation();
+
+        if(documentsValidator.form() && hasFile){
+
+        var pd = localStorage.getItem('permitDetails');
+        var ad = localStorage.getItem('artistDetails');
+        var dd = localStorage.getItem('documentDetails');
+
+        $.ajaxSetup({
+			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
+		});
+        $.ajax({
+                url:"{{route('company.apply_artist_permit')}}",
+                type: "POST",
+                // processData:false,
+                // data: { permitDetails: pd},
+                data: { permitD: pd, artistD: ad , documentD: dd},
+                success: function(result){
+                    // console.log(result)
+                    localStorage.clear();
+                    window.location.href="/company/artist_permits";
+                }
+            });
+        }
+
+    })
+
+
+    const startToFront = () => {
+        var hasFile = docValidation();
+        if(documentsValidator.form() && hasFile)
+        {
+            for(var i = 1; i <= $('#requirements_count').val(); i++)
+            {
+                fileUploadFns[i].reset();
+            }
+            $('#artist_details')[0].reset();
+            $('#documents_required')[0].reset();
             $('#submit_btn').css('display', 'none');
             $('#next_btn').css('display', 'block');
-       }
-    });
+            $('#addNew_btn').css('display', 'none');
+
+            var old_artist_id = $('#artist_number').val();
+            var new_artist_id = parseInt(old_artist_id) + 1 ;
+            $('#artist_number').val(new_artist_id);
+
+            wizard = new KTWizard("kt_wizard_v3");
+            wizard.goTo(3);
+        }
+    }
+
+    const stopNext = (validator_name) => {
+        wizard.on("beforeNext", function(wizardObj) {
+            if (validator_name.form() !== true) {
+                wizardObj.stop(); // don't go to the next step
+            }
+        });
+    }
 
     $('#prev_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
        if(wizard.currentStep == 2){
             $('#prev_btn').css('display', 'none');
-       }else{
+       }
+       else{
             $('#prev_btn').css('display', 'block');
             $('#next_btn').css('display', 'block');
        }
+       $('#addNew_btn').css('display', 'none');
+       $('#submit_btn').css('display', 'none');
     });
 
 
@@ -493,20 +630,22 @@ Apply New Artist Permit
         }
     }
 
-    const add_new_row = () => {
-        let num = $('.doc_row').siblings().length;
-        let next_num = num + 2 ;
-       $('#document_row').append('<div class="row" id="row_'+next_num+'"><div class="form-group col-3"> <select type="text" class="form-control" name="doc_type[]" id="doc_type_'+next_num+'" onchange="isExpiry('+next_num+')" required> <option value="">Select Document Type</option> <option value="passport">Passport</option> <option value="visa">Visa</option> <option value="photograph">Photograph</option> <option value="medical">Medical Certificate</option> </select> </div> <div class="form-group col-4">  <input type="file" class="form-control" name="doc_file[]" id="doc_file_'+next_num+'" placeholder="" required> </div>   <div class="form-group col-2"> <input type="text" class="form-control date-picker" name="doc_issue_date[]" id="doc_issue_date_'+next_num+'" placeholder="Issue Date" required/> </div><div class="form-group col-2"><input type="text" class="form-control date-picker" name="doc_exp_date[]" id="doc_exp_date_'+next_num+'" placeholder="Expiry Date"> </div><i class="fa fa-trash " onclick="del_row('+next_num+')" style="color:red;margin:10px auto;"></i></div>');
-       $('.date-picker').datepicker({
-        format: 'mm/dd/yyyy',
-    });
-
-    }
 
     $('.date-picker').datepicker({
         format: 'dd-mm-yyyy',
-    });
+        autoclose: true
+    })
 
+    $('#permit_from').on('changeDate', function(ev) {
+        if($('#permit_from').valid()){
+            $('#permit_from').removeClass('invalid').addClass('success');
+        }
+    });
+    $('#dob').on('changeDate', function(ev) {
+        if($('#dob').valid()){
+            $('#dob').removeClass('invalid').addClass('success');
+        }
+    });
     const del_row = (id) => {
         $('#row_'+id).remove();
     }
@@ -525,13 +664,38 @@ Apply New Artist Permit
             return    (dd[1]?dd:"0"+dd[0]) + "-" + (mm[1]?mm:"0"+mm[0])  +"-"  + yyyy;
         }
         $('#permit_to').val(newDate.toInputFormat());
+        $('#permit_to').valid();
     }
 
-    validator =  $('#artist_permit_form').validate({
+    var permitValidator = $('#permit_details').validate({
+        rules: {
+            permit_from: {
+                required: true,
+            },
+            permit_to: {
+                required: true,
+            },
+            work_loc: {
+                required: true
+            }
+        },
+        messages: {
+            permit_from: {
+                required: 'This field is required',
+            },
+            permit_to: {
+                required: 'This field is required',
+            },
+            work_loc: {
+                required: 'This field is required'
+            }
+        }
+
+    });
+
+
+    var detailsValidator =  $('#artist_details').validate({
             rules: {
-                permit_type: 'required',
-                permit_from: 'required',
-                permit_to: 'required',
                 name_en: 'required',
                 nationality: 'required',
                 passport: 'required',
@@ -550,18 +714,17 @@ Apply New Artist Permit
                     required: true,
                     email: true,
                 },
-                work_loc: 'required'
             },
             messages: {
-                permit_type: 'This field is required',
-                permit_from: 'This field is required',
-                permit_to: 'This field is required',
                 name_en: 'This field is required',
                 nationality: 'This field is required',
                 passport: 'This field is required',
                 uid_number: 'This field is required',
                 dob: 'This field is required',
-                telephone: 'This field is required & should be Number',
+                telephone: {
+                    required: 'This field is required',
+                    number: 'Must be a Number'
+                },
                 profession: 'This field is required',
                 mobile: {
                     number: 'Please enter number',
@@ -571,23 +734,70 @@ Apply New Artist Permit
                     required: 'This field is required',
                     email: 'Enter a valid email',
                 },
-                work_loc: 'This field is required'
             },
-            invalidHandler: function(event, validator) {
-                KTUtil.scrollTop();
+            // invalidHandler: function(event, validator){
+            //     KTUtil.scrollTop();
+            //     Swal.fire({
+            //         title: "",
+            //         text:
+            //             "Please fill all the mandatory fields",
+            //         type: "error",
+            //         confirmButtonClass: "btn btn-secondary"
+            //     });
 
-                Swal.fire({
-                    title: "",
-                    text:
-                        "Please fill all the mandatory fields",
-                    type: "error",
-                    confirmButtonClass: "btn btn-secondary"
-                });
-            },
-            // submitHandler: function(form) {
+            // },
 
-            // }
         });
+
+        var docRules = {};
+        var docMessages = {};
+
+        for(var i = 1; i < $('#requirements_count').val(); i++)
+        {
+            docRules['doc_issue_date_'+i] = 'required';
+            docRules['doc_exp_date_'+i] = 'required';
+            docMessages['doc_issue_date_'+i] = 'This field is required';
+            docMessages['doc_exp_date_'+i] = 'This field is required';
+        }
+
+
+
+        var documentsValidator = $('#documents_required').validate({
+            rules: docRules,
+            messages: docMessages
+        })
+
+
+        var KTAppOptions = {
+        "colors": {
+            "state": {
+                "brand": "#5d78ff",
+                "dark": "#282a3c",
+                "light": "#ffffff",
+                "primary": "#5867dd",
+                "success": "#34bfa3",
+                "info": "#36a3f7",
+                "warning": "#ffb822",
+                "danger": "#fd3995"
+            },
+            "base": {
+                "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
+                "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
+            }
+        }
+    };
+
+
+        // var documentValidator = $('#').validate({
+        //     rules: {
+        //         doc_issue_date_1: 'required'
+        //     },
+        //     messages:{
+
+        //     }
+        // });
+
+
 
 
 
@@ -646,31 +856,25 @@ Apply New Artist Permit
     // });
 
 
-    var KTAppOptions = {
-        "colors": {
-            "state": {
-                "brand": "#5d78ff",
-                "dark": "#282a3c",
-                "light": "#ffffff",
-                "primary": "#5867dd",
-                "success": "#34bfa3",
-                "info": "#36a3f7",
-                "warning": "#ffb822",
-                "danger": "#fd3995"
-            },
-            "base": {
-                "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
-                "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
-            }
-        }
-    };
+
+
+    // const add_new_row = () => {
+    //     let num = $('.doc_row').siblings().length;
+    //     let next_num = num + 2 ;
+    //    $('#document_row').append('<div class="row" id="row_'+next_num+'"><div class="form-group col-3"> <select type="text" class="form-control" name="doc_type[]" id="doc_type_'+next_num+'" onchange="isExpiry('+next_num+')" required> <option value="">Select Document Type</option> <option value="passport">Passport</option> <option value="visa">Visa</option> <option value="photograph">Photograph</option> <option value="medical">Medical Certificate</option> </select> </div> <div class="form-group col-4"> <div class="custom-file"> <input type="file" class="custom-file-input"  name="doc_file[]" id="doc_file_'+next_num+'"> <label class="custom-file-label" for="customFile">Choose file</label> </div> </div>   <div class="form-group col-2"> <input type="text" class="form-control date-picker" name="doc_issue_date[]" id="doc_issue_date_'+next_num+'" placeholder="Issue Date" required/> </div><div class="form-group col-2"><input type="text" class="form-control date-picker" name="doc_exp_date[]" id="doc_exp_date_'+next_num+'" placeholder="Expiry Date"> </div><i class="fa fa-trash " onclick="del_row('+next_num+')" style="color:red;margin:10px auto;"></i></div>');
+    //    $('.date-picker').datepicker({
+    //         format: 'mm/dd/yyyy',
+    //     });
+
+    // }
 
 
 
 </script>
 
-
+<link href="http://hayageek.github.io/jQuery-Upload-File/4.0.11/uploadfile.css" rel="stylesheet">
 <script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="http://hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js"></script>
 
 @endsection
