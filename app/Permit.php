@@ -13,7 +13,7 @@ class Permit extends Model
     protected $primaryKey = 'permit_id';
     protected $fillable = [
         'permit_number', 'issued_date', 'expired_date', 'work_location', 'permit_status',
-        'company_id', 'created_by', 'updated_by', 'deleted_by'
+        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason'
     ];
 
     public function artistPermit()

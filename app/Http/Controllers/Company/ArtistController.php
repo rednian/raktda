@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Storage;
-use App\Profession;
 use PragmaRX\Countries\Package\Countries;
 use Carbon\Carbon;
 use App\Artist;
@@ -17,6 +16,7 @@ use Excel;
 use Yajra\Datatables\Datatables;
 use App\Requirement;
 use App\Company;
+use App\PermitType;
 
 class ArtistController extends Controller
 {
@@ -24,7 +24,6 @@ class ArtistController extends Controller
 
     public function index()
     {
-
         return view('permits.artist.index');
     }
 
@@ -34,18 +33,10 @@ class ArtistController extends Controller
     public function applied_list()
     {
 
-        $permits = Permit::latest();
-        $permits = $permits->with('artist', 'artistPermit')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', '!=', 'expired')->get();
+        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', '!=', 'expired')->get();
         //->has('artistPermitDocument')
 
-
-        return Datatables::of($permits)->editColumn('created_at', function ($permit) {
-            if ($permit->created_at) {
-                return $permit->created_at->format('d-m-Y');
-            } else {
-                return '';
-            }
-        })->editColumn('issued_date', function ($permits) {
+        return Datatables::of($permits)->editColumn('issued_date', function ($permits) {
             if ($permits->issued_date) {
                 return Carbon::parse($permits->issued_date)->format('d-m-Y');
             } else {
@@ -56,6 +47,12 @@ class ArtistController extends Controller
                 return Carbon::parse($permits->expired_date)->format('d-m-Y');
             } else {
                 return 'none';
+            }
+        })->editColumn('created_at', function ($permit) {
+            if ($permit->created_at) {
+                return $permit->created_at->format('d-m-Y');
+            } else {
+                return '';
             }
         })->addColumn('action', function ($permit) {
             if ($permit->permit_status == 'approved') {
@@ -76,8 +73,7 @@ class ArtistController extends Controller
 
     public function existing_list()
     {
-        $permits = Permit::latest();
-        $permits = $permits->with('artist', 'artistPermit')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', 'expired')->get();
+        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', 'expired')->get();
 
 
         return Datatables::of($permits)->editColumn('created_at', function ($permits) {
@@ -180,7 +176,7 @@ class ArtistController extends Controller
     public function show_cancelled(Request $request)
     {
         $id = $request->id;
-        $artists = ArtistPermit::where('artist_permit_id', $id)->get();
+        $artists = Permit::where('permit_id', $id)->get();
         return $artists;
     }
 
@@ -192,7 +188,7 @@ class ArtistController extends Controller
             'cancel_reason' => 'required'
         ]);
         $id = $request->input('permit_id');
-        ArtistPermit::where('artist_permit_id', $id)->update(['cancel_reason' => $request->input('cancel_reason'), 'permit_status' => 'cancelled']);
+        Permit::where('permit_id', $id)->update(['cancel_reason' => $request->input('cancel_reason'), 'permit_status' => 'cancelled']);
         return redirect('company/artist_permits');
     }
 
@@ -202,7 +198,7 @@ class ArtistController extends Controller
     {
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
         $data_bundle['countries'] = Countries::all()->pluck('name.common')->sort();
-
+        $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
         return view('permits.artist.create', $data_bundle);
     }
 
@@ -278,7 +274,7 @@ class ArtistController extends Controller
             $company_name = str_replace(' ', '_', $company_array->company_name);
 
             for ($j = 1; $j <= $total; $j++) {
-                $newPath = $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $j;
+                $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $j;
                 if (session($i . '_doc_file_' . $j)) {
                     Storage::move(session($i . '_doc_file_' . $j), $newPath);
                 }
@@ -316,9 +312,10 @@ class ArtistController extends Controller
 
     public function makepayment($id)
     {
-        $data_bundle['profession'] = Profession::all();
+        // $data_bundle['profession'] = Profession::all();
         $data_bundle['countries'] = Countries::all()->pluck('name.common')->sort();
-        $data_bundle['artist_details'] = ArtistPermit::with('artist',  'artist.artistdocument')->where('artist_permit_id', $id)->get();
+        $artist_id = ArtistPermit::where('permit_id', $id)->value('artist_id');
+        $data_bundle['artist_details'] = Artist::with('artistPermit',  'permit', 'artistPermit.artistPermitDocument')->where('artist_id', $artist_id)->get();
         return view('permits.artist.payment', $data_bundle);
     }
 

@@ -26,3 +26,9 @@
 .kt-form__section.kt-form__section--first .kt-wizard-v3__form {
     margin-top: 1em !important;
 }
+
+.detailPopupTable.table th,
+.detailPopupTable.table td {
+    padding: 0rem;
+    border-top: none;
+}

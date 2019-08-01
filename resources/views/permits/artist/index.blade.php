@@ -17,7 +17,7 @@ Artists
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
-                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                    <i class="kt-font-brand flaticon2-copy"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
                     New Artist Permit Requests
@@ -96,7 +96,7 @@ Artists
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
-                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                    <i class="kt-font-brand flaticon2-paper"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
                     Existing Artist Requests
@@ -166,7 +166,7 @@ Artists
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -188,17 +188,19 @@ Artists
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form action="{{route('company.cancel_permit')}}" method="post">
+                <form id="cancel_permit_form" action="{{route('company.cancel_permit')}}" method="post" novalidate>
+                    <div class="modal-body">
                         {{csrf_field()}}
-                        <label for="">Please specify the reason</label>
-                        <textarea name="cancel_reason" class="form-control mb-3" id="cancel_reason" rows="3">
-
-                        </textarea>
+                        <label for="cancel_reason" class="form-control-label">Reason :</label>
+                        <textarea name="cancel_reason" placeholder="Enter the reason here..." style="resize:none;"
+                            class="form-control" id="cancel_reason" rows="3"></textarea>
                         <input type="hidden" id="cancel_permit_id" name="permit_id">
-                        <input type="submit" class="btn btn-danger pt-2 d-inline float-right" value="Submit">
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-sm btn-danger" value="Cancel">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -211,7 +213,7 @@ Artists
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cancelled Permit</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -240,9 +242,9 @@ Artists
             serverSide: true,
             searching: true,
             pageLength: 5,
+            order:[[4,'desc']],
             lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
             ajax:'{{route("company.json_applied_artists_list")}}',
-            order: [[ 4, "desc" ]],
             columns: [
                 { data: 'permit_number', name: 'permit_number' },
                 { data: 'issued_date', name: 'issue_date' },
@@ -262,9 +264,10 @@ Artists
             serverSide: true,
             searching: true,
             pageLength: 5,
+            deferRender: true,
             lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+            order:[[4,'desc']],
             ajax:'{{route("company.json_existing_artists_list")}}',
-            order: [[ 4, "desc" ]],
             columns: [
                 { data: 'permit_number', name: 'permit_number' },
                 { data: 'issued_date', name: 'issued_date' },
@@ -299,6 +302,15 @@ Artists
         });
     }
 
+    $('#cancel_permit_form').validate({
+        rules: {
+            cancel_reason: 'required'
+        },
+        message: {
+            cancel_reason: 'Please fill the field'
+        }
+    })
+
 
      async function show_details(id) {
 
@@ -310,13 +322,17 @@ Artists
             url: '{{route("company.fetch_artist_details")}}',
             data: {permit_id:id},
             success: function(data) {
+                $('#detail-permit').empty();
                if(data)
                {
-                   $('#detail-permit').append('<div class="accordion" id="accordionExample1">');
+                   $('#detail-permit').append('<div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">');
                    for(var i = 0;i < data.length; i++){
-                   $('#detail-permit').append('<div class="card"> <div class="card-header" id="heading'+i+'"> <div class="card-title" data-toggle="collapse" data-target="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne1">'+ data[i].artist.name+' - '+ data[i].artist.nationality+' - '+ data[i].artist.mobile_number+'</div> </div> <div id="collapseOne'+i+'" class="collapse show" aria-labelledby="heading'+i+'" data-parent="#accordionExample1"> <div class="card-body"> <table class="w-100 table table-striped"> <tr> <th>Email</th> <td >'+data[i].artist.email+'</td> <th>Profession</th> <td >'+data[i].profession+'</td>  </tr> <tr> <th>Passsport</th> <td >'+data[i].artist.passport_number+'</td> <th>UID Number</th> <td >'+data[i].artist.uid_number+'</td> </tr> <tr> <th>DOB</th> <td >'+data[i].artist.birthdate+'</td> <th>Phone Number</th> <td >'+data[i].artist.phone_number+'</td> </tr> </table> </div> </div> </div>');
+                   $('#detail-permit').append('<div class="card"> <div class="card-header" id="heading'+i+'"> <div class="card-title" data-toggle="collapse" data-target="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne1"> <i class="flaticon2-user"></i> <span class="mainTitle">'+ data[i].artist.name+' - '+ data[i].artist.nationality+' - '+ data[i].artist.mobile_number+'</span></div> </div> <div id="collapseOne'+i+'" class="collapse" aria-labelledby="heading'+i+'" data-parent="#accordionExample6"> <div class="card-body"> <table class="w-100 detailPopupTable table"> <tr> <th>Email</th> <td>'+data[i].artist.email+'</td> <th>Profession</th> <td >'+data[i].profession+'</td>  </tr> <tr> <th>Passsport</th> <td >'+data[i].artist.passport_number+'</td> <th>UID Number</th> <td >'+data[i].artist.uid_number+'</td> </tr> <tr> <th>DOB</th> <td >'+data[i].artist.birthdate+'</td> <th>Phone Number</th> <td >'+data[i].artist.phone_number+'</td></tr> </table> </div> </div> </div><br/>');
+                   (i == 0) ? $('#collapseOne'+i).addClass('show') : '';
                    }
                    $('#detail-permit').append('</div>');
+                   $('.mainTitle').css('text-transform', 'capitalize');
+
                }
             }
         });

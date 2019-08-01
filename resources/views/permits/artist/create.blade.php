@@ -260,8 +260,13 @@ Apply New Artist Permit
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Profession</label>
-                                                <input type="text" class="form-control " name="profession"
-                                                    id="profession" placeholder="Profession" />
+                                                <select class="form-control " name="profession" id="profession"
+                                                    placeholder="Profession">
+                                                    @foreach ($permitTypes as $pt)
+                                                    <option value=" ">Select</option>
+                                                    <option value="{{$pt->permit_type_id}}">{{$pt->name_en}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Passport Number</label>

@@ -15,4 +15,9 @@ class ArtistPermitDocument extends Model
         'issued_date', 'expired_date', 'status', 'path', 'document_name',
         'artist_permit_id', 'created_by', 'updated_by', 'deleled_by'
     ];
+
+    public function artistPermit()
+    {
+        return $this->belongsTo(ArtistPermit::class, 'artist_permit_id', 'artist_permit_id');
+    }
 }
