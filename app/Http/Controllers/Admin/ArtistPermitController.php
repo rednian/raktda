@@ -11,7 +11,6 @@ use App\Artist;
 use App\Permit;
 use App\Company;
 use App\ArtistPermit;
-use App\ArtistChecklist;
 use App\ArtistPermitComment;
 use App\ArtistPermitRivision;
 use Illuminate\Http\Request;
@@ -61,7 +60,6 @@ class ArtistPermitController extends Controller
             'page_title' => 'Check Artist Details',
             'breadcrumb'=> ['admin.artist_permit.checkApplication', $permit],
             'artist_permit'=> $artistpermit,
-            'checklist' =>ArtistChecklist::where('artist_permit_id', $artistpermit->artist_permit_id)->first()
         ]);
     }
 

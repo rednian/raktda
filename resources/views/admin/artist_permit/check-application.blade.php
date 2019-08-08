@@ -675,7 +675,7 @@ foreach (Auth::user()->roles as $role) {
         // Private functions
         var initWizard = function () {
             // Initialize form wizard
-            // wizard = new KTWizard('artist-wizard', { startStep: '{{ empty($checklist) ? 1 : 2 }}'});
+          
             wizard = new KTWizard('artist-wizard', { startStep: 3});
 
 
