@@ -24,9 +24,9 @@ class ArtistPermit extends Model implements Auditable
         return $this->hasOne(ArtistPermitPhoto::class, 'artist_permit_id');
     }
 
-    public function artistPermitRivision()
+    public function artistPermitRevision()
     {
-         return $this->hasMany(ArtistPermitRivision::class, 'artist_permit_id');
+         return $this->hasMany(ArtistPermitRevision::class, 'artist_permit_id');
     }
 
     public function comment()

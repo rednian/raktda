@@ -12,7 +12,7 @@ use App\Permit;
 use App\Company;
 use App\ArtistPermit;
 use App\ArtistPermitComment;
-use App\ArtistPermitRivision;
+use App\ArtistPermitRevision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
@@ -93,19 +93,10 @@ class ArtistPermitController extends Controller
                                 })
                                 ->addColumn('ischeck', function($artist_permit){
 
-                                    $rivision_exist = $artist_permit->whereHas('artistPermitRivision', function($q) use ($artist_permit){
+                                    $revision_exist = $artist_permit->whereHas('artistPermitRevision', function($q) use ($artist_permit){
                                         $q->where('artist_permit_id', $artist_permit->artist_permit_id);
                                     })->exists();
-
                                     $is_check = 'empty';
-
-                                    // if($rivision_exist){
-                                    //      foreach ($artist_permit->artistPermitRivision as $checklist) {
-                                    //          if($checklist->ischeck == 0){ $is_check = 'incomplete'; }
-                                    //          return $is_check;
-                                    //      }
-                                    // }
-
                                 })
                                 ->rawColumns(['status_label'])
                                 ->make(true);
