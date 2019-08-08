@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use Illuminate\Http\Request;
+use App\Procedure;
 use App\Http\Controllers\Controller;
 use Storage;
 use PragmaRX\Countries\Package\Countries;
@@ -254,6 +255,7 @@ class ArtistController extends Controller
                 'created_by' => Auth::user()->user_id,
                 'created_at' => Carbon::now()->toDateTimeString(),
             ]);
+
 
             $artistPermit = ArtistPermit::create([
                 'artist_permit_status' => 'active',

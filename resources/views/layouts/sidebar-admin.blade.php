@@ -81,8 +81,8 @@
                 <div class="kt-menu__submenu ">
                     <span class="kt-menu__arrow"></span>
                     <ul class="kt-menu__subnav">
-                        <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('permit/artist') ? 'kt-menu__item--active': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-                            <a href='{{ route('artist.index') }}' class="kt-menu__link kt-menu__toggle">
+                        <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('permit/artist_permit*') ? 'kt-menu__item--active': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <a href='{{ route('admin.artist_permit.index') }}' class="kt-menu__link kt-menu__toggle">
                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                 <span class="kt-menu__link-text">Artists Permit</span>
                             </a>
@@ -117,61 +117,66 @@
                                     <span class="kt-menu__link-text">Settings</span>
                                 </span>
                             </li>
-                            <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('settings/artist*') ? 'kt-menu__item--open': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('settings/permit_type*') ? 'kt-menu__item--open': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                         <span></span>
                                     </i>
-                                    <span class="kt-menu__link-text">Artist Type Permit</span>
+                                    <span class="kt-menu__link-text">Permit Type</span>
                                     <i class="kt-menu__ver-arrow la la-angle-right"></i>
                                 </a>
                                 <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                                     <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item {{ Request::is('settings/artist/artist_type/create') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
-                                            <a href="{{ route('artist_type.create') }}" class="kt-menu__link ">
+                                        <li class="kt-menu__item {{ Request::is('settings/permit_type/create') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('permit_type.create') }}" class="kt-menu__link ">
                                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                                     <span></span>
                                                 </i>
-                                                <span class="kt-menu__link-text">New Artist Type Permit</span>
+                                                <span class="kt-menu__link-text">New Permit Type</span>
                                             </a>
                                         </li>
-                                        <li class="kt-menu__item {{ Request::is('settings/artist/artist_type') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
-                                            <a href="{{ route('artist_type.index') }}" class="kt-menu__link ">
+                                        <li class="kt-menu__item {{ Request::is('settings/permit_type') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('permit_type.index') }}" class="kt-menu__link ">
                                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
-                                                <span class="kt-menu__link-text">Artist Type Permit List</span>
+                                                <span class="kt-menu__link-text">Permit Type List</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
-                            <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('settings/event*') ? 'kt-menu__item--open': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                            
+{{-- 
+                            <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('settings/requirement*') ? 'kt-menu__item--open': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                         <span></span>
                                     </i>
-                                    <span class="kt-menu__link-text">Event Permit Type</span>
+                                    <span class="kt-menu__link-text">Permit Requirement</span>
                                     <i class="kt-menu__ver-arrow la la-angle-right"></i>
                                 </a>
-                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                                <div class="kt-menu__submenu ">
+                                    <span class="kt-menu__arrow"></span>
                                     <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item {{ Request::is('settings/event/event_type/create') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
-                                            <a href="{{ route('event_type.create') }}" class="kt-menu__link ">
+                                        <li class="kt-menu__item {{ Request::is('settings/requirement/create') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('requirement.create') }}" class="kt-menu__link ">
                                                 <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                                     <span></span>
                                                 </i>
-                                                <span class="kt-menu__link-text">New Event Permit Type</span>
+                                                <span class="kt-menu__link-text">New Permit Requirement</span>
                                             </a>
                                         </li>
-                                        <li class="kt-menu__item {{ Request::is('settings/event/event_type') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
-                                            <a href="{{ route('event_type.index') }}" class="kt-menu__link ">
-                                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
-                                                <span class="kt-menu__link-text">Event Permit Type</span>
+                                        <li class="kt-menu__item {{ Request::is('settings/requirement') ? 'kt-menu__item--active': '' }}" aria-haspopup="true">
+                                            <a href="{{ route('requirement.index') }}" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="kt-menu__link-text">Permit Requirement List</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
-
+                            </li> --}}
+{{-- 
                             <li class="kt-menu__item  kt-menu__item--submenu {{ Request::is('settings/appovers*') ? 'kt-menu__item--open': '' }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                                 <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
@@ -201,7 +206,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>

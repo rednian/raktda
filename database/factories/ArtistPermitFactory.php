@@ -7,9 +7,9 @@ use Faker\Generator as Faker;
 
 $factory->define(ArtistPermit::class, function (Faker $faker) {
     return [
-        'permit_number'=>$faker->creditCardNumber,
-        'work_location'=>$faker->streetAddress,
-        'permit_status'=>'new',
-        'company_id'=>rand(62, 84),
+        'artist_permit_status'=> 'active',
+        'artist_id'=>rand(67, 126),
+        'permit_id'=>rand(151, 210),
+        'permit_type_id'=>rand(4, 6),
     ];
 });
