@@ -25,4 +25,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('uploadfile', 'Company\ArtistController@uploadDocuments')->name('company.upload_file');
     Route::post('deletefile', 'Company\ArtistController@deleteDocuments')->name('company.delete_file');
     Route::get('clear_the_temp', 'Company\ArtistController@clear_the_temp')->name('clear_the_temp');
+    Route::get('viewPermit/{id}', 'Company\ArtistController@viewPermit')->name('company.viewPermit');
+    Route::post('getArtistsInPermit', 'Company\ArtistController@getArtistsInPermit')->name('company.getArtistsInPermit');
+    Route::get('edit_artist/{id}', 'Company\ArtistController@edit_artist')->name('company.edit_artist');
+    Route::get('del_artist/{id}', 'Company\ArtistController@del_artist')->name('company.del_artist');
 });

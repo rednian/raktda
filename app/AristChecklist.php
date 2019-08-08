@@ -14,12 +14,11 @@ class AristChecklist extends Model
 
     public function comment()
     {
-        return $this->belongsTo(PermitComment::class:: 'permit_comment_id');
+        return $this->belongsTo(PermitComment::class, 'permit_comment_id');
     }
 
     public function artistPermit()
     {
         return $this->belongsTo(ArtistPermit::class, 'artist_permit_id');
     }
-
 }

@@ -32,6 +32,11 @@ class ArtistPermit extends Model implements Auditable
         return $this->hasMany(ArtistPermitDocument::class, 'artist_permit_id', 'artist_permit_id');
     }
 
+    public function permitType()
+    {
+        return $this->belongsTo(PermitType::class, 'profession', 'permit_type_id');
+    }
+
     public function scopeDataTable($query)
     {
         return $this->join('artist', 'artist.artist_id', '=', 'artist_permit.artist_id')

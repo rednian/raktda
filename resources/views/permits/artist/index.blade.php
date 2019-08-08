@@ -236,6 +236,7 @@ Artists
 @section('script')
 <script>
     $(document).ready(function(){
+
         var table1 = $('#applied-artists-table').DataTable({
             responsive: true,
             processing: false,
@@ -327,16 +328,21 @@ Artists
                {
                    $('#detail-permit').append('<div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">');
                    for(var i = 0;i < data.length; i++){
-                   $('#detail-permit').append('<div class="card"> <div class="card-header" id="heading'+i+'"> <div class="card-title" data-toggle="collapse" data-target="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne1"> <i class="flaticon2-user"></i> <span class="mainTitle">'+ data[i].artist.name+' - '+ data[i].artist.nationality+' - '+ data[i].artist.mobile_number+'</span></div> </div> <div id="collapseOne'+i+'" class="collapse" aria-labelledby="heading'+i+'" data-parent="#accordionExample6"> <div class="card-body"> <table class="w-100 detailPopupTable table"> <tr> <th>Email</th> <td>'+data[i].artist.email+'</td> <th>Profession</th> <td >'+data[i].profession+'</td>  </tr> <tr> <th>Passsport</th> <td >'+data[i].artist.passport_number+'</td> <th>UID Number</th> <td >'+data[i].artist.uid_number+'</td> </tr> <tr> <th>DOB</th> <td >'+data[i].artist.birthdate+'</td> <th>Phone Number</th> <td >'+data[i].artist.phone_number+'</td></tr> </table> </div> </div> </div><br/>');
+                   $('#detail-permit').append('<div class="card"> <div class="card-header" id="heading'+i+'"> <div class="card-title" data-toggle="collapse" data-target="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne1"> <i class="flaticon2-user"></i> <span class="mainTitle">'+ data[i].artist.name+' - '+ data[i].artist.nationality+' - '+ data[i].artist.mobile_number+'</span></div> </div> <div id="collapseOne'+i+'" class="collapse" aria-labelledby="heading'+i+'" data-parent="#accordionExample6"> <div class="card-body"> <table class="w-100 detailPopupTable table"> <tr> <th>Email</th> <td>'+data[i].artist.email+'</td> <th>Profession</th> <td >'+data[i].permit_type.name_en+'</td>  </tr> <tr> <th>Passsport</th> <td >'+data[i].artist.passport_number+'</td> <th>UID Number</th> <td >'+data[i].artist.uid_number+'</td> </tr> <tr> <th>DOB</th> <td >'+data[i].artist.birthdate+'</td> <th>Phone Number</th> <td >'+data[i].artist.phone_number+'</td></tr></table><table class="w-100 detailPopupTable table"> <thead><th>Doc Type</th><th>Issue Date</th><th>Expiry Date</th><th>Action</th></thead><tbody>'+data[i].artist_permit_document.map(showDocumentsFn)+'</tbody></table></div> </div> </div><br/>');
                    (i == 0) ? $('#collapseOne'+i).addClass('show') : '';
                    }
                    $('#detail-permit').append('</div>');
                    $('.mainTitle').css('text-transform', 'capitalize');
-
                }
             }
         });
     }
+
+    const showDocumentsFn = (doc) => {
+        var base_url = window.location.origin;
+        return '<tr><td>'+doc.document_name+'</td><td>'+doc.issued_date+'</td><td>'+doc.expired_date+'</td><td><a href="'+base_url+'/storage/'+doc.path+'" target="_blank">View</a></td></tr>';
+    }
+
 
     var KTAppOptions = {
         "colors": {

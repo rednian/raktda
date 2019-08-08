@@ -12,7 +12,7 @@ var KTWizard3 = (function() {
     var initWizard = function() {
         // Initialize form wizard
         wizard = new KTWizard("kt_wizard_v3", {
-            startStep: 1
+            startStep: 4
         });
 
         // Validation before going to next page

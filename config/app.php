@@ -161,13 +161,11 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
         Zizaco\Entrust\EntrustServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
@@ -175,6 +173,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Hoyvoy\CrossDatabase\CrossDatabaseServiceProvider::class,
         'A6digital\Image\DefaultProfileImageServiceProvider',
+        Intervention\Image\ImageServiceProvider::class
     ],
     /*
     |--------------------------------------------------------------------------
@@ -224,12 +223,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-
+        'Image' => Intervention\Image\Facades\Image::class
 
     ],
 

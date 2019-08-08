@@ -129,9 +129,10 @@ Make Payment
                                         {{-- <div class="kt-wizard-v3__review-title">
                                              Permit
                                         </div> --}}
-                                        @foreach ($artist_details as $art)
-                                        {{-- {{dd($art)}} --}}
 
+                                        @foreach ($permit_details as $artist)
+
+                                        {{-- {{dd($artist->artist)}} --}}
                                         <div class="kt-wizard-v3__review-content">
 
 
@@ -143,36 +144,40 @@ Make Payment
                                                             @php
                                                             $fileNameArray = [];
                                                             @endphp
-                                                            @foreach($artist_details[0]->artistPermit[0]->artistPermitDocument
+                                                            @foreach($artist->artistPermitDocument
                                                             as
                                                             $doc)
-                                                            {{$fileNameArray.push($doc->document_name))}}
+                                                            @php
+                                                            array_push($fileNameArray, $doc->document_name);
+                                                            @endphp
                                                             @endforeach
+
                                                             @if(in_array("artist photo",$fileNameArray))
                                                             <img class="kt-widget7__img" src="{{$doc->path}}"
-                                                                style="height:150px;width:160px;" alt="">
+                                                                style="height:150px;width:160px;" alt="" />
                                                             @else
-                                                            <img src="{{asset('img/default.jpg')}}" alt="">
+                                                            <img src="{{asset('img/default.jpg')}}" alt="" />
                                                             @endif
                                                         </div>
                                                         <div class="kt-widget5__section">
                                                             <a href="#" class="kt-widget5__title">
-                                                                {{$art->name}}
+                                                                {{$artist->artist['name']}}
                                                             </a>
                                                             <p class="kt-widget5__desc">
-                                                                {{$art->email}}<br />
-                                                                {{$art->mobile_number}}
+                                                                {{$artist->artist['email']}}<br />
+                                                                {{$artist->artist['mobile_number']}}
                                                             </p>
-                                                            <div>
-                                                                @foreach($artist_details[0]->artistPermit[0]->artistPermitDocument
+                                                            <div class="d-flex flex-row">
+                                                                @foreach($artist->artistPermitDocument
                                                                 as
                                                                 $doc)
-                                                                <div>
-                                                                    <label for="">{{$doc->document_name}}</label>
-                                                                    <a href="{{url('storage/'.$doc->path)}}"
-                                                                        target="_blank"><button
-                                                                            class="btn btn-sm btn-info">View</button></a>
-                                                                </div>
+                                                                @if($doc->document_name != 'artist photo')
+                                                                <a href="{{asset('storage/'.$doc->path)}}"
+                                                                    target="_blank"><button
+                                                                        class="btn btn-sm btn-info mr-5">{{$doc->document_name}}</button>
+                                                                </a>
+                                                                @endif
+                                                                {{--dd(storage_path())}} --}}
                                                                 @endforeach
                                                             </div>
                                                             <div class="kt-widget5__info">
@@ -181,66 +186,60 @@ Make Payment
                                                                         <tr>
                                                                             <td> <span>Nationality:</span>
                                                                                 <span
-                                                                                    class="kt-font-info">{{$art->nationality}}</span>
+                                                                                    class="kt-font-info">{{$artist->artist['nationality']}}</span>
                                                                             </td>
                                                                             <td>
                                                                                 <span>Passport Number:</span>
                                                                                 <span
-                                                                                    class="kt-font-info">{{$art->passport_number}}</span>
+                                                                                    class="kt-font-info">{{$artist->artist['passport_number']}}</span>
                                                                             </td>
                                                                             <td>
                                                                                 <span>UID Number:</span>
                                                                                 <span
-                                                                                    class="kt-font-info">{{$art->uid_number}}</span>
+                                                                                    class="kt-font-info">{{$artist->artist['uid_number']}}</span>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>
                                                                                 <span>D-O-B:</span>
                                                                                 <span
-                                                                                    class="kt-font-info">{{$art->birthdate}}</span>
+                                                                                    class="kt-font-info">{{$artist->artist['birthdate']}}</span>
                                                                             </td>
                                                                             <td>
                                                                                 <span>Phone Number:</span>
                                                                                 <span
-                                                                                    class="kt-font-info">{{$art->phone_number}}</span>
+                                                                                    class="kt-font-info">{{$artist->artist['phone_number']}}</span>
                                                                             </td>
                                                                             <td>
                                                                                 <span>Applied On:</span>
                                                                                 <span
-                                                                                    class="kt-font-info">{{$art->created_at}}</span>
+                                                                                    class="kt-font-info">{{$artist->artist['created_at']}}</span>
+                                                                            </td>
+                                                                            <td>
+                                                                                <span>Profession:</span>
+                                                                                <span
+                                                                                    class="kt-font-info">{{$artist->permitType['name_en']}}</span>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
 
 
-
-
-
-                                                                <span>Profession:</span>
-                                                                {{-- <span class="kt-font-info">{{$art->profession}}</span>
-                                                                --}}
-
                                                                 <input type="hidden" name="p_artist_id"
-                                                                    id="{{$art->artist_id}}">
+                                                                    id="{{$artist->artist['artist_id']}}">
                                                                 <input type="hidden" name="p_artist_permit_id"
-                                                                    id="{{$art->pivot['permit_id']}}">
+                                                                    id="{{$artist->pivot['permit_id']}}">
                                                             </div>
                                                             <div class="kt-wizard-v3__review-content kt-heading">
                                                                 <label for="">Permit Fee:</label>
-                                                                {{-- <span><small>AED
-                                                                        {{$artist_details[0]->artist['artisttype']->amount}}</small></span>
-                                                                --}}
+                                                                <span><small>AED
+                                                                        {{$artist->permitType['amount']}}</small></span>
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
-
-
-
 
                                         </div>
 

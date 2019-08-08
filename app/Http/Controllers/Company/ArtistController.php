@@ -17,6 +17,8 @@ use Yajra\Datatables\Datatables;
 use App\Requirement;
 use App\Company;
 use App\PermitType;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\File;
 
 class ArtistController extends Controller
 {
@@ -33,7 +35,7 @@ class ArtistController extends Controller
     public function applied_list()
     {
 
-        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', '!=', 'expired')->get();
+        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', '!=', 'expired')->get();
         //->has('artistPermitDocument')
 
         return Datatables::of($permits)->editColumn('issued_date', function ($permits) {
@@ -48,17 +50,11 @@ class ArtistController extends Controller
             } else {
                 return 'none';
             }
-        })->editColumn('created_at', function ($permit) {
-            if ($permit->created_at) {
-                return $permit->created_at->format('d-m-Y');
-            } else {
-                return '';
-            }
         })->addColumn('action', function ($permit) {
             if ($permit->permit_status == 'approved') {
                 return '<a href="' . route('make_payment', $permit->permit_id) . '" class="btn btn-sm btn-success">Payment</a>';
             } else if ($permit->permit_status == 'pending') {
-                return '<button onClick="cancel_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancel_permit" class="btn btn-sm btn-dark">Cancel</a>';
+                return '<button onClick="cancel_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancel_permit" class="btn btn-sm btn-dark">Cancel</button>&emsp;<a href="viewPermit/' . $permit->permit_id . '"><i class="kt-font-dark flaticon-edit-1 fs-1_5em"></i></a>';
             } else if ($permit->permit_status == 'rejected') {
                 return '<button onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="btn btn-sm btn-warning">Rejected</a>';
             } else if ($permit->permit_status == 'cancelled') {
@@ -67,13 +63,21 @@ class ArtistController extends Controller
         })->addColumn('details', function ($permit) {
             return '<button type="button" target="_blank" class="btn btn-link btn-sm" data-toggle="modal" data-target="#artist_details" onclick="show_details(' . $permit->permit_id . ')" >details</button>';
         })->rawColumns(['action', 'details'])->make(true);
+
+        // ->editColumn('created_at', function ($permit) {
+        //     if ($permit->created_at) {
+        //         return $permit->created_at->format('d-m-Y');
+        //     } else {
+        //         return '';
+        //     }
+        // })
     }
 
     // Artist Permit Dashboard Table Two
 
     public function existing_list()
     {
-        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', 'expired')->get();
+        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', 'expired')->get();
 
 
         return Datatables::of($permits)->editColumn('created_at', function ($permits) {
@@ -167,7 +171,7 @@ class ArtistController extends Controller
     public function fetch_artist_details(Request $request)
     {
         $id = $request->permit_id;
-        $artists = ArtistPermit::with('artist',  'permit')->where('permit_id', $id)->get();
+        $artists = ArtistPermit::with('artist',  'permit', 'permitType', 'artistPermitDocument')->where('permit_id', $id)->get();
         return $artists;
     }
 
@@ -207,8 +211,33 @@ class ArtistController extends Controller
     {
         $name = str_replace(" ", "_", $request->reqName);
         $number = $request->artistNo;
-        $path  = Storage::putFileAs('files/' . $number, $request->files->get('doc_file_' . $request->id), $name);
-        session([$number . '_doc_file_' . $request->id => $path]);
+        if ($request->id == 0) {
+            $file = $request->file('pic_file');
+            $ext = $file->getClientOriginalExtension();
+            $filename = $file->getClientOriginalName();
+            //$path  = Storage::putFileAs('files/' . $number, $request->files->get('pic_file'), $name);
+            // Image::configure(array('driver' => 'mysql'));
+            // $thumbImg = Image::make($request->files->get('pic_file'))->resize(300, 200,  function ($constraint) {
+            //     $constraint->aspectRatio();
+            // });
+            // $thumbPath  = Storage::put('files/' . $number . '/thumb' . $filename, $thumbImg);
+            // session([$number . '_pic_file' => $path, $number . '_ext' => $ext, $number . '_thumb' => $thumbPath]);
+            File::makeDirectory(storage_path('app/files/' . $number));
+            $thumb = 'thumbnail';
+            $original = 'original';
+            $path = $file->store('files/' . $number . '/' . $original);
+            $thumbnailpath = $file->store('files/' . $number . '/' . $thumb);
+
+            $thumbImg = Image::make($file)->resize(300, 200,  function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($thumbnailpath);
+
+            dd($thumbImg);
+        } else {
+            $ext = $request->files->get('doc_file_' . $request->id)->getClientOriginalExtension();
+            $path  = Storage::putFileAs('files/' . $number, $request->files->get('doc_file_' . $request->id), $name);
+            session([$number . '_doc_file_' . $request->id => $path, $number . '_ext_' . $request->id => $ext]);
+        }
     }
 
     public function deleteDocuments(Request $request)
@@ -228,11 +257,14 @@ class ArtistController extends Controller
         // dd($request->documentD, gettype(json_decode($request->documentD)), json_decode($request->documentD));
         $last_permit_no = Permit::latest()->first();
 
+        $new_permit_no = sprintf("%03d", $last_permit_no  ? $last_permit_no->permit_id + 1 : 1);
+
+
         $permit = Permit::create([
             'work_location' => $permitDetails['workLocation'],
             'issued_date' => $permitDetails['fromDate'] ? Carbon::parse($permitDetails['fromDate'])->toDateTimeString() : '',
             'expired_date' => $permitDetails['toDate'] ? Carbon::parse($permitDetails['toDate'])->toDateTimeString() : '',
-            'permit_number' => $last_permit_no->permit_id + 1,
+            'permit_number' => $new_permit_no,
             'created_at' => Carbon::now()->toDateTimeString(),
             'permit_status' => 'pending',
             'created_by' => Auth::user()->user_id,
@@ -272,11 +304,14 @@ class ArtistController extends Controller
 
             $company_array = Company::find(Auth::user()->EmpClientId);
             $company_name = str_replace(' ', '_', $company_array->company_name);
-
+            $company_name = strtolower($company_name);
             for ($j = 1; $j <= $total; $j++) {
-                $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $j;
+                $ext = session($i . '_ext_' . $j);
+                $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $j . '.' . $ext;
+                $newPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $j . '.' . $ext;
                 if (session($i . '_doc_file_' . $j)) {
                     Storage::move(session($i . '_doc_file_' . $j), $newPath);
+                    Storage::delete(session($i . '_doc_file_' . $j));
                 }
                 ArtistPermitDocument::create([
                     'issued_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['issue_date'])->toDateTimeString() : '',
@@ -284,11 +319,27 @@ class ArtistController extends Controller
                     'created_at' =>  Carbon::now()->toDateTimeString(),
                     'created_by' =>  Auth::user()->user_id,
                     'artist_permit_id' => $artistPermit->artist_permit_id,
-                    'path' =>  $newPath,
+                    'path' =>  $newPathLink,
                     'document_name' => $requirement_names[$j - 1],
                     'status' => 'active'
                 ]);
             }
+            // session([$number . '_pic_file' => $path, $number . '_ext' => $ext]);
+            $pic_ext = session($i . '_ext');
+            $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photo' . $pic_ext;
+            $newPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $j . '.' . $pic_ext;
+            $newThumbPath  = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/thumb' . $pic_ext;
+            $newThumbPathLink = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photo' . $pic_ext;
+            if (session($i . '_pic_file')) {
+                Storage::move(session($i . '_pic_file'), $newPath);
+                Storage::move(session($i . '_thumb'), $newThumbPath);
+            }
+            ArtistPermitPhoto::create([
+                'original' => $newPathLink,
+                'thumbnail' => $newThumbPathLink,
+                'artist_permit_id' =>  $artistPermit->artist_permit_id,
+                'created_at' =>  Carbon::now()->toDateTimeString()
+            ]);
         }
 
         if ($permit) {
@@ -314,8 +365,11 @@ class ArtistController extends Controller
     {
         // $data_bundle['profession'] = Profession::all();
         $data_bundle['countries'] = Countries::all()->pluck('name.common')->sort();
-        $artist_id = ArtistPermit::where('permit_id', $id)->value('artist_id');
-        $data_bundle['artist_details'] = Artist::with('artistPermit',  'permit', 'artistPermit.artistPermitDocument')->where('artist_id', $artist_id)->get();
+        // $artist_id = ArtistPermit::where('permit_id', $id)->value('artist_id');
+        // $data_bundle['artist_details'] = Artist::with(['artistPermit' => function ($q) use ($id) {
+        //     $q->where('permit_id', $id);
+        // },  'permit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType'])->get();
+        $data_bundle['permit_details'] = ArtistPermit::with('artist', 'permit', 'artistPermitDocument', 'permitType')->where('permit_id', $id)->get();
         return view('permits.artist.payment', $data_bundle);
     }
 
@@ -333,6 +387,47 @@ class ArtistController extends Controller
         return view('permits.happinessmeter', ['id' => $id]);
     }
 
+    public function viewPermit($id)
+    {
+        $data_bundle['id'] = $id;
+        $data_bundle['permit_details'] =  Permit::find($id);
+        return view('permits.artist.view_permit', $data_bundle);
+    }
+
+    public function getArtistsInPermit(Request $request)
+    {
+        $id = $request->id;
+        $permits = ArtistPermit::with('artist', 'artistPermitDocument', 'permitType')->where('permit_id', $id)->get();
+
+        return Datatables::of($permits)->addColumn('action', function ($permit) {
+            return '<a href="../edit_artist/' . $permit->artist_id . '" class="kt-font-info flaticon-edit-1 fs-1_5em"></a>&emsp;<a data-toggle="modal" data-target="#delartistmodal" onclick="(' . $permit->artist_id . ',' . $permit->artist['name'] . ')" class="kt-font-danger flaticon-delete fs-1_5em"></a>';
+        })->rawColumns(['action'])->make(true);
+    }
+
+    public function edit_artist($id)
+    {
+        $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
+        $data_bundle['countries'] = Countries::all()->pluck('name.common')->sort();
+        $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
+        $data_bundle['artist_details'] = Artist::with('artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('artist_id', $id)->get();
+        return view('permits.artist.edit_artist', $data_bundle);
+    }
+
+    public function del_artist($id)
+    {
+        $upArr = [
+            'artist_permit_status' => 'Inactive',
+            'deleted_at' => Carbon::now()->toDateTimeString()
+        ];
+
+        ArtistPermit::where('artist_id', $id)->update($upArr);
+        if (true) {
+            $result = 'Deleted';
+        } else {
+            $result = "Not Deleted";
+        }
+        return redirect()->back()->with('message', $result);
+    }
 
     public function submit_happiness(Request $request)
     {

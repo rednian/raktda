@@ -3,20 +3,8 @@
 
 @section('content')
 
-@component('layouts.subheader')
-@slot('heading')
-Permits
-@endslot
-@slot('subheading')
-Artist Permit
-@endslot
-
-@slot('subSubHeading')
-Apply New Artist Permit
-@endslot
-
-@endcomponent
-
+@include('layouts.subheader', ['heading' => 'Permits', 'subheading' => 'Artist', 'subSubHeading' => 'Edit Artist
+Permit'])
 
 <!-- begin:: Content -->
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content_company_artist">
@@ -98,74 +86,6 @@ Apply New Artist Permit
                         <!--begin: Form Wizard Step 1-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content"
                             data-ktwizard-state="current">
-                            <div class="kt-heading kt-heading--md">Instructions
-                            </div>
-                            <div class="kt-form__section kt-form__section--first mb-5">
-
-                                <!--begin::Accordion-->
-                                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-                                    <div class="card">
-                                        <div class="card-header" id="headingOne6">
-                                            <div class="card-title" data-toggle="collapse" data-target="#collapseOne6"
-                                                aria-expanded="true" aria-controls="collapseOne6">
-                                                <i class="flaticon-pie-chart-1"></i> Artist Details Required
-                                            </div>
-                                        </div>
-                                        <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseTwo6" aria-expanded="false"
-                                                aria-controls="collapseTwo6">
-                                                <i class="flaticon2-notification"></i> Documents Required
-                                            </div>
-                                        </div>
-                                        <div id="collapseTwo6" class="collapse" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingThree6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseThree6" aria-expanded="false"
-                                                aria-controls="collapseThree6">
-                                                <i class="flaticon2-chart"></i> Permit Fees Structure
-                                            </div>
-                                        </div>
-                                        <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!--end::Accordion-->
-                            </div>
-
-
 
                         </div>
 
@@ -173,61 +93,13 @@ Apply New Artist Permit
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-heading kt-heading--md"> Permit Details</div>
-
-
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-
-                                    <form id="permit_details" method="POST">
-                                        <div class="row">
-                                            <div class="form-group col-3">
-                                                <label>From Date</label>
-                                                <input type="text" class="form-control date-picker" name="permit_from"
-                                                    id="permit_from" data-date-start-date="+0d" placeholder="DD-MM-YYYY"
-                                                    onchange="setToDate()" />
-                                            </div>
-
-
-                                            <div class="form-group col-3">
-                                                <label>To Date</label>
-                                                <input type="text" class="form-control date-picker" name="permit_to"
-                                                    id="permit_to" placeholder="DD-MM-YYYY"
-                                                    data-date-start-date="+0d" />
-                                            </div>
 
 
 
-                                            <div class="form-group col-3">
-                                                <label>Work Location</label>
-                                                <input type="text" class="form-control" placeholder="Work Location"
-                                                    name="work_loc" id="work_loc" />
-                                            </div>
-
-                                            <div class="form-group col-3">
-                                                <label>Connected Event ?</label>
-                                                <div class="kt-radio-inline pt-2">
-                                                    <label class="kt-radio">
-                                                        <input type="radio" name="radio2"> Yes
-                                                        <span></span>
-                                                    </label>
-                                                    <label class="kt-radio">
-                                                        <input type="radio" name="radio2" checked> No
-                                                        <span></span>
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                </div>
-                            </div>
                         </div>
 
-                        <!--end: Form Wizard Step 3-->
 
+                        <!--end: Form Wizard Step 3-->
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -240,7 +112,7 @@ Apply New Artist Permit
                                             <div class="form-group col-3">
                                                 <label>Artist Name - EN</label>
                                                 <input type="text" class="form-control" name="name_en" id="name_en"
-                                                    placeholder="Artist Name - EN">
+                                                    placeholder="Artist Name - EN" value="{{$artist_details[0]->name}}">
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Artist Name - AR</label>
@@ -254,7 +126,9 @@ Apply New Artist Permit
                                                     {{-- select2  - class for search in select  --}}
                                                     <option value="">Select</option>
                                                     @foreach ($countries as $ct)
-                                                    <option value={{$ct}}>{{$ct}}</option>
+                                                    <option value={{$ct}}
+                                                        <?php if(@$artist_details[0]->nationality == $ct){ echo 'selected' ;}?>>
+                                                        {{$ct}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -264,41 +138,47 @@ Apply New Artist Permit
                                                     placeholder="Profession">
                                                     <option value="">Select</option>
                                                     @foreach ($permitTypes as $pt)
-                                                    <option value="{{$pt->permit_type_id}}">{{$pt->name_en}}</option>
+                                                    <option value="{{$pt->permit_type_id}}"
+                                                        <?php if((int)$artist_details[0]->artistPermit[0]->profession == $pt->permit_type_id){ echo 'selected'; } ?>>
+                                                        {{$pt->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Passport Number</label>
                                                 <input type="text" class="form-control" name="passport" id="passport"
-                                                    placeholder="Passport Number">
+                                                    placeholder="Passport Number"
+                                                    value="{{$artist_details[0]->passport_number}}">
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>UID Number</label>
                                                 <input type="text" class="form-control" name="uid_number"
-                                                    id="uid_number" placeholder="UID Number">
+                                                    id="uid_number" placeholder="UID Number"
+                                                    value="{{$artist_details[0]->uid_number}}">
                                             </div>
 
                                             <div class="form-group col-3">
                                                 <label>Date of Birth</label>
                                                 <input type="text" class="form-control date-picker"
-                                                    placeholder="DD-MM-YYYY" data-date-end-date="0d" name="dob"
-                                                    id="dob" />
+                                                    placeholder="DD-MM-YYYY" data-date-end-date="0d" name="dob" id="dob"
+                                                    value="{{$artist_details[0]->birthdate}}" />
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Telephone Number</label>
                                                 <input type="text" class="form-control" name="telephone" id="telephone"
-                                                    placeholder="Telephone Number">
+                                                    placeholder="Telephone Number"
+                                                    value="{{$artist_details[0]->phone_number}}">
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Mobile Number</label>
                                                 <input type="text" class="form-control" name="mobile" id="mobile"
-                                                    placeholder="Mobile Number">
+                                                    placeholder="Mobile Number"
+                                                    value="{{$artist_details[0]->mobile_number}}">
                                             </div>
                                             <div class="form-group col-3">
                                                 <label>Email</label>
                                                 <input type="text" class="form-control" placeholder="Email" name="email"
-                                                    id="email" />
+                                                    id="email" value="{{$artist_details[0]->email}}" />
                                             </div>
                                         </div>
                                     </form>
@@ -356,21 +236,6 @@ Apply New Artist Permit
                                 $i++;
                                 @endphp
                                 @endforeach
-                                <div class="kt-form__section kt-form__section--first">
-                                    <div class="kt-wizard-v3__form" id="document_row">
-                                        <div class="row">
-                                            <div class="form-group col-2">
-                                                <label for="" class="reqName" title="Artist Photo">Artist Photo</label>
-                                            </div>
-                                            <div class="form-group col-6">
-                                                <div id="pic_uploader">Upload
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
                             </form>
                         </div>
 
@@ -394,6 +259,12 @@ Apply New Artist Permit
                                 Previous
                             </div>
 
+                            <a href="../viewPermit/{{$artist_details[0]->artistPermit[0]->permit_id}}">
+                                <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                    data-ktwizard-type="action-prev" id="back_btn">
+                                    Back
+                                </div>
+                            </a>
                             <div class="btn btn-outline-brand btn-pill kt-font-bold kt-font-transform-u" id="addNew_btn"
                                 style="display:none;" onclick="startToFront()">
                                 Add New Artist
@@ -439,15 +310,20 @@ Apply New Artist Permit
 
 <script>
     var fileUploadFns = [];
-    var picUploader ;
     var artistDetails = new Object();
     var documentDetails = new Object();
 
     $(document).ready(function(){
+        $('#prev_btn').css('display', 'none');
+        wizard = new KTWizard("kt_wizard_v3", {
+            startStep: 3
+        });
+
+
         localStorage.clear();
         // upload file
        uploadFunction();
-       PicUploadFunction();
+
 
         $('.reqName').tooltip();
         //clear the temp
@@ -461,7 +337,7 @@ Apply New Artist Permit
     });
 
     const uploadFunction = () => {
-        // console.log($('#artist_number_doc').val());
+        console.log($('#artist_number_doc').val());
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
             fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
@@ -482,43 +358,12 @@ Apply New Artist Permit
         }
     }
 
-    const PicUploadFunction = () => {
-        picUploader = $('#pic_uploader').uploadFile({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{route('company.upload_file')}}",
-                method: "POST",
-                allowedTypes: "jpeg,jpg,png",
-                fileName: "pic_file",
-                multiple: false,
-                maxFileCount:1,
-                showDelete: true,
-                formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
-            });
-            $('#pic_uploader div').attr('id', 'pic-upload');
-            $('#pic_uploader + div').attr('id', 'pic-file-upload');
-    }
-
 
     $('#next_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
         $('#prev_btn').css('display', 'block'); // to make the prev button display
         // checking the next page is permit details
-       if(wizard.currentStep == 2){
-           stopNext(permitValidator); // validating the permit details page
-           // storing the values of permit details
-           if(permitValidator.form())
-            {
-                var permitDetails = {
-                    fromDate: $('#permit_from').val(),
-                    toDate: $('#permit_to').val(),
-                    workLocation: $('#work_loc').val()
-                }
-                // passing the values to local storage
-                localStorage.setItem('permitDetails', JSON.stringify(permitDetails));
-            }
-       }
+
        // checking the next page is artist details
        if(wizard.currentStep == 3)
        {
@@ -527,6 +372,7 @@ Apply New Artist Permit
             var artist_id = $('#artist_number').val() ;
             if(detailsValidator.form())
             {
+                $('#back_btn').css('display', 'none');
                 $('#submit_btn').css('display', 'block'); // display the submit button
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#addNew_btn').css('display', 'block'); // display the add new artist button
@@ -570,15 +416,8 @@ Apply New Artist Permit
                 exp_date : $('#doc_issue_date_'+i).val()
             }
         }
-        if($('#pic-file-upload').contents().length == 0) {
-            hasPicture = false;
-            $('#pic-upload').css('border', '2px dotted red');
-        }
-        else {
-            hasPicture = true;
-            $("#pic-upload").css('border', '2px dotted #A5A5C7');
-        }
-        if(hasFileArray.includes(false) || hasPicture == false){
+
+        if(hasFileArray.includes(false)){
             hasFile = false;
         } else {
             hasFile = true;
@@ -625,7 +464,6 @@ Apply New Artist Permit
             for(var i = 1; i <= $('#requirements_count').val(); i++)
             {
                 fileUploadFns[i].reset();
-                picUploader.reset();
             }
             $('#artist_details')[0].reset();
             $('#documents_required')[0].reset();
@@ -638,7 +476,6 @@ Apply New Artist Permit
             $('#artist_number').val(new_artist_id);
             $('#artist_number_doc').val(new_artist_id);
             uploadFunction();
-            PicUploadFunction();
             wizard = new KTWizard("kt_wizard_v3");
             wizard.goTo(3);
         }
@@ -654,15 +491,11 @@ Apply New Artist Permit
 
     $('#prev_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
-       if(wizard.currentStep == 2){
-            $('#prev_btn').css('display', 'none');
-       }
-       else{
-            $('#prev_btn').css('display', 'block');
-            $('#next_btn').css('display', 'block');
-       }
        $('#addNew_btn').css('display', 'none');
        $('#submit_btn').css('display', 'none');
+       $('#prev_btn').css('display', 'none');
+       $('#back_btn').css('display', 'block');
+       $('#next_btn').css('display', 'block');
     });
 
 
@@ -907,7 +740,6 @@ Apply New Artist Permit
 </script>
 
 <link href="http://hayageek.github.io/jQuery-Upload-File/4.0.11/uploadfile.css" rel="stylesheet">
-<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js"></script>
 
