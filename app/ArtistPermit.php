@@ -66,6 +66,4 @@ class ArtistPermit extends Model implements Auditable
                     ->join('permit_type', 'permit_type.permit_type_id', '=', 'artist_permit.permit_type_id')
                     ->join('bls.company', 'bls.company.company_id', '=', 'permit.company_id');
     }
-
-
 }

@@ -38,7 +38,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'artist_type'=> 'required',
+            'artist_type' => 'required',
             'artist_permit_from' => 'required|date',
             'artist_permit_to' => 'required|date',
             'artist_name_en' => 'required',
@@ -59,18 +59,16 @@ class EventController extends Controller
             'name' => $request->input('artist_name_en'),
             'nationality' => $request->input('artist_nationality'),
             'passport_number' => $request->input('artist_passport'),
-            'uid_number'=> $request->input('artist_uid_number'),
-            'birthdate'=> $request->input('artist_dob'),
-            'mobile_number'=> $request->input('artist_mobile'),
-            'phone_number'=> $request->input('artist_telephone'),
-            'email'=> $request->input('artist_email'),
-            'created_by'=> 1,
-            'company_id'=> 1,
+            'uid_number' => $request->input('artist_uid_number'),
+            'birthdate' => $request->input('artist_dob'),
+            'mobile_number' => $request->input('artist_mobile'),
+            'phone_number' => $request->input('artist_telephone'),
+            'email' => $request->input('artist_email'),
+            'created_by' => 1,
+            'company_id' => 1,
         ]);
 
-        $artistDocumet = ArtistDocument::create([
-
-        ]);
+        $artistDocumet = ArtistDocument::create([]);
 
         $artist->save();
 
@@ -84,9 +82,7 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-
-    }
+    { }
 
     /**
      * Show the form for editing the specified resource.

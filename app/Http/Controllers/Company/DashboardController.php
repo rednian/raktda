@@ -9,7 +9,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        //temp redirect to this url 
+     //temp redirect to this url 
        return redirect('company/add_new_artist'); 
     }
+
 }

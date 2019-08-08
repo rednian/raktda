@@ -10,13 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 class Artist extends Model implements Auditable
 {
     use SoftDeletes;
-     use \OwenIt\Auditing\Auditable;
+    use \OwenIt\Auditing\Auditable;
     protected $table = 'artist';
     protected $primaryKey = 'artist_id';
     protected $fillable = [
         'name', 'nationality', 'passport_number', 'uid_number', 'birthdate', 'mobile_number', 'artist_status', 
         'passport_issued_date', 'passport_expired_date', 'uid_issued_date', 'uid_expired_date',
         'person_code','phone_number', 'email', 'created_by', 'updated_by', 'deleted_by'
+
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'birthdate'];
 

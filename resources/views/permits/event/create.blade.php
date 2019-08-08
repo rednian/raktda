@@ -445,6 +445,6 @@ Apply New Event Permit
     </script>
 
     <link href={{'../assets/css/demo1/pages/general/wizard/wizard-3.css'}} rel="stylesheet" type="text/css" />
-    <script src={{asset('./assets/js/demo1/pages/wizard/wizard-3.js')}} type="text/javascript"></script>
+    {{-- <script src={{asset('./assets/js/demo1/pages/wizard/wizard-3.js')}} type="text/javascript"></script> --}}
 
     @endsection
