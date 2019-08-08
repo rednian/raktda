@@ -5,7 +5,7 @@ Auth::routes(['register' => false]);
 
 Route::middleware(['admin', 'auth'])->group(function(){
 
-  Route::get('/dashboard', 'admin\DashboardController@index')->name('admin.dashboard');
+    Route::get('/dashboard', 'admin\DashboardController@index')->name('admin.dashboard');
 
   //--------------------------------------------------------------------------
   // Artist
@@ -14,13 +14,11 @@ Route::middleware(['admin', 'auth'])->group(function(){
   Route::get('/permit/artist_permit/{artistpermit}/history', 'Admin\ArtistController@history')->name('admin.artist_permit.history');
 
 
+
   //--------------------------------------------------------------------------
 // Artist Permit
 //--------------------------------------------------------------------------
   
-
-
-
   Route::get('/permit/artist_permit', 'Admin\ArtistPermitController@index')->name('admin.artist_permit.index');
   Route::get('/permit/artist_permit/{permit}/application/{artistpermit}', 'Admin\ArtistPermitController@checkApplication')->name('admin.artist_permit.checkApplication');
   
@@ -39,6 +37,7 @@ Route::middleware(['admin', 'auth'])->group(function(){
   Route::get('/permit/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')->name('admin.artist_permit.datatable');
   Route::get('/permit/artist_permit/requestDataTable', 'Admin\ArtistPermitController@requestDataTable')->name('admin.artist_permit.requestDataTable');
   Route::get('/permit/artist_permit/artistDataTable', 'Admin\ArtistPermitController@artistDataTable')->name('admin.artist_permit.artistDataTable');
+
 
 
   //--------------------------------------------------------------------------
@@ -60,6 +59,5 @@ Route::middleware(['admin', 'auth'])->group(function(){
       Route::get('/settings/requirement/{requirement}/update_status', 'Admin\RequirementController@update_status')->name('requirement.update_status');
       Route::get('/settings/requirement/datatable', 'Admin\RequirementController@datatable')->name('requirement.datatable');
       Route::resource('/settings/requirement', 'Admin\RequirementController');
-
 
 });

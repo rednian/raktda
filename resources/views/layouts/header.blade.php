@@ -64,7 +64,7 @@
                 <form>
                     <!--begin: Head -->
                     <div class="kt-head kt-head--skin-dark kt-head--fit-x kt-head--fit-b"
-                        style="background-image: url(./assets/media/misc/bg-1.jpg)">
+                        style="background-image: url(../assets/media/misc/bg-1.jpg)">
                         <h3 class="kt-head__title">
                             User Notifications
                             &nbsp;
@@ -195,7 +195,7 @@
                 <div class="kt-header__topbar-user">
                     <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span>
                     <span class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords(Auth::user()->NameEn )}}</span>
-                   
+
 
                 </div>
             </div>

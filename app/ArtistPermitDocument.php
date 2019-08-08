@@ -21,5 +21,4 @@ class ArtistPermitDocument extends Model
      {
         return $this->belongsTo(ArtistPermit::class, 'artist_permit_id');
      }
-
 }

@@ -17,7 +17,7 @@ Artists
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
-                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                    <i class="kt-font-brand flaticon2-copy"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
                     New Artist Permit Requests
@@ -43,7 +43,7 @@ Artists
                                         <span class="kt-nav__section-text">Choose an option</span>
                                     </li>
                                     <li class="kt-nav__item">
-                                        <a href="#" class="kt-nav__link">
+                                        <a href="#" class="kt-nav__link" onclick="window.print();">
                                             <i class="kt-nav__link-icon la la-print"></i>
                                             <span class="kt-nav__link-text">Print</span>
                                         </a>
@@ -71,11 +71,10 @@ Artists
                 id="applied-artists-table">
                 <thead>
                     <tr>
-
-                        <th>Artist Name</th>
-                        <th>Nationality</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
+                        <th>Permit No.</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Work Location</th>
                         <th>Applied On</th>
                         <th>Actions</th>
                         <th>Details</th>
@@ -97,7 +96,7 @@ Artists
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <span class="kt-portlet__head-icon">
-                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                    <i class="kt-font-brand flaticon2-paper"></i>
                 </span>
                 <h3 class="kt-portlet__head-title">
                     Existing Artist Requests
@@ -144,11 +143,10 @@ Artists
             <table class="table table-striped- table-bordered table-hover table-checkable" id="existing-artists-table">
                 <thead>
                     <tr>
-
-                        <th>Artist Name</th>
-                        <th>Nationality</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
+                        <th>Permit No.</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Work Location</th>
                         <th>Applied On</th>
                         <th>Actions</th>
                         <th>Details</th>
@@ -168,43 +166,11 @@ Artists
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <div class="modal-body">
-                    <table class="w-100 table table-striped">
-                        <tr>
-                            <th>Name</th>
-                            <td id="a_name"></td>
-                            <th>Profession</th>
-                            <td id="a_profession"></td>
-                        </tr>
-                        <tr>
-                            <th>Nationality</th>
-                            <td id="a_nationality"></td>
-                            <th>Work Location</th>
-                            <td id="work_loc"></td>
-                        </tr>
-                        <tr>
-                            <th>Email</th>
-                            <td id="a_email"></td>
-                            <th>Permit Type</th>
-                            <td id="a_permit_type"></td>
-                        </tr>
-                        <tr>
-                            <th>Passsport</th>
-                            <td id="a_passport"></td>
-                            <th>UID Number</th>
-                            <td id="a_uid_no"></td>
-                        </tr>
-                        <tr>
-                            <th>DOB</th>
-                            <td id="a_dob"></td>
-                            <th>Phone Number</th>
-                            <td id="a_phone"></td>
-                        </tr>
-                    </table>
+                <div class="modal-body" id="detail-permit">
                 </div>
             </div>
         </div>
@@ -222,17 +188,19 @@ Artists
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form action="{{route('company.cancel_permit')}}" method="post">
+                <form id="cancel_permit_form" action="{{route('company.cancel_permit')}}" method="post" novalidate>
+                    <div class="modal-body">
                         {{csrf_field()}}
-                        <label for="">Please specify the reason</label>
-                        <textarea name="cancel_reason" class="form-control mb-3" id="cancel_reason" rows="3">
-
-                        </textarea>
+                        <label for="cancel_reason" class="form-control-label">Reason :</label>
+                        <textarea name="cancel_reason" placeholder="Enter the reason here..." style="resize:none;"
+                            class="form-control" id="cancel_reason" rows="3"></textarea>
                         <input type="hidden" id="cancel_permit_id" name="permit_id">
-                        <input type="submit" class="btn btn-danger pt-2 d-inline float-right" value="Cancel">
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-sm btn-danger" value="Cancel">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -245,7 +213,7 @@ Artists
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cancelled Permit</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -274,44 +242,20 @@ Artists
             serverSide: true,
             searching: true,
             pageLength: 5,
-
+            order:[[4,'desc']],
             lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
             ajax:'{{route("company.json_applied_artists_list")}}',
-            order: [[ 4, "desc" ]],
-            columnDefs: [
-                {targets:  0, className: 'no-wrap'},
-                {targets:  3, className: 'no-wrap',sortable: false},
-           ],
             columns: [
-                { data: 'artist.name', name: 'artist.name' },
-                { data: 'artist.nationality', name: 'artist.nationality' },
-                { data: 'artist.mobile_number', name: 'artist.mobile_number' },
-                { data: 'artist.email', name: 'artist.email' },
+                { data: 'permit_number', name: 'permit_number' },
+                { data: 'issued_date', name: 'issue_date' },
+                { data: 'expired_date', name: 'expire_date' },
+                { data: 'work_location', name: 'work_location' },
                 { data: 'created_at', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
             ]
         });
 
-        table1.on('change', '.kt-group-checkable', function() {
-			var set = $(this).closest('table').find('td:first-child .kt-checkable');
-			var checked = $(this).is(':checked');
-
-			$(set).each(function() {
-				if (checked) {
-					$(this).prop('checked', true);
-					$(this).closest('tr').addClass('active');
-				}
-				else {
-					$(this).prop('checked', false);
-					$(this).closest('tr').removeClass('active');
-				}
-			});
-		});
-
-		table1.on('change', 'tbody tr .kt-checkbox', function() {
-			$(this).parents('tr').toggleClass('active');
-		});
 
 
         var table2 = $('#existing-artists-table').DataTable({
@@ -320,14 +264,15 @@ Artists
             serverSide: true,
             searching: true,
             pageLength: 5,
+            deferRender: true,
             lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+            order:[[4,'desc']],
             ajax:'{{route("company.json_existing_artists_list")}}',
-            order: [[ 4, "desc" ]],
             columns: [
-                { data: 'artist.name', name: 'artist.name' },
-                { data: 'artist.nationality', name: 'artist.nationality' },
-                { data: 'artist.mobile_number', name: 'artist.mobile_number' },
-                { data: 'artist.email', name: 'artist.email' },
+                { data: 'permit_number', name: 'permit_number' },
+                { data: 'issued_date', name: 'issued_date' },
+                { data: 'expired_date', name: 'expired_date' },
+                { data: 'work_location', name: 'work_location' },
                 { data: 'created_at', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
@@ -357,29 +302,37 @@ Artists
         });
     }
 
+    $('#cancel_permit_form').validate({
+        rules: {
+            cancel_reason: 'required'
+        },
+        message: {
+            cancel_reason: 'Please fill the field'
+        }
+    })
 
-    const show_details = (id) => {
+
+     async function show_details(id) {
+
         $.ajaxSetup({
 			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
 		});
         $.ajax({
             type: 'POST',
             url: '{{route("company.fetch_artist_details")}}',
-            data: {id:id},
+            data: {permit_id:id},
             success: function(data) {
+                $('#detail-permit').empty();
                if(data)
                {
-                //   console.log();
-                   $('#a_name').html(data[0].artist['name']);
-                   $('#a_profession').html(data[0].artist['profession']);
-                   $('#a_nationality').html(data[0].artist['nationality']);
-                   $('#a_phone').html(data[0].artist['phone_number']);
-                   $('#a_email').html(data[0].artist['email']);
-                   $('#a_permit_type').html(data[0].artist['artisttype'].artist_type_en);
-                   $('#a_passport').html(data[0].artist['passport_number']);
-                   $('#a_uid_no').html(data[0].artist['uid_number']);
-                   $('#a_dob').html(data[0].artist['birthdate']);
-                   $('#work_loc').html(data[0].work_location);
+                   $('#detail-permit').append('<div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">');
+                   for(var i = 0;i < data.length; i++){
+                   $('#detail-permit').append('<div class="card"> <div class="card-header" id="heading'+i+'"> <div class="card-title" data-toggle="collapse" data-target="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne1"> <i class="flaticon2-user"></i> <span class="mainTitle">'+ data[i].artist.name+' - '+ data[i].artist.nationality+' - '+ data[i].artist.mobile_number+'</span></div> </div> <div id="collapseOne'+i+'" class="collapse" aria-labelledby="heading'+i+'" data-parent="#accordionExample6"> <div class="card-body"> <table class="w-100 detailPopupTable table"> <tr> <th>Email</th> <td>'+data[i].artist.email+'</td> <th>Profession</th> <td >'+data[i].profession+'</td>  </tr> <tr> <th>Passsport</th> <td >'+data[i].artist.passport_number+'</td> <th>UID Number</th> <td >'+data[i].artist.uid_number+'</td> </tr> <tr> <th>DOB</th> <td >'+data[i].artist.birthdate+'</td> <th>Phone Number</th> <td >'+data[i].artist.phone_number+'</td></tr> </table> </div> </div> </div><br/>');
+                   (i == 0) ? $('#collapseOne'+i).addClass('show') : '';
+                   }
+                   $('#detail-permit').append('</div>');
+                   $('.mainTitle').css('text-transform', 'capitalize');
+
                }
             }
         });

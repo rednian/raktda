@@ -2,7 +2,6 @@
 
 
 @section('content')
-
 @component('layouts.subheader')
 @slot('heading')
 Permits
@@ -16,7 +15,7 @@ Make Payment
 @endcomponent
 
 <!-- begin:: Content -->
-<div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+<div class="kt-content  kt-grid__item kt-grid__item--fluid " id="kt_content_company_artist">
     <div class="kt-portlet">
         <div class="kt-portlet__body kt-portlet__body--fit">
             <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
@@ -65,15 +64,22 @@ Make Payment
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
                             </div>
-                            {{-- <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#"
-                                style="flex: 0 0 17%;">
+                            <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
                                         <span>6</span>
                                     </div>
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
-                            </div> --}}
+                            </div>
+                            <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step" href="#">
+                                <div class="kt-wizard-v3__nav-body">
+                                    <div class="kt-wizard-v3__nav-label">
+                                        <span>7</span>
+                                    </div>
+                                    <div class="kt-wizard-v3__nav-bar"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -101,6 +107,18 @@ Make Payment
 
                         <!--end: Form Wizard Step 4-->
 
+                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        </div>
+
+                        {{-- {{print_r($artist_details[0]->permit[0]->permit_number)}}
+                        {{print_r($artist_details[0]->permit[0]->issued_date)}}
+                        {{print_r($artist_details[0]->permit[0]->expired_date)}}
+                        {{print_r($artist_details[0]->permit[0]->work_location)}} --}}
+                        {{-- <pre>
+                        {{print_r()}}
+                        </pre> --}}
+                        {{-- {{dd($artist_details)}} --}}
+
                         <!--begin: Form Wizard Step 5-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-heading kt-heading--md">
@@ -111,6 +129,8 @@ Make Payment
                                         {{-- <div class="kt-wizard-v3__review-title">
                                              Permit
                                         </div> --}}
+                                        @foreach ($artist_details as $art)
+                                        {{-- {{dd($art)}} --}}
 
                                         <div class="kt-wizard-v3__review-content">
 
@@ -120,48 +140,98 @@ Make Payment
 
                                                     <div class="kt-widget5__content">
                                                         <div class="kt-widget5__pic">
-                                                            <img class="kt-widget7__img"
-                                                                src="https://source.unsplash.com/random/"
+                                                            @php
+                                                            $fileNameArray = [];
+                                                            @endphp
+                                                            @foreach($artist_details[0]->artistPermit[0]->artistPermitDocument
+                                                            as
+                                                            $doc)
+                                                            {{$fileNameArray.push($doc->document_name))}}
+                                                            @endforeach
+                                                            @if(in_array("artist photo",$fileNameArray))
+                                                            <img class="kt-widget7__img" src="{{$doc->path}}"
                                                                 style="height:150px;width:160px;" alt="">
+                                                            @else
+                                                            <img src="{{asset('img/default.jpg')}}" alt="">
+                                                            @endif
                                                         </div>
                                                         <div class="kt-widget5__section">
                                                             <a href="#" class="kt-widget5__title">
-                                                                {{$artist_details[0]->artist['name']}}
+                                                                {{$art->name}}
                                                             </a>
                                                             <p class="kt-widget5__desc">
-                                                                {{$artist_details[0]->artist['email']}}<br />
-                                                                {{$artist_details[0]->artist['mobile_number']}}
+                                                                {{$art->email}}<br />
+                                                                {{$art->mobile_number}}
                                                             </p>
+                                                            <div>
+                                                                @foreach($artist_details[0]->artistPermit[0]->artistPermitDocument
+                                                                as
+                                                                $doc)
+                                                                <div>
+                                                                    <label for="">{{$doc->document_name}}</label>
+                                                                    <a href="{{url('storage/'.$doc->path)}}"
+                                                                        target="_blank"><button
+                                                                            class="btn btn-sm btn-info">View</button></a>
+                                                                </div>
+                                                                @endforeach
+                                                            </div>
                                                             <div class="kt-widget5__info">
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td> <span>Nationality:</span>
+                                                                                <span
+                                                                                    class="kt-font-info">{{$art->nationality}}</span>
+                                                                            </td>
+                                                                            <td>
+                                                                                <span>Passport Number:</span>
+                                                                                <span
+                                                                                    class="kt-font-info">{{$art->passport_number}}</span>
+                                                                            </td>
+                                                                            <td>
+                                                                                <span>UID Number:</span>
+                                                                                <span
+                                                                                    class="kt-font-info">{{$art->uid_number}}</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <span>D-O-B:</span>
+                                                                                <span
+                                                                                    class="kt-font-info">{{$art->birthdate}}</span>
+                                                                            </td>
+                                                                            <td>
+                                                                                <span>Phone Number:</span>
+                                                                                <span
+                                                                                    class="kt-font-info">{{$art->phone_number}}</span>
+                                                                            </td>
+                                                                            <td>
+                                                                                <span>Applied On:</span>
+                                                                                <span
+                                                                                    class="kt-font-info">{{$art->created_at}}</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
 
-                                                                <span>Permit Type:</span>
-                                                                <span class="kt-font-info">
-                                                                    {{$artist_details[0]->artist['artisttype']->artist_type_en}}</span>
-                                                                <span>Nationality:</span>
-                                                                <span
-                                                                    class="kt-font-info">{{$artist_details[0]->artist['nationality']}}</span>
-                                                                <span>Passport Number:</span>
-                                                                <span
-                                                                    class="kt-font-info">{{$artist_details[0]->artist['passport_number']}}</span>
-                                                                <span>UID Number:</span>
-                                                                <span
-                                                                    class="kt-font-info">{{$artist_details[0]->artist['uid_number']}}</span>
-                                                                <span>D-O-B:</span>
-                                                                <span
-                                                                    class="kt-font-info">{{$artist_details[0]->artist['birthdate']}}</span>
-                                                                <span>Phone Number:</span>
-                                                                <span
-                                                                    class="kt-font-info">{{$artist_details[0]->artist['phone_number']}}</span>
+
+
+
+
                                                                 <span>Profession:</span>
-                                                                <span
-                                                                    class="kt-font-info">{{$artist_details[0]->artist['profession']}}</span>
-                                                                <span>Applied On:</span>
-                                                                <span
-                                                                    class="kt-font-info">{{$artist_details[0]->artist['created_at']}}</span>
+                                                                {{-- <span class="kt-font-info">{{$art->profession}}</span>
+                                                                --}}
+
                                                                 <input type="hidden" name="p_artist_id"
-                                                                    id="{{$artist_details[0]->artist['artist_id']}}">
+                                                                    id="{{$art->artist_id}}">
                                                                 <input type="hidden" name="p_artist_permit_id"
-                                                                    id="{{$artist_details[0]->artist['artist_permit_id']}}">
+                                                                    id="{{$art->pivot['permit_id']}}">
+                                                            </div>
+                                                            <div class="kt-wizard-v3__review-content kt-heading">
+                                                                <label for="">Permit Fee:</label>
+                                                                {{-- <span><small>AED
+                                                                        {{$artist_details[0]->artist['artisttype']->amount}}</small></span>
+                                                                --}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -173,13 +243,10 @@ Make Payment
 
 
                                         </div>
-                                        <div class="kt-wizard-v3__review-content kt-heading">
-                                            Total Payable Amount: AED
-                                            {{$artist_details[0]->artist['artisttype']->amount}}
-                                        </div>
-                                        {{-- @php
-                                        dd($artist_details);
-                                        @endphp --}}
+
+
+
+                                        @endforeach
 
 
                                     </div>
@@ -270,10 +337,11 @@ Make Payment
 <script>
     $(document).ready(function(){
         wizard = new KTWizard("kt_wizard_v3",{
-            startStep: 4
+            startStep: 5
         });
         $('#next_btn').css('display','none');
         $('#prev_btn').css('display','none');
+        $('.kt-form__actions').css('float', 'right');
     })
 
 
@@ -287,13 +355,14 @@ Make Payment
                 "content"
             )
         },
-        type: "POST",
+        // type: "POST",
         url: "{{route('company.payment_gateway')}}",
         // dataType: 'application/json',
         processData:false,
-        data: {id:id , permit_id:permit_id},
+        // data: {id:id , permit_id:permit_id},
         success: function(data) {
-            console.log(data);
+            let url = '{{route('company.payment_gateway')}}';
+            $(location).attr('href',url);
         }
         });
     });

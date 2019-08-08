@@ -27,4 +27,5 @@ class ArtistController extends Controller
                             })
                             ->make(true);   
     }
+
 }

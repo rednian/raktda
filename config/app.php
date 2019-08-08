@@ -162,13 +162,6 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
-        /*
-         * Package Service Providers...
-         */
-
-        /*
-         * Application Service Providers...
-         */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -181,9 +174,7 @@ return [
         OwenIt\Auditing\AuditingServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Hoyvoy\CrossDatabase\CrossDatabaseServiceProvider::class,
-        'A6digital\Image\DefaultProfileImageServiceProvider'
-
-
+        'A6digital\Image\DefaultProfileImageServiceProvider',
     ],
     /*
     |--------------------------------------------------------------------------
@@ -238,6 +229,7 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
 
     ],
 
