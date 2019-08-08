@@ -1,6 +1,6 @@
 @extends('layouts.admin-app')
 @section('action')
-<a href="{{ route('permit_type.index') }}" class="btn btn-brand btn-elevate btn-sm ">Permit Type List</a>
+<a href="{{ route('permit_type.index') }}" class="btn btn-brand btn-raised active btn-sm ">Permit Type List</a>
 @endsection
 @section('content')
 <section class="row">
@@ -63,9 +63,9 @@
                                     <div class="form-group row">
                                         <dib class="div col-2"></dib>
                                         <div class="col-9">
-                                            <button type="submit" value="0" name="exit" class="btn btn-brand btn-elevate btn-sm">Save & New</button>
-                                            <button type="submit" value="1" name="exit" class="btn btn-brand btn-elevate btn-sm">Save & Exit</button>
-                                            <button type="reset" class="btn btn-light btn-elevate btn-sm">Cancel</button>
+                                            <button type="submit" value="0" name="exit" class="btn btn-brand active btn-raised btn-sm">Save & New</button>
+                                            <button type="submit" value="1" name="exit" class="btn btn-brand active btn-raised btn-sm">Save & Exit</button>
+                                            <button type="reset" class="btn btn-light btn-raised btn-sm">Cancel</button>
                                         </div>
                                     </div>
                                 </div>

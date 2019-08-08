@@ -1,6 +1,6 @@
 @extends('layouts.admin-app')
 @section('action')
-     <a href="{{ route('permit_type.create') }}" style="margin-bottom: 2%" class="btn btn-brand pull-right btn-sm">New Permit Type</a>
+     <a href="{{ route('permit_type.create') }}" style="margin-bottom: 2%" class="btn btn-brand active btn-raised pull-right btn-sm">New Permit Type</a>
 @endsection
 @section('content')
 <section class="row">
@@ -111,8 +111,8 @@
                {
                    render: function (data, type, full, meta) {
                     
-                      return ' <button type="button" class="btn btn-outline-danger btn-delete btn-sm btn-elevate">Delete</button>\
-                                <a class="btn btn-outline-info btn-sm btn-elevate">Edit</a>';
+                      return ' <button type="button" class="btn btn-danger btn-delete btn-sm btn-raised">Delete</button>\
+                                <a class="btn btn-brand btn-sm btn-raised">Edit</a>';
 
                    },
                },

@@ -13,12 +13,18 @@
             <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-right" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_tab_content" role="tab" aria-selected="true">
-                  <i class="flaticon-multimedia"></i> Pending Request
+                  <span class="kt-badge kt-badge--outline kt-badge--outline-2x kt-badge--success hide" id="number-permit-request">0 </span><i class="flaticon-users"></i>
+                   Pending Request
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_tab_content" role="tab" aria-selected="false">
-                  <i class="flaticon-cogwheel-2"></i> All Permit
+                  <i class="flaticon-users-1"></i> Artist Permit List
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_3_tab_content" role="tab" aria-selected="false">
+                  <i class="flaticon2-group"></i> Artist List
                 </a>
               </li>
               
@@ -28,14 +34,15 @@
         <div class="kt-portlet__body">
           <div class="tab-content">
             <div class="tab-pane active" id="kt_portlet_base_demo_1_tab_content" role="tabpanel">
-              <table class="table table-bordered table-condensed table-hover table-sm">
-                  <thead>
+              <table class="table table-bordered table-condensed table-hover table-sm" id="artist-request">
+                  <thead class="thead-light">
                       <tr>
                           <th>Company Name</th>
-                          <th>Permit Number</th>
-                          <th>Issued Date</th>
-                          <th>Expired Date</th>
-                          <th>Permit Status</th>
+                          <th>Date Submitted</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Status</th>
+                          <th># of Artist</th>
                           <th>Actions</th>
                       </tr>
                   </thead>
@@ -43,13 +50,26 @@
             </div>
             <div class="tab-pane" id="kt_portlet_base_demo_2_tab_content" role="tabpanel">
               <table class="table table-bordered table-condensed table-hover table-sm" id="artist-permit">
-                  <thead>
+                  <thead class="thead-light">
                       <tr>
                           <th>Company Name</th>
                           <th>Permit Number</th>
                           <th>Issued Date</th>
                           <th>Expired Date</th>
                           <th>Status</th>
+                          <th>Actions</th>
+                      </tr>
+                  </thead>
+              </table>
+            </div>
+            <div class="tab-pane" id="kt_portlet_base_demo_3_tab_content" role="tabpanel">
+              <table class="table table-bordered table-condensed table-hover table-sm" id="artist-table">
+                  <thead class="thead-light">
+                      <tr>
+                          <th>Artist Name</th>
+                          <th>Nationality</th>
+                          <th>Email</th>
+                          <th>Artist Status</th>
                           <th>Actions</th>
                       </tr>
                   </thead>
@@ -63,7 +83,7 @@
 <div class="select-company hide">
   <div class="form-row">
      <div class="col-2">
-        <select onchange="artistPermit.draw();" name="company_id" id="company_id" class="form-control input-sm select2">
+        <select onchange="artistPermit.draw();" name="company_id" id="company_id" class="custom-select input-sm select2">
             <option value="">All Company</option>
             @if(!empty($companies))
               @foreach($companies as $company)
@@ -77,7 +97,7 @@
 <div class="select-status hide">
   <div class="form-row">
      <div class="col-2">
-        <select onchange="artistPermit.draw();" name="permit_status" id="permit_status" class="form-control input-sm select2">
+        <select onchange="artistPermit.draw();" name="permit_status" id="permit_status" class="custom-select input-sm select2">
             <option value="">All Status</option>
             <option value="active">Active</option>       
             <option value="cancelled">Cancelled</option>       
@@ -90,8 +110,120 @@
 @section('script')
 <script type="text/javascript">
      var artistPermit = {};
+     var artistTable = {};
      var artistPermitRequest = {};
     $(document).ready(function(){
+
+          artistTable = $('table#artist-table').DataTable({
+                ajax: {
+                  url: '{{ route('admin.artist_permit.artistDataTable') }}',
+                },
+
+                columnDefs: [
+                  {targets:  [3, 4], className: 'no-wrap',sortable: false},
+                ],
+
+                columns: [
+                    { data: 'name'},
+                    { data: 'nationality'},
+                    { data: 'email'},
+                    {
+                      render: function(type, data, full, meta){
+                          var status = full.artist_status;
+                          var classname = 'success';
+                          if(status == 'block'){ classname = 'danger'; }
+                          return '<span class="kt-badge kt-badge--inline kt-badge--pill   kt-badge--'+classname+'">'+status+'</span>';
+                      } 
+                    },
+                    {
+                      render: function(type, data, full, meta){
+                         return '<a href="#" class="btn btn-brand active btn-sm btn-raised">view details</a>';
+                      }
+                    }
+                ],
+
+                 fnCreatedRow: function(row ,data, index){
+                 },
+          }); 
+
+
+          artistPermitRequest = $('table#artist-request').DataTable({
+           
+                ajax: {
+                url: '{{ route('admin.artist_permit.requestDataTable') }}',
+                data: function(data){
+                   // data.company_id = $('select[name=company_id]').val();
+                   // data.permit_status = $('select[name=permit_status]').val();
+                }
+            },
+
+            columnDefs: [
+              {targets:  [4, 5, 6], className: 'no-wrap',sortable: false},
+            ],
+
+            columns: [
+                { data: 'company_name'},
+                { data: 'submitted_date'},  
+                // { data: 'work_location', name: 'work_location'},
+                { data: 'issued_date'},
+                { data: 'expired_date'},
+                {
+                  render: function(data, type, full, meta){
+                      var className = null;
+                      // if(full.permit_status == 'pending'){ className = 'kt-badge--info'; }
+                    return '<span class="kt-badge kt-badge--inline kt-badge--pill   kt-badge--info">'+full.permit_status+'</span>';
+                  }
+                },
+                { data: 'artist_number', name: 'artist_number'},
+                {
+                    render: function (data, type, full, meta) {
+                      var url = '{{ url('permit/artist_permit') }}/'+full.permit_id+'/applicationdetails';
+                       return '<a href="#" class="btn btn-brand active btn-sm btn-raised">view details</a>';
+
+                    },
+                },
+            ],
+
+            fnCreatedRow: function(row ,data, index){
+
+                $('td', row).click(function(){ 
+                  var url = '{{ url('permit/artist_permit') }}/' + data.permit_id+'/application-details'; 
+                  location.href = url; 
+                });
+
+            },
+
+            fnRowCallback:function(row, data, index){
+
+              $(row).css('cursor', 'pointer');
+              // var now = moment().tz('Asia/Dubai');
+              // var issued_date = moment(data.issued_date).add(2, 'days');
+
+            
+              // console.log(issued_date);
+
+               
+              //   if ( column.qty < 1  ){
+              //      $(row).addClass('danger');
+              //    }
+
+
+              // if ( column.qty > 0 && column.qty < 20  ){
+              //    $(row).addClass('warning');
+              //  },
+            },
+
+            initComplete: function(setting, json){
+              $('#number-permit-request').html(json.recordsTotal);
+            }
+
+          });
+
+
+           // $('#artist-request').wrap('<div class="table-responsive"></div>');
+
+
+
 
          artistPermit = $('table#artist-permit').DataTable({
             dom: '<"pull-left"l><"toolbar"><"toolbar2">frt<"pull-left"i>p',
@@ -109,26 +241,26 @@
             ],
             columns: [
         
-                { data: 'company_name', name: 'company_name'},
-                { data: 'permit_number', name: 'permit_number'},
-                { data: 'issued_date', name: 'issued_date'},
-                { data: 'expired_date', name: 'expired_date'},
+                { data: 'company_name'},
+                { data: 'permit_number'},
+                { data: 'issued_date'},
+                { data: 'expired_date'},
                 {
                   render: function(data, type, full, meta){
                       var className = null;
                       
-                      if(full.permit_status == 'active'){ className = 'kt-badge--success'; }
-                      if(full.permit_status == 'rejected'){ className = 'kt-badge--danger'; }
-                      if(full.permit_status == 'cancelled'){ className = 'kt-badge--warning'; }
+                      if(full.permit_status == 'active'){ className = 'success'; }
+                      if(full.permit_status == 'rejected'){ className = 'danger'; }
+                      if(full.permit_status == 'cancelled'){ className = 'warning'; }
 
-                    return '<span class="kt-badge '+className+' kt-badge--inline kt-badge--pill">'+full.permit_status+'</span>';
+                    return '<span class="kt-badge kt-badge--inline kt-badge--pill   kt-badge--'+className+'">'+full.permit_status+'</span>';
                   }
                 },
 
                 {
                     render: function (data, type, full, meta) {
                      
-                       return '<a href="#" class="btn btn-outline-info btn-sm btn-elevate">Show Details</a>';
+                       return '<a href="#" class="btn btn-brand active btn-sm btn-raised">view details</a>';
 
                     },
                 },

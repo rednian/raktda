@@ -10,7 +10,7 @@
 
                 <!--begin: Form Wizard Nav -->
                 <div class="kt-wizard-v3__nav">
-                    <div class="kt-wizard-v3__nav-items">
+                    <div class="kt-wizard-v3__nav-iStems">
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" data-ktwizard-state="current">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">

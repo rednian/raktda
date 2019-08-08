@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 class Permit extends Model
 {
      use SoftDeletes;
+     protected $connection = 'mysql';
      protected $table = 'permit';
      protected $primaryKey = 'permit_id';
      protected $fillable = [
         'permit_number', 'issued_date', 'expired_date', 'work_location', 'permit_status',
         'company_id', 'created_by', 'updated_by', 'deleted_by'
     ];
+    protected $dates = ['created_at', 'issued_date', 'expired_date'];
 
     public function artistPermit()
     {
@@ -23,7 +25,17 @@ class Permit extends Model
 
     public function artist()
     {
-        return $this->belongsToMany(Artist::class, 'artist_permit', 'permit_id', 'artist_id');
+        return $this->belongsToMany(Artist::class, 'artist_permit', 'permit_id', 'artist_id')->withPivot('artist_permit_status');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function rivision()
+    {
+        return $this->hasMany(Rivision::class, 'permit_id');
     }
 
     public function scopeGetByStatus($query, $status)

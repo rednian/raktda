@@ -6,15 +6,27 @@
 //--------------------------------------------------------------------------
 
 // Artist Permit 
-Breadcrumbs::for('artist.index', function ($trail) {
-    $trail->push('Artist Permit', route('artist.index'));
+Breadcrumbs::for('admin.artist_permit.index', function ($trail) {
+    $trail->push('Artist Permit', route('admin.artist_permit.index'));
 });
 
 //Artist Permit > Application details
-Breadcrumbs::for('artist.application.details', function ($trail, $artistPermit) {
-    $trail->parent('artist.index');
-    $trail->push('Application Details', route('artist.application.details', $artistPermit->artist_permit_id));
+Breadcrumbs::for('admin.artist_permit.applicationdetails', function ($trail, $permit) {
+    $trail->parent('admin.artist_permit.index');
+    $trail->push(ucwords($permit->company->company_name) , route('admin.artist_permit.applicationdetails', $permit->permit_id));
 });
+
+//Artist Permit > Application check artist
+Breadcrumbs::for('admin.artist_permit.checkApplication', function ($trail, $permit) {
+    $trail->parent('admin.artist_permit.applicationdetails', $permit);
+    $trail->push(ucwords($permit->artistpermit[0]->artist->name). ' Application details', route('admin.artist_permit.checkApplication', [
+        'permit'=>$permit->permit_id, 
+        'artist'=>$permit->artistpermit[0]->artist_id
+    ]));
+});
+
+
+
 
 //--------------------------------------------------------------------------
 // Settings

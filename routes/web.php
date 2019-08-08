@@ -7,31 +7,45 @@ Route::middleware(['admin', 'auth'])->group(function(){
 
   Route::get('/dashboard', 'admin\DashboardController@index')->name('admin.dashboard');
 
+  //--------------------------------------------------------------------------
+  // Artist
+  //--------------------------------------------------------------------------
+
+  Route::get('/permit/artist_permit/{artistpermit}/history', 'Admin\ArtistController@history')->name('admin.artist_permit.history');
+
 
   //--------------------------------------------------------------------------
 // Artist Permit
 //--------------------------------------------------------------------------
   
-  // Route::post('/permit/artist/submit_artist', 'Admin\ArtistController@submit_artist')->name('artist.submit_artist');
-  // Route::get('/permit/artist/{permit}/application-details', 'Admin\ArtistController@applicationDetails')->name('artist.application.details');
-  // Route::get('/permit/artist/datatable', 'Admin\ArtistController@datatable')->name('artist.datatable');
-  // Route::get('/permit/artist/datatablerequest', 'Admin\ArtistController@datatablerequest')->name('artist.datatablerequest');
-  // Route::get('/permit/artist/{artist_permit}/artist_documents', 'Admin\ArtistController@artistDocuments')->name('artist.artist_documents');
-  // Route::get('/permit/artist/{artist_permit}/artist_details', 'Admin\ArtistController@artistDetails')->name('artist.artist_details');
+
+
 
   Route::get('/permit/artist_permit', 'Admin\ArtistPermitController@index')->name('admin.artist_permit.index');
+  Route::get('/permit/artist_permit/{permit}/application/{artistpermit}', 'Admin\ArtistPermitController@checkApplication')->name('admin.artist_permit.checkApplication');
+  
+  Route::post('/permit/artist_permit/{permit}/application/{artistpermit}/checklist', 'Admin\ArtistPermitController@checklist')
+        ->name('admin.artist_permit.checkApplication.checklist');
+
+  Route::post('/permit/artist_permit/{permit}/application/{artistpermit}/savedraft', 'Admin\ArtistPermitController@savedraft')
+        ->name('admin.artist_permit.checkApplication.savedraft');
+
+  Route::get('/permit/artist_permit/{permit}/application-details', 'Admin\ArtistPermitController@applicationDetails')->name('admin.artist_permit.applicationdetails');
+  
+
+  Route::get('/permit/artist_permit/{permit}/application-details/datatable', 'Admin\ArtistPermitController@applicationDataTable')
+        ->name('admin.artist_permit.applicationdetails.datatable');
+
   Route::get('/permit/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')->name('admin.artist_permit.datatable');
-  Route::resource('/permit/artist', 'Admin\ArtistController');
+  Route::get('/permit/artist_permit/requestDataTable', 'Admin\ArtistPermitController@requestDataTable')->name('admin.artist_permit.requestDataTable');
+  Route::get('/permit/artist_permit/artistDataTable', 'Admin\ArtistPermitController@artistDataTable')->name('admin.artist_permit.artistDataTable');
 
 
   //--------------------------------------------------------------------------
   // Settings
   //--------------------------------------------------------------------------
 
-      //Approvers
-      // Route::resource('settings/approvers', 'ProcedureApproverController');
-
-
+  
       //Permit Type
       Route::get('settings/permit_type/{permit_type}/update_status', 'Admin\PermitTypeController@update_status')->name('permit_type.update_status');
       Route::get('settings/permit_type/isexist', 'Admin\PermitTypeController@isexist')->name('permit_type.isexist');
