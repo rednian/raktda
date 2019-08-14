@@ -215,24 +215,17 @@ class ArtistController extends Controller
             $file = $request->file('pic_file');
             $ext = $file->getClientOriginalExtension();
             $filename = $file->getClientOriginalName();
-            //$path  = Storage::putFileAs('files/' . $number, $request->files->get('pic_file'), $name);
-            // Image::configure(array('driver' => 'mysql'));
-            // $thumbImg = Image::make($request->files->get('pic_file'))->resize(300, 200,  function ($constraint) {
-            //     $constraint->aspectRatio();
-            // });
-            // $thumbPath  = Storage::put('files/' . $number . '/thumb' . $filename, $thumbImg);
-            // session([$number . '_pic_file' => $path, $number . '_ext' => $ext, $number . '_thumb' => $thumbPath]);
-            File::makeDirectory(storage_path('app/files/' . $number));
             $thumb = 'thumbnail';
             $original = 'original';
-            $path = $file->store('files/' . $number . '/' . $original);
-            $thumbnailpath = $file->store('files/' . $number . '/' . $thumb);
-
+            $path  = Storage::putFileAs('files/' . $number . '/' . $original, $request->files->get('pic_file'), $name);
+            $thumbnailPath = $file->store('file/' . $number . '/' . $thumb);
+            // Image::configure(array('driver' => 'mysql'));
             $thumbImg = Image::make($file)->resize(300, 200,  function ($constraint) {
                 $constraint->aspectRatio();
-            })->save($thumbnailpath);
-
-            dd($thumbImg);
+            })->save($thumbnailPath);
+            $thumbPath  = Storage::put('files/' . $number . '/' . $thumb, $thumbImg);
+            session([$number . '_pic_file' => $path, $number . '_ext' => $ext, $number . '_thumb' => $thumbPath]);
+            // dd($thumbImg);
         } else {
             $ext = $request->files->get('doc_file_' . $request->id)->getClientOriginalExtension();
             $path  = Storage::putFileAs('files/' . $number, $request->files->get('doc_file_' . $request->id), $name);
