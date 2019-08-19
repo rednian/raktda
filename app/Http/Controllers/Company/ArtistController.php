@@ -17,8 +17,13 @@ use Yajra\Datatables\Datatables;
 use App\Requirement;
 use App\Company;
 use App\PermitType;
+use App\Language;
+use App\Religion;
+use App\Emirates;
+use App\Areas;
+use App\ArtistPermitComment;
 use Intervention\Image\ImageManagerStatic as Image;
-use Illuminate\Support\Facades\File;
+use League\Flysystem\Filesystem;
 
 class ArtistController extends Controller
 {
@@ -203,6 +208,10 @@ class ArtistController extends Controller
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
         $data_bundle['countries'] = Countries::all()->pluck('name.common')->sort();
         $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
+        $data_bundle['languages'] = Language::all();
+        $data_bundle['religions'] = Religion::all();
+        $data_bundle['emirates'] = Emirates::all();
+        $data_bundle['areas'] = Areas::all();
         return view('permits.artist.create', $data_bundle);
     }
 
@@ -214,18 +223,21 @@ class ArtistController extends Controller
         if ($request->id == 0) {
             $file = $request->file('pic_file');
             $ext = $file->getClientOriginalExtension();
-            $filename = $file->getClientOriginalName();
-            $thumb = 'thumbnail';
+            $fileName = $request->file('pic_file')->getClientOriginalName();
+
             $original = 'original';
-            $path  = Storage::putFileAs('files/' . $number . '/' . $original, $request->files->get('pic_file'), $name);
-            $thumbnailPath = $file->store('file/' . $number . '/' . $thumb);
-            // Image::configure(array('driver' => 'mysql'));
-            $thumbImg = Image::make($file)->resize(300, 200,  function ($constraint) {
+            $path  = Storage::putFileAs('files/' . $number . '/' . $original, $request->files->get('pic_file'), $fileName);
+            $thumbImg = Image::make($request->file('pic_file')->getRealPath());
+            $thumbImg->resize(300, 200,  function ($constraint) {
                 $constraint->aspectRatio();
-            })->save($thumbnailPath);
-            $thumbPath  = Storage::put('files/' . $number . '/' . $thumb, $thumbImg);
-            session([$number . '_pic_file' => $path, $number . '_ext' => $ext, $number . '_thumb' => $thumbPath]);
-            // dd($thumbImg);
+            });
+            Storage::makeDirectory('files/' . $number . '/thumb');
+            $thumbPath = storage_path() . '/app/files/' . $number . '/thumb/' . $fileName;
+            $thumbImg->save($thumbPath);
+
+            $thumbSavedPath = 'files/' . $number . '/thumb/' . $fileName;
+
+            session([$number . '_pic_file' => $path, $number . '_ext' => $ext, $number . '_thumb_file' => $thumbSavedPath]);
         } else {
             $ext = $request->files->get('doc_file_' . $request->id)->getClientOriginalExtension();
             $path  = Storage::putFileAs('files/' . $number, $request->files->get('doc_file_' . $request->id), $name);
@@ -243,15 +255,12 @@ class ArtistController extends Controller
 
     public function store(Request $request)
     {
+
         $permitDetails = json_decode($request->permitD, true);
         $artistDetails = json_decode($request->artistD, true);
         $documentDetails = json_decode($request->documentD, true);
-
-        // dd($request->documentD, gettype(json_decode($request->documentD)), json_decode($request->documentD));
         $last_permit_no = Permit::latest()->first();
-
         $new_permit_no = sprintf("%03d", $last_permit_no  ? $last_permit_no->permit_id + 1 : 1);
-
 
         $permit = Permit::create([
             'work_location' => $permitDetails['workLocation'],
@@ -266,27 +275,121 @@ class ArtistController extends Controller
 
         for ($i = 1; $i <= count($artistDetails); $i++) {
 
-            $artist = Artist::create([
-                'name' => $artistDetails[$i]['nameEn'],
-                'nationality' => $artistDetails[$i]['nationality'],
-                'passport_number' => $artistDetails[$i]['passport'],
-                'artist_status' => 'active',
-                'uid_number' => $artistDetails[$i]['uidNumber'],
-                'birthdate' => $artistDetails[$i]['dob'] ? Carbon::parse($permitDetails['fromDate'])->toDateString() : '',
-                'mobile_number' => $artistDetails[$i]['mobile'],
-                'phone_number' => $artistDetails[$i]['telephone'],
-                'email' => $artistDetails[$i]['email'],
-                'created_by' => Auth::user()->user_id,
-                'created_at' => Carbon::now()->toDateTimeString(),
-            ]);
+            $is_old = $artistDetails[$i]['is_old_artist'];
 
-            $artistPermit = ArtistPermit::create([
-                'artist_permit_status' => 'active',
-                'artist_id' => $artist->artist_id,
-                'permit_id' => $permit->permit_id,
-                'created_at' => Carbon::now()->toDateTimeString(),
-                'profession' => $artistDetails[$i]['profession']
-            ]);
+            if ($is_old == 2) {
+                Artist::where('person_code', $artistDetails[$i]['code'])->update([
+                    'firstname_en' => $artistDetails[$i]['fname_en'],
+                    'firstname_ar' => $artistDetails[$i]['fname_ar'],
+                    'lastname_en' => $artistDetails[$i]['lname_en'],
+                    'lastname_ar' => $artistDetails[$i]['lname_ar'],
+                    'nationality' => $artistDetails[$i]['nationality'],
+                    'passport_number' => $artistDetails[$i]['passport'],
+                    'artist_status' => 'active',
+                    'uid_number' => $artistDetails[$i]['uidNumber'],
+                    'uid_expiry_date' => $artistDetails[$i]['uidExp'] ? Carbon::parse($artistDetails[$i]['uidExp'])->toDateString() : '',
+                    'pp_expiry_date' => $artistDetails[$i]['ppExp'] ? Carbon::parse($artistDetails[$i]['ppExp'])->toDateString() : '',
+                    'visa_type' => $artistDetails[$i]['visaType'],
+                    'visa_number' => $artistDetails[$i]['visaNumber'],
+                    'visa_expiry_date' => $artistDetails[$i]['visaExp'] ? Carbon::parse($artistDetails[$i]['visaExp'])->toDateString() : '',
+                    'sponser_name' => $artistDetails[$i]['spName'],
+                    'id_no' => $artistDetails[$i]['idNo'],
+                    'language' => $artistDetails[$i]['language'],
+                    'religion' => $artistDetails[$i]['religion'],
+                    'gender' => $artistDetails[$i]['gender'],
+                    'emirate' => $artistDetails[$i]['city'],
+                    'area' => $artistDetails[$i]['area'],
+                    'address' => $artistDetails[$i]['address'],
+                    'birthdate' => $artistDetails[$i]['dob'] ? Carbon::parse($artistDetails[$i]['dob'])->toDateString() : '',
+                    'mobile_number' => $artistDetails[$i]['mobile'],
+                    'phone_number' => $artistDetails[$i]['landline'],
+                    'email' => $artistDetails[$i]['email'],
+                    'updated_by' => Auth::user()->user_id,
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                ]);
+
+                $artist = Artist::where('person_code', $artistDetails[$i]['code'])->first();
+            } else {
+
+                $last_person_code = Artist::orderBy('artist_id', 'desc')->value('person_code');
+
+                if ($last_person_code == null) {
+                    $code = 2000;
+                } else {
+                    $code = $last_person_code + 1;
+                }
+
+                $artist = Artist::create([
+                    'firstname_en' => $artistDetails[$i]['fname_en'],
+                    'firstname_ar' => $artistDetails[$i]['fname_ar'],
+                    'lastname_en' => $artistDetails[$i]['lname_en'],
+                    'lastname_ar' => $artistDetails[$i]['lname_ar'],
+                    'nationality' => $artistDetails[$i]['nationality'],
+                    'passport_number' => $artistDetails[$i]['passport'],
+                    'artist_status' => 'active',
+                    'uid_number' => $artistDetails[$i]['uidNumber'],
+                    'uid_expiry_date' => $artistDetails[$i]['uidExp'] ? Carbon::parse($artistDetails[$i]['uidExp'])->toDateString() : '',
+                    'pp_expiry_date' => $artistDetails[$i]['ppExp'] ? Carbon::parse($artistDetails[$i]['ppExp'])->toDateString() : '',
+                    'visa_type' => $artistDetails[$i]['visaType'],
+                    'visa_number' => $artistDetails[$i]['visaNumber'],
+                    'visa_expiry_date' => $artistDetails[$i]['visaExp'] ? Carbon::parse($artistDetails[$i]['visaExp'])->toDateString() : '',
+                    'sponser_name' => $artistDetails[$i]['spName'],
+                    'id_no' => $artistDetails[$i]['idNo'],
+                    'language' => $artistDetails[$i]['language'],
+                    'religion' => $artistDetails[$i]['religion'],
+                    'gender' => $artistDetails[$i]['gender'],
+                    'emirate' => $artistDetails[$i]['city'],
+                    'area' => $artistDetails[$i]['area'],
+                    'address' => $artistDetails[$i]['address'],
+                    'birthdate' => $artistDetails[$i]['dob'] ? Carbon::parse($artistDetails[$i]['dob'])->toDateString() : '',
+                    'mobile_number' => $artistDetails[$i]['mobile'],
+                    'phone_number' => $artistDetails[$i]['landline'],
+                    'person_code' => $code,
+                    'email' => $artistDetails[$i]['email'],
+                    'created_by' => Auth::user()->user_id,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                ]);
+            }
+
+            $company_array = Company::find(Auth::user()->EmpClientId);
+            $company_name = str_replace(' ', '_', $company_array->company_name);
+            $company_name = strtolower($company_name);
+
+            $pic_ext = session($i . '_ext');
+
+            if (Storage::exists(session($i . '_pic_file'))) {
+
+                $check_path = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photos';
+
+                if (Storage::exists($check_path)) {
+                    $file_count = count(Storage::files($check_path));
+                    $file_nos = $file_count / 2;
+                    $next_file_no = $file_nos + 1;
+                } else {
+                    $next_file_no = 1;
+                }
+
+                $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+                $newPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+                $newThumbPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+                $newThumbPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+
+                Storage::move(session($i . '_pic_file'), $newPath);
+                Storage::move(session($i . '_thumb_file'), $newThumbPath);
+
+
+                $artistPermit = ArtistPermit::create([
+                    'artist_permit_status' => 'active',
+                    'artist_id' => $artist->artist_id,
+                    'permit_id' => $permit->permit_id,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'profession' => $artistDetails[$i]['profession'],
+                    'original_pic' => $newPathLink,
+                    'thumbnail_pic' => $newThumbPathLink,
+                ]);
+
+                session()->forget([$i . '_pic_file', $i . '_thumb_file', $i . '_ext']);
+            }
 
             $requirements = Requirement::where('requirement_type', 'artist')->get();
             $requirement_names = [];
@@ -295,60 +398,54 @@ class ArtistController extends Controller
             }
             $total = $requirements->count();
 
-            $company_array = Company::find(Auth::user()->EmpClientId);
-            $company_name = str_replace(' ', '_', $company_array->company_name);
-            $company_name = strtolower($company_name);
             for ($j = 1; $j <= $total; $j++) {
-                $ext = session($i . '_ext_' . $j);
-                $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $j . '.' . $ext;
-                $newPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $j . '.' . $ext;
-                if (session($i . '_doc_file_' . $j)) {
+                if (Storage::exists(session($i . '_doc_file_' . $j))) {
+
+                    $ext = session($i . '_ext_' . $j);
+
+                    $check_path = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id;
+
+                    if (Storage::exists($check_path)) {
+                        $file_count = count(Storage::files($check_path));
+                        $next_file_no = $file_count + 1;
+                    } else {
+                        $next_file_no = $j;
+                    }
+
+                    $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $next_file_no . '.' . $ext;
+                    $newPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $next_file_no . '.' . $ext;
+
+
                     Storage::move(session($i . '_doc_file_' . $j), $newPath);
                     Storage::delete(session($i . '_doc_file_' . $j));
+
+                    ArtistPermitDocument::create([
+                        'issued_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['issue_date'])->toDateTimeString() : '',
+                        'expired_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['exp_date'])->toDateTimeString() : '',
+                        'created_at' =>  Carbon::now()->toDateTimeString(),
+                        'created_by' =>  Auth::user()->user_id,
+                        'artist_permit_id' => $artistPermit->artist_permit_id,
+                        'path' =>  $newPathLink,
+                        'document_name' => $requirement_names[$j - 1],
+                        'status' => 'active'
+                    ]);
+
+                    session()->forget([$i . '_doc_file_' . $j, $i . '_ext_' . $j]);
                 }
-                ArtistPermitDocument::create([
-                    'issued_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['issue_date'])->toDateTimeString() : '',
-                    'expired_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['exp_date'])->toDateTimeString() : '',
-                    'created_at' =>  Carbon::now()->toDateTimeString(),
-                    'created_by' =>  Auth::user()->user_id,
-                    'artist_permit_id' => $artistPermit->artist_permit_id,
-                    'path' =>  $newPathLink,
-                    'document_name' => $requirement_names[$j - 1],
-                    'status' => 'active'
-                ]);
             }
-            // session([$number . '_pic_file' => $path, $number . '_ext' => $ext]);
-            $pic_ext = session($i . '_ext');
-            $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photo' . $pic_ext;
-            $newPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $j . '.' . $pic_ext;
-            $newThumbPath  = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/thumb' . $pic_ext;
-            $newThumbPathLink = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photo' . $pic_ext;
-            if (session($i . '_pic_file')) {
-                Storage::move(session($i . '_pic_file'), $newPath);
-                Storage::move(session($i . '_thumb'), $newThumbPath);
-            }
-            ArtistPermitPhoto::create([
-                'original' => $newPathLink,
-                'thumbnail' => $newThumbPathLink,
-                'artist_permit_id' =>  $artistPermit->artist_permit_id,
-                'created_at' =>  Carbon::now()->toDateTimeString()
-            ]);
         }
 
         if ($permit) {
-            $result = ['success', 'Artist Permit Applied Successfully', 'Success'];
+            $result = ['success', 'Permit Applied Successfully', 'Success'];
         } else {
-            $result = ['error', 'Error while applying. Please Try Again', 'Error'];
+            $result = ['error', 'Error, Please Try Again', 'Error'];
         }
 
         return response()->json(['message' => $result]);
-
-        // return redirect()->back()->with('message', $result);
     }
 
     public function clear_the_temp()
     {
-        // Storage::delete('files');
         Storage::deleteDirectory('files');
     }
 
@@ -380,47 +477,58 @@ class ArtistController extends Controller
         return view('permits.happinessmeter', ['id' => $id]);
     }
 
+    // START VIEW PERMIT
+
     public function viewPermit($id)
     {
         $data_bundle['id'] = $id;
         $data_bundle['permit_details'] =  Permit::find($id);
+        $data_bundle['comment'] = ArtistPermitComment::where('artist_permit_id', $id)->get();
         return view('permits.artist.view_permit', $data_bundle);
     }
 
     public function getArtistsInPermit(Request $request)
     {
         $id = $request->id;
-        $permits = ArtistPermit::with('artist', 'artistPermitDocument', 'permitType')->where('permit_id', $id)->get();
-
-        return Datatables::of($permits)->addColumn('action', function ($permit) {
-            return '<a href="../edit_artist/' . $permit->artist_id . '" class="kt-font-info flaticon-edit-1 fs-1_5em"></a>&emsp;<a data-toggle="modal" data-target="#delartistmodal" onclick="(' . $permit->artist_id . ',' . $permit->artist['name'] . ')" class="kt-font-danger flaticon-delete fs-1_5em"></a>';
+        $permits = ArtistPermit::with('artist', 'artistPermitDocument', 'permitType')->where('permit_id', $id)->where('artist_permit_status', 'active')->get();
+        $total_artists = $permits->count();
+        return Datatables::of($permits)->addColumn('action', function ($permit) use ($total_artists) {
+            $fname = $permit->artist['firstname_en'] ? $permit->artist['firstname_en'] : '';
+            $lname = $permit->artist['lasttname_en'] ? $permit->artist['lasttname_en'] : '';
+            return '<a href="../edit_artist/' . $permit->artist_id . '" class="kt-font-info flaticon-edit-1 fs-1_5em"></a>&emsp;<a data-toggle="modal" data-target="#delartistmodal" onclick="delArtist(' . $permit->artist_id . ',' . $permit->permit_id . ',' . $total_artists . ',\'' . $fname . '\',\'' . $lname . '\')" class="kt-font-danger flaticon-delete fs-1_5em"></a>';
         })->rawColumns(['action'])->make(true);
     }
 
+    public function delete_artist_from_permit(Request $request)
+    {
+        Artistpermit::where('artist_id', $request->del_artist_id)->where('permit_id', $request->del_permit_id)->update(['artist_permit_status' => 'inactive']);
+        $result = ['success', 'Artist Removed successfully ', 'Success'];
+        return redirect('company/viewPermit/' . $request->del_permit_id)->with('message', $result);
+    }
+
+
+    // END VIEW PERMIT
+
+    // START EDIT PERMIT
+
     public function edit_artist($id)
     {
+        // session()->forget(['1_pic_file', '1_ext', '1_thumb_file', '1_doc_file_2', '1_ext_2', '1_doc_file_1', '1_ext_1']);
+
+        // dd(session()->all());
+
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
         $data_bundle['countries'] = Countries::all()->pluck('name.common')->sort();
         $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
-        $data_bundle['artist_details'] = Artist::with('artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('artist_id', $id)->get();
+        $data_bundle['artist_details'] = Artist::with('artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('artist_id', $id)->first();
+        $data_bundle['languages'] = Language::all();
+        $data_bundle['religions'] = Religion::all();
+        $data_bundle['emirates'] = Emirates::all();
+        $data_bundle['areas'] = Areas::all();
         return view('permits.artist.edit_artist', $data_bundle);
     }
 
-    public function del_artist($id)
-    {
-        $upArr = [
-            'artist_permit_status' => 'Inactive',
-            'deleted_at' => Carbon::now()->toDateTimeString()
-        ];
-
-        ArtistPermit::where('artist_id', $id)->update($upArr);
-        if (true) {
-            $result = 'Deleted';
-        } else {
-            $result = "Not Deleted";
-        }
-        return redirect()->back()->with('message', $result);
-    }
+    // END EDIT PERMIT
 
     public function submit_happiness(Request $request)
     {
@@ -438,48 +546,203 @@ class ArtistController extends Controller
         return view('permits.happinessmeter', ['id' => $id]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function get_files_uploaded(Request $request)
     {
-        //
+        $permit_id = $request->artist_permit;
+        $reqName =  $request->reqName;
+        $artist_documents = ArtistPermitDocument::where('artist_permit_id', $permit_id)->where('document_name', $reqName)->get();
+        return $artist_documents;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function get_files_uploaded_with_code($code)
     {
-        //
+        $artist_documents = Artist::with('artistPermit')->where('person_code', $code)->get();
+        return $artist_documents;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function delete_uploaded_file(Request $request)
     {
-        //
+        $req = str_replace(" ", "_", $request->reqName);
+        // dd('files/' . $request->artistNo . '/' . $req);
+        $status = Storage::delete('files/' . $request->artistNo . '/' . $req);
+        return $status;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function update_artist_permit(Request $request)
     {
-        //
+
+        $artistDetails = json_decode($request->artistD, true);
+        $documentDetails = json_decode($request->documentD, true);
+
+        $artist = Artist::where('artist_id', $artistDetails[1]['id'])->update([
+            'firstname_en' => $artistDetails[1]['fname_en'],
+            'firstname_ar' => $artistDetails[1]['fname_ar'],
+            'lastname_en' => $artistDetails[1]['lname_en'],
+            'lastname_ar' => $artistDetails[1]['lname_ar'],
+            'nationality' => $artistDetails[1]['nationality'],
+            'passport_number' => $artistDetails[1]['passport'],
+            'artist_status' => 'active',
+            'uid_number' => $artistDetails[1]['uidNumber'],
+            'uid_expiry_date' => $artistDetails[1]['uidExp'] ? Carbon::parse($artistDetails[1]['uidExp'])->toDateString() : '',
+            'pp_expiry_date' => $artistDetails[1]['ppExp'] ? Carbon::parse($artistDetails[1]['ppExp'])->toDateString() : '',
+            'visa_type' => $artistDetails[1]['visaType'],
+            'visa_number' => $artistDetails[1]['visaNumber'],
+            'visa_expiry_date' => $artistDetails[1]['visaExp'] ? Carbon::parse($artistDetails[1]['visaExp'])->toDateString() : '',
+            'sponser_name' => $artistDetails[1]['spName'],
+            'id_no' => $artistDetails[1]['idNo'],
+            'language' => $artistDetails[1]['language'],
+            'religion' => $artistDetails[1]['religion'],
+            'gender' => $artistDetails[1]['gender'],
+            'emirate' => $artistDetails[1]['city'],
+            'area' => $artistDetails[1]['area'],
+            'address' => $artistDetails[1]['address'],
+            'birthdate' => $artistDetails[1]['dob'] ? Carbon::parse($artistDetails[1]['dob'])->toDateString() : '',
+            'mobile_number' => $artistDetails[1]['mobile'],
+            'phone_number' => $artistDetails[1]['landline'],
+            'email' => $artistDetails[1]['email'],
+            'updated_by' => Auth::user()->user_id,
+            'updated_at' => Carbon::now()->toDateTimeString(),
+        ]);
+
+        $artist = Artist::where('person_code', $artistDetails[1]['code'])->first();
+
+        $company_array = Company::find(Auth::user()->EmpClientId);
+        $company_name = str_replace(' ', '_', $company_array->company_name);
+        $company_name = strtolower($company_name);
+
+        $pic_ext = session('1_ext');
+
+        if (Storage::exists(session('1_pic_file'))) {
+
+            $check_path = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photos';
+
+            if (Storage::exists($check_path)) {
+                $file_count = count(Storage::files($check_path));
+                $file_nos = $file_count / 2;
+                $next_file_no = $file_nos + 1;
+            } else {
+                $next_file_no = 1;
+            }
+
+            $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+            $newPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+            $newThumbPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+            $newThumbPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+
+            Storage::move(session('1_pic_file'), $newPath);
+            Storage::move(session('1_thumb_file'), $newThumbPath);
+
+            ArtistPermit::where('artist_permit_id', $artistDetails[1]['permit_id'])->update([
+                'profession' => $artistDetails[1]['profession'],
+                'original_pic' => $newPathLink,
+                'thumbnail_pic' => $newThumbPathLink,
+            ]);
+
+            session()->forget(['1_pic_file', '1_thumb_file', '1_ext']);
+        }
+
+        $requirements = Requirement::where('requirement_type', 'artist')->get();
+        $requirement_names = [];
+        foreach ($requirements as $req) {
+            array_push($requirement_names, $req->requirement_name);
+        }
+        $total = $requirements->count();
+
+        for ($j = 1; $j <= $total; $j++) {
+            if (Storage::exists(session('1_doc_file_' . $j))) {
+
+                $ext = session('1_ext_' . $j);
+
+                $check_path = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id;
+
+
+                if (Storage::exists($check_path)) {
+                    $file_count = count(Storage::files($check_path));
+                    $next_file_no = $file_count + 1;
+                } else {
+                    $next_file_no = $j;
+                }
+
+                $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $next_file_no . '.' . $ext;
+                $newPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $next_file_no . '.' . $ext;
+
+
+                Storage::move(session('1_doc_file_' . $j), $newPath);
+                Storage::delete(session('1_doc_file_' . $j));
+
+                ArtistPermitDocument::create([
+                    'issued_date' => $documentDetails[1][$j] != null ? Carbon::parse($documentDetails[1][$j]['issue_date'])->toDateTimeString() : '',
+                    'expired_date' => $documentDetails[1][$j] != null ? Carbon::parse($documentDetails[1][$j]['exp_date'])->toDateTimeString() : '',
+                    'created_at' =>  Carbon::now()->toDateTimeString(),
+                    'created_by' =>  Auth::user()->user_id,
+                    'artist_permit_id' => $artistDetails[1]['permit_id'],
+                    'path' =>  $newPathLink,
+                    'document_name' => $requirement_names[$j - 1],
+                    'status' => 'active'
+                ]);
+
+                session()->forget(['1_doc_file_' . $j, '1_ext_' . $j]);
+            }
+        }
+
+
+
+
+        if ($artist) {
+            $result = ['success', 'Artist Details Updated Successfully', 'Success'];
+        } else {
+            $result = ['error', 'Error, Please Try Again', 'Error'];
+        }
+
+        return response()->json(['message' => $result]);
+    }
+
+    public function edit_add_new_artist($id)
+    {
+        $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
+        $data_bundle['countries'] = Countries::all()->pluck('name.common')->sort();
+        $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
+        $data_bundle['languages'] = Language::all();
+        $data_bundle['religions'] = Religion::all();
+        $data_bundle['emirates'] = Emirates::all();
+        $data_bundle['areas'] = Areas::all();
+        $data_bundle['permit_id'] = $id;
+        return view('permits.artist.edit_add_artist', $data_bundle);
+    }
+
+
+    /* Helper functions */
+
+    public function fetch_areas($id)
+    {
+        $areas = Areas::where('emirates_id', $id)->get();
+        return $areas;
+    }
+
+    public function searchCode($id)
+    {
+        $artist_d = Artist::with('artistPermit', 'artistPermit.artistPermitDocument')->where('person_code', $id)->first();
+        return $artist_d;
+    }
+
+    public function download_file(Request $request)
+    {
+        $permit_no = $request->artist_permit;
+        $doc_name = $request->name;
+
+        $filePath = ArtistPermitDocument::where('document_name', $doc_name)->where('artist_permit_id', $permit_no)->value('path');
+
+        // dd(url('storage/' . $filePath));
+
+        $headers = array(
+            'Content-Type: image/jpeg , image/png , application/pdf',
+        );
+
+
+
+        // return Response::download(url('storage/' . $filePath));
+        // return response()->download(url('storage/' . $filePath));
+        return Storage::download(url('storage/' . $filePath), 'download', $headers);
+        // return response()->download(storage_path('app/' . $filePath));
     }
 }

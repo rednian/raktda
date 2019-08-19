@@ -16,6 +16,13 @@
                     View Artist Permit Details
                 </h3>
             </div>
+            <div class="my-auto">
+                <a href="../edit_add_new_artist/{{$permit_details['permit_id']}}"
+                    class="btn btn-brand btn-elevate btn-icon-sm float-right">
+                    <i class="la la-plus"></i>
+                    Add New Artist
+                </a>
+            </div>
         </div>
         <div class="kt-portlet__body">
 
@@ -45,7 +52,8 @@
                 id="applied-artists-table">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Profession</th>
                         <th>Mobile</th>
                         <th>Email</th>
@@ -65,6 +73,32 @@
     </div>
 
 </div>
+
+<!--begin::Modal-->
+<div class="modal fade" id="delartistmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Artist</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('company.delete_artist_from_permit')}}" method="post">
+                    @csrf
+                    <p id="warning_text"></p>
+                    <input type="hidden" id="del_artist_id" name="del_artist_id" />
+                    <input type="hidden" id="del_permit_id" name="del_permit_id" />
+                    <input type="submit" value="Remove" class="btn btn-danger1 float-right">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end::Modal-->
+
 
 @endsection
 
@@ -89,7 +123,8 @@
                 method:'post'
             },
             columns: [
-                { data: 'artist.name', name: 'artist.name' },
+                { data: 'artist.firstname_en', name: 'artist.firstname_en' },
+                { data: 'artist.lastname_en', name: 'artist.lastname_en' },
                 { data: 'permit_type.name_en', name: 'permit_type.name_en' },
                 { data: 'artist.mobile_number', name: 'artist.mobile_number' },
                 { data: 'artist.email', name: 'artist.email' },
@@ -105,5 +140,12 @@
     // } ).draw();
 
     });
+
+    function delArtist(aid, pid, total, fname, lname) {
+        $('#del_artist_id').val(aid);
+        $('#del_permit_id').val(pid);
+        $('#warning_text').html('Are you sure to remove <b>'+ fname + ' '+ lname+ '</b> from this permit ?');
+        $('#warning_text').css('color', '#580000')
+    }
 </script>
 @endsection

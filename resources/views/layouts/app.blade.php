@@ -751,8 +751,6 @@
         });
 
 
-
-
         $.extend( true, $.fn.dataTable.defaults, {
             deferRender: true,
             processing: true,

@@ -36,3 +36,14 @@
 .fs-1_5em {
     font-size: 1.5em;
 }
+
+/* COMMON CSS */
+
+.float-right {
+    float: right;
+}
+
+.btn-danger1 {
+    background-color: #d43f3a;
+    color: white;
+}
