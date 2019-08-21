@@ -16,12 +16,17 @@
                     View Artist Permit Details
                 </h3>
             </div>
-            <div class="my-auto">
+            <div class="my-auto float-right">
+                <a href="../artist_permits" class="btn btn-default btn-elevate btn-icon-sm">
+                    <i class="la la-angle-left"></i>
+                    Back
+                </a>
                 <a href="../edit_add_new_artist/{{$permit_details['permit_id']}}"
-                    class="btn btn-brand btn-elevate btn-icon-sm float-right">
+                    class="btn btn-brand btn-elevate btn-icon-sm ">
                     <i class="la la-plus"></i>
                     Add New Artist
                 </a>
+
             </div>
         </div>
         <div class="kt-portlet__body">

@@ -3,20 +3,10 @@
 
 @section('content')
 
-@component('layouts.subheader')
-@slot('heading')
-Permits
-@endslot
-@slot('subheading')
-Artist Permit
-@endslot
+@include('layouts.subheader',['heading' => 'Permits' , 'subheading' => 'Artist Permit', 'subheadingLink' =>
+'/company/artist_permits' , 'subSubHeading' => 'Apply New Artist Permit'])
 
-@slot('subSubHeading')
-Apply New Artist Permit
-@endslot
-
-@endcomponent
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <!-- begin:: Content -->
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content_company_artist">
@@ -587,6 +577,12 @@ Apply New Artist Permit
                                 Previous
                             </div>
 
+                            <a href="../company/artist_permits">
+                                <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                    id="back_btn">
+                                    Back
+                                </div>
+                            </a>
                             <div class="btn btn-outline-brand btn-pill kt-font-bold kt-font-transform-u" id="addNew_btn"
                                 style="display:none;" onclick="startToFront()">
                                 Add New Artist
@@ -690,7 +686,25 @@ Apply New Artist Permit
             type: "GET",
             url:"{{route('clear_the_temp')}}"
         });
+
+        fetchFromDrafts();
     });
+
+    const fetchFromDrafts = () => {
+            $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "fetch_artist_data_from_drafts",
+                success: function(data)
+                {
+                    console.log(data);
+                    if(data){
+
+                    }
+                }
+            });
+    }
 
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
@@ -814,9 +828,22 @@ Apply New Artist Permit
     }
 
 
+    const insertIntoDrafts = (stepNo, data) => {
+            $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "insert_artist_data_into_drafts",
+                type:'POST',
+                data: { data: data, step: stepNo, section: 'New'}
+            });
+    }
+
+
     $('#next_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
         $('#prev_btn').css('display', 'block'); // to make the prev button display
+        $('#back_btn').css('display','none');
         // checking the next page is permit details
        if(wizard.currentStep == 2){
             stopNext(permitValidator); // validating the permit details page
@@ -830,6 +857,8 @@ Apply New Artist Permit
                 }
                 // passing the values to local storage
                 localStorage.setItem('permitDetails', JSON.stringify(permitDetails));
+
+                insertIntoDrafts(2, JSON.stringify(permitDetails));
             }
        }
        // checking the next page is artist details
@@ -874,6 +903,8 @@ Apply New Artist Permit
                 }
 
                 localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
+
+                insertIntoDrafts(3, JSON.stringify(artistDetails));
             }
         }
     });
@@ -1186,7 +1217,7 @@ Apply New Artist Permit
                             $('#ex_artist_mobilenumber').html(data.mobile_number);
                             $('#ex_artist_phonenumber').html(data.phone_number);
                             $('#ex_artist_email').html(data.email);
-                            $('#profImg').attr('src', data.artist_permit[0].thumbnail_pic ? "{{url('"+data.artist_permit[0].thumbnail_pic+"')}}" : '');
+                            $('#profImg').attr('src', data.artist_permit[0].thumbnail_pic ? "/storage/"+data.artist_permit[0].thumbnail_pic : '');
                             $('#profImg').css('height', '150px');
                             $('#profImg').css('width', '150px');
                             $('#artist_exists').modal('show');

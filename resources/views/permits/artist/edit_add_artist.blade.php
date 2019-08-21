@@ -99,12 +99,8 @@ Apply New Artist Permit
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content"
                             data-ktwizard-state="current">
 
-
-
-
-
-
                         </div>
+
 
                         <!--end: Form Wizard Step 1-->
 
@@ -162,6 +158,7 @@ Apply New Artist Permit
                                             </div>
                                         </div>
                                         <input type="hidden" id="artist_permit_num">
+                                        <input type="hidden" id="artist_permit_id" value="{{$permit_id}}">
                                         <div class="row">
                                             <div class="form-group col-lg-3">
                                                 <label for="lname_ar" class="col-form-label col-form-label-sm">Last Name
@@ -282,7 +279,7 @@ Apply New Artist Permit
                                                 <select class="form-control form-control-sm " name="nationality"
                                                     id="nationality">
                                                     {{--   - class for search in select  --}}
-                                                    <option value="">Select</option>
+                                                    <option value=" ">Select</option>
                                                     @foreach ($countries as $ct)
                                                     <option value={{$ct}}>{{$ct}}</option>
                                                     @endforeach
@@ -293,7 +290,7 @@ Apply New Artist Permit
                                                     class="col-form-label col-form-label-sm">Languages:</label>
                                                 <select class=" form-control form-control-sm " name="language"
                                                     id="language">
-                                                    <option value="">Select</option>
+                                                    <option value=" ">Select</option>
                                                     @foreach ($languages as $lang)
                                                     <option value={{$lang->id}}>{{$lang->name_en}}</option>
                                                     @endforeach
@@ -304,7 +301,7 @@ Apply New Artist Permit
                                                     class="col-form-label col-form-label-sm">Religion:</label>
                                                 <select class=" form-control form-control-sm" name="religion"
                                                     id="religion">
-                                                    <option value="">Select</option>
+                                                    <option value=" ">Select</option>
                                                     @foreach ($religions as $reli)
                                                     <option value={{$reli->id}}>{{$reli->name_en}}</option>
                                                     @endforeach
@@ -314,7 +311,7 @@ Apply New Artist Permit
                                                 <label for="gender"
                                                     class="col-form-label col-form-label-sm">Gender:</label>
                                                 <select class=" form-control form-control-sm" name="gender" id="gender">
-                                                    <option value="">Select</option>
+                                                    <option value=" ">Select</option>
                                                     <option value="male">Male</option>
                                                     <option value="female">Female</option>
                                                 </select>
@@ -324,8 +321,8 @@ Apply New Artist Permit
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="city" class="col-form-label col-form-label-sm">City:</label>
                                                 <select class=" form-control form-control-sm " name="city" id="city"
-                                                    onChange="getAreas(this.value)">
-                                                    <option value="">Select</option>
+                                                    onChange="getAreas(this.value,'')">
+                                                    <option value=" ">Select</option>
                                                     @foreach ($emirates as $em)
                                                     <option value={{$em->id}}>{{$em->name_en}}</option>
                                                     @endforeach
@@ -334,7 +331,7 @@ Apply New Artist Permit
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="area" class="col-form-label col-form-label-sm">Area:</label>
                                                 <select class="  form-control form-control-sm " name="area" id="area">
-                                                    <option value="">Select</option>
+                                                    <option value=" ">Select</option>
 
                                                 </select>
                                             </div>
@@ -474,14 +471,10 @@ Apply New Artist Permit
                                 Previous
                             </div>
 
-                            <div class="btn btn-outline-brand btn-pill kt-font-bold kt-font-transform-u" id="addNew_btn"
-                                style="display:none;" onclick="startToFront()">
-                                Add New Artist
-                            </div>
 
                             <div class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
                                 id="submit_btn" style="display:none;">
-                                Apply
+                                Add
                             </div>
 
                             <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
@@ -559,8 +552,8 @@ Apply New Artist Permit
 <script>
     var fileUploadFns = [];
     var picUploader ;
-    var artistDetails = new Object();
-    var documentDetails = new Object();
+    var artistDetails = {};
+    var documentDetails = {};
 
     $(document).ready(function(){
         $('#prev_btn').css('display', 'none');
@@ -688,9 +681,10 @@ Apply New Artist Permit
                             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
                         });
                         $.ajax({
-                            url: "get_files_uploaded_with_code/"+$code,
+                            url: "../get_files_uploaded_with_code/"+$code,
                             success: function(data)
                             {
+                                // console.log(data[0].artist_permit[0].original_pic);
                                 if(data[0].artist_permit[0].original_pic)
                                 {
                                     obj.createProgress('Profile Pic','../../storage/'+data[0].artist_permit[0].original_pic,'');
@@ -722,6 +716,7 @@ Apply New Artist Permit
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#addNew_btn').css('display', 'block'); // display the add new artist button
                 artistDetails[artist_id] = {
+                    id: $('#artist_permit_id').val(),
                     code: $('#code').val(),
                     fname_en: $('#fname_en').val(),
                     fname_ar:  $('#fname_ar').val(),
@@ -805,11 +800,13 @@ Apply New Artist Permit
         var ad = localStorage.getItem('artistDetails');
         var dd = localStorage.getItem('documentDetails');
 
+        $permit_id = $('#artist_permit_id').val();
+
         $.ajaxSetup({
 			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
 		});
         $.ajax({
-                url:"{{route('company.apply_artist_permit')}}",
+                url:"{{route('company.add_artist_to_permit')}}",
                 type: "POST",
                 // processData:false,
                 // data: { permitDetails: pd},
@@ -817,7 +814,7 @@ Apply New Artist Permit
                 success: function(result){
                     // console.log(result)
                     localStorage.clear();
-                    window.location.href="/company/artist_permits";
+                    window.location.href="/company/viewPermit/"+$permit_id;
                 }
             });
         }
@@ -981,9 +978,9 @@ Apply New Artist Permit
         })
 
 
-        const getAreas = (city_id) => {
+        const getAreas = (city_id, area_id) => {
             $.ajax({
-                    url:"fetch_areas/"+city_id,
+                    url:"../fetch_areas/"+city_id,
                     success: function(result){
                         // console.log(result)
                         $('#area').empty();
@@ -991,8 +988,10 @@ Apply New Artist Permit
                         for(let i = 0; i< result.length;i++)
                         {
                             $('#area').append('<option value="'+result[i].id+'">'+result[i].area_en+'</option>');
+                            if(area_id == result[i].id) {
+                                 $('#area').val($('#area option:eq('+(i+1)+')').val());
+                            }
                         }
-
                     }
                 });
 
@@ -1004,7 +1003,6 @@ Apply New Artist Permit
                 $.ajax({
                     url:"../searchCode/"+code,
                     success: function(data){
-                        // console.log(data);
                         if(data) {
                             $('#artistDetailswithcode').val(JSON.stringify(data));
                             $('#ex_artist_en_name').html(data.firstname_en != null ?  data.firstname_en : '' + ' '+data.lastname_en != null ? data.lastname_en : '');
@@ -1012,7 +1010,7 @@ Apply New Artist Permit
                             $('#ex_artist_mobilenumber').html(data.mobile_number);
                             $('#ex_artist_phonenumber').html(data.phone_number);
                             $('#ex_artist_email').html(data.email);
-                            $('#profImg').attr('src', data.artist_permit[0].thumbnail_pic ? data.artist_permit[0].thumbnail_pic : '');
+                            $('#profImg').attr('src', data.artist_permit[0].thumbnail_pic ? "/storage/"+data.artist_permit[0].thumbnail_pic : '');
                             $('#profImg').css('height', '150px');
                             $('#profImg').css('width', '150px');
                             $('#artist_exists').modal('show');
@@ -1050,7 +1048,8 @@ Apply New Artist Permit
             $('#religion').val(ad.religion),
             $('#gender').val(ad.gender),
             $('#city').val(ad.emirate);
-            getAreas(ad.emirate);
+            getAreas(ad.emirate, ad.area);
+            $('#area').val(ad.area);
             $('#address').val(ad.address),
             $('#uid_number').val(ad.uid_number),
             $('#uid_expiry').val(ad.uid_expiry_date),
@@ -1059,7 +1058,6 @@ Apply New Artist Permit
             $('#mobile').val(ad.mobile_number),
             $('#email').val(ad.email);
             $('#artist_permit_num').val(ad.artist_permit[0].artist_permit_id);
-            $('#area').val(ad.area);
             PicUploadFunction();
             uploadFunction();
         }

@@ -49,6 +49,13 @@ Route::group(['middleware' => ['auth']], function () {
 
     // edit Artist
     Route::get('edit_artist/{id}', 'Company\ArtistController@edit_artist')->name('company.edit_artist');
+    Route::post('add_artist_to_permit', 'Company\ArtistController@add_artist_to_permit')->name('company.add_artist_to_permit');
+
+    //insert into drafts
+    Route::post('insert_artist_data_into_drafts', 'Company\ArtistController@insert_artist_data_into_drafts')->name('company.insert_artist_data_into_drafts');
+
+    //fetch from drafts
+    Route::get('fetch_artist_data_from_drafts', 'Company\ArtistController@fetch_artist_data_from_drafts')->name('company.fetch_artist_data_from_drafts');
 
     // END ARTIST PERMIT
 });

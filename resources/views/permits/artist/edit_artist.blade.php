@@ -463,6 +463,7 @@ Permit'])
                                             </div>
                                             <input type="hidden" id="datesRequiredCheck_{{$i}}"
                                                 value="{{$req->dates_required}}">
+                                            <input type="hidden" id="lastFilePath_{{$i}}" class="lastFilePath">
                                             @if($req->dates_required == 1)
                                             <div class="form-group col-2">
                                                 <input type="text" class="form-control date-picker"
@@ -538,6 +539,7 @@ Permit'])
 
 <!-- end:: Content -->
 
+<p id="downloadAppend"></p>
 
 
 <!-- begin::Scrolltop -->
@@ -638,6 +640,7 @@ Permit'])
                 formData: {id: i, reqName: $('#req_name_'+i).val() , artistNo: $('#artist_number_doc').val()},
                 onLoad:function(obj)
                 {
+                    var thisId = i ;
                     $.ajaxSetup({
                         headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
                     });
@@ -655,8 +658,8 @@ Permit'])
                                 let exp_datetime = new Date(data[0]['expired_date']);
                                 let formatted_issue_date = appendLeadingZeroes(issue_datetime.getDate()) + "-" + appendLeadingZeroes(issue_datetime.getMonth() + 1) + "-" + issue_datetime.getFullYear();
                                 let formatted_exp_date = appendLeadingZeroes(exp_datetime.getDate()) + "-" + appendLeadingZeroes(exp_datetime.getMonth() + 1) + "-" + exp_datetime.getFullYear();
-
-                                obj.createProgress(data[0]["document_name"],'../../storage/'+data[0]["path"],'');
+                                $('#lastFilePath_'+thisId).val(data[0]['path']);
+                                obj.createProgress(data[0]["document_name"],'../../storage/'+data[0]["path"],5);
                                 if(formatted_issue_date != NaN-NaN-NaN)
                                 {
                                     $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
@@ -667,7 +670,21 @@ Permit'])
                 },
                 downloadCallback:function(filename,pd)
                 {
-                    location.href="download.php?filename="+filename;
+                    var k = true;
+                    var l = 1 ;
+                    var j ;
+                    while(k){
+                        var n = $('#req_name_'+l).val();
+                        if(n == filename[0]){
+                            j = l ;
+                            k = false;
+                        }
+                        l++;
+                    }
+                    var base_url = window.location.origin;
+                    var file_path = $('#lastFilePath_'+j).val();
+                    $('#downloadAppend').html('<a href="'+base_url+'/storage/'+file_path+'" target="_blank"><button id="goClickDownload">Click</button></a>');
+                    $('#goClickDownload').trigger('click');
                 }
             });
             $('#fileuploader_'+i+' div').attr('id', 'ajax-upload_'+i);

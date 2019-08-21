@@ -14,7 +14,7 @@ class ArtistPermit extends Model implements Auditable
     protected $table = 'artist_permit';
     protected $primaryKey = 'artist_permit_id';
     protected $fillable = [
-        'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'profession'
+        'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'profession', 'original_pic', 'thumbnail_pic'
     ];
 
     public function permit()

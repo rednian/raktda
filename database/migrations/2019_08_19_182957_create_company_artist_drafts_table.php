@@ -15,7 +15,6 @@ class CreateCompanyArtistDraftsTable extends Migration
     {
         Schema::create('company_artist_drafts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
         });
     }
 
