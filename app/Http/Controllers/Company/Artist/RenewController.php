@@ -13,7 +13,7 @@ use App\ArtistTempData;
 use App\ArtistTempDocument;
 
 
-class ArtistController extends Controller
+class RenewController extends Controller
 {
 
     public function renew_permit($id)

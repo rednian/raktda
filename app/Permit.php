@@ -12,7 +12,7 @@ class Permit extends Model
     protected $table = 'permit';
     protected $primaryKey = 'permit_id';
     protected $fillable = [
-        'permit_number', 'issued_date', 'expired_date', 'work_location', 'permit_status',
+        'permit_number', 'issued_date', 'expired_date', 'work_location', 'permit_status', 'person_code',
         'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'user_id', 'request_type'
     ];
 

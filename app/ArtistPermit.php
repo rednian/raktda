@@ -14,7 +14,7 @@ class ArtistPermit extends Model implements Auditable
     protected $table = 'artist_permit';
     protected $primaryKey = 'artist_permit_id';
     protected $fillable = [
-        'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type', 'language', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'city', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion', 'emirates_id', 'uid_number'
+        'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type', 'language', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'city', 'area', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion', 'emirates_id', 'uid_number'
     ];
 
     public function permit()

@@ -99,7 +99,8 @@
                 <div class="modal-body">
                     <form action="{{route('company.cancel_permit')}}" id="cancel_permit_form" method="post" novalidate>
                         {{csrf_field()}}
-                        <label>Are you sure to Cancel this Permit of ID <span id="cancel_permit_number"></span>
+                        <label>Are you sure to Cancel this Permit of ID <span class="text--maroon"
+                                id="cancel_permit_number"></span>
                             ?</label>
                         <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..."
                             style="resize:none;" class="form-control" id="cancel_reason"></textarea>
@@ -219,7 +220,10 @@
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
                 }
-            ]
+            ],
+            language: {
+                emptyTable: "No Applied Artist Permits"
+            }
         });
 
 
@@ -293,7 +297,10 @@
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
                 }
-            ]
+            ],
+            language: {
+                emptyTable: "No Existing Artist Permits"
+            }
         });
 
 
@@ -301,7 +308,7 @@
 
     const cancel_permit = (id, number) => {
         $('#cancel_permit_id').val(id);
-        $('#cancel_permit_number').html('<strong>'+id+'</strong>');
+        $('#cancel_permit_number').html('<strong>'+number+'</strong>');
     }
 
     const show_cancelled = (id) => {

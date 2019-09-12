@@ -17,7 +17,7 @@ use App\Areas;
 use App\VisaType;
 use App\ArtistTempData;
 
-class ArtistController extends Controller
+class AmendController extends Controller
 {
 
 

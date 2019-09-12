@@ -228,7 +228,7 @@
                 $('#detail-permit').empty();
             if(data)
             {
-                var code = data.person_code ? data.person_code : '';
+                var code = data.person_code ? data.person_code != 0 ? data.person_code : '' : '';
                 $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td>' + code + '</td> <th>First Name</th> <td >' + data.firstname_en + '</td>  </tr> <tr> <th>Last Name</th> <td>' + data.lastname_en + '</td> <th>Nationality</th> <td >' + data.nationality + '</td>  </tr> <tr> <th>Email</th> <td>' + data.email + '</td> <th>Profession</th> <td >' + data.permit_type.name_en + '</td>  </tr> <tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>UID Number</th> <td >' + data.uid_number + '</td> </tr> <tr> <th>DOB</th> <td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr></table>');
 
             }
@@ -242,7 +242,7 @@
             url: '{{route("company.get_error_fields_list")}}',
             data: {artist_permit_id:id},
             success: function(data) {
-                // console.log(data);
+                console.log(data);
                 $('#field-list').empty();
                 $('#field-list').css('display', 'inline');
                if(data)

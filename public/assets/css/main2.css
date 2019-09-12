@@ -218,3 +218,17 @@ body {
     height: 25px !important;
     padding-top: 1px !important;
 }
+
+#detail-permit .table tr td {
+    max-width: 150px;
+}
+
+#PC_Popup_Table table tr th {
+    padding-right: 12px;
+}
+
+.mk-disabled {
+    background: #ccc;
+    color: #333;
+    pointer-events: none;
+}

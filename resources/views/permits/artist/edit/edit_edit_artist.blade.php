@@ -172,7 +172,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
+                                                    <input type="text" class="form-control form-control-sm"
                                                         name="permit_from" id="permit_from" data-date-start-date="+0d"
                                                         placeholder="DD-MM-YYYY"
                                                         value="{{date('d-m-Y',strtotime($permit_details->permit['issued_date']))}}"
@@ -185,7 +185,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
+                                                    <input type="text" class="form-control form-control-sm "
                                                         name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
                                                         data-date-start-date="+0d"
                                                         value="{{date('d-m-Y',strtotime($permit_details->permit['expired_date']))}}"
@@ -242,11 +242,11 @@
                                                 <label for="name_en" class="col-form-label col-form-label-sm">Person
                                                     Code:</label>
                                                 <input type="text" class="form-control form-control-sm " id="dcode"
-                                                    placeholder="Person Code"
-                                                    value="{{$artist_details->artist['person_code']}}" disabled>
+                                                    placeholder="Person Code" value="{{$artist_details->person_code}}"
+                                                    disabled>
                                                 <input type="hidden" class="form-control form-control-sm " name="code"
                                                     id="code" placeholder="Person Code"
-                                                    value="{{$artist_details->artist['person_code']}}">
+                                                    value="{{$artist_details->person_code}}">
                                                 <small>only enter if you know person code</small>
                                             </div>
                                             <input type="hidden" id="is_old_artist" value="1">
@@ -326,7 +326,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text"
-                                                        class="form-control form-control-sm date-picker {{in_array('birthdate', $fieldnames) ? 'is-invalid' : ''}}"
+                                                        class="form-control form-control-sm {{in_array('birthdate', $fieldnames) ? 'is-invalid' : ''}}"
                                                         placeholder="DD-MM-YYYY" data-date-end-date="0d" name="dob"
                                                         id="dob"
                                                         value="{{$artist_details->birthdate ? date('d-m-Y', strtotime($artist_details->birthdate)) : ''}}" />
@@ -490,10 +490,10 @@
                                                     name="gender" id="gender">
                                                     <option value="">Select</option>
                                                     <option value="1"
-                                                        <?php if($artist_details->gender_en == 1){ echo 'selected';}?>>
+                                                        <?php if($artist_details->gender == 1){ echo 'selected';}?>>
                                                         Male</option>
                                                     <option value="2"
-                                                        <?php if($artist_details->gender_en == 2){ echo 'selected';}?>>
+                                                        <?php if($artist_details->gender == 2){ echo 'selected';}?>>
                                                         Female</option>
                                                 </select>
                                             </div>
@@ -513,7 +513,7 @@
                                                 </select>
                                             </div>
                                             <input type="hidden" name="sel_area" id="sel_area"
-                                                value="{{$artist_details->artist['area']}}">
+                                                value="{{$artist_details->area}}">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="area" class="col-form-label col-form-label-sm">Area:</label>
                                                 <select
@@ -792,7 +792,7 @@
                 method: "POST",
                 allowedTypes: "jpeg,jpg,png,pdf",
                 fileName: "doc_file_"+i,
-                showDownload: true,
+                // showDownload: true,
                 // showPreview: true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
@@ -950,6 +950,7 @@
                 sp_name: 'required',
                 nationality: 'required',
                 address: 'required',
+                gender: 'required',
                 landline: {
                     number: true,
                     required : true
@@ -980,6 +981,7 @@
                 sp_name: 'This field is required',
                 nationality: 'This field is required',
                 address: 'This field is required',
+                gender: 'This field is required',
                 landline: {
                     required: 'This field is required',
                     number: 'Must be a Number'
@@ -1143,7 +1145,7 @@
                 // data: { permitDetails: pd},
                 data: {  permitId: artist_permit_id, artistD: ad , documentD: dd, updateChecklist: true},
                 success: function(result){
-                    console.log(result);
+                    // console.log(result);
                     if(result.message[0] == 'success')
                     {
                         localStorage.clear();
@@ -1197,7 +1199,29 @@
     $('.date-picker').datepicker({
         format: 'dd-mm-yyyy',
         autoclose: true
-    })
+    });
+
+    $('#permit_from').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        orientation: "bottom left"
+    });
+
+    $('#permit_to').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        orientation: "bottom left"
+    });
+
+    $('#dob').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        startView: 2
+    });
+
 
     $('#permit_from').on('changeDate', function(ev) {$('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');});
     $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});

@@ -23,6 +23,7 @@ use App\Emirates;
 use App\Areas;
 use App\VisaType;
 use App\ArtistTempData;
+use App\ArtistTempDocument;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class MainController extends Controller
@@ -63,7 +64,7 @@ class MainController extends Controller
             if ($permit->permit_status == 'approved') {
                 return '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
             } else if ($permit->permit_status == 'pending') {
-                return '<span onClick="cancel_permit(' . $permit->permit_id . ',' . $permit->permit_number . ')" data-toggle="modal" data-target="#cancel_permit" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span';
+                return '<span onClick="cancel_permit(' . $permit->permit_id . ',\'' . $permit->permit_number . '\')" data-toggle="modal" data-target="#cancel_permit" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span';
             } else if ($permit->permit_status == 'edit') {
                 return '<a href="edit_permit/' . $permit->permit_id . '"><span class="kt-badge kt-badge--warning kt-badge--inline">Edit </span></a>';
             } else if ($permit->permit_status == 'rejected') {
@@ -219,6 +220,7 @@ class MainController extends Controller
 
     public function create()
     {
+        $code =  $this->generatePersonCode();
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
         $data_bundle['countries'] = Countries::all()->pluck('demonym')->sort();
         $data_bundle['visatypes'] = VisaType::all();
@@ -268,6 +270,45 @@ class MainController extends Controller
         return $status;
     }
 
+    public function generatePermitNumber()
+    {
+        $last_permit_d = Permit::latest()->first();
+        if (empty($last_permit_d)) {
+            $new_permit_no = sprintf("AP%04d",  1);
+        } else {
+            $last_pn = $last_permit_d->permit_number;
+            $n = substr($last_pn, 2);
+            $f = substr($n, 0, 1);
+            $l = substr($n, -1, 1);
+            $x = 4;
+            if ($f == 9 && $l == 9) {
+                $x++;
+            }
+            $new_permit_no = sprintf("AP%0" . $x . "d", $n + 1);
+        }
+        return $new_permit_no;
+    }
+
+    public function generateReferenceNumber()
+    {
+        $last_permit_d = Permit::latest()->first();
+        if (empty($last_permit_d)) {
+            $new_refer_no = sprintf("RNA%04d",  1);
+        } else {
+            $last_rn = $last_permit_d->reference_number;
+            $n = substr($last_rn, 3);
+            $f = substr($n, 0, 1);
+            $l = substr($n, -1, 1);
+            $x = 4;
+            if ($f == 9 && $l == 9) {
+                $x++;
+            }
+            $new_refer_no = sprintf("RNA%0" . $x . "d", $n + 1);
+        }
+
+        return $new_refer_no;
+    }
+
     public function store(Request $request)
     {
 
@@ -275,9 +316,8 @@ class MainController extends Controller
         $artistDetails = json_decode($request->artistD, true);
         $documentDetails = json_decode($request->documentD, true);
 
-        $last_permit_d = Permit::latest()->first();
-        $new_permit_no = sprintf("%04d", $last_permit_d->permit_number  ? $last_permit_d->permit_number + 1 : 1);
-        $new_refer_no = sprintf("%04d", $last_permit_d->reference_number  ? $last_permit_d->reference_number + 1 : 1);
+        $new_permit_no = $this->generatePermitNumber();
+        $new_refer_no = $this->generateReferenceNumber();
 
         $permit = Permit::create([
             'work_location' => $permitDetails['workLocation'],
@@ -714,6 +754,7 @@ class MainController extends Controller
             $newThumbPathLink = $getArtistPics->thumbnail;
         }
 
+
         $artists = ArtistTempData::where('artist_permit_id', $artist_permit_id)->update([
             'firstname_en' => $artistDetails[$i]['fname_en'],
             'firstname_ar' => $artistDetails[$i]['fname_ar'],
@@ -744,6 +785,7 @@ class MainController extends Controller
             'po_box' => $artistDetails[$i]['po_box'],
             'fax_number' => $artistDetails[$i]['fax_number'],
             'email' => $artistDetails[$i]['email'],
+
         ]);
 
 
@@ -780,18 +822,16 @@ class MainController extends Controller
                 $newPathLink = $artistsD->path;
             }
 
-            ArtistPermitDocument::create([
+            ArtistTempDocument::create([
                 'issued_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['issue_date'])->toDateTimeString() : '',
                 'expired_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['exp_date'])->toDateTimeString() : '',
                 'created_at' =>  Carbon::now()->toDateTimeString(),
                 'created_by' =>  Auth::user()->user_id,
                 'artist_permit_id' => $artist_permit_id,
                 'path' =>  $newPathLink,
-                'document_name' => $requirement_names[$j - 1],
-                'status' => 'drafts'
+                'document_name' => $requirement_names[$j - 1]
             ]);
         }
-
 
         if ($artists) {
             $result = ['success', 'Artist Updated Successfully', 'Success'];
@@ -826,10 +866,11 @@ class MainController extends Controller
             'visa_type' => $artistDetails[$i]['visaType'],
             'visa_number' => $artistDetails[$i]['visaNumber'],
             'visa_expire_date' => $artistDetails[$i]['visaExp'] ? Carbon::parse($artistDetails[$i]['visaExp'])->toDateString() : '',
-            'sponser_name_en' => $artistDetails[$i]['spName'],
+            'sponsor_name_en' => $artistDetails[$i]['spName'],
             'emirates_id' => $artistDetails[$i]['idNo'],
             'language' => $artistDetails[$i]['language'],
             'religion' => $artistDetails[$i]['religion'],
+            'permit_type_id' => $artistDetails[$i]['profession'],
             'city' => $artistDetails[$i]['city'],
             'area' => $artistDetails[$i]['area'],
             'address_en' => $artistDetails[$i]['address'],
@@ -838,13 +879,19 @@ class MainController extends Controller
             'email' => $artistDetails[$i]['email'],
             'permit_id' => $permit_id,
             'created_at' => Carbon::now()->toDateTimeString(),
+            'person_code' => 0,
+            'po_box' => $artistDetails[$i]['po_box'],
+            'fax_number' => $artistDetails[$i]['fax_number'],
+            'status' => 0
         ]);
 
-        if (!$artistDetails[$i]['artist_id']) {
-            $tempData->artist_id = $tempData->id;
-        } else {
+        if (isset($artistDetails[$i]['artist_id'])) {
             $tempData->artist_id = $artistDetails[$i]['artist_id'];
+        } else {
+            $tempData->artist_id = $tempData->id;
         }
+
+        $tempData->artist_permit_id = $tempData->artist_id;
 
         $tempData->save();
 

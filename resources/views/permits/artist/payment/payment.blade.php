@@ -143,9 +143,8 @@
             $.ajax({
                 type: 'POST',
                 url: '{{route("company.fetch_artist_details")}}',
-                data: {artist_id:artist_id, artist_permit_id:artist_permit_id},
+                data: { ap_id:artist_permit_id},
                 success: function(data) {
-                    // console.log(data);
                     $('#detail-permit').empty();
                 if(data)
                 {

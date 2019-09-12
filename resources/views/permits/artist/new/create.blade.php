@@ -59,93 +59,95 @@
 
                     <!--begin: Form Wizard Form-->
                     {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
-                    <div class="kt-form w-100 p-5" id="kt_form">
+                    <div class="kt-form w-100 px-5" id="kt_form">
                         <!--begin: Form Wizard Step 1-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content"
                             data-ktwizard-state="current">
-                            <div class="kt-form__section kt-form__section--first mb-5">
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="kt-wizard-v3__form">
+                                    <!--begin::Accordion-->
+                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
+                                        <div class="card">
+                                            <div class="card-header" id="headingOne6">
+                                                <div class="card-title" data-toggle="collapse"
+                                                    data-target="#collapseOne6" aria-expanded="true"
+                                                    aria-controls="collapseOne6">
+                                                    Artist Details Required
+                                                </div>
+                                            </div>
+                                            <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
+                                                data-parent="#accordionExample6">
+                                                <div class="card-body">
+                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                                    terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+                                                    skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
 
-                                <!--begin::Accordion-->
-                                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-                                    <div class="card">
-                                        <div class="card-header" id="headingOne6">
-                                            <div class="card-title" data-toggle="collapse" data-target="#collapseOne6"
-                                                aria-expanded="true" aria-controls="collapseOne6">
-                                                Artist Details Required
+                                                </div>
                                             </div>
                                         </div>
-                                        <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+                                        <div class="card">
+                                            <div class="card-header" id="headingTwo6">
+                                                <div class="card-title collapsed" data-toggle="collapse"
+                                                    data-target="#collapseTwo6" aria-expanded="false"
+                                                    aria-controls="collapseTwo6">
+                                                    Documents Required
+                                                </div>
+                                            </div>
+                                            <div id="collapseTwo6" class="collapse" aria-labelledby="headingTwo6"
+                                                data-parent="#accordionExample6">
+                                                <div class="card-body">
+                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                                    terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+                                                    skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
 
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="card">
+                                            <div class="card-header" id="headingThree6">
+                                                <div class="card-title collapsed" data-toggle="collapse"
+                                                    data-target="#collapseThree6" aria-expanded="false"
+                                                    aria-controls="collapseThree6">
+                                                    Permit Fees Structure </div>
+                                            </div>
+                                            <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
+                                                data-parent="#accordionExample6">
+                                                <div class="card-body">
+                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                                    terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+                                                    skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header" id="headingFour6">
+                                                <div class="card-title collapsed" data-toggle="collapse"
+                                                    data-target="#collapseFour6" aria-expanded="false"
+                                                    aria-controls="collapseFour6">
+                                                    Rules and Conditions
+                                                </div>
+                                            </div>
+                                            <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
+                                                data-parent="#accordionExample6">
+                                                <div class="card-body">
+                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                                    terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+                                                    skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label class="kt-checkbox kt-checkbox--brand ml-2" id="agree_cb">
+                                            <input type="checkbox" id="agree" name="agree"> I Read and understand all
+                                            service rules, And agree to continue submitting it.
+                                            <span></span>
+                                        </label>
                                     </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseTwo6" aria-expanded="false"
-                                                aria-controls="collapseTwo6">
-                                                Documents Required
-                                            </div>
-                                        </div>
-                                        <div id="collapseTwo6" class="collapse" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingThree6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseThree6" aria-expanded="false"
-                                                aria-controls="collapseThree6">
-                                                Permit Fees Structure </div>
-                                        </div>
-                                        <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingFour6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseFour6" aria-expanded="false"
-                                                aria-controls="collapseFour6">
-                                                Rules and Conditions
-                                            </div>
-                                        </div>
-                                        <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label class="kt-checkbox kt-checkbox--brand ml-2" id="agree_cb">
-                                        <input type="checkbox" id="agree" name="agree"> I Read and understand all
-                                        service rules, And agree to continue submitting it.
-                                        <span></span>
-                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -164,7 +166,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
+                                                    <input type="text" class="form-control form-control-sm"
                                                         name="permit_from" id="permit_from" data-date-start-date="+0d"
                                                         placeholder="DD-MM-YYYY" onchange="setToDate()" />
                                                 </div>
@@ -175,7 +177,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
+                                                    <input type="text" class="form-control form-control-sm"
                                                         name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
                                                         data-date-start-date="+0d" />
                                                 </div>
@@ -216,11 +218,15 @@
                                         <div class=" row">
                                             <div class="form-group col-lg-3">
                                                 <label for="name_en" class="col-form-label col-form-label-sm">Person
-                                                    Code:</label>
+                                                    Code:</label><span id="changeArtistLabel"
+                                                    class="kt-badge kt-badge--danger kt-badge--inline d-none"
+                                                    onclick="removeSelectedArtist()">
+                                                    Change </span>
                                                 <input type="text" class="form-control form-control-sm " name="code"
                                                     id="code" placeholder="Person Code">
                                                 <small>only enter if you know person code</small>
                                             </div>
+                                            <input type="hidden" id="artist_id" value="">
                                             <input type="hidden" id="is_old_artist" value="1">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="profession"
@@ -286,7 +292,7 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
+                                                    <input type="text" class="form-control form-control-sm"
                                                         placeholder="DD-MM-YYYY" data-date-end-date="0d" name="dob"
                                                         id="dob" />
                                                 </div>
@@ -509,63 +515,68 @@
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <form id="documents_required" method="post">
-                                <input type="hidden" id="artist_number_doc" value={{1}}>
-                                <input type="hidden" id="requirements_count" value={{count($requirements)}}>
-                                <div class="kt-form__section kt-form__section--first">
-                                    <div class="kt-wizard-v3__form" id="document_row">
-                                        <div class="row">
-                                            <div class="form-group col-2">
-                                                <label for="" class="reqName" title="Artist Photo">Artist Photo</label>
-                                            </div>
-                                            <div class="form-group col-6">
-                                                <div id="pic_uploader">Upload
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="kt-wizard-v3__form">
+                                    <form id="documents_required" method="post">
+                                        <input type="hidden" id="artist_number_doc" value={{1}}>
+                                        <input type="hidden" id="requirements_count" value={{count($requirements)}}>
+                                        <div class="kt-form__section kt-form__section--first">
+                                            <div class="kt-wizard-v3__form" id="document_row">
+                                                <div class="row">
+                                                    <div class="form-group col-2">
+                                                        <label for="" class="reqName" title="Artist Photo">Artist
+                                                            Photo</label>
+                                                    </div>
+                                                    <div class="form-group col-6">
+                                                        <div id="pic_uploader">Upload
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                @php
-                                $i = 1;
-                                @endphp
-                                @foreach ($requirements as $req)
-                                <div class="kt-form__section kt-form__section--first">
-                                    <div class="kt-wizard-v3__form" id="document_row">
-                                        <div class="row">
-                                            <div class="form-group col-2">
-                                                <label for="" class="reqName"
-                                                    title="{{$req->requirement_description}}">{{$req->requirement_name}}</label>
-                                                <input type="hidden" value="{{$req->requirement_name}}"
-                                                    id="req_name_{{$i}}">
-                                            </div>
-                                            <div class="form-group col-6">
-                                                <div id="fileuploader_{{$i}}">Upload
+                                        @php
+                                        $i = 1;
+                                        @endphp
+                                        @foreach ($requirements as $req)
+                                        <div class="kt-form__section kt-form__section--first">
+                                            <div class="kt-wizard-v3__form" id="document_row">
+                                                <div class="row">
+                                                    <div class="form-group col-2">
+                                                        <label for="" class="reqName"
+                                                            title="{{$req->requirement_description}}">{{$req->requirement_name}}</label>
+                                                        <input type="hidden" value="{{$req->requirement_name}}"
+                                                            id="req_name_{{$i}}">
+                                                    </div>
+                                                    <div class="form-group col-6">
+                                                        <div id="fileuploader_{{$i}}">Upload
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                                        value="{{$req->dates_required}}">
+                                                    @if($req->dates_required == 1)
+                                                    <div class="form-group col-2">
+                                                        <input type="text" class="form-control date-picker"
+                                                            name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                            id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <input type="text" class="form-control date-picker"
+                                                            name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
+                                                            id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
+                                                    </div>
+                                                    @endif
                                                 </div>
+
                                             </div>
-                                            <input type="hidden" id="datesRequiredCheck_{{$i}}"
-                                                value="{{$req->dates_required}}">
-                                            @if($req->dates_required == 1)
-                                            <div class="form-group col-2">
-                                                <input type="text" class="form-control date-picker"
-                                                    name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                    id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
-                                            </div>
-                                            <div class="form-group col-2">
-                                                <input type="text" class="form-control date-picker"
-                                                    name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
-                                                    id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
-                                            </div>
-                                            @endif
                                         </div>
+                                        @php
+                                        $i++;
+                                        @endphp
+                                        @endforeach
 
-                                    </div>
+                                    </form>
                                 </div>
-                                @php
-                                $i++;
-                                @endphp
-                                @endforeach
-
-                            </form>
+                            </div>
                         </div>
 
 
@@ -625,30 +636,67 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Artist Exists</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Artist With Code &emsp;<span class="text--maroon"
+                        id="ex_artist_personcode"></span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
-                <p>Artist with same person code exists ! </p>
+                <p class="text-center">Artist with same person code exists ! </p>
                 <div class="kt-widget30__item d-flex justify-content-around">
-                    <div class="kt-widget30__pic">
+                    <div class="kt-widget30__pic mr-2">
                         <img id="profImg" title="image">
                     </div>
-                    <div class="kt-widget30__info">
-                        <p id="ex_artist_en_name"></p>
-                        <p id="ex_artist_ar_name"></p>
-                        <p id="ex_artist_phonenumber"></p>
-                        <p id="ex_artist_mobilenumber"></p>
-                        <p id="ex_artist_email"></p>
+                    <div class="kt-widget30__info" id="PC_Popup_Table">
+                        <table>
+                            <tr>
+                                <th>Name:</th>
+                                <td id="ex_artist_en_name"></td>
+                            </tr>
+                            <tr>
+                                <th>Name(Ar):</th>
+                                <td id="ex_artist_ar_name"></td>
+                            </tr>
+                            <tr>
+                                <th>DOB:</th>
+                                <td id="ex_artist_dob"></td>
+                            </tr>
+                            <tr>
+                                <th>Gender:</th>
+                                <td id="ex_artist_gender"></td>
+                            </tr>
+                            <tr>
+                                <th>Mobile:</th>
+                                <td id="ex_artist_mobilenumber"></td>
+                            </tr>
+                            <tr>
+                                <th>Phone:</th>
+                                <td id="ex_artist_phonenumber"></td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td id="ex_artist_email"></td>
+                            </tr>
+                            <tr>
+                                <th>Nationality:</th>
+                                <td id="ex_artist_nationality"></td>
+                            </tr>
+                        </table>
                     </div>
                     <input type="hidden" id="artistDetailswithcode">
-                    <span class="kt-widget30__stats">
+                    {{-- <span class="kt-widget30__stats">
                         <button class="btn btn-label-brand btn-bold btn-sm" onclick="setArtistDetails()"
                             data-dismiss="modal">Select</button>
-                    </span>
+                    </span> --}}
                 </div>
-                <small class="text-center">Are you sure to add the this artist, else please do not add person
+                <div class="d-flex justify-content-center mt-4">
+                    <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails()"
+                        data-dismiss="modal">Select this Artist</button>
+                    <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not
+                        this Artist</button>
+                </div>
+                <small class="d-flex justify-content-center">Are you sure to add the this artist, else please do not add
+                    person
                     code!</small>
             </div>
 
@@ -686,7 +734,7 @@
             url:"{{route('clear_the_temp')}}"
         });
 
-        fetchFromDrafts();
+        // fetchFromDrafts();
     });
 
     $('.kt-wizard-v3__nav-item').on('click', function() {
@@ -694,16 +742,19 @@
          // get current step number
         setTimeout(function(){
             if(wizard.currentStep == 1) {
+                // checkBoxChecked();
                 $('#back_btn').css('display', 'block');
                 $('#submit_btn').css('display', 'none');
                 $('#prev_btn').css('display', 'none');
                 $('#next_btn').css('display', 'block');
             } else if(wizard.currentStep == 2) {
+                // stopNext(permitValidator);
                 $('#back_btn').css('display', 'none');
                 $('#submit_btn').css('display', 'none');
                 $('#prev_btn').css('display', 'block');
                 $('#next_btn').css('display', 'block');
             } else if(wizard.currentStep == 3) {
+                // stopNext(detailsValidator);
                 $('#back_btn').css('display', 'none');
                 $('#submit_btn').css('display', 'none');
                 $('#prev_btn').css('display', 'block');
@@ -717,21 +768,21 @@
          }, 200);
     });
 
-    const fetchFromDrafts = () => {
-            $.ajax({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "fetch_artist_data_from_drafts",
-                success: function(data)
-                {
-                    // console.log(data);
-                    if(data){
+    // const fetchFromDrafts = () => {
+    //         $.ajax({
+    //             headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //             },
+    //             url: "fetch_artist_data_from_drafts",
+    //             success: function(data)
+    //             {
+    //                 // console.log(data);
+    //                 if(data){
 
-                    }
-                }
-            });
-    }
+    //                 }
+    //             }
+    //         });
+    // }
 
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
@@ -745,7 +796,7 @@
                 method: "POST",
                 allowedTypes: "jpeg,jpg,png,pdf",
                 fileName: "doc_file_"+i,
-                showDownload: true,
+                // showDownload: true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
@@ -773,18 +824,21 @@
                             success: function(data)
                             {
                                 // console.log('../../storage/'+data[0]["path"]);
-                                let id = obj[0].id;
-                                let number = id.split("_");
-                                let issue_datetime = new Date(data[0]['issued_date']);
-                                let exp_datetime = new Date(data[0]['expired_date']);
-                                let formatted_issue_date = appendLeadingZeroes(issue_datetime.getDate()) + "-" + appendLeadingZeroes(issue_datetime.getMonth() + 1) + "-" + issue_datetime.getFullYear();
-                                let formatted_exp_date = appendLeadingZeroes(exp_datetime.getDate()) + "-" + appendLeadingZeroes(exp_datetime.getMonth() + 1) + "-" + exp_datetime.getFullYear();
-
-                                obj.createProgress(data[0]["document_name"],'../../storage/'+data[0]["path"],'');
-                                if(formatted_issue_date != NaN-NaN-NaN)
+                                if(data)
                                 {
-                                    $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
-                                    $('#doc_exp_date_'+number[1]).val(formatted_exp_date);
+                                    let id = obj[0].id;
+                                    let number = id.split("_");
+                                    let issue_datetime = new Date(data[0]['issued_date']);
+                                    let exp_datetime = new Date(data[0]['expired_date']);
+                                    let formatted_issue_date = appendLeadingZeroes(issue_datetime.getDate()) + "-" + appendLeadingZeroes(issue_datetime.getMonth() + 1) + "-" + issue_datetime.getFullYear();
+                                    let formatted_exp_date = appendLeadingZeroes(exp_datetime.getDate()) + "-" + appendLeadingZeroes(exp_datetime.getMonth() + 1) + "-" + exp_datetime.getFullYear();
+
+                                    obj.createProgress(data[0]["document_name"],'../../storage/'+data[0]["path"],'');
+                                    if(formatted_issue_date != NaN-NaN-NaN)
+                                    {
+                                        $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
+                                        $('#doc_exp_date_'+number[1]).val(formatted_exp_date);
+                                    }
                                 }
                             }
                         });
@@ -851,6 +905,7 @@
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
                 onLoad:function(obj)
                 {
+                    console.log(obj);
                     $code = $('#code').val();
                     if($code){
                         $.ajaxSetup({
@@ -860,9 +915,9 @@
                             url: "get_files_uploaded_with_code/"+$code,
                             success: function(data)
                             {
-                                if(data[0].artist_permit[0].original_pic)
+                                if(data[0].artist_permit[0].original)
                                 {
-                                    obj.createProgress('Profile Pic','../../storage/'+data[0].artist_permit[0].original_pic,'');
+                                    obj.createProgress('Profile Pic','../../storage/'+data[0].artist_permit[0].original,'');
                                 }
                             }
                         });
@@ -992,11 +1047,7 @@
             messages: docMessages
         })
 
-
-    $('#next_btn').click(function(){
-        wizard = new KTWizard("kt_wizard_v3");
-
-        if (wizard.currentStep == 1) {
+        function checkBoxChecked() {
             if ($('#agree').not(':checked')) {
                 wizard.stop();
                 $('#agree_cb > span').addClass('compulsory');
@@ -1009,10 +1060,17 @@
         }
 
 
+    $('#next_btn').click(function(){
+        wizard = new KTWizard("kt_wizard_v3");
+
+        if (wizard.currentStep == 1) {
+            checkBoxChecked();
+        }
         // checking the next page is permit details
        if(wizard.currentStep == 2){
             stopNext(permitValidator); // validating the permit details page
            // storing the values of permit details
+           searchCode();
            if(permitValidator.form())
             {
                 var permitDetails = {
@@ -1038,6 +1096,7 @@
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#addNew_btn').css('display', 'block'); // display the add new artist button
                 artistDetails[artist_id] = {
+                    id: $('#artist_id').val(),
                     code: $('#code').val(),
                     fname_en: $('#fname_en').val(),
                     fname_ar:  $('#fname_ar').val(),
@@ -1215,8 +1274,31 @@
 
     $('.date-picker').datepicker({
         format: 'dd-mm-yyyy',
-        autoclose: true
+        autoclose: true,
+        todayHighlight: true,
+        // orientation: "bottom left"
     })
+
+    $('#permit_from').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        orientation: "bottom left"
+    });
+
+    $('#permit_to').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        orientation: "bottom left"
+    });
+
+    $('#dob').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        startView: 2
+    });
 
     $('#permit_from').on('changeDate', function(ev) {$('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');});
     $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});
@@ -1271,70 +1353,102 @@
         }
 
         $('#code').keyup(function() {
-            let code = $('#code').val();
-            if(code){
-                $.ajax({
-                    url:"searchCode/"+code,
-                    success: function(data){
-                        // console.log(data);
-                        if(data) {
-                            $('#artistDetailswithcode').val(JSON.stringify(data));
-                            $('#ex_artist_en_name').html(data.firstname_en != null ?  data.firstname_en : '' + ' '+data.lastname_en != null ? data.lastname_en : '');
-                            $('#ex_artist_ar_name').html(data.firstname_ar != null ?  data.firstname_ar : '' + ' '+data.lastname_ar != null ? data.lastname_ar : '');
-                            $('#ex_artist_mobilenumber').html(data.mobile_number);
-                            $('#ex_artist_phonenumber').html(data.phone_number);
-                            $('#ex_artist_email').html(data.email);
-                            $('#profImg').attr('src', data.artist_permit[0].thumbnail_pic ? "/storage/"+data.artist_permit[0].thumbnail_pic : '');
-                            $('#profImg').css('height', '150px');
-                            $('#profImg').css('width', '150px');
-                            $('#artist_exists').modal('show');
-                        }
+        searchCode();
+    });
 
+    function searchCode(){
+        let code = $('#code').val();
+        if(code){
+            $.ajax({
+                url: "{{url('company/searchCode')}}"+ '/'+code,
+                success: function(data){
+                    // console.log(data);
+                    if(data) {
+                        $('#artistDetailswithcode').val(JSON.stringify(data));
+                        $('#ex_artist_en_name').html((data.firstname_en != null ?  data.firstname_en : '') + ' ' + (data.lastname_en != null ? data.lastname_en : ''));
+                        $('#ex_artist_ar_name').html((data.firstname_ar != null ?  data.firstname_ar : '') + ' '+ (data.lastname_ar != null ? data.lastname_ar : ''));
+                        $total_aps = data.artist_permit.length;
+                        $j = $total_aps - 1 ;
+                        $('#ex_artist_mobilenumber').html(data.artist_permit[$j].mobile_number);
+                        $('#ex_artist_phonenumber').html(data.artist_permit[$j].phone_number);
+                        $('#ex_artist_email').html(data.artist_permit[$j].email);
+                        $('#ex_artist_personcode').html(data.person_code);
+                        var dateArray = data.birthdate.split('-');
+                        var dob = dateArray[2] + "-" + dateArray[1]  +"-"  + dateArray[0];
+                        $('#ex_artist_dob').html(dob);
+                        $('#ex_artist_nationality').html(data.nationality);
+                        var gender = data.artist_permit[$j].gender == 1 ? 'Male' : 'Female';
+                        $('#ex_artist_gender').html(gender);
+                        $('#profImg').attr('src', data.artist_permit[$j].thumbnail ? "/storage/"+data.artist_permit[$j].thumbnail : '');
+                        $('#profImg').css('height', '150px');
+                        $('#profImg').css('width', '150px');
+                        $('#artist_exists').modal('show');
                     }
-                });
-            }
-        });
+
+                }
+            });
+        }
+    }
+        function removeSelectedArtist(){
+        $('#artist_details').trigger('reset');
+        $('#documents_required').trigger('reset');
+        $('#artist_id').val('');
+        $('#fname_en').removeClass('mk-disabled');
+        $('#fname_ar').removeClass('mk-disabled');
+        $('#lname_en').removeClass('mk-disabled');
+        $('#lname_ar').removeClass('mk-disabled');
+        $('#artist_permit_id').val('');
+        $('#changeArtistLabel').addClass('d-none');
+        $('#code').removeClass('mk-disabled');
+        PicUploadFunction();
+        uploadFunction();
+    }
 
         const setArtistDetails = () => {
             let ad = $('#artistDetailswithcode').val();
             ad = JSON.parse(ad);
+            $ap_count = ad.artist_permit.length;
+            $i = $ap_count - 1 ;
             // console.log(ad);
             var dateArray = ad.birthdate.split('-');
             $('#is_old_artist').val(2);
             var newDate = dateArray[2] + "-" + dateArray[1]  +"-"  + dateArray[0];
-
-            $('#code').val(ad.person_code),
-            $('#fname_en').val(ad.firstname_en),
-            $('#fname_ar').val(ad.firstname_ar),
-            $('#lname_en').val(ad.lastname_en),
-            $('#lname_ar').val(ad.lastname_ar),
+            $('#changeArtistLabel').removeClass('d-none');
+            $('#changeArtistLabel').addClass('ml-2');
+            $('#artist_id').val(ad.artist_id);
+            $('#code').val(ad.person_code);$('#code').addClass('mk-disabled');
+            $('#fname_en').val(ad.firstname_en);$('#fname_en').addClass('mk-disabled');
+            $('#fname_ar').val(ad.firstname_ar);$('#fname_ar').addClass('mk-disabled');
+            $('#lname_en').val(ad.lastname_en);$('#lname_en').addClass('mk-disabled');
+            $('#lname_ar').val(ad.lastname_ar);$('#lname_ar').addClass('mk-disabled');
             $('#nationality').val(ad.nationality),
-            $('#profession').val(ad.artist_permit[0].profession),
-            $('#passport').val(ad.passport_number),
-            $('#pp_expiry').val(ad.pp_expiry_date),
-            $('#visa_type').val(ad.visa_type),
-            $('#visa_number').val(ad.visa_number),
-            $('#visa_expiry').val(ad.visa_expiry_date),
-            $('#sp_name').val(ad.sponser_name),
-            $('#id_no').val(ad.id_no),
-            $('#language').val(ad.language),
-            $('#religion').val(ad.religion),
-            $('#gender').val(ad.gender),
-            $('#city').val(ad.emirate);
-            $('#po_box').val(ad.po_box);
-            $('#fax_no').val(ad.emirate);
-            getAreas(ad.emirate);
-            $('#address').val(ad.address),
-            $('#uid_number').val(ad.uid_number),
-            $('#uid_expiry').val(ad.uid_expiry_date),
+            $('#profession').val(ad.artist_permit[$i].permit_type_id),
+            $('#passport').val(ad.artist_permit[$i].passport_number),
+            $('#pp_expiry').val(ad.artist_permit[$i].passport_expire_date),
+            $('#visa_type').val(ad.artist_permit[$i].visa_type),
+            $('#visa_number').val(ad.artist_permit[$i].visa_number),
+            $('#visa_expiry').val(ad.artist_permit[$i].visa_expire_date),
+            $('#sp_name').val(ad.artist_permit[$i].sponsor_name_en),
+            $('#id_no').val(ad.artist_permit[$i].emirates_id),
+            $('#language').val(ad.artist_permit[$i].language),
+            $('#religion').val(ad.artist_permit[$i].religion),
+            $('#gender').val(ad.artist_permit[$i].gender),
+            $('#city').val(ad.artist_permit[$i].city);
+            getAreas(ad.artist_permit[$i].city);
+            $('#address').val(ad.artist_permit[$i].address_en),
+            $('#uid_number').val(ad.artist_permit[$i].uid_number),
+            $('#uid_expiry').val(ad.artist_permit[$i].uid_expire_date),
             $('#dob').val(newDate),
-            $('#landline').val(ad.phone_number),
-            $('#mobile').val(ad.mobile_number),
-            $('#email').val(ad.email);
-            $('#artist_permit_num').val(ad.artist_permit[0].artist_permit_id);
-            $('#area').val(ad.area);
+            $('#landline').val(ad.artist_permit[$i].phone_number),
+            $('#po_box').val(ad.artist_permit[$i].po_box),
+            $('#fax_no').val(ad.artist_permit[$i].fax_number),
+            $('#mobile').val(ad.artist_permit[$i].mobile_number),
+            $('#email').val(ad.artist_permit[$i].email);
+            $('#artist_permit_num').val(ad.artist_permit[$i].artist_permit_id);
+            $('#area').val(ad.artist_permit[$i].area);
             PicUploadFunction();
             uploadFunction();
+            detailsValidator();
         }
 
 

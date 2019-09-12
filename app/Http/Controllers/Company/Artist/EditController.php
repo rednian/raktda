@@ -8,14 +8,18 @@ use PragmaRX\Countries\Package\Countries;
 use App\ArtistPermit;
 use App\Requirement;
 use App\PermitType;
+use App\PermitComment;
+use App\ArtistPermitCheck;
 use App\Language;
 use App\Religion;
 use App\Emirates;
 use App\Areas;
+use App\Permit;
+use Carbon\Carbon;
 use App\VisaType;
 use App\ArtistTempData;
 
-class ArtistController extends Controller
+class EditController extends Controller
 {
 
     public function edit_permit($id)
@@ -38,8 +42,8 @@ class ArtistController extends Controller
                     'artist_id' => $pd->artist_id,
                     'permit_id' => $pd->permit_id,
                     'permit_type_id' => $pd->permit_type_id,
-                    'original' => $pd->permit_id,
-                    'thumbnail' => $pd->permit_id,
+                    'original' => $pd->original,
+                    'thumbnail' => $pd->thumbnail,
                     'passport_number' => $pd->passport_number,
                     'uid_number' => $pd->uid_number,
                     'uid_expire_date' => $pd->uid_expire_date ? Carbon::parse($pd->uid_expire_date)->toDateString() : '',

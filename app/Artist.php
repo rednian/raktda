@@ -11,7 +11,7 @@ class Artist extends Model
     protected $table = 'artist';
     protected $primaryKey = 'artist_id';
     protected $fillable = [
-        'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'nationality', 'birthdate', 'artist_status', 'gender',  'created_by', 'updated_by', 'deleted_by'
+        'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'nationality', 'birthdate', 'artist_status', 'gender',  'created_by', 'updated_by', 'deleted_by', 'person_code'
     ];
 
     public function artistPermit()
