@@ -63,7 +63,7 @@
                         <!--begin: Form Wizard Step 1-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content"
                             data-ktwizard-state="current">
-                            <div class="kt-form__section kt-form__section--first">
+                            <div class="kt-form__section kt-form__section--first ">
                                 <div class="kt-wizard-v3__form">
                                     <!--begin::Accordion-->
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
@@ -153,16 +153,16 @@
                                 </div>
                             </div>
                         </div>
+
                         <!--end: Form Wizard Step 1-->
+
+                        {{-- {{dd($permit_details)}} --}}
 
                         <!--begin: Permit Details Wizard-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first">
                                 <div class="kt-wizard-v3__form">
                                     <form id="permit_details" method="POST">
-
-                                        <input type="hidden" id="artist_permit_id"
-                                            value="{{$permit_details->artist_permit_id}}">
                                         <div class=" row">
                                             <div class="form-group col-lg-3">
                                                 <label for="permit_from" class="col-form-label col-form-label-sm">From
@@ -172,8 +172,8 @@
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="permit_from" id="permit_from" data-date-start-date="+0d"
-                                                        placeholder="DD-MM-YYYY"
-                                                        value="{{date('d-m-Y',strtotime($permit_details->permit['issued_date']))}}"
+                                                        placeholder="DD-MM-YYYY" onchange="setToDate()"
+                                                        value="{{date('d-m-Y', strtotime($permit_details->permit['issued_date']))}}"
                                                         disabled />
                                                 </div>
                                             </div>
@@ -186,7 +186,7 @@
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
                                                         data-date-start-date="+0d"
-                                                        value="{{date('d-m-Y',strtotime($permit_details->permit['exprired_date']))}}"
+                                                        value="{{date('d-m-Y', strtotime($permit_details->permit['expired_date']))}}"
                                                         disabled />
                                                 </div>
                                             </div>
@@ -218,24 +218,20 @@
                         </div>
                         {{-- Permit details wizard end --}}
 
+                        {{-- {{dd($artist_details)}} --}}
+
                         {{-- Artist details wizard Start --}}
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first">
                                 <div class="kt-wizard-v3__form">
                                     <form id="artist_details">
-                                        <input type="hidden" id="artist_number" value="{{1}}">
-                                        <input type="hidden" id="artist_id"
-                                            value="{{$permit_details->artist['artist_id']}}">
+                                        <input type="hidden" id="artist_number" value={{1}}>
                                         <div class=" row">
                                             <div class="form-group col-lg-3">
                                                 <label for="name_en" class="col-form-label col-form-label-sm">Person
                                                     Code:</label>
-                                                <input type="text" class="form-control form-control-sm " id="dcode"
-                                                    placeholder="Person Code"
-                                                    value="{{$permit_details->artist['person_code']}}" disabled>
-                                                <input type="hidden" class="form-control form-control-sm " name="code"
-                                                    id="code" placeholder="Person Code"
-                                                    value="{{$permit_details->artist['person_code']}}">
+                                                <input type="text" class="form-control form-control-sm " name="code"
+                                                    id="code" placeholder="Person Code">
                                                 <small>only enter if you know person code</small>
                                             </div>
                                             <input type="hidden" id="is_old_artist" value="1">
@@ -243,15 +239,17 @@
                                                 <label for="profession"
                                                     class="col-form-label col-form-label-sm">Profession:</label>
                                                 <select class="form-control form-control-sm " name="profession"
-                                                    id="profession" placeholder="Profession">
+                                                    id="profession" placeholder="Profession" disabled>
                                                     <option value="">Select</option>
                                                     @foreach ($permitTypes as $pt)
                                                     <option value="{{$pt->permit_type_id}}"
-                                                        <?php if($pt->permit_type_id == $permit_details->profession){ echo 'selected' ;}?>>
+                                                        <?php if($pt->permit_type_id == $artist_details->permit_type_id) {echo 'selected';}?>>
                                                         {{$pt->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
+                                            <input type="hidden" id="old_profession"
+                                                value={{$permit_details->profession}}>
                                             <div class="form-group col-lg-3">
                                                 <label for="fname_en" class="col-form-label col-form-label-sm">First
                                                     Name:</label>
@@ -259,8 +257,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        name="fname_en" id="fname_en" placeholder="First Name"
-                                                        value="{{$permit_details->artist['firstname_en']}}">
+                                                        name="fname_en" id="fname_en" placeholder="First Name">
                                                 </div>
                                             </div>
 
@@ -271,8 +268,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        name="lname_en" id="lname_en" placeholder="Last Name"
-                                                        value="{{$permit_details->artist['lastname_en']}}">
+                                                        name="lname_en" id="lname_en" placeholder="Last Name">
                                                 </div>
                                             </div>
                                         </div>
@@ -285,9 +281,9 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm text-right"
-                                                        name="fname_ar" id="fname_ar" placeholder="First Name (Arabic)"
-                                                        value="{{$permit_details->artist['firstname_ar']}}">
+                                                    <input type="text"
+                                                        class="form-control form-control-sm horizontal-tb rtl"
+                                                        name="fname_ar" id="fname_ar" placeholder="First Name (Arabic)">
                                                 </div>
                                             </div>
 
@@ -297,9 +293,9 @@
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm text-right"
-                                                        name="lname_ar" id="lname_ar" placeholder="Last Name (Arabic)"
-                                                        value="{{$permit_details->artist['lastname_ar']}}">
+                                                    <input type="text"
+                                                        class="form-control form-control-sm horizontal-tb rtl"
+                                                        name="lname_ar" id="lname_ar" placeholder="Last Name (Arabic)">
                                                 </div>
                                             </div>
 
@@ -311,16 +307,14 @@
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-end-date="0d" name="dob"
-                                                        id="dob"
-                                                        value="{{date('d-m-Y', strtotime($permit_details->artist['birthdate']))}}" />
+                                                        id="dob" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="uid_number" class="col-form-label col-form-label-sm">UID:
                                                 </label>
                                                 <input type="text" class="form-control form-control-sm"
-                                                    name="uid_number" id="uid_number" placeholder="UID Number"
-                                                    value={{$permit_details->artist['uid_number']}}>
+                                                    name="uid_number" id="uid_number" placeholder="UID Number">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -332,16 +326,14 @@
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                        name="uid_expiry" id="uid_expiry"
-                                                        value="{{$permit_details->artist['uid_expiry_date'] ? date('d-m-Y', strtotime($permit_details->artist['uid_expiry_date'])) : ''}}" />
+                                                        name="uid_expiry" id="uid_expiry" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="passport" class="col-form-label col-form-label-sm">Passport
                                                     No:</label>
                                                 <input type="text" class="form-control form-control-sm" name="passport"
-                                                    id="passport" placeholder="Passport Number"
-                                                    value="{{$permit_details->artist['passport_number']}}">
+                                                    id="passport" placeholder="Passport Number">
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="pp_expiry" class="col-form-label col-form-label-sm">PP
@@ -351,8 +343,7 @@
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                        name="pp_expiry" id="pp_expiry"
-                                                        value="{{$permit_details->artist['pp_expiry_date'] ? date('d-m-Y', strtotime($permit_details->artist['pp_expiry_date'])) : ''}}" />
+                                                        name="pp_expiry" id="pp_expiry" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
@@ -361,12 +352,9 @@
                                                 <select type="text" class="form-control form-control-sm "
                                                     name="visa_type" id="visa_type">
                                                     <option value="">Select</option>
-                                                    @foreach ($visa_types as $vt)
-                                                    <option value="{{$vt->visa_type_en}}"
-                                                        <?php if($vt->visa_type_en == $permit_details->artist['visa_type']) { echo 'selected' ;}?>>
-                                                        {{$vt->visa_type_en}}
-                                                    </option>
-                                                    @endforeach
+                                                    <option value="Employment Visas">Employment Visas</option>
+                                                    <option value="Tourist Visas">Tourist Visas</option>
+                                                    <option value="Family Visas">Family Visas</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -375,8 +363,7 @@
                                                 <label for="visa_number" class="col-form-label col-form-label-sm">Visa
                                                     Number:</label>
                                                 <input type="text" class="form-control form-control-sm"
-                                                    name="visa_number" id="visa_number" placeholder="Visa Number"
-                                                    value="{{$permit_details->artist['visa_number']}}">
+                                                    name="visa_number" id="visa_number" placeholder="Visa Number">
                                             </div>
 
                                             <div class="form-group col-lg-3">
@@ -387,23 +374,20 @@
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                        name="visa_expiry" id="visa_expiry"
-                                                        value="{{$permit_details->artist['visa_expiry_date']}}" />
+                                                        name="visa_expiry" id="visa_expiry" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="sp_name" class="col-form-label col-form-label-sm">Sponser
                                                     Name:</label>
                                                 <input type="text" class="form-control form-control-sm" name="sp_name"
-                                                    id="sp_name" placeholder="Sponser Name"
-                                                    value="{{$permit_details->artist['sponser_name']}}">
+                                                    id="sp_name" placeholder="Sponser Name">
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="telephone"
                                                     class="col-form-label col-form-label-sm">Identification No:</label>
                                                 <input type="text" class="form-control form-control-sm" name="id_no"
-                                                    id="id_no" placeholder="Identification No."
-                                                    value="{{$permit_details->artist['id_no']}}">
+                                                    id="id_no" placeholder="Identification No.">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -414,12 +398,8 @@
                                                     id="nationality">
                                                     {{--   - class for search in select  --}}
                                                     <option value="">Select</option>
-
-                                                    @foreach ($countries as $key => $value)
-
-                                                    <option value="{{$value}}"
-                                                        <?php if($value == $permit_details->artist['nationality']){ echo 'selected' ;}?>>
-                                                        {{$value}}</option>
+                                                    @foreach ($countries as $ct)
+                                                    <option value={{$ct}}>{{$ct}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -430,9 +410,7 @@
                                                     id="language">
                                                     <option value="">Select</option>
                                                     @foreach ($languages as $lang)
-                                                    <option value="{{$lang->id}}"
-                                                        <?php if($lang->id == $permit_details->artist['language']){ echo 'selected';}?>>
-                                                        {{$lang->name_en}}</option>
+                                                    <option value={{$lang->id}}>{{$lang->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -443,9 +421,7 @@
                                                     id="religion">
                                                     <option value="">Select</option>
                                                     @foreach ($religions as $reli)
-                                                    <option value="{{$reli->id}}"
-                                                        <?php if($reli->id == $permit_details->artist['religion']){ echo 'selected';}?>>
-                                                        {{$reli->name_en}}</option>
+                                                    <option value={{$reli->id}}>{{$reli->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -454,12 +430,8 @@
                                                     class="col-form-label col-form-label-sm">Gender:</label>
                                                 <select class=" form-control form-control-sm" name="gender" id="gender">
                                                     <option value="">Select</option>
-                                                    <option value="male"
-                                                        <?php if($permit_details->artist['gender'] == 'male'){ echo 'selected';}?>>
-                                                        Male</option>
-                                                    <option value="female"
-                                                        <?php if($permit_details->artist['gender'] == 'female'){ echo 'selected';}?>>
-                                                        Female</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -467,17 +439,13 @@
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="city" class="col-form-label col-form-label-sm">City:</label>
                                                 <select class=" form-control form-control-sm " name="city" id="city"
-                                                    onChange="getAreas(this.value, '')">
+                                                    onChange="getAreas(this.value)">
                                                     <option value="">Select</option>
                                                     @foreach ($emirates as $em)
-                                                    <option value="{{$em->id}}"
-                                                        <?php if($em->id == $permit_details->artist['emirate']){ echo 'selected';}?>>
-                                                        {{$em->name_en}}</option>
+                                                    <option value={{$em->id}}>{{$em->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <input type="hidden" name="sel_area" id="sel_area"
-                                                value="{{$permit_details->artist['area']}}">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="area" class="col-form-label col-form-label-sm">Area:</label>
                                                 <select class="  form-control form-control-sm " name="area" id="area">
@@ -492,8 +460,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-map-marker"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        name="address" id="address" placeholder="Address"
-                                                        value="{{$permit_details->artist['address']}}">
+                                                        name="address" id="address" placeholder="Address">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
@@ -503,8 +470,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-phone-square"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        name="landline" id="landline" placeholder="Landline No."
-                                                        value="{{$permit_details->artist['phone_number']}}">
+                                                        name="landline" id="landline" placeholder="Landline No.">
                                                 </div>
                                             </div>
                                         </div>
@@ -516,8 +482,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-mobile-phone"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        name="mobile" id="mobile" placeholder="Mobile No."
-                                                        value="{{$permit_details->artist['mobile_number']}}">
+                                                        name="mobile" id="mobile" placeholder="Mobile No.">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
@@ -527,8 +492,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-envelope-o"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        placeholder="Email" name="email" id="email"
-                                                        value="{{$permit_details->artist['email']}}" />
+                                                        placeholder="Email" name="email" id="email" />
                                                 </div>
                                             </div>
                                         </div>
@@ -544,7 +508,7 @@
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-form__section kt-form__section--first">
+                            <div class="kt-form__section kt-form__section--first ">
                                 <div class="kt-wizard-v3__form">
                                     <form id="documents_required" method="post">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
@@ -615,27 +579,20 @@
                                 data-ktwizard-type="action-prev" id="prev_btn">
                                 Previous
                             </div>
-                            <input type="hidden" id="from_page" value="{{$from}}">
-                            <input type="hidden" id="permit_id" value={{$permit_details->permit_id}}>
-                            @php
-                            if($from == 'amend'){
-                            $route_back = '../../amend_permit/'.$permit_details->permit_id;
-                            } elseif($from == 'edit') {
-                            $route_back = '../../edit_permit/'.$permit_details->permit_id;
-                            } elseif($from == 'renew') {
-                            $route_back = '../../renew_permit/'.$permit_details->permit_id;
-                            }
-                            @endphp
 
-                            <a href="{{$route_back}}">
+                            <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
+                            <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
+
+                            <a href="{{'../amend_permit/'.$permit_details->permit_id}}">
                                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                    id="back_btn">
+                                    id="back_btn" style="display:none;">
                                     Back
                                 </div>
                             </a>
+
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                 id="submit_btn" style="display:none;">
-                                Update
+                                Apply
                             </div>
 
                             <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
@@ -663,6 +620,67 @@
     <i class="fa fa-arrow-up"></i>
 </div>
 <!-- end::Scrolltop -->
+
+<!--begin::Modal-->
+<div class="modal fade" id="artist_exists" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Artist Exists</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Artist with same person code exists ! </p>
+                <div class="kt-widget30__item d-flex justify-content-around">
+                    <div class="kt-widget30__pic">
+                        <img id="profImg" title="image">
+                    </div>
+                    <div class="kt-widget30__info">
+                        <p id="ex_artist_en_name"></p>
+                        <p id="ex_artist_ar_name"></p>
+                        <p id="ex_artist_phonenumber"></p>
+                        <p id="ex_artist_mobilenumber"></p>
+                        <p id="ex_artist_email"></p>
+                    </div>
+                    <input type="hidden" id="artistDetailswithcode">
+                    <span class="kt-widget30__stats">
+                        <button class="btn btn-label-brand btn-bold btn-sm" onclick="setArtistDetails()"
+                            data-dismiss="modal">Select</button>
+                    </span>
+                </div>
+                <small class="text-center">Are you sure to add the this artist, else please do not add person
+                    code!</small>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--end::Modal-->
+
+<!--begin::Modal-->
+<div class="modal fade" id="alert_profession" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Message !</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>please select a artist with <span class="text--maroon">SAME PROFESSION</span> ! </p>
+                <button class="btn btn--yellow btn-wide kt-font-transform-u float-right"
+                    data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end::Modal-->
+
 
 
 @endsection
@@ -693,10 +711,8 @@
 
         wizard = new KTWizard("kt_wizard_v3");
         wizard.goTo(3);
-        $('#back_btn').css('display', 'none');
-        var city = $('#city').val();
-        var sel_area = $('#sel_area').val();
-        city ? getAreas(city, sel_area) : '';
+
+        // fetchFromDrafts();
     });
 
 
@@ -729,6 +745,21 @@
     });
 
 
+    const fetchFromDrafts = () => {
+            $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "fetch_artist_data_from_drafts",
+                success: function(data)
+                {
+                    // console.log(data);
+                    if(data){
+
+                    }
+                }
+            });
+    }
 
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
@@ -743,10 +774,10 @@
                 allowedTypes: "jpeg,jpg,png,pdf",
                 fileName: "doc_file_"+i,
                 showDownload: true,
-                // showPreview: true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                returnType: "json",
                 showFileCounter: false,
                 abortStr: '',
                 multiple: false,
@@ -756,19 +787,20 @@
                 formData: {id: i, reqName: $('#req_name_'+i).val() , artistNo: $('#artist_number_doc').val()},
                 onLoad:function(obj)
                 {
-                    $artist_permit_id = $('#artist_permit_id').val();
-                    if($artist_permit_id){
+                    $code = $('#code').val();
+                    if($code){
                         $.ajaxSetup({
                         headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
                         });
                         $.ajax({
                             cache: false,
-                            url: "{{route('company.get_files_by_artist_permit_id')}}",
+                            url: "{{route('company.get_files_uploaded')}}",
                             type: 'POST',
-                            data: {artist_permit_id:  $artist_permit_id, reqName: $('#req_name_'+i).val()},
+                            data: {artist_permit: $('#artist_permit_num').val(), reqName: $('#req_name_'+i).val()},
                             dataType: "json",
                             success: function(data)
                             {
+                                // console.log(data);
                                 // console.log('../../storage/'+data[0]["path"]);
                                 let id = obj[0].id;
                                 let number = id.split("_");
@@ -777,7 +809,7 @@
                                 let formatted_issue_date = appendLeadingZeroes(issue_datetime.getDate()) + "-" + appendLeadingZeroes(issue_datetime.getMonth() + 1) + "-" + issue_datetime.getFullYear();
                                 let formatted_exp_date = appendLeadingZeroes(exp_datetime.getDate()) + "-" + appendLeadingZeroes(exp_datetime.getMonth() + 1) + "-" + exp_datetime.getFullYear();
 
-                                obj.createProgress(data[0]["document_name"],"{{url('/storage')}}"+'/'+data[0]["path"],'');
+                                obj.createProgress(data[0]["document_name"],'../../storage/'+data[0]["path"],'');
                                 if(formatted_issue_date != NaN-NaN-NaN)
                                 {
                                     $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
@@ -788,8 +820,15 @@
                     }
 
                 },
-                downloadCallback:function(filename,pd)
+                onError: function(files, status, errMsg, pd) {
+                    showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
+                    pd.statusbar.hide();
+                },
+                downloadCallback:function(files,pd)
                 {
+                    console.log('files',files);
+                    console.log('pd',pd);
+                    // location.href="download_file/"+files[0];
                     // $.ajaxSetup({
                     //     headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
                     //     });
@@ -828,31 +867,31 @@
                 allowedTypes: "jpeg,jpg,png",
                 fileName: "pic_file",
                 multiple: false,
-                maxFileCount:1,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
                 showFileCounter: false,
                 abortStr: '',
+                returnType: "json",
+                maxFileCount:1,
                 showPreview:true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
                 onLoad:function(obj)
                 {
-                    var artist_permit_id = $('#artist_permit_id').val();
-                    if(artist_permit_id){
+                    $code = $('#code').val();
+                    if($code){
                         $.ajaxSetup({
                             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
                         });
                         $.ajax({
-                            url: "{{url('company/get_photo_by_artist_permit_id')}}"+'/'+artist_permit_id,
+                            url: "{{url('company/get_files_uploaded_with_code')}}"+'/'+$code,
                             success: function(data)
                             {
-                                // console.log(data[0].original_pic);
-                                if(data[0].original)
+                                if(data[0].artist_permit[0].original_pic)
                                 {
-                                    obj.createProgress('Profile Pic',"{{url('/storage')}}"+'/'+data[0].original,'');
+                                    obj.createProgress('Profile Pic','../../storage/'+data[0].artist_permit[0].original_pic,'');
                                 }
                             }
                         });
@@ -865,6 +904,16 @@
     }
 
 
+    // const insertIntoDrafts = (stepNo, data) => {
+    //         $.ajax({
+    //             headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //             },
+    //             url: "insert_artist_data_into_drafts",
+    //             type:'POST',
+    //             data: { data: data, step: stepNo, section: 'New'}
+    //         });
+    // }
 
     var permitValidator = $('#permit_details').validate({
         rules: {
@@ -901,11 +950,11 @@
                 nationality: 'required',
                 address: 'required',
                 landline: {
-                    // number: true,
+                    number: true,
                     required : true
                 } ,
                 mobile: {
-                    // number: true,
+                    number: true,
                     required : true
                 } ,
                 email: {
@@ -932,10 +981,10 @@
                 address: 'This field is required',
                 landline: {
                     required: 'This field is required',
-                    // number: 'Must be a Number'
+                    number: 'Must be a Number'
                 },
                 mobile: {
-                    // number: 'Please enter number',
+                    number: 'Please enter number',
                     required : 'This field is required'
                 },
                 email: {
@@ -943,6 +992,17 @@
                     email: 'Enter a valid email',
                 },
             },
+            // invalidHandler: function(event, validator){
+            //     KTUtil.scrollTop();
+            //     Swal.fire({
+            //         title: "",
+            //         text:
+            //             "Please fill all the mandatory fields",
+            //         type: "error",
+            //         confirmButtonClass: "btn btn-secondary"
+            //     });
+
+            // },
         });
 
         var docRules = {};
@@ -964,6 +1024,19 @@
 
     $('#next_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
+
+        if (wizard.currentStep == 1) {
+            if ($('#agree').not(':checked')) {
+                wizard.stop();
+                $('#agree_cb > span').addClass('compulsory');
+            }
+            if ($('#agree').is(':checked')) {
+                $('#back_btn').css('display', 'none');
+                $('#prev_btn').css('display', 'block');
+                wizard.goNext();
+            }
+        }
+
 
         // checking the next page is permit details
        if(wizard.currentStep == 2){
@@ -994,7 +1067,7 @@
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#addNew_btn').css('display', 'block'); // display the add new artist button
                 artistDetails[artist_id] = {
-                    id: $('#artist_id').val(),
+                    id: $('#permit_id').val(),
                     code: $('#code').val(),
                     fname_en: $('#fname_en').val(),
                     fname_ar:  $('#fname_ar').val(),
@@ -1026,7 +1099,7 @@
 
                 localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
 
-                // insertIntoDrafts(3, JSON.stringify(artistDetails));
+                insertIntoDrafts(3, JSON.stringify(artistDetails));
             }
         }
     });
@@ -1076,34 +1149,34 @@
         var hasFile = docValidation();
 
         if(documentsValidator.form() && hasFile){
+
         var artist_permit_id = $('#artist_permit_id').val();
         var permit_id = $('#permit_id').val();
         var ad = localStorage.getItem('artistDetails');
         var dd = localStorage.getItem('documentDetails');
-        var from_page = $('#from_page').val();
 
         $.ajaxSetup({
 			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
 		});
         $.ajax({
-                url:"{{route('company.move_temp_to_permit')}}",
+                url:"{{route('company.update_artist_temp_data')}}",
                 type: "POST",
                 // processData:false,
                 // data: { permitDetails: pd},
-                data: {  permitId: artist_permit_id, artistD: ad , documentD: dd},
+                data: {  permitId: artist_permit_id, artistD: ad , documentD: dd, updateChecklist: false},
                 success: function(result){
                     // console.log(result)
-                    localStorage.clear();
-                    if(from_page == 'renew'){
-                        window.location.href="{{url('company/renew_permit')}}"+'/'+ permit_id;
-                    }else if(from_page == 'edit') {
-                        window.location.href="{{url('company/edit_permit')}}"+'/'+ permit_id;
+                    if(result.message[0] == 'success')
+                    {
+                        localStorage.clear();
+                        window.location.href="{{url('company/amend_permit')}}"+'/'+ permit_id;
                     }
                 }
             });
         }
 
     })
+
 
 
     const stopNext = (validator_name) => {
@@ -1118,11 +1191,15 @@
         wizard = new KTWizard("kt_wizard_v3");
        if(wizard.currentStep == 2){
             $('#prev_btn').css('display', 'none');
-            $('#back_btn').css('display', 'block');
-       }else{
+       }
+       else if(wizard.currentStep == 1){
+            $('#back_btn').css('display', 'none');
+       } else
+       {
             $('#prev_btn').css('display', 'block');
             $('#next_btn').css('display', 'block');
        }
+       $('#addNew_btn').css('display', 'none');
        $('#submit_btn').css('display', 'none');
     });
 
@@ -1178,24 +1255,184 @@
 
 
 
-    const getAreas = (city_id, sel_id) => {
-        $.ajax({
-                url:"{{url('company/fetch_areas')}}"+'/'+city_id,
-                success: function(result){
-                    // console.log(result)
-                    $('#area').empty();
-                    $('#area').append('<option value=" ">Select</option>');
-                    for(let i = 0; i< result.length;i++)
-                    {
-                        $('#area').append('<option value="'+result[i].id+'" >'+result[i].area_en+'</option>');
-                    }
-                    if(sel_id){
-                        $('#area').val(sel_id);
-                    }
-                }
-            });
+        const getAreas = (city_id) => {
+            $.ajax({
+                    url:"{{url('company/fetch_areas')}}"+'/'+city_id,
+                    success: function(result){
+                        // console.log(result)
+                        $('#area').empty();
+                        $('#area').append('<option value=" ">Select</option>');
+                        for(let i = 0; i< result.length;i++)
+                        {
+                            $('#area').append('<option value="'+result[i].id+'">'+result[i].area_en+'</option>');
+                        }
 
-    }
+                    }
+                });
+
+        }
+
+        $('#code').keyup(function() {
+            let code = $('#code').val();
+            if(code){
+                $.ajax({
+                    url:"{{url('company/searchCode')}}"+'/'+code,
+                    success: function(data){
+                        console.log(data);
+                        if(data) {
+                            $('#artistDetailswithcode').val(JSON.stringify(data));
+                            $('#ex_artist_en_name').html(data.firstname_en != null ?  data.firstname_en : '' + ' '+data.lastname_en != null ? data.lastname_en : '');
+                            $('#ex_artist_ar_name').html(data.firstname_ar != null ?  data.firstname_ar : '' + ' '+data.lastname_ar != null ? data.lastname_ar : '');
+                            $('#ex_artist_mobilenumber').html(data.mobile_number);
+                            $('#ex_artist_phonenumber').html(data.phone_number);
+                            $('#ex_artist_email').html(data.email);
+                            $('#profImg').attr('src', data.artist_permit[0].thumbnail_pic ? "/storage/"+data.artist_permit[0].thumbnail_pic : '');
+                            $('#profImg').css('height', '150px');
+                            $('#profImg').css('width', '150px');
+                            $('#artist_exists').modal('show');
+                        }
+
+                    },error:function(){
+                        alert("error!!!!");
+                    }
+                });
+            }
+        });
+
+        const setArtistDetails = () => {
+            let ad = $('#artistDetailswithcode').val();
+            var old_profession = $('#old_profession').val();
+
+            ad = JSON.parse(ad);
+
+            var artist_permit_count = ad.artist_permit.length;
+            var pr_index = artist_permit_count - 1 ;
+            if(old_profession != ad.artist_permit[pr_index].profession){
+                $('#code').val('');
+                $('#alert_profession').modal('show');
+                return ;
+            }
+            // console.log(ad);
+            var dateArray = ad.birthdate.split('-');
+            $('#is_old_artist').val(2);
+            var newDate = dateArray[2] + "-" + dateArray[1]  +"-"  + dateArray[0];
+
+            $('#code').val(ad.person_code),
+            $('#fname_en').val(ad.firstname_en),
+            $('#fname_ar').val(ad.firstname_ar),
+            $('#lname_en').val(ad.lastname_en),
+            $('#lname_ar').val(ad.lastname_ar),
+            $('#nationality').val(ad.nationality),
+            $('#profession').val(ad.artist_permit[0].profession),
+            $('#passport').val(ad.passport_number),
+            $('#pp_expiry').val(ad.pp_expiry_date),
+            $('#visa_type').val(ad.visa_type),
+            $('#visa_number').val(ad.visa_number),
+            $('#visa_expiry').val(ad.visa_expiry_date),
+            $('#sp_name').val(ad.sponser_name),
+            $('#id_no').val(ad.id_no),
+            $('#language').val(ad.language),
+            $('#religion').val(ad.religion),
+            $('#gender').val(ad.gender),
+            $('#city').val(ad.emirate);
+            getAreas(ad.emirate);
+            $('#address').val(ad.address),
+            $('#uid_number').val(ad.uid_number),
+            $('#uid_expiry').val(ad.uid_expiry_date),
+            $('#dob').val(newDate),
+            $('#landline').val(ad.phone_number),
+            $('#mobile').val(ad.mobile_number),
+            $('#email').val(ad.email);
+            $('#artist_permit_num').val(ad.artist_permit[0].artist_permit_id);
+            $('#area').val(ad.area);
+            PicUploadFunction();
+            uploadFunction();
+        }
+
+
+
+
+        // var documentValidator = $('#').validate({
+        //     rules: {
+        //         doc_issue_date_1: 'required'
+        //     },
+        //     messages:{
+
+        //     }
+        // });
+
+
+
+
+
+
+        // let permit_type = $('#permit_type').val();
+        // let from_date = $('#permit_from').val();
+        // let to_date = $('#permit_to').val();
+        // let name_en =  $('#name_en').val();
+        // let name_ar =  $('#name_ar').val();
+        // let nationality = $('#artist_nationality').val();
+        // let passport =  $('#passport]').val();
+        // let uid =  $('#uid_number]').val();
+        // let dob =  $('#dob]').val();
+        // let telephone =  $('#telephone]').val();
+        // let mobile =  $('#mobile]').val();
+        // let email =  $('#email]').val();
+        // let profession =  $('#profession]').val();
+
+        //artist_type: artist_type, from_date: from_date, to_date: to_date, name_en: name_en, name_ar: name_ar, nationality: nationality, passport: passport, uid: uid, dob: dob, telephone: telephone, mobile: mobile, email: email, profession: profession
+
+        // let doc_type = $('select[id][name="artist_upload_doc_type"]').val();
+        // let doc_file = $('input[name="artist_upload_doc_file"]')[0].files ;
+        // let doc_exp_date = $('input[name="artist_upload_doc_exp_date"]').val();
+
+
+        // let doc_type = $('#doc_type_1').val();
+        // let doc_file = $('#doc_file_1')[0].files[0] ;
+        // let doc_exp_date = $('#doc_exp_date_1').val();
+
+        // let fileData = new FormData();
+        // fileData.append(doc_file.name,doc_file);
+
+
+        // console.log(doc_type, fileData, doc_exp_date);
+
+        // return
+
+
+        // $.ajax({
+        //     headers: {
+        //     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+        //         "content"
+        //     )
+        // },
+        // type: "POST",
+        // url: '/company/apply_artist_permit',
+        // // dataType: 'application/json',
+        // processData:false,
+        // data: {
+        //     doc_type:doc_type, doc_file:fileData, doc_exp_date:doc_exp_date
+        // },
+        // success: function(data) {
+        //     console.log(data);
+        // }
+        // });
+    // });
+
+
+
+
+    // const add_new_row = () => {
+    //     let num = $('.doc_row').siblings().length;
+    //     let next_num = num + 2 ;
+    //    $('#document_row').append('<div class="row" id="row_'+next_num+'"><div class="form-group col-3"> <select type="text" class="form-control" name="doc_type[]" id="doc_type_'+next_num+'" onchange="isExpiry('+next_num+')" required> <option value="">Select Document Type</option> <option value="passport">Passport</option> <option value="visa">Visa</option> <option value="photograph">Photograph</option> <option value="medical">Medical Certificate</option> </select> </div> <div class="form-group col-4"> <div class="custom-file"> <input type="file" class="custom-file-input"  name="doc_file[]" id="doc_file_'+next_num+'"> <label class="custom-file-label" for="customFile">Choose file</label> </div> </div>   <div class="form-group col-2"> <input type="text" class="form-control date-picker" name="doc_issue_date[]" id="doc_issue_date_'+next_num+'" placeholder="Issue Date" required/> </div><div class="form-group col-2"><input type="text" class="form-control date-picker" name="doc_exp_date[]" id="doc_exp_date_'+next_num+'" placeholder="Expiry Date"> </div><i class="fa fa-trash " onclick="del_row('+next_num+')" style="color:red;margin:10px auto;"></i></div>');
+    //    $('.date-picker').datepicker({
+    //         format: 'mm/dd/yyyy',
+    //     });
+
+    // }
+
+
 
 </script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>

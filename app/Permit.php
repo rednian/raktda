@@ -13,12 +13,12 @@ class Permit extends Model
     protected $primaryKey = 'permit_id';
     protected $fillable = [
         'permit_number', 'issued_date', 'expired_date', 'work_location', 'permit_status',
-        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason'
+        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'user_id', 'request_type'
     ];
 
     public function artistPermit()
     {
-        return $this->hasMany(ArtistPermit::class, 'permit_id');
+        return $this->hasMany(ArtistPermit::class, 'permit_id')->where('artist_permit_status', 'active');
     }
 
     public function artist()

@@ -10,23 +10,8 @@ class ArtistPermitComment extends Model
        use SoftDeletes;
       protected $table = 'artist_permit_comment';
       protected $primaryKey = 'artist_permit_comment_id';
-      protected $fillable = [ 'comment', 'user_id', 'artist_permit_id', 'comment_status'];
+      protected $fillable = [ 'artist_permit_id', 'artist_permit_check_id', 'permit_comment_id'];
 
-
-      public function permitRivision()
-      {
-        return $this->hasMany(PermitRivision::class, 'artist_permit_comment_id');
-      }
-
-      public function artistPermitRivision()
-      {
-        return $this->hasMany(ArtistPermitRivision::class, 'artist_permit_comment_id');
-      }
-
-      public function artistPermit()
-      {
-        return $this->belongsTo(ArtistPermit::class, 'artist_permit_id');
-      }
-
+      
   
 }
