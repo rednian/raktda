@@ -194,7 +194,7 @@ class ArtistPermitController extends Controller
 
       return Datatables::of($artist_permit_document)
       ->editColumn('document_name', function($artist_permit_document){
-        return ucwords($artist_permit_document->requirement->requirement_name_en);
+        return ucwords($artist_permit_document->document_name);
       })
       ->editColumn('issued_date', function($artist_permit_document){
         return $artist_permit_document->issued_date->format('d-M-Y');
@@ -203,8 +203,8 @@ class ArtistPermitController extends Controller
         return $artist_permit_document->expired_date->format('d-M-Y');
       })
       ->addColumn('action', function($artist_permit_document){
-         $html = '<label class="kt-checkbox kt-checkbox--bold kt-checkbox--dark kt-checkbox--single">';
-         $html .= '<input type="checkbox"  name="'.$artist_permit_document->requirement->requirement_name_en.'" >';
+         $html = '<label class="kt-checkbox kt-checkbox--default kt-checkbox--single">';
+         $html .= '<input type="checkbox" data-check="checklist"  name="'.$artist_permit_document->document_name.'" >';
          $html .= '<span></span>';
          $html .= '</label>';
 

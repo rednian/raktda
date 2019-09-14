@@ -15,7 +15,7 @@ class Artist extends Model implements Auditable
     protected $primaryKey = 'artist_id';
     protected $fillable = [
 
-        'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'nationality', 'birthdate', 'artist_status', 'gender',  'created_by', 'updated_by', 'deleted_by', 'person_code'
+        'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'nationality', 'birthdate', 'artist_status', 'gender_id',  'created_by', 'updated_by', 'deleted_by', 'person_code'
 
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'birthdate'];
@@ -23,6 +23,11 @@ class Artist extends Model implements Auditable
     public function artistPermit()
     {
         return $this->hasMany(ArtistPermit::class, 'artist_id');
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class, 'gender_id');
     }
 
     public function permit()

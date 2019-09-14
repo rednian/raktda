@@ -11,7 +11,17 @@
       </div>
       <div class="kt-portlet__head-toolbar">
         <a href="{{ route('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-light btn-elevate kt-margin-r-4 kt-font-transform-u"><i class="la la-arrow-left"></i> Back</a>
-        <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-brand btn-elevate kt-font-transform-u">Artist Permit</a>
+        <div class="dropdown dropdown-inline">
+          <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="flaticon-more"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" >
+            <a class="dropdown-item kt-font-trasnform-u" href="javascript:void(0)">Company Information</a>
+            <a class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.artist_permit.index') }}">Artist Information</a>
+            {{-- <div class="dropdown-divider"></div> --}}
+            {{-- <a class="dropdown-item" href="#"><i class="la la-cog"></i> Settings</a> --}}
+          </div>
+        </div>
       </div>
   </div>
   <div class="kt-portlet__body kt-padding-t-5">
@@ -67,7 +77,7 @@
                     <div class="card">
                       <div class="card-header" id="headingOne6">
                         <div class="card-title" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
-                          <h5 class="kt-font-dark kt-font-transform-u">Personal information</h5>
+                          <h6 class="kt-font-dark kt-font-transform-u">Personal information</h6>
                         </div>
                       </div>
                       <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6">
@@ -111,11 +121,11 @@
                                      <label for="example-search-input" class="col-4 col-form-label">Gender <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
-                                             <input value="{{ ucwords($artist_permit->artist->gender_en) }}" type="text" readonly  class="form-control form-control-sm">
+                                             <input value="{{ ucwords($artist_permit->artist->gender->name_en) }}" type="text" readonly  class="form-control form-control-sm">
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->artist->gender_en) }}" name="gender" type="checkbox">
+                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->artist->gender->name_en) }}" name="gender" type="checkbox">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -127,11 +137,11 @@
                                      <label for="example-search-input" class="col-4 col-form-label">Nationality <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
-                                             <input value="{{ ucwords($artist_permit->artist->nationality_en) }}" readonly  type="text" class="form-control form-control-sm">
+                                             <input value="{{ ucwords($artist_permit->artist->nationality) }}" readonly  type="text" class="form-control form-control-sm">
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->artist->nationality_en) }}" type="checkbox" name="nationality">
+                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->artist->nationality) }}" type="checkbox" name="nationality">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -227,11 +237,11 @@
                                      <label for="example-search-input" class="col-4 col-form-label">Language</label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
-                                             <input value="{{ $artist_permit->language_en }}" type="text" name="language_en" readonly class="form-control form-control-sm">
+                                             <input value="{{ $artist_permit->language->name_en}}" type="text" readonly class="form-control form-control-sm">
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default" >
-                                                   <input data-check="checklist" value="{{ $artist_permit->language_en }}" type="checkbox" name="language">
+                                                   <input data-check="checklist" value="{{ $artist_permit->language->name_en}}" type="checkbox" name="language">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -280,7 +290,7 @@
                     <div class="card">
                       <div class="card-header" id="headingTwo6">
                         <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6" aria-expanded="false" aria-controls="collapseTwo6">
-                          <h5 class="kt-font-dark kt-font-transform-u">Contact information</h5>
+                          <h6 class="kt-font-dark kt-font-transform-u">Contact information</h6>
                         </div>
                       </div>
                       <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample6">
@@ -381,7 +391,7 @@
                     <div class="card">
                       <div class="card-header" id="headingThree6">
                         <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseThree6" aria-expanded="false" aria-controls="collapseThree6">
-                         <h5 class="kt-font-dark kt-font-transform-u">Address information</h5>
+                         <h6 class="kt-font-dark kt-font-transform-u">Address information</h6>
                         </div>
                       </div>
                       <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6" data-parent="#accordionExample6">
@@ -425,11 +435,11 @@
                                     <label for="example-search-input" class="col-4 col-form-label">Area <span class="text-danger">*</span></label>
                                     <div class="col-8">
                                          <div class="input-group input-group-sm">
-                                            <input value="{{ ucwords($artist_permit->area_en) }}" type="text"  readonly class="form-control form-control-sm">
+                                            <input value="{{ ucwords($artist_permit->area->area_en) }}" type="text"  readonly class="form-control form-control-sm">
                                             <div class="input-group-append">
                                               <span class="input-group-text">
                                                 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                  <input data-check="checklist" value="{{ ucwords($artist_permit->area_en) }}" type="checkbox" name="area">
+                                                  <input data-check="checklist" value="{{ ucwords($artist_permit->area->area_en) }}" type="checkbox" name="area">
                                                   <span></span>
                                                 </label>
                                               </span>
@@ -443,17 +453,17 @@
                                     <label for="example-search-input" class="col-4 col-form-label">City <span class="text-danger">*</span></label>
                                     <div class="col-8">
                                          <div class="input-group input-group-sm">
-                                            <input value="{{ ucwords($artist_permit->city_en) }}" type="text"  readonly class="form-control form-control-sm">
+                                            <input value="{{ ucwords($artist_permit->emirate->name_en) }}" type="text"  readonly class="form-control form-control-sm">
                                             <div class="input-group-append">
                                               <span class="input-group-text">
                                                 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                  <input data-check="checklist" value="{{ ucwords($artist_permit->city_en) }}" type="checkbox" name="area">
+                                                  <input data-check="checklist" value="{{ ucwords($artist_permit->emirate->name_en) }}" type="checkbox" name="area">
                                                   <span></span>
                                                 </label>
                                               </span>
                                             </div>
                                           </div>
-                                     </div>
+                                     </div> 
                                 </div>
                               </div>
                             </section>
@@ -485,7 +495,6 @@
                   <table class="table table-hover table-borderless table-striped" id="document-table">
                     <thead class="thead-dark">
                       <tr>
-                        <th></th>
                         <th>Document Name</th>
                         <th>Issued Date</th>
                         <th>Expiry Date</th>
@@ -548,10 +557,10 @@
         <div class="btn btn-elevate btn-light  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev">
         Previous
         </div>
-        <div class="btn btn-elevate btn-outline-brand  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
+        <div class="btn active btn-elevate btn-brand  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
         Next
         </div>
-        <div class="btn btn-success btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">
+        <div class="btn active btn-success btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">
           Finish & New
         </div>
       </div>
@@ -612,11 +621,10 @@
         url: '{{ url('/permit/artist_permit') }}/'+{{ $permit->permit_id }}+'/application/'+{{ $artist_permit->artist_permit_id }}+'/documentDatatable'
       },
         columnDefs: [
-             {targets: [0], className: 'no-wrap'},
-             {targets:  [0], className: 'no-wrap',sortable: false},
+             {targets: [3], className: 'no-wrap'},
+             {targets:  [3], className: 'no-wrap',sortable: false},
         ],
         columns: [
-            { data: ''},
             { data: 'document_name'},
             { data: 'issued_date'},
             { data: 'expird_date'},

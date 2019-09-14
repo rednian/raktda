@@ -14,7 +14,7 @@ class ArtistPermit extends Model implements Auditable
     protected $table = 'artist_permit';
     protected $primaryKey = 'artist_permit_id';
     protected $fillable = [
-        'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type', 'language', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'city', 'area', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion', 'emirates_id', 'uid_number'
+        'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type_id', 'language_id', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'city', 'area_id', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion_id', 'emirates_id', 'uid_number'
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at',  'uid_expire_date', 'passport_expire_date', 'visa_expire_date'];
 
@@ -58,13 +58,28 @@ class ArtistPermit extends Model implements Auditable
         return $this->belongsTo(Artist::class, 'artist_id');
     }
 
-
-
-    public function scopeDataTable($query)
+    public function emirate()
     {
-        return $this->join('artist', 'artist.artist_id', '=', 'artist_permit.artist_id')
-                    ->join('permit', 'permit.permit_id', '=', 'artist_permit.permit_id')
-                    ->join('permit_type', 'permit_type.permit_type_id', '=', 'artist_permit.permit_type_id')
-                    ->join('bls.company', 'bls.company.company_id', '=', 'permit.company_id');
+        return $this->belongsTo(Emirates::class);
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Areas::class);
+    }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class);
+    }
+
+    public function religion()
+    {
+        return $this->belongsTo(Religion::class);
+    }
+
+    public function visaType()
+    {
+        return $this->belongsTo(VisaType::class);
     }
 }   

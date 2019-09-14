@@ -134,8 +134,8 @@
                                 {{-- <span class="form-text text-muted">Some help text goes here</span> --}}
                               </div>
                             <div class="form-group form-group-xs">
-                              <button type="reset" class="btn btn-sm btn-elevate btn-light ">Clear</button>
-                              <button type="submit" class="btn btn-sm btn-elevate btn-success">Submit</button>
+                              <button type="reset" class="btn btn-sm btn-elevate btn-secondary ">Clear</button>
+                              <button type="submit" class="btn btn-sm btn-elevate btn-info ">Submit</button>
                             </div>
                       </form>
                     </div>
@@ -150,11 +150,9 @@
                     <ol class="text-danger">
                       @foreach ($permit->check as $check)
                         <li>{{ $check->artistPermit->artist->fullName }}</li>
-                        <ul>
                           @foreach ($check->checklist as $checklist)
-                            <li>{{ $checklist->fieldname }}</li>
+                            <span>{{ $checklist->fieldname }}</span>,
                           @endforeach
-                        </ul>
                       @endforeach
                     </ol>
                   </div>
