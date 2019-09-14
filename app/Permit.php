@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Permit extends Model
 {
-     use SoftDeletes;
-     protected $connection = 'mysql';
-     protected $table = 'permit';
-     protected $primaryKey = 'permit_id';
-     protected $fillable = [
-        'issued_date', 'expired_date', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
+    use SoftDeletes;
+    protected $connection = 'mysql';
+    protected $table = 'permit';
+    protected $primaryKey = 'permit_id';
+    protected $fillable = [
+        'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
         'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type'
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
@@ -55,10 +55,10 @@ class Permit extends Model
 
     public function scopeGetByStatus($query, $status)
     {
-        return $this->select('*',DB::raw('COUNT(artist_permit.artist_id) AS artist_number'))
-                    ->join('bls.company', 'permit.company_id', '=', 'bls.company.company_id')
-                    ->join('artist_permit', 'permit.permit_id', '=', 'artist_permit.permit_id')
-                    ->where('permit.permit_status', $status)
-                    ->groupBy('artist_permit.permit_id');
+        return $this->select('*', DB::raw('COUNT(artist_permit.artist_id) AS artist_number'))
+            ->join('bls.company', 'permit.company_id', '=', 'bls.company.company_id')
+            ->join('artist_permit', 'permit.permit_id', '=', 'artist_permit.permit_id')
+            ->where('permit.permit_status', $status)
+            ->groupBy('artist_permit.permit_id');
     }
 }

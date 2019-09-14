@@ -235,8 +235,7 @@
                                 <div class="kt-wizard-v3__form">
                                     <form id="artist_details">
                                         <input type="hidden" id="artist_number" value="{{1}}">
-                                        <input type="hidden" id="artist_id"
-                                            value="{{$artist_details->artist['artist_id']}}">
+                                        <input type="hidden" id="artist_id" value="{{$artist_details->id}}">
                                         <div class=" row">
                                             <div class="form-group col-lg-3">
                                                 <label for="name_en" class="col-form-label col-form-label-sm">Person

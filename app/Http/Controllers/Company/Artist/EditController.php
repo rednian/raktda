@@ -18,6 +18,7 @@ use App\Permit;
 use Carbon\Carbon;
 use App\VisaType;
 use App\ArtistTempData;
+use App\ArtistTempDocument;
 
 class EditController extends Controller
 {
@@ -26,12 +27,20 @@ class EditController extends Controller
     {
         $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('permit_id', $id)->first();
 
-        $row_exists = ArtistTempData::where('permit_id', $id)->exists();
+        ArtistTempData::where('permit_id', $id)->where('status', '!=', '2')->delete();
+        ArtistTempDocument::where('permit_id', $id)->where('status', '!=', '2')->delete();
 
-        if (!$row_exists) {
+        // $row_exists = ArtistTempData::where('permit_id', $id)->exists();
 
-            foreach ($permit_details->artistPermit as $pd) {
-                ArtistTempData::create([
+        // if (!$row_exists) {
+
+        foreach ($permit_details->artistPermit as $pd) {
+
+            $row_exists = ArtistTempData::where('artist_permit_id', $pd->artist_permit_id)->exists();
+
+            if (!$row_exists) {
+
+                ArtistTempData::updateOrCreate([
                     'firstname_en' => $pd->artist['firstname_en'],
                     'firstname_ar' =>  $pd->artist['firstname_ar'],
                     'lastname_en' =>  $pd->artist['lastname_en'],
@@ -67,10 +76,14 @@ class EditController extends Controller
                     'email' => $pd->email,
                     'emirates_id' => $pd->emirates_id,
                     'artist_permit_id' => $pd->artist_permit_id,
-                    'person_code' => $pd->artist['person_code']
+                    'person_code' => $pd->artist['person_code'],
+                    'is_old_artist' => 2
                 ]);
             }
         }
+
+        ArtistTempData::where('permit_id', $id)->where('status', 2)->update(['status' => 0]);
+        // }
         $data_bundle['permit_details'] =  Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('permit_id', $id)->first();
         $data_bundle['artist_details'] = ArtistTempData::where('permit_id', $id)->where('status', 0)->get();
         $data_bundle['staff_comments'] = PermitComment::where('permit_id', $id)->get();
@@ -102,6 +115,7 @@ class EditController extends Controller
         } else {
             $result = null;
         }
+        ArtistTempData::where('artist_permit_id', $artist_permit_id)->update(['status' => 2]);
         $data_bundle['field_list'] = $result;
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
         $data_bundle['countries'] = Countries::all()->pluck('demonym')->sort();
