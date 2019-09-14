@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use DB;
 use DataTables;
-use App\Company;
+
 use App\Artist;
 use App\ArtistPermit;
 use Illuminate\Http\Request;
@@ -11,67 +11,41 @@ use App\Http\Controllers\Controller;
 
 class ArtistController extends Controller
 {
-    public function index(Request $request)
+
+  public function index()
+  {
+    return view('admin.artist.index',[
+            'page_title'=> 'Artist List',
+            'breadcrumb'=> 'admin.artist.index',
+        ]);
+  }
+
+  public function show(Request $request, Artist $artist)
+  {
+    $artist_permit = ArtistPermit::whereHas('permit', function($q){
+      $q->whereNotIn('permit_status', ['draft', 'edit']);
+    })
+    ->where('artist_id', $artist->artist_id)->latest()->first();
+
+    return view('admin.artist.show',['artist_permit'=>$artist_permit]);
+  }
+
+
+    public function history(Request $request, ArtistPermit $artistpermit)
     {
-        $company = ArtistPermit::artistPermit($request)
-            ->groupBy('artist_permit.company_id')
-            ->orderBy('company_name')
-            ->get();
-        return view('admin.artist_permit.index', ['companies' => $company]);
+        $artist_permit = $artistpermit->datatable()
+                                      ->where('artist_permit.artist_id', $artistpermit->artist_id)
+                                      ->where('artist_permit.artist_permit_id','!=' ,$artistpermit->artist_permit_id)
+                                      ->get();
+          return Datatables::of($artist_permit)
+                            ->editColumn('issued_date', function($artist_permit){
+                                     return date('d-M-Y', strtotime($artist_permit->issued_date));
+                            })
+                            
+                            ->editColumn('expired_date', function($artist_permit){
+                                   return $artist_permit->expired_date ? date('d-M-Y', strtotime($artist_permit->expired_date)) : null;
+                            })
+                            ->make(true);   
     }
 
-    public function application(Request $request, ArtistPermit $artistPermit)
-    {
-        $company = Company::find($artistPermit->company_id);
-        return view('admin.artist_permit.application', ['artist_permit' => $artistPermit, 'company' => $company]);
-    }
-
-
-    public function create()
-    {
-        //
-    }
-
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    public function show($id)
-    {
-        //
-    }
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function datatableRequest(Request $request)
-    {
-        $permit = ArtistPermit::requestType('new')->orderBy('artist_permit.created_at', 'DESC')->get();
-        return Datatables::of($permit)->make(true);
-    }
-
-
-    public function datatable(Request $request)
-    {
-        $permit = ArtistPermit::artistPermit($request)->get();
-        return Datatables::of($permit)->make(true);
-    }
 }

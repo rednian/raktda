@@ -1,155 +1,170 @@
 "use strict";
 
 // Class definition
-var KTWizard3 = (function() {
-    // Base elements
-    var wizardEl;
-    var formEl;
-    var validator;
-    var wizard;
+var KTWizard3 = function () {
+	// Base elements
+	var wizardEl;
+	var formEl;
+	var validator;
+	var wizard;
+	
+	// Private functions
+	var initWizard = function () {
+		// Initialize form wizard
+		wizard = new KTWizard('kt_wizard_v3', {
+			startStep: 1,
+		});
 
-    // Private functions
-    var initWizard = function() {
-        // Initialize form wizard
-        wizard = new KTWizard("kt_wizard_v3", {
-            startStep: 1
-        });
+		// Validation before going to next page
+		wizard.on('beforeNext', function(wizardObj) {
+			if (validator.form() !== true) {
+				wizardObj.stop();  // don't go to the next step
+			}
+		});
 
-        // Validation before going to next page
-        wizard.on("beforeNext", function(wizardObj) {
-            if (validator.form() !== true) {
-                wizardObj.stop(); // don't go to the next step
-            }
-        });
+		wizard.on('beforePrev', function(wizardObj) {
+			if (validator.form() !== true) {
+				wizardObj.stop();  // don't go to the next step
+			}
+		});
 
-        // Change event
-        wizard.on("change", function(wizard) {
-            KTUtil.scrollTop();
-        });
-    };
+		// Change event
+		wizard.on('change', function(wizard) {
+			KTUtil.scrollTop();	
+		});
+	}
 
-    var initValidation = function() {
-        validator = formEl.validate({
-            // Validate only visible fields
-            ignore: ":hidden",
+	var initValidation = function() {
+		validator = formEl.validate({
+			// Validate only visible fields
+			ignore: ":hidden",
 
-            // Validation rules
-            rules: {
-                //= Step 1
-                // artist_type: {
-                //     required: true
-                // },
-                // artist_permit_from: {
-                //     required: true
-                // },
-                // artist_permit_to: {
-                //     required: true
-                // },
-                // artist_name_en: {
-                //     required: true
-                // },
-                // artist_nationality: {
-                //     required: true
-                // },
-                // artist_passport: {
-                //     required: true
-                // },
-                // artist_uid_number: {
-                //     required: true
-                // },
-                // artist_dob: {
-                //     required: true
-                // },
-                // artist_telephone: {
-                //     required: true
-                // },
-                // artist_mobile: {
-                //     required: true
-                // },
-                // artist_email: {
-                //     required: true
-                // },
+			// Validation rules
+			rules: {
+				//= Step 1
+				address1: {
+					required: true 
+				},
+				postcode: {
+					required: true
+				},	   
+				city: {
+					required: true
+				},	 
+				state: {
+					required: true
+				},	 
+				country: {
+					required: true
+				},	 
 
-                //= Step 2
-                artist_upload_doc_type: {
-                    required: true
-                },
-                artist_upload_doc_file: {
-                    required: true
-                },
-                artist_upload_doc_exp_date: {
-                    required: true
-                }
-            },
+				//= Step 2
+				package: {
+					required: true
+				},
+				weight: {
+					required: true
+				},	
+				width: {
+					required: true
+				},
+				height: {
+					required: true
+				},	
+				length: {
+					required: true
+				},			   
 
-            // Display error
-            invalidHandler: function(event, validator) {
-                KTUtil.scrollTop();
+				//= Step 3
+				delivery: {
+					required: true
+				},
+				packaging: {
+					required: true
+				},	
+				preferreddelivery: {
+					required: true
+				},	
 
-                swal.fire({
-                    title: "",
-                    text:
-                        "There are some errors in your submission. Please correct them.",
-                    type: "error",
-                    confirmButtonClass: "btn btn-secondary"
-                });
-            },
+				//= Step 4
+				locaddress1: {
+					required: true 
+				},
+				locpostcode: {
+					required: true
+				},	   
+				loccity: {
+					required: true
+				},	 
+				locstate: {
+					required: true
+				},	 
+				loccountry: {
+					required: true
+				},
+			},
+			
+			// Display error  
+			invalidHandler: function(event, validator) {	 
+				KTUtil.scrollTop();
 
-            // Submit valid form
-            submitHandler: function(form) {}
-        });
-    };
+				swal.fire({
+					"title": "", 
+					"text": "There are some errors in your submission. Please correct them.", 
+					"type": "error",
+					"confirmButtonClass": "btn btn-secondary"
+				});
+			},
 
-    var initSubmit = function() {
-        var btn = formEl.find('[data-ktwizard-type="action-submit"]');
+			// Submit valid form
+			submitHandler: function (form) {
+				
+			}
+		});   
+	}
 
-        btn.on("click", function(e) {
-            e.preventDefault();
+	var initSubmit = function() {
+		var btn = formEl.find('[data-ktwizard-type="action-submit"]');
 
-            if (validator.form()) {
-                // See: src\js\framework\base\app.js
-                KTApp.progress(btn);
-                //KTApp.block(formEl);
+		btn.on('click', function(e) {
+			e.preventDefault();
 
-                // See: http://malsup.com/jquery/form/#ajaxSubmit
-                formEl.ajaxSubmit({
-                    url: '{{route("/company/apply_artist_permit")}}/',
-                    type: "GET",
-                    headers: {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                            "content"
-                        )
-                    },
-                    success: function() {
-                        KTApp.unprogress(btn);
-                        //KTApp.unblock(formEl);
+			if (validator.form()) {
+				// See: src\js\framework\base\app.js
+				KTApp.progress(btn);
+				//KTApp.block(formEl);
 
-                        swal.fire({
-                            title: "",
-                            text:
-                                "The application has been successfully submitted!",
-                            type: "success",
-                            confirmButtonClass: "btn btn-secondary"
-                        });
-                    }
-                });
-            }
-        });
-    };
+				// See: http://malsup.com/jquery/form/#ajaxSubmit
+				formEl.ajaxSubmit({
+					success: function() {
+						KTApp.unprogress(btn);
+						//KTApp.unblock(formEl);
 
-    return {
-        // public functions
-        init: function() {
-            wizardEl = KTUtil.get("kt_wizard_v3");
-            formEl = $("#kt_form");
+						swal.fire({
+							"title": "", 
+							"text": "The application has been successfully submitted!", 
+							"type": "success",
+							"confirmButtonClass": "btn btn-secondary"
+						});
+					}
+				});
+			}
+		});
+	}
 
-            initWizard();
-            initValidation();
-            initSubmit();
-        }
-    };
-})();
+	return {
+		// public functions
+		init: function() {
+			wizardEl = KTUtil.get('kt_wizard_v3');
+			formEl = $('#kt_form');
 
-jQuery(document).ready(function() {
-    KTWizard3.init();
+			initWizard(); 
+			initValidation();
+			initSubmit();
+		}
+	};
+}();
+
+jQuery(document).ready(function() {	
+	KTWizard3.init();
 });

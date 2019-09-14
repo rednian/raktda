@@ -9,8 +9,14 @@ class PermitComment extends Model
     protected $table = 'permit_comment';
     protected $primaryKey = 'permit_comment_id';
     protected $fillable = [
-        'comment', 'user_id', 'permit_id', 'comment_status', 'created_by', 'updated_by', 'deleted_by'
+
+        'comment', 'user_id', 'permit_id', 'type'
     ];
+
+    public function approverComment()
+    {
+          return $this->belongsToMany(PermitApprover::class, 'permit_approver_note','permit_comment_id', 'permit_approver_id');
+    }
 
     public function check()
     {

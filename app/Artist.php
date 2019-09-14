@@ -2,17 +2,23 @@
 
 namespace App;
 
+use Carbon\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Artist extends Model
+class Artist extends Model implements Auditable
 {
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
     protected $table = 'artist';
     protected $primaryKey = 'artist_id';
     protected $fillable = [
+
         'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'nationality', 'birthdate', 'artist_status', 'gender',  'created_by', 'updated_by', 'deleted_by', 'person_code'
+
     ];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at', 'birthdate'];
 
     public function artistPermit()
     {
@@ -23,4 +29,19 @@ class Artist extends Model
     {
         return $this->belongsToMany(Permit::class, 'artist_permit', 'artist_id', 'permit_id');
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->firstname_en.' '.$this->lastname_en;
+    }
+
+    public function getAgeAttribute()
+    {
+        return Carbon::parse($this->attributes['birthdate'])->age;
+    }
+
+    
+
+
+
 }

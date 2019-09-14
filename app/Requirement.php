@@ -13,17 +13,11 @@ class Requirement extends Model implements Auditable
 
      protected $table = 'requirement';
      protected $primaryKey = 'requirement_id';
-     protected $fillable = ['requirement_name', 'requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by'];
+     protected $fillable = ['requirement_name', 'requirement_description', 'requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by'];
 
      public function requirementDocument()
      {
         return $this->hasMany(ArtistDocument::class, 'requirement_id');
-     }
-
-     public function artist()
-     {
-        return $this->belongsToMany(Artist::class, 'artist_document', 'requirement_id', 'artist_id')
-                    ->withPivot('doc_path', 'issued_date','expired_date', 'doc_status');
      }
 
 }

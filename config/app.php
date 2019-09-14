@@ -172,6 +172,7 @@ return [
         OwenIt\Auditing\AuditingServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Hoyvoy\CrossDatabase\CrossDatabaseServiceProvider::class,
+        DougSisk\CountryState\CountryStateServiceProvider::class,
         'A6digital\Image\DefaultProfileImageServiceProvider',
         Intervention\Image\ImageServiceProvider::class
     ],

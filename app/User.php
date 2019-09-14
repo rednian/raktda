@@ -28,9 +28,9 @@ class User extends Authenticatable implements Auditable
         'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'
     ];
 
-    protected $auditInclude = [
-        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'
-    ];
+    // protected $auditInclude = [
+    //     'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'
+    // ];
 
 
     protected $hidden = [
@@ -40,6 +40,11 @@ class User extends Authenticatable implements Auditable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'EmpClientId', 'employee_id');
+    }
 
     public function isAdmin()
     {

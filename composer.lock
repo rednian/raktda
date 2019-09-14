@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "1af136147bdf0368bcca5473909c6272",
+=======
+    "content-hash": "f3c5e89bee7375e2fa5741a186e95595",
+>>>>>>> master
     "packages": [
         {
             "name": "a6digital/laravel-default-profile-image",
@@ -156,6 +160,64 @@
                 "json_decode"
             ],
             "time": "2018-09-20T15:43:07+00:00"
+        },
+        {
+            "name": "davejamesmiller/laravel-breadcrumbs",
+            "version": "5.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/davejamesmiller/laravel-breadcrumbs.git",
+                "reference": "6465e8710341578092fdd8aea24319d4f53ab27c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/davejamesmiller/laravel-breadcrumbs/zipball/6465e8710341578092fdd8aea24319d4f53ab27c",
+                "reference": "6465e8710341578092fdd8aea24319d4f53ab27c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.6.*|5.7.*|5.8.*",
+                "illuminate/view": "5.6.*|5.7.*|5.8.*",
+                "php": ">=7.1.3"
+            },
+            "require-dev": {
+                "laravel/framework": "5.6.*|5.7.*|5.8.*",
+                "orchestra/testbench": "3.6.*|3.7.*|3.8.*",
+                "php-coveralls/php-coveralls": "^1.0",
+                "phpunit/phpunit": "7.*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DaveJamesMiller\\Breadcrumbs\\BreadcrumbsServiceProvider"
+                    ],
+                    "aliases": {
+                        "Breadcrumbs": "DaveJamesMiller\\Breadcrumbs\\Facades\\Breadcrumbs"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DaveJamesMiller\\Breadcrumbs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dave James Miller",
+                    "email": "dave@davejamesmiller.com"
+                }
+            ],
+            "description": "A simple Laravel-style way to create breadcrumbs.",
+            "homepage": "https://github.com/davejamesmiller/laravel-breadcrumbs",
+            "keywords": [
+                "laravel"
+            ],
+            "time": "2019-02-27T13:09:37+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -357,6 +419,63 @@
             "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
             "homepage": "https://github.com/dompdf/dompdf",
             "time": "2015-12-07T04:07:13+00:00"
+        },
+        {
+            "name": "dougsisk/laravel-country-state",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DougSisk/laravel-country-state.git",
+                "reference": "d5ffe88b3e7dda543ca5b6f8acaf00b3ef85794c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DougSisk/laravel-country-state/zipball/d5ffe88b3e7dda543ca5b6f8acaf00b3ef85794c",
+                "reference": "d5ffe88b3e7dda543ca5b6f8acaf00b3ef85794c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.1",
+                "php": ">=7.0",
+                "rinvex/countries": "3.1.*"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "~5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DougSisk\\CountryState\\CountryStateServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DougSisk\\CountryState\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Doug Sisk",
+                    "homepage": "http://dougsisk.com"
+                }
+            ],
+            "description": "Country & state helper for Laravel 5.1+.",
+            "homepage": "https://github.com/DougSisk/laravel-country-state",
+            "keywords": [
+                "countries",
+                "country",
+                "laravel",
+                "state",
+                "states"
+            ],
+            "time": "2018-10-08T17:06:43+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -2876,6 +2995,80 @@
                 "uuid"
             ],
             "time": "2018-07-19T23:38:55+00:00"
+        },
+        {
+            "name": "rinvex/countries",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rinvex/countries.git",
+                "reference": "e32228ef43f26d3b02296be9454f842c52d492f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rinvex/countries/zipball/e32228ef43f26d3b02296be9454f842c52d492f3",
+                "reference": "e32228ef43f26d3b02296be9454f842c52d492f3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Rinvex\\Country\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rinvex LLC",
+                    "email": "help@rinvex.com",
+                    "homepage": "https://rinvex.com"
+                },
+                {
+                    "name": "Abdelrahman Omran",
+                    "role": "Project Lead",
+                    "email": "me@omranic.com",
+                    "homepage": "https://omranic.com"
+                },
+                {
+                    "name": "The Generous Laravel Community",
+                    "homepage": "https://github.com/rinvex/country/contributors"
+                }
+            ],
+            "description": "Rinvex Country is a simple and lightweight package for retrieving country details with flexibility. A whole bunch of data including name, demonym, capital, iso codes, dialling codes, geo data, currencies, flags, emoji, and other attributes for all 250 countries worldwide at your fingertips.",
+            "homepage": "https://rinvex.com",
+            "keywords": [
+                "Flexible",
+                "Simple",
+                "countries",
+                "country",
+                "currencies",
+                "demonym",
+                "dialling",
+                "emoji",
+                "flags",
+                "geographic",
+                "languages",
+                "rinvex",
+                "svg"
+            ],
+            "time": "2017-03-07T18:40:20+00:00"
         },
         {
             "name": "simplesoftwareio/simple-qrcode",

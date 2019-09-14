@@ -16,20 +16,26 @@ class ArtistPermit extends Model implements Auditable
     protected $fillable = [
         'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type', 'language', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'city', 'area', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion', 'emirates_id', 'uid_number'
     ];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at',  'uid_expire_date', 'passport_expire_date', 'visa_expire_date'];
 
-    public function permit()
+    public function check()
     {
-        return $this->belongsTo(Permit::class, 'permit_id');
+        return $this->hasMany(ArtistPermitCheck::class, 'artist_permit_id');
     }
 
-    public function artist()
+    public function artistPermitRevision()
     {
-        return $this->belongsTo(Artist::class, 'artist_id');
+         return $this->hasMany(ArtistPermitRevision::class, 'artist_permit_id');
     }
 
-    public function artistPermitDocument()
+    public function comment()
     {
-        return $this->hasMany(ArtistPermitDocument::class, 'artist_permit_id', 'artist_permit_id');
+        return $this->hasMany(ArtistPermitComment::class, 'artist_permit_id');
+    }
+
+    public function checklist()
+    {
+        return $this->hasMany(ArtistChecklist::class, 'artist_permit_id');
     }
 
     public function permitType()
@@ -37,10 +43,28 @@ class ArtistPermit extends Model implements Auditable
         return $this->belongsTo(PermitType::class, 'permit_type_id');
     }
 
+    public function permit()
+    {
+        return $this->belongsTo(Permit::class, 'permit_id');
+    }
+
+    public function artistPermitDocument()
+    {
+        return $this->hasMany(ArtistPermitDocument::class, 'artist_permit_id');
+    }
+
+    public function artist()
+    {
+        return $this->belongsTo(Artist::class, 'artist_id');
+    }
+
+
+
     public function scopeDataTable($query)
     {
         return $this->join('artist', 'artist.artist_id', '=', 'artist_permit.artist_id')
-            ->join('permit', 'permit.permit_id', '=', 'artist_permit.permit_id')
-            ->join('bls.company', 'bls.company.company_id', '=', 'permit.company_id');
+                    ->join('permit', 'permit.permit_id', '=', 'artist_permit.permit_id')
+                    ->join('permit_type', 'permit_type.permit_type_id', '=', 'artist_permit.permit_type_id')
+                    ->join('bls.company', 'bls.company.company_id', '=', 'permit.company_id');
     }
-}
+}   
