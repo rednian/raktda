@@ -9,6 +9,7 @@ class PermitComment extends Model
     protected $table = 'permit_comment';
     protected $primaryKey = 'permit_comment_id';
     protected $fillable = [
+
         'comment', 'user_id', 'permit_id', 'type'
     ];
 

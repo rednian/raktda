@@ -14,10 +14,7 @@ class ArtistPermit extends Model implements Auditable
     protected $table = 'artist_permit';
     protected $primaryKey = 'artist_permit_id';
     protected $fillable = [
-        'sponsor_name_en', 'sponsor_name_ar', 'visa_expire_date', 'visa_number', 'visa_type_en', 'visa_type_ar', 'mobile_number',
-        'email', 'fax_number', 'po_box', 'phone_number', 'address_en', 'address_ar', 'area_ar', 'area_en', 'city_ar', 'city_en',
-        'passport_expire_date', 'passport_number', 'uid_expire_date', 'uid_number', 'thumbnail', 'originakbl', 'artist_permit_status',
-        'artist_id', 'permit_id', 'permit_type_id', 'language_en', 'language_ar', 'type'
+        'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type', 'language', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'city', 'area', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion', 'emirates_id', 'uid_number'
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at',  'uid_expire_date', 'passport_expire_date', 'visa_expire_date'];
 
@@ -60,6 +57,8 @@ class ArtistPermit extends Model implements Auditable
     {
         return $this->belongsTo(Artist::class, 'artist_id');
     }
+
+
 
     public function scopeDataTable($query)
     {

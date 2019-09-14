@@ -14,8 +14,8 @@ class Artist extends Model implements Auditable
     protected $table = 'artist';
     protected $primaryKey = 'artist_id';
     protected $fillable = [
-        'artist_status', 'person_code', 'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'nationality_en', 'nationality_ar','birthdate',
-        'created_by', 'updated_by', 'deleted_by', 'gender_en', 'gender_ar'
+
+        'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'nationality', 'birthdate', 'artist_status', 'gender',  'created_by', 'updated_by', 'deleted_by', 'person_code'
 
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'birthdate'];

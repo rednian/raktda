@@ -3,8 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
-
 class ArtistPermitChecklist extends Model
 {
      protected $table = 'artist_permit_checklist';

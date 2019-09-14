@@ -1,0 +1,234 @@
+:root {
+    --main-brand-color: #80262b;
+    --sub-brand-color: #ffbf00;
+    --light-brand-color: #a63a3f;
+}
+
+.kt-content {
+    padding: 10px;
+}
+
+body {
+    font-size: 12px !important;
+}
+
+/* Buttons */
+.btn--maroon {
+    background-color: var(--main-brand-color);
+    border: 2px solid var(--main-brand-color);
+    color: #fff;
+}
+
+.btn--yellow {
+    background-color: var(--sub-brand-color);
+    color: #000;
+    border: 2px solid var(--sub-brand-color);
+}
+
+.btn-outline-maroon {
+    border-color: var(--main-brand-color);
+    color: var(--main-brand-color);
+}
+
+.btn-outline-maroon:hover {
+    background: var(--main-brand-color);
+    color: #fff;
+}
+
+.btn--maroon:hover {
+    background-color: #a63a3f;
+    border: 2px solid #a63a3f;
+    color: #fff;
+}
+
+.btn--yellow:hover {
+    background-color: var(--sub-brand-color);
+    color: #000;
+    border: 2px solid var(--sub-brand-color);
+}
+/* Wizard Length */
+
+.kt-wizard-v3
+    .kt-wizard-v3__nav
+    .kt-wizard-v3__nav-items
+    .kt-wizard-v3__nav-item {
+    flex: 0 0 25% !important;
+}
+
+.kt-wizard-v3 .kt-wizard-v3__wrapper .kt-form {
+    width: 90%;
+    padding-top: 0;
+}
+
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item.kt-menu__item--active
+    > .kt-menu__heading
+    .kt-menu__link-text,
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item.kt-menu__item--active
+    > .kt-menu__link
+    .kt-menu__link-text {
+    color: #ffffff;
+}
+
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover
+    > .kt-menu__heading
+    .kt-menu__link-text,
+.kt-aside-menu
+    .kt-menu__nav
+    > .kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover
+    > .kt-menu__link
+    .kt-menu__link-text {
+    color: #ffffff;
+}
+
+#kt_header {
+    background: #fff !important;
+}
+
+.kt-header--fixed.kt-subheader--fixed.kt-subheader--enabled .kt-wrapper {
+    padding-top: 65px;
+}
+
+#agree_cb span.compulsory {
+    border: 1px solid red;
+}
+
+.kt-wizard-v3
+    .kt-wizard-v3__nav
+    .kt-wizard-v3__nav-items
+    .kt-wizard-v3__nav-item[data-ktwizard-state="current"]
+    .kt-wizard-v3__nav-body {
+    color: #a63a3f;
+}
+
+.kt-wizard-v3
+    .kt-wizard-v3__nav
+    .kt-wizard-v3__nav-items
+    .kt-wizard-v3__nav-item[data-ktwizard-state="current"]
+    .kt-wizard-v3__nav-body
+    .kt-wizard-v3__nav-bar:after {
+    width: 100%;
+    background-color: #a63a3f;
+}
+
+.accordion.accordion-toggle-plus .card .card-header .card-title {
+    color: #a63a3f;
+}
+
+#add_new_btn_div {
+    width: 73%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.kt-badge {
+    cursor: pointer;
+}
+
+.popup-submit-btn {
+    float: right;
+    margin: 10px auto;
+}
+
+.text--yellow {
+    color: var(--sub-brand-color);
+}
+
+.bg--maroon {
+    background: var(--main-brand-color);
+}
+
+.text--maroon {
+    color: var(--main-brand-color);
+}
+
+.ajax-file-upload-bar {
+    border-radius: 0px !important;
+    background-color: #a63a3f !important;
+}
+
+.ajax-file-upload-green,
+.ajax-file-upload-red {
+    background-color: #fff !important;
+    font-size: 25px !important;
+    padding: 0px !important;
+    margin: auto 5px !important;
+    box-shadow: none !important;
+}
+
+.ajax-file-upload-green {
+    color: #0abb87 !important;
+}
+
+.ajax-file-upload-red {
+    color: #7f0000 !important;
+}
+
+.ajax-file-upload-progress {
+    border: none !important;
+}
+
+.ajax-file-upload-filename {
+    position: absolute;
+    bottom: 0;
+}
+
+.ajax-file-upload-statusbar {
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.form-group label {
+    color: var(--light-brand-color);
+}
+
+.rtl {
+    direction: rtl;
+}
+
+.horizontal-tb {
+    writing-mode: horizontal-tb;
+}
+
+#detail-permit table tr > * {
+    border-color: rgba(0, 0, 0, 0.5);
+}
+
+#detail-permit th {
+    background-color: var(--sub-brand-color);
+    text-transform: uppercase;
+}
+
+#detail-permit td {
+    font-weight: bold;
+}
+
+.modal-header h5 {
+    text-transform: uppercase;
+}
+
+.ajax-upload-dragdrop > div {
+    height: 25px !important;
+    padding-top: 1px !important;
+}
+
+#detail-permit .table tr td {
+    max-width: 150px;
+}
+
+#PC_Popup_Table table tr th {
+    padding-right: 12px;
+}
+
+.mk-disabled {
+    background: #ccc;
+    color: #333;
+    pointer-events: none;
+}
