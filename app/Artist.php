@@ -14,9 +14,8 @@ class Artist extends Model implements Auditable
     protected $table = 'artist';
     protected $primaryKey = 'artist_id';
     protected $fillable = [
-        'name', 'nationality', 'passport_number', 'uid_number', 'birthdate', 'mobile_number', 'artist_status', 
-        'passport_issued_date', 'passport_expired_date', 'uid_issued_date', 'uid_expired_date',
-        'person_code','phone_number', 'email', 'created_by', 'updated_by', 'deleted_by'
+        'artist_status', 'person_code', 'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'nationality_en', 'nationality_ar','birthdate',
+        'created_by', 'updated_by', 'deleted_by', 'gender_en', 'gender_ar'
 
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'birthdate'];
@@ -29,6 +28,11 @@ class Artist extends Model implements Auditable
     public function permit()
     {
         return $this->belongsToMany(Permit::class, 'artist_permit', 'artist_id', 'permit_id');
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->firstname_en.' '.$this->lastname_en;
     }
 
     public function getAgeAttribute()

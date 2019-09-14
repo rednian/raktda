@@ -2,40 +2,45 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DB;
+use App\Procedure;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+
 class ProcedureController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
-        //
+        return view('admin.settings.procedure.index', [
+            'page_title'=> 'Procedure',
+            'breadcrumb'=> 'procedure.index',
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create()
     {
-        //
+         return view('admin.settings.procedure.create', [
+            'page_title'=> 'Procedure Create',
+            'breadcrumb'=> 'procedure.create',
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $procedure = Procedure::create($request->all());
+            
+            DB::commit();
+            $result = ['success', ' Artist has been saved as draft successfully.', 'Success'];
+        } catch (Exception $e) {
+            $result = ['error', $e->getMessage(), 'Error'];
+            DB::rollBack();
+            
+        }
     }
 
     /**

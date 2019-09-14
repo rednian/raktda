@@ -147,7 +147,7 @@
         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
             {{-- @if (Auth::user()->type == 1)
 
-<!-- end:: Header Mobile -->
+<!-- end:: Header Mobile -->e
 <div class="kt-grid kt-grid--hor kt-grid--root">
 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
     @if (Auth::user() && Auth::user()->type == 1)

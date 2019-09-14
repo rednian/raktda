@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::component('layouts.components.profile', 'profile');
+        Blade::component('layouts.components.usergroup', 'group');
         Blade::component('layouts.components.alert', 'alert');
         Blade::component('layouts.components.label', 'label');
         Blade::component('layouts.components.status', 'status');

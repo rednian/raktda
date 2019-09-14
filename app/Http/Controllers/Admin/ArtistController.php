@@ -11,6 +11,26 @@ use App\Http\Controllers\Controller;
 
 class ArtistController extends Controller
 {
+
+  public function index()
+  {
+    return view('admin.artist.index',[
+            'page_title'=> 'Artist List',
+            'breadcrumb'=> 'admin.artist.index',
+        ]);
+  }
+
+  public function show(Request $request, Artist $artist)
+  {
+    $artist_permit = ArtistPermit::whereHas('permit', function($q){
+      $q->whereNotIn('permit_status', ['draft', 'edit']);
+    })
+    ->where('artist_id', $artist->artist_id)->latest()->first();
+
+    return view('admin.artist.show',['artist_permit'=>$artist_permit]);
+  }
+
+
     public function history(Request $request, ArtistPermit $artistpermit)
     {
         $artist_permit = $artistpermit->datatable()

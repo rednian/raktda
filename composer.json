@@ -12,6 +12,7 @@
         "a6digital/laravel-default-profile-image": "^2.0",
         "davejamesmiller/laravel-breadcrumbs": "5.x",
         "dompdf/dompdf": "~0.6.1",
+        "dougsisk/laravel-country-state": "^2.1",
         "fideloper/proxy": "^4.0",
         "hoyvoy/laravel-cross-database-subqueries": "^5.6",
         "jeremykenedy/laravel-roles": "^2.0",

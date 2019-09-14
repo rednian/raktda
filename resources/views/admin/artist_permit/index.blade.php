@@ -1,278 +1,294 @@
-@extends('layouts.admin-app')
+@extends('layouts.admin.admin-app')
 @section('content')
-<section class="row">
-  <div class="col-md-12">
-    <div class="kt-portlet kt-portlet--tabs">
-        <div class="kt-portlet__head">
-          <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">
-             Artist Permit
-            </h3>
-          </div>
-          <div class="kt-portlet__head-toolbar">
-            <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-right" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_tab_content" role="tab" aria-selected="true">
-                  <span class="kt-badge kt-badge--outline kt-badge--outline-2x kt-badge--success hide" id="number-permit-request">0 </span><i class="flaticon-users"></i>
-                   Pending Request
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_tab_content" role="tab" aria-selected="false">
-                  <i class="flaticon-users-1"></i> Artist Permit List
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_3_tab_content" role="tab" aria-selected="false">
-                  <i class="flaticon2-group"></i> Artist List
-                </a>
-              </li>
-              
-            </ul>
-          </div>
-        </div>
-        <div class="kt-portlet__body">
-          <div class="tab-content">
-            <div class="tab-pane active" id="kt_portlet_base_demo_1_tab_content" role="tabpanel">
-              <table class="table table-bordered table-condensed table-hover table-sm" id="artist-request">
-                  <thead class="thead-light">
-                      <tr>
-                          <th>Company Name</th>
-                          <th>Date Submitted</th>
-                          <th>Start Date</th>
-                          <th>End Date</th>
-                          <th>Status</th>
-                          <th># of Artist</th>
-                          <th>Actions</th>
-                      </tr>
-                  </thead>
-              </table>
-            </div>
-            <div class="tab-pane" id="kt_portlet_base_demo_2_tab_content" role="tabpanel">
-              <table class="table table-bordered table-condensed table-hover table-sm" id="artist-permit">
-                  <thead class="thead-light">
-                      <tr>
-                          <th>Company Name</th>
-                          <th>Permit Number</th>
-                          <th>Issued Date</th>
-                          <th>Expired Date</th>
-                          <th>Status</th>
-                          <th>Actions</th>
-                      </tr>
-                  </thead>
-              </table>
-            </div>
-            <div class="tab-pane" id="kt_portlet_base_demo_3_tab_content" role="tabpanel">
-              <table class="table table-bordered table-condensed table-hover table-sm" id="artist-table">
-                  <thead class="thead-light">
-                      <tr>
-                          <th>Artist Name</th>
-                          <th>Nationality</th>
-                          <th>Email</th>
-                          <th>Artist Status</th>
-                          <th>Actions</th>
-                      </tr>
-                  </thead>
-              </table>
-            </div>
-          </div>
-        </div>
+<section  class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
+  <div class="kt-portlet__head kt-portlet__head--noborder">
+    <div class="kt-portlet__head-label">
+      <ul class="nav nav-tabs kt-margin-t-15 " role="tablist ">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Action Needed</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#kt_tabs_1_2">Processing Permits</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#kt_tabs_1_3">Rejected Permits</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#kt_tabs_1_4">Approved Permits</a>
+        </li>
+
+      </ul>
     </div>
+    <div class="kt-portlet__head-toolbar">
+      <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-light btn-elevate kt-font-transform-u"><i class="la la-search"></i> Search Application</a>
+    </div>
+    </div>
+   <div class="kt-portlet__body kt-padding-t-5">
+    <div class="tab-content">
+      <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
+        <section class="row kt-margin-b-20 kt-padding-b-20">
+          <div class="col-4">
+            <div class="kt-section kt-section--space-sm">
+                <div class="kt-widget24 kt-widget24--solid">
+                  <div class="kt-widget24__details">
+                    <div class="kt-widget24__info">
+                      <a href="#" class="kt-widget24__title" title="Click to edit">
+                       Tasks Pool
+                      </a>
+                      <span class="kt-widget24__desc">
+                        Today
+                      </span>
+                    </div>
+                    <span class="kt-widget24__stats kt-font-default">
+                      340
+                    </span>
+                  </div>
+                  <!-- <div class="progress progress--sm">
+                    <div class="progress-bar kt-bg-default" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div> -->
+                </div>
+              </div>
+          </div>
+          <div class="col-4">
+            <div class="kt-section kt-section--space-sm">
+                <div class="kt-widget24 kt-widget24--solid">
+                  <div class="kt-widget24__details">
+                    <div class="kt-widget24__info">
+                      <a href="#" class="kt-widget24__title" title="Click to edit">
+                        Staff Pool
+                      </a>
+                      <span class="kt-widget24__desc">
+                        Today
+                      </span>
+                    </div>
+                    <span class="kt-widget24__stats kt-font-default">
+                      10
+                    </span>
+                  </div>
+                  <!-- <div class="progress progress--sm">
+                    <div class="progress-bar kt-bg-brand" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div> -->
+                </div>
+              </div>
+          </div>
+          <div class="col-4">
+            <div class="kt-section kt-section--space-sm">
+                <div class="kt-widget24 kt-widget24--solid">
+                  <div class="kt-widget24__details">
+                    <div class="kt-widget24__info">
+                      <a href="#" class="kt-widget24__title" title="Click to edit">
+                       Client Pool
+                      </a>
+                      <span class="kt-widget24__desc">
+                        Today
+                      </span>
+                    </div>
+                    <span class="kt-widget24__stats kt-font-default">
+                     50
+                    </span>
+                  </div>
+                  <!-- <div class="progress progress--sm">
+                    <div class="progress-bar kt-bg-brand" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div> -->
+                </div>
+              </div>
+          </div>
+        </section>
+        
+        {{-- <form action="" id="frm-action-needed" class="kt-hide row">
+          <div class="col-sm-10">
+            <div class="form-group">
+              <div class="kt-checkbox-inline ">
+                  <label class="kt-checkbox">
+                    <input type="checkbox" onchange="artistPermit.draw()" name="today" value="{{ date('Y-m-d') }}"> Submitted Today
+                    <span></span>
+                  </label>
+                  <label class="kt-checkbox">
+                    <input type="checkbox" >Need Action
+                    <span></span>
+                  </label>
+                  <label class="kt-checkbox">
+                    <input type="checkbox"> Option 3
+                    <span></span>
+                  </label>
+                </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+               <button id="btn-need-action" type="reset" class="btn btn-sm btn-elevate btn-secondary">Clear</button>
+            </div>
+          </div>
+        </form> --}}
+        
+        
+        <table class="table  table-hover  table-borderless table-striped" id="artist-permit">
+               <thead class="thead-dark">
+                   <tr>
+                       <th>Reference No.</th>
+                       <th>Company Name</th>
+                       <th>Trade License No.</th>
+                       <th>Applied Date</th>
+                       <th>Permit Start</th>
+                       <th>No. of Artist</th>
+                       <th>Request Type</th>
+                   </tr>
+               </thead>
+           </table>
+      </div>
+      <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
+        <table class="table table-hover" id="artist-permit-processing">
+               <thead class="thead-light">
+                   <tr>
+                       <th>Reference No.</th>
+                       <th>Company Name</th>
+                       <th>Trade License No.</th>
+                       <th>Applied Date</th>
+                       <th>Permit Start</th>
+                       <th>No. of Artist</th>
+                       <th>Request Type</th>
+                   </tr>
+               </thead>
+           </table>
+      </div>
+      <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
+          
+      </div>
+      <div class="tab-pane" id="kt_tabs_1_4" role="tabpanel">
+        
+      </div>
+    </div>
+   </div>
+</section>
+<section class="row">
+  <div class="col">
+    <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
+       <div class="kt-portlet__body" > 
+          
+          {{-- <section style="position: absolute; right: 15px">
+            <div class="form-group form-group-sm" >
+              <div class="col-sm-12">
+               <div class="kt-input-icon kt-input-icon--right">
+                    <input type="search" class="form-control-sm form-control" placeholder="Search..." >
+                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                      <span><i class="la la-search"></i></span>
+                    </span>
+                  </div>
+              </div>
+            </div>
+          </section> --}}
+          
+        
+       </div>
+    </section>
   </div>
 </section>
-<div class="select-company hide">
-  <div class="form-row">
-     <div class="col-2">
-        <select onchange="artistPermit.draw();" name="company_id" id="company_id" class="custom-select input-sm select2">
-            <option value="">All Company</option>
-            @if(!empty($companies))
-              @foreach($companies as $company)
-                <option value="{{ $company->company_id }}">{{ ucwords($company->company_name) }}</option>
-              @endforeach
-            @endif        
-        </select>
-     </div>
-  </div>
-</div>
-<div class="select-status hide">
-  <div class="form-row">
-     <div class="col-2">
-        <select onchange="artistPermit.draw();" name="permit_status" id="permit_status" class="custom-select input-sm select2">
-            <option value="">All Status</option>
-            <option value="active">Active</option>       
-            <option value="cancelled">Cancelled</option>       
-            <option value="rejected">Rejected</option>       
-        </select>
-     </div>
-  </div>
-</div>
 @endsection
+
 @section('script')
 <script type="text/javascript">
      var artistPermit = {};
-     var artistTable = {};
-     var artistPermitRequest = {};
-    $(document).ready(function(){
+     var permit_processing = {};
+ $(document).ready(function(){
 
-          artistTable = $('table#artist-table').DataTable({
-                ajax: {
-                  url: '{{ route('admin.artist_permit.artistDataTable') }}',
-                },
-
-                columnDefs: [
-                  {targets:  [3, 4], className: 'no-wrap',sortable: false},
-                ],
-
-                columns: [
-                    { data: 'name'},
-                    { data: 'nationality'},
-                    { data: 'email'},
-                    {
-                      render: function(type, data, full, meta){
-                          var status = full.artist_status;
-                          var classname = 'success';
-                          if(status == 'block'){ classname = 'danger'; }
-                          return '<span class="kt-badge kt-badge--inline kt-badge--pill   kt-badge--'+classname+'">'+status+'</span>';
-                      } 
-                    },
-                    {
-                      render: function(type, data, full, meta){
-                         return '<a href="#" class="btn btn-brand active btn-sm btn-raised">view details</a>';
-                      }
-                    }
-                ],
-
-                 fnCreatedRow: function(row ,data, index){
-                 },
-          }); 
+// global
+  $('input[type=checkbox]').change(function(){
+    if( $(this).is(':checked') ){
+      $(this).parent('label').addClass('kt-checkbox--success');
+    }
+    else{
+       $(this).parent('label').removeClass('kt-checkbox--success');
+    }
+  });
 
 
-          artistPermitRequest = $('table#artist-request').DataTable({
-           
-                ajax: {
-                url: '{{ route('admin.artist_permit.requestDataTable') }}',
-                data: function(data){
-                   // data.company_id = $('select[name=company_id]').val();
-                   // data.permit_status = $('select[name=permit_status]').val();
-                }
-            },
+// processing permit table
+   permit_processing = $('table#artist-permit-processing').DataTable({
+     // dom: `<'row'<'col-sm-12'<'toolbar'><'toolbar2'><f>tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+      ajax: {
+          url: '{{ route('admin.artist_permit.datatable') }}',
+          data: function(d){
 
-            columnDefs: [
-              {targets:  [4, 5, 6], className: 'no-wrap',sortable: false},
-            ],
+            d.type = ['new', 'renew', 'cancel', 'amend'];
+            d.status = 'processing';
 
-            columns: [
-                { data: 'company_name'},
-                { data: 'submitted_date'},  
-                // { data: 'work_location', name: 'work_location'},
-                { data: 'issued_date'},
-                { data: 'expired_date'},
-                {
-                  render: function(data, type, full, meta){
-                      var className = null;
-                      // if(full.permit_status == 'pending'){ className = 'kt-badge--info'; }
-                    return '<span class="kt-badge kt-badge--inline kt-badge--pill   kt-badge--info">'+full.permit_status+'</span>';
-                  }
-                },
-                { data: 'artist_number', name: 'artist_number'},
-                {
-                    render: function (data, type, full, meta) {
-                      var url = '{{ url('permit/artist_permit') }}/'+full.permit_id+'/applicationdetails';
-                       return '<a href="#" class="btn btn-brand active btn-sm btn-raised">view details</a>';
-
-                    },
-                },
-            ],
-
-            fnCreatedRow: function(row ,data, index){
-
-                $('td', row).click(function(){ 
-                  var url = '{{ url('permit/artist_permit') }}/' + data.permit_id+'/application-details'; 
-                  location.href = url; 
-                });
-
-            },
-
-            fnRowCallback:function(row, data, index){
-
-              $(row).css('cursor', 'pointer');
-              // var now = moment().tz('Asia/Dubai');
-              // var issued_date = moment(data.issued_date).add(2, 'days');
-
+            // if($('input[type=checkbox][name=today]').is(':checked')){
+            //    d.today = $('input[type=checkbox][name=today]').val();
+            // }
+            // else{
+            //   d.today = null;
+            // }
             
-              // console.log(issued_date);
-
-               
-              //   if ( column.qty < 1  ){
-              //      $(row).addClass('danger');
-              //    }
-
-
-              // if ( column.qty > 0 && column.qty < 20  ){
-              //    $(row).addClass('warning');
-              //  },
-            },
-
-            initComplete: function(setting, json){
-              $('#number-permit-request').html(json.recordsTotal);
-            }
-
-          });
-
-
-           // $('#artist-request').wrap('<div class="table-responsive"></div>');
-
-
-
-
-         artistPermit = $('table#artist-permit').DataTable({
-            dom: '<"pull-left"l><"toolbar"><"toolbar2">frt<"pull-left"i>p',
-            ajax: {
-                url: '{{ route('admin.artist_permit.datatable') }}',
-                data: function(data){
-                   data.company_id = $('select[name=company_id]').val();
-                   data.permit_status = $('select[name=permit_status]').val();
-                }
-            },
-        
-            columnDefs: [
-                 {targets: [0,4], className: 'no-wrap'},
-                 {targets:  5, className: 'no-wrap',sortable: false},
-            ],
-            columns: [
-        
-                { data: 'company_name'},
-                { data: 'permit_number'},
-                { data: 'issued_date'},
-                { data: 'expired_date'},
-                {
-                  render: function(data, type, full, meta){
-                      var className = null;
-                      
-                      if(full.permit_status == 'active'){ className = 'success'; }
-                      if(full.permit_status == 'rejected'){ className = 'danger'; }
-                      if(full.permit_status == 'cancelled'){ className = 'warning'; }
-
-                    return '<span class="kt-badge kt-badge--inline kt-badge--pill   kt-badge--'+className+'">'+full.permit_status+'</span>';
-                  }
-                },
-
-                {
-                    render: function (data, type, full, meta) {
-                     
-                       return '<a href="#" class="btn btn-brand active btn-sm btn-raised">view details</a>';
-
-                    },
-                },
-            ],
-             
-            fnCreatedRow: function(row, data, index){
-
-            }
+          }
+      },
+  
+      columnDefs: [
+           {targets: [0,4, 5, 6], className: 'no-wrap'},
+           {targets:  5, className: 'no-wrap',sortable: false},
+      ],
+      columns: [
+          { data: 'reference_number'},
+          { data: 'company_name'},
+          { data: 'trade_license_number'},
+          { data: 'applied_date'},
+          { data: 'permit_start'},
+          { data: 'artist_number'},
+          { data: 'request_type'},
+      ],
+       
+      createdRow: function(row, data, index){
+        $(row).click(function(){
+          location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application-details';
         });
+      },
+  });
 
-        $("div.toolbar").html($('.select-company').removeClass('hide'));
-        $("div.toolbar2").html($('.select-status').removeClass('hide'));
+
+       
+       // action needed  table
+     artistPermit = $('table#artist-permit').DataTable({
+      // dom: '<"row"<"col text-left"f<"toolbar">>>rt<"pull-left"p><"pull-left kt-margin-l-5"l><"pull-right m-r-sm"i><"clearfix">',
+        ajax: {
+            url: '{{ route('admin.artist_permit.datatable') }}',
+            data: function(d){
+
+              d.type = ['new', 'renew', 'cancel', 'amend'];
+              d.status = 'pending';
+
+              if($('input[type=checkbox][name=today]').is(':checked')){
+                 d.today = $('input[type=checkbox][name=today]').val();
+              }
+              else{
+                d.today = null;
+              }
+              
+            }
+        },
+    
+        columnDefs: [
+             {targets: [0,4, 5, 6], className: 'no-wrap'},
+             // {targets:  6, className: 'no-wrap',sortable: false},
+        ],
+        columns: [
+            { data: 'reference_number'},
+            { data: 'company_name'},
+            { data: 'trade_license_number'},
+            { data: 'applied_date'},
+            { data: 'permit_start'},
+            { data: 'artist_number'},
+            { data: 'request_type'},
+        ],
+         
+        createdRow: function(row, data, index){
+          $(row).click(function(){
+            location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application';
+          });
+        }
     });
+
+
+
+    $("div.toolbar").html($('.select2').removeClass('kt-hide'));
+});
 </script>
 @endsection

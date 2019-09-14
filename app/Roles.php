@@ -23,6 +23,13 @@ class Roles extends Model
        'NameAr', 'NameEn', 'username', 'Remarks', 'AppID', 'Type', 'IsActive','Createby', 'Modifiedby'
     ];
 
+    public function approvers()
+    {
+        return $this->belongsTo(ApproverProcedure::class, 'role_id');
+    }
+
+    
+
      public function users()
     {
         return $this->belongsToMany(User::class, 'roleuser', 'role_id', 'user_id');
