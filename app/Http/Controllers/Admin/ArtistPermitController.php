@@ -16,6 +16,7 @@ use App\ArtistPermit;
 use App\Procedure;
 use App\ApproverProcedure;
 use App\PermitComment;
+use App\ArtistPermitDocument;
 use App\ArtistPermitComment;
 use Illuminate\Http\Request;
 use App\ArtistPermitCheck;
@@ -28,11 +29,11 @@ class ArtistPermitController extends Controller
 
     public function index()
     {
-        $companies = ArtistPermit::dataTable()->where('permit_status', '!=', 'pending')->groupBy('permit.company_id')->get();
+        // $companies = ArtistPermit::dataTable()->where('permit_status', '!=', 'pending')->groupBy('permit.company_id')->get();
         return view('admin.artist_permit.index', [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
-            'companies' =>$companies
+            // 'companies' =>$companies
         ]);
     }
 
@@ -148,7 +149,6 @@ class ArtistPermitController extends Controller
           ->where('permit_id', '!=', $permit->permit_id);
       })->where('artist_id', $artistpermit->artist_id)->get();
 
-
         return view('admin.artist_permit.check-application', [
           'permit'=>$permit, 
           'existing_permit'=>$existing_permit,
@@ -192,9 +192,12 @@ class ArtistPermitController extends Controller
     {
       $artist_permit_document = $artistpermit->artistPermitDocument();
 
-      return Datatables::of($artist_permit_document)
+      $artist_permit_document =  Datatables::of($artist_permit_document)
       ->editColumn('document_name', function($artist_permit_document){
-        return ucwords($artist_permit_document->document_name);
+        $name = '<a href="'.asset('/storage/'.$artist_permit_document->path).'" data-fancybox>';
+        $name .= ucwords($artist_permit_document->document_name);
+        $name .='</a>';
+        return $name;
       })
       ->editColumn('issued_date', function($artist_permit_document){
         return $artist_permit_document->issued_date->format('d-M-Y');
@@ -210,8 +213,18 @@ class ArtistPermitController extends Controller
 
          return  $html;
       })
-      ->rawColumns(['action'])
+      ->rawColumns(['action', 'document_name'])
       ->make(true);
+      $data = $artist_permit_document->getData(true);
+      $data['data'][] = [
+          'document_name' => '<a href="'.asset('/storage/'.$artistpermit->thumbnail).'" data-fancybox>Artist Photo</a>',
+          'issued_date'=> 'Not Required',
+          'expired_date'=> 'Not Required',
+          'action'=> '<label class="kt-checkbox kt-checkbox--default kt-checkbox--single"><input type="checkbox" data-check="checklist"  name="artist photo" ><span></span></label>'
+      ];
+
+      return response()->json($data);
+
     }
 
     public function artistPermitHistory(Request $request, Permit $permit, Artist $artist)
@@ -311,19 +324,12 @@ class ArtistPermitController extends Controller
     { 
      if($request->ajax()){
          $permit = Permit::has('artistpermit')
-         ->where(function($q) use ($request){
-             if($request->type){
-                 foreach ($request->type as $type) {
-                     $q->orWhere('request_type', $type);    
-                 }
-             }
-         })
          ->where('permit_status', $request->status)
          ->when($request->today, function($q) use ($request){
               $q->where('created_at', 'like', $request->today.'%');
          })
-         ->orderBy('created_at', 'desc')
-         ->get();
+         ->orderBy('created_at', 'DESC');
+         // ->get();
 
              
          return Datatables::of($permit)

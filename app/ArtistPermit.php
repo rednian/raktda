@@ -60,26 +60,35 @@ class ArtistPermit extends Model implements Auditable
 
     public function emirate()
     {
-        return $this->belongsTo(Emirates::class);
+        return $this->belongsTo(Emirates::class)->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function area()
     {
-        return $this->belongsTo(Areas::class);
+        return $this->belongsTo(Areas::class)->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function language()
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(Language::class)->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function religion()
     {
-        return $this->belongsTo(Religion::class);
+        return $this->belongsTo(Religion::class)->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function visaType()
     {
-        return $this->belongsTo(VisaType::class);
+        return $this->belongsTo(VisaType::class)->withDefault(['visa_type_en'=> null, 'visa_type_ar'=> null ]);
     }
+
+
+    // public function scopeDataTable($query)
+    // {
+    //     return $this->join('artist', 'artist.artist_id', '=', 'artist_permit.artist_id')
+    //                 ->join('permit', 'permit.permit_id', '=', 'artist_permit.permit_id')
+    //                 ->join('permit_type', 'permit_type.permit_type_id', '=', 'artist_permit.permit_type_id')
+    //                 ->join('bls.company', 'bls.company.company_id', '=', 'permit.company_id');
+    // }
 }   

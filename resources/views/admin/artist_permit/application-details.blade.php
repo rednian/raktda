@@ -146,10 +146,10 @@
                 <div class="alert alert-outline-danger fade show" role="alert">
                   <div class="alert-icon"><i class="flaticon-warning"></i></div>
                   <div class="alert-text">
-                    <p class="text-danger">The Following Artist have some discrepancy with their information.</p>
-                    <ol class="text-danger">
+                    <p>The Following Artist have some discrepancies with their information.</p>
+                    <ol class="kt-font-dark">
                       @foreach ($permit->check as $check)
-                        <li>{{ $check->artistPermit->artist->fullName }}</li>
+                        <li class="kt-font-bold">{{ $check->artistPermit->artist->fullName }}</li>
                           @foreach ($check->checklist as $checklist)
                             <span>{{ $checklist->fieldname }}</span>,
                           @endforeach
