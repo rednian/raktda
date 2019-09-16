@@ -6,7 +6,9 @@ Route::post('/update_language', 'admin\UserController@updateLanguage')->name('ad
 
 Route::middleware(['admin', 'auth'])->group(function(){
 
-    Route::get('/dashboard', 'admin\DashboardController@index')->name('admin.dashboard');
+    Route::get('/dashboard', function(){
+      return redirect()->route('admin.artist_permit.index');
+    })->name('admin.dashboard');
 
   //--------------------------------------------------------------------------
   // Artist
