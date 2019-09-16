@@ -176,8 +176,7 @@
                                                 <div class="input-group-prepend"><span class="input-group-text"><i
                                                             class="la la-calendar"></i></span></div>
                                                 <input type="text" class="form-control form-control-sm" name="permit_to"
-                                                    id="permit_to" placeholder="DD-MM-YYYY"
-                                                    data-date-start-date="+30d" />
+                                                    id="permit_to" placeholder="DD-MM-YYYY" />
                                             </div>
                                         </div>
                                         <div class="form-group col-lg-3">
@@ -1297,8 +1296,12 @@
         todayHighlight: true,
         startView: 2
     });
-
-    $('#permit_from').on('changeDate', function(ev) {$('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');});
+    $('#permit_from').on('changeDate', function(ev) {
+        $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
+        var selDate = ev.date ;
+        var minDate = moment([selDate.getFullYear(), selDate.getMonth(), selDate.getDate()]).add(30, "days").format('DD-MM-YYYY');
+        $('#permit_to').datepicker('setStartDate', minDate );
+    });
     $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});
     $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
     $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});

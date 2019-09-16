@@ -121,8 +121,8 @@ class MainController extends Controller
             $diff = abs($today - $issued_date) / 60 / 60 / 24;
             $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
             $amendBtn = ($diff < 10) ? '<a href="' . route('company.amend_permit', $permit->permit_id) . '" title="Amend"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">Amend</span></a>&nbsp;' : '';
-            $renewBtn =  '<a href="' . route('company.renew_permit', $permit->permit_id) . '" title="Renew"><span  class="kt-badge kt-badge--success kt-badge--inline">Renew</span></a>';
-            return  `<span class="d-flex flex-column">` . $renewBtn . `</span>`;
+            $renewBtn = ($expDiff <= 2) ? '<a href="' . route('company.renew_permit', $permit->permit_id) . '" title="Renew"><span  class="kt-badge kt-badge--success kt-badge--inline">Renew</span></a>' : '';
+            return  $amendBtn . $renewBtn;
         })->addColumn('details', function ($permit) {
             return '<a href="' . route('company.get_permit_details', $permit->permit_id) . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
         })->rawColumns(['action', 'details'])->make(true);
