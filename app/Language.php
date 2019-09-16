@@ -8,6 +8,9 @@ class Language extends Model
 {
     protected $table = 'languages';
     protected $primaryKey = 'id';
+    protected $fillable = ['name_en', 'name_ar'];
+
+
 
     // public function artist()
     // {
