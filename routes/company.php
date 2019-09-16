@@ -4,7 +4,9 @@
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', function(){return redirect()->route('artist_permits.index'); })->name('company.dashboard');
 
-    Route::get('{company_name}/dashboard', 'Company\DashboardController@index')->name('company.dashboard');
+    Route::get('{company_name}/dashboard', function(){
+        return redirect()->route('artist_permits.index');
+    })->name('company.dashboard');
 
     $artistPermitLink = 'Company\Artist';
 
