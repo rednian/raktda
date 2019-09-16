@@ -3,621 +3,614 @@
 
 @section('content')
 
-<link href="http://hayageek.github.io/jQuery-Upload-File/4.0.11/uploadfile.css" rel="stylesheet">
+<link href="{{ asset('/css/uploadfile.css') }}" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <!-- begin:: Content -->
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-    <div class="kt-portlet">
-        <div class="kt-portlet__body kt-portlet__body--fit">
-            <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
-                <div class="kt-grid__item">
+{{-- <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"> --}}
+<div class="kt-portlet">
+    <div class="kt-portlet__body ">
+        <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
+            <div class="kt-grid__item">
 
-                    <!--begin: Form Wizard Nav -->
-                    <div class="kt-wizard-v3__nav">
-                        <div class="kt-wizard-v3__nav-items">
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                                data-ktwizard-state="current">
-                                <div class="kt-wizard-v3__nav-body">
-                                    <div class="kt-wizard-v3__nav-label">
-                                        <span>1</span> Check Instructions
-                                    </div>
-                                    <div class="kt-wizard-v3__nav-bar"></div>
-                                </div>
-                            </a>
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
-                                <div class="kt-wizard-v3__nav-body">
-                                    <div class="kt-wizard-v3__nav-label">
-                                        <span>2</span> Permit Details
-                                    </div>
-                                    <div class="kt-wizard-v3__nav-bar"></div>
-                                </div>
-                            </a>
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
-                                <div class="kt-wizard-v3__nav-body">
-                                    <div class="kt-wizard-v3__nav-label">
-                                        <span>3</span> Artist Details
-                                    </div>
-                                    <div class="kt-wizard-v3__nav-bar"></div>
-                                </div>
-                            </a>
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
-                                <div class="kt-wizard-v3__nav-body">
-                                    <div class="kt-wizard-v3__nav-label">
-                                        <span>4</span> Upload Docs
-                                    </div>
-                                    <div class="kt-wizard-v3__nav-bar"></div>
-                                </div>
-                            </a>
-
-                        </div>
-                    </div>
-
-                    <!--end: Form Wizard Nav -->
-                </div>
-                <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
-
-                    <!--begin: Form Wizard Form-->
-                    {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
-                    <div class="kt-form w-100 px-5" id="kt_form">
-                        <!--begin: Form Wizard Step 1-->
-                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content"
+                <!--begin: Form Wizard Nav -->
+                <div class="kt-wizard-v3__nav">
+                    <div class="kt-wizard-v3__nav-items">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
                             data-ktwizard-state="current">
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-                                    <!--begin::Accordion-->
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-                                        <div class="card">
-                                            <div class="card-header" id="headingOne6">
-                                                <div class="card-title" data-toggle="collapse"
-                                                    data-target="#collapseOne6" aria-expanded="true"
-                                                    aria-controls="collapseOne6">
-                                                    Artist Details Required
-                                                </div>
-                                            </div>
-                                            <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
-                                                data-parent="#accordionExample6">
-                                                <div class="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                    terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                    skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+                            <div class="kt-wizard-v3__nav-body">
+                                <div class="kt-wizard-v3__nav-label">
+                                    <span>1</span> Check Instructions
+                                </div>
+                                <div class="kt-wizard-v3__nav-bar"></div>
+                            </div>
+                        </a>
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                            <div class="kt-wizard-v3__nav-body">
+                                <div class="kt-wizard-v3__nav-label">
+                                    <span>2</span> Permit Details
+                                </div>
+                                <div class="kt-wizard-v3__nav-bar"></div>
+                            </div>
+                        </a>
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                            <div class="kt-wizard-v3__nav-body">
+                                <div class="kt-wizard-v3__nav-label">
+                                    <span>3</span> Artist Details
+                                </div>
+                                <div class="kt-wizard-v3__nav-bar"></div>
+                            </div>
+                        </a>
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                            <div class="kt-wizard-v3__nav-body">
+                                <div class="kt-wizard-v3__nav-label">
+                                    <span>4</span> Upload Docs
+                                </div>
+                                <div class="kt-wizard-v3__nav-bar"></div>
+                            </div>
+                        </a>
 
-                                                </div>
+                    </div>
+                </div>
+
+                <!--end: Form Wizard Nav -->
+            </div>
+            <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
+
+                <!--begin: Form Wizard Form-->
+                {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
+                <div class="kt-form w-100 px-5" id="kt_form">
+                    <!--begin: Form Wizard Step 1-->
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
+                        <div class="kt-form__section kt-form__section--first">
+                            <div class="kt-wizard-v3__form">
+                                <!--begin::Accordion-->
+                                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
+                                    <div class="card">
+                                        <div class="card-header" id="headingOne6">
+                                            <div class="card-title" data-toggle="collapse" data-target="#collapseOne6"
+                                                aria-expanded="true" aria-controls="collapseOne6">
+                                                Artist Details Required
                                             </div>
                                         </div>
-                                        <div class="card">
-                                            <div class="card-header" id="headingTwo6">
-                                                <div class="card-title collapsed" data-toggle="collapse"
-                                                    data-target="#collapseTwo6" aria-expanded="false"
-                                                    aria-controls="collapseTwo6">
-                                                    Documents Required
-                                                </div>
-                                            </div>
-                                            <div id="collapseTwo6" class="collapse" aria-labelledby="headingTwo6"
-                                                data-parent="#accordionExample6">
-                                                <div class="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                    terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                    skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+                                        <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
+                                            data-parent="#accordionExample6">
+                                            <div class="card-body">
+                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
 
-                                                </div>
                                             </div>
                                         </div>
-                                        <div class="card">
-                                            <div class="card-header" id="headingThree6">
-                                                <div class="card-title collapsed" data-toggle="collapse"
-                                                    data-target="#collapseThree6" aria-expanded="false"
-                                                    aria-controls="collapseThree6">
-                                                    Permit Fees Structure </div>
-                                            </div>
-                                            <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
-                                                data-parent="#accordionExample6">
-                                                <div class="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                    terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                    skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header" id="headingFour6">
-                                                <div class="card-title collapsed" data-toggle="collapse"
-                                                    data-target="#collapseFour6" aria-expanded="false"
-                                                    aria-controls="collapseFour6">
-                                                    Rules and Conditions
-                                                </div>
-                                            </div>
-                                            <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
-                                                data-parent="#accordionExample6">
-                                                <div class="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                    terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                    skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <label class="kt-checkbox kt-checkbox--brand ml-2" id="agree_cb">
-                                            <input type="checkbox" id="agree" name="agree"> I Read and understand all
-                                            service rules, And agree to continue submitting it.
-                                            <span></span>
-                                        </label>
                                     </div>
+                                    <div class="card">
+                                        <div class="card-header" id="headingTwo6">
+                                            <div class="card-title collapsed" data-toggle="collapse"
+                                                data-target="#collapseTwo6" aria-expanded="false"
+                                                aria-controls="collapseTwo6">
+                                                Documents Required
+                                            </div>
+                                        </div>
+                                        <div id="collapseTwo6" class="collapse" aria-labelledby="headingTwo6"
+                                            data-parent="#accordionExample6">
+                                            <div class="card-body">
+                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="headingThree6">
+                                            <div class="card-title collapsed" data-toggle="collapse"
+                                                data-target="#collapseThree6" aria-expanded="false"
+                                                aria-controls="collapseThree6">
+                                                Permit Fees Structure </div>
+                                        </div>
+                                        <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
+                                            data-parent="#accordionExample6">
+                                            <div class="card-body">
+                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="headingFour6">
+                                            <div class="card-title collapsed" data-toggle="collapse"
+                                                data-target="#collapseFour6" aria-expanded="false"
+                                                aria-controls="collapseFour6">
+                                                Rules and Conditions
+                                            </div>
+                                        </div>
+                                        <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
+                                            data-parent="#accordionExample6">
+                                            <div class="card-body">
+                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label class="kt-checkbox kt-checkbox--brand ml-2" id="agree_cb">
+                                        <input type="checkbox" id="agree" name="agree"> I Read and understand all
+                                        service rules, And agree to continue submitting it.
+                                        <span></span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!--end: Form Wizard Step 1-->
+                    <!--end: Form Wizard Step 1-->
 
-                        <!--begin: Permit Details Wizard-->
-                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-                                    <form id="permit_details" method="POST">
-                                        <div class=" row">
-                                            <div class="form-group col-lg-3">
-                                                <label for="permit_from" class="col-form-label col-form-label-sm">From
-                                                    Date:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="permit_from" id="permit_from" data-date-start-date="+0d"
-                                                        placeholder="DD-MM-YYYY" onchange="setToDate()" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="permit_to" class="col-form-label col-form-label-sm">To
-                                                    Date:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
-                                                        data-date-start-date="+0d" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="work_loc" class="col-form-label col-form-label-sm">Work
-                                                    Location:</label>
+                    <!--begin: Permit Details Wizard-->
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        <div class="kt-form__section kt-form__section--first">
+                            <div class="kt-wizard-v3__form">
+                                <form id="permit_details" method="POST">
+                                    <div class=" row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="permit_from" class="col-form-label col-form-label-sm">From
+                                                Date:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-calendar"></i></span></div>
                                                 <input type="text" class="form-control form-control-sm"
-                                                    placeholder="Work Location" name="work_loc" id="work_loc" />
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="" class="col-form-label col-form-label-sm">Connected Event
-                                                    ?</label>
-                                                <div class="kt-radio-inline">
-                                                    <label class="kt-radio kt-radio--solid">
-                                                        <input type="radio" name="isEvent" value="0"> Yes
-                                                        <span></span>
-                                                    </label>
-                                                    <label class="kt-radio kt-radio--solid">
-                                                        <input type="radio" name="isEvent" checked value="1"> No
-                                                        <span></span>
-                                                    </label>
-                                                </div>
+                                                    name="permit_from" id="permit_from" data-date-start-date="+0d"
+                                                    placeholder="DD-MM-YYYY" onchange="setToDate()" />
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- Permit details wizard end --}}
-
-                        {{-- Artist details wizard Start --}}
-                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-                                    <form id="artist_details">
-                                        <input type="hidden" id="artist_number" value={{1}}>
-                                        <div class=" row">
-                                            <div class="form-group col-lg-3">
-                                                <label for="name_en" class="col-form-label col-form-label-sm">Person
-                                                    Code:</label><span id="changeArtistLabel"
-                                                    class="kt-badge kt-badge--danger kt-badge--inline d-none"
-                                                    onclick="removeSelectedArtist()">
-                                                    Change </span>
-                                                <input type="text" class="form-control form-control-sm " name="code"
-                                                    id="code" placeholder="Person Code">
-                                                <small>only enter if you know person code</small>
-                                            </div>
-                                            <input type="hidden" id="artist_id" value="">
-                                            <input type="hidden" id="is_old_artist" value="1">
-                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="profession"
-                                                    class="col-form-label col-form-label-sm">Profession:</label>
-                                                <select class="form-control form-control-sm " name="profession"
-                                                    id="profession" placeholder="Profession">
-                                                    <option value="">Select</option>
-                                                    @foreach ($permitTypes as $pt)
-                                                    <option value="{{$pt->permit_type_id}}">{{$pt->name_en}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="fname_en" class="col-form-label col-form-label-sm">First
-                                                    Name:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-user"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="fname_en" id="fname_en" placeholder="First Name">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group col-lg-3">
-                                                <label for="lname_en" class="col-form-label col-form-label-sm">Last
-                                                    Name:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-user"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="lname_en" id="lname_en" placeholder="Last Name">
-                                                </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="permit_to" class="col-form-label col-form-label-sm">To
+                                                Date:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-calendar"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm" name="permit_to"
+                                                    id="permit_to" placeholder="DD-MM-YYYY"
+                                                    data-date-start-date="+0d" />
                                             </div>
                                         </div>
-                                        <input type="hidden" id="artist_permit_num">
-                                        <div class="row">
-
-                                            <div class="form-group col-lg-3">
-                                                <label for="fname_ar" class="col-form-label col-form-label-sm">First
-                                                    Name (Arabic):</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-user"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm text-right"
-                                                        name="fname_ar" id="fname_ar" placeholder="First Name (Arabic)">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group col-lg-3">
-                                                <label for="lname_ar" class="col-form-label col-form-label-sm">Last Name
-                                                    (Arabic):</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-user"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm text-right"
-                                                        name="lname_ar" id="lname_ar" placeholder="Last Name (Arabic)">
-                                                </div>
-                                            </div>
-
-
-                                            <div class="form-group col-lg-3">
-                                                <label for="dob" class="col-form-label col-form-label-sm">DOB:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        placeholder="DD-MM-YYYY" data-date-end-date="0d" name="dob"
-                                                        id="dob" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="uid_number" class="col-form-label col-form-label-sm">UID:
+                                        <div class="form-group col-lg-3">
+                                            <label for="work_loc" class="col-form-label col-form-label-sm">Work
+                                                Location:</label>
+                                            <input type="text" class="form-control form-control-sm"
+                                                placeholder="Work Location" name="work_loc" id="work_loc" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="" class="col-form-label col-form-label-sm">Connected Event
+                                                ?</label>
+                                            <div class="kt-radio-inline">
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="isEvent" value="0"> Yes
+                                                    <span></span>
                                                 </label>
-                                                <input type="text" class="form-control form-control-sm"
-                                                    name="uid_number" id="uid_number" placeholder="UID Number">
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="isEvent" checked value="1"> No
+                                                    <span></span>
+                                                </label>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="form-group col-lg-3">
-                                                <label for="uid_expiry" class="col-form-label col-form-label-sm">UID
-                                                    Expire Date:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
-                                                        placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                        name="uid_expiry" id="uid_expiry" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="passport" class="col-form-label col-form-label-sm">Passport
-                                                    No:</label>
-                                                <input type="text" class="form-control form-control-sm" name="passport"
-                                                    id="passport" placeholder="Passport Number">
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="pp_expiry" class="col-form-label col-form-label-sm">PP
-                                                    Expire Date:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
-                                                        placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                        name="pp_expiry" id="pp_expiry" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="visa_type" class="col-form-label col-form-label-sm">Visa
-                                                    Type:</label>
-                                                <select type="text" class="form-control form-control-sm "
-                                                    name="visa_type" id="visa_type">
-                                                    <option value="">Select</option>
-                                                    @foreach ($visatypes as $vt)
-                                                    <option value={{$vt->id}}>{{$vt->visa_type_en}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-lg-3">
-                                                <label for="visa_number" class="col-form-label col-form-label-sm">Visa
-                                                    Number:</label>
-                                                <input type="text" class="form-control form-control-sm"
-                                                    name="visa_number" id="visa_number" placeholder="Visa Number">
-                                            </div>
-
-                                            <div class="form-group col-lg-3">
-                                                <label for="visa_expiry" class="col-form-label col-form-label-sm">Visa
-                                                    Expire Date:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-calendar"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
-                                                        placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                        name="visa_expiry" id="visa_expiry" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="sp_name" class="col-form-label col-form-label-sm">Sponser
-                                                    Name:</label>
-                                                <input type="text" class="form-control form-control-sm" name="sp_name"
-                                                    id="sp_name" placeholder="Sponser Name">
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="telephone"
-                                                    class="col-form-label col-form-label-sm">Identification No:</label>
-                                                <input type="text" class="form-control form-control-sm" name="id_no"
-                                                    id="id_no" placeholder="Identification No.">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="nationality"
-                                                    class="col-form-label col-form-label-sm">Nationality:</label>
-                                                <select class="form-control form-control-sm " name="nationality"
-                                                    id="nationality">
-                                                    {{--   - class for search in select  --}}
-                                                    <option value="">Select</option>
-                                                    @foreach ($countries as $ct)
-                                                    @if($ct)
-                                                    <option value="{{$ct}}">{{$ct}}</option>
-                                                    @endif
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="language"
-                                                    class="col-form-label col-form-label-sm">Languages:</label>
-                                                <select class=" form-control form-control-sm " name="language"
-                                                    id="language">
-                                                    <option value="">Select</option>
-                                                    @foreach ($languages as $lang)
-                                                    <option value={{$lang->id}}>{{$lang->name_en}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="religion"
-                                                    class="col-form-label col-form-label-sm">Religion:</label>
-                                                <select class=" form-control form-control-sm" name="religion"
-                                                    id="religion">
-                                                    <option value="">Select</option>
-                                                    @foreach ($religions as $reli)
-                                                    <option value={{$reli->id}}>{{$reli->name_en}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="gender"
-                                                    class="col-form-label col-form-label-sm">Gender:</label>
-                                                <select class=" form-control form-control-sm" name="gender" id="gender">
-                                                    <option value="">Select</option>
-                                                    <option value="1">Male</option>
-                                                    <option value="2">Female</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="city" class="col-form-label col-form-label-sm">City:</label>
-                                                <select class=" form-control form-control-sm " name="city" id="city"
-                                                    onChange="getAreas(this.value)">
-                                                    <option value="">Select</option>
-                                                    @foreach ($emirates as $em)
-                                                    <option value={{$em->id}}>{{$em->name_en}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="area" class="col-form-label col-form-label-sm">Area:</label>
-                                                <select class="  form-control form-control-sm " name="area" id="area">
-                                                    <option value="">Select</option>
-
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="address"
-                                                    class="col-form-label col-form-label-sm">Address:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-map-marker"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="address" id="address" placeholder="Address">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="address" class="col-form-label col-form-label-sm">PO
-                                                    Box:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="po_box" id="po_box" placeholder="PO box">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-lg-3">
-                                                <label for="address" class="col-form-label col-form-label-sm">Fax
-                                                    No:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="fax_no" id="fax_no" placeholder="Fax No">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="landline" class="col-form-label col-form-label-sm">LandLine
-                                                    No:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-phone-square"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="landline" id="landline" placeholder="Landline No.">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="mobile" class="col-form-label col-form-label-sm">Mobile
-                                                    No:</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-mobile-phone"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="mobile" id="mobile" placeholder="Mobile No.">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="email"
-                                                    class="col-form-label col-form-label-sm">Email</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-envelope-o"></i></span></div>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        placeholder="Email" name="email" id="email" />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+                    </div>
+                    {{-- Permit details wizard end --}}
 
-                        <!--end: Form Wizard Step 3-->
-
-
-
-                        <!--begin: Form Wizard Step 3-->
-                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-                                    <form id="documents_required" method="post">
-                                        <input type="hidden" id="artist_number_doc" value={{1}}>
-                                        <input type="hidden" id="requirements_count" value={{count($requirements)}}>
-                                        <div class="kt-form__section kt-form__section--first">
-                                            <div class="kt-wizard-v3__form" id="document_row">
-                                                <div class="row">
-                                                    <div class="form-group col-2">
-                                                        <label for="" class="reqName" title="Artist Photo">Artist
-                                                            Photo</label>
-                                                    </div>
-                                                    <div class="form-group col-6">
-                                                        <div id="pic_uploader">Upload
-                                                        </div>
-                                                    </div>
-                                                </div>
+                    {{-- Artist details wizard Start --}}
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        <div class="kt-form__section kt-form__section--first">
+                            <div class="kt-wizard-v3__form">
+                                <form id="artist_details">
+                                    <input type="hidden" id="artist_number" value={{1}}>
+                                    <div class=" row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="name_en" class="col-form-label col-form-label-sm">Person
+                                                Code:</label><span id="changeArtistLabel"
+                                                class="kt-badge kt-badge--danger kt-badge--inline d-none"
+                                                onclick="removeSelectedArtist()">
+                                                Change </span>
+                                            <input type="text" class="form-control form-control-sm " name="code"
+                                                id="code" placeholder="Person Code">
+                                            <small>only enter if you know person code</small>
+                                        </div>
+                                        <input type="hidden" id="artist_id" value="">
+                                        <input type="hidden" id="is_old_artist" value="1">
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="profession"
+                                                class="col-form-label col-form-label-sm">Profession:</label>
+                                            <select class="form-control form-control-sm " name="profession"
+                                                id="profession" placeholder="Profession">
+                                                <option value="">Select</option>
+                                                @foreach ($permitTypes as $pt)
+                                                <option value="{{$pt->permit_type_id}}">{{$pt->name_en}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="fname_en" class="col-form-label col-form-label-sm">First
+                                                Name:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-user"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm" name="fname_en"
+                                                    id="fname_en" placeholder="First Name">
                                             </div>
                                         </div>
-                                        @php
-                                        $i = 1;
-                                        @endphp
-                                        @foreach ($requirements as $req)
-                                        <div class="kt-form__section kt-form__section--first">
-                                            <div class="kt-wizard-v3__form" id="document_row">
-                                                <div class="row">
-                                                    <div class="form-group col-2">
-                                                        <label for="" class="reqName"
-                                                            title="{{$req->requirement_description}}">{{$req->requirement_name}}</label>
-                                                        <input type="hidden" value="{{$req->requirement_name}}"
-                                                            id="req_name_{{$i}}">
-                                                    </div>
-                                                    <div class="form-group col-6">
-                                                        <div id="fileuploader_{{$i}}">Upload
-                                                        </div>
-                                                    </div>
-                                                    <input type="hidden" id="datesRequiredCheck_{{$i}}"
-                                                        value="{{$req->dates_required}}">
-                                                    @if($req->dates_required == 1)
-                                                    <div class="form-group col-2">
-                                                        <input type="text" class="form-control date-picker"
-                                                            name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                            id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
-                                                    </div>
-                                                    <div class="form-group col-2">
-                                                        <input type="text" class="form-control date-picker"
-                                                            name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
-                                                            id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
-                                                    </div>
-                                                    @endif
-                                                </div>
 
+                                        <div class="form-group col-lg-3">
+                                            <label for="lname_en" class="col-form-label col-form-label-sm">Last
+                                                Name:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-user"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm" name="lname_en"
+                                                    id="lname_en" placeholder="Last Name">
                                             </div>
                                         </div>
-                                        @php
-                                        $i++;
-                                        @endphp
-                                        @endforeach
+                                    </div>
+                                    <input type="hidden" id="artist_permit_num">
+                                    <div class="row">
 
-                                    </form>
-                                </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="fname_ar" class="col-form-label col-form-label-sm">First
+                                                Name (Arabic):</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-user"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm text-right"
+                                                    name="fname_ar" id="fname_ar" placeholder="First Name (Arabic)">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="lname_ar" class="col-form-label col-form-label-sm">Last Name
+                                                (Arabic):</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-user"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm text-right"
+                                                    name="lname_ar" id="lname_ar" placeholder="Last Name (Arabic)">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="dob" class="col-form-label col-form-label-sm">DOB:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-calendar"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    placeholder="DD-MM-YYYY" data-date-end-date="0d" name="dob"
+                                                    id="dob" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="uid_number" class="col-form-label col-form-label-sm">UID:
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" name="uid_number"
+                                                id="uid_number" placeholder="UID Number">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="uid_expiry" class="col-form-label col-form-label-sm">UID
+                                                Expire Date:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-calendar"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm date-picker"
+                                                    placeholder="DD-MM-YYYY" data-date-start-date="30d"
+                                                    name="uid_expiry" id="uid_expiry" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="passport" class="col-form-label col-form-label-sm">Passport
+                                                No:</label>
+                                            <input type="text" class="form-control form-control-sm" name="passport"
+                                                id="passport" placeholder="Passport Number">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="pp_expiry" class="col-form-label col-form-label-sm">PP
+                                                Expire Date:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-calendar"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm date-picker"
+                                                    placeholder="DD-MM-YYYY" data-date-start-date="30d" name="pp_expiry"
+                                                    id="pp_expiry" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="visa_type" class="col-form-label col-form-label-sm">Visa
+                                                Type:</label>
+                                            <select type="text" class="form-control form-control-sm " name="visa_type"
+                                                id="visa_type">
+                                                <option value="">Select</option>
+                                                @foreach ($visatypes as $vt)
+                                                <option value={{$vt->id}}>{{$vt->visa_type_en}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="visa_number" class="col-form-label col-form-label-sm">Visa
+                                                Number:</label>
+                                            <input type="text" class="form-control form-control-sm" name="visa_number"
+                                                id="visa_number" placeholder="Visa Number">
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="visa_expiry" class="col-form-label col-form-label-sm">Visa
+                                                Expire Date:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-calendar"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm date-picker"
+                                                    placeholder="DD-MM-YYYY" data-date-start-date="30d"
+                                                    name="visa_expiry" id="visa_expiry" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="sp_name" class="col-form-label col-form-label-sm">Sponser
+                                                Name:</label>
+                                            <input type="text" class="form-control form-control-sm" name="sp_name"
+                                                id="sp_name" placeholder="Sponser Name">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="telephone"
+                                                class="col-form-label col-form-label-sm">Identification No:</label>
+                                            <input type="text" class="form-control form-control-sm" name="id_no"
+                                                id="id_no" placeholder="Identification No.">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="nationality"
+                                                class="col-form-label col-form-label-sm">Nationality:</label>
+                                            <select class="form-control form-control-sm " name="nationality"
+                                                id="nationality">
+                                                {{--   - class for search in select  --}}
+                                                <option value="">Select</option>
+                                                @foreach ($countries as $ct)
+                                                @if($ct)
+                                                <option value="{{$ct}}">{{$ct}}</option>
+                                                @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="language"
+                                                class="col-form-label col-form-label-sm">Languages:</label>
+                                            <select class=" form-control form-control-sm " name="language"
+                                                id="language">
+                                                <option value="">Select</option>
+                                                @foreach ($languages as $lang)
+                                                <option value={{$lang->id}}>{{$lang->name_en}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="religion"
+                                                class="col-form-label col-form-label-sm">Religion:</label>
+                                            <select class=" form-control form-control-sm" name="religion" id="religion">
+                                                <option value="">Select</option>
+                                                @foreach ($religions as $reli)
+                                                <option value={{$reli->id}}>{{$reli->name_en}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="gender" class="col-form-label col-form-label-sm">Gender:</label>
+                                            <select class=" form-control form-control-sm" name="gender" id="gender">
+                                                <option value="">Select</option>
+                                                <option value="1">Male</option>
+                                                <option value="2">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="city" class="col-form-label col-form-label-sm">City:</label>
+                                            <select class=" form-control form-control-sm " name="city" id="city"
+                                                onChange="getAreas(this.value)">
+                                                <option value="">Select</option>
+                                                @foreach ($emirates as $em)
+                                                <option value={{$em->id}}>{{$em->name_en}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="area" class="col-form-label col-form-label-sm">Area:</label>
+                                            <select class="  form-control form-control-sm " name="area" id="area">
+                                                <option value="">Select</option>
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="address"
+                                                class="col-form-label col-form-label-sm">Address:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-map-marker"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm" name="address"
+                                                    id="address" placeholder="Address">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="address" class="col-form-label col-form-label-sm">PO
+                                                Box:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"></div>
+                                                <input type="text" class="form-control form-control-sm" name="po_box"
+                                                    id="po_box" placeholder="PO box">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-3">
+                                            <label for="address" class="col-form-label col-form-label-sm">Fax
+                                                No:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"></div>
+                                                <input type="text" class="form-control form-control-sm" name="fax_no"
+                                                    id="fax_no" placeholder="Fax No">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="landline" class="col-form-label col-form-label-sm">LandLine
+                                                No:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-phone-square"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm" name="landline"
+                                                    id="landline" placeholder="Landline No.">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="mobile" class="col-form-label col-form-label-sm">Mobile
+                                                No:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-mobile-phone"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm" name="mobile"
+                                                    id="mobile" placeholder="Mobile No.">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="email" class="col-form-label col-form-label-sm">Email</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="la la-envelope-o"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    placeholder="Email" name="email" id="email" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
+                    </div>
+
+                    <!--end: Form Wizard Step 3-->
 
 
 
-                        <div class="kt-form__actions">
-                            <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                data-ktwizard-type="action-prev" id="prev_btn">
-                                Previous
+                    <!--begin: Form Wizard Step 3-->
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        <div class="kt-form__section kt-form__section--first">
+                            <div class="kt-wizard-v3__form">
+                                <form id="documents_required" method="post">
+                                    <input type="hidden" id="artist_number_doc" value={{1}}>
+                                    <input type="hidden" id="requirements_count" value={{count($requirements)}}>
+
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <label for="" class="reqName text--maroon kt-font-bold"
+                                                title="Artist Photo">Artist
+                                                Photo</label>
+
+                                            <div id="pic_uploader">Upload
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @php
+                                    $i = 1;
+                                    @endphp
+                                    @foreach ($requirements as $req)
+                                    <div class="row ">
+                                        <div class="col-8">
+                                            <label for="" class="reqName text--maroon kt-font-bold"
+                                                title="{{$req->requirement_description}}">{{ucwords($req->requirement_name)}}</label>
+                                            <input type="hidden" value="{{$req->requirement_name}}"
+                                                id="req_name_{{$i}}">
+
+                                            <label for="" class="reqName text--maroon kt-font-bold" title=""
+                                                style="visibility:hidden;">upload</label>
+                                            <div id="fileuploader_{{$i}}">Upload
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                            value="{{$req->dates_required}}">
+                                        @if($req->dates_required == 1)
+                                        <div class="col-2">
+                                            <label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue
+                                                Date</label>
+                                            <input type="text" class="form-control date-picker"
+                                                name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                        </div>
+                                        <div class="col-2">
+                                            <label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry
+                                                Date</label>
+                                            <input type="text" class="form-control date-picker"
+                                                name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
+                                                id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                        </div>
+                                        @endif
+
+                                    </div>
+                                    @php
+                                    $i++;
+                                    @endphp
+                                    @endforeach
+
+                                </form>
                             </div>
+                        </div>
+                    </div>
 
-                            <a href="../company/artist_permits">
-                                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                    id="back_btn">
-                                    Back
-                                </div>
-                            </a>
-                            <div id="add_new_btn_div">
-                                <div class="btn btn-outline-maroon btn-pill btn-sm kt-font-bold kt-font-transform-u kt-margin-r-20"
-                                    id="addNew_btn" style="display:none;" onclick="startToFront()">
-                                    Add New Artist
-                                </div>
-                            </div>
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                id="submit_btn" style="display:none;">
-                                Apply
-                            </div>
 
-                            <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                data-ktwizard-type="action-next" id="next_btn">
-                                Next Step
-                            </div>
 
+                    <div class="kt-form__actions">
+                        <div class="btn btn--maroon btn-sm  kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-prev" id="prev_btn">
+                            Previous
+                        </div>
+
+                        <a href="../company/artist_permits">
+                            <div class="btn btn--yellow btn-sm  kt-font-bold kt-font-transform-u" id="back_btn">
+                                Back
+                            </div>
+                        </a>
+                        <div id="add_new_btn_div">
+                            <div class="btn btn-outline-maroon btn-pill btn-sm kt-font-bold kt-font-transform-u kt-margin-r-20"
+                                id="addNew_btn" style="display:none;" onclick="startToFront()">
+                                Add New Artist
+                            </div>
+                        </div>
+                        <div class="btn btn--yellow btn-sm  kt-font-bold kt-font-transform-u" id="submit_btn"
+                            style="display:none;">
+                            Apply
+                        </div>
+
+                        <div class="btn btn--maroon btn-sm  kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-next" id="next_btn">
+                            Next Step
                         </div>
 
                     </div>
 
-                    <!--end: Form Wizard Form-->
                 </div>
+
+                <!--end: Form Wizard Form-->
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!-- end:: Content -->
@@ -638,7 +631,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Artist With Code &emsp;<span class="text--maroon"
                         id="ex_artist_personcode"></span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearPersonCode()">
                 </button>
             </div>
             <div class="modal-body">
@@ -905,7 +898,7 @@
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
                 onLoad:function(obj)
                 {
-                    console.log(obj);
+                    // console.log(obj);
                     $code = $('#code').val();
                     if($code){
                         $.ajaxSetup({
@@ -973,6 +966,7 @@
                 visa_number: 'required',
                 visa_expiry: 'required',
                 sp_name: 'required',
+                gender: 'required',
                 nationality: 'required',
                 address: 'required',
                 landline: {
@@ -1003,6 +997,7 @@
                 visa_number: 'This field is required',
                 visa_expiry: 'This field is required',
                 sp_name: 'This field is required',
+                gender: 'This field is required',
                 nationality: 'This field is required',
                 address: 'This field is required',
                 landline: {
@@ -1352,11 +1347,13 @@
 
         }
 
-        $('#code').keyup(function() {
-        searchCode();
-    });
+        $('#code').keyup(function(e) {
+            searchCode(e);
+        });
 
-    function searchCode(){
+
+
+    function searchCode(e){
         let code = $('#code').val();
         if(code){
             $.ajax({
@@ -1383,6 +1380,7 @@
                         $('#profImg').css('height', '150px');
                         $('#profImg').css('width', '150px');
                         $('#artist_exists').modal('show');
+
                     }
 
                 }
@@ -1402,6 +1400,10 @@
         $('#code').removeClass('mk-disabled');
         PicUploadFunction();
         uploadFunction();
+    }
+
+    const clearPersonCode = () => {
+        $('#code').val('');
     }
 
         const setArtistDetails = () => {
@@ -1539,5 +1541,5 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="http://hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js"></script>
+<script src="{{asset('/js/uploadfile.js')}}"></script>
 @endsection

@@ -6,144 +6,135 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<!-- end:: Header -->
-<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
 
 
-    <!-- begin:: Content -->
-    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-
-        <section class="row">
-            <div class="col">
-
-                <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
+<section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
 
-                    <div class="kt-portlet__body">
+    <div class="kt-portlet__body">
 
-                        <ul class="nav nav-tabs " role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Applied
-                                    Artists Permits </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Existing
-                                    Artists Permits</a>
-                            </li>
-                            <li class="nav-item" style="position:absolute; right: 3%;">
-                                <a href="/company/add_new_artist"><button class="btn btn--yellow btn-sm btn-wide">Add
-                                        New
-                                        Permit</button></a>
-                            </li>
-                        </ul>
+        <ul class="nav nav-tabs " role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Applied
+                    Artists Permits </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Existing
+                    Artists Permits</a>
+            </li>
+            <li class="nav-item"
+                style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
+                <a href="/company/add_new_artist"><button class="btn btn--yellow btn-sm btn-wide">Add
+                        New
+                        Permit</button></a>
+            </li>
+        </ul>
 
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                                <table
-                                    class="table table-striped- table-bordered table-condensed table-hover table-checkable"
-                                    id="applied-artists-table">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Refer No.</th>
-                                            <th>Permit No.</th>
-                                            <th>From Date</th>
-                                            <th>To Date</th>
-                                            <th>Address</th>
-                                            <th>Applied on</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                            <th>Details</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                            <div class="tab-pane " id="kt_tabs_1_2" role="tabpanel">
-                                <table class="table table-striped- table-bordered table-hover table-checkable"
-                                    id="existing-artists-table">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Refer No.</th>
-                                            <th>Permit No.</th>
-                                            <th>From Date</th>
-                                            <th>To Date</th>
-                                            <th>Address</th>
-                                            <th>Applied on</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                            <th>Details</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
+                <table class="table table-striped- table-bordered table-condensed table-hover table-checkable"
+                    id="applied-artists-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Refer No.</th>
+                            <th>Permit No.</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Address</th>
+                            <th>Applied on</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tab-pane " id="kt_tabs_1_2" role="tabpanel">
+                <table class="table table-striped- table-bordered table-hover table-checkable"
+                    id="existing-artists-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Refer No.</th>
+                            <th>Permit No.</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Address</th>
+                            <th>Applied on</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                        <!--end: Datatable -->
+        <!--end: Datatable -->
+
+
+
+        <!--begin::Modal-->
+        <div class="modal fade" id="cancel_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cancel Permit</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
                     </div>
-            </div>
-    </div>
 
+                    <div class="modal-body">
+                        <form action="{{route('company.cancel_permit')}}" id="cancel_permit_form" method="post"
+                            novalidate>
+                            {{csrf_field()}}
+                            <label>Are you sure to Cancel this Permit of ID <span class="text--maroon"
+                                    id="cancel_permit_number"></span>
+                                ?</label>
+                            <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..."
+                                style="resize:none;" class="form-control" id="cancel_reason"></textarea>
+                            <input type="hidden" id="cancel_permit_id" name="permit_id">
+                            <input type="submit" class="btn btn-sm btn--yellow popup-submit-btn" value="Cancel Permit">
+                        </form>
+                    </div>
 
-    <!--begin::Modal-->
-    <div class="modal fade" id="cancel_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cancel Permit</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <form action="{{route('company.cancel_permit')}}" id="cancel_permit_form" method="post" novalidate>
-                        {{csrf_field()}}
-                        <label>Are you sure to Cancel this Permit of ID <span class="text--maroon"
-                                id="cancel_permit_number"></span>
-                            ?</label>
-                        <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..."
-                            style="resize:none;" class="form-control" id="cancel_reason"></textarea>
-                        <input type="hidden" id="cancel_permit_id" name="permit_id">
-                        <input type="submit" class="btn btn-sm btn--yellow popup-submit-btn" value="Cancel Permit">
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
-
-    <!--begin::Modal-->
-    <div class="modal fade" id="cancelled_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="cancelled_reason" class="text--maroon kt-font-bold kt-font-transform-i"></p>
                 </div>
             </div>
         </div>
+
+        <!--end::Modal-->
+
+        <!--begin::Modal-->
+        <div class="modal fade" id="cancelled_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="cancelled_reason" class="text--maroon kt-font-bold kt-font-transform-i"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end::Modal-->
+
+
+
+
     </div>
 
-    <!--end::Modal-->
+    @endsection
 
-
-
-
-</div>
-
-@endsection
-
-@section('script')
-<script>
-    $(document).ready(function(){
+    @section('script')
+    <script>
+        $(document).ready(function(){
 
         $.ajaxSetup({
             headers: {
@@ -337,5 +328,5 @@
     })
 
 
-</script>
-@endsection
+    </script>
+    @endsection

@@ -236,12 +236,12 @@ class MainController extends Controller
     public function uploadDocuments(Request $request)
     {
         $name = str_replace(" ", "_", $request->reqName);
+        $userid = Auth::user()->user_id;
         $number = $request->artistNo;
         if ($request->id == 0) {
             $file = $request->file('pic_file');
             $ext = $file->getClientOriginalExtension();
             $fileName = $request->file('pic_file')->getClientOriginalName();
-
             $original = 'original';
             $path  = Storage::putFileAs('files/' . $number . '/' . $original, $request->files->get('pic_file'), $fileName);
             $thumbImg = Image::make($request->file('pic_file')->getRealPath());
@@ -252,12 +252,12 @@ class MainController extends Controller
             $thumbPath = storage_path() . '/app/files/' . $number . '/thumb/' . $fileName;
             $thumbImg->save($thumbPath);
             $thumbSavedPath = 'files/' . $number . '/thumb/' . $fileName;
-            session([$number . '_pic_file' => $path, $number . '_ext' => $ext, $number . '_thumb_file' => $thumbSavedPath]);
+            session([$userid . '_' . $number . '_pic_file' => $path, $userid . '_' . $number . '_ext' => $ext, $userid . '_' . $number . '_thumb_file' => $thumbSavedPath]);
         } else {
             $file = $request->files->get('doc_file_' . $request->id);
             $ext = $request->files->get('doc_file_' . $request->id)->getClientOriginalExtension();
             $path  = Storage::putFileAs('files/' . $number, $request->files->get('doc_file_' . $request->id), $name);
-            session([$number . '_doc_file_' . $request->id => $path, $number . '_ext_' . $request->id => $ext]);
+            session([$userid . '_' . $number . '_doc_file_' . $request->id => $path, $userid . '_' . $number . '_ext_' . $request->id => $ext]);
         }
         return json_encode($file);
     }
@@ -338,49 +338,41 @@ class MainController extends Controller
 
             $is_old = $artistDetails[$i]['is_old_artist'];
 
-            if ($is_old == 2) {
-                Artist::where('person_code', $artistDetails[$i]['code'])->update([
-                    'firstname_en' => $artistDetails[$i]['fname_en'],
-                    'firstname_ar' => $artistDetails[$i]['fname_ar'],
-                    'lastname_en' => $artistDetails[$i]['lname_en'],
-                    'lastname_ar' => $artistDetails[$i]['lname_ar'],
-                    'nationality' => $artistDetails[$i]['nationality'],
-                    'gender' => $artistDetails[$i]['gender'],
-                    'birthdate' => $artistDetails[$i]['dob'] ? Carbon::parse($artistDetails[$i]['dob'])->toDateString() : '',
-                    'artist_status' => 'active',
-                    'updated_by' => Auth::user()->user_id,
-                    'updated_at' => Carbon::now()->toDateTimeString(),
-                ]);
+            $input_array = [
+                'firstname_en' => $artistDetails[$i]['fname_en'],
+                'firstname_ar' => $artistDetails[$i]['fname_ar'],
+                'lastname_en' => $artistDetails[$i]['lname_en'],
+                'lastname_ar' => $artistDetails[$i]['lname_ar'],
+                'nationality' => $artistDetails[$i]['nationality'],
+                'gender_id' => $artistDetails[$i]['gender'],
+                'birthdate' => $artistDetails[$i]['dob'] ? Carbon::parse($artistDetails[$i]['dob'])->toDateString() : '',
+                'artist_status' => 'active',
+                'updated_by' => Auth::user()->user_id,
+                'updated_at' =>  Carbon::now()->toDateTimeString()
+            ];
 
+            if ($is_old == 2) {
+                Artist::where('person_code', $artistDetails[$i]['code'])->update($input_array);
                 $artist = Artist::where('person_code', $artistDetails[$i]['code'])->first();
             } else {
-
                 $code =  $this->generatePersonCode();
-
-                $artist = Artist::create([
-                    'person_code' => $code,
-                    'firstname_en' => $artistDetails[$i]['fname_en'],
-                    'firstname_ar' => $artistDetails[$i]['fname_ar'],
-                    'lastname_en' => $artistDetails[$i]['lname_en'],
-                    'lastname_ar' => $artistDetails[$i]['lname_ar'],
-                    'nationality' => $artistDetails[$i]['nationality'],
-                    'gender' => $artistDetails[$i]['gender'],
-                    'birthdate' => $artistDetails[$i]['dob'] ? Carbon::parse($artistDetails[$i]['dob'])->toDateString() : '',
-                    'artist_status' => 'active',
-                    'updated_by' => Auth::user()->user_id,
-                    'updated_at' => Carbon::now()->toDateTimeString(),
-                    'created_by' => Auth::user()->user_id,
-                    'created_at' => Carbon::now()->toDateTimeString(),
-                ]);
+                $artist = Artist::create($input_array);
+                $artist->person_code = $code;
+                $artist->created_by = Auth::user()->user_id;
+                $artist->created_at = Carbon::now()->toDateTimeString();
+                $artist->save();
             }
 
             $company_array = Company::find(Auth::user()->EmpClientId);
             $company_name = str_replace(' ', '_', $company_array->company_name);
             $company_name = strtolower($company_name);
 
-            $pic_ext = session($i . '_ext');
+            $userid = Auth::user()->user_id;
 
-            if (Storage::exists(session($i . '_pic_file'))) {
+            $pic_ext = session($userid . '_' . $i . '_ext');
+
+
+            if (Storage::exists(session($userid . '_' . $i . '_pic_file'))) {
 
                 $check_path = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photos';
 
@@ -397,10 +389,10 @@ class MainController extends Controller
                 $newThumbPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
                 $newThumbPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
 
-                Storage::move(session($i . '_pic_file'), $newPath);
-                Storage::move(session($i . '_thumb_file'), $newThumbPath);
+                Storage::move(session($userid . '_' . $i . '_pic_file'), $newPath);
+                Storage::move(session($userid . '_' . $i . '_thumb_file'), $newThumbPath);
 
-                session()->forget([$i . '_pic_file', $i . '_thumb_file', $i . '_ext']);
+                session()->forget([$userid . '_' . $i . '_pic_file', $userid . '_' . $i . '_thumb_file', $i . '_ext']);
             } else {
                 $getArtistPics = ArtistPermit::where('artist_id', $artist->artist_id)->latest()->first();
                 $newPathLink = $getArtistPics->original;
@@ -425,15 +417,15 @@ class MainController extends Controller
                 'sponsor_name_en' => $artistDetails[$i]['spName'],
                 'language' => $artistDetails[$i]['language'],
                 'religion' => $artistDetails[$i]['religion'],
-                'city' => $artistDetails[$i]['city'],
+                'emirate_id' => $artistDetails[$i]['city'],
                 'fax_number' => $artistDetails[$i]['fax_no'],
                 'po_box' => $artistDetails[$i]['po_box'],
-                'area' => $artistDetails[$i]['area'],
+                'area_id' => $artistDetails[$i]['area'],
                 'address_en' => $artistDetails[$i]['address'],
                 'mobile_number' => $artistDetails[$i]['mobile'],
                 'phone_number' => $artistDetails[$i]['landline'],
                 'email' => $artistDetails[$i]['email'],
-                'emirates_id' => $artistDetails[$i]['idNo']
+                'identification_number' => $artistDetails[$i]['idNo']
             ]);
 
             $requirements = Requirement::where('requirement_type', 'artist')->get();
@@ -444,9 +436,9 @@ class MainController extends Controller
             $total = $requirements->count();
 
             for ($j = 1; $j <= $total; $j++) {
-                if (Storage::exists(session($i . '_doc_file_' . $j))) {
+                if (Storage::exists(session($userid . '_' . $i . '_doc_file_' . $j))) {
 
-                    $ext = session($i . '_ext_' . $j);
+                    $ext = session($userid . '_' . $i . '_ext_' . $j);
 
                     $check_path = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id;
 
@@ -460,10 +452,10 @@ class MainController extends Controller
                     $newPath = 'public/' . $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $next_file_no . '.' . $ext;
                     $newPathLink = $company_name . '/artist_permit/' . $artist->artist_id . '/document_' . $next_file_no . '.' . $ext;
 
-                    Storage::move(session($i . '_doc_file_' . $j), $newPath);
-                    Storage::delete(session($i . '_doc_file_' . $j));
+                    Storage::move(session($userid . '_' . $i . '_doc_file_' . $j), $newPath);
+                    Storage::delete(session($userid . '_' . $i . '_doc_file_' . $j));
 
-                    session()->forget([$i . '_doc_file_' . $j, $i . '_ext_' . $j]);
+                    session()->forget([$userid . '_' . $i . '_doc_file_' . $j, $userid . '_' . $i . '_ext_' . $j]);
                 } else {
                     $artistsD = ArtistPermitDocument::where('artist_permit_id', $artistDetails[$i]['id'])->latest()->first();
                     $newPathLink = $artistsD->path;
@@ -721,40 +713,6 @@ class MainController extends Controller
 
         $i = 1;
 
-        $company_array = Company::find(Auth::user()->EmpClientId);
-        $company_name = str_replace(' ', '_', $company_array->company_name);
-        $company_name = strtolower($company_name);
-
-        $pic_ext = session($i . '_ext');
-
-        if (Storage::exists(session($i . '_pic_file'))) {
-
-            $check_path = 'public/' . $company_name . '/artist_permit/' . $artistDetails[$i]['id'] . '/photos';
-
-            if (Storage::exists($check_path)) {
-                $file_count = count(Storage::files($check_path));
-                $file_nos = $file_count / 2;
-                $next_file_no = $file_nos + 1;
-            } else {
-                $next_file_no = 1;
-            }
-
-            $newPath = 'public/' . $company_name . '/artist_permit/' . $artistDetails[$i]['id'] . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
-            $newPathLink = $company_name . '/artist_permit/' . $artistDetails[$i]['id'] . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
-            $newThumbPath = 'public/' . $company_name . '/artist_permit/' . $artistDetails[$i]['id'] . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
-            $newThumbPathLink = $company_name . '/artist_permit/' . $artistDetails[$i]['id'] . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
-
-            Storage::move(session($i . '_pic_file'), $newPath);
-            Storage::move(session($i . '_thumb_file'), $newThumbPath);
-
-            session()->forget([$i . '_pic_file', $i . '_thumb_file', $i . '_ext']);
-        } else {
-            $getArtistPics = ArtistTempData::where('artist_permit_id', $artist_permit_id)->latest()->first();
-            $newPathLink = $getArtistPics->original;
-            $newThumbPathLink = $getArtistPics->thumbnail;
-        }
-
-
         $artists = ArtistTempData::where('artist_permit_id', $artist_permit_id)->update([
             'firstname_en' => $artistDetails[$i]['fname_en'],
             'firstname_ar' => $artistDetails[$i]['fname_ar'],
@@ -764,8 +722,6 @@ class MainController extends Controller
             'gender' => $artistDetails[$i]['gender'],
             'birthdate' => $artistDetails[$i]['dob'] ? Carbon::parse($artistDetails[$i]['dob'])->toDateString() : '',
             'permit_type_id' => $artistDetails[$i]['profession'],
-            'original' => $newPathLink,
-            'thumbnail' => $newThumbPathLink,
             'uid_number' => $artistDetails[$i]['uidNumber'],
             'passport_number' => $artistDetails[$i]['passport'],
             'uid_expire_date' => $artistDetails[$i]['uidExp'] ? Carbon::parse($artistDetails[$i]['uidExp'])->toDateString() : '',
@@ -789,6 +745,42 @@ class MainController extends Controller
         ]);
 
 
+        $company_array = Company::find(Auth::user()->EmpClientId);
+        $company_name = str_replace(' ', '_', $company_array->company_name);
+        $company_name = strtolower($company_name);
+
+        $userid = Auth::user()->user_id;
+
+        $pic_ext = session($userid . '_' . $i . '_ext');
+
+        if (Storage::exists(session($userid . '_' . $i . '_pic_file'))) {
+
+            $check_path = 'public/' . $company_name . '/artist_permit/temp/' . $artistDetails[$i]['id'] . '/photos';
+
+            if (Storage::exists($check_path)) {
+                $file_count = count(Storage::files($check_path));
+                $file_nos = $file_count / 2;
+                $next_file_no = $file_nos + 1;
+            } else {
+                $next_file_no = 1;
+            }
+
+            $newPath = 'public/' . $company_name . '/artist_permit/temp/' . $artistDetails[$i]['id'] . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+            $newPathLink = $company_name . '/artist_permit/temp/' . $artistDetails[$i]['id'] . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+            $newThumbPath = 'public/' . $company_name . '/artist_permit/temp/' . $artistDetails[$i]['id'] . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+            $newThumbPathLink = $company_name . '/artist_permit/temp/' . $artistDetails[$i]['id'] . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+
+            Storage::move(session($userid . '_' . $i . '_pic_file'), $newPath);
+            Storage::move(session($userid . '_' . $i . '_thumb_file'), $newThumbPath);
+
+            session()->forget([$userid . '_' . $i . '_pic_file', $userid . '_' . $i . '_thumb_file', $userid . '_' . $i . '_ext']);
+
+            $artists->original = $newPathLink;
+            $artists->thumbnail = $newThumbPathLink;
+            $artists->save();
+        }
+
+
         $requirements = Requirement::where('requirement_type', 'artist')->get();
         $requirement_names = [];
         foreach ($requirements as $req) {
@@ -797,11 +789,11 @@ class MainController extends Controller
         $total = $requirements->count();
 
         for ($j = 1; $j <= $total; $j++) {
-            if (Storage::exists(session($i . '_doc_file_' . $j))) {
+            if (Storage::exists(session($userid . '_' . $i . '_doc_file_' . $j))) {
 
-                $ext = session($i . '_ext_' . $j);
+                $ext = session($userid . '_' . $i . '_ext_' . $j);
 
-                $check_path = 'public/' . $company_name . '/artist_permit/' . $artistDetails[$i]['id'];
+                $check_path = 'public/' . $company_name . '/artist_permit/temp/' . $artistDetails[$i]['id'];
 
                 if (Storage::exists($check_path)) {
                     $file_count = count(Storage::files($check_path));
@@ -810,27 +802,25 @@ class MainController extends Controller
                     $next_file_no = $j;
                 }
 
-                $newPath = 'public/' . $company_name . '/artist_permit/' . $artistDetails[$i]['id'] . '/document_' . $next_file_no . '.' . $ext;
-                $newPathLink = $company_name . '/artist_permit/' . $artistDetails[$i]['id'] . '/document_' . $next_file_no . '.' . $ext;
+                $newPath = 'public/' . $company_name . '/artist_permit/temp/' . $artistDetails[$i]['id'] . '/document_' . $next_file_no . '.' . $ext;
+                $newPathLink = $company_name . '/artist_permit/temp/' . $artistDetails[$i]['id'] . '/document_' . $next_file_no . '.' . $ext;
 
-                Storage::move(session($i . '_doc_file_' . $j), $newPath);
-                Storage::delete(session($i . '_doc_file_' . $j));
+                Storage::move(session($userid . '_' . $i . '_doc_file_' . $j), $newPath);
+                Storage::delete(session($userid . '_' . $i . '_doc_file_' . $j));
 
-                session()->forget([$i . '_doc_file_' . $j, $i . '_ext_' . $j]);
-            } else {
-                $artistsD = ArtistPermitDocument::where('artist_permit_id', $artist_permit_id)->latest()->first();
-                $newPathLink = $artistsD->path;
+                session()->forget([$userid . '_' . $i . '_doc_file_' . $j, $userid . '_' . $i . '_ext_' . $j]);
+
+                ArtistTempDocument::create([
+                    'issued_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['issue_date'])->toDateTimeString() : '',
+                    'expired_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['exp_date'])->toDateTimeString() : '',
+                    'created_at' =>  Carbon::now()->toDateTimeString(),
+                    'created_by' =>  Auth::user()->user_id,
+                    'artist_permit_id' => $artist_permit_id,
+                    'path' =>  $newPathLink,
+                    'document_name' => $requirement_names[$j - 1],
+                    'status' => 2
+                ]);
             }
-
-            ArtistTempDocument::create([
-                'issued_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['issue_date'])->toDateTimeString() : '',
-                'expired_date' => $documentDetails[$i][$j] != null ? Carbon::parse($documentDetails[$i][$j]['exp_date'])->toDateTimeString() : '',
-                'created_at' =>  Carbon::now()->toDateTimeString(),
-                'created_by' =>  Auth::user()->user_id,
-                'artist_permit_id' => $artist_permit_id,
-                'path' =>  $newPathLink,
-                'document_name' => $requirement_names[$j - 1]
-            ]);
         }
 
         if ($artists) {
@@ -850,7 +840,7 @@ class MainController extends Controller
         $documentDetails = json_decode($request->documentD, true);
 
         $i = 1;
-        $is_old = $artistDetails[$i]['is_old_artist'];
+        // $is_old = $artistDetails[$i]['is_old_artist'];
         $tempData = ArtistTempData::create([
             'firstname_en' => $artistDetails[$i]['fname_en'],
             'firstname_ar' => $artistDetails[$i]['fname_ar'],
@@ -882,16 +872,12 @@ class MainController extends Controller
             'person_code' => 0,
             'po_box' => $artistDetails[$i]['po_box'],
             'fax_number' => $artistDetails[$i]['fax_number'],
-            'status' => 0
+            'status' => 2,
+            'is_old_artist' => $artistDetails[$i]['is_old_artist']
         ]);
 
-        if (isset($artistDetails[$i]['artist_id'])) {
-            $tempData->artist_id = $artistDetails[$i]['artist_id'];
-        } else {
-            $tempData->artist_id = $tempData->id;
-        }
-
-        $tempData->artist_permit_id = $tempData->artist_id;
+        $tempData->artist_id = $artistDetails[$i]['is_old_artist']  == 2 ? $artistDetails[$i]['artist_id'] : $tempData->id;
+        $tempData->artist_permit_id = $artistDetails[$i]['is_old_artist']  == 2 ? $artistDetails[$i]['artist_permit_id'] : $tempData->id;
 
         $tempData->save();
 
@@ -899,11 +885,13 @@ class MainController extends Controller
         $company_name = str_replace(' ', '_', $company_array->company_name);
         $company_name = strtolower($company_name);
 
-        $pic_ext = session($i . '_ext');
+        $userid = Auth::user()->user_id;
 
-        if (Storage::exists(session($i . '_pic_file'))) {
+        $pic_ext = session($userid . '_' . $i . '_ext');
 
-            $check_path = 'public/' . $company_name . '/artist_permit/' . $tempData->artist_id . '/photos';
+        if (Storage::exists(session($userid . '_' . $i . '_pic_file'))) {
+
+            $check_path = 'public/' . $company_name . '/artist_permit/temp/' . $tempData->artist_id . '/photos';
 
             if (Storage::exists($check_path)) {
                 $file_count = count(Storage::files($check_path));
@@ -913,24 +901,21 @@ class MainController extends Controller
                 $next_file_no = 1;
             }
 
-            $newPath = 'public/' . $company_name . '/artist_permit/' . $tempData->artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
-            $newPathLink = $company_name . '/artist_permit/' . $tempData->artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
-            $newThumbPath = 'public/' . $company_name . '/artist_permit/' . $tempData->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
-            $newThumbPathLink = $company_name . '/artist_permit/' . $tempData->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+            $newPath = 'public/' . $company_name . '/artist_permit/temp/' . $tempData->artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+            $newPathLink = $company_name . '/artist_permit/temp/' . $tempData->artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+            $newThumbPath = 'public/' . $company_name . '/artist_permit/temp/' . $tempData->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+            $newThumbPathLink = $company_name . '/artist_permit/temp/' . $tempData->artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
 
-            Storage::move(session($i . '_pic_file'), $newPath);
-            Storage::move(session($i . '_thumb_file'), $newThumbPath);
+            Storage::move(session($userid . '_' . $i . '_pic_file'), $newPath);
+            Storage::move(session($userid . '_' . $i . '_thumb_file'), $newThumbPath);
 
-            session()->forget([$i . '_pic_file', $i . '_thumb_file', $i . '_ext']);
-        } else {
-            $artistsD = ArtistPermit::where('artist_id', $tempData->artist_id)->latest()->first(); // change artist id
-            $newPathLink = $artistsD->original;
-            $newThumbPathLink = $artistsD->thumbnail;
+            session()->forget([$userid . '_' . $i . '_pic_file', $userid . '_' . $i . '_thumb_file', $userid . '_' . $i . '_ext']);
+
+            $tempData->original  = $newPathLink;
+            $tempData->thumbnail = $newThumbPathLink;
+            $tempData->save();
         }
 
-        $tempData->original  = $newPathLink;
-        $tempData->thumbnail = $newThumbPathLink;
-        $tempData->save();
 
         $requirements = Requirement::where('requirement_type', 'artist')->get();
         $requirement_names = [];
@@ -940,11 +925,11 @@ class MainController extends Controller
         $total = $requirements->count();
 
         for ($j = 1; $j <= $total; $j++) {
-            if (Storage::exists(session($i . '_doc_file_' . $j))) {
+            if (Storage::exists(session($userid . '_' . $i . '_doc_file_' . $j))) {
 
-                $ext = session($i . '_ext_' . $j);
+                $ext = session($userid . '_' . $i . '_ext_' . $j);
 
-                $check_path = 'public/' . $company_name . '/artist_permit/' . $tempData->artist_id;
+                $check_path = 'public/' . $company_name . '/artist_permit/temp/' . $tempData->artist_id;
 
                 if (Storage::exists($check_path)) {
                     $file_count = count(Storage::files($check_path));
@@ -953,16 +938,16 @@ class MainController extends Controller
                     $next_file_no = $j;
                 }
 
-                $newPath = 'public/' . $company_name . '/artist_permit/' . $tempData->artist_id . '/document_' . $next_file_no . '.' . $ext;
-                $newPathLink = $company_name . '/artist_permit/' . $tempData->artist_id . '/document_' . $next_file_no . '.' . $ext;
+                $newPath = 'public/' . $company_name . '/artist_permit/temp/' . $tempData->artist_id . '/document_' . $next_file_no . '.' . $ext;
+                $newPathLink = $company_name . '/artist_permit/temp/' . $tempData->artist_id . '/document_' . $next_file_no . '.' . $ext;
 
 
-                Storage::move(session($i . '_doc_file_' . $j), $newPath);
-                Storage::delete(session($i . '_doc_file_' . $j));
+                Storage::move(session($userid . '_' . $i . '_doc_file_' . $j), $newPath);
+                Storage::delete(session($userid . '_' . $i . '_doc_file_' . $j));
 
 
 
-                session()->forget([$i . '_doc_file_' . $j, $i . '_ext_' . $j]);
+                session()->forget([$userid . '_' . $i . '_doc_file_' . $j, $userid . '_' . $i . '_ext_' . $j]);
             } else {
                 $artistsD = ArtistPermitDocument::where('artist_permit_id', $tempData->artist_id)->latest()->first();
                 $newPathLink = $artistsD->path;
@@ -976,7 +961,7 @@ class MainController extends Controller
                 'artist_permit_id' => $tempData->id,
                 'path' =>  $newPathLink,
                 'document_name' => $requirement_names[$j - 1],
-                'status' => 'active'
+                'status' => 2
             ]);
         }
 

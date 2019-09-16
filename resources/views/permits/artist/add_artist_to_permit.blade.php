@@ -907,7 +907,6 @@
                             }
                         });
                     }
-
                 },
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
@@ -960,6 +959,7 @@
                 sp_name: 'required',
                 nationality: 'required',
                 address: 'required',
+                gender: 'required',
                 landline: {
                     // number: true,
                     required : true
@@ -990,6 +990,7 @@
                 sp_name: 'This field is required',
                 nationality: 'This field is required',
                 address: 'This field is required',
+                gender: 'This field is required',
                 landline: {
                     required: 'This field is required',
                     // number: 'Must be a Number'
@@ -1329,8 +1330,10 @@
         $('#artist_permit_id').val('');
         $('#changeArtistLabel').addClass('d-none');
         $('#code').removeClass('mk-disabled');
+        $('#code').val('');
         PicUploadFunction();
         uploadFunction();
+        picUploader.reset();
     }
 
 
