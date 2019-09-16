@@ -1268,7 +1268,7 @@
                     updateChecklist: true
                 },
                 success: function(result){
-                    // console.log(result);
+                    console.log(result);
                     if(result.message[0] == 'success')
                     {
                         localStorage.clear();

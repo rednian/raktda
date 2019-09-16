@@ -77,15 +77,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                        $arr = [];
-                        @endphp
+
                         {{-- {{dd($artist_details)}} --}}
+                        @php
+                        $i = 0 ;
+                        @endphp
+                        <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                         @foreach ($artist_details as $artist_detail)
                         <tr>
-                            @php
-                            array_push($arr, $artist_detail->id);
-                            @endphp
+
                             <td>{{$artist_detail->firstname_en}}</td>
                             <td>{{$artist_detail->lastname_en}}</td>
                             <td>{{$artist_detail->permitType['name_en']}}</td>
@@ -119,10 +119,14 @@
                                     <i class="la la-comment la-2x"></i>
                                 </a>
                             </td>
+                            <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
+                            @php
+                            $i++;
+                            @endphp
                         </tr>
                         @endforeach
                     </tbody>
-                    <input type="hidden" id="temp_id_array" value="{{ json_encode($arr)}}">
+
                 </table>
             </div>
         </div>
@@ -215,6 +219,45 @@
         }
     });
 
+    // $(window).on('unload',function () {
+    //     var ids = $('#temp_id_array').val();
+    //     $.ajax({
+    //             type: 'POST',
+    //             url: '{{url("company/check_update_is_edit")}}',
+    //             data: {permit_id: $('#permit_id').val(),  temp_ids: ids},
+    //             success: function(data) {
+    //                 console.log('this' +data);
+    //             }
+    //     });
+    // });
+
+    $(window).on('beforeunload', function (e)
+    {
+        var permit_id = $('#permit_id').val();
+        var nexUrl = document.activeElement.href;
+       var total = $('#total_artist_details').val();
+       if(nextUrl != "{{url('company/add_artist_to_permit/edit/')}}/"+permit_id ){
+            for(var i = 0 ; i < total; i++){
+                var temp_id = $('#temp_id_'+i).val();
+                if(nextUrl != "{{url('company/edit_edit_artist')}}"+'/' +temp_id ){
+                    $.ajax({
+                        type: 'GET',
+                        url: "{{url('company/update_is_edit')}}"+"/" +permit_id,
+                        success: function(data) {
+                            console.log('at last it worked');
+                        }
+                    });
+                }
+            }
+        }
+
+
+       total_artist_details
+
+
+    });
+
+
 
     function getArtistDetails(id) {
         $.ajax({
@@ -233,25 +276,6 @@
             }
         });
     }
-
-    window.onbeforeunload = function (e) {
-
-        var ids = $('#temp_id_array').val();
-
-        e = e || window.event;
-
-        if (e) {
-            $.ajax({
-                    type: 'POST',
-                    url: '{{route("company.check_update_is_edit")}}',
-                    data: {permit_id: $('#permit_id').val(),  temp_ids: ids},
-                    success: function(data) {
-
-                    }
-            });
-        }
-
-    };
 
 
     function getErrorFields(id) {

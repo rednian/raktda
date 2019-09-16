@@ -543,7 +543,7 @@ class MainController extends Controller
         return $status;
     }
 
-    public function add_artist_to_permit($id, $from)
+    public function add_artist_to_permit($from, $id)
     {
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
         $data_bundle['countries'] = Countries::all()->pluck('demonym')->sort();
@@ -714,6 +714,8 @@ class MainController extends Controller
         $temp_id = $request->temp_id;
         $artistDetails = json_decode($request->artistD, true);
         $documentDetails = json_decode($request->documentD, true);
+
+
 
         $i = 1;
 
@@ -1005,6 +1007,8 @@ class MainController extends Controller
 
         $artist_temp_data = ArtistTempData::with('ArtistTempDocument')->where('permit_id', $permit_id)->get();
 
+        dd($artist_temp_data);
+
         // $artists_of_permit = ArtistPermit::with('permit')->where('permit_id', $permit_id)->get();
 
         foreach ($artist_temp_data as $data) {
@@ -1102,20 +1106,8 @@ class MainController extends Controller
         return $artist_documents;
     }
 
-    public function check_update_is_edit(Request $request)
+    public function update_is_edit($id)
     {
-        $permit_id = $request->permit_id;
-        $temp_ids = json_decode($request->temp_ids);
-
-        echo $temp_ids;
-
-        if (url()->current() != url('add_artist_to_permit') . '/' . $permit_id . '/' . 'edit') {
-            foreach ($temp_ids as $ti) {
-                if (url()->current() != url('edit_edit_artist') . '/' . $ti) {
-                    Permit::where('permit_id', $permit_id)->update(['is_edit' => 0]);
-                }
-            }
-        }
-        // || (url()->current() != url('edit_permit') . '/' . $permit_id)
+        Permit::where('permit_id', $id)->update(['is_edit' => 0]);
     }
 }
