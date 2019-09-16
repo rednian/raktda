@@ -34,6 +34,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('uploadfile', $artistPermitLink . '\MainController@uploadDocuments')->name('company.upload_file');
     Route::post('deletefile', $artistPermitLink . '\MainController@deleteDocuments')->name('company.delete_file');
     Route::get('get_permit_details/{id}', $artistPermitLink . '\MainController@get_permit_details')->name('company.get_permit_details');
+    Route::post('check_update_is_edit', $artistPermitLink . '\MainController@check_update_is_edit')->name('company.check_update_is_edit');
+
+
+
+    Route::get('get_temp_photo_artist_permit_id/{id}', $artistPermitLink . '\MainController@get_temp_photo_artist_permit_id')->name('company.get_temp_photo_artist_permit_id');
+    Route::post('get_temp_files_by_artist_permit_id', $artistPermitLink . '\MainController@get_temp_files_by_artist_permit_id')->name('company.get_temp_files_by_artist_permit_id');
+
 
     //drafts
     Route::post('insert_artist_data_into_drafts', $artistPermitLink . '\MainController@insert_artist_data_into_drafts')->name('company.insert_artist_data_into_drafts');

@@ -166,7 +166,7 @@
                                         <div class=" row">
                                             <div class="form-group col-lg-3">
                                                 <label for="permit_from" class="col-form-label col-form-label-sm">From
-                                                    Date:</label>
+                                                    Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -179,20 +179,20 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="permit_to" class="col-form-label col-form-label-sm">To
-                                                    Date:</label>
+                                                    Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
-                                                        data-date-start-date="+0d"
+                                                        data-date-start-date="+30d"
                                                         value="{{date('d-m-Y', strtotime($permit_details->permit['expired_date']))}}"
                                                         disabled />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="work_loc" class="col-form-label col-form-label-sm">Work
-                                                    Location:</label>
+                                                    Location:*</label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     placeholder="Work Location" name="work_loc" id="work_loc"
                                                     value="{{$permit_details->permit['work_location']}}" disabled />
@@ -237,7 +237,7 @@
                                             <input type="hidden" id="is_old_artist" value="1">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="profession"
-                                                    class="col-form-label col-form-label-sm">Profession:</label>
+                                                    class="col-form-label col-form-label-sm">Profession:*</label>
                                                 <select class="form-control form-control-sm " name="profession"
                                                     id="profession" placeholder="Profession" disabled>
                                                     <option value="">Select</option>
@@ -252,7 +252,7 @@
                                                 value={{$permit_details->profession}}>
                                             <div class="form-group col-lg-3">
                                                 <label for="fname_en" class="col-form-label col-form-label-sm">First
-                                                    Name:</label>
+                                                    Name:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -263,7 +263,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="lname_en" class="col-form-label col-form-label-sm">Last
-                                                    Name:</label>
+                                                    Name:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -277,7 +277,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="fname_ar" class="col-form-label col-form-label-sm">First
-                                                    Name (Arabic):</label>
+                                                    Name (Arabic):*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -289,7 +289,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="lname_ar" class="col-form-label col-form-label-sm">Last Name
-                                                    (Arabic):</label>
+                                                    (Arabic):*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -301,7 +301,7 @@
 
 
                                             <div class="form-group col-lg-3">
-                                                <label for="dob" class="col-form-label col-form-label-sm">DOB:</label>
+                                                <label for="dob" class="col-form-label col-form-label-sm">DOB:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -311,7 +311,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
-                                                <label for="uid_number" class="col-form-label col-form-label-sm">UID:
+                                                <label for="uid_number" class="col-form-label col-form-label-sm">UID:*
                                                 </label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     name="uid_number" id="uid_number" placeholder="UID Number">
@@ -320,7 +320,7 @@
                                         <div class="row">
                                             <div class="form-group col-lg-3">
                                                 <label for="uid_expiry" class="col-form-label col-form-label-sm">UID
-                                                    Expire Date:</label>
+                                                    Expire Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -331,13 +331,13 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="passport" class="col-form-label col-form-label-sm">Passport
-                                                    No:</label>
+                                                    No:*</label>
                                                 <input type="text" class="form-control form-control-sm" name="passport"
                                                     id="passport" placeholder="Passport Number">
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="pp_expiry" class="col-form-label col-form-label-sm">PP
-                                                    Expire Date:</label>
+                                                    Expire Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -348,7 +348,7 @@
                                             </div>
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="visa_type" class="col-form-label col-form-label-sm">Visa
-                                                    Type:</label>
+                                                    Type:*</label>
                                                 <select type="text" class="form-control form-control-sm "
                                                     name="visa_type" id="visa_type">
                                                     <option value="">Select</option>
@@ -361,14 +361,14 @@
                                         <div class="row">
                                             <div class="form-group col-lg-3">
                                                 <label for="visa_number" class="col-form-label col-form-label-sm">Visa
-                                                    Number:</label>
+                                                    Number:*</label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     name="visa_number" id="visa_number" placeholder="Visa Number">
                                             </div>
 
                                             <div class="form-group col-lg-3">
                                                 <label for="visa_expiry" class="col-form-label col-form-label-sm">Visa
-                                                    Expire Date:</label>
+                                                    Expire Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -379,7 +379,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="sp_name" class="col-form-label col-form-label-sm">Sponser
-                                                    Name:</label>
+                                                    Name:*</label>
                                                 <input type="text" class="form-control form-control-sm" name="sp_name"
                                                     id="sp_name" placeholder="Sponser Name">
                                             </div>
@@ -393,7 +393,7 @@
                                         <div class="row">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="nationality"
-                                                    class="col-form-label col-form-label-sm">Nationality:</label>
+                                                    class="col-form-label col-form-label-sm">Nationality:*</label>
                                                 <select class="form-control form-control-sm " name="nationality"
                                                     id="nationality">
                                                     {{--   - class for search in select  --}}
@@ -427,7 +427,7 @@
                                             </div>
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="gender"
-                                                    class="col-form-label col-form-label-sm">Gender:</label>
+                                                    class="col-form-label col-form-label-sm">Gender:*</label>
                                                 <select class=" form-control form-control-sm" name="gender" id="gender">
                                                     <option value="">Select</option>
                                                     <option value="male">Male</option>
@@ -437,7 +437,8 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="city" class="col-form-label col-form-label-sm">City:</label>
+                                                <label for="city"
+                                                    class="col-form-label col-form-label-sm">Emirate:</label>
                                                 <select class=" form-control form-control-sm " name="city" id="city"
                                                     onChange="getAreas(this.value)">
                                                     <option value="">Select</option>
@@ -455,7 +456,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="address"
-                                                    class="col-form-label col-form-label-sm">Address:</label>
+                                                    class="col-form-label col-form-label-sm">Address:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-map-marker"></i></span></div>
@@ -464,8 +465,28 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
-                                                <label for="landline" class="col-form-label col-form-label-sm">LandLine
+                                                <label for="address" class="col-form-label col-form-label-sm">PO
+                                                    Box:</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"></div>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        name="po_box" id="po_box" placeholder="PO box">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-3">
+                                                <label for="address" class="col-form-label col-form-label-sm">Fax
                                                     No:</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"></div>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        name="fax_no" id="fax_no" placeholder="Fax No">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="landline" class="col-form-label col-form-label-sm">LandLine
+                                                    No:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-phone-square"></i></span></div>
@@ -473,11 +494,10 @@
                                                         name="landline" id="landline" placeholder="Landline No.">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
+
                                             <div class="form-group col-lg-3">
                                                 <label for="mobile" class="col-form-label col-form-label-sm">Mobile
-                                                    No:</label>
+                                                    No:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-mobile-phone"></i></span></div>
@@ -487,7 +507,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="email"
-                                                    class="col-form-label col-form-label-sm">Email</label>
+                                                    class="col-form-label col-form-label-sm">Email:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-envelope-o"></i></span></div>
@@ -946,6 +966,7 @@
                 visa_type: 'required',
                 visa_number: 'required',
                 visa_expiry: 'required',
+                gender: 'required',
                 sp_name: 'required',
                 nationality: 'required',
                 address: 'required',
@@ -978,6 +999,7 @@
                 visa_expiry: 'This field is required',
                 sp_name: 'This field is required',
                 nationality: 'This field is required',
+                gender: 'This field is required',
                 address: 'This field is required',
                 landline: {
                     required: 'This field is required',
@@ -1088,6 +1110,8 @@
                     city: $('#city').val(),
                     area: $('#area').val(),
                     address: $('#address').val(),
+                    fax_no: $('#fax_no').val(),
+                    po_box: $('#po_box').val(),
                     uidNumber: $('#uid_number').val(),
                     uidExp: $('#uid_expiry').val(),
                     dob: $('#dob').val(),
@@ -1123,7 +1147,7 @@
             }
             documentDetails[artist_number][i] = {
                 issue_date :   $('#doc_issue_date_'+i).val(),
-                exp_date : $('#doc_issue_date_'+i).val()
+                exp_date : $('#doc_exp_date_'+i).val()
             }
         }
         if($('#pic-file-upload').contents().length == 0) {

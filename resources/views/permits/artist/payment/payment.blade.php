@@ -3,103 +3,97 @@
 
 @section('content')
 
-<!-- end:: Header -->
-<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- begin:: Content -->
-    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
 
-        <div class="row">
-            <div class="col-lg-12">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
-                <div class="kt-portlet kt-portlet--mobile">
-                    <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
-                        <div class="kt-portlet__head-label">
-                            <h3 class="kt-portlet__head-title">Make Payment <span
-                                    class="text--yellow bg--maroon px-3 ml-3 text-center"><strong>{{$permit_details['permit_number']}}</strong></span>
-                            </h3>
-                        </div>
 
-                        <div class="kt-portlet__head-toolbar">
-                            <div class="my-auto float-right">
-                                <a href="/company/artist_permits" class="btn btn--maroon btn-elevate btn-sm">
-                                    <i class="la la-angle-left"></i>
-                                    Back
-                                </a>
-                            </div>
-                        </div>
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">Make Payment <span
+                            class="text--yellow bg--maroon px-3 ml-3 text-center"><strong>{{$permit_details['permit_number']}}</strong></span>
+                    </h3>
+                </div>
+
+                <div class="kt-portlet__head-toolbar">
+                    <div class="my-auto float-right">
+                        <a href="/company/artist_permits" class="btn btn--maroon btn-elevate btn-sm">
+                            <i class="la la-angle-left"></i>
+                            Back
+                        </a>
                     </div>
+                </div>
+            </div>
 
-                    <div class="kt-portlet__body">
-                        <div class="kt-widget5__info pb-4">
-                            <div class="pb-2">
-                                <span>From Date:</span>&emsp;
-                                <span
-                                    class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
-                                <span>To Date:</span>&emsp;
-                                <span
-                                    class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                                <span>Work Location:</span>&emsp;
-                                <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
-                                <span>Reference No:</span>&emsp;
-                                <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
-                            </div>
-                        </div>
+            <div class="kt-portlet__body">
+                <div class="kt-widget5__info pb-4">
+                    <div class="pb-2">
+                        <span>From Date:</span>&emsp;
+                        <span
+                            class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
+                        <span>To Date:</span>&emsp;
+                        <span
+                            class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
+                        <span>Work Location:</span>&emsp;
+                        <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+                        <span>Reference No:</span>&emsp;
+                        <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
+                    </div>
+                </div>
 
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                                <table
-                                    class="table table-striped- table-bordered table-condensed table-hover table-checkable"
-                                    id="applied-artists-table">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Profession</th>
-                                            <th>Mobile</th>
-                                            <th>Email</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($permit_details->artistPermit as $artistPermit)
-                                        <tr>
-                                            <td>{{$artistPermit->artist['firstname_en']}}</td>
-                                            <td>{{$artistPermit->artist['lastname_en']}}</td>
-                                            <td>{{$artistPermit->permitType['name_en']}}</td>
-                                            <td>{{$artistPermit->mobile_number}}</td>
-                                            <td>{{$artistPermit->email}}</td>
-                                            <td><span
-                                                    class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{$artistPermit->artist['artist_status'] == 'active' ? 'success' : 'danger'}}">{{$artistPermit->artist['artist_status']}}</span>
-                                            </td>
-                                            <td class="text-center"> <a href="#" data-toggle="modal"
-                                                    data-target="#artist_details"
-                                                    onclick="getArtistDetails({{$artistPermit->artist_id}}, {{$artistPermit->artist_permit_id}})"
-                                                    class="btn-clean btn-icon btn-icon-md" title="View">
-                                                    <i class="la la-file la-2x"></i>
-                                                </a></td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
+                        <table class="table table-striped table-borderless" id="applied-artists-table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Profession</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($permit_details->artistPermit as $artistPermit)
+                                <tr>
+                                    <td>{{$artistPermit->artist['firstname_en']}}</td>
+                                    <td>{{$artistPermit->artist['lastname_en']}}</td>
+                                    <td>{{$artistPermit->permitType['name_en']}}</td>
+                                    <td>{{$artistPermit->mobile_number}}</td>
+                                    <td>{{$artistPermit->email}}</td>
+                                    <td><span
+                                            class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{$artistPermit->artist['artist_status'] == 'active' ? 'success' : 'danger'}}">{{$artistPermit->artist['artist_status']}}</span>
+                                    </td>
+                                    <td class="text-center"> <a href="#" data-toggle="modal"
+                                            data-target="#artist_details"
+                                            onclick="getArtistDetails({{$artistPermit->artist_id}}, {{$artistPermit->artist_permit_id}})"
+                                            class="btn-clean btn-icon btn-icon-md" title="View">
+                                            <i class="la la-file la-2x"></i>
+                                        </a></td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
 
-                                <div class="d-flex justify-content-end">
-                                    <a href="../payment_gateway/{{$permit_details->permit_id}}">
-                                        <div
-                                            class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm">
-                                            Make Payment
-                                        </div>
-                                    </a>
+                        <div class="d-flex justify-content-end">
+                            <a href="../payment_gateway/{{$permit_details->permit_id}}">
+                                <div class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm">
+                                    Make Payment
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <!--begin::Modal-->

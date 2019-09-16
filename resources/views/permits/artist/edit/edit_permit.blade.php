@@ -64,8 +64,7 @@
 
         <div class="tab-content">
             <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                <table class="table table-striped- table-bordered table-condensed table-hover table-checkable"
-                    id="applied-artists-table">
+                <table class="table table-striped table-borderless" id="applied-artists-table">
                     <thead class="thead-dark">
                         <tr>
                             <th>First Name</th>
@@ -78,9 +77,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                        $arr = [];
+                        @endphp
                         {{-- {{dd($artist_details)}} --}}
                         @foreach ($artist_details as $artist_detail)
                         <tr>
+                            @php
+                            array_push($arr, $artist_detail->id);
+                            @endphp
                             <td>{{$artist_detail->firstname_en}}</td>
                             <td>{{$artist_detail->lastname_en}}</td>
                             <td>{{$artist_detail->permitType['name_en']}}</td>
@@ -89,8 +94,9 @@
                             {{-- <td><span
                                                     class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{$artist_details->artist['artist_status'] == 'active' ? 'success' : 'danger'}}">{{$artist_details->artist['artist_status']}}</span>
                             </td> --}}
+
                             <td class="text-center">
-                                <a href="../edit_edit_artist/{{$artist_detail->artist_permit_id}}"
+                                <a href="../edit_edit_artist/{{$artist_detail->id}}"
                                     class="btn-clean btn-icon btn-icon-sm" title="Edit">
                                     <i class="la la-pencil la-2x"></i>
                                 </a>
@@ -116,6 +122,7 @@
                         </tr>
                         @endforeach
                     </tbody>
+                    <input type="hidden" id="temp_id_array" value="{{ json_encode($arr)}}">
                 </table>
             </div>
         </div>
@@ -226,6 +233,26 @@
             }
         });
     }
+
+    window.onbeforeunload = function (e) {
+
+        var ids = $('#temp_id_array').val();
+
+        e = e || window.event;
+
+        if (e) {
+            $.ajax({
+                    type: 'POST',
+                    url: '{{route("company.check_update_is_edit")}}',
+                    data: {permit_id: $('#permit_id').val(),  temp_ids: ids},
+                    success: function(data) {
+
+                    }
+            });
+        }
+
+    };
+
 
     function getErrorFields(id) {
         $.ajax({
