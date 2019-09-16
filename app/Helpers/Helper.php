@@ -3,9 +3,22 @@ function label($label = []){
    return  '<span class="kt-badge  kt-badge--'.$label['class'].' kt-badge--inline kt-badge--pill">'.$label['status'].'</span>';
 }
 
-function check($fieldname, $id){
-  $isCheck =  App\ArtistPermitRevision::where('fieldname', $fieldname)->where('artist_permit_id',$id)->where('ischeck', 1)->exists();
-  return $isCheck ? 'checked' : '';
+function is($model, $fieldname){
+    if( $model->check()->exists() ){
+        if( $model->check()->first()->checklist()->exists() ){
+             $check =  $model->check()->first()->checklist()->where('fieldname', $fieldname)->first();
+             if($check){
+                if($fieldname == $check->fieldname){
+                  return true;
+                }
+             }
+              
+        }
+       
+    }
+
+    return false;
+   
 }
 
 function getDocumentType($filename = null){

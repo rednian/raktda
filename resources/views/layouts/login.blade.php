@@ -43,14 +43,14 @@
             <div class="kt-login__wrapper">
                 <div class="kt-login__content">
                     <a class="kt-login__logo" href="#">
-                        <img src="{{ asset('/assets/media/logos/logo-5.png') }}">
+                        <img  src="{{ asset('/img/logo-en.svg') }}">
                     </a>
                     <h3 class="kt-login__title">JOIN OUR GREAT COMMUNITY</h3>
                     <span class="kt-login__desc">
-                        The ultimate Bootstrap & Angular 6 admin theme framework for next generation web apps.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe voluptatum earum, non dolorum quaerat ut inventore odio tempore expedita laudantium necessitatibus, neque voluptatem, dolores! Minima facere, voluptas aliquam natus maiores.
                     </span>
                     <div class="kt-login__actions">
-                        <button type="button" id="kt_login_signup" class="btn btn-outline-brand btn-pill">Get An Account</button>
+                        <button type="button" id="kt_login_signup" class="btn btn-outline-brand ">Get An Account</button>
                     </div>
                 </div>
             </div>

@@ -28,16 +28,16 @@
                 <span></span>
             </label>
         </div>
-        <div class="col kt-align-right">
+        {{-- <div class="col kt-align-right">
             @if (Route::has('password.request'))
             <a class="kt-link" href="{{ route('password.request') }}">
                 {{ __('Forgot Your Password?') }}
             </a>
             @endif
-        </div>
+        </div> --}}
     </div>
     <div class="kt-login__actions">
-        <button id="kt_login_signin_submit" type="submit" class="btn btn-brand btn-pill btn-elevate">Sign In</button>
+        <button id="kt_login_signin_submit" type="submit" class="btn btn-brand btn-sm btn-elevate">Sign In</button>
     </div>
 </form>
 @endsection

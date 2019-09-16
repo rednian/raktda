@@ -10,6 +10,12 @@ class ArtistPermitCheck extends Model
     protected $primaryKey = 'artist_permit_check_id';
     protected $fillable = ['artist_permit_id', 'status'];
 
+    public function comment()
+    {
+        return $this->belongsToMany(PermitComment::class, 'artist_permit_comment', 'artist_permit_check_id', 'permit_comment_id')
+                    ->withPivot('artist_permit_check_id', 'permit_comment_id');
+    }
+
     public function checklist()
     {
         return $this->hasMany(ArtistPermitChecklist::class, 'artist_permit_check_id');

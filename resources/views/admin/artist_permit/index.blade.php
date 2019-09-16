@@ -3,15 +3,15 @@
 <section  class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
   <div class="kt-portlet__head kt-portlet__head--noborder">
     <div class="kt-portlet__head-label">
-      <ul class="nav nav-tabs kt-margin-t-15 " role="tablist ">
+      <ul class="nav nav-pills kt-margin-t-15 " role="tablist ">
         <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Action Needed</a>
+          <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">New Request Permits</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#kt_tabs_1_2">Processing Permits</a>
+          <a class="nav-link " data-toggle="tab" href="#kt_tabs_1_2">Processing Permits</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#kt_tabs_1_3">Rejected Permits</a>
+          <a class="nav-link " data-toggle="tab" href="#kt_tabs_1_3">Rejected Permits</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" href="#kt_tabs_1_4">Approved Permits</a>
@@ -19,14 +19,19 @@
 
       </ul>
     </div>
-    <div class="kt-portlet__head-toolbar">
-      <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-light btn-elevate kt-font-transform-u"><i class="la la-search"></i> Search Application</a>
-    </div>
+    {{-- <div class="kt-portlet__head-toolbar">
+      <div class="kt-input-icon kt-input-icon--right">
+        <input type="text" class="form-control-sm form-control kt-input" placeholder="Search...">
+        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+          <span><i class="la la-search"></i></span>
+        </span>
+      </div>
+    </div> --}}
     </div>
    <div class="kt-portlet__body kt-padding-t-5">
     <div class="tab-content">
       <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-        <section class="row kt-margin-b-20 kt-padding-b-20">
+        <section class="row kt-padding-b-20">
           <div class="col-4">
             <div class="kt-section kt-section--space-sm">
                 <div class="kt-widget24 kt-widget24--solid">
@@ -94,34 +99,60 @@
               </div>
           </div>
         </section>
-        
-        {{-- <form action="" id="frm-action-needed" class="kt-hide row">
-          <div class="col-sm-10">
-            <div class="form-group">
-              <div class="kt-checkbox-inline ">
-                  <label class="kt-checkbox">
-                    <input type="checkbox" onchange="artistPermit.draw()" name="today" value="{{ date('Y-m-d') }}"> Submitted Today
-                    <span></span>
-                  </label>
-                  <label class="kt-checkbox">
-                    <input type="checkbox" >Need Action
-                    <span></span>
-                  </label>
-                  <label class="kt-checkbox">
-                    <input type="checkbox"> Option 3
-                    <span></span>
-                  </label>
+          <h6 class="kt-font-dark kt-margin-b-10 kt-font-transform-u">Filter Data</h6>
+            <form class="kt-form kt-form--fit kt-margin-b-20 border kt-padding-20">
+              <section class="row">
+                <div class="col-4">
+                  <div class="form-group form-group-xs">
+                      <div class="kt-checkbox-inline">
+                        <label class="kt-checkbox">
+                          <input type="checkbox"> Submitted Today
+                          <span></span>
+                        </label>
+                        <label class="kt-checkbox">
+                          <input type="checkbox"> Action Needed
+                          <span></span>
+                        </label>
+                      </div>
+                  </div>
                 </div>
-            </div>
-          </div>
-          <div class="col-sm-2">
-            <div class="form-group">
-               <button id="btn-need-action" type="reset" class="btn btn-sm btn-elevate btn-secondary">Clear</button>
-            </div>
-          </div>
-        </form> --}}
-        
-        
+                <div class="col-4">
+                  <div class="form-group row form-group-xs">
+                     <label class="form-col-label col-5">Company Type</label>
+                     <div class="col-7">
+                       <select class="form-control form-control-sm" data-col-index="6">
+                         <option value="">-Select All-</option>
+                         <option value="">Private </option>
+                         <option value="">Government</option>
+                         <option value="">Individual</option>
+                       </select>
+                     </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group row form-group-xs">
+                     <label class="form-col-label col-5">Request Type</label>
+                     <div class="col-7">
+                       <select class="form-control form-control-sm" data-col-index="6">
+                         <option value="">-Select All-</option>
+                         <option value="">New </option>
+                         <option value="">Renew</option>
+                         <option value="">Amend</option>
+                         <option value="">Cancel</option>
+                       </select>
+                     </div>
+                  </div>
+                </div>
+              </section>
+              <div class="kt-separator kt-separator--xs kt-separator--dashed kt-margin-t-5 kt-margin-b-5"></div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <button class="btn btn-warning btn-sm btn-elevate kt-font-transform-u" id="kt_search">Apply Filter</button>
+                  <button type="reset" class="btn btn-secondary btn-sm btn-elevate kt-font-bold kt-font-transform-u" id="kt_reset">Reset</button>
+                </div>
+                 
+              </div>
+          </form>   
         <table class="table  table-hover  table-borderless table-striped" id="artist-permit">
                <thead class="thead-dark">
                    <tr>
@@ -137,8 +168,8 @@
            </table>
       </div>
       <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
-        <table class="table table-hover" id="artist-permit-processing">
-               <thead class="thead-light">
+        <table class="table table-hover table-striped table-borderless" id="artist-permit-processing">
+               <thead class="thead-dark">
                    <tr>
                        <th>Reference No.</th>
                        <th>Company Name</th>
@@ -152,7 +183,19 @@
            </table>
       </div>
       <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
-          
+          <table class="table  table-hover  table-borderless table-striped" id="artist-permit-rejected">
+                 <thead class="thead-dark">
+                     <tr>
+                         <th>Reference No.</th>
+                         <th>Company Name</th>
+                         <th>Trade License No.</th>
+                         <th>Applied Date</th>
+                         <th>Permit Start</th>
+                         <th>No. of Artist</th>
+                         <th>Request Type</th>
+                     </tr>
+                 </thead>
+             </table>
       </div>
       <div class="tab-pane" id="kt_tabs_1_4" role="tabpanel">
         
@@ -189,6 +232,8 @@
 <script type="text/javascript">
      var artistPermit = {};
      var permit_processing = {};
+
+
  $(document).ready(function(){
 
 // global
@@ -246,21 +291,13 @@
 
        
        // action needed  table
-     artistPermit = $('table#artist-permit').DataTable({
+     $('table#artist-permit-rejected').DataTable({
+        // "dom": '<"toolbar">rtip',
       // dom: '<"row"<"col text-left"f<"toolbar">>>rt<"pull-left"p><"pull-left kt-margin-l-5"l><"pull-right m-r-sm"i><"clearfix">',
         ajax: {
             url: '{{ route('admin.artist_permit.datatable') }}',
             data: function(d){
-
-              d.type = ['new', 'renew', 'cancel', 'amend'];
-              d.status = 'pending';
-
-              if($('input[type=checkbox][name=today]').is(':checked')){
-                 d.today = $('input[type=checkbox][name=today]').val();
-              }
-              else{
-                d.today = null;
-              }
+              d.status = 'rejected'
               
             }
         },
@@ -285,6 +322,49 @@
           });
         }
     });
+
+      artistPermit = $('table#artist-permit').DataTable({
+         // "dom": '<"toolbar">rtip',
+       // dom: '<"row"<"col text-left"f<"toolbar">>>rt<"pull-left"p><"pull-left kt-margin-l-5"l><"pull-right m-r-sm"i><"clearfix">',
+         ajax: {
+             url: '{{ route('admin.artist_permit.datatable') }}',
+             data: function(d){
+
+               d.type = ['new', 'renew', 'cancel', 'amend'];
+               d.status = 'pending';
+
+               if($('input[type=checkbox][name=today]').is(':checked')){
+                  d.today = $('input[type=checkbox][name=today]').val();
+               }
+               else{
+                 d.today = null;
+               }
+               
+             }
+         },
+     
+         columnDefs: [
+              {targets: [0,4, 5, 6], className: 'no-wrap'},
+              // {targets:  6, className: 'no-wrap',sortable: false},
+         ],
+         columns: [
+             { data: 'reference_number'},
+             { data: 'company_name'},
+             { data: 'trade_license_number'},
+             { data: 'applied_date'},
+             { data: 'permit_start'},
+             { data: 'artist_number'},
+             { data: 'request_type'},
+         ],
+          
+         createdRow: function(row, data, index){
+           $(row).click(function(){
+             location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application';
+           });
+         }
+     });
+
+      // $("div.toolbar").html('<b>Custom tool bar! Text/images etc.</b>');
 
 
 

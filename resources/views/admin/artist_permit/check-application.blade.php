@@ -7,19 +7,19 @@
 <div  class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border" id="kt_page_portlet">
   <div class="kt-portlet__head kt-portlet__head--sm">
       <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-success">{{ strtoupper($artist_permit->artist->fullName) }}</span> - Information</h3>
+            <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ strtoupper($artist_permit->artist->fullName) }}</span></h3>
       </div>
       <div class="kt-portlet__head-toolbar">
-        <a href="{{ route('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-light btn-elevate kt-margin-r-4 kt-font-transform-u"><i class="la la-arrow-left"></i> Back</a>
+        <a href="{{ route('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-secondary btn-elevate kt-margin-r-4 kt-font-transform-u"><i class="la la-arrow-left"></i> Back to permit details</a>
         <div class="dropdown dropdown-inline">
           <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="flaticon-more"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" >
-            <a class="dropdown-item kt-font-trasnform-u" href="javascript:void(0)">Company Information</a>
-            <a class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.artist_permit.index') }}">Artist Information</a>
-            {{-- <div class="dropdown-divider"></div> --}}
-            {{-- <a class="dropdown-item" href="#"><i class="la la-cog"></i> Settings</a> --}}
+            <a class="dropdown-item kt-font-transform-u" href="{{ route('admin.artist_permit.index') }}">Artist Permit list</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item kt-font-transform-u" href="{{ route('admin.artist.show', $artist_permit->artist_id) }}">Artist Information</a>
+            <a class="dropdown-item kt-font-transform-u" href="javascript:void(0)">Company Information</a>
           </div>
         </div>
       </div>
@@ -86,10 +86,10 @@
                            <div class="col-6">
                              <section class="kt-form kt-form--label-right">
                                  <div class="form-group form-group-sm row">
-                                      <label for="example-search-input" class="col-4 col-form-label">First Name <span class="text-danger">*</span></label>
+                                      <label for="example-search-input" class="col-4 col-form-label kt-font-dark">First Name <span class="text-danger">*</span></label>
                                       <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
-                                             <input value="{{ ucwords($artist_permit->artist->firstname_en) }}" readonly type="text" class="form-control form-control-sm">
+                                             <input {{ is($artist_permit, 'firstname') ? 'is-valid': null }} value="{{ ucwords($artist_permit->artist->firstname_en) }}" readonly type="text" class="form-control form-control-sm">
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -102,7 +102,7 @@
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">Person Code <span class="text-danger">*</span></label>
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Person Code <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
                                              <input readonly type="text" class="form-control form-control-sm">
@@ -118,7 +118,7 @@
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">Gender <span class="text-danger">*</span></label>
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Gender <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
                                              <input value="{{ ucwords($artist_permit->artist->gender->name_en) }}" type="text" readonly  class="form-control form-control-sm">
@@ -134,7 +134,7 @@
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">Nationality <span class="text-danger">*</span></label>
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Nationality <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
                                              <input value="{{ ucwords($artist_permit->artist->nationality) }}" readonly  type="text" class="form-control form-control-sm">
@@ -150,7 +150,7 @@
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">Passport No. <span class="text-danger">*</span></label>
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Passport No. <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
                                              <input value="{{ ucwords($artist_permit->passport_number) }}" readonly  type="text" class="form-control form-control-sm">
@@ -166,8 +166,8 @@
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">UID No. <span class="text-danger">*</span></label>
-                                     <div class="col-lg-8">
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">UID No. <span class="text-danger">*</span></label>
+                                     <div class="col-lg-8"> 
                                           <div class="input-group input-group-sm">
                                              <input value="{{ ucwords($artist_permit->uid_number) }}" readonly type="text" class="form-control form-control-sm">
                                              <div class="input-group-append">
@@ -186,7 +186,7 @@
                            <div class="col-6">
                              <section class="kt-form kt-form--label-right">
                                  <div class="form-group form-group-sm row">
-                                      <label for="example-search-input" class="col-4 col-form-label">Last Name <span class="text-danger">*</span></label>
+                                      <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Last Name <span class="text-danger">*</span></label>
                                       <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
                                              <input value="{{ ucwords($artist_permit->artist->lastname_en) }}" readonly  type="text" class="form-control form-control-sm">
@@ -202,7 +202,7 @@
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">Profession <span class="text-danger">*</span></label>
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Profession <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
                                              <input value="{{ ucwords($artist_permit->permittype->name_en) }}" readonly name="profession_en" type="text" class="form-control form-control-sm">
@@ -218,7 +218,7 @@
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">Age <span class="text-danger">*</span></label>
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Age <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
                                              <input value="{{ $artist_permit->artist->age }}" readonly type="text" class="form-control form-control-sm">
@@ -231,17 +231,21 @@
                                                </span>
                                              </div>
                                            </div>
+                                           @if ($artist_permit->artist->age < 18)
+                                              <span class="form-text text-danger">Age is less than 18.</span>
+                                           @endif
+                                          
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">Language</label>
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Language</label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
-                                             <input value="{{ $artist_permit->language->name_en}}" type="text" readonly class="form-control form-control-sm">
+                                             <input value="{{ $artist_permit->language->name_en ? $artist_permit->language->name_en : null}}" type="text" readonly class="form-control form-control-sm">
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default" >
-                                                   <input data-check="checklist" value="{{ $artist_permit->language->name_en}}" type="checkbox" name="language">
+                                                   <input data-check="checklist" value="{{ $artist_permit->language->name_en ? $artist_permit->language->name_en : null}}" type="checkbox" name="language">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -250,7 +254,7 @@
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">Passport Expiry <span class="text-danger">*</span></label>
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Passport Expiry <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
                                              <input value="{{ $artist_permit->passport__expire_date }}" type="text"  readonly class="form-control form-control-sm">
@@ -266,7 +270,7 @@
                                       </div>
                                  </div>
                                  <div class="form-group form-group-sm row">
-                                     <label for="example-search-input" class="col-4 col-form-label">UID Expiry <span class="text-danger">*</span></label>
+                                     <label for="example-search-input" class="col-4 col-form-label kt-font-dark">UID Expiry <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
                                              <input value="{{ $artist_permit->uid_expire_date->format('d-M-d') }}"  type="text"  readonly class="form-control form-control-sm">
@@ -299,7 +303,7 @@
                             <div class="col-6">
                               <section class="kt-form kt-form--label-right">
                                 <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label">Mobile Number <span class="text-danger">*</span></label>
+                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Mobile Number <span class="text-danger">*</span></label>
                                     <div class="col-lg-8">
                                          <div class="input-group input-group-sm">
                                             <input value="{{ $artist_permit->mobile_number }}" type="text"  readonly class="form-control form-control-sm">
@@ -315,7 +319,7 @@
                                      </div>
                                 </div>
                                 <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label">Fax Number <span class="text-danger">*</span></label>
+                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Fax Number <span class="text-danger">*</span></label>
                                     <div class="col-lg-8">
                                          <div class="input-group input-group-sm">
                                             <input value="{{ $artist_permit->fax_number }}" type="text"  readonly class="form-control form-control-sm">
@@ -331,7 +335,7 @@
                                      </div>
                                 </div>
                                 <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label">Sponsor Name <span class="text-danger">*</span></label>
+                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Sponsor Name <span class="text-danger">*</span></label>
                                     <div class="col-lg-8">
                                          <div class="input-group input-group-sm">
                                             <input value="{{ $artist_permit->sponsor_name_en }}" type="text"  readonly class="form-control form-control-sm">
@@ -351,7 +355,7 @@
                             <div class="col-6">
                               <section class="kt-form kt-form--label-right">
                                 <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label">Phone Number <span class="text-danger">*</span></label>
+                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Phone Number <span class="text-danger">*</span></label>
                                     <div class="col-lg-8">
                                          <div class="input-group input-group-sm">
                                             <input value="{{ $artist_permit->phone_number }}" type="text"  readonly class="form-control form-control-sm">
@@ -367,7 +371,7 @@
                                      </div>
                                 </div>
                                 <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label">Email Address <span class="text-danger">*</span></label>
+                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Email Address <span class="text-danger">*</span></label>
                                     <div class="col-lg-8">
                                          <div class="input-group input-group-sm">
                                             <input value="{{ $artist_permit->email }}" type="text" readonly class="form-control form-control-sm">
@@ -398,7 +402,7 @@
                         <div class="card-body">
                           <div class="kt-form kt-form--label-right">
                             <div class="form-group form-group-sm row">
-                                <label for="example-search-input" class="col-2 col-form-label">Address <span class="text-danger">*</span></label>
+                                <label for="example-search-input" class="col-2 col-form-label kt-font-dark">Address <span class="text-danger">*</span></label>
                                 <div class="col-10">
                                      <div class="input-group input-group-sm">
                                        <input value="{{ ucwords($artist_permit->address_en) }}" type="text"  readonly class="form-control form-control-sm">
@@ -414,7 +418,7 @@
                                  </div>
                             </div>
                             <div class="form-group form-group-sm row">
-                                <label for="example-search-input" class="col-2 col-form-label">P.O. Box <span class="text-danger">*</span></label>
+                                <label for="example-search-input" class="col-2 col-form-label kt-font-dark">P.O. Box <span class="text-danger">*</span></label>
                                 <div class="col-10">
                                      <div class="input-group input-group-sm">
                                         <input value="{{ ucwords($artist_permit->po_box) }}" type="text" readonly class="form-control form-control-sm">
@@ -432,7 +436,7 @@
                             <section class="row">
                               <div class="col-6">
                                 <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label">Area <span class="text-danger">*</span></label>
+                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Area <span class="text-danger">*</span></label>
                                     <div class="col-8">
                                          <div class="input-group input-group-sm">
                                             <input value="{{ ucwords($artist_permit->area->area_en) }}" type="text"  readonly class="form-control form-control-sm">
@@ -450,7 +454,7 @@
                               </div>
                               <div class="col-6">
                                 <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label">City <span class="text-danger">*</span></label>
+                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">City <span class="text-danger">*</span></label>
                                     <div class="col-8">
                                          <div class="input-group input-group-sm">
                                             <input value="{{ ucwords($artist_permit->emirate->name_en) }}" type="text"  readonly class="form-control form-control-sm">
@@ -492,6 +496,27 @@
                   <section class="form-group sticky">
                     <textarea v-model="comment" name="comment" rows="3" class="form-control form-control-sm" placeholder="Some remarks here..."></textarea>
                   </section>
+                  <?php 
+                    $nearly_expire = $artist_permit->artistPermitDocument()->whereDate('expired_date', '<', Carbon\Carbon::now()->addMonth())->get();
+                   ?>
+                  @if ($nearly_expire->count() > 0)
+                    <div class="alert alert-outline-danger fade show" role="alert">
+                        <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                        <div class="alert-text">
+                          <div>The Following documents are about to expire.</div>
+                          <ol>
+                            @foreach ($nearly_expire as $document)
+                              <li>{{ ucfirst($document->document_name) }}</li>
+                            @endforeach
+                          </ol>
+                        </div>
+                        <div class="alert-close">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-close"></i></span>
+                          </button>
+                        </div>
+                      </div>
+                  @endif
                   <table class="table table-hover table-borderless table-striped" id="document-table">
                     <thead class="thead-dark">
                       <tr>
@@ -531,8 +556,8 @@
                       </button> 
                     </div>
                   </div>
-                <table class="table table-hover" id="permit-history">
-                    <thead class="thead-light">
+                <table class="table table-hover table-striped table-borderless" id="permit-history">
+                    <thead class="thead-dark">
                       <tr>
                         <th>Reference No.</th>
                         <th>Company Name</th>
@@ -554,13 +579,13 @@
       <!--end: Form Wizard Step 3-->
       <!--begin: Form Actions -->
       <div class="kt-form__actions">
-        <div class="btn btn-elevate btn-light  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev">
+        <div class="btn btn-elevate btn-secondary  btn-sm kt-font-bolder kt-font-transform-u" data-ktwizard-type="action-prev">
         Previous
         </div>
-        <div class="btn active btn-elevate btn-brand  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
+        <div class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
         Next
         </div>
-        <div class="btn active btn-success btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">
+        <div class="btn active btn-warning btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">
           Finish & New
         </div>
       </div>
@@ -627,7 +652,7 @@
         columns: [
             { data: 'document_name'},
             { data: 'issued_date'},
-            { data: 'expird_date'},
+            { data: 'expired_date'},
             { data: 'action'},
         ],
     });
