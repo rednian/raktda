@@ -601,14 +601,14 @@
                             </div>
                             @php
                             if($from == 'amend'){
-                            $route_back = '../../amend_permit/'.$permit_details->permit_id;
+                            $route_back = 'amend_permit/'.$permit_details->permit_id;
                             } elseif($from == 'edit') {
-                            $route_back = '../../edit_permit/'.$permit_details->permit_id;
+                            $route_back = 'edit_permit/'.$permit_details->permit_id;
                             } elseif($from == 'renew') {
-                            $route_back = '../../renew_permit/'.$permit_details->permit_id;
+                            $route_back = 'renew_permit/'.$permit_details->permit_id;
                             }
                             @endphp
-                            <a href="{{$route_back}}">
+                            <a href="{{url('company/'.$route_back)}}">
                                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                     id="back_btn">
                                     Back

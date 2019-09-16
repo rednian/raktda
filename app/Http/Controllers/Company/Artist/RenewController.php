@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Company\Ar;
+namespace App\Http\Controllers\Company\Artist;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

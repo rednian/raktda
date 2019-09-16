@@ -678,7 +678,7 @@
                             </div>
                             <input type="hidden" value="{{$permit_details->permit_id}}" id="permit_id">
 
-                            <a href="{{'../../company/edit_permit/'.$permit_details->permit_id}}">
+                            <a href="{{url('company/edit_permit/'.$permit_details->permit_id)}}">
                                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                     id="back_btn">
                                     Back

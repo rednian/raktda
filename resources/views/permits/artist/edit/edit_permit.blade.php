@@ -33,11 +33,11 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right">
-                <a href="/company/artist_permits" class="btn btn--maroon btn-elevate btn-sm">
+                <a href="{{url('company/artist_permits')}}" class="btn btn--maroon btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
-                <a href="/company/add_artist_to_permit/{{$permit_details->permit_id}}/{{'edit'}}"
+                <a href="{{url('company/add_artist_to_permit/'.$permit_details->permit_id.'/edit')}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add New Artist
@@ -96,7 +96,7 @@
                             </td> --}}
 
                             <td class="text-center">
-                                <a href="../edit_edit_artist/{{$artist_detail->id}}"
+                                <a href="{{url('company/edit_edit_artist/'.$artist_detail->id)}}"
                                     class="btn-clean btn-icon btn-icon-sm" title="Edit">
                                     <i class="la la-pencil la-2x"></i>
                                 </a>

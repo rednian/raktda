@@ -16,12 +16,12 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right">
-                <a href="/company/artist_permits"
+                <a href="{{url('company/artist_permits')}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
-                <a href="/company/add_artist_to_permit/{{$permit_details->permit_id}}/{{'amend'}}"
+                <a href="{{url('/company/add_artist_to_permit/'.$permit_details->permit_id.'/amend')}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
@@ -200,10 +200,10 @@
             data: {permit_id: $('#permit_id').val()},
             success: function(result) {
                 // console.log(data);
-                if(result.message[0] == 'success')
-                {
+                // if(result.message[0] == 'success')
+                // {
                     window.location.href="{{url('company/artist_permits')}}";
-                }
+                // }
             }
         });
     }

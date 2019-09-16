@@ -166,7 +166,7 @@
                                         <div class=" row">
                                             <div class="form-group col-lg-3">
                                                 <label for="permit_from" class="col-form-label col-form-label-sm">From
-                                                    Date:</label>
+                                                    Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -179,20 +179,20 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="permit_to" class="col-form-label col-form-label-sm">To
-                                                    Date:</label>
+                                                    Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
-                                                        data-date-start-date="+0d"
+                                                        data-date-start-date="+30d"
                                                         value="{{date('d-m-Y',strtotime($permit_details->permit['exprired_date']))}}"
                                                         disabled />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="work_loc" class="col-form-label col-form-label-sm">Work
-                                                    Location:</label>
+                                                    Location:*</label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     placeholder="Work Location" name="work_loc" id="work_loc"
                                                     value="{{$permit_details->permit['work_location']}}" disabled />
@@ -241,20 +241,20 @@
                                             <input type="hidden" id="is_old_artist" value="1">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="profession"
-                                                    class="col-form-label col-form-label-sm">Profession:</label>
+                                                    class="col-form-label col-form-label-sm">Profession:*</label>
                                                 <select class="form-control form-control-sm " name="profession"
                                                     id="profession" placeholder="Profession">
                                                     <option value="">Select</option>
                                                     @foreach ($permitTypes as $pt)
                                                     <option value="{{$pt->permit_type_id}}"
-                                                        <?php if($pt->permit_type_id == $permit_details->profession){ echo 'selected' ;}?>>
+                                                        <?php if($pt->permit_type_id == $permit_details->permit_type_id){ echo 'selected' ;}?>>
                                                         {{$pt->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="fname_en" class="col-form-label col-form-label-sm">First
-                                                    Name:</label>
+                                                    Name:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -266,7 +266,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="lname_en" class="col-form-label col-form-label-sm">Last
-                                                    Name:</label>
+                                                    Name:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -281,7 +281,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="fname_ar" class="col-form-label col-form-label-sm">First
-                                                    Name (Arabic):</label>
+                                                    Name (Arabic):*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -293,7 +293,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="lname_ar" class="col-form-label col-form-label-sm">Last Name
-                                                    (Arabic):</label>
+                                                    (Arabic):*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -305,7 +305,7 @@
 
 
                                             <div class="form-group col-lg-3">
-                                                <label for="dob" class="col-form-label col-form-label-sm">DOB:</label>
+                                                <label for="dob" class="col-form-label col-form-label-sm">DOB:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -316,54 +316,54 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
-                                                <label for="uid_number" class="col-form-label col-form-label-sm">UID:
+                                                <label for="uid_number" class="col-form-label col-form-label-sm">UID:*
                                                 </label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     name="uid_number" id="uid_number" placeholder="UID Number"
-                                                    value={{$permit_details->artist['uid_number']}}>
+                                                    value={{$permit_details->uid_number}}>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-lg-3">
                                                 <label for="uid_expiry" class="col-form-label col-form-label-sm">UID
-                                                    Expire Date:</label>
+                                                    Expire Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-start-date="30d"
                                                         name="uid_expiry" id="uid_expiry"
-                                                        value="{{$permit_details->artist['uid_expiry_date'] ? date('d-m-Y', strtotime($permit_details->artist['uid_expiry_date'])) : ''}}" />
+                                                        value="{{$permit_details->uid_expire_date ? date('d-m-Y', strtotime($permit_details->uid_expire_date)) : ''}}" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="passport" class="col-form-label col-form-label-sm">Passport
-                                                    No:</label>
+                                                    No:*</label>
                                                 <input type="text" class="form-control form-control-sm" name="passport"
                                                     id="passport" placeholder="Passport Number"
-                                                    value="{{$permit_details->artist['passport_number']}}">
+                                                    value="{{$permit_details->passport_number}}">
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="pp_expiry" class="col-form-label col-form-label-sm">PP
-                                                    Expire Date:</label>
+                                                    Expire Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-start-date="30d"
                                                         name="pp_expiry" id="pp_expiry"
-                                                        value="{{$permit_details->artist['pp_expiry_date'] ? date('d-m-Y', strtotime($permit_details->artist['pp_expiry_date'])) : ''}}" />
+                                                        value="{{$permit_details->passport_expire_date ? date('d-m-Y', strtotime($permit_details->passport_expire_date)) : ''}}" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="visa_type" class="col-form-label col-form-label-sm">Visa
-                                                    Type:</label>
+                                                    Type:*</label>
                                                 <select type="text" class="form-control form-control-sm "
                                                     name="visa_type" id="visa_type">
                                                     <option value="">Select</option>
                                                     @foreach ($visa_types as $vt)
-                                                    <option value="{{$vt->visa_type_en}}"
-                                                        <?php if($vt->visa_type_en == $permit_details->artist['visa_type']) { echo 'selected' ;}?>>
+                                                    <option value="{{$vt->id}}"
+                                                        <?php if($vt->id == $permit_details->visa_type_id) { echo 'selected' ;}?>>
                                                         {{$vt->visa_type_en}}
                                                     </option>
                                                     @endforeach
@@ -373,53 +373,56 @@
                                         <div class="row">
                                             <div class="form-group col-lg-3">
                                                 <label for="visa_number" class="col-form-label col-form-label-sm">Visa
-                                                    Number:</label>
+                                                    Number:*</label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     name="visa_number" id="visa_number" placeholder="Visa Number"
-                                                    value="{{$permit_details->artist['visa_number']}}">
+                                                    value="{{$permit_details->visa_number}}">
                                             </div>
 
                                             <div class="form-group col-lg-3">
                                                 <label for="visa_expiry" class="col-form-label col-form-label-sm">Visa
-                                                    Expire Date:</label>
+                                                    Expire Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-start-date="30d"
                                                         name="visa_expiry" id="visa_expiry"
-                                                        value="{{$permit_details->artist['visa_expiry_date']}}" />
+                                                        value="{{$permit_details->visa_expire_date ? date('d-m-Y', strtotime($permit_details->visa_expire_date)) : ''}}" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="sp_name" class="col-form-label col-form-label-sm">Sponser
-                                                    Name:</label>
+                                                    Name:*</label>
                                                 <input type="text" class="form-control form-control-sm" name="sp_name"
                                                     id="sp_name" placeholder="Sponser Name"
-                                                    value="{{$permit_details->artist['sponser_name']}}">
+                                                    value="{{$permit_details->sponsor_name_en}}">
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="telephone"
                                                     class="col-form-label col-form-label-sm">Identification No:</label>
                                                 <input type="text" class="form-control form-control-sm" name="id_no"
                                                     id="id_no" placeholder="Identification No."
-                                                    value="{{$permit_details->artist['id_no']}}">
+                                                    value="{{$permit_details->id_no}}">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="nationality"
-                                                    class="col-form-label col-form-label-sm">Nationality:</label>
+                                                    class="col-form-label col-form-label-sm">Nationality:*</label>
                                                 <select class="form-control form-control-sm " name="nationality"
                                                     id="nationality">
                                                     {{--   - class for search in select  --}}
                                                     <option value="">Select</option>
 
-                                                    @foreach ($countries as $key => $value)
 
-                                                    <option value="{{$value}}"
-                                                        <?php if($value == $permit_details->artist['nationality']){ echo 'selected' ;}?>>
-                                                        {{$value}}</option>
+
+                                                    @foreach ($countries as $ct)
+                                                    @if($ct)
+                                                    <option value="{{$ct}}"
+                                                        <?php if($ct == $permit_details->nationality){ echo 'selected' ;}?>>
+                                                        {{$ct}}</option>
+                                                    @endif
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -431,7 +434,7 @@
                                                     <option value="">Select</option>
                                                     @foreach ($languages as $lang)
                                                     <option value="{{$lang->id}}"
-                                                        <?php if($lang->id == $permit_details->artist['language']){ echo 'selected';}?>>
+                                                        <?php if($lang->id == $permit_details->language_id){ echo 'selected';}?>>
                                                         {{$lang->name_en}}</option>
                                                     @endforeach
                                                 </select>
@@ -444,40 +447,41 @@
                                                     <option value="">Select</option>
                                                     @foreach ($religions as $reli)
                                                     <option value="{{$reli->id}}"
-                                                        <?php if($reli->id == $permit_details->artist['religion']){ echo 'selected';}?>>
+                                                        <?php if($reli->id == $permit_details->religion_id){ echo 'selected';}?>>
                                                         {{$reli->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="gender"
-                                                    class="col-form-label col-form-label-sm">Gender:</label>
+                                                    class="col-form-label col-form-label-sm">Gender:*</label>
                                                 <select class=" form-control form-control-sm" name="gender" id="gender">
                                                     <option value="">Select</option>
-                                                    <option value="male"
-                                                        <?php if($permit_details->artist['gender'] == 'male'){ echo 'selected';}?>>
+                                                    <option value="1"
+                                                        <?php if($permit_details->artist['gender'] == '1'){ echo 'selected';}?>>
                                                         Male</option>
-                                                    <option value="female"
-                                                        <?php if($permit_details->artist['gender'] == 'female'){ echo 'selected';}?>>
+                                                    <option value="2"
+                                                        <?php if($permit_details->artist['gender'] == '2'){ echo 'selected';}?>>
                                                         Female</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="city" class="col-form-label col-form-label-sm">City:</label>
+                                                <label for="city"
+                                                    class="col-form-label col-form-label-sm">Emirate:</label>
                                                 <select class=" form-control form-control-sm " name="city" id="city"
                                                     onChange="getAreas(this.value, '')">
                                                     <option value="">Select</option>
                                                     @foreach ($emirates as $em)
                                                     <option value="{{$em->id}}"
-                                                        <?php if($em->id == $permit_details->artist['emirate']){ echo 'selected';}?>>
+                                                        <?php if($em->id == $permit_details->emirate_id){ echo 'selected';}?>>
                                                         {{$em->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <input type="hidden" name="sel_area" id="sel_area"
-                                                value="{{$permit_details->artist['area']}}">
+                                                value="{{$permit_details->area_id}}">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="area" class="col-form-label col-form-label-sm">Area:</label>
                                                 <select class="  form-control form-control-sm " name="area" id="area">
@@ -487,48 +491,69 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="address"
-                                                    class="col-form-label col-form-label-sm">Address:</label>
+                                                    class="col-form-label col-form-label-sm">Address:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-map-marker"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="address" id="address" placeholder="Address"
-                                                        value="{{$permit_details->artist['address']}}">
+                                                        value="{{$permit_details->address_en}}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
-                                                <label for="landline" class="col-form-label col-form-label-sm">LandLine
-                                                    No:</label>
+                                                <label for="address" class="col-form-label col-form-label-sm">PO
+                                                    Box:</label>
                                                 <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text"><i
-                                                                class="la la-phone-square"></i></span></div>
+                                                    <div class="input-group-prepend"></div>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        name="landline" id="landline" placeholder="Landline No."
-                                                        value="{{$permit_details->artist['phone_number']}}">
+                                                        name="po_box" id="po_box" placeholder="PO box"
+                                                        value="{{$permit_details->po_box}}">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-lg-3">
-                                                <label for="mobile" class="col-form-label col-form-label-sm">Mobile
+                                                <label for="address" class="col-form-label col-form-label-sm">Fax
                                                     No:</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"></div>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        name="fax_no" id="fax_no" placeholder="Fax No"
+                                                        value="{{$permit_details->fax_number}}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label for="landline" class="col-form-label col-form-label-sm">LandLine
+                                                    No:*</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"><span class="input-group-text"><i
+                                                                class="la la-phone-square"></i></span></div>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        name="landline" id="landline" placeholder="Landline No."
+                                                        value="{{$permit_details->phone_number}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-lg-3">
+                                                <label for="mobile" class="col-form-label col-form-label-sm">Mobile
+                                                    No:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-mobile-phone"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="mobile" id="mobile" placeholder="Mobile No."
-                                                        value="{{$permit_details->artist['mobile_number']}}">
+                                                        value="{{$permit_details->mobile_number}}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="email"
-                                                    class="col-form-label col-form-label-sm">Email</label>
+                                                    class="col-form-label col-form-label-sm">Email:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-envelope-o"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         placeholder="Email" name="email" id="email"
-                                                        value="{{$permit_details->artist['email']}}" />
+                                                        value="{{$permit_details->email}}" />
                                                 </div>
                                             </div>
                                         </div>
@@ -544,59 +569,59 @@
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-form__section kt-form__section--first">
+                            <div class="kt-form__section kt-form__section--first ">
                                 <div class="kt-wizard-v3__form">
                                     <form id="documents_required" method="post">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
                                         <input type="hidden" id="requirements_count" value={{count($requirements)}}>
-
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <label for="" class="reqName text--maroon kt-font-bold"
-                                                    title="Artist Photo">Artist
-                                                    Photo</label>
-
-                                                <div id="pic_uploader">Upload
+                                        <div class="kt-form__section kt-form__section--first">
+                                            <div class="kt-wizard-v3__form" id="document_row">
+                                                <div class="row">
+                                                    <div class="form-group col-2">
+                                                        <label for="" class="reqName" title="Artist Photo">Artist
+                                                            Photo:*</label>
+                                                    </div>
+                                                    <div class="form-group col-6">
+                                                        <div id="pic_uploader">Upload
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                         @php
                                         $i = 1;
                                         @endphp
                                         @foreach ($requirements as $req)
-                                        <div class="row ">
-                                            <div class="col-8">
-                                                <label for="" class="reqName text--maroon kt-font-bold"
-                                                    title="{{$req->requirement_description}}">{{ucwords($req->requirement_name)}}</label>
-                                                <input type="hidden" value="{{$req->requirement_name}}"
-                                                    id="req_name_{{$i}}">
-
-                                                <label for="" class="reqName text--maroon kt-font-bold" title=""
-                                                    style="visibility:hidden;">upload</label>
-                                                <div id="fileuploader_{{$i}}">Upload
+                                        <div class="kt-form__section kt-form__section--first">
+                                            <div class="kt-wizard-v3__form" id="document_row">
+                                                <div class="row">
+                                                    <div class="form-group col-2">
+                                                        <label for="" class="reqName"
+                                                            title="{{$req->requirement_description}}">{{$req->requirement_name}}:*</label>
+                                                        <input type="hidden" value="{{$req->requirement_name}}"
+                                                            id="req_name_{{$i}}">
+                                                    </div>
+                                                    <div class="form-group col-6">
+                                                        <div id="fileuploader_{{$i}}">Upload
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                                        value="{{$req->dates_required}}">
+                                                    @if($req->dates_required == 1)
+                                                    <div class="form-group col-2">
+                                                        <input type="text" class="form-control date-picker"
+                                                            name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                            id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <input type="text" class="form-control date-picker"
+                                                            name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
+                                                            id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
+                                                    </div>
+                                                    @endif
                                                 </div>
-                                            </div>
-                                            <input type="hidden" id="datesRequiredCheck_{{$i}}"
-                                                value="{{$req->dates_required}}">
-                                            @if($req->dates_required == 1)
-                                            <div class="col-2">
-                                                <label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue
-                                                    Date</label>
-                                                <input type="text" class="form-control date-picker"
-                                                    name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                    id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
-                                            </div>
-                                            <div class="col-2">
-                                                <label for="" class="text--maroon kt-font-bold"
-                                                    title="Expiry Date">Expiry
-                                                    Date</label>
-                                                <input type="text" class="form-control date-picker"
-                                                    name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
-                                                    id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
-                                            </div>
-                                            @endif
 
+                                            </div>
                                         </div>
                                         @php
                                         $i++;
@@ -620,15 +645,15 @@
                             <input type="hidden" id="permit_id" value={{$permit_details->permit_id}}>
                             @php
                             if($from == 'amend'){
-                            $route_back = '../../amend_permit/'.$permit_details->permit_id;
+                            $route_back = 'amend_permit/'.$permit_details->permit_id;
                             } elseif($from == 'edit') {
-                            $route_back = '../../edit_permit/'.$permit_details->permit_id;
+                            $route_back = 'edit_permit/'.$permit_details->permit_id;
                             } elseif($from == 'renew') {
-                            $route_back = '../../renew_permit/'.$permit_details->permit_id;
+                            $route_back = 'renew_permit/'.$permit_details->permit_id;
                             }
                             @endphp
 
-                            <a href="{{$route_back}}">
+                            <a href="{{'company/'.$route_back}}">
                                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                     id="back_btn">
                                     Back
@@ -743,7 +768,7 @@
                 method: "POST",
                 allowedTypes: "jpeg,jpg,png,pdf",
                 fileName: "doc_file_"+i,
-                showDownload: true,
+                // showDownload: true,
                 // showPreview: true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
@@ -1015,6 +1040,8 @@
                     gender: $('#gender').val(),
                     city: $('#city').val(),
                     area: $('#area').val(),
+                    fax_no: $('#fax_no').val(),
+                    po_box: $('#po_box').val(),
                     address: $('#address').val(),
                     uidNumber: $('#uid_number').val(),
                     uidExp: $('#uid_expiry').val(),

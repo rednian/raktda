@@ -39,7 +39,7 @@ class MainController extends Controller
     public function fetch_applied_artists()
     {
 
-        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', '!=', 'expired')->get();
+        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', '!=', 'active')->get();
         //->has('artistPermitDocument')
 
         return Datatables::of($permits)->editColumn('created_at', function ($permits) {
@@ -120,9 +120,9 @@ class MainController extends Controller
             $today = strtotime(date('Y-m-d 00:00:00'));
             $diff = abs($today - $issued_date) / 60 / 60 / 24;
             $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
-            $amendBtn = '<a href="' . route('company.amend_permit', $permit->permit_id) . '" title="Amend"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">Amend</span></a>&nbsp;';
-            $renewBtn = ($expDiff <= 2) ? '<a href="' . route('company.renew_permit', $permit->permit_id) . '" title="Renew"><span  class="kt-badge kt-badge--success kt-badge--inline">Renew</span></a>' : $amendBtn;
-            return  $renewBtn;
+            $amendBtn = ($diff < 10) ? '<a href="' . route('company.amend_permit', $permit->permit_id) . '" title="Amend"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">Amend</span></a>&nbsp;' : '';
+            $renewBtn =  '<a href="' . route('company.renew_permit', $permit->permit_id) . '" title="Renew"><span  class="kt-badge kt-badge--success kt-badge--inline">Renew</span></a>';
+            return  `<span class="d-flex flex-column">` . $renewBtn . `</span>`;
         })->addColumn('details', function ($permit) {
             return '<a href="' . route('company.get_permit_details', $permit->permit_id) . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
         })->rawColumns(['action', 'details'])->make(true);

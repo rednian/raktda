@@ -583,7 +583,7 @@
                             Previous
                         </div>
 
-                        <a href="../company/artist_permits">
+                        <a href="{{url('company/artist_permits')}}">
                             <div class="btn btn--yellow btn-sm  kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>

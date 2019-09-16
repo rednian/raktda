@@ -21,7 +21,7 @@
 
                 <div class="kt-portlet__head-toolbar">
                     <div class="my-auto float-right">
-                        <a href="/company/artist_permits" class="btn btn--maroon btn-elevate btn-sm">
+                        <a href="{{url('company/artist_permits')}}" class="btn btn--maroon btn-elevate btn-sm">
                             <i class="la la-angle-left"></i>
                             Back
                         </a>
@@ -82,7 +82,7 @@
                         </table>
 
                         <div class="d-flex justify-content-end">
-                            <a href="../payment_gateway/{{$permit_details->permit_id}}">
+                            <a href="{{url('company/payment_gateway/'.$permit_details->permit_id)}}">
                                 <div class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm">
                                     Make Payment
                                 </div>

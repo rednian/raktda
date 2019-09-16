@@ -603,7 +603,7 @@
                             <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
                             <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
-                            <a href="{{'../amend_permit/'.$permit_details->permit_id}}">
+                            <a href="{{url('amend_permit/'.$permit_details->permit_id)}}">
                                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                     id="back_btn" style="display:none;">
                                     Back

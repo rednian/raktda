@@ -33,7 +33,7 @@
 
 
                 <div class="d-flex justify-content-center">
-                    <a href="../happiness_meter/{{$permit_details->permit_id}}">
+                    <a href="{{url('company/happiness_meter/'.$permit_details->permit_id)}}">
                         <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u">PAY</button>
                     </a>
                 </div>

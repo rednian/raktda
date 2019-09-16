@@ -154,7 +154,7 @@
         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
             @include('layouts.sidebar')
             <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
-                @include('layouts.admin.topbar')
+                @include('layouts.header')
                 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
                     <!-- begin:: Content -->
                     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
@@ -297,7 +297,8 @@
     <script src="{{ asset('/assets/vendors/custom/fancybox-master/dist/jquery.fancybox.js') }}" type="text/javascript">
     </script>
     <script src="{{ asset('/assets/vendors/custom/bootbox/bootbox.all.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
+    {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script> --}}
+    <script src="{{ asset('/js/companyCustom.js') }}" type="text/javascript"></script>
     <!--end::Page Vendors -->
 
     <!--begin::Page Scripts(used by this page) -->

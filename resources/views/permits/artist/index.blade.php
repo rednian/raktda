@@ -24,7 +24,7 @@
             </li>
             <li class="nav-item"
                 style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                <a href="/company/add_new_artist"><button class="btn btn--yellow btn-sm btn-wide">Add
+                <a href="{{ url('company/add_new_artist')}}"><button class="btn btn--yellow btn-sm btn-wide">Add
                         New
                         Permit</button></a>
             </li>
@@ -258,7 +258,7 @@
                 },
                 {
                     targets:4,
-                    width: '10%',
+                    width: '15%',
                     render: function(data, type, full, meta) {
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
