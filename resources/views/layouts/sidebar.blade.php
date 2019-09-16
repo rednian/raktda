@@ -49,7 +49,7 @@
                     </a>
                 </li>
 
-                <li class="kt-menu__item  {{ Request::is('company/artist_permits') ? 'kt-menu__item--active': '' }}">
+                <li class="kt-menu__item kt-menu__item--active">
                     <a href="{{url('company/artist_permits')}}" class="kt-menu__link">
                         <span class="kt-menu__link-text">ARTIST PERMIT</span>
                     </a>

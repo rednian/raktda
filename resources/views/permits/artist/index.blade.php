@@ -32,16 +32,15 @@
 
         <div class="tab-content">
             <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                <table class="table table-striped- table-bordered table-condensed table-hover table-checkable"
-                    id="applied-artists-table">
+                <table class="table table-striped table-borderless" id="applied-artists-table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Refer No.</th>
-                            <th>Permit No.</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
+                            <th>ReferNo.</th>
+                            <th>PermitNo.</th>
+                            <th>FromDate</th>
+                            <th>ToDate</th>
                             <th>Address</th>
-                            <th>Applied on</th>
+                            <th>AppliedOn</th>
                             <th>Status</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -50,16 +49,15 @@
                 </table>
             </div>
             <div class="tab-pane " id="kt_tabs_1_2" role="tabpanel">
-                <table class="table table-striped- table-bordered table-hover table-checkable"
-                    id="existing-artists-table">
+                <table class="table table-striped table-borderless" id="existing-artists-table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Refer No.</th>
-                            <th>Permit No.</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
+                            <th>ReferNo.</th>
+                            <th>PermitNo.</th>
+                            <th>FromDate</th>
+                            <th>ToDate</th>
                             <th>Address</th>
-                            <th>Applied on</th>
+                            <th>AppliedOn</th>
                             <th>Status</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -230,7 +228,7 @@
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            order:[[4,'desc']],
+            order:[[5,'desc']],
             ajax:'{{route("company.fetch_existing_artists")}}',
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
@@ -278,12 +276,13 @@
                     width: '12%',
                     className: 'text-center',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
+                        return `<span class="kt-font-bold">${data}</span>`;
 					}
                 },
                 {
                     targets:-3,
                     width: '10%',
+                    className: 'text-center',
                     render: function(data, type, full, meta) {
 						return `<span class="kt-font-bold">${data}</span>`;
 					}

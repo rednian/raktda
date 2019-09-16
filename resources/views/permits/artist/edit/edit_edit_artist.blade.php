@@ -168,7 +168,7 @@
                                         <div class=" row">
                                             <div class="form-group col-lg-3">
                                                 <label for="permit_from" class="col-form-label col-form-label-sm">From
-                                                    Date:</label>
+                                                    Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -181,20 +181,20 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="permit_to" class="col-form-label col-form-label-sm">To
-                                                    Date:</label>
+                                                    Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm "
                                                         name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
-                                                        data-date-start-date="+0d"
+                                                        data-date-start-date="+30d"
                                                         value="{{date('d-m-Y',strtotime($permit_details->permit['expired_date']))}}"
                                                         disabled />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="work_loc" class="col-form-label col-form-label-sm">Work
-                                                    Location:</label>
+                                                    Location:*</label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     placeholder="Work Location" name="work_loc" id="work_loc"
                                                     value="{{$permit_details->permit['work_location']}}" disabled />
@@ -248,10 +248,12 @@
                                                     value="{{$artist_details->person_code}}">
                                                 <small>only enter if you know person code</small>
                                             </div>
-                                            <input type="hidden" id="is_old_artist" value="1">
+                                            <input type="hidden" id="is_old_artist"
+                                                value="{{$artist_details->is_old_artist}}">
+                                            <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="profession"
-                                                    class="col-form-label col-form-label-sm">Profession:</label>
+                                                    class="col-form-label col-form-label-sm">Profession:*</label>
                                                 <select
                                                     class="form-control form-control-sm {{in_array('profession', $fieldnames) ? 'is-invalid' : ''}}"
                                                     name="profession" id="profession" placeholder="Profession">
@@ -265,7 +267,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="fname_en" class="col-form-label col-form-label-sm">First
-                                                    Name:</label>
+                                                    Name:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -278,7 +280,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="lname_en" class="col-form-label col-form-label-sm">Last
-                                                    Name:</label>
+                                                    Name:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -294,7 +296,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="fname_ar" class="col-form-label col-form-label-sm">First
-                                                    Name (Arabic):</label>
+                                                    Name (Arabic):*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -307,7 +309,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="lname_ar" class="col-form-label col-form-label-sm">Last Name
-                                                    (Arabic):</label>
+                                                    (Arabic):*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-user"></i></span></div>
@@ -320,7 +322,7 @@
 
 
                                             <div class="form-group col-lg-3">
-                                                <label for="dob" class="col-form-label col-form-label-sm">DOB:</label>
+                                                <label for="dob" class="col-form-label col-form-label-sm">DOB:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -332,7 +334,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
-                                                <label for="uid_number" class="col-form-label col-form-label-sm">UID:
+                                                <label for="uid_number" class="col-form-label col-form-label-sm">UID:*
                                                 </label>
                                                 <input type="text"
                                                     class="form-control form-control-sm {{in_array('UID number', $fieldnames) ? 'is-invalid' : ''}}"
@@ -343,7 +345,7 @@
                                         <div class="row">
                                             <div class="form-group col-lg-3">
                                                 <label for="uid_expiry" class="col-form-label col-form-label-sm">UID
-                                                    Expire Date:</label>
+                                                    Expire Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -356,7 +358,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="passport" class="col-form-label col-form-label-sm">Passport
-                                                    No:</label>
+                                                    No:*</label>
                                                 <input type="text"
                                                     class="form-control form-control-sm {{in_array('passport number', $fieldnames) ? 'is-invalid' : ''}}"
                                                     name="passport" id="passport" placeholder="Passport Number"
@@ -364,7 +366,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="pp_expiry" class="col-form-label col-form-label-sm">PP
-                                                    Expire Date:</label>
+                                                    Expire Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -377,7 +379,7 @@
                                             </div>
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="visa_type" class="col-form-label col-form-label-sm">Visa
-                                                    Type:</label>
+                                                    Type:*</label>
                                                 <select type="text"
                                                     class="form-control form-control-sm {{in_array('visa type', $fieldnames) ? 'is-invalid' : ''}}"
                                                     name="visa_type" id="visa_type">
@@ -394,7 +396,7 @@
                                         <div class="row">
                                             <div class="form-group col-lg-3">
                                                 <label for="visa_number" class="col-form-label col-form-label-sm">Visa
-                                                    Number:</label>
+                                                    Number:*</label>
                                                 <input type="text"
                                                     class="form-control form-control-sm {{in_array('visa number', $fieldnames) ? 'is-invalid' : ''}}"
                                                     name="visa_number" id="visa_number" placeholder="Visa Number"
@@ -403,7 +405,7 @@
 
                                             <div class="form-group col-lg-3">
                                                 <label for="visa_expiry" class="col-form-label col-form-label-sm">Visa
-                                                    Expire Date:</label>
+                                                    Expire Date:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-calendar"></i></span></div>
@@ -416,7 +418,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="sp_name" class="col-form-label col-form-label-sm">Sponser
-                                                    Name:</label>
+                                                    Name:*</label>
                                                 <input type="text"
                                                     class="form-control form-control-sm {{in_array('sponsor name', $fieldnames) ? 'is-invalid' : ''}}"
                                                     name="sp_name" id="sp_name" placeholder="Sponsor Name"
@@ -434,15 +436,10 @@
                                         <div class="row">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="nationality"
-                                                    class="col-form-label col-form-label-sm">Nationality:</label>
+                                                    class="col-form-label col-form-label-sm">Nationality:*</label>
                                                 <select
                                                     class="form-control form-control-sm {{in_array('nationality', $fieldnames) ? 'is-invalid' : ''}}"
                                                     name="nationality" id="nationality">
-                                                    {{--   - class for search in select  --}}
-                                                    {{-- @foreach ($countries as $key => $value)
-                                                    <option value="{{$value}}">
-                                                    {{$value}}</option>
-                                                    @endforeach --}}
                                                     <option value="">Select</option>
                                                     @foreach ($countries as $ct)
                                                     @if($ct)
@@ -483,7 +480,7 @@
                                             </div>
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="gender"
-                                                    class="col-form-label col-form-label-sm">Gender:</label>
+                                                    class="col-form-label col-form-label-sm">Gender:*</label>
                                                 <select
                                                     class=" form-control form-control-sm {{in_array('gender', $fieldnames) ? 'is-invalid' : ''}}"
                                                     name="gender" id="gender">
@@ -499,7 +496,8 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="city" class="col-form-label col-form-label-sm">City:</label>
+                                                <label for="city"
+                                                    class="col-form-label col-form-label-sm">Emirate:</label>
                                                 <select
                                                     class=" form-control form-control-sm {{in_array('city', $fieldnames) ? 'is-invalid' : ''}}"
                                                     name="city" id="city" onChange="getAreas(this.value, '')">
@@ -524,7 +522,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="address"
-                                                    class="col-form-label col-form-label-sm">Address:</label>
+                                                    class="col-form-label col-form-label-sm">Address:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-map-marker"></i></span></div>
@@ -558,7 +556,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="landline" class="col-form-label col-form-label-sm">LandLine
-                                                    No:</label>
+                                                    No:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-phone-square"></i></span></div>
@@ -570,7 +568,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="mobile" class="col-form-label col-form-label-sm">Mobile
-                                                    No:</label>
+                                                    No:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-mobile-phone"></i></span></div>
@@ -582,7 +580,7 @@
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="email"
-                                                    class="col-form-label col-form-label-sm">Email</label>
+                                                    class="col-form-label col-form-label-sm">Email:*</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="la la-envelope-o"></i></span></div>
@@ -605,7 +603,7 @@
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-form__section kt-form__section--first">
+                            <div class="kt-form__section kt-form__section--first ">
                                 <div class="kt-wizard-v3__form">
                                     <form id="documents_required" method="post">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
@@ -668,6 +666,8 @@
                                 </div>
                             </div>
                         </div>
+
+
 
 
 
@@ -750,6 +750,8 @@
         city ? getAreas(city, sel_area) : '';
     });
 
+
+
     $('.kt-wizard-v3__nav-item').on('click', function() {
         wizard = new KTWizard("kt_wizard_v3");
          // get current step number
@@ -812,7 +814,7 @@
                         });
                         $.ajax({
                             cache: false,
-                            url: "{{route('company.get_files_by_artist_permit_id')}}",
+                            url: "{{route('company.get_temp_files_by_artist_permit_id')}}",
                             type: 'POST',
                             data: {artist_permit_id:  $artist_permit_id, reqName: $('#req_name_'+i).val()},
                             dataType: "json",
@@ -895,7 +897,7 @@
                             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
                         });
                         $.ajax({
-                            url: "{{url('company/get_photo_by_artist_permit_id')}}"+'/'+artist_permit_id,
+                            url: "{{url('company/get_temp_photo_artist_permit_id')}}"+'/'+artist_permit_id,
                             success: function(data)
                             {
                                 // console.log(data[0].original_pic);
@@ -1103,7 +1105,7 @@
             }
             documentDetails[artist_number][i] = {
                 issue_date :   $('#doc_issue_date_'+i).val(),
-                exp_date : $('#doc_issue_date_'+i).val()
+                exp_date : $('#doc_exp_date_'+i).val()
             }
         }
         if($('#pic-file-upload').contents().length == 0) {
@@ -1123,40 +1125,6 @@
         localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
         return hasFile ;
     }
-
-    $('#submit_btn').click((e) => {
-
-        var hasFile = docValidation();
-
-        if(documentsValidator.form() && hasFile){
-        var artist_permit_id = $('#artist_permit_id').val();
-        var permit_id = $('#permit_id').val();
-        var ad = localStorage.getItem('artistDetails');
-        var dd = localStorage.getItem('documentDetails');
-
-        $.ajaxSetup({
-			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-		});
-        $.ajax({
-                url:"{{route('company.update_artist_temp_data')}}",
-                type: "POST",
-                // processData:false,
-                // data: { permitDetails: pd},
-                data: {  permitId: artist_permit_id, artistD: ad , documentD: dd, updateChecklist: true},
-                success: function(result){
-                    // console.log(result);
-                    if(result.message[0] == 'success')
-                    {
-                        localStorage.clear();
-                        window.location.href="{{url('company/edit_permit')}}"+'/'+ permit_id;
-
-                    }
-                }
-            });
-        }
-
-    })
-
 
     const stopNext = (validator_name) => {
         wizard.on("beforeNext", function(wizardObj) {
@@ -1270,6 +1238,48 @@
             });
 
     }
+
+    $('#submit_btn').click((e) => {
+
+        var hasFile = docValidation();
+
+        if(documentsValidator.form() && hasFile){
+
+        var artist_permit_id = $('#artist_permit_id').val();
+        var permit_id = $('#permit_id').val();
+        var temp_id = $('#temp_id').val();
+        var ad = localStorage.getItem('artistDetails');
+        var dd = localStorage.getItem('documentDetails');
+
+        $.ajaxSetup({
+            headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
+        });
+        $.ajax({
+                url:"{{route('company.update_artist_temp_data')}}",
+                type: "POST",
+                // processData:false,
+                // data: { permitDetails: pd},
+                data: {
+                    permitId: artist_permit_id,
+                    artistD: ad ,
+                    documentD: dd,
+                    temp_id: temp_id,
+                    permit_id: permit_id,
+                    updateChecklist: true
+                },
+                success: function(result){
+                    // console.log(result);
+                    if(result.message[0] == 'success')
+                    {
+                        localStorage.clear();
+                        window.location.href="{{url('company/edit_permit')}}"+'/'+ permit_id;
+
+                    }
+                }
+            });
+        }
+
+})
 
 </script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>

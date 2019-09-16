@@ -549,54 +549,54 @@
                                     <form id="documents_required" method="post">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
                                         <input type="hidden" id="requirements_count" value={{count($requirements)}}>
-                                        <div class="kt-form__section kt-form__section--first">
-                                            <div class="kt-wizard-v3__form" id="document_row">
-                                                <div class="row">
-                                                    <div class="form-group col-2">
-                                                        <label for="" class="reqName" title="Artist Photo">Artist
-                                                            Photo</label>
-                                                    </div>
-                                                    <div class="form-group col-6">
-                                                        <div id="pic_uploader">Upload
-                                                        </div>
-                                                    </div>
+
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label for="" class="reqName text--maroon kt-font-bold"
+                                                    title="Artist Photo">Artist
+                                                    Photo</label>
+
+                                                <div id="pic_uploader">Upload
                                                 </div>
                                             </div>
                                         </div>
+
                                         @php
                                         $i = 1;
                                         @endphp
                                         @foreach ($requirements as $req)
-                                        <div class="kt-form__section kt-form__section--first">
-                                            <div class="kt-wizard-v3__form" id="document_row">
-                                                <div class="row">
-                                                    <div class="form-group col-2">
-                                                        <label for="" class="reqName"
-                                                            title="{{$req->requirement_description}}">{{$req->requirement_name}}</label>
-                                                        <input type="hidden" value="{{$req->requirement_name}}"
-                                                            id="req_name_{{$i}}">
-                                                    </div>
-                                                    <div class="form-group col-6">
-                                                        <div id="fileuploader_{{$i}}">Upload
-                                                        </div>
-                                                    </div>
-                                                    <input type="hidden" id="datesRequiredCheck_{{$i}}"
-                                                        value="{{$req->dates_required}}">
-                                                    @if($req->dates_required == 1)
-                                                    <div class="form-group col-2">
-                                                        <input type="text" class="form-control date-picker"
-                                                            name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                            id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
-                                                    </div>
-                                                    <div class="form-group col-2">
-                                                        <input type="text" class="form-control date-picker"
-                                                            name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
-                                                            id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
-                                                    </div>
-                                                    @endif
-                                                </div>
+                                        <div class="row ">
+                                            <div class="col-8">
+                                                <label for="" class="reqName text--maroon kt-font-bold"
+                                                    title="{{$req->requirement_description}}">{{ucwords($req->requirement_name)}}</label>
+                                                <input type="hidden" value="{{$req->requirement_name}}"
+                                                    id="req_name_{{$i}}">
 
+                                                <label for="" class="reqName text--maroon kt-font-bold" title=""
+                                                    style="visibility:hidden;">upload</label>
+                                                <div id="fileuploader_{{$i}}">Upload
+                                                </div>
                                             </div>
+                                            <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                                value="{{$req->dates_required}}">
+                                            @if($req->dates_required == 1)
+                                            <div class="col-2">
+                                                <label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue
+                                                    Date</label>
+                                                <input type="text" class="form-control date-picker"
+                                                    name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                    id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="" class="text--maroon kt-font-bold"
+                                                    title="Expiry Date">Expiry
+                                                    Date</label>
+                                                <input type="text" class="form-control date-picker"
+                                                    name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
+                                                    id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                            </div>
+                                            @endif
+
                                         </div>
                                         @php
                                         $i++;
@@ -607,6 +607,7 @@
                                 </div>
                             </div>
                         </div>
+
 
 
 
@@ -1050,7 +1051,7 @@
             }
             documentDetails[artist_number][i] = {
                 issue_date :   $('#doc_issue_date_'+i).val(),
-                exp_date : $('#doc_issue_date_'+i).val()
+                exp_date : $('#doc_exp_date_'+i).val()
             }
         }
         if($('#pic-file-upload').contents().length == 0) {

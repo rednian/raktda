@@ -52,9 +52,8 @@
 
                 <div class="tab-content">
                     <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                        <table class="table table-striped- table-bordered table-condensed table-hover table-checkable"
-                            id="applied-artists-table">
-                            <thead class="thead-light">
+                        <table class="table table-striped table-borderless" id="applied-artists-table">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>First Name</th>
                                     <th>Last Name</th>

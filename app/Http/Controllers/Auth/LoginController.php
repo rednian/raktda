@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected $redirectTo = '/company/dashboard';
+    protected $redirectTo = '/artist_permits';
     protected $username;
 
     public function __construct()

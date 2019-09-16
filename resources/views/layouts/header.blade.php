@@ -5,23 +5,25 @@
 
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
-            <!--begin: Notifications -->
-            <div class="kt-header__topbar-item dropdown">
-                <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="30px,0px" aria-expanded="true">
-                    <span class="kt-header__topbar-icon kt-pulse kt-pulse--danger"> 
-                     <i class="flaticon2-bell-alarm-symbol"></i> 
-                         <span class="kt-pulse__ring"></span>
-                   </span>               
-                     <span class="kt-badge kt-badge--dot kt-badge--notify kt-badge--sm kt-badge--danger"></span>
-                </div>
-                <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg">
-                    <form>
-                       <!--begin: Head -->
-                       <div class="kt-head kt-head--skin-light kt-head--fit-x kt-head--fit-b">
-                           <h3 class="kt-head__title">
-                               User Notifications &nbsp; <span class="btn btn-label-primary btn-sm btn-bold btn-font-sm">23 new</span> 
-                           </h3>
-                       </div>
+        <!--begin: Notifications -->
+        <div class="kt-header__topbar-item dropdown">
+            <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="30px,0px" aria-expanded="true">
+                <span class="kt-header__topbar-icon kt-pulse kt-pulse--danger">
+                    <i class="flaticon2-bell-alarm-symbol"></i>
+                    <span class="kt-pulse__ring"></span>
+                </span>
+                <span class="kt-badge kt-badge--dot kt-badge--notify kt-badge--sm kt-badge--danger"></span>
+            </div>
+            <div
+                class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg">
+                <form>
+                    <!--begin: Head -->
+                    <div class="kt-head kt-head--skin-light kt-head--fit-x kt-head--fit-b">
+                        <h3 class="kt-head__title">
+                            User Notifications &nbsp; <span class="btn btn-label-primary btn-sm btn-bold btn-font-sm">23
+                                new</span>
+                        </h3>
+                    </div>
                     <!--end: Head -->
                     <div class="tab-content">
                         <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
