@@ -171,6 +171,11 @@
       color: #ffffff;
   }
 
+  .dataTables_wrapper .pagination .page-item.active > .page-link {
+      background: #a63a3f;
+      color: #ffffff;
+  }
+
 
   .kt-widget24.kt-widget24--solid {
       border-radius: 1px;
@@ -183,7 +188,7 @@
       background-color: rgba(166, 58, 63, 0.2);
   }*/
 
-  }
+  
  .table-primary, .table-primary > th, .table-primary > td {
      background-color: #d0d4f5 !important;
  }

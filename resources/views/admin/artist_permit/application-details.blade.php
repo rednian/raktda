@@ -150,7 +150,7 @@
                               </div>
                             <div class="form-group form-group-xs">
                               <button type="submit" class="btn btn-sm btn-elevate btn-warning kt-font-transform-u ">Submit</button>
-                              <button type="reset" class="btn btn-sm btn-elevate btn-secondary kt-font-bold kt-font-transform-u">Clear</button>
+                              <button type="reset" class="btn btn-sm btn-secondary kt-font-bold kt-font-transform-u">Clear</button>
                             </div>
                       </form>
                     </div>

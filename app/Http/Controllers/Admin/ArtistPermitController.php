@@ -208,7 +208,7 @@ class ArtistPermitController extends Controller
         return $artist_permit_document->expired_date->format('d-M-Y');
       })
       ->addColumn('action', function($artist_permit_document){
-         $html = '<label class="kt-checkbox kt-checkbox--default kt-checkbox--single">';
+         $html = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">';
          $html .= '<input type="checkbox" data-check="checklist"  name="'.$artist_permit_document->document_name.'" >';
          $html .= '<span></span>';
          $html .= '</label>';
@@ -222,7 +222,7 @@ class ArtistPermitController extends Controller
           'document_name' => '<a href="'.asset('/storage/'.$artistpermit->thumbnail).'" data-fancybox data-caption="'.ucwords($artistpermit->artist->fullname).' - Photo">Artist Photo</a>',
           'issued_date'=> 'Not Required',
           'expired_date'=> 'Not Required',
-          'action'=> '<label class="kt-checkbox kt-checkbox--default kt-checkbox--single"><input type="checkbox" data-check="checklist"  name="artist photo" ><span></span></label>'
+          'action'=> '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default"><input type="checkbox" data-check="checklist"  name="artist photo" ><span></span></label>'
       ];
 
       return response()->json($data);

@@ -40,11 +40,11 @@ $(document).ready(function(){
       $(this).change(function(){
 
         if($(this).is(':checked')){
-          // $(this).parent('label').removeClass('kt-checkbox--solid').addClass('kt-checkbox--success');
+          $(this).parent('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
           $(this).closest('.input-group').find('input[type=text]').addClass('is-valid').css('background-image', 'none');
         }
         else{
-           // $(this).parent('label').removeClass('kt-checkbox--solid').addClass('kt-checkbox--solid');
+           $(this).parent('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
             $(this).closest('.input-group').find('input[type=text]').removeClass('is-valid');
         }
       });

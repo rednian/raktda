@@ -503,7 +503,7 @@
                     <div class="alert alert-outline-danger fade show" role="alert">
                         <div class="alert-icon"><i class="flaticon-warning"></i></div>
                         <div class="alert-text">
-                          <div>The Following documents are about to expire.</div>
+                          <div>The Following documents either about to expire or already expired.</div>
                           <ol>
                             @foreach ($nearly_expire as $document)
                               <li>{{ ucfirst($document->document_name) }}</li>
@@ -579,7 +579,7 @@
       <!--end: Form Wizard Step 3-->
       <!--begin: Form Actions -->
       <div class="kt-form__actions">
-        <div class="btn btn-elevate btn-secondary  btn-sm kt-font-bolder kt-font-transform-u" data-ktwizard-type="action-prev">
+        <div class="btn btn-elevate btn-secondary  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev">
         Previous
         </div>
         <div class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
@@ -608,16 +608,29 @@
     }
   });
 </script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    var form = $('form#kt_form');
+    var wizardEl;
+       var validator;
+       var wizard =  new KTWizard("kt_wizard_v3", { startStep: 1 });
+           // wizard.on("beforeNext", function(wizardObj) {
+           //  if (validator.form() !== true) {
+           //        wizardObj.stop(); 
+           //    }
+           // }).on("change", function(wizard) { KTUtil.scrollTop(); });
+           // form.validate({
+           //  ignore: true,
+           //  rules:{
+
+           //  }
+           // });
+  });
+</script>
 <script>
   var checklist = [];
   $(document).ready(function(){
 
-    new KTWizard("kt_wizard_v3", { startStep: 1 })
-    .on('beforeNext' , function(wizardObj){
-
-    }).on('change', function(wizardObj){
-      KTUtil.scrollTop();
-    });
 
     $('div[data-ktwizard-type=action-submit]').click(function(){
       
