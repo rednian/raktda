@@ -7,19 +7,19 @@
 <div  class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border" id="kt_page_portlet">
   <div class="kt-portlet__head kt-portlet__head--sm">
       <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-success">{{ strtoupper($artist_permit->artist->fullName) }}</span> - Information</h3>
+            <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ strtoupper($artist_permit->artist->fullName) }}</span></h3>
       </div>
       <div class="kt-portlet__head-toolbar">
-        <a href="{{ route('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-light btn-elevate kt-margin-r-4 kt-font-transform-u"><i class="la la-arrow-left"></i> Back</a>
+        <a href="{{ route('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-secondary btn-elevate kt-margin-r-4 kt-font-transform-u"><i class="la la-arrow-left"></i> Back to permit details</a>
         <div class="dropdown dropdown-inline">
           <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="flaticon-more"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" >
-            <a class="dropdown-item" href="{{ route('admin.artist_permit.index') }}">Artist Permit list</a>
+            <a class="dropdown-item kt-font-transform-u" href="{{ route('admin.artist_permit.index') }}">Artist Permit list</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.artist.show', $artist_permit->artist_id) }}">Artist Information</a>
-            <a class="dropdown-item kt-font-trasnform-u" href="javascript:void(0)">Company Information</a>
+            <a class="dropdown-item kt-font-transform-u" href="{{ route('admin.artist.show', $artist_permit->artist_id) }}">Artist Information</a>
+            <a class="dropdown-item kt-font-transform-u" href="javascript:void(0)">Company Information</a>
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@
                                       <label for="example-search-input" class="col-4 col-form-label kt-font-dark">First Name <span class="text-danger">*</span></label>
                                       <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
-                                             <input value="{{ ucwords($artist_permit->artist->firstname_en) }}" readonly type="text" class="form-control form-control-sm">
+                                             <input {{ is($artist_permit, 'firstname') ? 'is-valid': null }} value="{{ ucwords($artist_permit->artist->firstname_en) }}" readonly type="text" class="form-control form-control-sm">
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -556,8 +556,8 @@
                       </button> 
                     </div>
                   </div>
-                <table class="table table-hover" id="permit-history">
-                    <thead class="thead-light">
+                <table class="table table-hover table-striped table-borderless" id="permit-history">
+                    <thead class="thead-dark">
                       <tr>
                         <th>Reference No.</th>
                         <th>Company Name</th>
@@ -579,13 +579,13 @@
       <!--end: Form Wizard Step 3-->
       <!--begin: Form Actions -->
       <div class="kt-form__actions">
-        <div class="btn btn-elevate btn-light  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev">
+        <div class="btn btn-elevate btn-secondary  btn-sm kt-font-bolder kt-font-transform-u" data-ktwizard-type="action-prev">
         Previous
         </div>
-        <div class="btn active btn-elevate btn-brand  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
+        <div class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
         Next
         </div>
-        <div class="btn active btn-success btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">
+        <div class="btn active btn-warning btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">
           Finish & New
         </div>
       </div>

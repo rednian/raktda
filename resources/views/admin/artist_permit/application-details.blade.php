@@ -6,7 +6,7 @@
       <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Artist Permit Details</h3>
     </div>
     <div class="kt-portlet__head-toolbar">
-      <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-light btn-elevate kt-font-transform-u"><i class="la la-arrow-left"></i> Back</a>
+      <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u"><i class="la la-arrow-left"></i> Back to permit list</a>
       <div class="dropdown dropdown-inline">
         <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="flaticon-more"></i>
@@ -78,6 +78,21 @@
                           <td>Work Location :</td>
                           <td>{{ ucwords($permit->work_location) }}</td>
                         </tr>
+                        <tr>
+                          <td>Number of Artist :</td>
+                          <td>{{ $permit->artistpermit()->count() }}</td>
+                        </tr>
+                        @if ($permit->artist->where('artist_status', 'block')->count() > 0)
+                          <tr>
+                            <td>Block Artist :</td>
+                            <td>{{ $permit->artist->where('artist_status', 'block')->count() }}</td>
+                          </tr>
+                        @endif
+                        
+                        {{-- <tr>
+                          <td>Permit Revision :</td>
+                          <td>{{ $permit->artist->where('artist_status', 'block')->count() }}</td>
+                        </tr> --}}
                       </table>
                       
                     </div>
@@ -134,8 +149,8 @@
                                 {{-- <span class="form-text text-muted">Some help text goes here</span> --}}
                               </div>
                             <div class="form-group form-group-xs">
-                              <button type="reset" class="btn btn-sm btn-elevate btn-secondary ">Clear</button>
-                              <button type="submit" class="btn btn-sm btn-elevate btn-info ">Submit</button>
+                              <button type="submit" class="btn btn-sm btn-elevate btn-warning kt-font-transform-u ">Submit</button>
+                              <button type="reset" class="btn btn-sm btn-elevate btn-secondary kt-font-bold kt-font-transform-u">Clear</button>
                             </div>
                       </form>
                     </div>
@@ -148,7 +163,10 @@
                   <div class="alert-text">
                     <p>The Following Artist have some discrepancies with their information.</p>
                     <ol class="kt-font-dark">
-                      @foreach ($permit->check as $check)
+                      @foreach ($permit->check as $index => $check)
+                      @if ($check->has('comment'))
+                        <p>Remarks: {{ ucfirst($check->comment[$index]->comment) }}</p>
+                      @endif
                         <li class="kt-font-bold">{{ $check->artistPermit->artist->fullName }}</li>
                           @foreach ($check->checklist as $checklist)
                             <span>{{ $checklist->fieldname }}</span>,
@@ -243,7 +261,7 @@ var artist = {};
 
       $('#permit-action').validate({
          // onsubmit: false,
-        debug:true,
+        // debug:true,
         rules: {
           comment: {
             required: true,
@@ -310,7 +328,7 @@ var artist = {};
               data: null,
               render: function(data, type){
                 var url = '{{ url('/permit/artist') }}/'+data.artist_id;
-                return '<a href="'+url+'" class="btn btn-link btn-elevate btn-sm">view artist</a>';
+                return '<a href="'+url+'" class="btn btn-warning kt-font-transform-u  btn-elevate btn-sm">view artist</a>';
               }
             }
         ],       

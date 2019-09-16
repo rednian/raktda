@@ -57,7 +57,7 @@ class ArtistPermitController extends Controller
                     'user_id' => $user->user_id,
                     'time_start' => $user_time['time_start'],
                     'time_end' => Carbon::now(),
-                    'status'=> 'approved'
+                    'status'=> 'processing'
                   ]);
 
                   $permit->update(['permit_status'=>'approved', 'user_d'=>$user->user_id ]);
@@ -84,8 +84,13 @@ class ArtistPermitController extends Controller
               }
 
               if($request->action == 'rejected'){
-                   $permit_status = 'rejected';
-                   $comment_type = 'client';
+                  $permit->update(['permit_status'=>'rejected', 'user_d'=>$user->user_id ]);
+                  if($request->comment){
+                    $request['type'] = 'client';
+                     $permit_comment = $permit->comment()->create($request->all());
+
+
+                  }
               }
 
               // if($request->comment){
@@ -109,10 +114,17 @@ class ArtistPermitController extends Controller
     {
       try {
          DB::beginTransaction();
-         
          $request['artist_permit_id'] = $artistpermit->artist_permit_id;
+         $request['permit_id'] = $permit->permit_id;
          $request['status'] = 0; 
+         $request['user_id'] = Auth::user()->user_id;
+
          $artist_permit_check = ArtistPermitCheck::create($request->all());
+         if($request->comment){
+           $request['type'] = 'client';
+           $permit_comment = $permit->comment()->create($request->all());
+           $artist_permit_check->comment()->attach($permit_comment->permit_comment_id,['artist_permit_id'=>$artistpermit->artist_permit_id]);
+         }
 
          if($request->checklist){
            foreach ($request->checklist as $checklist) {
@@ -121,16 +133,6 @@ class ArtistPermitController extends Controller
            }
          }
 
-         if($request->comment){
-           $request['user_id'] = Auth::user()->user_id;
-           $request['permit_id'] = $permit->permit_id;
-           $permit_comment = PermitComment::create($request->all());
-
-
-         //   $permit_comment->artistPermit()->attach([
-         //    'artist_permit_check_id'=>$artist_permit_check->artist_permit_check_id
-         // ]);
-         }
          DB::commit();
           $result = ['success', $artistpermit->artist->fullname.' successfully checked.', 'Success'];
 
@@ -194,7 +196,7 @@ class ArtistPermitController extends Controller
 
       $artist_permit_document =  Datatables::of($artist_permit_document)
       ->editColumn('document_name', function($artist_permit_document){
-        $name = '<a href="'.asset('/storage/'.$artist_permit_document->path).'" data-fancybox>';
+        $name = '<a href="'.asset('/storage/'.$artist_permit_document->path).'" data-fancybox data-fancybox data-caption="'.ucwords($artist_permit_document->document_name).'">';
         $name .= ucwords($artist_permit_document->document_name);
         $name .='</a>';
         return $name;
@@ -217,7 +219,7 @@ class ArtistPermitController extends Controller
       ->make(true);
       $data = $artist_permit_document->getData(true);
       $data['data'][] = [
-          'document_name' => '<a href="'.asset('/storage/'.$artistpermit->thumbnail).'" data-fancybox>Artist Photo</a>',
+          'document_name' => '<a href="'.asset('/storage/'.$artistpermit->thumbnail).'" data-fancybox data-caption="'.ucwords($artistpermit->artist->fullname).' - Photo">Artist Photo</a>',
           'issued_date'=> 'Not Required',
           'expired_date'=> 'Not Required',
           'action'=> '<label class="kt-checkbox kt-checkbox--default kt-checkbox--single"><input type="checkbox" data-check="checklist"  name="artist photo" ><span></span></label>'
@@ -240,10 +242,10 @@ class ArtistPermitController extends Controller
               return $artist->permit->reference_number;
             })
             ->editColumn('permit_start', function($artist){
-              return $artist->permit->issued_date->format('d-M-Y');
+              return $artist->permit->issued_date->format('d-M-Y h:m a');
             })
             ->editColumn('expiry_date', function($artist){
-              return $artist->permit->expired_date->format('d-M-Y');
+              return $artist->permit->expired_date->format('d-M-Y h:m a');
             })
             ->editColumn('permit_status', function($artist){
               $class_name = strtolower($artist->permit->permit_status) == 'active' ? 'success' : 'danger';
@@ -285,10 +287,10 @@ class ArtistPermitController extends Controller
                          return $artist_permit->permit->request_type;
                       })
                     ->addColumn('nationality', function($artist_permit){
-                        return ucwords($artist_permit->artist->nationality_en);
+                        return ucwords($artist_permit->artist->nationality);
                      })
-                    ->addColumn('type', function($artist_permit){
-                        return ucwords($artist_permit->type);
+                      ->addColumn('type', function($artist_permit){
+                          return ucwords($artist_permit->type);
                     })
                     ->addColumn('age', function($artist_permit){
                         return $artist_permit->artist->age;
@@ -336,6 +338,9 @@ class ArtistPermitController extends Controller
                  ->editColumn('artist_number', function($permit){
                      return $permit->artist->count();
                  })
+                 ->editColumn('reference_number', function($permit){
+                  return '<span class="kt-font-bold">'.$permit->reference_number.'</span>';
+                 })
                    ->editColumn('applied_date', function($permit){
                      if(!$permit->created_at) return null;
                      return $permit->created_at->format('d-M-Y');
@@ -374,7 +379,7 @@ class ArtistPermitController extends Controller
                      }
                     
                })
-               ->rawColumns(['request_type'])
+               ->rawColumns(['request_type', 'reference_number'])
                  ->make(true);   
      }
     }
