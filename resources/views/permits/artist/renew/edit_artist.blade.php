@@ -1,11 +1,7 @@
 @extends('layouts.app')
-
-
 @section('content')
-
-<link href="http://hayageek.github.io/jQuery-Upload-File/4.0.11/uploadfile.css" rel="stylesheet">
+<link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
 <!-- begin:: Content -->
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="kt-portlet">
@@ -154,7 +150,7 @@
                             </div>
                         </div>
                         <!--end: Form Wizard Step 1-->
-
+                        {{-- {{dd($permit_details->permit)}} --}}
                         <!--begin: Permit Details Wizard-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first">
@@ -173,7 +169,7 @@
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="permit_from" id="permit_from" data-date-start-date="+0d"
                                                         placeholder="DD-MM-YYYY"
-                                                        value="{{date('d-m-Y',strtotime($permit_details->permit['issued_date']))}}"
+                                                        value="{{date('d-m-Y',strtotime('+1 day',strtotime($permit_details->permit['expired_date'])))}}"
                                                         disabled />
                                                 </div>
                                             </div>
@@ -186,7 +182,7 @@
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
                                                         data-date-start-date="+30d"
-                                                        value="{{date('d-m-Y',strtotime($permit_details->permit['exprired_date']))}}"
+                                                        value="{{date('d-m-Y',strtotime('+31 days',strtotime($permit_details->permit['expired_date'])))}}"
                                                         disabled />
                                                 </div>
                                             </div>
@@ -231,14 +227,15 @@
                                                 <label for="name_en" class="col-form-label col-form-label-sm">Person
                                                     Code:</label>
                                                 <input type="text" class="form-control form-control-sm " id="dcode"
-                                                    placeholder="Person Code"
-                                                    value="{{$permit_details->artist['person_code']}}" disabled>
+                                                    placeholder="Person Code" value="{{$artist_details->person_code}}"
+                                                    disabled>
                                                 <input type="hidden" class="form-control form-control-sm " name="code"
                                                     id="code" placeholder="Person Code"
-                                                    value="{{$permit_details->artist['person_code']}}">
+                                                    value="{{$artist_details->person_code}}">
                                                 <small>only enter if you know person code</small>
                                             </div>
                                             <input type="hidden" id="is_old_artist" value="1">
+                                            <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="profession"
                                                     class="col-form-label col-form-label-sm">Profession:*</label>
@@ -247,7 +244,7 @@
                                                     <option value="">Select</option>
                                                     @foreach ($permitTypes as $pt)
                                                     <option value="{{$pt->permit_type_id}}"
-                                                        <?php if($pt->permit_type_id == $permit_details->permit_type_id){ echo 'selected' ;}?>>
+                                                        <?php if($pt->permit_type_id == $artist_details->permit_type_id){ echo 'selected' ;}?>>
                                                         {{$pt->name_en}}</option>
                                                     @endforeach
                                                 </select>
@@ -260,7 +257,7 @@
                                                                 class="la la-user"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="fname_en" id="fname_en" placeholder="First Name"
-                                                        value="{{$permit_details->artist['firstname_en']}}">
+                                                        value="{{$artist_details->firstname_en}}">
                                                 </div>
                                             </div>
 
@@ -272,7 +269,7 @@
                                                                 class="la la-user"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="lname_en" id="lname_en" placeholder="Last Name"
-                                                        value="{{$permit_details->artist['lastname_en']}}">
+                                                        value="{{$artist_details->lastname_en}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -287,7 +284,7 @@
                                                                 class="la la-user"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm text-right"
                                                         name="fname_ar" id="fname_ar" placeholder="First Name (Arabic)"
-                                                        value="{{$permit_details->artist['firstname_ar']}}">
+                                                        value="{{$artist_details->firstname_ar}}">
                                                 </div>
                                             </div>
 
@@ -299,7 +296,7 @@
                                                                 class="la la-user"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm text-right"
                                                         name="lname_ar" id="lname_ar" placeholder="Last Name (Arabic)"
-                                                        value="{{$permit_details->artist['lastname_ar']}}">
+                                                        value="{{$artist_details->lastname_ar}}">
                                                 </div>
                                             </div>
 
@@ -312,7 +309,7 @@
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-end-date="0d" name="dob"
                                                         id="dob"
-                                                        value="{{date('d-m-Y', strtotime($permit_details->artist['birthdate']))}}" />
+                                                        value="{{date('d-m-Y', strtotime($artist_details->birthdate))}}" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
@@ -320,7 +317,7 @@
                                                 </label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     name="uid_number" id="uid_number" placeholder="UID Number"
-                                                    value={{$permit_details->uid_number}}>
+                                                    value={{$artist_details->uid_number}}>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -333,7 +330,7 @@
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-start-date="30d"
                                                         name="uid_expiry" id="uid_expiry"
-                                                        value="{{$permit_details->uid_expire_date ? date('d-m-Y', strtotime($permit_details->uid_expire_date)) : ''}}" />
+                                                        value="{{$artist_details->uid_expire_date ? date('d-m-Y', strtotime($artist_details->uid_expire_date)) : ''}}" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
@@ -341,7 +338,7 @@
                                                     No:*</label>
                                                 <input type="text" class="form-control form-control-sm" name="passport"
                                                     id="passport" placeholder="Passport Number"
-                                                    value="{{$permit_details->passport_number}}">
+                                                    value="{{$artist_details->passport_number}}">
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="pp_expiry" class="col-form-label col-form-label-sm">PP
@@ -352,7 +349,7 @@
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-start-date="30d"
                                                         name="pp_expiry" id="pp_expiry"
-                                                        value="{{$permit_details->passport_expire_date ? date('d-m-Y', strtotime($permit_details->passport_expire_date)) : ''}}" />
+                                                        value="{{$artist_details->passport_expire_date ? date('d-m-Y', strtotime($artist_details->passport_expire_date)) : ''}}" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
@@ -363,7 +360,7 @@
                                                     <option value="">Select</option>
                                                     @foreach ($visa_types as $vt)
                                                     <option value="{{$vt->id}}"
-                                                        <?php if($vt->id == $permit_details->visa_type_id) { echo 'selected' ;}?>>
+                                                        <?php if($vt->id == $artist_details->visa_type) { echo 'selected' ;}?>>
                                                         {{$vt->visa_type_en}}
                                                     </option>
                                                     @endforeach
@@ -376,7 +373,7 @@
                                                     Number:*</label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     name="visa_number" id="visa_number" placeholder="Visa Number"
-                                                    value="{{$permit_details->visa_number}}">
+                                                    value="{{$artist_details->visa_number}}">
                                             </div>
 
                                             <div class="form-group col-lg-3">
@@ -388,7 +385,7 @@
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         placeholder="DD-MM-YYYY" data-date-start-date="30d"
                                                         name="visa_expiry" id="visa_expiry"
-                                                        value="{{$permit_details->visa_expire_date ? date('d-m-Y', strtotime($permit_details->visa_expire_date)) : ''}}" />
+                                                        value="{{$artist_details->visa_expire_date ? date('d-m-Y', strtotime($artist_details->visa_expire_date)) : ''}}" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
@@ -396,16 +393,17 @@
                                                     Name:*</label>
                                                 <input type="text" class="form-control form-control-sm" name="sp_name"
                                                     id="sp_name" placeholder="Sponser Name"
-                                                    value="{{$permit_details->sponsor_name_en}}">
+                                                    value="{{$artist_details->sponsor_name_en}}">
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 <label for="telephone"
                                                     class="col-form-label col-form-label-sm">Identification No:</label>
                                                 <input type="text" class="form-control form-control-sm" name="id_no"
                                                     id="id_no" placeholder="Identification No."
-                                                    value="{{$permit_details->id_no}}">
+                                                    value="{{$artist_details->id_no}}">
                                             </div>
                                         </div>
+
                                         <div class="row">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="nationality"
@@ -414,19 +412,14 @@
                                                     id="nationality">
                                                     {{--   - class for search in select  --}}
                                                     <option value="">Select</option>
-
-
-
                                                     @foreach ($countries as $ct)
-                                                    @if($ct)
-                                                    <option value="{{$ct}}"
-                                                        <?php if($ct == $permit_details->nationality){ echo 'selected' ;}?>>
-                                                        {{$ct}}</option>
-                                                    @endif
+                                                    <option value="{{$ct->country_code}}"
+                                                        <?php if($ct->country_code == $artist_details->nationality){ echo 'selected' ;}?>>
+                                                        {{$ct->country_enNationality}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <div class=" form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="language"
                                                     class="col-form-label col-form-label-sm">Languages:</label>
                                                 <select class=" form-control form-control-sm " name="language"
@@ -434,7 +427,7 @@
                                                     <option value="">Select</option>
                                                     @foreach ($languages as $lang)
                                                     <option value="{{$lang->id}}"
-                                                        <?php if($lang->id == $permit_details->language_id){ echo 'selected';}?>>
+                                                        <?php if($lang->id == $artist_details->language_id){ echo 'selected';}?>>
                                                         {{$lang->name_en}}</option>
                                                     @endforeach
                                                 </select>
@@ -447,7 +440,7 @@
                                                     <option value="">Select</option>
                                                     @foreach ($religions as $reli)
                                                     <option value="{{$reli->id}}"
-                                                        <?php if($reli->id == $permit_details->religion_id){ echo 'selected';}?>>
+                                                        <?php if($reli->id == $artist_details->religion_id){ echo 'selected';}?>>
                                                         {{$reli->name_en}}</option>
                                                     @endforeach
                                                 </select>
@@ -458,10 +451,10 @@
                                                 <select class=" form-control form-control-sm" name="gender" id="gender">
                                                     <option value="">Select</option>
                                                     <option value="1"
-                                                        <?php if($permit_details->artist['gender'] == '1'){ echo 'selected';}?>>
+                                                        <?php if($artist_details->gender == '1'){ echo 'selected';}?>>
                                                         Male</option>
                                                     <option value="2"
-                                                        <?php if($permit_details->artist['gender'] == '2'){ echo 'selected';}?>>
+                                                        <?php if($artist_details->gender == '2'){ echo 'selected';}?>>
                                                         Female</option>
                                                 </select>
                                             </div>
@@ -475,13 +468,13 @@
                                                     <option value="">Select</option>
                                                     @foreach ($emirates as $em)
                                                     <option value="{{$em->id}}"
-                                                        <?php if($em->id == $permit_details->emirate_id){ echo 'selected';}?>>
+                                                        <?php if($em->id == $artist_details->emirate_id){ echo 'selected';}?>>
                                                         {{$em->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <input type="hidden" name="sel_area" id="sel_area"
-                                                value="{{$permit_details->area_id}}">
+                                                value="{{$artist_details->area_id}}">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="area" class="col-form-label col-form-label-sm">Area:</label>
                                                 <select class="  form-control form-control-sm " name="area" id="area">
@@ -497,7 +490,7 @@
                                                                 class="la la-map-marker"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="address" id="address" placeholder="Address"
-                                                        value="{{$permit_details->address_en}}">
+                                                        value="{{$artist_details->address_en}}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
@@ -507,7 +500,7 @@
                                                     <div class="input-group-prepend"></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="po_box" id="po_box" placeholder="PO box"
-                                                        value="{{$permit_details->po_box}}">
+                                                        value="{{$artist_details->po_box}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -519,7 +512,7 @@
                                                     <div class="input-group-prepend"></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="fax_no" id="fax_no" placeholder="Fax No"
-                                                        value="{{$permit_details->fax_number}}">
+                                                        value="{{$artist_details->fax_number}}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
@@ -530,7 +523,7 @@
                                                                 class="la la-phone-square"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="landline" id="landline" placeholder="Landline No."
-                                                        value="{{$permit_details->phone_number}}">
+                                                        value="{{$artist_details->phone_number}}">
                                                 </div>
                                             </div>
 
@@ -542,7 +535,7 @@
                                                                 class="la la-mobile-phone"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="mobile" id="mobile" placeholder="Mobile No."
-                                                        value="{{$permit_details->mobile_number}}">
+                                                        value="{{$artist_details->mobile_number}}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-3">
@@ -553,7 +546,7 @@
                                                                 class="la la-envelope-o"></i></span></div>
                                                     <input type="text" class="form-control form-control-sm"
                                                         placeholder="Email" name="email" id="email"
-                                                        value="{{$permit_details->email}}" />
+                                                        value="{{$artist_details->email}}" />
                                                 </div>
                                             </div>
                                         </div>
@@ -641,19 +634,9 @@
                                 data-ktwizard-type="action-prev" id="prev_btn">
                                 Previous
                             </div>
-                            <input type="hidden" id="from_page" value="{{$from}}">
                             <input type="hidden" id="permit_id" value={{$permit_details->permit_id}}>
-                            @php
-                            if($from == 'amend'){
-                            $route_back = 'amend_permit/'.$permit_details->permit_id;
-                            } elseif($from == 'edit') {
-                            $route_back = 'edit_permit/'.$permit_details->permit_id;
-                            } elseif($from == 'renew') {
-                            $route_back = 'renew_permit/'.$permit_details->permit_id;
-                            }
-                            @endphp
 
-                            <a href="{{'company/'.$route_back}}">
+                            <a href="{{'company/renew_permit/'.$permit_details->permit_id}}">
                                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                     id="back_btn">
                                     Back
@@ -695,6 +678,9 @@
 
 
 @section('script')
+<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="{{asset('js/uploadfile.js')}}"></script>
 <script>
     var fileUploadFns = [];
     var picUploader ;
@@ -782,28 +768,28 @@
                 formData: {id: i, reqName: $('#req_name_'+i).val() , artistNo: $('#artist_number_doc').val()},
                 onLoad:function(obj)
                 {
-                    $artist_permit_id = $('#artist_permit_id').val();
-                    if($artist_permit_id){
+                    var temp_id = $('#temp_id').val();
+                    if(temp_id){
                         $.ajaxSetup({
                         headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
                         });
                         $.ajax({
                             cache: false,
-                            url: "{{route('company.get_files_by_artist_permit_id')}}",
+                            url: "{{route('company.get_temp_files_by_artist_permit_id')}}",
                             type: 'POST',
-                            data: {artist_permit_id:  $artist_permit_id, reqName: $('#req_name_'+i).val()},
+                            data: {temp_id:  temp_id, reqName: $('#req_name_'+i).val()},
                             dataType: "json",
                             success: function(data)
                             {
                                 // console.log('../../storage/'+data[0]["path"]);
                                 let id = obj[0].id;
                                 let number = id.split("_");
-                                let issue_datetime = new Date(data[0]['issued_date']);
-                                let exp_datetime = new Date(data[0]['expired_date']);
+                                let issue_datetime = new Date(data.issued_date);
+                                let exp_datetime = new Date(data.expired_date);
                                 let formatted_issue_date = appendLeadingZeroes(issue_datetime.getDate()) + "-" + appendLeadingZeroes(issue_datetime.getMonth() + 1) + "-" + issue_datetime.getFullYear();
                                 let formatted_exp_date = appendLeadingZeroes(exp_datetime.getDate()) + "-" + appendLeadingZeroes(exp_datetime.getMonth() + 1) + "-" + exp_datetime.getFullYear();
 
-                                obj.createProgress(data[0]["document_name"],"{{url('/storage')}}"+'/'+data[0]["path"],'');
+                                obj.createProgress(data.document_name,"{{url('/storage')}}"+'/'+data.path,'');
                                 if(formatted_issue_date != NaN-NaN-NaN)
                                 {
                                     $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
@@ -866,13 +852,13 @@
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
                 onLoad:function(obj)
                 {
-                    var artist_permit_id = $('#artist_permit_id').val();
+                    var temp_id = $('#temp_id').val();
                     if(artist_permit_id){
                         $.ajaxSetup({
                             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
                         });
                         $.ajax({
-                            url: "{{url('company/get_photo_by_artist_permit_id')}}"+'/'+artist_permit_id,
+                            url: "{{url('company/get_temp_photo_artist_permit_id')}}"+'/'+temp_id,
                             success: function(data)
                             {
                                 // console.log(data[0].original_pic);
@@ -1040,7 +1026,7 @@
                     gender: $('#gender').val(),
                     city: $('#city').val(),
                     area: $('#area').val(),
-                    fax_no: $('#fax_no').val(),
+                    fax_number: $('#fax_no').val(),
                     po_box: $('#po_box').val(),
                     address: $('#address').val(),
                     uidNumber: $('#uid_number').val(),
@@ -1106,6 +1092,7 @@
         if(documentsValidator.form() && hasFile){
         var artist_permit_id = $('#artist_permit_id').val();
         var permit_id = $('#permit_id').val();
+        var temp_id = $('#temp_id').val();
         var ad = localStorage.getItem('artistDetails');
         var dd = localStorage.getItem('documentDetails');
         var from_page = $('#from_page').val();
@@ -1114,18 +1101,24 @@
 			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
 		});
         $.ajax({
-                url:"{{route('company.move_temp_to_permit')}}",
+                url:"{{route('company.update_artist_temp_data')}}",
                 type: "POST",
                 // processData:false,
                 // data: { permitDetails: pd},
-                data: {  permitId: artist_permit_id, artistD: ad , documentD: dd},
+                data: {
+                    permitId: artist_permit_id,
+                    artistD: ad ,
+                    documentD: dd,
+                    temp_id: temp_id,
+                    permit_id: permit_id,
+                    updateChecklist: false
+                },
                 success: function(result){
                     // console.log(result)
-                    localStorage.clear();
-                    if(from_page == 'renew'){
+                    if(result.message[0] == 'success')
+                    {
+                        localStorage.clear();
                         window.location.href="{{url('company/renew_permit')}}"+'/'+ permit_id;
-                    }else if(from_page == 'edit') {
-                        window.location.href="{{url('company/edit_permit')}}"+'/'+ permit_id;
                     }
                 }
             });
@@ -1226,8 +1219,4 @@
     }
 
 </script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="http://hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js"></script>
 @endsection

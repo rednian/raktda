@@ -37,7 +37,7 @@
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
-                <a href="{{url('company/add_artist_to_permit/'.$permit_details->permit_id.'/edit')}}"
+                <a href="{{url('company/add_artist_to_permit/edit/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add New Artist
@@ -107,7 +107,7 @@
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
-                                    onclick="delArtist({{$artist_detail->artist_permit_id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
+                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal"
                                     class="btn-clean btn-icon btn-icon-sm" title="Delete">
                                     <i class="la la-trash la-2x"></i>
@@ -191,7 +191,7 @@
                     <form action="{{route('company.delete_artist')}}" method="POST">
                         @csrf
                         <p id="warning_text"></p>
-                        <input type="hidden" id="del_artist_permit_id" name="del_artist_permit_id" />
+                        <input type="hidden" id="del_temp_id" name="del_temp_id" />
                         <input type="hidden" name="del_artist_from" value="edit" />
                         <input type="hidden" name="del_permit_id" id="del_permit_id">
                         <input type="submit" value="Remove"
@@ -234,27 +234,31 @@
     $(window).on('beforeunload', function (e)
     {
         var permit_id = $('#permit_id').val();
-        var nexUrl = document.activeElement.href;
-       var total = $('#total_artist_details').val();
-       if(nextUrl != "{{url('company/add_artist_to_permit/edit/')}}/"+permit_id ){
+        var nextUrl = document.activeElement.href;
+        if(nextUrl == undefined){
+            return;
+        }
+        var total = $('#total_artist_details').val();
+        var addUrl = "{{url('company/add_artist_to_permit/edit')}}/"+permit_id ;
+        if(nextUrl != addUrl ){
+            var tempArr = [];
             for(var i = 0 ; i < total; i++){
                 var temp_id = $('#temp_id_'+i).val();
-                if(nextUrl != "{{url('company/edit_edit_artist')}}"+'/' +temp_id ){
-                    $.ajax({
-                        type: 'GET',
-                        url: "{{url('company/update_is_edit')}}"+"/" +permit_id,
-                        success: function(data) {
-                            console.log('at last it worked');
-                        }
-                    });
-                }
+                var tempUrl = "{{url('company/edit_edit_artist')}}"+'/' +temp_id ;
+                tempArr.push(tempUrl);
             }
+
+            if(!tempArr.includes(nextUrl)){
+                $.ajax({
+                    type: 'GET',
+                    url: "{{url('company/update_is_edit')}}"+"/" +permit_id,
+                    success: function(data) {
+                        // console.log('at last it worked');
+                    }
+                });
+            }
+
         }
-
-
-       total_artist_details
-
-
     });
 
 
@@ -312,17 +316,16 @@
             type: 'POST',
             data: {permit_id: $('#permit_id').val()},
             success: function(result) {
-                // console.log(data);
-                // if(result.message[0] == 'success')
-                // {
-                //     window.location.href="{{url('company/artist_permits')}}";
-                // }
+                if(result.message[0] == 'success')
+                {
+                    window.location.href="{{url('company/artist_permits')}}";
+                }
             }
         });
     }
 
-    function delArtist(artist_permit_id, permit_id, fname, lname) {
-            $('#del_artist_permit_id').val(artist_permit_id);
+    function delArtist(temp_id, permit_id, fname, lname) {
+            $('#del_temp_id').val(temp_id);
             $('#del_permit_id').val(permit_id);
             $('#del_fname').val(fname);
             $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');

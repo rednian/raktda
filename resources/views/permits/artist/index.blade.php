@@ -282,7 +282,7 @@
                 {
                     targets:-3,
                     width: '10%',
-                    className: 'text-center',
+                    className:'text-center',
                     render: function(data, type, full, meta) {
 						return `<span class="kt-font-bold">${data}</span>`;
 					}

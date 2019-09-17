@@ -20,7 +20,7 @@
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
-                <a href="{{url('company/add_artist_to_permit/'.$permit_id.'/renew')}}"
+                <a href="{{url('company/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
@@ -29,20 +29,24 @@
         </div>
     </div>
 
-    <input type="hidden" id="permit_id" value="{{$permit_id}}">
+    <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
     <div class="kt-portlet__body">
         <div class="kt-widget5__info py-4">
             <div class="pb-2">
                 <span>From Date:</span>&emsp;
-                <span class="kt-font-info">{{date('d-M-Y',strtotime($issued_date))}}</span>&emsp;&emsp;
-                <input type="hidden" id="issued_date" value="{{$issued_date}}">
+                <span
+                    class="kt-font-info">{{date('d-M-Y',strtotime('+1 day', strtotime($permit_details->expired_date)))}}</span>&emsp;&emsp;
+                <input type="hidden" id="issued_date" value="{{$permit_details->expired_date}}">
+                @php
+                $to_date = date('d-M-Y', strtotime('+31 days', strtotime($permit_details->expired_date)));
+                @endphp
                 <span>To Date:</span>&emsp;
-                <span class="kt-font-info">{{date('d-M-Y',strtotime($expired_date))}}</span>&emsp;&emsp;
-                <input type="hidden" id="expired_date" value="{{$expired_date}}">
+                <span class="kt-font-info">{{$to_date}}</span>&emsp;&emsp;
+                <input type="hidden" id="expired_date" value="{{$to_date}}">
                 <span>Work Location:</span>&emsp;
-                <span class="kt-font-info">{{$work_location}}</span>&emsp;&emsp;
-                <input type="hidden" id="work_location" value="{{$work_location}}">
+                <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+                <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
             </div>
         </div>
 
@@ -68,7 +72,7 @@
                             <td>{{$artist_detail->mobile_number}}</td>
                             <td>{{$artist_detail->email}}</td>
                             <td class="text-center">
-                                <a href="{{url('company/edit_artist/renew/'.$artist_detail->artist_permit_id)}}"
+                                <a href="{{url('company/edit_artist/'.$artist_detail->id)}}"
                                     class="btn-clean btn-icon btn-icon-sm" title="Edit">
                                     <i class="la la-pencil la-2x"></i>
                                 </a>
@@ -79,7 +83,7 @@
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
-                                    onclick="delArtist({{$artist_detail->artist_permit_id}},{{$artist_detail->permit_id}},'{{$artistPermit->firstname_en}}','{{$artist_detail->lastname_en}}')"
+                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal"
                                     class="btn-clean btn-icon btn-icon-sm" title="Delete">
                                     <i class="la la-trash la-2x"></i>

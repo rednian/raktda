@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('fetch_artist_data_from_drafts', $artistPermitLink . '\MainController@fetch_artist_data_from_drafts')->name('company.fetch_artist_data_from_drafts');
 
     // Edit Controller
-    Route::get('edit_artist/{from}/{id}', $artistPermitLink . '\EditController@edit_artist')->name('company.edit_artist');
+    Route::get('edit_artist/{id}', $artistPermitLink . '\RenewController@edit_artist')->name('company.edit_artist');
     Route::get('update_checklist/{id}', $artistPermitLink . '\EditController@update_checklist')->name('company.update_checklist');
     Route::get('edit_permit/{id}', $artistPermitLink . '\EditController@edit_permit')->name('company.edit_permit');
     Route::post('get_error_fields_list', $artistPermitLink . '\EditController@get_error_fields_list')->name('company.get_error_fields_list');
