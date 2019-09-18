@@ -451,7 +451,13 @@
     #nav--new-permit-btn {
         display:none;
     }
-    button#nav--new-permit-btn-mobile {
+    #nav--new-permit-btn-mobile {
+        display:block;
+    }
+    .permit--action-bar {
+        display:none;
+    }
+    .permit--action-bar--mobile {
         display:block;
     }
 }
@@ -462,5 +468,18 @@
     }
     #nav--new-permit-btn-mobile {
         display:none;
+    }
+    .permit--action-bar {
+        display:block;
+    }
+    .permit--action-bar--mobile {
+        display:none;
+    }
+}
+
+@media(max-width:768px){
+    .kt-form {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
     }
 }

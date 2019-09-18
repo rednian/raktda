@@ -9,13 +9,14 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Amend Artist Permit <span
-                    class="text--yellow bg--maroon px-3 ml-3 text-center"><strong>{{$permit_details['permit_number']}}</strong></span>
+            <h3 class="kt-portlet__head-title">Amend Artist Permit
             </h3>
+            <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+                <strong>{{$permit_details['permit_number']}}</strong></span>
         </div>
 
         <div class="kt-portlet__head-toolbar">
-            <div class="my-auto float-right">
+            <div class="my-auto float-right permit--action-bar">
                 <a href="{{url('company/artist_permits')}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-angle-left"></i>
@@ -25,6 +26,17 @@
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
+                </a>
+            </div>
+            <div class="my-auto float-right permit--action-bar--mobile">
+                <a href="{{url('company/artist_permits')}}"
+                    class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                    <i class="la la-angle-left"></i>
+
+                </a>
+                <a href="{{url('/company/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
+                    <i class="la la-plus"></i>
                 </a>
             </div>
         </div>

@@ -14,9 +14,10 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
                 <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title">Make Payment <span
-                            class="text--yellow bg--maroon px-3 ml-3 text-center"><strong>{{$permit_details['permit_number']}}</strong></span>
+                    <h3 class="kt-portlet__head-title">Make Payment
                     </h3>
+                    <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+                        <strong>{{$permit_details['permit_number']}}</strong></span>
                 </div>
 
                 <div class="kt-portlet__head-toolbar">
