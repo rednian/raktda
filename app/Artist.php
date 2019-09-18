@@ -37,7 +37,7 @@ class Artist extends Model implements Auditable
 
     public function getFullNameAttribute()
     {
-        return $this->firstname_en.' '.$this->lastname_en;
+        return $this->firstname_en . ' ' . $this->lastname_en;
     }
 
     public function getAgeAttribute()
@@ -45,8 +45,8 @@ class Artist extends Model implements Auditable
         return Carbon::parse($this->attributes['birthdate'])->age;
     }
 
-    
-
-
-
+    public function Nationality()
+    {
+        return $this->belongsTo(Countries::class, 'nationality',  'country_code');
+    }
 }

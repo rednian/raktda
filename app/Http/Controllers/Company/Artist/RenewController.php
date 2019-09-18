@@ -9,6 +9,7 @@ use App\ArtistPermitDocument;
 use App\ArtistPermit;
 use App\Permit;
 use Auth;
+use App\Artist;
 use App\ArtistTempData;
 use App\Countries;
 use App\PermitType;
@@ -129,106 +130,236 @@ class RenewController extends Controller
 
     public function move_temp_to_permit_renew(Request $request)
     {
-        $permit_number = $request->permit_number;
+        $current_time_string = Carbon::now()->toDateTimeString();
+        $user_id = Auth::user()->user_id;
 
         $permit_id = $request->permit_id;
+        $n_permit_number = $request->permit_number;
+        $n_work_location = $request->work_location;
+        $n_issued_date = $request->issued_date;
+        $n_expired_date = $request->expired_date;
+
+        $n_refer_no = $this->generateReferenceNumber();
+
+        $permitTable = Permit::create([
+            'permit_number' => $n_permit_number,
+            'user_id' => Auth::user()->user_id,
+            'reference_number' => $n_refer_no,
+            'issued_date' => $n_issued_date,
+            'expired_date' => $n_expired_date,
+            'work_location' => $n_work_location,
+            'permit_status' => 'pending',
+            'request_type' => 'new',
+            'company_id' => Auth::user()->EmpClientId,
+            'created_at' => $current_time_string,
+            'created_by' => $user_id
+        ]);
 
         $artist_temp_data = ArtistTempData::with('ArtistTempDocument')->where('permit_id', $permit_id)->get();
 
-        $last_permit_d = Permit::latest()->first();
-        $new_refer_no = sprintf("%04d", $last_permit_d->reference_number  ? $last_permit_d->reference_number + 1 : 1);
-
-        $permit = Permit::create([
-            'work_location' => $request->work_location,
-            'issued_date' => $request->issued_date ? Carbon::parse($request->issued_date)->toDateString() : '',
-            'expired_date' => $request->expired_date ? Carbon::parse($request->expired_date)->toDateString() : '',
-            'permit_number' => $permit_number,
-            'reference_number' => $new_refer_no,
-            'permit_status' => 'pending',
-            'request_type' => 'new',
-            'user_id' => Auth::user()->user_id,
-            'created_by' => Auth::user()->user_id,
-            'created_at' => Carbon::now()->toDateTimeString(),
-            'company_id' => Auth::user()->EmpClientId
-        ]);
-
-        // $artists_of_permit = ArtistPermit::with('permit')->where('permit_id', $permit_id)->get();
-
         foreach ($artist_temp_data as $data) {
-            if ($data->status == 1) {
-                ArtistPermit::where('artist_permit_id', $data->artist_permit_id)->update([
-                    'artist_permit_status' => 'inactive'
-                ]);
-            } else {
 
-                $updateArray = [
-                    // 'artist_id' => $data->artist_id,
-                    // 'permit_id' => $data->permit_id,
+            if ($data->status != 1) {
+
+                $updateArray = array(
                     'permit_type_id' => $data->permit_type_id,
-                    'original' => $data->original,
-                    'thumbnail' => $data->thumbnail,
                     'passport_number' => $data->passport_number,
                     'uid_number' => $data->uid_number,
-                    'uid_expire_date' => $data->uid_expire_date ? Carbon::parse($data->uid_expire_date)->toDateString() : '',
-                    'passport_expire_date' => $data->passport_expire_date ? Carbon::parse($data->passport_expire_date)->toDateString() : '',
-                    'visa_type' => $data->visa_type,
+                    'uid_expire_date' => $data->uid_expire_date,
+                    'passport_expire_date' => $data->passport_expire_date,
+                    'visa_type_id' => $data->visa_type,
                     'visa_number' => $data->visa_number,
-                    'visa_expire_date' => $data->visa_expire_date ? Carbon::parse($data->visa_expire_date)->toDateString() : '',
+                    'visa_expire_date' => $data->visa_expire_date,
                     'sponsor_name_en' => $data->sponsor_name_en,
-                    'language' => $data->language,
-                    'religion' => $data->religion,
-                    'city' => $data->city,
+                    'language_id' => $data->language,
+                    'religion_id' => $data->religion,
+                    'emirate_id' => $data->city,
                     'fax_number' => $data->fax_number,
                     'po_box' => $data->po_box,
-                    'area' => $data->area,
+                    'area_id' => $data->area,
                     'address_en' => $data->address_en,
                     'mobile_number' => $data->mobile_number,
                     'phone_number' => $data->phone_number,
                     'email' => $data->email,
-                    'emirates_id' => $data->emirates_id,
-                    'updated_at' => Carbon::now()->toDateTimeString(),
-                    'updated_by' => Auth::user()->user_id
-                ];
+                    'identification_number' => $data->emirates_id,
+                    'artist_permit_status' => 'active',
+                    'created_at' => $current_time_string,
+                    'created_by' =>  $user_id
+                );
 
-                if ($data->artist_permit_id) {
-                    $artistPermit =  ArtistPermit::where('artist_permit_id', $data->artist_permit_id)->update($updateArray);
-                    $artist_temp_document = ArtistTempDocument::where('artist_permit_id', $data->artist_permit_id)->get();
-                    $artist_old_documents = ArtistPermitDocument::where('artist_permit_id', $data->artist_permit_id)->get();
+
+                if ($data->artist_id) {
+                    Artist::where('artist_id', $data->artist_id)->update([
+                        'firstname_ar' => $data->firstname_ar,
+                        'lastname_ar' => $data->lastname_ar,
+                        'firstname_en' => $data->firstname_en,
+                        'lastname_en' => $data->lastname_en,
+                        'gender_id' => $data->gender,
+                        'nationality' => $data->nationality,
+                        'birthdate' => $data->birthdate,
+                        'updated_at' => $current_time_string,
+                        'updated_by' => $user_id
+                    ]);
+                    $artist_id = $data->artist_id;
                 } else {
-                    $artistPermit =   ArtistPermit::create($updateArray);
-                    $artistPermit->created_at = Carbon::now()->toDateTimeString();
-                    $artistPermit->created_by =  Auth::user()->user_id;
-                    $artistPermit->save();
-
-                    $artist_temp_document = ArtistTempDocument::where('artist_permit_id', $data->id)->get();
+                    $a = Artist::create([
+                        'artist_status' => 'active',
+                        'person_code' => $this->generatePersonCode(),
+                        'firstname_ar' => $data->firstname_ar,
+                        'lastname_ar' => $data->lastname_ar,
+                        'firstname_en' => $data->firstname_en,
+                        'lastname_en' => $data->lastname_en,
+                        'gender_id' => $data->gender,
+                        'nationality' => $data->nationality,
+                        'birthdate' => $data->birthdate,
+                        'created_at' => $current_time_string,
+                        'created_by' => $user_id
+                    ]);
+                    $artist_id = $a->artist_id;
                 }
 
-                foreach ($artist_temp_document as $atd) {
-                    ArtistPermitDocument::create([
-                        'issued_date' => $atd->issued_date != null ? Carbon::parse($atd->issued_date)->toDateString() : '',
-                        'expired_date' => $atd->expired_date != null ? Carbon::parse($atd->expired_date)->toDateString() : '',
-                        'created_at' =>  Carbon::now()->toDateTimeString(),
-                        'created_by' =>  Auth::user()->user_id,
-                        'path' =>  $atd->path,
-                        'document_name' => $atd->document_name,
-                        'artist_permit_id' => $artistPermit->artist_permit_id
-                    ]);
+                $updateArray['artist_id'] = $artist_id;
+                $updateArray['permit_id'] = $permitTable->permit_id;
 
-                    if ($data->artist_permit_id) {
-                        foreach ($artist_old_documents as $aod) {
-                            ArtistPermitDocument::where('permit_document_id', $aod->permit_document_id)->update(['status' => 'inactive']);
+                $org = explode('/', $data->original);
+
+                if ($org[2] == 'temp') {
+
+                    $pic_ext = '';
+
+                    if ($org[5]) {
+                        $ext = explode('.', $org[5]);
+                        $pic_ext = $ext[1];
+                    }
+
+                    $check_path = 'public/' .  $org[0] . '/artist_permit/' .  $artist_id . '/photos';
+
+                    if (Storage::exists($check_path)) {
+                        $file_count = count(Storage::files($check_path));
+                        $file_nos = $file_count / 2;
+                        $next_file_no = $file_nos + 1;
+                    } else {
+                        $next_file_no = 1;
+                    }
+
+                    $newPath = 'public/' . $org[0] . '/artist_permit/' . $artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+                    $newPathLink = $org[0] . '/artist_permit/' . $artist_id . '/photos/photo_' . $next_file_no . '.' . $pic_ext;
+                    $newThumbPath = 'public/' . $org[0] . '/artist_permit/' . $artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+                    $newThumbPathLink = $org[0] . '/artist_permit/' . $artist_id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
+
+                    $oldPath = 'public/' . $data->original;
+                    $oldThumbPath = 'public/' . $data->thumbnail;
+
+                    Storage::move($oldPath, $newPath);
+                    Storage::move($oldThumbPath, $newThumbPath);
+                } else {
+                    $newPathLink = $data->original;
+                    $newThumbPathLink = $data->thumbnail;
+                }
+
+                $updateArray['original'] = $newPathLink;
+                $updateArray['thumbnail'] = $newThumbPathLink;
+
+                $artistPermit =  ArtistPermit::create($updateArray); // created the artist permit
+
+
+                $requirements = Requirement::where('requirement_type', 'artist')->get();
+                $requirement_names = [];
+                foreach ($requirements as $req) {
+                    array_push($requirement_names, $req->requirement_name);
+                }
+                $total = $requirements->count();
+
+                for ($j = 1; $j <= $total; $j++) {
+
+                    $artist_temp_document = ArtistTempDocument::where('temp_data_id', $data->id)->where('document_name', $requirement_names[$j - 1])->orderBy('created_at', 'desc')->first();
+
+                    if (!$artist_temp_document->doc_id) {
+
+                        $temp_path = $artist_temp_document->path;
+                        $te_pth = explode('/', $temp_path);
+                        $ext = '';
+                        if ($te_pth[4]) {
+                            $ex = explode('.', $te_pth[4]);
+                            $ext = $ex[1];
                         }
+
+                        $check_path = 'public/' . $te_pth[0] . '/artist_permit/' . $artist_id;
+
+                        if (Storage::exists($check_path)) {
+                            $file_count = count(Storage::files($check_path));
+                            $next_file_no = $file_count + 1;
+                        } else {
+                            $next_file_no = $j;
+                        }
+
+                        $newPath = 'public/' . $te_pth[0] . '/artist_permit/' . $artist_id . '/document_' . $next_file_no . '.' . $ext;
+                        $newPathLink = $te_pth[0] . '/artist_permit/' . $artist_id . '/document_' . $next_file_no . '.' . $ext;
+
+                        $oldPath = 'public/' . $temp_path;
+
+                        Storage::move($oldPath, $newPath);
+
+                        ArtistPermitDocument::create([
+                            'issued_date' => $artist_temp_document->issued_date,
+                            'expired_date' => $artist_temp_document->expired_date,
+                            'created_at' =>  $current_time_string,
+                            'created_by' =>  $user_id,
+                            'path' =>  $newPathLink,
+                            'document_name' => $artist_temp_document->document_name,
+                            'artist_permit_id' => $artistPermit->artist_perit_id
+                        ]);
                     }
                 }
             }
         }
 
-        if ($permit) {
-            $message = ['success', 'Permit Re-Submitted Successfully', 'Success'];
+        if ($permitTable) {
+            $message = ['success', 'Permit Applied Successfully', 'Success'];
         } else {
             $message = ['error', 'Error, Please Try Again', 'Error'];
         }
 
         return response()->json(['message' => $message]);
+    }
+
+    function generatePersonCode()
+    {
+
+        $last_person_code = Artist::orderBy('artist_id', 'desc')->value('person_code');
+
+        if ($last_person_code == null) {
+            $code = 2000;
+        } else {
+            $code = $last_person_code + 1;
+        }
+
+        // call the same function if the barcode exists already
+        if ($this->personCodeExists($code)) {
+            return $this->generatePersonCode();
+        }
+
+        // otherwise, it's valid and can be used
+        return $code;
+    }
+
+    public function generateReferenceNumber()
+    {
+        $last_permit_d = Permit::latest()->first();
+        if (empty($last_permit_d)) {
+            $new_refer_no = sprintf("RNA%04d",  1);
+        } else {
+            $last_rn = $last_permit_d->reference_number;
+            $n = substr($last_rn, 3);
+            $f = substr($n, 0, 1);
+            $l = substr($n, -1, 1);
+            $x = 4;
+            if ($f == 9 && $l == 9) {
+                $x++;
+            }
+            $new_refer_no = sprintf("RNA%0" . $x . "d", $n + 1);
+        }
+
+        return $new_refer_no;
     }
 }

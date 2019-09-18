@@ -24,15 +24,20 @@
             </li>
             <li class="nav-item"
                 style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                <a href="{{ url('company/add_new_artist')}}"><button class="btn btn--yellow btn-sm btn-wide">Add
-                        New
-                        Permit</button></a>
+                <a href="{{ url('company/add_new_artist')}}">
+                    <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
+                        Add New Permit
+                    </button>
+                    <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                        <i class="la la-plus"></i>
+                    </button>
+                </a>
             </li>
         </ul>
 
         <div class="tab-content">
             <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                <table class="table table-striped table-borderless" id="applied-artists-table">
+                <table class="table table-sm table-striped table-borderless" id="applied-artists-table">
                     <thead class="thead-dark">
                         <tr>
                             <th>ReferNo.</th>
@@ -47,9 +52,10 @@
                         </tr>
                     </thead>
                 </table>
+
             </div>
-            <div class="tab-pane " id="kt_tabs_1_2" role="tabpanel">
-                <table class="table table-striped table-borderless" id="existing-artists-table">
+            <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
+                <table class="table table-sm table-striped table-borderless " id="existing-artists-table">
                     <thead class="thead-dark">
                         <tr>
                             <th>ReferNo.</th>
@@ -67,6 +73,7 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
 
         <!--end: Datatable -->

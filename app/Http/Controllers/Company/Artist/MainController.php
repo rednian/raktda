@@ -661,7 +661,7 @@ class MainController extends Controller
     public function fetch_artist_details(Request $request)
     {
         $ap_id = $request->ap_id;
-        $artistPermitDetails = ArtistPermit::with('artist', 'permitType', 'artistPermitDocument')->where('artist_permit_id', $ap_id)->first();
+        $artistPermitDetails = ArtistPermit::with('artist', 'permitType', 'artistPermitDocument', 'artist.Nationality')->where('artist_permit_id', $ap_id)->first();
         return $artistPermitDetails;
     }
 
@@ -678,7 +678,6 @@ class MainController extends Controller
         $artist_documents = ArtistPermit::where('artist_permit_id', $artist_permit_id)->get();
         return $artist_documents;
     }
-
 
 
     // Temp Data functions

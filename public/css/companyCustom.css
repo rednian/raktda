@@ -407,7 +407,7 @@
 }
 
 #detail-permit th {
-    background-color: var(--sub-brand-color);
+    /* background-color: var(--sub-brand-color); */
     text-transform: uppercase;
 }
 
@@ -447,3 +447,20 @@
     font-weight: 500;
 }
 
+@media(max-width:600px) {
+    #nav--new-permit-btn {
+        display:none;
+    }
+    button#nav--new-permit-btn-mobile {
+        display:block;
+    }
+}
+
+@media(min-width:600px) {
+    #nav--new-permit-btn {
+        display:block;
+    }
+    #nav--new-permit-btn-mobile {
+        display:none;
+    }
+}

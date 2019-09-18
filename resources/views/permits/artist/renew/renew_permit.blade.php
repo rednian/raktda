@@ -40,10 +40,11 @@
                 <input type="hidden" id="issued_date" value="{{$permit_details->expired_date}}">
                 @php
                 $to_date = date('d-M-Y', strtotime('+31 days', strtotime($permit_details->expired_date)));
+                $db_to_date = date('Y-m-d', strtotime('+31 days', strtotime($permit_details->expired_date)));
                 @endphp
                 <span>To Date:</span>&emsp;
                 <span class="kt-font-info">{{$to_date}}</span>&emsp;&emsp;
-                <input type="hidden" id="expired_date" value="{{$to_date}}">
+                <input type="hidden" id="expired_date" value="{{$db_to_date}}">
                 <span>Work Location:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
                 <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
@@ -64,6 +65,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                        $i = 0 ;
+                        @endphp
+                        <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                         @foreach ($artist_details as $artist_detail)
                         <tr>
                             <td>{{$artist_detail->firstname_en}}</td>
@@ -90,6 +95,10 @@
                                 </a>
                                 @endif
                             </td>
+                            <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
+                            @php
+                            $i++;
+                            @endphp
                         </tr>
                         @endforeach
                     </tbody>
@@ -139,7 +148,7 @@
                     <form action="{{route('company.delete_artist')}}" method="POST">
                         @csrf
                         <p id="warning_text"></p>
-                        <input type="hidden" id="del_artist_permit_id" name="del_artist_permit_id" />
+                        <input type="hidden" id="del_temp_id" name="del_temp_id" />
                         <input type="hidden" name="del_artist_from" value="renew" />
                         <input type="hidden" name="del_permit_id" id="del_permit_id">
                         <input type="submit" value="Remove"
@@ -162,6 +171,36 @@
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(window).on('beforeunload', function (e)
+    {
+        var permit_id = $('#permit_id').val();
+        var nextUrl = document.activeElement.href;
+        if(nextUrl == undefined){
+            return;
+        }
+        var total = $('#total_artist_details').val();
+        var addUrl = "{{url('company/add_artist_to_permit/renew')}}/"+permit_id ;
+        if(nextUrl != addUrl ){
+            var tempArr = [];
+            for(var i = 0 ; i < total; i++){
+                var temp_id = $('#temp_id_'+i).val();
+                var tempUrl = "{{url('company/edit_artist')}}"+'/' +temp_id ;
+                tempArr.push(tempUrl);
+            }
+
+            if(!tempArr.includes(nextUrl)){
+                $.ajax({
+                    type: 'GET',
+                    url: "{{url('company/update_is_edit')}}"+"/" +permit_id,
+                    success: function(data) {
+                        // console.log('at last it worked');
+                    }
+                });
+            }
+
         }
     });
 
@@ -197,15 +236,15 @@
             },
             success: function(data) {
                 // console.log(data);
-              if(data.message == 'success') {
+              if(data.message[0] == 'success') {
                 window.location.href="{{url('company/artist_permits')}}";
               }
             }
         });
     }
 
-    function delArtist(artist_permit_id, permit_id, fname, lname) {
-        $('#del_artist_permit_id').val(artist_permit_id);
+    function delArtist(temp_id, permit_id, fname, lname) {
+        $('#del_temp_id').val(temp_id);
         $('#del_permit_id').val(permit_id);
         $('#del_fname').val(fname);
         $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
