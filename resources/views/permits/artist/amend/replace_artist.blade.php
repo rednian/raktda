@@ -229,10 +229,10 @@
                                         </div>
                                         <input type="hidden" id="is_old_artist" value="1">
                                         <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                            <label for="profession"
-                                                class="col-form-label col-form-label-sm">Profession:*</label>
-                                            <select class="form-control form-control-sm " name="profession"
-                                                id="profession" placeholder="Profession" disabled>
+                                            <label for="permit_type" class="col-form-label col-form-label-sm">Permit
+                                                Type:*</label>
+                                            <select class="form-control form-control-sm " name="permit_type"
+                                                id="permit_type" placeholder="Permit Type" disabled>
                                                 <option value="">Select</option>
                                                 @foreach ($permitTypes as $pt)
                                                 <option value="{{$pt->permit_type_id}}"
@@ -242,7 +242,8 @@
                                             </select>
                                         </div>
                                         <input type="hidden" id="artist_id" value="">
-                                        <input type="hidden" id="old_profession" value={{$permit_details->profession}}>
+                                        <input type="hidden" id="old_profession"
+                                            value={{$artist_details->permit_type_id}}>
                                         <div class="form-group col-lg-3">
                                             <label for="fname_en" class="col-form-label col-form-label-sm">First
                                                 Name:*</label>
@@ -264,9 +265,8 @@
                                                     id="lname_en" placeholder="Last Name">
                                             </div>
                                         </div>
-                                    </div>
-                                    <input type="hidden" id="artist_permit_num">
-                                    <div class="row">
+
+                                        <input type="hidden" id="artist_permit_num">
 
                                         <div class="form-group col-lg-3">
                                             <label for="fname_ar" class="col-form-label col-form-label-sm">First
@@ -292,6 +292,18 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="profession"
+                                                class="col-form-label col-form-label-sm">Profession:*</label>
+                                            <select class="form-control form-control-sm " name="profession"
+                                                id="profession" placeholder="Profession">
+                                                <option value="">Select</option>
+                                                @foreach ($profession as $pf)
+                                                <option value="{{$pf->profession_id}}">{{$pf->name_en}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
 
                                         <div class="form-group col-lg-3">
                                             <label for="dob" class="col-form-label col-form-label-sm">DOB:*</label>
@@ -309,8 +321,7 @@
                                             <input type="text" class="form-control form-control-sm" name="uid_number"
                                                 id="uid_number" placeholder="UID Number">
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3">
                                             <label for="uid_expiry" class="col-form-label col-form-label-sm">UID
                                                 Expire Date:*</label>
@@ -350,8 +361,7 @@
                                                 <option value="Family Visas">Family Visas</option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3">
                                             <label for="visa_number" class="col-form-label col-form-label-sm">Visa
                                                 Number:*</label>
@@ -382,8 +392,7 @@
                                             <input type="text" class="form-control form-control-sm" name="id_no"
                                                 id="id_no" placeholder="Identification No.">
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                             <label for="nationality"
                                                 class="col-form-label col-form-label-sm">Nationality:*</label>
@@ -427,8 +436,7 @@
                                                 <option value="female">Female</option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                             <label for="city" class="col-form-label col-form-label-sm">Emirate:</label>
                                             <select class=" form-control form-control-sm " name="city" id="city"
@@ -465,8 +473,7 @@
                                                     id="po_box" placeholder="PO box">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3">
                                             <label for="address" class="col-form-label col-form-label-sm">Fax
                                                 No:</label>
@@ -988,6 +995,7 @@
                 fname_ar: 'required',
                 lname_en: 'required',
                 lname_ar: 'required',
+                permit_type: 'requried',
                 profession: 'required',
                 dob: 'required',
                 uid_number: 'required',
@@ -1019,6 +1027,7 @@
                 fname_ar: 'This field is required',
                 lname_en: 'This field is required',
                 lname_ar: 'This field is required',
+                permit_type: 'This field is required',
                 profession: 'This field is required',
                 dob: 'This field is required',
                 uid_number: 'This field is required',
@@ -1127,6 +1136,7 @@
                     lname_en: $('#lname_en').val(),
                     lname_ar:  $('#lname_ar').val(),
                     nationality: $('#nationality').val(),
+                    permit_type: $('#permit_type').val(),
                     profession: $('#profession').val(),
                     passport: $('#passport').val(),
                     ppExp: $('#pp_expiry').val(),
@@ -1417,7 +1427,8 @@
             $('#lname_en').val(ad.lastname_en);$('#lname_en').addClass('mk-disabled');
             $('#lname_ar').val(ad.lastname_ar);$('#lname_ar').addClass('mk-disabled');
             $('#nationality').val(ad.nationality),
-            $('#profession').val(ad.artist_permit[i].permit_type_id),
+            $('#permit_type').val(ad.artist_permit[i].permit_type_id),
+            $('#profession').val(ad.artist_permit[i].profession),
             $('#passport').val(ad.artist_permit[i].passport_number),
             $('#pp_expiry').val(ad.artist_permit[i].passport_expire_date),
             $('#visa_type').val(ad.artist_permit[i].visa_type),

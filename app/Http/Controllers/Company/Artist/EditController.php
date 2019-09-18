@@ -48,6 +48,7 @@ class EditController extends Controller
                     'artist_id' => $pd->artist_id,
                     'permit_id' => $pd->permit_id,
                     'permit_type_id' => $pd->permit_type_id,
+                    'profession' => $pd->profession_id,
                     'original' => $pd->original,
                     'thumbnail' => $pd->thumbnail,
                     'passport_number' => $pd->passport_number,
@@ -131,6 +132,7 @@ class EditController extends Controller
         $data_bundle['religions'] = Religion::all();
         $data_bundle['emirates'] = Emirates::all();
         $data_bundle['visa_types'] = VisaType::all();
+        $data_bundle['profession'] = \App\Profession::all();
         $data_bundle['areas'] = Areas::all();
         $data_bundle['permit_details'] = ArtistPermit::with('artist', 'artistPermitDocument', 'permitType', 'permit')->where('permit_id', $permit_id)->first();
         $data_bundle['artist_details'] = ArtistTempData::with('permitType')->where('id', $temp_id)->first();

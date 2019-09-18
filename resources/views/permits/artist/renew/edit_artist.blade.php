@@ -237,10 +237,10 @@
                                             <input type="hidden" id="is_old_artist" value="1">
                                             <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                                <label for="profession"
-                                                    class="col-form-label col-form-label-sm">Profession:*</label>
-                                                <select class="form-control form-control-sm " name="profession"
-                                                    id="profession" placeholder="Profession">
+                                                <label for="permit_type" class="col-form-label col-form-label-sm">Permit
+                                                    Type:*</label>
+                                                <select class="form-control form-control-sm " name="permit_type"
+                                                    id="permit_type" placeholder="Permit Type">
                                                     <option value="">Select</option>
                                                     @foreach ($permitTypes as $pt)
                                                     <option value="{{$pt->permit_type_id}}"
@@ -272,9 +272,9 @@
                                                         value="{{$artist_details->lastname_en}}">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <input type="hidden" id="artist_permit_num">
-                                        <div class="row">
+
+                                            <input type="hidden" id="artist_permit_num">
+
 
                                             <div class="form-group col-lg-3">
                                                 <label for="fname_ar" class="col-form-label col-form-label-sm">First
@@ -300,6 +300,18 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                                <label for="profession"
+                                                    class="col-form-label col-form-label-sm">Profession:*</label>
+                                                <select class="form-control form-control-sm " name="profession"
+                                                    id="profession" placeholder="Profession">
+                                                    <option value="">Select</option>
+                                                    @foreach ($profession as $pf)
+                                                    <option value="{{$pf->profession_id}}">{{$pf->name_en}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
 
                                             <div class="form-group col-lg-3">
                                                 <label for="dob" class="col-form-label col-form-label-sm">DOB:*</label>
@@ -319,8 +331,7 @@
                                                     name="uid_number" id="uid_number" placeholder="UID Number"
                                                     value={{$artist_details->uid_number}}>
                                             </div>
-                                        </div>
-                                        <div class="row">
+
                                             <div class="form-group col-lg-3">
                                                 <label for="uid_expiry" class="col-form-label col-form-label-sm">UID
                                                     Expire Date:*</label>
@@ -366,8 +377,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="row">
+
                                             <div class="form-group col-lg-3">
                                                 <label for="visa_number" class="col-form-label col-form-label-sm">Visa
                                                     Number:*</label>
@@ -458,8 +468,7 @@
                                                         Female</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="row">
+
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="city"
                                                     class="col-form-label col-form-label-sm">Emirate:</label>
@@ -503,8 +512,7 @@
                                                         value="{{$artist_details->po_box}}">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
+
                                             <div class="form-group col-lg-3">
                                                 <label for="address" class="col-form-label col-form-label-sm">Fax
                                                     No:</label>
@@ -901,6 +909,7 @@
                 lname_en: 'required',
                 lname_ar: 'required',
                 profession: 'required',
+                permit_type: 'required',
                 dob: 'required',
                 uid_number: 'required',
                 uid_expiry: 'required',
@@ -930,6 +939,7 @@
                 fname_ar: 'This field is required',
                 lname_en: 'This field is required',
                 lname_ar: 'This field is required',
+                permit_type: 'This field is required',
                 profession: 'This field is required',
                 dob: 'This field is required',
                 uid_number: 'This field is required',
@@ -1014,6 +1024,7 @@
                     lname_ar:  $('#lname_ar').val(),
                     nationality: $('#nationality').val(),
                     profession: $('#profession').val(),
+                    permit_type: $('#permit_type').val(),
                     passport: $('#passport').val(),
                     ppExp: $('#pp_expiry').val(),
                     visaType: $('#visa_type').val(),

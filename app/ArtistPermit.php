@@ -14,7 +14,7 @@ class ArtistPermit extends Model implements Auditable
     protected $table = 'artist_permit';
     protected $primaryKey = 'artist_permit_id';
     protected $fillable = [
-        'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type_id', 'language_id', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'emirate_id', 'area_id', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion_id', 'identification_number', 'uid_number'
+        'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type_id', 'language_id', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'emirate_id', 'area_id', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion_id', 'identification_number', 'uid_number', 'profession_id'
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at',  'uid_expire_date', 'passport_expire_date', 'visa_expire_date'];
 
@@ -81,5 +81,10 @@ class ArtistPermit extends Model implements Auditable
     public function visaType()
     {
         return $this->belongsTo(VisaType::class);
+    }
+
+    public function Profession()
+    {
+        return $this->belongsTo(Profession::class, 'profession_id');
     }
 }
