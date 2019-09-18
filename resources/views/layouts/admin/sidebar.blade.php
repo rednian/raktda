@@ -66,7 +66,7 @@
                    </a>
                </li>
                <li class="kt-menu__item">
-                   <a href="?page=index" class="kt-menu__link ">
+                   <a href="javascript:void()" class="kt-menu__link ">
                        <span class="kt-menu__link-text">SETTINGS</span>
                    </a>
                </li>

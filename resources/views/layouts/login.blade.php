@@ -1,125 +1,168 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-<meta charset="utf-8" />
-<title>RAK TDA | Login</title>
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<meta name="description" content="Login page example">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!--begin::Fonts -->
-<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
-<script>
-    WebFont.load({
-        google: {
-            "families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"]
-        },
-        active: function() {
-            sessionStorage.fonts = true;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>RAKTDA | Login Page</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link href="{{ asset('/assets/css/login/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/assets/css/login/animate.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/assets/css/login/style.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/login/style-responsive.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/login/default.css') }}" rel="stylesheet" id="theme" />
+    <link rel='apple-touch-icon' type='image/png' href="{{ asset('/img/apple-touch-icon.png') }}">
+    <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
+    <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
+    <style>
+        .btn.btn-success{
+            background: #80262b;
+            border-color: #80262b;
+            border-radius: 0;
         }
+        .btn.btn-success:hover{
+            background: #a63a3f;
+            border-color: #a63a3f;
+            border-radius: 0;
+        }
+        .btn.btn-success.active, .btn.btn-success:active, .btn.btn-success:focus, .btn.btn-success:hover, .open .dropdown-toggle.btn-success {
+            background: #a63a3f;
+            border-color: #a63a3f;
+        }
+        .form-control{
+            border-radius: 0;
+        }
+        .news-feed-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,.7);
+            /*background: rgba(128, 38, 43, .7);*/
+
+        }
+        .login.login-with-news-feed .news-caption, .register.register-with-news-feed .news-caption {
+            background: none;
+            top: 160px;
+
+        }
+    </style>
+</head>
+<body class=" bg-white">
+<!-- begin #page-loader -->
+{{--<div id="page-loader" class="fade in"><span class="spinner"></span></div>--}}
+<!-- end #page-loader -->
+
+<!-- begin #page-container -->
+<div id="page-container">
+    <!-- begin login -->
+    <div class="login login-with-news-feed">
+        <!-- begin news-feed -->
+        <div class="news-feed">
+            <div class="news-image">
+                {{--<img src="{{ asset('assets/css/login/bg-3.jpg') }}" data-id="login-cover-image" alt="" />--}}
+            </div>
+            <div class="news-feed-overlay"></div>
+            <div class="news-caption">
+                <h3 class="caption-title text-center"> Ras Al Khaimah Smart Government Project</h3>
+                <p class="text-center">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque delectus dolores facere minus quaerat ut voluptate. Commodi doloribus eaque esse eum, fugit libero modi pariatur quidem quis vitae voluptatem?
+                </p>
+            </div>
+        </div>
+        <!-- end news-feed -->
+        <!-- begin right-content -->
+        <div class="right-content">
+            <!-- begin login-header -->
+            <div class="login-header">
+                <div class="brand">
+                    <img src="{{ asset('img/logo-en.svg') }}">
+                    <small style="margin-top: 5%;" class="text-center">Login to you Account</small>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-sign-in"></i>
+                </div>
+            </div>
+            <!-- end login-header -->
+            <!-- begin login-content -->
+            <div class="login-content">
+                <form method="POST" action="{{ route('login') }}" class="margin-bottom-0">
+                    @csrf
+                    <div class="form-group m-b-15">
+                        <input autocomplete="off" autofocus type="text" @error('username') is-invalid @enderror" name="login" value="{{ old('login') }}" class="form-control input-lg" placeholder="Username" required />
+                        @error('username')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="form-group m-b-15">
+                        <input name="password" type="password" class="form-control input-lg  @error('password') is-invalid @enderror" placeholder="Password" required />
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="checkbox m-b-30">
+                        <label>
+                            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} /> Remember Me
+                        </label>
+                    </div>
+                    <div class="login-buttons">
+                        <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
+                    </div>
+                    {{--<div class="m-t-20 m-b-40 p-b-40 text-inverse">--}}
+                        {{--Not a member yet? Click <a href="register_v3.html" class="text-success">here</a> to register.--}}
+                    {{--</div>--}}
+                    {{--<hr />--}}
+                    {{--<p class="text-center">--}}
+                        {{--&copy; Color Admin All Right Reserved 2015--}}
+                    {{--</p>--}}
+                </form>
+            </div>
+            <!-- end login-content -->
+        </div>
+        <!-- end right-container -->
+    </div>
+    <!-- end login -->
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+{{--<script src="assets/plugins/jquery/jquery-1.9.1.min.js"></script>--}}
+{{--<script src="assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>--}}
+{{--<script src="assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>--}}
+{{--<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>--}}
+{{--<!--[if lt IE 9]>--}}
+{{--<script src="assets/crossbrowserjs/html5shiv.js"></script>--}}
+{{--<script src="assets/crossbrowserjs/respond.min.js"></script>--}}
+{{--<script src="assets/crossbrowserjs/excanvas.min.js"></script>--}}
+{{--<![endif]-->--}}
+{{--<script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>--}}
+{{--<script src="assets/plugins/jquery-cookie/jquery.cookie.js"></script>--}}
+{{--<!-- ================== END BASE JS ================== -->--}}
+
+{{--<!-- ================== BEGIN PAGE LEVEL JS ================== -->--}}
+{{--<script src="assets/js/apps.min.js"></script>--}}
+{{--<!-- ================== END PAGE LEVEL JS ================== -->--}}
+
+<script src="{{ asset('assets/vendors/general/jquery/dist/jquery.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
+<script>
+    $(document).ready(function(){
+			$('.news-feed').backstretch([
+				'{{asset('/assets/css/login/1.jpg')}}',
+				'{{asset('/assets/css/login/2.jpg')}}',
+				'{{asset('/assets/css/login/3.jpg')}}',
+				'{{asset('/assets/css/login/4.jpg')}}',
+      ], {
+				fade: 1000,
+				duration: 3000
+			});
     });
 </script>
-
-<!--end::Fonts -->
-
-<!--begin::Page Custom Styles(used by this page) -->
-<link href="{{ asset('/assets/css/demo1/pages/login/login-5.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('/assets/vendors/general/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('/assets/css/demo1/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-
-<link href="{{ asset('/assets/css/demo1/skins/header/base/light.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('/assets/css/demo1/skins/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('/assets/css/demo1/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('/assets/css/demo1/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
-<link rel='apple-touch-icon' type='image/png' href="{{ asset('/img/apple-touch-icon.png') }}">
-<link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
-<link rel='icon' type='image/png' href="{{ asset('assets/img/favicon-32x32.png') }}">
-</head>
-<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--fixed kt-subheader--enabled kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
-<div class="kt-grid kt-grid--ver kt-grid--root">
-<div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v5 kt-login--signin" id="kt_login">
-    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile" style="background-image: url({{ asset('/assets/media/bg/bg-3.jpg') }});">
-        <div class="kt-login__left">
-            <div class="kt-login__wrapper">
-                <div class="kt-login__content">
-                    <a class="kt-login__logo" href="#">
-                        <img  src="{{ asset('/img/logo-en.svg') }}">
-                    </a>
-                    <h3 class="kt-login__title">JOIN OUR GREAT COMMUNITY</h3>
-                    <span class="kt-login__desc">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe voluptatum earum, non dolorum quaerat ut inventore odio tempore expedita laudantium necessitatibus, neque voluptatem, dolores! Minima facere, voluptas aliquam natus maiores.
-                    </span>
-                    <div class="kt-login__actions">
-                        <button type="button" id="kt_login_signup" class="btn btn-outline-brand ">Get An Account</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="kt-login__divider">
-            <div></div>
-        </div>
-        <div class="kt-login__right">
-            <div class="kt-login__wrapper">
-                <div class="kt-login__signin">
-                    <div class="kt-login__head">
-                        <h3 class="kt-login__title">Login To Your Account</h3>
-                    </div>
-                    <div class="kt-login__form">
-                        @yield('content')
-                    </div>
-                </div>
-                {{-- <div class="kt-login__forgot">
-                    <div class="kt-login__head">
-                        <h3 class="kt-login__title">Forgotten Password ?</h3>
-                        <div class="kt-login__desc">Enter your email to reset your password:</div>
-                    </div>
-                    <div class="kt-login__form">
-                        <form class="kt-form" action="">
-                            <div class="form-group">
-                                <input class="form-control" type="text" placeholder="Email" name="email" id="kt_email" autocomplete="off">
-                            </div>
-                            <div class="kt-login__actions">
-                                <button id="kt_login_forgot_submit" class="btn btn-brand btn-pill btn-elevate">Request</button>
-                                <button id="kt_login_forgot_cancel" class="btn btn-outline-brand btn-pill">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div> --}}
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-<script>
-var KTAppOptions = {
-"colors": {
-    "state": {
-        "brand": "#5d78ff",
-        "dark": "#282a3c",
-        "light": "#ffffff",
-        "primary": "#5867dd",
-        "success": "#34bfa3",
-        "info": "#36a3f7",
-        "warning": "#ffb822",
-        "danger": "#fd3995"
-    },
-    "base": {
-        "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
-        "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
-    }
-}
-};
-</script>
-<script src="{{ asset('/assets/vendors/general/jquery/dist/jquery.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/assets/vendors/general/popper.js/dist/umd/popper.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/assets/vendors/general/bootstrap/dist/js/bootstrap.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/assets/vendors/general/js-cookie/src/js.cookie.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/assets/vendors/general/moment/min/moment.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/assets/vendors/general/tooltip.js/dist/umd/tooltip.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/assets/vendors/general/perfect-scrollbar/dist/perfect-scrollbar.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/assets/vendors/general/sticky-js/dist/sticky.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/assets/vendors/general/wnumb/wNumb.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
-{{-- <script src="{{ asset('/assets/js/demo1/pages/login/login-general.js') }}" type="text/javascript"></script> --}}
 </body>
 </html>

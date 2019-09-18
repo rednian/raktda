@@ -1,7 +1,9 @@
 const mix = require('laravel-mix');
 
 
-
+mix.styles([
+'public/assets/vendors/custom/datatables/datatables.bundle.rtl.min.css'
+], 'public/js/arabic.css');
 mix.styles([
     'public/assets/vendors/custom/datatables/datatables.bundle.min.css',
     'public/assets/vendors/custom/datatables/datatables.checkboxes.css',
@@ -45,7 +47,7 @@ mix.styles([
     // 'public/css/custom.css',
     
 
-], 'public/css/all.css');
+], 'public/css/.css');
 
 
 
