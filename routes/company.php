@@ -20,7 +20,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('update_artist_temp_data', $artistPermitLink . '\MainController@update_artist_temp_data')->name('company.update_artist_temp_data');
     Route::post('get_files_uploaded', $artistPermitLink . '\MainController@get_files_uploaded')->name('company.get_files_uploaded');
     Route::get('get_files_uploaded_with_code/{id}', $artistPermitLink . '\MainController@get_files_uploaded_with_code')->name('company.get_files_uploaded_with_code');
-    Route::get('add_artist_to_permit/{id}/{from}',  $artistPermitLink . '\MainController@add_artist_to_permit')->name('company.add_artist_to_permit');
+    Route::get('add_artist_to_permit/{from}/{id}',  $artistPermitLink . '\MainController@add_artist_to_permit')->name('company.add_artist_to_permit');
     Route::post('add_to_artist_temp_data', $artistPermitLink . '\MainController@add_to_artist_temp_data')->name('company.add_to_artist_temp_data');
     Route::get('fetch_areas/{id}',  $artistPermitLink . '\MainController@fetch_areas')->name('company.fetch_areas');
     Route::get('searchCode/{id}',  $artistPermitLink . '\MainController@searchCode')->name('company.searchCode');
@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('uploadfile', $artistPermitLink . '\MainController@uploadDocuments')->name('company.upload_file');
     Route::post('deletefile', $artistPermitLink . '\MainController@deleteDocuments')->name('company.delete_file');
     Route::get('get_permit_details/{id}', $artistPermitLink . '\MainController@get_permit_details')->name('company.get_permit_details');
-    Route::post('check_update_is_edit', $artistPermitLink . '\MainController@check_update_is_edit')->name('company.check_update_is_edit');
+    Route::get('update_is_edit/{id}', $artistPermitLink . '\MainController@update_is_edit')->name('company.update_is_edit');
 
 
 
@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('fetch_artist_data_from_drafts', $artistPermitLink . '\MainController@fetch_artist_data_from_drafts')->name('company.fetch_artist_data_from_drafts');
 
     // Edit Controller
-    Route::get('edit_artist/{from}/{id}', $artistPermitLink . '\EditController@edit_artist')->name('company.edit_artist');
+    Route::get('edit_artist/{id}', $artistPermitLink . '\RenewController@edit_artist')->name('company.edit_artist');
     Route::get('update_checklist/{id}', $artistPermitLink . '\EditController@update_checklist')->name('company.update_checklist');
     Route::get('edit_permit/{id}', $artistPermitLink . '\EditController@edit_permit')->name('company.edit_permit');
     Route::post('get_error_fields_list', $artistPermitLink . '\EditController@get_error_fields_list')->name('company.get_error_fields_list');

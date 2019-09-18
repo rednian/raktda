@@ -9,26 +9,41 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Amend Artist Permit <span
-                    class="text--yellow bg--maroon px-3 ml-3 text-center"><strong>{{$permit_details['permit_number']}}</strong></span>
+            <h3 class="kt-portlet__head-title">Amend Artist Permit
             </h3>
+            <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+                <strong>{{$permit_details['permit_number']}}</strong></span>
         </div>
 
         <div class="kt-portlet__head-toolbar">
-            <div class="my-auto float-right">
-                <a href="/company/artist_permits"
+            <div class="my-auto float-right permit--action-bar">
+                <a href="{{url('company/artist_permits')}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
-                <a href="/company/add_artist_to_permit/{{$permit_details->permit_id}}/{{'amend'}}"
+                <a href="{{url('/company/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
                 </a>
             </div>
+            <div class="my-auto float-right permit--action-bar--mobile">
+                <a href="{{url('company/artist_permits')}}"
+                    class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                    <i class="la la-angle-left"></i>
+
+                </a>
+                <a href="{{url('/company/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
+                    <i class="la la-plus"></i>
+                </a>
+            </div>
         </div>
     </div>
+
+
+    <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
     <div class="kt-portlet__body">
         <div class="kt-widget5__info py-4">
@@ -58,6 +73,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                        $i = 0 ;
+                        @endphp
+                        <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                         @foreach ($artist_details as $artist_detail)
                         <tr>
                             <td>{{$artist_detail->firstname_en}}</td>
@@ -65,11 +84,9 @@
                             <td>{{$artist_detail->permitType['name_en']}}</td>
                             <td>{{$artist_detail->mobile_number}}</td>
                             <td>{{$artist_detail->email}}</td>
-                            {{-- <td><span
-                                            class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{$artist_details->artist['artist_status'] == 'active' ? 'success' : 'danger'}}">{{$artist_details->artist['artist_status']}}</span>
-                            </td> --}}
+
                             <td class="text-center">
-                                <a href="../replace_artist/{{$artist_detail->artist_permit_id}}"
+                                <a href="{{url('company/replace_artist/'.$artist_detail->id)}}"
                                     class="btn-clean btn-icon btn-icon-sm" title="Edit">
                                     <i class="la la-refresh la-2x"></i>
                                 </a>
@@ -80,7 +97,7 @@
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
-                                    onclick="delArtist({{$artist_detail->artist_permit_id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
+                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal"
                                     class="btn-clean btn-icon btn-icon-sm" title="Delete">
                                     <i class="la la-trash la-2x"></i>
@@ -88,6 +105,10 @@
                                 @endif
 
                             </td>
+                            <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
+                            @php
+                            $i++;
+                            @endphp
                         </tr>
                         @endforeach
                     </tbody>
@@ -134,7 +155,7 @@
                     <form action="{{route('company.delete_artist')}}" method="POST">
                         @csrf
                         <p id="warning_text"></p>
-                        <input type="hidden" id="del_artist_permit_id" name="del_artist_permit_id" />
+                        <input type="hidden" id="del_temp_id" name="del_temp_id" />
                         <input type="hidden" name="del_artist_from" value="amend" />
                         <input type="hidden" name="del_permit_id" id="del_permit_id">
                         <input type="submit" value="Remove"
@@ -162,6 +183,36 @@
         }
     });
 
+    $(window).on('beforeunload', function (e)
+    {
+        var permit_id = $('#permit_id').val();
+        var nextUrl = document.activeElement.href;
+        if(nextUrl == undefined){
+            return;
+        }
+        var total = $('#total_artist_details').val();
+        var addUrl = "{{url('company/add_artist_to_permit/amend')}}/"+permit_id ;
+        if(nextUrl != addUrl ){
+            var tempArr = [];
+            for(var i = 0 ; i < total; i++){
+                var temp_id = $('#temp_id_'+i).val();
+                var tempUrl = "{{url('company/replace_artist')}}"+'/' +temp_id ;
+                tempArr.push(tempUrl);
+            }
+
+            if(!tempArr.includes(nextUrl)){
+                $.ajax({
+                    type: 'GET',
+                    url: "{{url('company/update_is_edit')}}"+"/" +permit_id,
+                    success: function(data) {
+                        // console.log('at last it worked');
+                    }
+                });
+            }
+
+        }
+    });
+
     function getArtistDetails(id) {
         $.ajax({
             type: 'POST',
@@ -185,8 +236,8 @@
         return '<tr><td>'+doc.document_name+'</td><td>'+doc.issued_date+'</td><td>'+doc.expired_date+'</td><td><a href="'+base_url+'/storage/'+doc.path+'" target="_blank">View</a></td></tr>';
     }
 
-    function delArtist(artist_permit_id, permit_id, fname, lname) {
-        $('#del_artist_permit_id').val(artist_permit_id);
+    function delArtist(temp_id, permit_id, fname, lname) {
+        $('#del_temp_id').val(temp_id);
         $('#del_permit_id').val(permit_id);
         $('#del_fname').val(fname);
         $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
@@ -199,11 +250,10 @@
             url: '{{route("company.move_temp_to_permit")}}',
             data: {permit_id: $('#permit_id').val()},
             success: function(result) {
-                // console.log(data);
-                if(result.message[0] == 'success')
-                {
-                    window.location.href="{{url('company/artist_permits')}}";
-                }
+                // if(result.message[0] == 'success')
+                // {
+                    // window.location.href="{{url('company/artist_permits')}}";
+                // }
             }
         });
     }

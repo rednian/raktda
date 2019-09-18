@@ -10,19 +10,26 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Artist Permit Details
-                <span
-                    class="text--yellow bg--maroon px-3 ml-3 text-center"><strong>{{$permit_details->permit_number}}</strong></span>
-            </h3>
+            <h3 class="kt-portlet__head-title">Artist Permit Details</h3>
+            <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+                <strong>{{$permit_details->permit_number}}
+                </strong>
+            </span>
         </div>
 
         <div class="kt-portlet__head-toolbar">
-            <div class="my-auto float-right">
-                <a href="/company/artist_permits" class="btn btn--maroon btn-elevate btn-sm">
+            <div class="my-auto float-right permit--action-bar">
+                <a href="{{url('company/artist_permits')}}" class="btn btn--maroon btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
-            </div>.
+            </div>
+
+            <div class="my-auto float-right permit--action-bar--mobile">
+                <a href="{{url('company/artist_permits')}}" class="btn btn--maroon btn-elevate btn-sm">
+                    <i class="la la-angle-left"></i>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -43,40 +50,41 @@
 
         <div class="tab-content">
             <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                <table class="table table-striped- table-bordered table-condensed table-hover table-checkable"
-                    id="applied-artists-table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Profession</th>
-                            <th>Mobile</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    {{-- {{dd($permit_details)}} --}}
-                    <tbody>
-                        @foreach ($permit_details->artistPermit as $artistPermit)
-                        <tr>
-                            <td>{{$artistPermit->artist['firstname_en']}}</td>
-                            <td>{{$artistPermit->artist['lastname_en']}}</td>
-                            <td>{{$artistPermit->permitType['name_en']}}</td>
-                            <td>{{$artistPermit->mobile_number}}</td>
-                            <td>{{$artistPermit->email}}</td>
-                            <td><span
-                                    class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{$artistPermit->artist['artist_status'] == 'active' ? 'success' : 'danger'}}">{{$artistPermit->artist['artist_status']}}</span>
-                            </td>
-                            <td class="text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
-                                    onclick="getArtistDetails({{$artistPermit->artist_permit_id}})"
-                                    class="btn-clean btn-icon btn-icon-md" title="View">
-                                    <i class="la la-file la-2x"></i>
-                                </a></td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped table-borderless  " id="applied-artists-table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Profession</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        {{-- {{dd($permit_details)}} --}}
+                        <tbody>
+                            @foreach ($permit_details->artistPermit as $artistPermit)
+                            <tr>
+                                <td>{{$artistPermit->artist['firstname_en']}}</td>
+                                <td>{{$artistPermit->artist['lastname_en']}}</td>
+                                <td>{{$artistPermit->permitType['name_en']}}</td>
+                                <td>{{$artistPermit->mobile_number}}</td>
+                                <td>{{$artistPermit->email}}</td>
+                                <td><span
+                                        class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{$artistPermit->artist['artist_status'] == 'active' ? 'success' : 'danger'}}">{{$artistPermit->artist['artist_status']}}</span>
+                                </td>
+                                <td class="text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
+                                        onclick="getArtistDetails({{$artistPermit->artist_permit_id}})"
+                                        class="btn-clean btn-icon btn-icon-md" title="View">
+                                        <i class="la la-file la-2x"></i>
+                                    </a></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

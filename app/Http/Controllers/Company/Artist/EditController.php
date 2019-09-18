@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Company\Artist;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use PragmaRX\Countries\Package\Countries;
+use App\Countries;
 use App\ArtistPermit;
 use App\Requirement;
 use App\PermitType;
@@ -36,10 +36,6 @@ class EditController extends Controller
             ArtistTempDocument::where('permit_id', $id)->delete();
 
             foreach ($permit_details->artistPermit as $pd) {
-
-                // $row_exists = ArtistTempData::where('artist_permit_id', $pd->artist_permit_id)->exists();
-
-                // if (!$row_exists) {
 
                 $artist_temp = ArtistTempData::updateOrCreate([
                     'firstname_en' => $pd->artist['firstname_en'],
@@ -83,57 +79,33 @@ class EditController extends Controller
 
                 $permit_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('document_name');
 
-                $doc_row_exists = ArtistTempDocument::where('artist_permit_id', $pd->artist_permit_id)->exists();
 
-                if (!$doc_row_exists) {
-                    foreach ($pd->artistPermitDocument as $ap) {
-                        ArtistTempDocument::create([
-                            'status' => 2,
-                            'issued_date' => $ap->issued_date,
-                            'expired_date' => $ap->expired_date,
-                            'path' => $ap->path,
-                            'document_name' => $ap->document_name,
-                            'artist_permit_id' => $ap->artist_permit_id,
-                            'permit_id' => $pd->permit_id,
-                            'temp_data_id' => $artist_temp->id,
-                            'doc_id' => $ap->permit_document_id,
-                            'created_at' => $ap->created_at,
-                            'updated_at' => $ap->updated_at
-                        ]);
-                    }
-                    // }
+                foreach ($pd->artistPermitDocument as $ap) {
+                    ArtistTempDocument::create([
+                        'status' => 2,
+                        'issued_date' => $ap->issued_date,
+                        'expired_date' => $ap->expired_date,
+                        'path' => $ap->path,
+                        'document_name' => $ap->document_name,
+                        'artist_permit_id' => $ap->artist_permit_id,
+                        'permit_id' => $pd->permit_id,
+                        'temp_data_id' => $artist_temp->id,
+                        'doc_id' => $ap->permit_document_id,
+                        'created_at' => $ap->created_at,
+                        'updated_at' => $ap->updated_at
+                    ]);
                 }
             }
         }
 
         Permit::where('permit_id', $id)->update(['is_edit' => 1]);
 
-        // session(['editFirst' => false]);
-
-        // ArtistTempData::where('permit_id', $id)->where('status', 2)->update(['status' => 0]);
-        // ArtistTempDocument::where('permit_id', $id)->where('status', 2)->update(['status' => 0]);
-        // }
-        $data_bundle['permit_details'] =  Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('permit_id', $id)->first();
+        $data_bundle['permit_details'] =  Permit::where('permit_id', $id)->first();
         $data_bundle['artist_details'] = ArtistTempData::where('permit_id', $id)->where('status', 0)->get();
         $data_bundle['staff_comments'] = PermitComment::where('permit_id', $id)->get();
         return view('permits.artist.edit.edit_permit', $data_bundle);
     }
 
-    public function edit_artist($from, $id)
-    {
-        $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
-        $data_bundle['countries'] = Countries::all()->pluck('demonym')->sort();
-        $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
-        $data_bundle['visa_types'] = VisaType::all();
-        $data_bundle['artist_details'] = ArtistTempData::with('permitType', 'ArtistTempDocument')->where('id', $id)->first();
-        $data_bundle['permit_details'] = ArtistPermit::with('artist', 'permit', 'artistPermitDocument', 'permitType')->where('artist_permit_id', $id)->first();
-        $data_bundle['languages'] = Language::all();
-        $data_bundle['religions'] = Religion::all();
-        $data_bundle['emirates'] = Emirates::all();
-        $data_bundle['areas'] = Areas::all();
-        $data_bundle['from'] = $from;
-        return view('permits.artist.edit_artist', $data_bundle);
-    }
 
     public function edit_edit_artist($temp_id)
     {
@@ -153,7 +125,7 @@ class EditController extends Controller
 
         $data_bundle['field_list'] = $result;
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
-        $data_bundle['countries'] = Countries::all()->pluck('demonym')->sort();
+        $data_bundle['countries'] = Countries::all();
         $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
         $data_bundle['languages'] = Language::all();
         $data_bundle['religions'] = Religion::all();
@@ -161,7 +133,7 @@ class EditController extends Controller
         $data_bundle['visa_types'] = VisaType::all();
         $data_bundle['areas'] = Areas::all();
         $data_bundle['permit_details'] = ArtistPermit::with('artist', 'artistPermitDocument', 'permitType', 'permit')->where('permit_id', $permit_id)->first();
-        $data_bundle['artist_details'] = ArtistTempData::with('permitType', 'artistPermitDocument')->where('id', $temp_id)->first();
+        $data_bundle['artist_details'] = ArtistTempData::with('permitType')->where('id', $temp_id)->first();
         return view('permits.artist.edit.edit_edit_artist', $data_bundle);
     }
 

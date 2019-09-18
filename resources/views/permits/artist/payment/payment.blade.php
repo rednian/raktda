@@ -14,14 +14,15 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
                 <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title">Make Payment <span
-                            class="text--yellow bg--maroon px-3 ml-3 text-center"><strong>{{$permit_details['permit_number']}}</strong></span>
+                    <h3 class="kt-portlet__head-title">Make Payment
                     </h3>
+                    <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+                        <strong>{{$permit_details['permit_number']}}</strong></span>
                 </div>
 
                 <div class="kt-portlet__head-toolbar">
                     <div class="my-auto float-right">
-                        <a href="/company/artist_permits" class="btn btn--maroon btn-elevate btn-sm">
+                        <a href="{{url('company/artist_permits')}}" class="btn btn--maroon btn-elevate btn-sm">
                             <i class="la la-angle-left"></i>
                             Back
                         </a>
@@ -82,7 +83,7 @@
                         </table>
 
                         <div class="d-flex justify-content-end">
-                            <a href="../payment_gateway/{{$permit_details->permit_id}}">
+                            <a href="{{url('company/payment_gateway/'.$permit_details->permit_id)}}">
                                 <div class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm">
                                     Make Payment
                                 </div>

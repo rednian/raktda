@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Company\Artist;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use PragmaRX\Countries\Package\Countries;
+use App\Countries;
 use Carbon\Carbon;
 use App\ArtistPermit;
 use App\Permit;
@@ -16,78 +16,107 @@ use App\Emirates;
 use App\Areas;
 use App\VisaType;
 use App\ArtistTempData;
+use App\ArtistTempDocument;
 
 class AmendController extends Controller
 {
 
-
     public function amend_permit($id)
     {
-        $data_bundle['permit_id'] = $id;
-        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('permit_id', $id)->first();
+        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.permitType')->where('permit_id', $id)->first();
 
-        $row_exists = ArtistTempData::where('permit_id', $id)->exists();
+        $is_edit =  Permit::where('permit_id', $id)->value('is_edit');
 
-        if (!$row_exists) {
+        if ($is_edit == 0) {
+
+            ArtistTempData::where('permit_id', $id)->delete();
+            ArtistTempDocument::where('permit_id', $id)->delete();
+
             foreach ($permit_details->artistPermit as $pd) {
-                ArtistTempData::create([
+
+
+                $artist_temp =  ArtistTempData::updateOrCreate([
                     'firstname_en' => $pd->artist['firstname_en'],
                     'firstname_ar' =>  $pd->artist['firstname_ar'],
                     'lastname_en' =>  $pd->artist['lastname_en'],
                     'lastname_ar' =>  $pd->artist['lastname_ar'],
                     'nationality' =>  $pd->artist['nationality'],
-                    'gender' =>  $pd->artist['gender'],
+                    'gender' =>  $pd->artist['gender_id'],
                     'birthdate' =>  $pd->artist['birthdate'] ? Carbon::parse($pd->artist['birthdate'])->toDateString() : '',
                     'artist_id' => $pd->artist_id,
                     'permit_id' => $pd->permit_id,
                     'permit_type_id' => $pd->permit_type_id,
-                    'original' => $pd->permit_id,
-                    'thumbnail' => $pd->permit_id,
+                    'original' => $pd->original,
+                    'thumbnail' => $pd->thumbnail,
                     'passport_number' => $pd->passport_number,
                     'uid_number' => $pd->uid_number,
                     'uid_expire_date' => $pd->uid_expire_date ? Carbon::parse($pd->uid_expire_date)->toDateString() : '',
                     'passport_expire_date' => $pd->passport_expire_date ? Carbon::parse($pd->passport_expire_date)->toDateString() : '',
-                    'visa_type' => $pd->visa_type,
+                    'visa_type' => $pd->visa_type_id,
                     'visa_number' => $pd->visa_number,
                     'visa_expire_date' => $pd->visa_expire_date ? Carbon::parse($pd->visa_expire_date)->toDateString() : '',
                     'sponsor_name_en' => $pd->sponsor_name_en,
                     'sponsor_name_ar' => $pd->sponsor_name_ar,
-                    'language' => $pd->language,
-                    'religion' => $pd->religion,
-                    'city' => $pd->city,
+                    'language' => $pd->language_id,
+                    'religion' => $pd->religion_id,
+                    'city' => $pd->emirate_id,
                     'fax_number' => $pd->fax_number,
                     'po_box' => $pd->po_box,
-                    'area' => $pd->area,
+                    'area' => $pd->area_id,
                     'address_en' => $pd->address_en,
                     'address_ar' => $pd->address_ar,
                     'mobile_number' => $pd->mobile_number,
                     'phone_number' => $pd->phone_number,
                     'status' => 0,
                     'email' => $pd->email,
-                    'emirates_id' => $pd->emirates_id,
+                    'emirates_id' => $pd->identification_number,
                     'artist_permit_id' => $pd->artist_permit_id,
-                    'person_code' => $pd->artist['person_code']
+                    'person_code' => $pd->artist['person_code'],
+                    'is_old_artist' => 2
                 ]);
+
+                $permit_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('document_name');
+
+                foreach ($pd->artistPermitDocument as $ap) {
+                    ArtistTempDocument::create([
+                        'status' => 2,
+                        'issued_date' => $ap->issued_date,
+                        'expired_date' => $ap->expired_date,
+                        'path' => $ap->path,
+                        'document_name' => $ap->document_name,
+                        'artist_permit_id' => $ap->artist_permit_id,
+                        'permit_id' => $pd->permit_id,
+                        'temp_data_id' => $artist_temp->id,
+                        'doc_id' => $ap->permit_document_id,
+                        'created_at' => $ap->created_at,
+                        'updated_at' => $ap->updated_at
+                    ]);
+                }
             }
         }
-        $data_bundle['permit_details'] =  Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('permit_id', $id)->first();
+
+        Permit::where('permit_id', $id)->update(['is_edit' => 1]);
+
+        $data_bundle['permit_details'] =  Permit::where('permit_id', $id)->first();
         $data_bundle['artist_details'] = ArtistTempData::where('permit_id', $id)->where('status', 0)->get();
         return view('permits.artist.amend.amend_permit', $data_bundle);
     }
 
-    public function replace_artist($id)
+    public function replace_artist($temp_id)
     {
-        $data_bundle['artist_permit_id'] = $id;
+        $artist_permit_id = ArtistTempData::where('id', $temp_id)->value('artist_permit_id');
+        $permit_id = ArtistTempData::where('id', $temp_id)->value('permit_id');
+
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
-        $data_bundle['countries'] = Countries::all()->pluck('demonym')->sort();
+        $data_bundle['countries'] = Countries::all();
         $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
         $data_bundle['languages'] = Language::all();
         $data_bundle['religions'] = Religion::all();
         $data_bundle['emirates'] = Emirates::all();
         $data_bundle['visa_types'] = VisaType::all();
         $data_bundle['areas'] = Areas::all();
-        $data_bundle['permit_details'] = ArtistPermit::with('permit', 'permitType')->where('artist_permit_id', $id)->first();
-        $data_bundle['artist_details'] = ArtistTempData::where('artist_permit_id', $id)->where('status', 0)->first();
+        $data_bundle['permit_details'] = Permit::where('permit_id', $permit_id)->first();
+        $data_bundle['artist_details'] = ArtistTempData::where('id', $temp_id)->where('status', 0)->first();
         return view('permits.artist.amend.replace_artist', $data_bundle);
     }
 }

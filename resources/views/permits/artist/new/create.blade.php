@@ -9,7 +9,7 @@
 <!-- begin:: Content -->
 {{-- <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"> --}}
 <div class="kt-portlet">
-    <div class="kt-portlet__body ">
+    <div class="kt-portlet__body kt-portlet__body--fit">
         <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
             <div class="kt-grid__item">
 
@@ -176,8 +176,7 @@
                                                 <div class="input-group-prepend"><span class="input-group-text"><i
                                                             class="la la-calendar"></i></span></div>
                                                 <input type="text" class="form-control form-control-sm" name="permit_to"
-                                                    id="permit_to" placeholder="DD-MM-YYYY"
-                                                    data-date-start-date="+30d" />
+                                                    id="permit_to" placeholder="DD-MM-YYYY" />
                                             </div>
                                         </div>
                                         <div class="form-group col-lg-3">
@@ -384,9 +383,8 @@
                                                 {{--   - class for search in select  --}}
                                                 <option value="">Select</option>
                                                 @foreach ($countries as $ct)
-                                                @if($ct)
-                                                <option value="{{$ct}}">{{$ct}}</option>
-                                                @endif
+                                                <option value="{{$ct->country_code}}">{{$ct->country_enNationality}}
+                                                </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -517,101 +515,111 @@
                                     <input type="hidden" id="artist_number_doc" value={{1}}>
                                     <input type="hidden" id="requirements_count" value={{count($requirements)}}>
                                     <div class="kt-form__section kt-form__section--first">
-                                        <div class="kt-wizard-v3__form" id="document_row">
-                                            <div class="row">
-                                                <div class="form-group col-2">
-                                                    <label for="" class="reqName" title="Artist Photo">Artist
-                                                        Photo:*</label>
-                                                </div>
-                                                <div class="form-group col-6">
-                                                    <div id="pic_uploader">Upload
-                                                    </div>
-                                                </div>
+
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <label style="visibility:hidden">hidden</label>
+                                                <p for="" class="reqName text--maroon kt-font-bold"
+                                                    title="Artist Photo">Artist
+                                                    Photo:*</p>
                                             </div>
-                                        </div>
-                                    </div>
-                                    @php
-                                    $i = 1;
-                                    @endphp
-                                    @foreach ($requirements as $req)
-                                    <div class="kt-form__section kt-form__section--first">
-                                        <div class="kt-wizard-v3__form" id="document_row">
-                                            <div class="row">
-                                                <div class="form-group col-2">
-                                                    <label for="" class="reqName"
-                                                        title="{{$req->requirement_description}}">{{$req->requirement_name}}:*</label>
-                                                    <input type="hidden" value="{{$req->requirement_name}}"
-                                                        id="req_name_{{$i}}">
+                                            <div class="col-6">
+                                                <label style="visibility:hidden">hidden</label>
+                                                <div id="pic_uploader">Upload
                                                 </div>
-                                                <div class="form-group col-6">
-                                                    <div id="fileuploader_{{$i}}">Upload
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" id="datesRequiredCheck_{{$i}}"
-                                                    value="{{$req->dates_required}}">
-                                                @if($req->dates_required == 1)
-                                                <div class="form-group col-2">
-                                                    <input type="text" class="form-control date-picker"
-                                                        name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                        id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <input type="text" class="form-control date-picker"
-                                                        name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
-                                                        id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
-                                                </div>
-                                                @endif
                                             </div>
 
                                         </div>
-                                    </div>
-                                    @php
-                                    $i++;
-                                    @endphp
-                                    @endforeach
+                                        @php
+                                        $i = 1;
+                                        @endphp
+                                        @foreach ($requirements as $req)
+
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <label style="visibility:hidden">hidden</label>
+                                                <p for="" class="reqName text--maroon kt-font-bold"
+                                                    title="{{$req->requirement_description}}">
+                                                    {{$req->requirement_name}}:*</p>
+                                            </div>
+                                            <input type="hidden" value="{{$req->requirement_name}}"
+                                                id="req_name_{{$i}}">
+
+                                            <div class="col-6">
+                                                <label style="visibility:hidden">hidden</label>
+                                                <div id="fileuploader_{{$i}}">Upload
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                                value="{{$req->dates_required}}">
+                                            @if($req->dates_required == 1)
+                                            <div class="col-2">
+                                                <label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue
+                                                    Date</label>
+                                                <input type="text" class="form-control date-picker"
+                                                    name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                    id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="" class="text--maroon kt-font-bold"
+                                                    title="Expiry Date">Expiry
+                                                    Date</label>
+                                                <input type="text" class="form-control date-picker"
+                                                    name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
+                                                    id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                            </div>
+                                            @endif
+                                        </div>
+
+
+                                        @php
+                                        $i++;
+                                        @endphp
+                                        @endforeach
 
                                 </form>
                             </div>
                         </div>
                     </div>
+                </div>
 
 
 
-                    <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm  kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-prev" id="prev_btn">
-                            Previous
+                <div class="kt-form__actions">
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-prev" id="prev_btn">
+                        Previous
+                    </div>
+
+                    <a href="{{url('company/artist_permits')}}">
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                            Back
                         </div>
-
-                        <a href="../company/artist_permits">
-                            <div class="btn btn--yellow btn-sm  kt-font-bold kt-font-transform-u" id="back_btn">
-                                Back
-                            </div>
-                        </a>
-                        <div id="add_new_btn_div">
-                            <div class="btn btn-outline-maroon btn-pill btn-sm kt-font-bold kt-font-transform-u kt-margin-r-20"
-                                id="addNew_btn" style="display:none;" onclick="startToFront()">
-                                Add New Artist
-                            </div>
+                    </a>
+                    <div id="add_new_btn_div">
+                        <div class="btn btn-outline-maroon btn-wide btn-pill btn-sm kt-font-bold kt-font-transform-u kt-margin-r-20"
+                            id="addNew_btn" style="display:none;" onclick="startToFront()">
+                            Add New Artist
                         </div>
-                        <div class="btn btn--yellow btn-sm  kt-font-bold kt-font-transform-u" id="submit_btn"
-                            style="display:none;">
-                            Apply
-                        </div>
+                    </div>
+                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
+                        style="display:none;">
+                        Apply
+                    </div>
 
-                        <div class="btn btn--maroon btn-sm  kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-next" id="next_btn">
-                            Next Step
-                        </div>
-
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-next" id="next_btn">
+                        Next Step
                     </div>
 
                 </div>
 
-                <!--end: Form Wizard Form-->
             </div>
+
+            <!--end: Form Wizard Form-->
         </div>
     </div>
+</div>
 </div>
 </div>
 
@@ -1067,6 +1075,7 @@
        if(wizard.currentStep == 2){
             stopNext(permitValidator); // validating the permit details page
            // storing the values of permit details
+           KTUtil.scrollTop();
            searchCode();
            if(permitValidator.form())
             {
@@ -1084,7 +1093,8 @@
        // checking the next page is artist details
        if(wizard.currentStep == 3)
        {
-            stopNext(detailsValidator); // validating the artist details page
+            stopNext(detailsValidator);
+            KTUtil.scrollTop();// validating the artist details page
             // object of array storing the artist details
             var artist_id = $('#artist_number').val() ;
             if(detailsValidator.form())
@@ -1297,8 +1307,12 @@
         todayHighlight: true,
         startView: 2
     });
-
-    $('#permit_from').on('changeDate', function(ev) {$('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');});
+    $('#permit_from').on('changeDate', function(ev) {
+        $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
+        var selDate = ev.date ;
+        var minDate = moment([selDate.getFullYear(), selDate.getMonth(), selDate.getDate()]).add(30, "days").format('DD-MM-YYYY');
+        $('#permit_to').datepicker('setStartDate', minDate );
+    });
     $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});
     $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
     $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});

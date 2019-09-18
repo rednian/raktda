@@ -20,7 +20,7 @@
                     <!--begin: Head -->
                     <div class="kt-head kt-head--skin-light kt-head--fit-x kt-head--fit-b">
                         <h3 class="kt-head__title">
-                            User Notifications &nbsp; <span class="btn btn-label-primary btn-sm btn-bold btn-font-sm">23
+                            User Notifications &nbsp; <span class="btn btn-label-primary btn-sm btn-bold btn-font-sm">1
                                 new</span>
                         </h3>
                     </div>
@@ -33,98 +33,8 @@
                                     <div class="kt-notification__item-icon"> <i
                                             class="flaticon2-line-chart kt-font-success"></i> </div>
                                     <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> New order has been received </div>
-                                        <div class="kt-notification__item-time"> 2 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon2-box-1 kt-font-brand"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> New customer is registered </div>
-                                        <div class="kt-notification__item-time"> 3 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon2-chart2 kt-font-danger"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> Application has been approved </div>
-                                        <div class="kt-notification__item-time"> 3 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon2-image-file kt-font-warning"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> New file has been uploaded </div>
-                                        <div class="kt-notification__item-time"> 5 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i class="flaticon2-drop kt-font-info"></i>
-                                    </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> New user feedback received </div>
-                                        <div class="kt-notification__item-time"> 8 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon2-pie-chart-2 kt-font-success"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> System reboot has been successfully
-                                            completed </div>
-                                        <div class="kt-notification__item-time"> 12 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon2-favourite kt-font-danger"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> New order has been placed </div>
-                                        <div class="kt-notification__item-time"> 15 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item kt-notification__item--read">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon2-safe kt-font-primary"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> Company meeting canceled </div>
-                                        <div class="kt-notification__item-time"> 19 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon2-psd kt-font-success"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> New report has been received </div>
-                                        <div class="kt-notification__item-time"> 23 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon-download-1 kt-font-danger"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> Finance report has been generated
-                                        </div>
-                                        <div class="kt-notification__item-time"> 25 hrs ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon-security kt-font-warning"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> New customer comment recieved </div>
-                                        <div class="kt-notification__item-time"> 2 days ago </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon2-pie-chart kt-font-success"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> New customer is registered </div>
-                                        <div class="kt-notification__item-time"> 3 days ago </div>
+                                        <div class="kt-notification__item-title">New Artist Permit is applied </div>
+                                        <div class="kt-notification__item-time"> 2 min ago </div>
                                     </div>
                                 </a>
                             </div>
@@ -282,6 +192,7 @@
         <!--end: Language bar -->
 
         <!--begin: User Bar -->
+        <!--begin: User Bar -->
         <div class="kt-header__topbar-item kt-header__topbar-item--user">
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
                 <div class="kt-header__topbar-user">
@@ -292,26 +203,21 @@
                     $first_letter = substr($first_name, 0, 1);
                     @endphp
 
-                    <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span><span
+                    <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span> <span
                         class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords($first_name) }}</span>
-                    {{-- <img class="kt-hidden" alt="Pic" src="assets/media/users/300_25.jpg" /> --}}
-                    <!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
                     <span
-                        class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bolder">{{ ucwords($first_letter) }}</span>
+                        class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
                 </div>
             </div>
             <div
-                class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-sm">
+                class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg">
                 <!--begin: Head -->
-                <div class="kt-user-card kt-user-card--skin-dark kt-notification-item-padding-x"
-                    style="background-image: url(assets/media/misc/bg-1.jpg)">
+                <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
                     <div class="kt-user-card__avatar">
-                        {{-- <img class="kt-hidden" alt="Pic" src="assets/media/users/300_25.jpg" /> --}}
-                        <!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
                         <span
-                            class="kt-badge kt-badge--sm kt-badge--rounded kt-badge--bold kt-font-success">{{ ucwords($first_letter) }}</span>
+                            class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
                     </div>
-                    <div class="kt-user-card__name"> {{ $name }} </div>
+                    <div class="kt-user-card__name">{{ $name }}</div>
                     <div class="kt-user-card__badge"> <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">23
                             Notifications</span> </div>
                 </div>
@@ -323,19 +229,13 @@
                         </div>
                         <div class="kt-notification__item-details">
                             <div class="kt-notification__item-title kt-font-bold"> My Profile </div>
-                            <div class="kt-notification__item-time"> Account settings and more</div>
+                            <div class="kt-notification__item-time"> Account settings and more </div>
                         </div>
                     </a>
-
-
-
-
                     <div class="kt-notification__custom kt-space-between">
-                        {{-- <a href="javascript:void(0)" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
-                             --}}
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                            class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
+                            class="btn btn-brand btn-elevate btn-sm">Sign Out</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf
                         </form>
                     </div>

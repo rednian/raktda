@@ -407,7 +407,7 @@
 }
 
 #detail-permit th {
-    background-color: var(--sub-brand-color);
+    /* background-color: var(--sub-brand-color); */
     text-transform: uppercase;
 }
 
@@ -445,4 +445,41 @@
 .kt-font-info {
     color: var(--main-brand-color) !important;
     font-weight: 500;
+}
+
+@media(max-width:600px) {
+    #nav--new-permit-btn {
+        display:none;
+    }
+    #nav--new-permit-btn-mobile {
+        display:block;
+    }
+    .permit--action-bar {
+        display:none;
+    }
+    .permit--action-bar--mobile {
+        display:block;
+    }
+}
+
+@media(min-width:600px) {
+    #nav--new-permit-btn {
+        display:block;
+    }
+    #nav--new-permit-btn-mobile {
+        display:none;
+    }
+    .permit--action-bar {
+        display:block;
+    }
+    .permit--action-bar--mobile {
+        display:none;
+    }
+}
+
+@media(max-width:768px){
+    .kt-form {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
 }
