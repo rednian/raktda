@@ -755,6 +755,7 @@
                             dataType: "json",
                             success: function(data)
                             {
+                                console.log(data);
                                 // console.log('../../storage/'+data[0]["path"]);
                                 let id = obj[0].id;
                                 let number = id.split("_");

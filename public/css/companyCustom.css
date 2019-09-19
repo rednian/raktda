@@ -483,3 +483,11 @@
         padding-right: 0px !important;
     }
 }
+
+input[type="text"]:disabled {
+    cursor: not-allowed;
+}
+
+input:focus, select:focus {
+    border-color: var(--sub-brand-color) !important;
+}

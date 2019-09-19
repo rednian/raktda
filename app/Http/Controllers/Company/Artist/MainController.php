@@ -86,7 +86,10 @@ class MainController extends Controller
 
     public function get_permit_details($id)
     {
-
+        $p = Permit::with('artistPermit')->whereHas('artistPermit', function ($q) {
+            $q->where('artist_permit_status', '!=', 'removed');
+        })->where('permit_id', $id)->get();
+        dd($p);
         // $data_bundle['permit_number'] = $id;
         $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.permitType', 'artistPermit.artistPermitDocument')->where('permit_id', $id)->first();
         return view('permits.artist.view_details', $data_bundle);
@@ -229,15 +232,19 @@ class MainController extends Controller
 
     public function create()
     {
+
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
-        $data_bundle['countries'] = Countries::all();
-        $data_bundle['visatypes'] = VisaType::all();
-        $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
-        $data_bundle['languages'] = Language::all();
-        $data_bundle['religions'] = Religion::all();
-        $data_bundle['emirates'] = Emirates::all();
-        $data_bundle['areas'] = Areas::all();
-        $data_bundle['profession'] = Profession::all();
+        $data_bundle['countries'] = Countries::orderBy('country_enNationality', 'asc')->get();
+        $data_bundle['visatypes'] = VisaType::orderBy('visa_type_en', 'asc')->get();
+        $data_bundle['permitTypes'] = PermitType::orderBy('name_en', 'asc')
+            ->where('permit_type', 'artist')->where('status', 1)->get();
+        $data_bundle['languages'] = Language::orderBy('name_en', 'asc')->get();
+        $data_bundle['religions'] = Religion::orderBy('name_en', 'asc')->get();
+        $data_bundle['emirates'] = Emirates::orderBy('name_en', 'asc')->get();
+        $data_bundle['areas'] = Areas::orderBy('area_en', 'asc')->get();
+        $data_bundle['profession'] = Profession::orderBy('name_en', 'asc')->get();
+
+
         return view('permits.artist.new.create', $data_bundle);
     }
 
@@ -411,7 +418,7 @@ class MainController extends Controller
             }
 
             $artistPermit = ArtistPermit::create([
-                'artist_permit_status' => 'active',
+                'artist_permit_status' => 'pending',
                 'artist_id' => $artist->artist_id,
                 'permit_id' => $permit->permit_id,
                 'created_at' => Carbon::now()->toDateTimeString(),
@@ -555,14 +562,16 @@ class MainController extends Controller
     public function add_artist_to_permit($from, $id)
     {
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
-        $data_bundle['countries'] = Countries::all();
-        $data_bundle['visatypes'] = VisaType::all();
-        $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
-        $data_bundle['languages'] = Language::all();
-        $data_bundle['religions'] = Religion::all();
-        $data_bundle['emirates'] = Emirates::all();
-        $data_bundle['areas'] = Areas::all();
-        $data_bundle['profession'] = Profession::all();
+        $data_bundle['countries'] = Countries::orderBy('country_enNationality', 'asc')->get();
+        $data_bundle['visatypes'] = VisaType::orderBy('visa_type_en', 'asc')->get();
+        $data_bundle['permitTypes'] = PermitType::orderBy('name_en', 'asc')
+            ->where('permit_type', 'artist')->where('status', 1)->get();
+        $data_bundle['languages'] = Language::orderBy('name_en', 'asc')->get();
+        $data_bundle['religions'] = Religion::orderBy('name_en', 'asc')->get();
+        $data_bundle['emirates'] = Emirates::orderBy('name_en', 'asc')->get();
+        $data_bundle['areas'] = Areas::orderBy('area_en', 'asc')->get();
+        $data_bundle['profession'] = Profession::orderBy('name_en', 'asc')->get();
+
         $data_bundle['permit_details'] = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('permit_id', $id)->first();
         $data_bundle['permit_id'] = $id;
         $data_bundle['from'] = $from;

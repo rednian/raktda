@@ -221,7 +221,6 @@
                                                 Change </span>
                                             <input type="text" class="form-control form-control-sm " name="code"
                                                 id="code" placeholder="Person Code">
-                                            <small>only enter if you know person code</small>
                                         </div>
                                         <input type="hidden" id="artist_id" value="">
                                         <input type="hidden" id="is_old_artist" value="1">
@@ -716,6 +715,29 @@
 
 <!--end::Modal-->
 
+<div class="modal fade" id="alertMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Person Code Alert !</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearPersonCode()">
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center">Sorry ! We cannot find artist with With Person Code <span
+                        class="text--maroon kt-font-bold" id="not_artist_personcode"></span>. Please leave it blank!
+                </p>
+                <div class="d-flex justify-content-center mt-4">
+                    <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"
+                        data-dismiss="modal">Ok !</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 @endsection
@@ -750,36 +772,6 @@
         // fetchFromDrafts();
     });
 
-    /*$('.kt-wizard-v3__nav-item').on('click', function() {
-        wizard = new KTWizard("kt_wizard_v3");
-         // get current step number
-        setTimeout(function(){
-            if(wizard.currentStep == 1) {
-                // checkBoxChecked();
-                $('#back_btn').css('display', 'block');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'none');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 2) {
-                // stopNext(permitValidator);
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 3) {
-                // stopNext(detailsValidator);
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 4){
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'block');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'none');
-            }
-         }, 200);
-    });*/
 
     // const fetchFromDrafts = () => {
     //         $.ajax({
@@ -1401,7 +1393,7 @@
 
         }
 
-        $('#code').keyup(function(e) {
+        $('#code').change(function(e) {
             searchCode(e);
         });
 
@@ -1413,7 +1405,6 @@
                 $.ajax({
                     url: "{{url('company/searchCode')}}"+ '/'+code,
                     success: function(data){
-                        // console.log(data);
                         if(data) {
                             $('#artistDetailswithcode').val(JSON.stringify(data));
                             $('#ex_artist_en_name').html((data.firstname_en != null ?  data.firstname_en : '') + ' ' + (data.lastname_en != null ? data.lastname_en : ''));
@@ -1424,8 +1415,7 @@
                             $('#ex_artist_phonenumber').html(data.artist_permit[$j].phone_number);
                             $('#ex_artist_email').html(data.artist_permit[$j].email);
                             $('#ex_artist_personcode').html(data.person_code);
-                            var dateArray = data.birthdate.split('-');
-                            var dob = dateArray[2] + "-" + dateArray[1]  +"-"  + dateArray[0];
+                            var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                             $('#ex_artist_dob').html(dob);
                             $('#ex_artist_nationality').html(data.nationality);
                             var gender = data.artist_permit[$j].gender == 1 ? 'Male' : 'Female';
@@ -1434,9 +1424,13 @@
                             $('#profImg').css('height', '150px');
                             $('#profImg').css('width', '150px');
                             $('#artist_exists').modal('show');
-
+                            $('#alertMessage').modal('hide');
                         }
-
+                        else {
+                            setTimeout(searchCode(), 1000);
+                            $('#not_artist_personcode').html(code);
+                            $('#alertMessage').modal('show');
+                        }
                     }
                 });
             }
@@ -1467,10 +1461,11 @@
             ad = JSON.parse(ad);
             $ap_count = ad.artist_permit.length;
             $i = $ap_count - 1 ;
-            // console.log(ad);
-            var dateArray = ad.birthdate.split('-');
+
             $('#is_old_artist').val(2);
-            var newDate = dateArray[2] + "-" + dateArray[1]  +"-"  + dateArray[0];
+
+            var dob = moment(ad.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
+
             $('#changeArtistLabel').removeClass('d-none');
             $('#changeArtistLabel').addClass('ml-2');
             $('#artist_id').val(ad.artist_id);
@@ -1482,32 +1477,35 @@
             $('#nationality').val(ad.nationality),
             $('#profession').val(ad.artist_permit[$i].profession_id),
             $('#permit_type').val(ad.artist_permit[$i].permit_type_id),
-            $('#passport').val(ad.artist_permit[$i].passport_number),
-            $('#pp_expiry').val(ad.artist_permit[$i].passport_expire_date),
-            $('#visa_type').val(ad.artist_permit[$i].visa_type),
+            $('#passport').val(ad.artist_permit[$i].passport_number);
+            var ppExp = moment(ad.artist_permit[$i].passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#pp_expiry').val(ppExp);
+            var visaExp = moment(ad.artist_permit[$i].visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#visa_expiry').val(visaExp);
+            var uidExp = moment(ad.artist_permit[$i].uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#uid_expiry').val(uidExp);
+            $('#visa_type').val(ad.artist_permit[$i].visa_type_id),
             $('#visa_number').val(ad.artist_permit[$i].visa_number),
-            $('#visa_expiry').val(ad.artist_permit[$i].visa_expire_date),
             $('#sp_name').val(ad.artist_permit[$i].sponsor_name_en),
             $('#id_no').val(ad.artist_permit[$i].emirates_id),
-            $('#language').val(ad.artist_permit[$i].language),
-            $('#religion').val(ad.artist_permit[$i].religion),
-            $('#gender').val(ad.artist_permit[$i].gender),
-            $('#city').val(ad.artist_permit[$i].city);
-            getAreas(ad.artist_permit[$i].city);
+            $('#language').val(ad.artist_permit[$i].language_id),
+            $('#religion').val(ad.artist_permit[$i].religion_id),
+            $('#gender').val(ad.gender_id),
+            $('#city').val(ad.artist_permit[$i].emirates_id);
+            getAreas(ad.artist_permit[$i].emirates_id);
             $('#address').val(ad.artist_permit[$i].address_en),
             $('#uid_number').val(ad.artist_permit[$i].uid_number),
-            $('#uid_expiry').val(ad.artist_permit[$i].uid_expire_date),
-            $('#dob').val(newDate),
+            $('#dob').val(dob),
             $('#landline').val(ad.artist_permit[$i].phone_number),
             $('#po_box').val(ad.artist_permit[$i].po_box),
             $('#fax_no').val(ad.artist_permit[$i].fax_number),
             $('#mobile').val(ad.artist_permit[$i].mobile_number),
             $('#email').val(ad.artist_permit[$i].email);
             $('#artist_permit_num').val(ad.artist_permit[$i].artist_permit_id);
-            $('#area').val(ad.artist_permit[$i].area);
+            $('#area').val(ad.artist_permit[$i].area_id);
             PicUploadFunction();
             uploadFunction();
-            detailsValidator();
+            // $('#artist_details').validate();
         }
 
 
