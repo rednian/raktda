@@ -1,3 +1,12 @@
+:root {
+  ---danger: #80262b;
+  ---danger-light: #a63a3f;
+  ---warning: #ffbf00;
+}
+
+.kt-spinner--danger{
+  color: #a63a3f !important;
+}
 /*sidebar*/
 .kt-aside,  .kt-aside-menu {
     background-color: #fda900 !important;
@@ -39,6 +48,34 @@
       /*border-bottom: 1px solid #a63a3f !important;*/
       border-bottom: 1px solid #fff !important;
 }
+
+.kt-badge{
+  border-radius: 0;
+}
+
+/*button*/
+.btn{
+  border-radius: 0;
+}
+.btn-warning{
+  background: #fda900;
+}
+.btn-warning:hover,.btn-warning:focus{
+  background-color: #ffbf00;
+  border: 1px solid #ffbf00;
+  color: #000;
+}
+.btn-maroon {
+  background-color: var(---danger);
+  border: 2px solid var(--main-brand-color);
+  color: #fff;
+}
+.btn-maroon:hover{
+  background-color: var(---danger);
+  border-color:  var(---danger-light);
+  color: #fff;
+}
+
 
 
 /*menu color*/
@@ -133,18 +170,40 @@
 .kt-notes .kt-notes__items .kt-notes__item .kt-notes__content {
     background-color: #fff;
 }
-
+/*font*/
+.kt-font-warning{ color: var(---warning)}
+thead > tr > th.no-wrap.sorting_disabled > span{
+  cursor: pointer;
+}
 
 /*table*/
   .table .thead-dark th {
       color: #fff;
-      background-color: #a63a3f !important;
-      border-color: #a63a3f !important;
+      background-color: var(--danger) !important;
+      border-color: var(--danger) !important;
+  }
+
+  table tr td{
+    cursor: pointer;
+  }
+
+  .table-success{
+    background-color: rgba(10, 187, 135, 0.5) !important;
   }
 
   .dataTables_wrapper .pagination .page-item.active > .page-link {
-      background: #80262b
+      background: #80262b;
       color: #ffffff;
+  }
+
+  .dataTables_wrapper .pagination .page-item.active > .page-link {
+      background: #a63a3f;
+      color: #ffffff;
+  }
+
+
+  .kt-widget24.kt-widget24--solid {
+      border-radius: 1px;
   }
 
 
@@ -154,7 +213,7 @@
       background-color: rgba(166, 58, 63, 0.2);
   }*/
 
-  }
+  
  .table-primary, .table-primary > th, .table-primary > td {
      background-color: #d0d4f5 !important;
  }
@@ -319,5 +378,17 @@
 
 .accordion.accordion-solid .card {
     margin-bottom: 5px;
+}
+
+.nav-pills .nav-item .nav-link:active, .nav-pills .nav-item .nav-link.active, .nav-pills .nav-item .nav-link.active:hover {
+    background-color: #a63a3f;
+}
+
+/*accordion*/
+.accordion.accordion-solid .card .card-header .card-title {
+  font-size: 1.1rem;
+  padding: 1.25rem;
+  background-color: #f7f8fa;
+  border-radius: 0;
 }
 

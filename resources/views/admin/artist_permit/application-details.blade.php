@@ -6,7 +6,7 @@
       <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Artist Permit Details</h3>
     </div>
     <div class="kt-portlet__head-toolbar">
-      <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-light btn-elevate kt-font-transform-u"><i class="la la-arrow-left"></i> Back</a>
+      <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u"><i class="la la-arrow-left"></i> Back to permit list</a>
       <div class="dropdown dropdown-inline">
         <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="flaticon-more"></i>
@@ -20,10 +20,10 @@
     </div>
     </div>
     <div class="kt-portlet__body kt-padding-t-5">
-      <div class="accordion accordion-light  accordion-toggle-arrow" id="accordionExample5">
+      <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
         <div class="card">
           <div class="card-header" id="headingOne5">
-            <div class="card-title kt-padding-t-10 kt-padding-b-10" data-toggle="collapse" data-target="#collapseOne5" aria-expanded="true" aria-controls="collapseOne5">
+            <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapseOne5" aria-expanded="true" aria-controls="collapseOne5">
              <h6 class="kt-font-dark kt-font-transform-u">Basic Information</h6>
             </div>
           </div>
@@ -42,18 +42,14 @@
                         <tr>
                           <td>Request Type :</td>
                           <td>
-                            @if ($permit->request_type == 'new')
-                             <span class="kt-badge kt-badge--inline kt-badge--info">{{ ucwords($permit->request_type) }}</span>
-                            @endif
-                            @if ($permit->request_type == 'renew')
-                             <span class="kt-badge kt-badge--inline kt-badge--success">{{ ucwords($permit->request_type) }}</span>
-                            @endif
-                             @if ($permit->request_type == 'cancel')
-                             <span class="kt-badge kt-badge--inline kt-badge--danger">{{ ucwords($permit->request_type) }}</span>
-                            @endif
-                            @if ($permit->request_type == 'amend')
-                             <span class="kt-badge kt-badge--inline kt-badge--warning">{{ ucwords($permit->request_type) }}</span>
-                            @endif
+                           <?php
+                            $class_name = 'default';
+                            if ($permit->request_type == 'new'){ $class_name = 'info';}
+	                          if ($permit->request_type == 'renew'){ $class_name = 'success';}
+	                          if ($permit->request_type == 'cancel'){ $class_name = 'danger';}
+	                          if ($permit->request_type == 'amend'){ $class_name = 'warning';}
+                            ?>
+                             <span class="kt-badge kt-badge--inline kt-badge--{{$class_name}}">{{ ucwords($permit->request_type) }}</span>
                           </td>
                         </tr>
                         @if ($permit->number)
@@ -65,19 +61,38 @@
                         <tr>
                           <td>Submitted Date:</td>
                           <td>
-                            <span class="btn btn-label-brand btn-sm btn-bold btn-upper">{{ $permit->created_at ? $permit->created_at->format('d-M-Y') : null   }}</span>
+                            <span class="btn btn-label-brand btn-sm btn-bold btn-upper">
+                              {{ $permit->created_at ? $permit->created_at->format('d-M-Y') : null   }}
+                            </span>
                           </td>
                         </tr>
                         <tr>
                           <td>Permit Start :</td>
                           <td>
-                            <span class="btn btn-label-brand btn-sm btn-bold btn-upper">{{ $permit->issued_date ? $permit->issued_date->format('d-M-Y') : null   }}</span>
+                            <span class="btn btn-label-brand btn-sm btn-bold btn-upper">
+                              {{ $permit->issued_date ? $permit->issued_date->format('d-M-Y') : null }}
+                            </span>
                           </td>
                         </tr>
                         <tr>
                           <td>Work Location :</td>
                           <td>{{ ucwords($permit->work_location) }}</td>
                         </tr>
+                        <tr>
+                          <td>Number of Artist :</td>
+                          <td>{{ $permit->artistpermit()->count() }}</td>
+                        </tr>
+                        @if ($permit->artist->where('artist_status', 'block')->count() > 0)
+                          <tr>
+                            <td>Block Artist :</td>
+                            <td>{{ $permit->artist->where('artist_status', 'block')->count() }}</td>
+                          </tr>
+                        @endif
+                        
+                        {{-- <tr>
+                          <td>Permit Revision :</td>
+                          <td>{{ $permit->artist->where('artist_status', 'block')->count() }}</td>
+                        </tr> --}}
                       </table>
                       
                     </div>
@@ -131,11 +146,10 @@
                                     <span></span>
                                   </label>
                                 </div>
-                                {{-- <span class="form-text text-muted">Some help text goes here</span> --}}
                               </div>
                             <div class="form-group form-group-xs">
-                              <button type="reset" class="btn btn-sm btn-elevate btn-secondary ">Clear</button>
-                              <button type="submit" class="btn btn-sm btn-elevate btn-info ">Submit</button>
+                              <button type="submit" class="btn btn-sm btn-elevate btn-warning kt-font-transform-u ">Submit</button>
+                              <button type="reset" class="btn btn-sm btn-secondary kt-font-bold kt-font-transform-u">Clear</button>
                             </div>
                       </form>
                     </div>
@@ -146,10 +160,13 @@
                 <div class="alert alert-outline-danger fade show" role="alert">
                   <div class="alert-icon"><i class="flaticon-warning"></i></div>
                   <div class="alert-text">
-                    <p class="text-danger">The Following Artist have some discrepancy with their information.</p>
-                    <ol class="text-danger">
-                      @foreach ($permit->check as $check)
-                        <li>{{ $check->artistPermit->artist->fullName }}</li>
+                    <p>The Following Artist have some discrepancies with their information.</p>
+                    <ol class="kt-font-dark">
+                      @foreach ($permit->check as $index => $check)
+                      @if ($check->has('comment'))
+                        <p>Remarks: {{ ucfirst($check->comment[$index]->comment) }}</p>
+                      @endif
+                        <li class="kt-font-bold">{{ $check->artistPermit->artist->fullName }}</li>
                           @foreach ($check->checklist as $checklist)
                             <span>{{ $checklist->fieldname }}</span>,
                           @endforeach
@@ -169,7 +186,7 @@
         @if ($permit->approver->count() > 0)
         <div class="card">
           <div class="card-header" id="headingThree5">
-            <div class="card-title kt-padding-t-10 kt-padding-b-10" data-toggle="collapse" data-target="#collapseThree5" aria-expanded="true" aria-controls="collapseThree5">
+            <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapseThree5" aria-expanded="true" aria-controls="collapseThree5">
               <h6 class="kt-font-dark kt-font-transform-u">Approvers</h6>
             </div>
           </div>
@@ -208,7 +225,7 @@
         @endif
         <div class="card">
           <div class="card-header" id="headingTwo5">
-            <div class="card-title kt-padding-t-10 kt-padding-b-10  " data-toggle="collapse" data-target="#collapseTwo5" aria-expanded="true" aria-controls="collapseTwo5">
+            <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5 " data-toggle="collapse" data-target="#collapseTwo5" aria-expanded="true" aria-controls="collapseTwo5">
                <h6 class="kt-font-dark kt-font-transform-u">Artist List</h6>
             </div>
           </div>
@@ -217,13 +234,13 @@
              <table class="table table-hover table-borderless table-striped table-sm" id="artist-table">
                <thead class="thead-dark">
                  <tr>
-                   <th>Check</th>
                    <th>Person Code</th>
                    <th>Name</th>
                    <th>Age</th>
                    <th>Profession</th>
                    <th>Nationality</th>
                    <th>Artist Status</th>
+                   <th>Check</th>
                    <th>Action</th>
                  </tr>
                </thead>
@@ -243,7 +260,7 @@ var artist = {};
 
       $('#permit-action').validate({
          // onsubmit: false,
-        debug:true,
+        // debug:true,
         rules: {
           comment: {
             required: true,
@@ -294,23 +311,23 @@ var artist = {};
         ],
         // order: [ [groupColumn, 'asc'] ], 
         columns: [
-            {
-              render: function (row, type, data){
-                var check = data.check ?  'checked' : null;
-                return  '<label class="kt-checkbox kt-checkbox--bold kt-checkbox--dark kt-checkbox--single"><input '+check+' disabled type="checkbox"><span></span></label>';
-              }
-            },
             { data: 'person_code'},
             { data: 'fullname'},
             { data: 'age'},
             { data: 'profession'},
             { data: 'nationality'},
             { data: 'artist_status'},
+					{
+						render: function (row, type, data){
+							var check = data.check ?  'la-check-circle text-success' : 'la-times-circle text-dark';
+							return '<span style="font-size: x-large" class="kt-font-bold la '+check+'"></span>';
+						}
+					},
             {
               data: null,
               render: function(data, type){
                 var url = '{{ url('/permit/artist') }}/'+data.artist_id;
-                return '<a href="'+url+'" class="btn btn-link btn-elevate btn-sm">view artist</a>';
+                return '<a href="'+url+'" class="btn btn-warning kt-font-transform-u  btn-elevate btn-sm">view artist</a>';
               }
             }
         ],       

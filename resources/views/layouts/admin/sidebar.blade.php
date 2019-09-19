@@ -7,7 +7,7 @@
             @if (Auth::user()->LanguageId == 1)
                <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-en.svg') }}" />
                @else
-               <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-ar.svg') }}" />
+               <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-en.svg') }}" />
             @endif
               
            </a>
@@ -66,7 +66,7 @@
                    </a>
                </li>
                <li class="kt-menu__item">
-                   <a href="?page=index" class="kt-menu__link ">
+                   <a href="javascript:void()" class="kt-menu__link ">
                        <span class="kt-menu__link-text">SETTINGS</span>
                    </a>
                </li>

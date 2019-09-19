@@ -18,14 +18,14 @@ class ArtistPermit extends Model implements Auditable
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at',  'uid_expire_date', 'passport_expire_date', 'visa_expire_date'];
 
+    public function profession()
+    {
+        return $this->belongsTo(Profession::class, 'profession_id');
+    }
+
     public function check()
     {
         return $this->hasMany(ArtistPermitCheck::class, 'artist_permit_id');
-    }
-
-    public function artistPermitRevision()
-    {
-        return $this->hasMany(ArtistPermitRevision::class, 'artist_permit_id');
     }
 
     public function comment()
@@ -60,31 +60,26 @@ class ArtistPermit extends Model implements Auditable
 
     public function emirate()
     {
-        return $this->belongsTo(Emirates::class);
+        return $this->belongsTo(Emirates::class)->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function area()
     {
-        return $this->belongsTo(Areas::class);
+        return $this->belongsTo(Areas::class)->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function language()
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(Language::class)->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function religion()
     {
-        return $this->belongsTo(Religion::class);
+        return $this->belongsTo(Religion::class)->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function visaType()
     {
-        return $this->belongsTo(VisaType::class);
-    }
-
-    public function Profession()
-    {
-        return $this->belongsTo(Profession::class, 'profession_id');
+        return $this->belongsTo(VisaType::class)->withDefault(['visa_type_en' => null, 'visa_type_ar' => null]);
     }
 }

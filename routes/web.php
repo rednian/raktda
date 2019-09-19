@@ -1,12 +1,19 @@
 <?php
 Route::get('/', function () { return redirect()->route('login'); })->name('default');
 
+Route::get('/clear-cache', function() {
+	Artisan::call('cache:clear');
+	return "Cache is cleared";
+});
+
 Auth::routes(['register' => false]);
 Route::post('/update_language', 'admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
 
 Route::middleware(['admin', 'auth'])->group(function(){
 
-    Route::get('/dashboard', 'admin\DashboardController@index')->name('admin.dashboard');
+    Route::get('/dashboard', function(){
+      return redirect()->route('admin.artist_permit.index');
+    })->name('admin.dashboard');
 
   //--------------------------------------------------------------------------
   // Artist
@@ -35,7 +42,7 @@ Route::middleware(['admin', 'auth'])->group(function(){
 
   Route::get('/permit/artist_permit/{permit}/artistDataTable', 'Admin\ArtistPermitController@artistDataTable')->name('admin.artist_permit.artistDataTable');
 
-  Route::get('/permit/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')->name('admin.artist_permit.datatable');
+  Route::get('/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')->name('admin.artist_permit.datatable');
 
   Route::get('/permit/artist', 'Admin\ArtistController@index')->name('admin.artist.index');
 

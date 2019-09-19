@@ -1,8 +1,3 @@
-// var scale = 'scale(1)';
-// document.body.style.webkitTransform =  scale;    // Chrome, Opera, Safari
-//  document.body.style.msTransform =   scale;       // IE 9
-//  document.body.style.transform = scale;     // General
- 
 // defaulth theme
 var KTAppOptions = {
     "colors":{
@@ -14,7 +9,7 @@ var KTAppOptions = {
         "success":"#34bfa3",
         "info":"#36a3f7",
         "warning":"#ffb822",
-        "danger":"#fd3995"
+        "danger":"#80262b"
         },
         "base":{
             "label":["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
@@ -23,37 +18,18 @@ var KTAppOptions = {
     }
 }; 
 $(document).ready(function(){
-
-// language selection
-  // $('span[data-lang=en]').click(function(){
-  //    $(this).addClass('d-none');
-  //    $('span[data-lang=ar]').removeClass('d-none');
-  // });
-
-  // $('span[data-lang=ar]').click(function(){
-  //    $(this).addClass('d-none');
-  //    $('span[data-lang=en]').removeClass('d-none');
-  // });
-
-
   $('input[type=checkbox]').each(function(){
-      $(this).change(function(){
-
+      $(document).on('input[type=checkbox]','change',function(){
         if($(this).is(':checked')){
-          // $(this).parent('label').removeClass('kt-checkbox--solid').addClass('kt-checkbox--success');
+          $(this).parent('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
           $(this).closest('.input-group').find('input[type=text]').addClass('is-valid').css('background-image', 'none');
         }
         else{
-           // $(this).parent('label').removeClass('kt-checkbox--solid').addClass('kt-checkbox--solid');
+           $(this).parent('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
             $(this).closest('.input-group').find('input[type=text]').removeClass('is-valid');
         }
       });
   });
-
-
-
-  
-
 // datatable default setting
     $.extend( true, $.fn.dataTable.defaults, {
         // dom: '<"row"<"col text-left"f>>rt<"pull-left"p><"pull-left kt-margin-l-5"l><"pull-right m-r-sm"i><"clearfix">',
@@ -91,12 +67,6 @@ $(document).ready(function(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-        
-        
-        // $('.fancy-box').fancybox({});
-
-    
 
         $(document).bind("ajaxSend", function(){
             // $.LoadingOverlay("show", {

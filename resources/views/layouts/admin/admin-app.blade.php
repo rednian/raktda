@@ -81,10 +81,9 @@
         <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />
         @yield('style')
         <!--end::Layout Skins -->
-
         <link rel='apple-touch-icon' type='image/png' href="{{ asset('/img/apple-touch-icon.png') }}">
         <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
-        <link rel='icon' type='image/png' href="{{ asset('assets/img/favicon-32x32.png') }}">
+        <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
     </head>
     <body class="kt-page--loading-enabled kt-page--loading kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-aside--enabled kt-aside--fixed kt-page--loading" >
         <!-- begin:: Page -->
@@ -140,7 +139,6 @@
         <!--[html-partial:include:{"file":"partials\/_layout-toolbar.html"}]/-->
         <!--[html-partial:include:{"file":"partials\/_layout-demo-panel.html"}]/-->
         <!--[html-partial:include:{"file":"partials\/_layout-chat.html"}]/-->
- 
         <script>            
        
 </script>
@@ -213,17 +211,12 @@
         <!--end::Global Theme Bundle -->
 
         <!--begin::Page Vendors(used by this page) -->
-
         <script src="{{ asset('/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
         <script src="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.min.js') }}" type="text/javascript"></script>
         <script src="{{ asset('/assets/vendors/custom/fancybox-master/dist/jquery.fancybox.js') }}" type="text/javascript"></script>
         <script src="{{ asset('/assets/vendors/custom/bootbox/bootbox.all.min.js') }}" type="text/javascript"></script>
         <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
         <!--end::Page Vendors -->
-
-        <!--begin::Page Scripts(used by this page) -->
-        {{-- <script src="{{ asset('/assets/js/demo1/pages/dashboard.js') }}" type="text/javascript"></script> --}}
-        <!--end::Page Scripts -->
     </body>
     @yield('script')
     <script type="text/javascript">
