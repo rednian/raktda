@@ -136,9 +136,8 @@
                 $('#detail-permit').empty();
                if(data)
                {
-                   console.log(data)
                 var code = data.artist.person_code ? data.artist.person_code : '';
-                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td >' + code + '</td> <th>First Name</th> <td >' + data.artist.firstname_en + '</td>  </tr> <tr> <th>Last Name</th> <td>' + data.artist.lastname_en + '</td> <th>Nationality</th> <td >' + data.artist.nationality.country_enName + '</td>  </tr> <tr> <th>Email</th> <td>' + data.email + '</td> <th>Artist Type</th> <td >' + data.permit_type.name_en + '</td>  </tr> <tr> <th>Profession</th> <td>' + data.profession.name_en + '</td> <th>Phone Number</th> <td >' + data.phone_number + '</td>  </tr><tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>UID Number</th> <td >' + data.uid_number + '</td> </tr> <tr> <th>DOB</th> <td >' + moment(data.artist.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr></table>');
+                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td >' + code + '</td> <th>First Name</th> <td >' + data.artist.firstname_en + '</td>  </tr> <tr> <th>Last Name</th> <td>' + data.artist.lastname_en + '</td> <th>Nationality</th> <td >' + data.artist.nationality.country_enName + '</td>  </tr> <tr> <th>Email</th> <td>' + data.email + '</td> <th>Artist Type</th> <td >' + data.permit_type.name_en + '</td>  </tr> <tr> <th>Profession</th> <td>' + ( data.profession  ?  data.profession.name_en : '' )+ '</td> <th>Phone Number</th> <td >' + data.phone_number + '</td>  </tr><tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>UID Number</th> <td >' + data.uid_number + '</td> </tr> <tr> <th>DOB</th> <td >' + moment(data.artist.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr></table>');
 
                }
             }

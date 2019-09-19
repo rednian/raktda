@@ -11,7 +11,7 @@
                 <div class="kt-wizard-v3__nav">
                     <div class="kt-wizard-v3__nav-items">
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                            data-ktwizard-state="current">
+                            data-ktwizard-state="current" id="check_inst">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>1</span> Check Instructions
@@ -19,7 +19,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="permit_det">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>2</span> Permit Details
@@ -27,7 +27,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>3</span> Artist Details
@@ -35,7 +35,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>4</span> Upload Docs
@@ -743,35 +743,6 @@
 
     });
 
-    $('.kt-wizard-v3__nav-item').on('click', function() {
-        wizard = new KTWizard("kt_wizard_v3");
-         // get current step number
-        setTimeout(function(){
-            if(wizard.currentStep == 1) {
-                $('#back_btn').css('display', 'block');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'none');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 2) {
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 3) {
-                searchCode();
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 4){
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'block');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'none');
-            }
-         }, 200);
-    });
-
 
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
@@ -1031,20 +1002,74 @@
         })
 
 
+        $( "#check_inst" ).on( "click", function() {
+            setThis('none', 'block', 'block', 'none');
+        });
+
+        $( "#permit_det" ).on( "click", function() {
+            if(!checkForTick()) return ;
+            setThis('block', 'block', 'none', 'none');
+        });
+
+        $( "#artist_det" ).on( "click", function() {
+            wizard = new KTWizard("kt_wizard_v3");
+            if(!checkForTick()) { return  };
+            if(wizard.currentStep == 2){
+                stopNext(permitValidator);
+                return;
+            }
+            setThis('block', 'block', 'none', 'none');
+        });
+
+        $( "#upload_doc" ).on( "click", function() {
+            wizard = new KTWizard("kt_wizard_v3");
+            if(!checkForTick()) return ;
+            if(wizard.currentStep == 3){
+                stopNext(detailsValidator);
+                return;
+            }
+            if(wizard.currentStep == 2){
+                stopNext(permitValidator);
+                return;
+            }
+            setThis('block', 'none', 'none', 'block');
+        });
+
+        const setThis = (prev, next, back, submit) => {
+            $('#prev_btn').css('display', prev);
+            $('#next_btn').css('display', next);
+            $('#back_btn').css('display', back);
+            $('#submit_btn').css('display', submit);
+        }
+
+        const checkForTick = () => {
+            wizard = new KTWizard("kt_wizard_v3");
+            var result ;
+            if (wizard.currentStep == 1) {
+                if ($('#agree').not(':checked')) {
+                    wizard.stop();
+                    $('#agree_cb > span').addClass('compulsory');
+                    result = false;
+                }
+                if ($('#agree').is(':checked')) {
+                    $('#back_btn').css('display', 'none');
+                    $('#prev_btn').css('display', 'block');
+                    wizard.goNext();
+                    result = true;
+                }
+            }else{
+                result = true;
+            }
+            return result;
+        }
+
+
+
+
     $('#next_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
 
-        if (wizard.currentStep == 1) {
-            if ($('#agree').not(':checked')) {
-                wizard.stop();
-                $('#agree_cb > span').addClass('compulsory');
-            }
-            if ($('#agree').is(':checked')) {
-                $('#back_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                wizard.goNext();
-            }
-        }
+        checkForTick();
 
 
         // checking the next page is permit details
@@ -1203,36 +1228,10 @@
     }
 
 
-    $('.date-picker').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true
-    });
-
-    $('#permit_from').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        orientation: "bottom left"
-    });
-
-    $('#permit_to').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        orientation: "bottom left"
-    });
-
-    $('#dob').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        startView: 2
-    });
-
-
-    function clearPersonCode() {
-        $('#code').val('');
-    }
+    $('.date-picker').datepicker({format: 'dd-mm-yyyy',autoclose: true});
+    $('#permit_from').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true,orientation: "bottom left"});
+    $('#permit_to').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true,orientation: "bottom left"});
+    $('#dob').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true,startView: 2});
 
     $('#permit_from').on('changeDate', function(ev) {$('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');});
     $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});
@@ -1241,8 +1240,8 @@
     $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
     $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
 
-    const del_row = (id) => {
-        $('#row_'+id).remove();
+    function clearPersonCode() {
+        $('#code').val('');
     }
 
 
@@ -1278,7 +1277,7 @@
                     }
 
                 }
-            });
+        });
     }
 
     $('#code').keyup(function() {

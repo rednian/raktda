@@ -669,7 +669,7 @@ class MainController extends Controller
     public function fetch_artist_details(Request $request)
     {
         $ap_id = $request->ap_id;
-        $artistPermitDetails = ArtistPermit::with('artist', 'permitType', 'artistPermitDocument', 'Profession', 'artist.Nationality')->where('artist_permit_id', $ap_id)->first();
+        $artistPermitDetails = ArtistPermit::with('artist', 'permitType', 'artistPermitDocument', 'profession', 'artist.Nationality')->where('artist_permit_id', $ap_id)->first();
         return $artistPermitDetails;
     }
 
@@ -724,6 +724,13 @@ class MainController extends Controller
         $artistDetails = json_decode($request->artistD, true);
         $documentDetails = json_decode($request->documentD, true);
 
+        // dump($artist_permit_id);
+        // dump($temp_id);
+        // dump($artistDetails);
+        // dump($documentDetails);
+
+        // dd();
+
         $i = 1;
 
         $artists = ArtistTempData::where('id', $temp_id)->update([
@@ -734,7 +741,8 @@ class MainController extends Controller
             'nationality' => $artistDetails[$i]['nationality'],
             'gender' => $artistDetails[$i]['gender'],
             'birthdate' => $artistDetails[$i]['dob'] ? Carbon::parse($artistDetails[$i]['dob'])->toDateString() : '',
-            'permit_type_id' => $artistDetails[$i]['profession'],
+            'permit_type_id' => $artistDetails[$i]['permit_type'],
+            'profession' => $artistDetails[$i]['profession'],
             'uid_number' => $artistDetails[$i]['uidNumber'],
             'passport_number' => $artistDetails[$i]['passport'],
             'uid_expire_date' => $artistDetails[$i]['uidExp'] ? Carbon::parse($artistDetails[$i]['uidExp'])->toDateString() : '',
@@ -912,7 +920,8 @@ class MainController extends Controller
             'emirates_id' => $artistDetails[$i]['idNo'],
             'language' => $artistDetails[$i]['language'],
             'religion' => $artistDetails[$i]['religion'],
-            'permit_type_id' => $artistDetails[$i]['profession'],
+            'permit_type_id' => $artistDetails[$i]['permit_type'],
+            'profession' => $artistDetails[$i]['profession'],
             'city' => $artistDetails[$i]['city'],
             'area' => $artistDetails[$i]['area'],
             'address_en' => $artistDetails[$i]['address'],
@@ -1048,6 +1057,7 @@ class MainController extends Controller
 
                 $updateArray = array(
                     'permit_type_id' => $data->permit_type_id,
+                    'profession_id' => $data->profession,
                     'passport_number' => $data->passport_number,
                     'uid_number' => $data->uid_number,
                     'uid_expire_date' => $data->uid_expire_date,
@@ -1215,7 +1225,10 @@ class MainController extends Controller
         }
 
         $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'pending']);
+
         if ($result) {
+            ArtistTempData::where('permit_id', $permit_id)->delete();
+            ArtistTempDocument::where('permit_id', $permit_id)->delete();
             $message = ['success', 'Permit Re-Submitted Successfully', 'Success'];
         } else {
             $message = ['error', 'Error, Please Try Again', 'Error'];

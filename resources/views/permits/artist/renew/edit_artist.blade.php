@@ -13,7 +13,7 @@
                     <div class="kt-wizard-v3__nav">
                         <div class="kt-wizard-v3__nav-items">
                             <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                                data-ktwizard-state="current">
+                                data-ktwizard-state="current" id="check_inst">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
                                         <span>1</span> Check Instructions
@@ -21,7 +21,7 @@
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="permit_det">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
                                         <span>2</span> Permit Details
@@ -29,7 +29,7 @@
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
                                         <span>3</span> Artist Details
@@ -37,7 +37,7 @@
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
                                         <span>4</span> Upload Docs
@@ -307,7 +307,9 @@
                                                     id="profession" placeholder="Profession">
                                                     <option value="">Select</option>
                                                     @foreach ($profession as $pf)
-                                                    <option value="{{$pf->profession_id}}">{{$pf->name_en}}</option>
+                                                    <option value="{{$pf->profession_id}}"
+                                                        <?php if($artist_details->profession = $pf->profession_id){ echo 'selected' ; } ?>>
+                                                        {{$pf->name_en}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -406,15 +408,13 @@
                                                     value="{{$artist_details->sponsor_name_en}}">
                                             </div>
                                             <div class="form-group col-lg-3">
-                                                <label for="telephone"
+                                                <label for="id_no"
                                                     class="col-form-label col-form-label-sm">Identification No:</label>
                                                 <input type="text" class="form-control form-control-sm" name="id_no"
                                                     id="id_no" placeholder="Identification No."
                                                     value="{{$artist_details->id_no}}">
                                             </div>
-                                        </div>
 
-                                        <div class="row">
                                             <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                                 <label for="nationality"
                                                     class="col-form-label col-form-label-sm">Nationality:*</label>
@@ -575,55 +575,51 @@
                                     <form id="documents_required" method="post">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
                                         <input type="hidden" id="requirements_count" value={{count($requirements)}}>
-                                        <div class="kt-form__section kt-form__section--first">
-                                            <div class="kt-wizard-v3__form" id="document_row">
-                                                <div class="row">
-                                                    <div class="form-group col-2">
-                                                        <label for="" class="reqName" title="Artist Photo">Artist
-                                                            Photo:*</label>
-                                                    </div>
-                                                    <div class="form-group col-6">
-                                                        <div id="pic_uploader">Upload
-                                                        </div>
-                                                    </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-2 col-sm-12">
+                                                <label for="" class="reqName" title="Artist Photo">Artist
+                                                    Photo:*</label>
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div id="pic_uploader">Upload
                                                 </div>
                                             </div>
                                         </div>
+
                                         @php
                                         $i = 1;
                                         @endphp
                                         @foreach ($requirements as $req)
-                                        <div class="kt-form__section kt-form__section--first">
-                                            <div class="kt-wizard-v3__form" id="document_row">
-                                                <div class="row">
-                                                    <div class="form-group col-2">
-                                                        <label for="" class="reqName"
-                                                            title="{{$req->requirement_description}}">{{$req->requirement_name}}:*</label>
-                                                        <input type="hidden" value="{{$req->requirement_name}}"
-                                                            id="req_name_{{$i}}">
-                                                    </div>
-                                                    <div class="form-group col-6">
-                                                        <div id="fileuploader_{{$i}}">Upload
-                                                        </div>
-                                                    </div>
-                                                    <input type="hidden" id="datesRequiredCheck_{{$i}}"
-                                                        value="{{$req->dates_required}}">
-                                                    @if($req->dates_required == 1)
-                                                    <div class="form-group col-2">
-                                                        <input type="text" class="form-control date-picker"
-                                                            name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                            id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
-                                                    </div>
-                                                    <div class="form-group col-2">
-                                                        <input type="text" class="form-control date-picker"
-                                                            name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
-                                                            id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
-                                                    </div>
-                                                    @endif
-                                                </div>
 
+                                        <div class="row">
+                                            <div class="col-lg-2 col-sm-12">
+                                                <label for="" class="reqName"
+                                                    title="{{$req->requirement_description}}">{{$req->requirement_name}}:*</label>
+                                                <input type="hidden" value="{{$req->requirement_name}}"
+                                                    id="req_name_{{$i}}">
                                             </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div id="fileuploader_{{$i}}">Upload
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                                value="{{$req->dates_required}}">
+                                            @if($req->dates_required == 1)
+                                            <div class="col-lg-2 col-sm-12">
+                                                <input type="text" class="form-control date-picker"
+                                                    name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                    id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
+                                            </div>
+                                            <div class="form-group col-2">
+                                                <input type="text" class="form-control date-picker"
+                                                    name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
+                                                    id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
+                                            </div>
+                                            @endif
                                         </div>
+
+
                                         @php
                                         $i++;
                                         @endphp
@@ -644,7 +640,7 @@
                             </div>
                             <input type="hidden" id="permit_id" value={{$permit_details->permit_id}}>
 
-                            <a href="{{'company/renew_permit/'.$permit_details->permit_id}}">
+                            <a href="{{url('company/renew_permit').'/'.$permit_details->permit_id}}">
                                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                     id="back_btn">
                                     Back
@@ -714,40 +710,10 @@
         wizard = new KTWizard("kt_wizard_v3");
         wizard.goTo(3);
         $('#back_btn').css('display', 'none');
-        var city = $('#city').val();
-        var sel_area = $('#sel_area').val();
-        city ? getAreas(city, sel_area) : '';
+
+        $('#city').val() ? getAreas($('#city').val(), $('#sel_area').val()) : '';
+
     });
-
-
-    $('.kt-wizard-v3__nav-item').on('click', function() {
-        wizard = new KTWizard("kt_wizard_v3");
-         // get current step number
-        setTimeout(function(){
-            if(wizard.currentStep == 1) {
-                $('#back_btn').css('display', 'block');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'none');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 2) {
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 3) {
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 4){
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'block');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'none');
-            }
-         }, 200);
-    });
-
 
 
     const uploadFunction = () => {
@@ -983,9 +949,73 @@
             messages: docMessages
         })
 
+        $( "#check_inst" ).on( "click", function() {
+            setThis('none', 'block', 'block', 'none');
+        });
+
+        $( "#permit_det" ).on( "click", function() {
+            if(!checkForTick()) return ;
+            setThis('block', 'block', 'none', 'none');
+        });
+
+        $( "#artist_det" ).on( "click", function() {
+            wizard = new KTWizard("kt_wizard_v3");
+            if(!checkForTick()) { return  };
+            if(wizard.currentStep == 2){
+                stopNext(permitValidator);
+                return;
+            }
+            setThis('block', 'block', 'none', 'none');
+        });
+
+        $( "#upload_doc" ).on( "click", function() {
+            wizard = new KTWizard("kt_wizard_v3");
+            if(!checkForTick()) return ;
+            if(wizard.currentStep == 3){
+                stopNext(detailsValidator);
+                return;
+            }
+            if(wizard.currentStep == 2){
+                stopNext(permitValidator);
+                return;
+            }
+            setThis('block', 'none', 'none', 'block');
+        });
+
+        const setThis = (prev, next, back, submit) => {
+            $('#prev_btn').css('display', prev);
+            $('#next_btn').css('display', next);
+            $('#back_btn').css('display', back);
+            $('#submit_btn').css('display', submit);
+        }
+
+        const checkForTick = () => {
+            wizard = new KTWizard("kt_wizard_v3");
+            var result ;
+            if (wizard.currentStep == 1) {
+                if ($('#agree').not(':checked')) {
+                    wizard.stop();
+                    $('#agree_cb > span').addClass('compulsory');
+                    result = false;
+                }
+                if ($('#agree').is(':checked')) {
+                    $('#back_btn').css('display', 'none');
+                    $('#prev_btn').css('display', 'block');
+                    wizard.goNext();
+                    result = true;
+                }
+            }else{
+                result = true;
+            }
+            return result;
+        }
+
+
 
     $('#next_btn').click(function(){
         wizard = new KTWizard("kt_wizard_v3");
+
+        checkForTick();
 
         // checking the next page is permit details
        if(wizard.currentStep == 2){

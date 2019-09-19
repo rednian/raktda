@@ -17,7 +17,7 @@
                 <div class="kt-wizard-v3__nav">
                     <div class="kt-wizard-v3__nav-items">
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                            data-ktwizard-state="current">
+                            data-ktwizard-state="current" id="check_inst">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>1</span> Check Instructions
@@ -25,7 +25,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="permit_det">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>2</span> Permit Details
@@ -33,7 +33,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>3</span> Artist Details
@@ -41,7 +41,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>4</span> Upload Docs
@@ -378,8 +378,8 @@
                                                 id="sp_name" placeholder="Sponser Name">
                                         </div>
                                         <div class="form-group col-lg-3">
-                                            <label for="telephone"
-                                                class="col-form-label col-form-label-sm">Identification No:</label>
+                                            <label for="id_no" class="col-form-label col-form-label-sm">Identification
+                                                No:</label>
                                             <input type="text" class="form-control form-control-sm" name="id_no"
                                                 id="id_no" placeholder="Identification No.">
                                         </div>
@@ -722,6 +722,9 @@
 
 
 @section('script')
+<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="{{asset('/js/uploadfile.js')}}"></script>
 <script>
     var fileUploadFns = [];
     var picUploader ;
@@ -747,7 +750,7 @@
         // fetchFromDrafts();
     });
 
-    $('.kt-wizard-v3__nav-item').on('click', function() {
+    /*$('.kt-wizard-v3__nav-item').on('click', function() {
         wizard = new KTWizard("kt_wizard_v3");
          // get current step number
         setTimeout(function(){
@@ -776,7 +779,7 @@
                 $('#next_btn').css('display', 'none');
             }
          }, 200);
-    });
+    });*/
 
     // const fetchFromDrafts = () => {
     //         $.ajax({
@@ -793,6 +796,8 @@
     //             }
     //         });
     // }
+
+
 
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
@@ -1061,95 +1066,142 @@
             messages: docMessages
         })
 
-        function checkBoxChecked() {
-            if ($('#agree').not(':checked')) {
-                wizard.stop();
-                $('#agree_cb > span').addClass('compulsory');
+        $( "#check_inst" ).on( "click", function() {
+            setThis('none', 'block', 'block', 'none');
+        });
+
+        $( "#permit_det" ).on( "click", function() {
+            if(!checkForTick()) return ;
+            setThis('block', 'block', 'none', 'none');
+        });
+
+        $( "#artist_det" ).on( "click", function() {
+            wizard = new KTWizard("kt_wizard_v3");
+            if(!checkForTick()) { return  };
+            if(wizard.currentStep == 2){
+                stopNext(permitValidator);
+                return;
             }
-            if ($('#agree').is(':checked')) {
-                $('#back_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                wizard.goNext();
+            setThis('block', 'block', 'none', 'none');
+        });
+
+        $( "#upload_doc" ).on( "click", function() {
+            wizard = new KTWizard("kt_wizard_v3");
+            if(!checkForTick()) return ;
+            if(wizard.currentStep == 3){
+                stopNext(detailsValidator);
+                return;
             }
+            if(wizard.currentStep == 2){
+                stopNext(permitValidator);
+                return;
+            }
+            setThis('block', 'none', 'none', 'block');
+        });
+
+        const setThis = (prev, next, back, submit) => {
+            $('#prev_btn').css('display', prev);
+            $('#next_btn').css('display', next);
+            $('#back_btn').css('display', back);
+            $('#submit_btn').css('display', submit);
         }
 
-
-    $('#next_btn').click(function(){
-        wizard = new KTWizard("kt_wizard_v3");
-
-        if (wizard.currentStep == 1) {
-            checkBoxChecked();
-        }
-        // checking the next page is permit details
-       if(wizard.currentStep == 2){
-            stopNext(permitValidator); // validating the permit details page
-           // storing the values of permit details
-           KTUtil.scrollTop();
-           searchCode();
-           if(permitValidator.form())
-            {
-                var permitDetails = {
-                    fromDate: $('#permit_from').val(),
-                    toDate: $('#permit_to').val(),
-                    workLocation: $('#work_loc').val()
+        const checkForTick = () => {
+            wizard = new KTWizard("kt_wizard_v3");
+            var result ;
+            if (wizard.currentStep == 1) {
+                if ($('#agree').not(':checked')) {
+                    wizard.stop();
+                    $('#agree_cb > span').addClass('compulsory');
+                    result = false;
                 }
-                // passing the values to local storage
-                localStorage.setItem('permitDetails', JSON.stringify(permitDetails));
-
-                // insertIntoDrafts(2, JSON.stringify(permitDetails));
-            }
-       }
-       // checking the next page is artist details
-       if(wizard.currentStep == 3)
-       {
-            stopNext(detailsValidator);
-            KTUtil.scrollTop();// validating the artist details page
-            // object of array storing the artist details
-            var artist_id = $('#artist_number').val() ;
-            if(detailsValidator.form())
-            {
-                $('#submit_btn').css('display', 'block'); // display the submit button
-                $('#next_btn').css('display', 'none'); // hide the next button
-                $('#addNew_btn').css('display', 'block'); // display the add new artist button
-                artistDetails[artist_id] = {
-                    id: $('#artist_id').val(),
-                    code: $('#code').val(),
-                    fname_en: $('#fname_en').val(),
-                    fname_ar:  $('#fname_ar').val(),
-                    lname_en: $('#lname_en').val(),
-                    lname_ar:  $('#lname_ar').val(),
-                    nationality: $('#nationality').val(),
-                    permit_type: $('#permit_type').val(),
-                    profession: $('#profession').val(),
-                    passport: $('#passport').val(),
-                    ppExp: $('#pp_expiry').val(),
-                    visaType: $('#visa_type').val(),
-                    visaNumber: $('#visa_number').val(),
-                    visaExp: $('#visa_expiry').val(),
-                    spName: $('#sp_name').val(),
-                    idNo: $('#id_no').val(),
-                    language: $('#language').val(),
-                    religion: $('#religion').val(),
-                    gender: $('#gender').val(),
-                    city: $('#city').val(),
-                    area: $('#area').val(),
-                    address: $('#address').val(),
-                    fax_no: $('#fax_no').val(),
-                    po_box: $('#po_box').val(),
-                    uidNumber: $('#uid_number').val(),
-                    uidExp: $('#uid_expiry').val(),
-                    dob: $('#dob').val(),
-                    landline: $('#landline').val(),
-                    mobile: $('#mobile').val(),
-                    email: $('#email').val(),
-                    is_old_artist: $('#is_old_artist').val()
+                if ($('#agree').is(':checked')) {
+                    $('#back_btn').css('display', 'none');
+                    $('#prev_btn').css('display', 'block');
+                    wizard.goNext();
+                    result = true;
                 }
-
-                localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
-
-                // insertIntoDrafts(3, JSON.stringify(artistDetails));
+            }else{
+                result = true;
             }
+            return result;
         }
+
+
+        $('#next_btn').click(function(){
+
+             wizard = new KTWizard("kt_wizard_v3");
+
+            checkForTick();
+            // checking the next page is permit details
+            if(wizard.currentStep == 2){
+                    stopNext(permitValidator); // validating the permit details page
+                // storing the values of permit details
+                KTUtil.scrollTop();
+                searchCode();
+                if(permitValidator.form())
+                    {
+                        var permitDetails = {
+                            fromDate: $('#permit_from').val(),
+                            toDate: $('#permit_to').val(),
+                            workLocation: $('#work_loc').val()
+                        }
+                        // passing the values to local storage
+                        localStorage.setItem('permitDetails', JSON.stringify(permitDetails));
+
+                        // insertIntoDrafts(2, JSON.stringify(permitDetails));
+                    }
+            }
+            // checking the next page is artist details
+            if(wizard.currentStep == 3)
+            {
+                    stopNext(detailsValidator);
+                    KTUtil.scrollTop();// validating the artist details page
+                    // object of array storing the artist details
+                    var artist_id = $('#artist_number').val() ;
+                    if(detailsValidator.form())
+                    {
+                        $('#submit_btn').css('display', 'block'); // display the submit button
+                        $('#next_btn').css('display', 'none'); // hide the next button
+                        $('#addNew_btn').css('display', 'block'); // display the add new artist button
+                        artistDetails[artist_id] = {
+                            id: $('#artist_id').val(),
+                            code: $('#code').val(),
+                            fname_en: $('#fname_en').val(),
+                            fname_ar:  $('#fname_ar').val(),
+                            lname_en: $('#lname_en').val(),
+                            lname_ar:  $('#lname_ar').val(),
+                            nationality: $('#nationality').val(),
+                            permit_type: $('#permit_type').val(),
+                            profession: $('#profession').val(),
+                            passport: $('#passport').val(),
+                            ppExp: $('#pp_expiry').val(),
+                            visaType: $('#visa_type').val(),
+                            visaNumber: $('#visa_number').val(),
+                            visaExp: $('#visa_expiry').val(),
+                            spName: $('#sp_name').val(),
+                            idNo: $('#id_no').val(),
+                            language: $('#language').val(),
+                            religion: $('#religion').val(),
+                            gender: $('#gender').val(),
+                            city: $('#city').val(),
+                            area: $('#area').val(),
+                            address: $('#address').val(),
+                            fax_no: $('#fax_no').val(),
+                            po_box: $('#po_box').val(),
+                            uidNumber: $('#uid_number').val(),
+                            uidExp: $('#uid_expiry').val(),
+                            dob: $('#dob').val(),
+                            landline: $('#landline').val(),
+                            mobile: $('#mobile').val(),
+                            email: $('#email').val(),
+                            is_old_artist: $('#is_old_artist').val()
+                        }
+
+                        localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
+                        // insertIntoDrafts(3, JSON.stringify(artistDetails));
+                    }
+            }
     });
 
 
@@ -1192,168 +1244,143 @@
         return hasFile ;
     }
 
-    $('#submit_btn').click((e) => {
+        $('#submit_btn').click((e) => {
 
-        var hasFile = docValidation();
+            var hasFile = docValidation();
 
-        if(documentsValidator.form() && hasFile){
+            if(documentsValidator.form() && hasFile){
 
-        var pd = localStorage.getItem('permitDetails');
-        var ad = localStorage.getItem('artistDetails');
-        var dd = localStorage.getItem('documentDetails');
+            var pd = localStorage.getItem('permitDetails');
+            var ad = localStorage.getItem('artistDetails');
+            var dd = localStorage.getItem('documentDetails');
 
-        $.ajaxSetup({
-			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-		});
-        $.ajax({
-                url:"{{route('company.apply_artist_permit')}}",
-                type: "POST",
-                // processData:false,
-                // data: { permitDetails: pd},
-                data: { permitD: pd, artistD: ad , documentD: dd},
-                success: function(result){
-                    console.log(result)
-                    localStorage.clear();
-                    window.location.href="/company/artist_permits";
+            $.ajaxSetup({
+                headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
+            });
+            $.ajax({
+                    url:"{{route('company.apply_artist_permit')}}",
+                    type: "POST",
+                    // processData:false,
+                    // data: { permitDetails: pd},
+                    data: { permitD: pd, artistD: ad , documentD: dd},
+                    success: function(result){
+                        console.log(result)
+                        localStorage.clear();
+                        window.location.href="/company/artist_permits";
+                    }
+                });
+            }
+
+        });
+
+
+        const startToFront = () => {
+            var hasFile = docValidation();
+            if(documentsValidator.form() && hasFile)
+            {
+                for(var i = 1; i <= $('#requirements_count').val(); i++)
+                {
+                    fileUploadFns[i].reset();
+                    picUploader.reset();
+                }
+                $('#artist_details')[0].reset();
+                $('#documents_required')[0].reset();
+                $('#submit_btn').css('display', 'none');
+                $('#next_btn').css('display', 'block');
+                $('#addNew_btn').css('display', 'none');
+
+                var old_artist_id = $('#artist_number').val();
+                var new_artist_id = parseInt(old_artist_id) + 1 ;
+                $('#artist_number').val(new_artist_id);
+                $('#artist_number_doc').val(new_artist_id);
+                uploadFunction();
+                PicUploadFunction();
+                wizard = new KTWizard("kt_wizard_v3");
+                wizard.goTo(3);
+            }
+        }
+
+        const stopNext = (validator_name) => {
+            wizard.on("beforeNext", function(wizardObj) {
+                if (validator_name.form() !== true) {
+                    wizardObj.stop(); // don't go to the next step
                 }
             });
         }
 
-    })
-
-
-    const startToFront = () => {
-        var hasFile = docValidation();
-        if(documentsValidator.form() && hasFile)
-        {
-            for(var i = 1; i <= $('#requirements_count').val(); i++)
-            {
-                fileUploadFns[i].reset();
-                picUploader.reset();
-            }
-            $('#artist_details')[0].reset();
-            $('#documents_required')[0].reset();
-            $('#submit_btn').css('display', 'none');
-            $('#next_btn').css('display', 'block');
-            $('#addNew_btn').css('display', 'none');
-
-            var old_artist_id = $('#artist_number').val();
-            var new_artist_id = parseInt(old_artist_id) + 1 ;
-            $('#artist_number').val(new_artist_id);
-            $('#artist_number_doc').val(new_artist_id);
-            uploadFunction();
-            PicUploadFunction();
+        $('#prev_btn').click(function(){
             wizard = new KTWizard("kt_wizard_v3");
-            wizard.goTo(3);
-        }
-    }
-
-    const stopNext = (validator_name) => {
-        wizard.on("beforeNext", function(wizardObj) {
-            if (validator_name.form() !== true) {
-                wizardObj.stop(); // don't go to the next step
+            if(wizard.currentStep == 2){
+                $('#prev_btn').css('display', 'none');
+                $('#back_btn').css('display', 'block');
             }
+            else if(wizard.currentStep == 1){
+                $('#back_btn').css('display', 'none');
+            } else
+            {
+                $('#prev_btn').css('display', 'block');
+                $('#next_btn').css('display', 'block');
+            }
+            $('#addNew_btn').css('display', 'none');
+            $('#submit_btn').css('display', 'none');
         });
-    }
-
-    $('#prev_btn').click(function(){
-        wizard = new KTWizard("kt_wizard_v3");
-       if(wizard.currentStep == 2){
-            $('#prev_btn').css('display', 'none');
-            $('#back_btn').css('display', 'block');
-       }
-       else if(wizard.currentStep == 1){
-            $('#back_btn').css('display', 'none');
-       } else
-       {
-            $('#prev_btn').css('display', 'block');
-            $('#next_btn').css('display', 'block');
-       }
-       $('#addNew_btn').css('display', 'none');
-       $('#submit_btn').css('display', 'none');
-    });
 
 
-    const isExpiry = (num) => {
-        let val = $('#doc_type_'+num).val();
-        if((val == 'photograph') || (val == 'medical') ){
-            $('#doc_exp_date_'+num).css('display', 'none');
-            $('#doc_issue_date_'+num).css('display', 'none');
-            $('#doc_exp_date_'+num).removeAttr( "required" );
-            $('#doc_issue_date_'+num).removeAttr( "required" );
-        } else {
-            $('#doc_exp_date_'+num).css('display', 'block');
-            $('#doc_issue_date_'+num).css('display', 'block');
-            $('#doc_exp_date_'+num).prop('required',true);
-            $('#doc_issue_date_'+num).prop('required',true);
+        const isExpiry = (num) => {
+            let val = $('#doc_type_'+num).val();
+            if((val == 'photograph') || (val == 'medical') ){
+                $('#doc_exp_date_'+num).css('display', 'none');
+                $('#doc_issue_date_'+num).css('display', 'none');
+                $('#doc_exp_date_'+num).removeAttr( "required" );
+                $('#doc_issue_date_'+num).removeAttr( "required" );
+            } else {
+                $('#doc_exp_date_'+num).css('display', 'block');
+                $('#doc_issue_date_'+num).css('display', 'block');
+                $('#doc_exp_date_'+num).prop('required',true);
+                $('#doc_issue_date_'+num).prop('required',true);
+            }
         }
-    }
 
 
-    $('.date-picker').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        // orientation: "bottom left"
-    })
+        $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true,todayHighlight: true});
+        $('#permit_from').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true,orientation: "bottom left"});
+        $('#permit_to').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true,orientation: "bottom left"});
+        $('#dob').datepicker({ format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true,startView: 2});
 
-    $('#permit_from').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        orientation: "bottom left"
-    });
+        $('#permit_from').on('changeDate', function(ev) {
+            $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
+            var selDate = ev.date ;
+            var minDate = moment([selDate.getFullYear(), selDate.getMonth(), selDate.getDate()]).add(30, "days").format('DD-MM-YYYY');
+            $('#permit_to').datepicker('setStartDate', minDate );
+        });
+        $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});
+        $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
+        $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
+        $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
+        $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
 
-    $('#permit_to').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        orientation: "bottom left"
-    });
-
-    $('#dob').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        startView: 2
-    });
-    $('#permit_from').on('changeDate', function(ev) {
-        $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
-        var selDate = ev.date ;
-        var minDate = moment([selDate.getFullYear(), selDate.getMonth(), selDate.getDate()]).add(30, "days").format('DD-MM-YYYY');
-        $('#permit_to').datepicker('setStartDate', minDate );
-    });
-    $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});
-    $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
-    $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
-    $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
-    $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
-
-    for(var h = 0; h < $('#requirements_count').val(); h++){
-        $('#doc_issue_date').on('changeDate', function(ev) { $('#doc_issue_date').valid() || $('#doc_issue_date').removeClass('invalid').addClass('success');});
-        $('#doc_exp_date').on('changeDate', function(ev) { $('#doc_exp_date').valid() || $('#doc_exp_date').removeClass('invalid').addClass('success');});
-    }
-
-    const del_row = (id) => {
-        $('#row_'+id).remove();
-    }
-
-    const setToDate = () => {
-        var permitFrom = $('#permit_from').val();
-        var da =  permitFrom.split('-');
-        var permitFrom = da[1]+'/'+da[0]+'/'+da[2];
-        var newDate = new Date(permitFrom);
-        newDate.setDate(newDate.getDate() + 30);
-
-        Date.prototype.toInputFormat = function(){
-            var yyyy = this.getFullYear().toString();
-            var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-            var dd  = this.getDate().toString();
-            return    (dd[1]?dd:"0"+dd[0]) + "-" + (mm[1]?mm:"0"+mm[0])  +"-"  + yyyy;
+        for(var h = 0; h < $('#requirements_count').val(); h++){
+            $('#doc_issue_date').on('changeDate', function(ev) { $('#doc_issue_date').valid() || $('#doc_issue_date').removeClass('invalid').addClass('success');});
+            $('#doc_exp_date').on('changeDate', function(ev) { $('#doc_exp_date').valid() || $('#doc_exp_date').removeClass('invalid').addClass('success');});
         }
-        $('#permit_to').val(newDate.toInputFormat());
-        $('#permit_to').valid();
-    }
+
+
+        const setToDate = () => {
+            var permitFrom = $('#permit_from').val();
+            var da =  permitFrom.split('-');
+            var permitFrom = da[1]+'/'+da[0]+'/'+da[2];
+            var newDate = new Date(permitFrom);
+            newDate.setDate(newDate.getDate() + 30);
+
+            Date.prototype.toInputFormat = function(){
+                var yyyy = this.getFullYear().toString();
+                var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+                var dd  = this.getDate().toString();
+                return    (dd[1]?dd:"0"+dd[0]) + "-" + (mm[1]?mm:"0"+mm[0])  +"-"  + yyyy;
+            }
+            $('#permit_to').val(newDate.toInputFormat());
+            $('#permit_to').valid();
+        }
 
 
 
@@ -1380,60 +1407,62 @@
 
 
 
-    function searchCode(e){
-        let code = $('#code').val();
-        if(code){
-            $.ajax({
-                url: "{{url('company/searchCode')}}"+ '/'+code,
-                success: function(data){
-                    // console.log(data);
-                    if(data) {
-                        $('#artistDetailswithcode').val(JSON.stringify(data));
-                        $('#ex_artist_en_name').html((data.firstname_en != null ?  data.firstname_en : '') + ' ' + (data.lastname_en != null ? data.lastname_en : ''));
-                        $('#ex_artist_ar_name').html((data.firstname_ar != null ?  data.firstname_ar : '') + ' '+ (data.lastname_ar != null ? data.lastname_ar : ''));
-                        $total_aps = data.artist_permit.length;
-                        $j = $total_aps - 1 ;
-                        $('#ex_artist_mobilenumber').html(data.artist_permit[$j].mobile_number);
-                        $('#ex_artist_phonenumber').html(data.artist_permit[$j].phone_number);
-                        $('#ex_artist_email').html(data.artist_permit[$j].email);
-                        $('#ex_artist_personcode').html(data.person_code);
-                        var dateArray = data.birthdate.split('-');
-                        var dob = dateArray[2] + "-" + dateArray[1]  +"-"  + dateArray[0];
-                        $('#ex_artist_dob').html(dob);
-                        $('#ex_artist_nationality').html(data.nationality);
-                        var gender = data.artist_permit[$j].gender == 1 ? 'Male' : 'Female';
-                        $('#ex_artist_gender').html(gender);
-                        $('#profImg').attr('src', data.artist_permit[$j].thumbnail ? "/storage/"+data.artist_permit[$j].thumbnail : '');
-                        $('#profImg').css('height', '150px');
-                        $('#profImg').css('width', '150px');
-                        $('#artist_exists').modal('show');
+        function searchCode(e){
+            let code = $('#code').val();
+            if(code){
+                $.ajax({
+                    url: "{{url('company/searchCode')}}"+ '/'+code,
+                    success: function(data){
+                        // console.log(data);
+                        if(data) {
+                            $('#artistDetailswithcode').val(JSON.stringify(data));
+                            $('#ex_artist_en_name').html((data.firstname_en != null ?  data.firstname_en : '') + ' ' + (data.lastname_en != null ? data.lastname_en : ''));
+                            $('#ex_artist_ar_name').html((data.firstname_ar != null ?  data.firstname_ar : '') + ' '+ (data.lastname_ar != null ? data.lastname_ar : ''));
+                            $total_aps = data.artist_permit.length;
+                            $j = $total_aps - 1 ;
+                            $('#ex_artist_mobilenumber').html(data.artist_permit[$j].mobile_number);
+                            $('#ex_artist_phonenumber').html(data.artist_permit[$j].phone_number);
+                            $('#ex_artist_email').html(data.artist_permit[$j].email);
+                            $('#ex_artist_personcode').html(data.person_code);
+                            var dateArray = data.birthdate.split('-');
+                            var dob = dateArray[2] + "-" + dateArray[1]  +"-"  + dateArray[0];
+                            $('#ex_artist_dob').html(dob);
+                            $('#ex_artist_nationality').html(data.nationality);
+                            var gender = data.artist_permit[$j].gender == 1 ? 'Male' : 'Female';
+                            $('#ex_artist_gender').html(gender);
+                            $('#profImg').attr('src', data.artist_permit[$j].thumbnail ? "/storage/"+data.artist_permit[$j].thumbnail : '');
+                            $('#profImg').css('height', '150px');
+                            $('#profImg').css('width', '150px');
+                            $('#artist_exists').modal('show');
+
+                        }
 
                     }
-
-                }
-            });
+                });
+            }
         }
-    }
-        function removeSelectedArtist(){
-        $('#artist_details').trigger('reset');
-        $('#documents_required').trigger('reset');
-        $('#artist_id').val('');
-        $('#fname_en').removeClass('mk-disabled');
-        $('#fname_ar').removeClass('mk-disabled');
-        $('#lname_en').removeClass('mk-disabled');
-        $('#lname_ar').removeClass('mk-disabled');
-        $('#artist_permit_id').val('');
-        $('#changeArtistLabel').addClass('d-none');
-        $('#code').removeClass('mk-disabled');
-        PicUploadFunction();
-        uploadFunction();
-    }
 
-    const clearPersonCode = () => {
-        $('#code').val('');
-    }
+        function removeSelectedArtist(){
+            $('#artist_details').trigger('reset');
+            $('#documents_required').trigger('reset');
+            $('#artist_id').val('');
+            $('#fname_en').removeClass('mk-disabled');
+            $('#fname_ar').removeClass('mk-disabled');
+            $('#lname_en').removeClass('mk-disabled');
+            $('#lname_ar').removeClass('mk-disabled');
+            $('#artist_permit_id').val('');
+            $('#changeArtistLabel').addClass('d-none');
+            $('#code').removeClass('mk-disabled');
+            PicUploadFunction();
+            uploadFunction();
+        }
+
+        const clearPersonCode = () => {
+            $('#code').val('');
+        }
 
         const setArtistDetails = () => {
+
             let ad = $('#artistDetailswithcode').val();
             ad = JSON.parse(ad);
             $ap_count = ad.artist_permit.length;
@@ -1482,92 +1511,6 @@
         }
 
 
-
-        // var documentValidator = $('#').validate({
-        //     rules: {
-        //         doc_issue_date_1: 'required'
-        //     },
-        //     messages:{
-
-        //     }
-        // });
-
-
-
-
-
-
-        // let permit_type = $('#permit_type').val();
-        // let from_date = $('#permit_from').val();
-        // let to_date = $('#permit_to').val();
-        // let name_en =  $('#name_en').val();
-        // let name_ar =  $('#name_ar').val();
-        // let nationality = $('#artist_nationality').val();
-        // let passport =  $('#passport]').val();
-        // let uid =  $('#uid_number]').val();
-        // let dob =  $('#dob]').val();
-        // let telephone =  $('#telephone]').val();
-        // let mobile =  $('#mobile]').val();
-        // let email =  $('#email]').val();
-        // let profession =  $('#profession]').val();
-
-        //artist_type: artist_type, from_date: from_date, to_date: to_date, name_en: name_en, name_ar: name_ar, nationality: nationality, passport: passport, uid: uid, dob: dob, telephone: telephone, mobile: mobile, email: email, profession: profession
-
-        // let doc_type = $('select[id][name="artist_upload_doc_type"]').val();
-        // let doc_file = $('input[name="artist_upload_doc_file"]')[0].files ;
-        // let doc_exp_date = $('input[name="artist_upload_doc_exp_date"]').val();
-
-
-        // let doc_type = $('#doc_type_1').val();
-        // let doc_file = $('#doc_file_1')[0].files[0] ;
-        // let doc_exp_date = $('#doc_exp_date_1').val();
-
-        // let fileData = new FormData();
-        // fileData.append(doc_file.name,doc_file);
-
-
-        // console.log(doc_type, fileData, doc_exp_date);
-
-        // return
-
-
-        // $.ajax({
-        //     headers: {
-        //     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-        //         "content"
-        //     )
-        // },
-        // type: "POST",
-        // url: '/company/apply_artist_permit',
-        // // dataType: 'application/json',
-        // processData:false,
-        // data: {
-        //     doc_type:doc_type, doc_file:fileData, doc_exp_date:doc_exp_date
-        // },
-        // success: function(data) {
-        //     console.log(data);
-        // }
-        // });
-    // });
-
-
-
-
-    // const add_new_row = () => {
-    //     let num = $('.doc_row').siblings().length;
-    //     let next_num = num + 2 ;
-    //    $('#document_row').append('<div class="row" id="row_'+next_num+'"><div class="form-group col-3"> <select type="text" class="form-control" name="doc_type[]" id="doc_type_'+next_num+'" onchange="isExpiry('+next_num+')" required> <option value="">Select Document Type</option> <option value="passport">Passport</option> <option value="visa">Visa</option> <option value="photograph">Photograph</option> <option value="medical">Medical Certificate</option> </select> </div> <div class="form-group col-4"> <div class="custom-file"> <input type="file" class="custom-file-input"  name="doc_file[]" id="doc_file_'+next_num+'"> <label class="custom-file-label" for="customFile">Choose file</label> </div> </div>   <div class="form-group col-2"> <input type="text" class="form-control date-picker" name="doc_issue_date[]" id="doc_issue_date_'+next_num+'" placeholder="Issue Date" required/> </div><div class="form-group col-2"><input type="text" class="form-control date-picker" name="doc_exp_date[]" id="doc_exp_date_'+next_num+'" placeholder="Expiry Date"> </div><i class="fa fa-trash " onclick="del_row('+next_num+')" style="color:red;margin:10px auto;"></i></div>');
-    //    $('.date-picker').datepicker({
-    //         format: 'mm/dd/yyyy',
-    //     });
-
-    // }
-
-
-
 </script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="{{asset('/js/uploadfile.js')}}"></script>
+
 @endsection
