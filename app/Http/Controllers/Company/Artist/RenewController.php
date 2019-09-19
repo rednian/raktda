@@ -115,16 +115,20 @@ class RenewController extends Controller
         $permit_id = ArtistTempData::where('id', $temp_id)->value('permit_id');
 
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
-        $data_bundle['countries'] = Countries::all();
-        $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
-        $data_bundle['visa_types'] = VisaType::all();
+        $data_bundle['countries'] = Countries::orderBy('country_enNationality', 'asc')->get();
+        $data_bundle['visa_types'] = VisaType::orderBy('visa_type_en', 'asc')->get();
+        $data_bundle['permitTypes'] = PermitType::orderBy('name_en', 'asc')
+            ->where('permit_type', 'artist')->where('status', 1)->get();
+        $data_bundle['languages'] = Language::orderBy('name_en', 'asc')->get();
+        $data_bundle['religions'] = Religion::orderBy('name_en', 'asc')->get();
+        $data_bundle['emirates'] = Emirates::orderBy('name_en', 'asc')->get();
+        $data_bundle['areas'] = Areas::orderBy('area_en', 'asc')->get();
+        $data_bundle['profession'] = Profession::orderBy('name_en', 'asc')->get();
+
         $data_bundle['artist_details'] = ArtistTempData::where('id', $temp_id)->first();
         $data_bundle['permit_details'] = ArtistPermit::with('artist', 'permit', 'artistPermitDocument', 'permitType')->where('permit_id', $permit_id)->first();
-        $data_bundle['languages'] = Language::all();
-        $data_bundle['religions'] = Religion::all();
-        $data_bundle['emirates'] = Emirates::all();
-        $data_bundle['profession'] = \App\Profession::all();
-        $data_bundle['areas'] = Areas::all();
+
+
         return view('permits.artist.renew.edit_artist', $data_bundle);
     }
 
@@ -301,6 +305,7 @@ class RenewController extends Controller
                         $oldPath = 'public/' . $temp_path;
 
                         Storage::move($oldPath, $newPath);
+                        Storage::delete($oldPath);
 
                         ArtistPermitDocument::create([
                             'issued_date' => $artist_temp_document->issued_date,
@@ -317,6 +322,8 @@ class RenewController extends Controller
         }
 
         if ($permitTable) {
+            ArtistTempData::where('permit_id', $permit_id)->delete();
+            ArtistTempDocument::where('permit_id', $permit_id)->delete();
             $message = ['success', 'Permit Applied Successfully', 'Success'];
         } else {
             $message = ['error', 'Error, Please Try Again', 'Error'];

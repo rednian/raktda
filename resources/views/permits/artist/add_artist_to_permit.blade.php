@@ -1018,6 +1018,7 @@
                 stopNext(permitValidator);
                 return;
             }
+            detailsValidator.resetForm();
             setThis('block', 'block', 'none', 'none');
         });
 
