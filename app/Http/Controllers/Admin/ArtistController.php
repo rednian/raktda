@@ -27,7 +27,10 @@ class ArtistController extends Controller
     })
     ->where('artist_id', $artist->artist_id)->latest()->first();
 
-    return view('admin.artist.show',['artist_permit'=>$artist_permit]);
+    return view('admin.artist.show',[
+    	'page_title'=> $artist->fullname.' - details',
+    	'artist_permit'=>$artist_permit
+    ]);
   }
 
 

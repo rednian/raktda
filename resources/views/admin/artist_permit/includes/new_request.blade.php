@@ -55,14 +55,13 @@
 		<th>Reference No.</th>
 		<th>Company Name</th>
 		<th>Applied Date</th>
-		<th>Trade License No.</th>
-		<th>Permit Status</th>
 		<th>No. of Artist
 			<span data-content="The number of artist that already checked"
 						data-original-title=""  data-container="body" data-toggle="kt-popover"
 						data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
 			</span>
 		</th>
+		<th>Permit Status</th>
 		<th>Request Type</th>
 	</tr>
 	</thead>
@@ -134,7 +133,7 @@
 						d.permit_start = $('input[name=permit_start]').val();
 						d.issued_date = filter.getAction();
 						d.today = filter.getToday();
-						d.status = ['pending', 'edit'];
+						d.status = ['pending', 'edit', 'processing'];
 					}
 				},
 				columnDefs: [
@@ -144,10 +143,9 @@
 				columns: [
 					{ data: 'reference_number'},
 					{ data: 'company_name'},
-					{ data: 'trade_license_number'},
 					{ data: 'applied_date'},
-					{ data: 'permit_start'},
 					{ data: 'artist_number'},
+					{ data: 'permit_status'},
 					// { data: 'company_type'},
 					{ data: 'request_type'},
 				],

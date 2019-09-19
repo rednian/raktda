@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>RAKTDA | Login Page</title>
+    <title>RAKTDA | Login </title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -79,7 +79,7 @@
             <div class="login-header">
                 <div class="brand">
                     <img src="{{ asset('img/logo-en.svg') }}">
-                    <small style="margin-top: 5%;" class="text-center">Login to you Account</small>
+                    <h4 style="margin-top: 10%;" class="text-center">Login to you Account</h4>
                 </div>
                 <div class="icon">
                     <i class="fa fa-sign-in"></i>

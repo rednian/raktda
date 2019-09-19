@@ -53,7 +53,11 @@
         </div>
       </div>
       <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
-      <form class="kt-form" id="kt_form" novalidate="novalidate">
+      <form class="kt-form" id="kt_form" novalidate="novalidate"  action="{{ route('admin.artist_permit.checklist', [
+      'permit'=>$permit->permit_id,
+      'artistpermit'=>$artist_permit->artist_permit_id
+      ]) }}" method="post">
+        @csrf
       <!--begin: Form Wizard Step 1-->
         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
           <div class="kt-form__section kt-form__section--first">
@@ -66,13 +70,25 @@
 											<div class="card-header" id="headingFour6">
 												<div class="card-title collapsed" data-toggle="collapse" data-target="#collapseFour6" aria-expanded="false" aria-controls="collapseFour6">
 													<h6 class="kt-font-dark kt-font-transform-u">Existing Permit</h6>
+
 												</div>
 											</div>
 											<div id="collapseFour6" class="collapse show" aria-labelledby="headingFour6" data-parent="#accordionExample6">
 												<div class="card-body">
 													<section class="row">
 														<div class="col text-center">
-															<button class="btn btn-warning btn-wide kt-font-transform-u">Check Existing Permit</button>
+															<button type="button" id="btn-check-existing-permit" class="btn btn-warning btn-wide kt-font-transform-u">Check Existing Permit</button>
+                              <div class="alert alert-outline-danger kt-margin-t-10 show" role="alert" id="active-permit-alert">
+                                <div class="alert-icon"><i class="flaticon-danger"></i></div>
+                                <div class="alert-text"><span class="text-dark kt-font-bold">
+                                    {{ strtoupper($artist_permit->artist->fullName) }}
+                                  </span> has <span class="text-danger kt-font-bolder">{{ $existing_permit->count() }}</span> active Permit.</div>
+                                <div class="alert-close">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><i class="la la-close"></i></span>
+                                  </button>
+                                </div>
+                              </div>
 														</div>
 													</section>
 												</div>
@@ -97,7 +113,7 @@
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" name="firstname" value="{{ ucwords($artist_permit->artist->firstname_en) }}" type="checkbox" value="off">
+                                                   <input data-check="checklist" name="check[firstname]" value="{{ ucwords($artist_permit->artist->firstname_en) }}" type="checkbox" value="off">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -113,7 +129,7 @@
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" value="{{ $artist_permit->artist->person_code }}"  name="person code" type="checkbox">
+                                                   <input data-check="checklist" value="{{ $artist_permit->artist->person_code }}"  name="check[person_code]" type="checkbox">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -129,7 +145,7 @@
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->artist->gender->name_en) }}" name="gender" type="checkbox">
+                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->artist->gender->name_en) }}" name="check[gender]" type="checkbox">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -145,7 +161,7 @@
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->artist->nationality) }}" type="checkbox" name="nationality">
+                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->artist->nationality) }}" type="checkbox" name="check[nationality]">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -161,7 +177,7 @@
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->passport_number) }}" type="checkbox" name="passport number">
+                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->passport_number) }}" type="checkbox" name="check[passport_number]">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -177,7 +193,7 @@
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->uid_number) }}" type="checkbox" name="UID number">
+                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->uid_number) }}" type="checkbox" name="check[uid_number]">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -197,7 +213,7 @@
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" name="lastname" value="{{ ucwords($artist_permit->artist->lastname_en) }}" type="checkbox">
+                                                   <input data-check="checklist" name="check[lastname]" value="{{ ucwords($artist_permit->artist->lastname_en) }}" type="checkbox">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -209,11 +225,11 @@
                                      <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Profession <span class="text-danger">*</span></label>
                                      <div class="col-lg-8">
                                           <div class="input-group input-group-sm">
-                                             <input value="{{ ucwords($artist_permit->permittype->name_en) }}" readonly name="profession_en" type="text" class="form-control form-control-sm">
+                                             <input value="{{ ucwords($artist_permit->permittype->name_en) }}" readonly type="text" class="form-control form-control-sm">
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->permittype->name_en) }}" type="checkbox" name="profession">
+                                                   <input data-check="checklist" value="{{ ucwords($artist_permit->permittype->name_en) }}" type="checkbox" name="check[profession]">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -229,7 +245,7 @@
                                              <div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default" >
-                                                   <input name="age" data-check="checklist" value="{{ $artist_permit->artist->age }}" type="checkbox">
+                                                   <input data-check="checklist" value="{{ $artist_permit->artist->age }}" type="checkbox">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -581,8 +597,17 @@
         <div class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
         Next
         </div>
-        <div class="btn active btn-warning btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">
-          Finish & New
+        {{--<div class="btn active btn-warning btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">--}}
+          {{--Finish & New--}}
+        {{--</div>--}}
+        <div class="dropdown" data-ktwizard-type="action-submit">
+          <button class="btn btn-warning btn-sm kt-font-bold kt-font-transform-u dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           Take action & finish
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+            <button type="submit"  name="artist_permit_status" value="approved" class="dropdown-item">Approve</button>
+            <button type="submit" name="artist_permit_status" value="disapproved" class="dropdown-item">Reject</button>
+          </div>
         </div>
       </div>
       <!--end: Form Actions -->
@@ -626,27 +651,29 @@
 <script>
   var checklist = [];
   $(document).ready(function(){
-    $('div[data-ktwizard-type=action-submit]').click(function(){
-
-      $('input[type=checkbox][data-check=checklist]').each(function(){
-        if(!$(this).is(':checked')){
-          checklist.push({ fieldname: $(this).attr('name') , value: $(this).val() });
+		$('button#btn-check-existing-permit').click(function() {
+			$.ajax({
+        url: '{{ url('/arist_permit/') }}/'+{{ $permit->permit_id }}+'/checkactivepermit/'+{{ $artist_permit->artist_id }},
+        dataType: 'json',
+        beforeSend: function () {
+					KTApp.blockPage({
+						overlayColor: '#000',
+						type: 'v2',
+						state: 'success',
+						size: 'lg',
+						message: 'Searching for existing permit. Please wait for a few minutes...'
+					});
+				}
+      }).done(function (response) {
+      	if(response.result.count > 0){
+      		// $('#active-permit-alert')
         }
-      });
+				KTApp.unblockPage();
+			});
 
-      $.ajax({
-        url:'{{ url('/artist_permit') }}/'+{{ $permit->permit_id }}+'/application/'+{{ $artist_permit->artist_permit_id }}+'/checklist',
-        data: {checklist: checklist, comment: $('textarea[name=comment]').val() },
-        type: 'post',
-        dataType:'json'
-      }).done(function(response){
-          checklist = [];
-          var url = '{{ url('/artist_permit') }}/'+{{ $permit->permit_id }}+'/application';
-           location.replace(url);
+		});
 
-      });
 
-  });
      $('#document-table').DataTable({
       ajax:{
         url: '{{ url('/permit/artist_permit') }}/'+{{ $permit->permit_id }}+'/application/'+{{ $artist_permit->artist_permit_id }}+'/documentDatatable'

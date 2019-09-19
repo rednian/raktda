@@ -86,38 +86,57 @@ class ArtistPermitController extends Controller
       }
     }
 
+    public function checkActivePermit(Request $request, Permit $permit, Artist $artist)
+    {
+    	$permit = Permit::whereHas('artistpermit', function($q) use ($artist){
+    		$q->where('artist_id',$artist->artist_id);
+	    })->where('permit_status', 'active')->get();
+    	$result = ['permit'=>$permit, 'count'=>$permit->count()];
+
+    	return response()->json($result);
+    }
+
     public function artistChecklist(Request $request, Permit $permit, ArtistPermit $artistpermit)
     {
       try {
          DB::beginTransaction();
-         $request['artist_permit_id'] = $artistpermit->artist_permit_id;
-         $request['permit_id'] = $permit->permit_id;
-         $request['status'] = 0; 
-         $request['user_id'] = Auth::user()->user_id;
+//         $permit->update(['permit_status', 'processing']);
+//	      if($permit->artistPermit()->where('artist_permit_status', 'reject')->count()){
+//
+//	      }
+         $artistpermit->update(['artist_permit_status'=>$request->artist_permit_status]);
 
-         $artist_permit_check = ArtistPermitCheck::create($request->all());
+         //delete the last checklist and replace with recent
+	      $artistpermit->check()->where('artist_permit_id', $artistpermit->artist_permit_id)->delete();
+         $artist_permit_check = $artistpermit->check()->create(['status'=>0]);
+
          if($request->comment){
-           $request['type'] = 'client';
-           $permit_comment = $permit->comment()->create($request->all());
-           $artist_permit_check->comment()->attach($permit_comment->permit_comment_id,['artist_permit_id'=>$artistpermit->artist_permit_id]);
+	         $request['permit_id'] = $permit->permit_id;
+	         $request['user_id'] = Auth::user()->user_id;
+	         $request['type'] = 'client';
+	         $comment = $permit->comment()->create($request->all());
+	         $artist_permit_check->comment()->attach($comment->permit_comment_id,['artist_permit_id'=>$artistpermit->artist_permit_id]);
          }
 
-         if($request->checklist){
-           foreach ($request->checklist as $checklist) {
-             $checklist['artist_permit_id'] = $artistpermit->artist_permit_id;
-             $artist_permit_check->checklist()->create($checklist);
-           }
+         if($request->check){
+         	foreach ($request->check as $fieldname => $value){
+	          $artist_permit_check->checklist()->create([
+	          	'fieldname'=>$fieldname,
+		          'value'=>$value,
+		          'artist_permit_id'=>$artistpermit->artist_permit_id
+	          ]);
+          }
          }
 
          DB::commit();
-          $result = ['success', $artistpermit->artist->fullname.' successfully checked.', 'Success'];
+         $result = ['success', $artistpermit->artist->fullname.' successfully checked.', 'Success'];
 
       } catch (Exception $e) {
          DB::rollBack();
          $result = ['error', $e->getMessage(), 'Error'];
       }
 
-       return response()->json(['message' => $result]);
+       return redirect()->route('admin.artist_permit.applicationdetails', $permit->permit_id)->with(['result'=>$result]);
     }
 
     public function checkApplication(Request $request,Permit $permit,  ArtistPermit $artistpermit)
@@ -128,6 +147,7 @@ class ArtistPermitController extends Controller
       })->where('artist_id', $artistpermit->artist_id)->get();
 
         return view('admin.artist_permit.check-application', [
+        	'page_title'=>'check artist details',
           'permit'=>$permit, 
           'existing_permit'=>$existing_permit,
           'artist_permit'=>$artistpermit
@@ -234,6 +254,7 @@ class ArtistPermitController extends Controller
     {
       if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
         return view('admin.artist_permit.application-details', [
+        	'page_title'=> 'artist permit details',
           'permit'=>$permit,
           'roles'=>Roles::where('type', 0)->get()
         ]);
@@ -241,51 +262,48 @@ class ArtistPermitController extends Controller
 
     public function applicationDataTable(Request $request, Permit $permit)
     {
-        if($request->ajax()){
-        
-            $artist_permit = ArtistPermit::where('permit_id', $permit->permit_id)->get();
-
-
-             return Datatables::of($artist_permit)
-                     ->addColumn('visa_type', function($artist_permit){
+    	if($request->ajax()){
+    		$artist_permit = ArtistPermit::where('permit_id', $permit->permit_id)->get();
+    		return Datatables::of($artist_permit)
+			    ->addColumn('visa_type', function($artist_permit){
                          return ucwords($artist_permit->artist->visa_type);
                      })
-                     ->addColumn('request_type', function($artist_permit){
+			    ->addColumn('request_type', function($artist_permit){
                          return $artist_permit->permit->request_type;
                       })
-                    ->addColumn('nationality', function($artist_permit){
+			    ->addColumn('nationality', function($artist_permit){
                         return ucwords($artist_permit->artist->nationality);
                      })
-                      ->addColumn('type', function($artist_permit){
+			    ->addColumn('type', function($artist_permit){
                           return ucwords($artist_permit->type);
                     })
-                    ->addColumn('age', function($artist_permit){
+			    ->addColumn('age', function($artist_permit){
                         return $artist_permit->artist->age;
                     })
-                    ->addColumn('fullname', function($artist_permit){
+			    ->addColumn('fullname', function($artist_permit){
                         return ucwords($artist_permit->artist->fullname);
                     })
-                    ->addColumn('profession', function($artist_permit){
+			    ->addColumn('profession', function($artist_permit){
                         if(!$artist_permit->permitType){ return null; }
                         return ucwords($artist_permit->permitType->name_en);
                     })
-                    ->addColumn('person_code', function($artist_permit){
+			    ->addColumn('person_code', function($artist_permit){
                         return $artist_permit->artist->person_code;
                     })
-                    ->editColumn('artist_status', function($artist_permit){
+			    ->editColumn('artist_status', function($artist_permit){
                      $class_name = 'default';
                      $status = $artist_permit->artist_permit_status;
-                     if($artist_permit->artist_permit_status == 'pending'){ $class_name = 'dark'; }
-                     if($artist_permit->artist_permit_status == 'disapproved'){ $class_name = 'warning'; }
+                     if($artist_permit->artist_permit_status == 'pending'){ $class_name = 'warning'; }
+                     if($artist_permit->artist_permit_status == 'disapproved'){ $class_name = 'danger'; }
                      if($artist_permit->artist_permit_status == 'approved'){ $class_name = 'success'; }
                       
                       return ' <span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($artist_permit->artist_permit_status).'</span>';
                     })
-                    ->addColumn('check', function($artist_permit){
-                      return $artist_permit->check()->where('status', 0)->exists();
-                    })
-                    ->rawColumns(['artist_status', 'check'])
-                    ->make(true);
+			    ->addColumn('check', function($artist_permit){
+			    	return $artist_permit->check()->where('status', 0)->exists();
+			    })
+			    ->rawColumns(['artist_status', 'check'])
+			    ->make(true);
         }       
     }
 
@@ -318,7 +336,12 @@ class ArtistPermitController extends Controller
 	         ->addColumn('artist_number', function($permit){
 	         	$total = $permit->artistpermit()->count();
 	         	$check = $permit->artistpermit()->where('artist_permit_status', '!=', 'pending')->count();
-	         	return 'Checked '.$check.' of '.$total;
+//	         	if($check == 0){ return $total; }
+	         	return 'Checked '.$check.' of '.$total.' artist';
+	         })
+	         ->addColumn('permit_status', function($permit){
+	         	$classname = $permit->permit_status == 'pending' ? 'warning': 'info';
+	         	return '<span class="kt-badge kt-badge--'.$classname.' kt-badge--inline">'.ucwords($permit->permit_status).'</span>';
 	         })
 	         ->editColumn('reference_number', function($permit){
                   return '<span class="kt-font-bold">'.$permit->reference_number.'</span>';
@@ -358,7 +381,7 @@ class ArtistPermitController extends Controller
 	         	if(strtolower($permit->request_type) == 'amend'){$class_name = 'warning'; }
 	         	return '<span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($permit->request_type).'</span>';
 	         })
-	         ->rawColumns(['request_type', 'reference_number', 'company_type'])
+	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status'])
 	         ->make(true);
      }
     }

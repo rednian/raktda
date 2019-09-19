@@ -82,19 +82,19 @@
                           <td>Number of Artist :</td>
                           <td>{{ $permit->artistpermit()->count() }}</td>
                         </tr>
-                        @if ($permit->artist->where('artist_status', 'block')->count() > 0)
+                      @if ($permit->artist->where('artist_status', 'block')->count() > 0)
                           <tr>
                             <td>Block Artist :</td>
                             <td>{{ $permit->artist->where('artist_status', 'block')->count() }}</td>
                           </tr>
                         @endif
-                        
+
                         {{-- <tr>
                           <td>Permit Revision :</td>
                           <td>{{ $permit->artist->where('artist_status', 'block')->count() }}</td>
                         </tr> --}}
                       </table>
-                      
+
                     </div>
                   </section>
                 </div>
@@ -105,7 +105,7 @@
                       <form method="post" class="kt-form" id="permit-action" action="{{ route('admin.artist_permit.submit', $permit->permit_id) }}">
                         @csrf
                         <div class="form-group form-group-xs">
-                            <label>Notes</label>
+                          <label>Notes</label>
                           <textarea name="comment"  rows="3" class="form-control-sm form-control"></textarea>
                         </div>
                         <div class="form-group form-group-sm">
@@ -117,75 +117,51 @@
                           </div>
                         </div>
                         <div class="form-group kt-margin-t-15 d-none" id="approver-group">
-                            <label>Approvers</label>
-                            <div class="kt-checkbox-inline">
-                              <label class="kt-checkbox">
-                                <input  type="checkbox" name="role_id[]" value="{{ $roles->where('NameEn','inspector')->first()->role_id }}"> Inspector
-                                <span></span>
-                              </label>
-                              <label class="kt-checkbox">
-                                <input  type="checkbox" name="role_id[]" value="{{ $roles->where('NameEn','manager')->first()->role_id }}"> Manager
-                                <span></span>
-                              </label>
-                            </div>
-                            {{-- <span class="form-text text-muted">Some help text goes here</span> --}}
+                          <label>Approvers</label>
+                          <div class="kt-checkbox-inline">
+                            <label class="kt-checkbox">
+                              <input  type="checkbox" name="role_id[]" value="{{ $roles->where('NameEn','inspector')->first()->role_id }}"> Inspector
+                              <span></span>
+                            </label>
+                            <label class="kt-checkbox">
+                              <input  type="checkbox" name="role_id[]" value="{{ $roles->where('NameEn','manager')->first()->role_id }}"> Manager
+                              <span></span>
+                            </label>
                           </div>
-                          <div class="form-group">
-                                <label>Select Action</label>
-                                <div class="kt-radio-inline">
-                                  <label class="kt-radio">
-                                    <input type="radio" name="action" value="approve"> Approve
-                                    <span></span>
-                                  </label>
-                                  <label class="kt-radio">
-                                    <input type="radio" name="action" value="reject"> Reject
-                                    <span></span>
-                                  </label>
-                                  <label class="kt-radio">
-                                    <input type="radio" name="action" value="send_back"> Send Back to Client
-                                    <span></span>
-                                  </label>
-                                </div>
-                              </div>
-                            <div class="form-group form-group-xs">
-                              <button type="submit" class="btn btn-sm btn-elevate btn-warning kt-font-transform-u ">Submit</button>
-                              <button type="reset" class="btn btn-sm btn-secondary kt-font-bold kt-font-transform-u">Clear</button>
-                            </div>
+                          {{-- <span class="form-text text-muted">Some help text goes here</span> --}}
+                        </div>
+                        <div class="form-group">
+                          <label>Select Action</label>
+                          <div class="kt-radio-inline">
+                            <label class="kt-radio">
+                              <input type="radio" name="action" value="approve"> Approve
+                              <span></span>
+                            </label>
+                            <label class="kt-radio">
+                              <input type="radio" name="action" value="reject"> Reject
+                              <span></span>
+                            </label>
+                            <label class="kt-radio">
+                              <input type="radio" name="action" value="send_back"> Send Back to Client
+                              <span></span>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-xs">
+                          <button type="submit" class="btn btn-sm btn-elevate btn-warning kt-font-transform-u ">Submit</button>
+                          <button type="reset" class="btn btn-sm btn-secondary kt-font-bold kt-font-transform-u">Clear</button>
+                        </div>
                       </form>
                     </div>
                   </section>
                 </div>
               </section>
-              @if ( $permit->check->count() > 0)
-                <div class="alert alert-outline-danger fade show" role="alert">
-                  <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                  <div class="alert-text">
-                    <p>The Following Artist have some discrepancies with their information.</p>
-                    <ol class="kt-font-dark">
-                      @foreach ($permit->check as $index => $check)
-                      @if ($check->has('comment'))
-                        <p>Remarks: {{ ucfirst($check->comment[$index]->comment) }}</p>
-                      @endif
-                        <li class="kt-font-bold">{{ $check->artistPermit->artist->fullName }}</li>
-                          @foreach ($check->checklist as $checklist)
-                            <span>{{ $checklist->fieldname }}</span>,
-                          @endforeach
-                      @endforeach
-                    </ol>
-                  </div>
-                  <div class="alert-close">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true"><i class="la la-close"></i></span>
-                    </button>
-                  </div>
-                </div>
-              @endif
             </div>
           </div>
         </div>
-        @if ($permit->approver->count() > 0)
-        <div class="card">
-          <div class="card-header" id="headingThree5">
+      @if ($permit->approver->count() > 0)
+          <div class="card">
+            <div class="card-header" id="headingThree5">
             <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapseThree5" aria-expanded="true" aria-controls="collapseThree5">
               <h6 class="kt-font-dark kt-font-transform-u">Approvers</h6>
             </div>
@@ -234,14 +210,38 @@
              <table class="table table-hover table-borderless table-striped table-sm" id="artist-table">
                <thead class="thead-dark">
                  <tr>
+                   <th>
+                     Artist Name
+                     <span data-content="Click the artist name to view the artist information and permit history."
+                           data-original-title=""  data-container="body" data-toggle="kt-popover"
+                           data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
+                     </span>
+                   </th>
                    <th>Person Code</th>
-                   <th>Name</th>
-                   <th>Age</th>
+                   <th>
+                     Age
+                     <span data-content="hover the age to see the birthdate of the artist."
+                           data-original-title=""  data-container="body" data-toggle="kt-popover"
+                           data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
+                     </span>
+                   </th>
                    <th>Profession</th>
                    <th>Nationality</th>
-                   <th>Artist Status</th>
-                   <th>Check</th>
-                   <th>Action</th>
+                   <th>
+                     Action Status
+                     <span data-content="Click the artist name to view the artist information and permit history."
+                           data-original-title=""  data-container="body" data-toggle="kt-popover"
+                           data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
+                     </span>
+                   </th>
+                   <th>
+                     Check Status
+                     <span data-content="Click the artist name to view the artist information and permit history."
+                           data-original-title=""  data-container="body" data-toggle="kt-popover"
+                           data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
+                     </span>
+                   </th>
+                   {{--<th>Action</th>--}}
                  </tr>
                </thead>
                </table>
@@ -255,7 +255,6 @@
 <script type="text/javascript">
 var artist = {};
   var approver = {};
-
   $(document).ready(function(){
 
       $('#permit-action').validate({
@@ -306,30 +305,35 @@ var artist = {};
         url: '{{ route('admin.artist_permit.applicationdetails.datatable', $permit->permit_id) }}'
       },
         columnDefs: [
-             {targets: '_all', className: 'no-wrap'},
-             {targets:  [0], className: 'no-wrap',sortable: false},
+        	{targets: '_all', className: 'no-wrap'},
+          {targets:  [6], sortable: false},
         ],
         // order: [ [groupColumn, 'asc'] ], 
         columns: [
-            { data: 'person_code'},
-            { data: 'fullname'},
-            { data: 'age'},
-            { data: 'profession'},
-            { data: 'nationality'},
-            { data: 'artist_status'},
-					{
+        	{
+            	render: function (type, data, full, meta) {
+            		var url = '{{ url('/permit/artist') }}/'+full.artist_id;
+            		return '<a class="underlined kt-font-dark kt-font-bold" href="'+url+'">'+full.fullname+'</a>';
+							}
+          },
+					{ data: 'person_code'},
+          { data: 'age'},
+          { data: 'profession'},
+          { data: 'nationality'},
+          { data: 'artist_status'},
+          {
 						render: function (row, type, data){
 							var check = data.check ?  'la-check-circle text-success' : 'la-times-circle text-dark';
 							return '<span style="font-size: x-large" class="kt-font-bold la '+check+'"></span>';
 						}
 					},
-            {
-              data: null,
-              render: function(data, type){
-                var url = '{{ url('/permit/artist') }}/'+data.artist_id;
-                return '<a href="'+url+'" class="btn btn-warning kt-font-transform-u  btn-elevate btn-sm">view artist</a>';
-              }
-            }
+            {{--{--}}
+              {{--data: null,--}}
+              {{--render: function(data, type){--}}
+                {{--var url = '{{ url('/permit/artist') }}/'+data.artist_id;--}}
+                {{--return '<a href="'+url+'" class="btn btn-warning kt-font-transform-u  btn-elevate btn-sm">view artist</a>';--}}
+              {{--}--}}
+            {{--}--}}
         ],       
         createdRow: function(row, data, index){
 
