@@ -28,8 +28,7 @@ class RenewController extends Controller
     {
         $old_permit_number = Permit::where('permit_id', $id)->latest()->value('permit_number');
         $number = explode('-', $old_permit_number);
-        $new_pn = isset($number[1]) ? $number[0] . '-' . $number[1] + 1 : $old_permit_number . '-' . '01';
-
+        $new_pn = isset($number[1]) ? $number[0] . '-' . sprintf("%02d", (int) $number[1] + 1) : $old_permit_number . '-' . '01';
         $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.permitType')->where('permit_id', $id)->first();
 
         $is_edit =  Permit::where('permit_id', $id)->value('is_edit');
@@ -51,6 +50,7 @@ class RenewController extends Controller
                     'birthdate' =>  $pd->artist['birthdate'] ? Carbon::parse($pd->artist['birthdate'])->toDateString() : '',
                     'artist_id' => $pd->artist_id,
                     'permit_id' => $pd->permit_id,
+                    'profession' => $pd->profession_id,
                     'permit_type_id' => $pd->permit_type_id,
                     'original' => $pd->original,
                     'thumbnail' => $pd->thumbnail,
@@ -123,6 +123,7 @@ class RenewController extends Controller
         $data_bundle['languages'] = Language::all();
         $data_bundle['religions'] = Religion::all();
         $data_bundle['emirates'] = Emirates::all();
+        $data_bundle['profession'] = \App\Profession::all();
         $data_bundle['areas'] = Areas::all();
         return view('permits.artist.renew.edit_artist', $data_bundle);
     }
@@ -130,6 +131,7 @@ class RenewController extends Controller
 
     public function move_temp_to_permit_renew(Request $request)
     {
+
         $current_time_string = Carbon::now()->toDateTimeString();
         $user_id = Auth::user()->user_id;
 

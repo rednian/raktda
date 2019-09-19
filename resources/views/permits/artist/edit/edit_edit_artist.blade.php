@@ -10,7 +10,7 @@
                 <div class="kt-wizard-v3__nav">
                     <div class="kt-wizard-v3__nav-items">
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                            data-ktwizard-state="current">
+                            data-ktwizard-state="current" id="check_inst">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>1</span> Check Instructions
@@ -18,7 +18,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="permit_det">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>2</span> Permit Details
@@ -26,7 +26,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>3</span> Artist Details
@@ -34,7 +34,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>4</span> Upload Docs
@@ -238,11 +238,11 @@
                                             value="{{$artist_details->is_old_artist}}">
                                         <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
                                         <div class="form-group col-lg-3 w-100 d-flex flex-column">
-                                            <label for="profession"
-                                                class="col-form-label col-form-label-sm">Profession:*</label>
+                                            <label for="permit_type" class="col-form-label col-form-label-sm">Permit
+                                                Type:*</label>
                                             <select
-                                                class="form-control form-control-sm {{in_array('profession', $fieldnames) ? 'is-invalid' : ''}}"
-                                                name="profession" id="profession" placeholder="Profession">
+                                                class="form-control form-control-sm {{in_array('permit_type', $fieldnames) ? 'is-invalid' : ''}}"
+                                                name="permit_type" id="permit_type" placeholder="Permit Type">
                                                 <option value="">Select</option>
                                                 @foreach ($permitTypes as $pt)
                                                 <option value="{{$pt->permit_type_id}}"
@@ -276,9 +276,8 @@
                                                     value="{{$artist_details->lastname_en}}">
                                             </div>
                                         </div>
-                                    </div>
-                                    <input type="hidden" id="artist_permit_num">
-                                    <div class="row">
+
+                                        <input type="hidden" id="artist_permit_num">
 
                                         <div class="form-group col-lg-3">
                                             <label for="fname_ar" class="col-form-label col-form-label-sm">First
@@ -306,6 +305,21 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group col-lg-3 w-100 d-flex flex-column">
+                                            <label for="profession" class="col-form-label col-form-label-sm">Profession
+                                                :*</label>
+                                            <select
+                                                class="form-control form-control-sm {{in_array('profession', $fieldnames) ? 'is-invalid' : ''}}"
+                                                name="profession" id="profession" placeholder="Profession">
+                                                <option value="">Select</option>
+                                                @foreach ($profession as $pt)
+                                                <option value="{{$pt->profession_id}}"
+                                                    <?php if($pt->profession_id == $artist_details->profession){ echo 'selected' ;}?>>
+                                                    {{$pt->name_en}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
 
                                         <div class="form-group col-lg-3">
                                             <label for="dob" class="col-form-label col-form-label-sm">DOB:*</label>
@@ -326,8 +340,7 @@
                                                 name="uid_number" id="uid_number" placeholder="UID Number"
                                                 value={{$artist_details->uid_number}}>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3">
                                             <label for="uid_expiry" class="col-form-label col-form-label-sm">UID
                                                 Expire Date:*</label>
@@ -377,8 +390,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3">
                                             <label for="visa_number" class="col-form-label col-form-label-sm">Visa
                                                 Number:*</label>
@@ -417,8 +429,7 @@
                                                 name="id_no" id="id_no" placeholder="Identification No."
                                                 value="{{$artist_details->emirates_id}}">
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                             <label for="nationality"
                                                 class="col-form-label col-form-label-sm">Nationality:*</label>
@@ -478,8 +489,7 @@
                                                     Female</option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3 w-100 d-flex flex-column">
                                             <label for="city" class="col-form-label col-form-label-sm">Emirate:</label>
                                             <select
@@ -526,8 +536,7 @@
                                                     value="{{$artist_details->po_box}}">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="form-group col-lg-3">
                                             <label for="address" class="col-form-label col-form-label-sm">Fax
                                                 No:</label>
@@ -591,55 +600,51 @@
                                 <form id="documents_required" method="post">
                                     <input type="hidden" id="artist_number_doc" value={{1}}>
                                     <input type="hidden" id="requirements_count" value={{count($requirements)}}>
-                                    <div class="kt-form__section kt-form__section--first">
-                                        <div class="kt-wizard-v3__form" id="document_row">
-                                            <div class="row">
-                                                <div class="form-group col-2">
-                                                    <label for="" class="reqName" title="Artist Photo">Artist
-                                                        Photo</label>
-                                                </div>
-                                                <div class="form-group col-6">
-                                                    <div id="pic_uploader">Upload
-                                                    </div>
-                                                </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-2 col-sm-12">
+                                            <label for="" class="reqName" title="Artist Photo">Artist
+                                                Photo</label>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div id="pic_uploader">Upload
                                             </div>
                                         </div>
                                     </div>
+
+
                                     @php
                                     $i = 1;
                                     @endphp
                                     @foreach ($requirements as $req)
-                                    <div class="kt-form__section kt-form__section--first">
-                                        <div class="kt-wizard-v3__form" id="document_row">
-                                            <div class="row">
-                                                <div class="form-group col-2">
-                                                    <label for="" class="reqName"
-                                                        title="{{$req->requirement_description}}">{{$req->requirement_name}}</label>
-                                                    <input type="hidden" value="{{$req->requirement_name}}"
-                                                        id="req_name_{{$i}}">
-                                                </div>
-                                                <div class="form-group col-6">
-                                                    <div id="fileuploader_{{$i}}">Upload
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" id="datesRequiredCheck_{{$i}}"
-                                                    value="{{$req->dates_required}}">
-                                                @if($req->dates_required == 1)
-                                                <div class="form-group col-2">
-                                                    <input type="text" class="form-control date-picker"
-                                                        name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                        id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <input type="text" class="form-control date-picker"
-                                                        name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
-                                                        id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
-                                                </div>
-                                                @endif
-                                            </div>
 
+                                    <div class="row">
+                                        <div class="col-lg-2  col-sm-12">
+                                            <label for="" class="reqName"
+                                                title="{{$req->requirement_description}}">{{$req->requirement_name}}</label>
+                                            <input type="hidden" value="{{$req->requirement_name}}"
+                                                id="req_name_{{$i}}">
                                         </div>
+                                        <div class="col-lg-6  col-sm-12">
+                                            <div id="fileuploader_{{$i}}">Upload
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                            value="{{$req->dates_required}}">
+                                        @if($req->dates_required == 1)
+                                        <div class="col-lg-2  col-sm-12">
+                                            <input type="text" class="form-control date-picker"
+                                                name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                id="doc_issue_date_{{$i}}" placeholder="Issue Date" />
+                                        </div>
+                                        <div class="col-lg-2  col-sm-12">
+                                            <input type="text" class="form-control date-picker"
+                                                name="doc_exp_date_{{$i}}" data-date-start-date="+30d"
+                                                id="doc_exp_date_{{$i}}" placeholder=" Expiry Date" />
+                                        </div>
+                                        @endif
                                     </div>
+
                                     @php
                                     $i++;
                                     @endphp
@@ -710,14 +715,19 @@
     var picUploader ;
     var artistDetails = new Object();
     var documentDetails = new Object();
+    wizard = new KTWizard("kt_wizard_v3");
+
+    $.ajaxSetup({
+        headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
+    });
 
     $(document).ready(function(){
-        localStorage.clear();
-        // upload file
-       uploadFunction();
-       PicUploadFunction();
 
-        $('.reqName').tooltip();
+        localStorage.clear(); // clearing the localstorage
+        uploadFunction(); // upload file
+        PicUploadFunction();
+
+        $('.reqName').tooltip(); // adding tooltip for the upload docs Name
 
         $.ajax({
             headers: {
@@ -727,47 +737,18 @@
             url:"{{route('clear_the_temp')}}"
         });
 
-        wizard = new KTWizard("kt_wizard_v3");
-        wizard.goTo(3);
-        $('#back_btn').css('display', 'none');
-        var city = $('#city').val();
-        var sel_area = $('#sel_area').val();
-        city ? getAreas(city, sel_area) : '';
+
+        wizard.goTo(3); // skipping to the 3rd section
+
+        $('#back_btn').css('display', 'none'); // hiding back btn on the first section
+
+        $('#city').val() ? getAreas($('#city').val(), $('#sel_area').val()) : ''; // setting the area data if added
+
     });
 
-
-
-    $('.kt-wizard-v3__nav-item').on('click', function() {
-        wizard = new KTWizard("kt_wizard_v3");
-         // get current step number
-        setTimeout(function(){
-            if(wizard.currentStep == 1) {
-                $('#back_btn').css('display', 'block');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'none');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 2) {
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 3) {
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'none');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'block');
-            } else if(wizard.currentStep == 4){
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'block');
-                $('#prev_btn').css('display', 'block');
-                $('#next_btn').css('display', 'none');
-            }
-         }, 200);
-    });
-
-
+    // function to upload documents
     const uploadFunction = () => {
-        // console.log($('#artist_number_doc').val());
+
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
             fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
@@ -778,8 +759,6 @@
                 method: "POST",
                 allowedTypes: "jpeg,jpg,png,pdf",
                 fileName: "doc_file_"+i,
-                // showDownload: true,
-                // showPreview: true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
@@ -805,8 +784,6 @@
                             dataType: "json",
                             success: function(data)
                             {
-                                // console.log(data);
-                                // console.log('../../storage/'+data[0]["path"]);
                                 let id = obj[0].id;
                                 let number = id.split("_");
                                 let issue_datetime = new Date(data.issued_date);
@@ -847,7 +824,7 @@
         }
     }
 
-
+    // appends zero to the date if less than 9
     function appendLeadingZeroes(n){
         if(n <= 9){
             return "0" + n;
@@ -855,6 +832,7 @@
         return n
     }
 
+    // function to upload picture
     const PicUploadFunction = () => {
         picUploader = $('#pic_uploader').uploadFile({
                 headers: {
@@ -886,8 +864,6 @@
                             url: "{{url('company/get_temp_photo_artist_permit_id')}}"+'/'+temp_id,
                             success: function(data)
                             {
-                                // console.log(data);
-                                // console.log(data[0].original_pic);
                                 if(data[0].original)
                                 {
                                     obj.createProgress('Profile Pic',"{{url('/storage')}}"+'/'+data[0].original,'');
@@ -902,8 +878,7 @@
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
     }
 
-
-
+    // validating permit details
     var permitValidator = $('#permit_details').validate({
         rules: {
             permit_from: 'required',
@@ -915,10 +890,9 @@
             permit_to: 'This field is required',
             work_loc:  'This field is required'
         }
-
     });
 
-
+    // validating artist details
     var detailsValidator =  $('#artist_details').validate({
             ignore: [],
             rules: {
@@ -927,6 +901,7 @@
                 lname_en: 'required',
                 lname_ar: 'required',
                 profession: 'required',
+                permit_type: 'required',
                 dob: 'required',
                 uid_number: 'required',
                 uid_expiry: 'required',
@@ -958,6 +933,7 @@
                 lname_en: 'This field is required',
                 lname_ar: 'This field is required',
                 profession: 'This field is required',
+                permit_type: 'This field is required',
                 dob: 'This field is required',
                 uid_number: 'This field is required',
                 uid_expiry: 'This field is required',
@@ -985,9 +961,10 @@
             },
         });
 
+
+        // validating the documents
         var docRules = {};
         var docMessages = {};
-
         for(var i = 1; i < $('#requirements_count').val(); i++)
         {
             docRules['doc_issue_date_'+i] = 'required';
@@ -999,278 +976,288 @@
         var documentsValidator = $('#documents_required').validate({
             rules: docRules,
             messages: docMessages
+        });
+
+        $( "#check_inst" ).on( "click", function() {
+            checkForTick();
+            setThis('none', 'block', 'block', 'none');
+        });
+
+        $( "#permit_det" ).on( "click", function() {
+            checkForTick();
+            setThis('block', 'block', 'none', 'none');
+        });
+
+        $( "#artist_det" ).on( "click", function() {
+            checkForTick();
+            if(wizard.currentStep == 3){// checking the next page is permit details
+                stopNext(permitValidator);
+            }
+            setThis('block', 'block', 'none', 'none');
+        });
+
+
+        $( "#upload_doc" ).on( "click", function() {
+            checkForTick();
+            if(wizard.currentStep == 4){
+                stopNext(detailsValidator);
+            }
+            setThis('block', 'none', 'none', 'block');
+        });
+
+        const setThis = (prev, next, back, submit) => {
+            $('#prev_btn').css('display', prev);
+            $('#next_btn').css('display', next);
+            $('#back_btn').css('display', back);
+            $('#submit_btn').css('display', submit);
+        }
+
+
+        const checkForTick = () => {
+            wizard = new KTWizard("kt_wizard_v3");
+
+            if (wizard.currentStep == 2) {
+                if ($('#agree').not(':checked')) {
+                    wizard.stop();
+                    $('#agree_cb > span').addClass('compulsory');
+                }
+                if ($('#agree').is(':checked')) {
+                    $('#back_btn').css('display', 'none');
+                    $('#prev_btn').css('display', 'block');
+                    wizard.goNext();
+                }
+            }
+        }
+
+
+        $('#next_btn').click(function(){
+
+            checkForTick();
+
+            if(wizard.currentStep == 3){// checking the next page is permit details
+                stopNext(permitValidator); // validating the permit details page
+                // storing the values of permit details
+                if(permitValidator.form())
+                {
+                        var permitDetails = {
+                            fromDate: $('#permit_from').val(),
+                            toDate: $('#permit_to').val(),
+                            workLocation: $('#work_loc').val()
+                        }
+                        // passing the values to local storage
+                        localStorage.setItem('permitDetails', JSON.stringify(permitDetails));
+                        // insertIntoDrafts(2, JSON.stringify(permitDetails));
+                }
+            }
+            // checking the next page is artist details
+            if(wizard.currentStep == 4)
+            {
+                    stopNext(detailsValidator); // validating the artist details page
+                    // object of array storing the artist details
+                    var artist_id = $('#artist_number').val() ;
+                    if(detailsValidator.form())
+                    {
+                        $('#submit_btn').css('display', 'block'); // display the submit button
+                        $('#next_btn').css('display', 'none'); // hide the next button
+                        $('#addNew_btn').css('display', 'block'); // display the add new artist button
+                        artistDetails[artist_id] = {
+                            id: $('#artist_id').val(),
+                            code: $('#code').val(),
+                            fname_en: $('#fname_en').val(),
+                            fname_ar:  $('#fname_ar').val(),
+                            lname_en: $('#lname_en').val(),
+                            lname_ar:  $('#lname_ar').val(),
+                            nationality: $('#nationality').val(),
+                            profession: $('#profession').val(),
+                            permit_type: $('#permit_type').val(),
+                            passport: $('#passport').val(),
+                            ppExp: $('#pp_expiry').val(),
+                            visaType: $('#visa_type').val(),
+                            visaNumber: $('#visa_number').val(),
+                            visaExp: $('#visa_expiry').val(),
+                            spName: $('#sp_name').val(),
+                            idNo: $('#id_no').val(),
+                            language: $('#language').val(),
+                            religion: $('#religion').val(),
+                            gender: $('#gender').val(),
+                            city: $('#city').val(),
+                            area: $('#area').val(),
+                            address: $('#address').val(),
+                            uidNumber: $('#uid_number').val(),
+                            uidExp: $('#uid_expiry').val(),
+                            dob: $('#dob').val(),
+                            po_box: $('#po_box').val(),
+                            fax_number: $('#fax_no').val(),
+                            landline: $('#landline').val(),
+                            mobile: $('#mobile').val(),
+                            email: $('#email').val(),
+                            is_old_artist: $('#is_old_artist').val()
+                        }
+
+                        localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
+                        // insertIntoDrafts(3, JSON.stringify(artistDetails));
+                    }
+                }
+        });
+
+        $('#prev_btn').click(function(){
+            if(wizard.currentStep == 1){
+                    $('#prev_btn').css('display', 'none');
+                    $('#back_btn').css('display', 'block');
+            }else{
+                    $('#prev_btn').css('display', 'block');
+                    $('#next_btn').css('display', 'block');
+            }
+            $('#submit_btn').css('display', 'none');
+        });
+
+        const docValidation = () => {
+
+            var artist_number = $('#artist_number').val();
+            var hasFile = true;
+            var hasFileArray = [];
+            documentDetails[artist_number] = {};
+            for(var i = 1; i <= $('#requirements_count').val(); i++)
+            {
+                if($('#ajax-file-upload_'+i).contents().length == 0) {
+                    hasFileArray[i] = false;
+                    $("#ajax-upload_"+i).css('border', '2px dotted red');
+                }
+                else{
+                    hasFileArray[i] = true;
+                    $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
+                }
+                documentDetails[artist_number][i] = {
+                    issue_date :   $('#doc_issue_date_'+i).val(),
+                    exp_date : $('#doc_exp_date_'+i).val()
+                }
+            }
+            if($('#pic-file-upload').contents().length == 0) {
+                hasPicture = false;
+                $('#pic-upload').css('border', '2px dotted red');
+            }
+            else {
+                hasPicture = true;
+                $("#pic-upload").css('border', '2px dotted #A5A5C7');
+            }
+            if(hasFileArray.includes(false) || hasPicture == false){
+                hasFile = false;
+            } else {
+                hasFile = true;
+            }
+
+            localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
+            return hasFile ;
+        }
+
+        const stopNext = (validator_name) => {
+            wizard.on("beforeNext", function(wizardObj) {
+                if (validator_name.form() !== true) {
+                    wizardObj.stop(); // don't go to the next step
+                }
+            });
+        }
+
+
+        const isExpiry = (num) => {
+            let val = $('#doc_type_'+num).val();
+            if((val == 'photograph') || (val == 'medical') ){
+                $('#doc_exp_date_'+num).css('display', 'none');
+                $('#doc_issue_date_'+num).css('display', 'none');
+                $('#doc_exp_date_'+num).removeAttr( "required" );
+                $('#doc_issue_date_'+num).removeAttr( "required" );
+            } else {
+                $('#doc_exp_date_'+num).css('display', 'block');
+                $('#doc_issue_date_'+num).css('display', 'block');
+                $('#doc_exp_date_'+num).prop('required',true);
+                $('#doc_issue_date_'+num).prop('required',true);
+            }
+        }
+
+        // setting initial datepickers
+        $('.date-picker').datepicker({ format: 'dd-mm-yyyy', autoclose: true });
+        $('#permit_from').datepicker({ format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true,orientation: "bottom left"});
+        $('#permit_to').datepicker({ format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true,orientation: "bottom left"});
+        $('#dob').datepicker({ format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2});
+        // on changing datepickers
+        $('#permit_from').on('changeDate', function(ev) {$('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');});
+        $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});
+        $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
+        $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
+        $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
+        $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
+
+        const setToDate = () => {
+            var permitFrom = $('#permit_from').val();
+            var da =  permitFrom.split('-');
+            var permitFrom = da[1]+'/'+da[0]+'/'+da[2];
+            var newDate = new Date(permitFrom);
+            newDate.setDate(newDate.getDate() + 30);
+
+            Date.prototype.toInputFormat = function(){
+                var yyyy = this.getFullYear().toString();
+                var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+                var dd  = this.getDate().toString();
+                return    (dd[1]?dd:"0"+dd[0]) + "-" + (mm[1]?mm:"0"+mm[0])  +"-"  + yyyy;
+            }
+            $('#permit_to').val(newDate.toInputFormat());
+            $('#permit_to').valid();
+        }
+
+
+
+        const getAreas = (city_id, sel_id) => {
+            $.ajax({
+                    url:"{{url('company/fetch_areas')}}"+'/'+city_id,
+                    success: function(result){
+                        $('#area').empty();
+                        $('#area').append('<option value="">Select</option>');
+                        for(let i = 0; i< result.length;i++)
+                        {
+                            $('#area').append('<option value="'+result[i].id+'" >'+result[i].area_en+'</option>');
+                        }
+                        if(sel_id == 0){$('#area').val('');} else if(sel_id){ $('#area').val(sel_id);  }
+                    }
+            });
+        }
+
+        $('#submit_btn').click( (e) => {
+
+            var hasFile = docValidation();
+
+            if(documentsValidator.form() && hasFile){
+                var artist_permit_id = $('#artist_permit_id').val();
+                var permit_id = $('#permit_id').val();
+                var temp_id = $('#temp_id').val();
+                var ad = localStorage.getItem('artistDetails');
+                var dd = localStorage.getItem('documentDetails');
+
+
+            $.ajax({
+                    url:"{{route('company.update_artist_temp_data')}}",
+                    type: "POST",
+                    // processData:false,
+                    // data: { permitDetails: pd},
+                    data: {
+                        permitId: artist_permit_id,
+                        artistD: ad ,
+                        documentD: dd,
+                        temp_id: temp_id,
+                        permit_id: permit_id,
+                        updateChecklist: true
+                    },
+                    success: function(result){
+                        // console.log(result);
+                        if(result.message[0] == 'success')
+                        {
+                            localStorage.clear();
+                            window.location.href="{{url('company/edit_permit')}}"+'/'+ permit_id;
+
+                        }
+                    }
+                });
+            }
         })
 
-
-    $('#next_btn').click(function(){
-        wizard = new KTWizard("kt_wizard_v3");
-
-        // checking the next page is permit details
-       if(wizard.currentStep == 2){
-            stopNext(permitValidator); // validating the permit details page
-           // storing the values of permit details
-           if(permitValidator.form())
-            {
-                var permitDetails = {
-                    fromDate: $('#permit_from').val(),
-                    toDate: $('#permit_to').val(),
-                    workLocation: $('#work_loc').val()
-                }
-                // passing the values to local storage
-                localStorage.setItem('permitDetails', JSON.stringify(permitDetails));
-
-                // insertIntoDrafts(2, JSON.stringify(permitDetails));
-            }
-       }
-       // checking the next page is artist details
-       if(wizard.currentStep == 3)
-       {
-            stopNext(detailsValidator); // validating the artist details page
-            // object of array storing the artist details
-            var artist_id = $('#artist_number').val() ;
-            if(detailsValidator.form())
-            {
-                $('#submit_btn').css('display', 'block'); // display the submit button
-                $('#next_btn').css('display', 'none'); // hide the next button
-                $('#addNew_btn').css('display', 'block'); // display the add new artist button
-                artistDetails[artist_id] = {
-                    id: $('#artist_id').val(),
-                    code: $('#code').val(),
-                    fname_en: $('#fname_en').val(),
-                    fname_ar:  $('#fname_ar').val(),
-                    lname_en: $('#lname_en').val(),
-                    lname_ar:  $('#lname_ar').val(),
-                    nationality: $('#nationality').val(),
-                    profession: $('#profession').val(),
-                    passport: $('#passport').val(),
-                    ppExp: $('#pp_expiry').val(),
-                    visaType: $('#visa_type').val(),
-                    visaNumber: $('#visa_number').val(),
-                    visaExp: $('#visa_expiry').val(),
-                    spName: $('#sp_name').val(),
-                    idNo: $('#id_no').val(),
-                    language: $('#language').val(),
-                    religion: $('#religion').val(),
-                    gender: $('#gender').val(),
-                    city: $('#city').val(),
-                    area: $('#area').val(),
-                    address: $('#address').val(),
-                    uidNumber: $('#uid_number').val(),
-                    uidExp: $('#uid_expiry').val(),
-                    dob: $('#dob').val(),
-                    po_box: $('#po_box').val(),
-                    fax_number: $('#fax_no').val(),
-                    landline: $('#landline').val(),
-                    mobile: $('#mobile').val(),
-                    email: $('#email').val(),
-                    is_old_artist: $('#is_old_artist').val()
-                }
-
-                localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
-
-                // insertIntoDrafts(3, JSON.stringify(artistDetails));
-            }
-        }
-    });
-
-
-
-    const docValidation = () => {
-        var artist_number = $('#artist_number').val();
-        var hasFile = true;
-        var hasFileArray = [];
-        documentDetails[artist_number] = {};
-        for(var i = 1; i <= $('#requirements_count').val(); i++)
-        {
-            if($('#ajax-file-upload_'+i).contents().length == 0) {
-                hasFileArray[i] = false;
-                $("#ajax-upload_"+i).css('border', '2px dotted red');
-            }
-            else{
-                hasFileArray[i] = true;
-                $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
-            }
-            documentDetails[artist_number][i] = {
-                issue_date :   $('#doc_issue_date_'+i).val(),
-                exp_date : $('#doc_exp_date_'+i).val()
-            }
-        }
-        if($('#pic-file-upload').contents().length == 0) {
-            hasPicture = false;
-            $('#pic-upload').css('border', '2px dotted red');
-        }
-        else {
-            hasPicture = true;
-            $("#pic-upload").css('border', '2px dotted #A5A5C7');
-        }
-        if(hasFileArray.includes(false) || hasPicture == false){
-            hasFile = false;
-        } else {
-            hasFile = true;
-        }
-
-        localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
-        return hasFile ;
-    }
-
-    const stopNext = (validator_name) => {
-        wizard.on("beforeNext", function(wizardObj) {
-            if (validator_name.form() !== true) {
-                wizardObj.stop(); // don't go to the next step
-            }
-        });
-    }
-
-    $('#prev_btn').click(function(){
-        wizard = new KTWizard("kt_wizard_v3");
-       if(wizard.currentStep == 2){
-            $('#prev_btn').css('display', 'none');
-            $('#back_btn').css('display', 'block');
-       }else{
-            $('#prev_btn').css('display', 'block');
-            $('#next_btn').css('display', 'block');
-       }
-       $('#submit_btn').css('display', 'none');
-    });
-
-
-    const isExpiry = (num) => {
-        let val = $('#doc_type_'+num).val();
-        if((val == 'photograph') || (val == 'medical') ){
-            $('#doc_exp_date_'+num).css('display', 'none');
-            $('#doc_issue_date_'+num).css('display', 'none');
-            $('#doc_exp_date_'+num).removeAttr( "required" );
-            $('#doc_issue_date_'+num).removeAttr( "required" );
-        } else {
-            $('#doc_exp_date_'+num).css('display', 'block');
-            $('#doc_issue_date_'+num).css('display', 'block');
-            $('#doc_exp_date_'+num).prop('required',true);
-            $('#doc_issue_date_'+num).prop('required',true);
-        }
-    }
-
-
-    $('.date-picker').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true
-    });
-
-    $('#permit_from').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        orientation: "bottom left"
-    });
-
-    $('#permit_to').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        orientation: "bottom left"
-    });
-
-    $('#dob').datepicker({
-        format: 'dd-mm-yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        startView: 2
-    });
-
-
-    $('#permit_from').on('changeDate', function(ev) {$('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');});
-    $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});
-    $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
-    $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
-    $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
-    $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
-
-    const del_row = (id) => {
-        $('#row_'+id).remove();
-    }
-
-    const setToDate = () => {
-        var permitFrom = $('#permit_from').val();
-        var da =  permitFrom.split('-');
-        var permitFrom = da[1]+'/'+da[0]+'/'+da[2];
-        var newDate = new Date(permitFrom);
-        newDate.setDate(newDate.getDate() + 30);
-
-        Date.prototype.toInputFormat = function(){
-            var yyyy = this.getFullYear().toString();
-            var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-            var dd  = this.getDate().toString();
-            return    (dd[1]?dd:"0"+dd[0]) + "-" + (mm[1]?mm:"0"+mm[0])  +"-"  + yyyy;
-        }
-        $('#permit_to').val(newDate.toInputFormat());
-        $('#permit_to').valid();
-    }
-
-
-
-    const getAreas = (city_id, sel_id) => {
-        $.ajax({
-                url:"{{url('company/fetch_areas')}}"+'/'+city_id,
-                success: function(result){
-                    // console.log(result)
-                    $('#area').empty();
-                    $('#area').append('<option value=" ">Select</option>');
-                    for(let i = 0; i< result.length;i++)
-                    {
-                        $('#area').append('<option value="'+result[i].id+'" >'+result[i].area_en+'</option>');
-                    }
-                    if(sel_id){
-                        $('#area').val(sel_id);
-                    }
-                }
-            });
-
-    }
-
-    $('#submit_btn').click((e) => {
-
-        var hasFile = docValidation();
-
-        if(documentsValidator.form() && hasFile){
-
-        var artist_permit_id = $('#artist_permit_id').val();
-        var permit_id = $('#permit_id').val();
-        var temp_id = $('#temp_id').val();
-        var ad = localStorage.getItem('artistDetails');
-        var dd = localStorage.getItem('documentDetails');
-
-        $.ajaxSetup({
-            headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-        });
-        $.ajax({
-                url:"{{route('company.update_artist_temp_data')}}",
-                type: "POST",
-                // processData:false,
-                // data: { permitDetails: pd},
-                data: {
-                    permitId: artist_permit_id,
-                    artistD: ad ,
-                    documentD: dd,
-                    temp_id: temp_id,
-                    permit_id: permit_id,
-                    updateChecklist: true
-                },
-                success: function(result){
-                    console.log(result);
-                    if(result.message[0] == 'success')
-                    {
-                        localStorage.clear();
-                        window.location.href="{{url('company/edit_permit')}}"+'/'+ permit_id;
-
-                    }
-                }
-            });
-        }
-
-})
-
 </script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="http://hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js"></script>
 @endsection

@@ -13,7 +13,7 @@
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$new_permit_num}}</strong></span>
         </div>
-        <input type="hidden" name="permit_number" value="{{$new_permit_num}}">
+        <input type="hidden" id="permit_number" value="{{$new_permit_num}}">
         <div class="kt-portlet__head-toolbar ">
             <div class="my-auto float-right permit--action-bar">
                 <a href="{{url('company/artist_permits')}}"
@@ -223,12 +223,11 @@
             url: '{{route("company.fetch_artist_temp_data")}}',
             data: {artist_temp_id:id},
             success: function(data) {
-                console.log(data);
                 $('#detail-permit').empty();
             if(data)
             {
                 var code = data.person_code ? data.person_code : '';
-                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td>' + code + '</td> <th>First Name</th> <td >' + data.firstname_en + '</td>  </tr> <tr> <th>Last Name</th> <td>' + data.lastname_en + '</td> <th>Nationality</th> <td >' + data.nationality + '</td>  </tr> <tr> <th>Email</th> <td>' + data.email + '</td> <th>Profession</th> <td >' + data.permit_type.name_en + '</td>  </tr> <tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>UID Number</th> <td >' + data.uid_number + '</td> </tr> <tr> <th>DOB</th> <td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr></table>');
+                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td>' + code + '</td> <th>First Name</th> <td >' + data.firstname_en + '</td>  </tr> <tr> <th>Last Name</th> <td>' + data.lastname_en + '</td> <th>Nationality</th> <td >' + data.nationality.country_enName + '</td>  </tr> <tr> <th>Email</th> <td>' + data.email + '</td> <th>Artist Type</th> <td >' + data.permit_type.name_en + '</td>  </tr><tr> <th>Profession</th> <td>' + (data.profession ? data.profession.name_en : '' )+ '</td> <th>Phone Number</th> <td >' + data.phone_number + '</td>  </tr> <tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>UID Number</th> <td >' + data.uid_number + '</td> </tr> <tr> <th>DOB</th> <td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr></table>');
 
             }
             }
@@ -240,11 +239,11 @@
             type: 'POST',
             url: '{{route("company.move_temp_to_permit_renew")}}',
             data: {
-                permit_number: $('#permit_number').val(),
                 permit_id: $('#permit_id').val(),
                 work_location: $('#work_location').val(),
                 issued_date: $('#issued_date').val(),
-                expired_date: $('#expired_date').val()
+                expired_date: $('#expired_date').val(),
+                permit_number:$('#permit_number').val()
             },
             success: function(data) {
                 // console.log(data);

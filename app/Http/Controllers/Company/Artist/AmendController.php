@@ -13,6 +13,7 @@ use App\PermitType;
 use App\Language;
 use App\Religion;
 use App\Emirates;
+use App\Profession;
 use App\Areas;
 use App\VisaType;
 use App\ArtistTempData;
@@ -45,6 +46,7 @@ class AmendController extends Controller
                     'birthdate' =>  $pd->artist['birthdate'] ? Carbon::parse($pd->artist['birthdate'])->toDateString() : '',
                     'artist_id' => $pd->artist_id,
                     'permit_id' => $pd->permit_id,
+                    'profession' => $pd->profession_id,
                     'permit_type_id' => $pd->permit_type_id,
                     'original' => $pd->original,
                     'thumbnail' => $pd->thumbnail,
@@ -115,8 +117,10 @@ class AmendController extends Controller
         $data_bundle['emirates'] = Emirates::all();
         $data_bundle['visa_types'] = VisaType::all();
         $data_bundle['areas'] = Areas::all();
+        $data_bundle['profession'] = Profession::all();
         $data_bundle['permit_details'] = Permit::where('permit_id', $permit_id)->first();
         $data_bundle['artist_details'] = ArtistTempData::where('id', $temp_id)->where('status', 0)->first();
+
         return view('permits.artist.amend.replace_artist', $data_bundle);
     }
 }

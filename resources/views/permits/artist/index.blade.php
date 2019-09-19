@@ -37,7 +37,7 @@
 
         <div class="tab-content">
             <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                <table class="table table-sm table-striped table-borderless" id="applied-artists-table">
+                <table class="table table-striped table-borderless" id="applied-artists-table">
                     <thead class="thead-dark">
                         <tr>
                             <th>ReferNo.</th>
@@ -55,7 +55,7 @@
 
             </div>
             <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
-                <table class="table table-sm table-striped table-borderless " id="existing-artists-table">
+                <table class="table table-striped table-borderless " id="existing-artists-table">
                     <thead class="thead-dark">
                         <tr>
                             <th>ReferNo.</th>

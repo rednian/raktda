@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Profession extends Model
 {
@@ -14,6 +14,6 @@ class Profession extends Model
 
     public function artist()
     {
-        return $this->hasMany(ArtistPermit::class,'profession_id');
+        return $this->hasMany(ArtistPermit::class, 'profession_id');
     }
 }

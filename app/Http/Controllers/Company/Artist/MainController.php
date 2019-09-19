@@ -20,6 +20,7 @@ use App\PermitType;
 use App\Language;
 use App\Religion;
 use App\Emirates;
+use App\Profession;
 use App\Areas;
 use App\VisaType;
 use App\ArtistTempData;
@@ -123,6 +124,10 @@ class MainController extends Controller
             $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
             $amendBtn = ($diff < 10) ? '<a href="' . route('company.amend_permit', $permit->permit_id) . '" title="Amend"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">Amend</span></a>' : '';
             $renewBtn = ($expDiff <= 2) ? '<a href="' . route('company.renew_permit', $permit->permit_id) . '" title="Renew"><span  class="kt-badge kt-badge--success kt-badge--inline">Renew</span></a>' : '';
+            $pn = Permit::where('permit_number', 'like', "$permit->permit_number%")->latest()->first()->permit_number;
+            if ($pn != $permit->permit_number) {
+                $renewBtn = '';
+            }
             return  '<span class="d-flex flex-column">' . $amendBtn . $renewBtn . '</span>';
         })->addColumn('details', function ($permit) {
             return '<a href="' . route('company.get_permit_details', $permit->permit_id) . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
@@ -192,7 +197,7 @@ class MainController extends Controller
         $id = $request->artist_temp_id;
         // $artists = ArtistPermit::with('artist',  'permit', 'permitType', 'artistPermitDocument')->where('permit_id', $id)->get();
         // $artists = ArtistPermit::with('artist', 'permit', 'artistPermitDocument', 'permitType')->where('artist_permit_id', $artist_permit_id)->first();
-        $artists = ArtistTempData::with('permitType')->where('id', $id)->first();
+        $artists = ArtistTempData::with('permitType', 'Nationality', 'Profession')->where('id', $id)->first();
         return $artists;
     }
 
@@ -224,7 +229,6 @@ class MainController extends Controller
 
     public function create()
     {
-        $code =  $this->generatePersonCode();
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
         $data_bundle['countries'] = Countries::all();
         $data_bundle['visatypes'] = VisaType::all();
@@ -233,6 +237,7 @@ class MainController extends Controller
         $data_bundle['religions'] = Religion::all();
         $data_bundle['emirates'] = Emirates::all();
         $data_bundle['areas'] = Areas::all();
+        $data_bundle['profession'] = Profession::all();
         return view('permits.artist.new.create', $data_bundle);
     }
 
@@ -276,8 +281,10 @@ class MainController extends Controller
 
     public function generatePermitNumber()
     {
-        $last_permit_d = Permit::latest()->first();
-        if (empty($last_permit_d)) {
+        // $last_permit_d = Permit::latest()->first();
+        $last_permit_d = Permit::orderBy('created_at', 'desc')->where('permit_number', 'not like', '%-%')->first();
+
+        if (!isset($last_permit_d->permit_number)) {
             $new_permit_no = sprintf("AP%04d",  1);
         } else {
             $last_pn = $last_permit_d->permit_number;
@@ -408,7 +415,8 @@ class MainController extends Controller
                 'artist_id' => $artist->artist_id,
                 'permit_id' => $permit->permit_id,
                 'created_at' => Carbon::now()->toDateTimeString(),
-                'permit_type_id' => $artistDetails[$i]['profession'],
+                'permit_type_id' => $artistDetails[$i]['permit_type'],
+                'profession_id' => $artistDetails[$i]['profession'],
                 'original' => $newPathLink,
                 'thumbnail' => $newThumbPathLink,
                 'passport_number' => $artistDetails[$i]['passport'],
@@ -554,6 +562,7 @@ class MainController extends Controller
         $data_bundle['religions'] = Religion::all();
         $data_bundle['emirates'] = Emirates::all();
         $data_bundle['areas'] = Areas::all();
+        $data_bundle['profession'] = Profession::all();
         $data_bundle['permit_details'] = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('permit_id', $id)->first();
         $data_bundle['permit_id'] = $id;
         $data_bundle['from'] = $from;
@@ -651,7 +660,6 @@ class MainController extends Controller
         $headers = array(
             'Content-Type: image/jpeg , image/png , application/pdf',
         );
-
         // return Response::download(url('storage/' . $filePath));
         // return response()->download(url('storage/' . $filePath));
         return Storage::download(url('storage/' . $filePath), 'download', $headers);
@@ -661,7 +669,7 @@ class MainController extends Controller
     public function fetch_artist_details(Request $request)
     {
         $ap_id = $request->ap_id;
-        $artistPermitDetails = ArtistPermit::with('artist', 'permitType', 'artistPermitDocument', 'artist.Nationality')->where('artist_permit_id', $ap_id)->first();
+        $artistPermitDetails = ArtistPermit::with('artist', 'permitType', 'artistPermitDocument', 'profession', 'artist.Nationality')->where('artist_permit_id', $ap_id)->first();
         return $artistPermitDetails;
     }
 
@@ -716,6 +724,13 @@ class MainController extends Controller
         $artistDetails = json_decode($request->artistD, true);
         $documentDetails = json_decode($request->documentD, true);
 
+        // dump($artist_permit_id);
+        // dump($temp_id);
+        // dump($artistDetails);
+        // dump($documentDetails);
+
+        // dd();
+
         $i = 1;
 
         $artists = ArtistTempData::where('id', $temp_id)->update([
@@ -726,7 +741,8 @@ class MainController extends Controller
             'nationality' => $artistDetails[$i]['nationality'],
             'gender' => $artistDetails[$i]['gender'],
             'birthdate' => $artistDetails[$i]['dob'] ? Carbon::parse($artistDetails[$i]['dob'])->toDateString() : '',
-            'permit_type_id' => $artistDetails[$i]['profession'],
+            'permit_type_id' => $artistDetails[$i]['permit_type'],
+            'profession' => $artistDetails[$i]['profession'],
             'uid_number' => $artistDetails[$i]['uidNumber'],
             'passport_number' => $artistDetails[$i]['passport'],
             'uid_expire_date' => $artistDetails[$i]['uidExp'] ? Carbon::parse($artistDetails[$i]['uidExp'])->toDateString() : '',
@@ -904,7 +920,8 @@ class MainController extends Controller
             'emirates_id' => $artistDetails[$i]['idNo'],
             'language' => $artistDetails[$i]['language'],
             'religion' => $artistDetails[$i]['religion'],
-            'permit_type_id' => $artistDetails[$i]['profession'],
+            'permit_type_id' => $artistDetails[$i]['permit_type'],
+            'profession' => $artistDetails[$i]['profession'],
             'city' => $artistDetails[$i]['city'],
             'area' => $artistDetails[$i]['area'],
             'address_en' => $artistDetails[$i]['address'],
@@ -1040,6 +1057,7 @@ class MainController extends Controller
 
                 $updateArray = array(
                     'permit_type_id' => $data->permit_type_id,
+                    'profession_id' => $data->profession,
                     'passport_number' => $data->passport_number,
                     'uid_number' => $data->uid_number,
                     'uid_expire_date' => $data->uid_expire_date,
@@ -1207,7 +1225,10 @@ class MainController extends Controller
         }
 
         $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'pending']);
+
         if ($result) {
+            ArtistTempData::where('permit_id', $permit_id)->delete();
+            ArtistTempDocument::where('permit_id', $permit_id)->delete();
             $message = ['success', 'Permit Re-Submitted Successfully', 'Success'];
         } else {
             $message = ['error', 'Error, Please Try Again', 'Error'];
