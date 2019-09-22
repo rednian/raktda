@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('clear_the_temp', $artistPermitLink . '\MainController@clear_the_temp')->name('clear_the_temp');
     Route::post('cancel_permit',  $artistPermitLink . '\MainController@cancel_permit')->name('company.cancel_permit');
     Route::post('show_cancelled', $artistPermitLink . '\MainController@show_cancelled')->name('company.show_cancelled');
+    Route::get('show_rejected/{id}', $artistPermitLink . '\MainController@show_rejected')->name('company.show_rejected');
     Route::post('uploadfile', $artistPermitLink . '\MainController@uploadDocuments')->name('company.upload_file');
     Route::post('deletefile', $artistPermitLink . '\MainController@deleteDocuments')->name('company.delete_file');
     Route::get('get_permit_details/{id}', $artistPermitLink . '\MainController@get_permit_details')->name('company.get_permit_details');
@@ -59,7 +60,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Payment Controller
     Route::get('make_payment/{id?}', $artistPermitLink . '\PaymentController@make_payment')->name('company.make_payment');
     Route::get('payment_gateway/{id}', $artistPermitLink . '\PaymentController@payment_gateway')->name('company.payment_gateway');
-    Route::get('happiness_meter/{id}', $artistPermitLink . '\PaymentController@happiness_meter')->name('company.happiness_meter');
+    Route::get('pay_fee/{id}', $artistPermitLink . '\PaymentController@pay_fee')->name('company.pay_fee');
     Route::post('submit_happiness', $artistPermitLink . '\PaymentController@submit_happiness')->name('company.submit_happiness');
 
     // Renew Controller

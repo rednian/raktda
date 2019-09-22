@@ -25,6 +25,7 @@ use App\Areas;
 use App\VisaType;
 use App\ArtistTempData;
 use App\ArtistTempDocument;
+use App\PermitComment;
 use PDF;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -133,7 +134,7 @@ class MainController extends Controller
         })->addColumn('details', function ($permit) {
             return '<a href="' . route('company.get_permit_details', $permit->permit_id) . '" title="View"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . route('company.download_permit', $permit->permit_id) . '" title="Download"><span class="fa fa-file-download fa-2x"></i></a>';
+            return '<a href="' . route('company.download_permit', $permit->permit_id) . '" target="_blank" title="Download"><span class="fa fa-file-download fa-2x"></i></a>';
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
 
@@ -213,6 +214,12 @@ class MainController extends Controller
         return $artists;
     }
 
+    public function show_rejected($id)
+    {
+        $comment_details = PermitComment::where('permit_id', $id)->latest()->first();
+        return $comment_details;
+    }
+
     // To Cancel Permit Popup Submit
 
     public function cancel_permit(Request $request)
@@ -232,7 +239,6 @@ class MainController extends Controller
 
     public function create()
     {
-
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
         $data_bundle['countries'] = Countries::orderBy('country_enNationality', 'asc')->get();
         $data_bundle['visatypes'] = VisaType::orderBy('visa_type_en', 'asc')->get();
@@ -243,7 +249,6 @@ class MainController extends Controller
         $data_bundle['emirates'] = Emirates::orderBy('name_en', 'asc')->get();
         $data_bundle['areas'] = Areas::orderBy('area_en', 'asc')->get();
         $data_bundle['profession'] = Profession::orderBy('name_en', 'asc')->get();
-
 
         return view('permits.artist.new.create', $data_bundle);
     }
@@ -1275,6 +1280,6 @@ class MainController extends Controller
         $data['company_details'] = Company::find(Auth::user()->EmpClientId);
         $data['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'artistPermit.artist.Nationality')->where('permit_id', $id)->first();
         $pdf = PDF::loadView('permits.artist.permit_print', $data);
-        return $pdf->download('permit.pdf');
+        return $pdf->stream('permit.pdf');
     }
 }

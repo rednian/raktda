@@ -46,87 +46,83 @@
                     </div>
                 </div>
 
-                <div class="tab-content">
-                    <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                        <table class="table table-striped table-borderless" id="applied-artists-table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Profession</th>
-                                    <th>Mobile</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($permit_details->artistPermit as $artistPermit)
-                                <tr>
-                                    <td>{{$artistPermit->artist['firstname_en']}}</td>
-                                    <td>{{$artistPermit->artist['lastname_en']}}</td>
-                                    <td>{{$artistPermit->permitType['name_en']}}</td>
-                                    <td>{{$artistPermit->mobile_number}}</td>
-                                    <td>{{$artistPermit->email}}</td>
-                                    <td><span
-                                            class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{$artistPermit->artist['artist_status'] == 'active' ? 'success' : 'danger'}}">{{$artistPermit->artist['artist_status']}}</span>
-                                    </td>
-                                    <td class="text-center"> <a href="#" data-toggle="modal"
-                                            data-target="#artist_details"
-                                            onclick="getArtistDetails({{$artistPermit->artist_id}}, {{$artistPermit->artist_permit_id}})"
-                                            class="btn-clean btn-icon btn-icon-md" title="View">
-                                            <i class="la la-file la-2x"></i>
-                                        </a></td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <div class="table-responsive">
+                    <table class="table table-striped table-borderless" id="applied-artists-table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Profession</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($permit_details->artistPermit as $artistPermit)
+                            <tr>
+                                <td>{{$artistPermit->artist['firstname_en']}}</td>
+                                <td>{{$artistPermit->artist['lastname_en']}}</td>
+                                <td>{{$artistPermit->permitType['name_en']}}</td>
+                                <td>{{$artistPermit->mobile_number}}</td>
+                                <td>{{$artistPermit->email}}</td>
+                                <td>{{ucwords($artistPermit->artist_permit_status)}}
+                                </td>
+                                <td class="text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
+                                        onclick="getArtistDetails({{$artistPermit->artist_id}}, {{$artistPermit->artist_permit_id}})"
+                                        class="btn-clean btn-icon btn-icon-md" title="View">
+                                        <i class="la la-file la-2x"></i>
+                                    </a></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-                        <div class="d-flex justify-content-end">
-                            <a href="{{url('company/payment_gateway/'.$permit_details->permit_id)}}">
-                                <div class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm">
-                                    Make Payment
-                                </div>
-                            </a>
+                <div class="d-flex justify-content-end">
+                    <a href="{{url('company/payment_gateway/'.$permit_details->permit_id)}}">
+                        <div class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm">
+                            Make Payment
                         </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <!--begin::Modal-->
+        <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body" id="detail-permit">
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-
-
-    <!--begin::Modal-->
-    <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body" id="detail-permit">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
+        <!--end::Modal-->
 
 
 
 
 
 
-    @endsection
+        @endsection
 
 
-    @section('script')
+        @section('script')
 
-    <script>
-        $.ajaxSetup({
+        <script>
+            $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
@@ -150,6 +146,6 @@
                 }
             });
         }
-    </script>
+        </script>
 
-    @endsection
+        @endsection

@@ -63,65 +63,61 @@
             </div>
         </div>
 
-        <div class="tab-content">
-            <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                <table class="table table-striped table-borderless" id="applied-artists-table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Profession</th>
-                            <th>Mobile</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <div class="table-responsive">
+            <table class="table table-striped table-borderless" id="applied-artists-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Profession</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                    $i = 0 ;
+                    @endphp
+                    <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
+                    @foreach ($artist_details as $artist_detail)
+                    <tr>
+                        <td>{{$artist_detail->firstname_en}}</td>
+                        <td>{{$artist_detail->lastname_en}}</td>
+                        <td>{{$artist_detail->permitType['name_en']}}</td>
+                        <td>{{$artist_detail->mobile_number}}</td>
+                        <td>{{$artist_detail->email}}</td>
+                        <td>
+                            {{ucwords($artist_detail->artist_permit_status)}}
+                        </td>
+                        <td class="text-center">
+                            <a href="{{url('company/edit_artist/'.$artist_detail->id)}}"
+                                class="btn-clean btn-icon btn-icon-sm" title="Edit">
+                                <i class="la la-pencil la-2x"></i>
+                            </a>
+                            <a href="#" data-toggle="modal" data-target="#artist_details"
+                                onclick="getArtistDetails({{$artist_detail->id}})"
+                                class="btn-clean btn-icon btn-icon-sm" title="View">
+                                <i class="la la-file la-2x"></i>
+                            </a>
+                            @if(count($artist_details) > 1)
+                            <a href="#"
+                                onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
+                                data-toggle="modal" data-target="#delartistmodal" class="btn-clean btn-icon btn-icon-sm"
+                                title="Delete">
+                                <i class="la la-trash la-2x"></i>
+                            </a>
+                            @endif
+                        </td>
+                        <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
                         @php
-                        $i = 0 ;
+                        $i++;
                         @endphp
-                        <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
-                        @foreach ($artist_details as $artist_detail)
-                        <tr>
-                            <td>{{$artist_detail->firstname_en}}</td>
-                            <td>{{$artist_detail->lastname_en}}</td>
-                            <td>{{$artist_detail->permitType['name_en']}}</td>
-                            <td>{{$artist_detail->mobile_number}}</td>
-                            <td>{{$artist_detail->email}}</td>
-                            <td>
-                                <span class="kt-badge kt-badge--inline kt-badge--pill">
-                                    {{$artist_detail->artist_permit_status}}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <a href="{{url('company/edit_artist/'.$artist_detail->id)}}"
-                                    class="btn-clean btn-icon btn-icon-sm" title="Edit">
-                                    <i class="la la-pencil la-2x"></i>
-                                </a>
-                                <a href="#" data-toggle="modal" data-target="#artist_details"
-                                    onclick="getArtistDetails({{$artist_detail->id}})"
-                                    class="btn-clean btn-icon btn-icon-sm" title="View">
-                                    <i class="la la-file la-2x"></i>
-                                </a>
-                                @if(count($artist_details) > 1)
-                                <a href="#"
-                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
-                                    data-toggle="modal" data-target="#delartistmodal"
-                                    class="btn-clean btn-icon btn-icon-sm" title="Delete">
-                                    <i class="la la-trash la-2x"></i>
-                                </a>
-                                @endif
-                            </td>
-                            <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
-                            @php
-                            $i++;
-                            @endphp
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
 
         <div class="d-flex justify-content-end">

@@ -130,6 +130,25 @@
 
         <!--end::Modal-->
 
+        <!--begin::Modal-->
+        <div class="modal fade" id="rejected_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Rejected Reason</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="rejected_reason" class="text--maroon kt-font-bold kt-font-transform-i"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end::Modal-->
+
 
 
 
@@ -310,9 +329,6 @@
     }
 
     const show_cancelled = (id) => {
-        $.ajaxSetup({
-			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-		});
         $.ajax({
             url: "{{route('company.show_cancelled')}}",
             type: 'POST',
@@ -332,7 +348,17 @@
         message: {
             cancel_reason: 'Please fill the field'
         }
-    })
+    });
+
+
+    const rejected_permit = id => {
+        $.ajax({
+            url: "{{url('company/show_rejected')}}"+'/'+id,
+            success: function(data){
+                $('#rejected_reason').html(data.comment);
+            }
+        });
+    }
 
 
     </script>
