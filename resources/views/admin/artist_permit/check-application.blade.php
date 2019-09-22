@@ -591,22 +591,15 @@
       <!--end: Form Wizard Step 3-->
       <!--begin: Form Actions -->
       <div class="kt-form__actions">
-        <div class="btn btn-elevate btn-maroon  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev">
-        Previous
-        </div>
-        <div class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
-        Next
-        </div>
-        {{--<div class="btn active btn-warning btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">--}}
-          {{--Finish & New--}}
-        {{--</div>--}}
+        <button type="button" class="btn btn-elevate btn-maroon btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev">Previous</button>
+        <button type="button" class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">Next</button>
         <div class="dropdown" data-ktwizard-type="action-submit">
           <button class="btn btn-warning btn-sm kt-font-bold kt-font-transform-u dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
            Take action & finish
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
             <button type="submit"  name="artist_permit_status" value="approved" class="dropdown-item">Approve</button>
-            <button type="submit" name="artist_permit_status" value="disapproved" class="dropdown-item">Reject</button>
+            <button type="submit" name="artist_permit_status" value="disapproved" class="dropdown-item">Disapprove</button>
           </div>
         </div>
       </div>

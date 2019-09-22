@@ -35,7 +35,7 @@ class Permit extends Model
 
     public function artistPermit()
     {
-        return $this->hasMany(ArtistPermit::class, 'permit_id')->where('artist_permit_status', 'active');
+        return $this->hasMany(ArtistPermit::class, 'permit_id');
     }
 
     public function artist()

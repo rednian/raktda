@@ -66,10 +66,10 @@
             </div>
             <div class="news-feed-overlay"></div>
             <div class="news-caption">
-                <h3 class="caption-title text-center"> Ras Al Khaimah Smart Government Project</h3>
-                <p class="text-center">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque delectus dolores facere minus quaerat ut voluptate. Commodi doloribus eaque esse eum, fugit libero modi pariatur quidem quis vitae voluptatem?
-                </p>
+                <h3 class="caption-title text-center" style="color: #fff; font-size: 43px"> Ras Al Khaimah <br/> Smart Government Project</h3>
+                {{--<p class="text-center">--}}
+                    {{--Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque delectus dolores facere minus quaerat ut voluptate. Commodi doloribus eaque esse eum, fugit libero modi pariatur quidem quis vitae voluptatem?--}}
+                {{--</p>--}}
             </div>
         </div>
         <!-- end news-feed -->

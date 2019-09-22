@@ -16,22 +16,25 @@
 		<div class="col-sm-8">
 			<section class="row">
 				<div class="col-sm-4">
-					<label>Permit Start Date</label>
-					<input type="text" class="form-control-sm form-control" placeholder="Start date of permit" autocomplete="off" name="permit_start">
+					<label>Applied Date</label>
+					<input type="text" class=" form-control form-control-sm" placeholder="Start date of permit" autocomplete="off" name="permit_start">
 				</div>
 				<div class="col-sm-4">
-					<label>Company Type</label>
-					<select class="form-control form-control-sm" name="company_type" data-type="new_request">
+					<label>Permit Status</label>
+					<select class="form-control form-control-sm" name="permit_status" data-type="new_request">
 						<option selected disabled>-Select All-</option>
-						<option value="private">Private </option>
-						<option value="government">Government</option>
-						<option value="individual">Individual</option>
+						<option value="new">New</option>
+						<option value="processing">Processing</option>
+						<option value="pending from client">Pending from client</option>
+						<option value="New-update from client">New-update from client</option>
+						<option value="unprocessed">unprocessed</option>
+						<option value="locked">Locked</option>
 					</select>
 				</div>
 				<div class="col-sm-4">
 					<label>Request Type</label>
 					<select class="form-control form-control-sm" name="request_type" data-type="new_request">
-						<option value="">-Select All-</option>
+						<option selected disabled>-Select All-</option>
 						<option value="new">New </option>
 						<option value="renew">Renew</option>
 						<option value="amend">Amend</option>
@@ -61,8 +64,8 @@
 						data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
 			</span>
 		</th>
-		<th>Permit Status</th>
 		<th>Request Type</th>
+		<th>Permit Status</th>
 	</tr>
 	</thead>
 </table>
@@ -123,17 +126,19 @@
 				artistPermit.ajax.reload(null, false);
 			});
 
-
 			artistPermit = $('table#artist-permit').DataTable({
 				ajax: {
 					url: '{{ route('admin.artist_permit.datatable') }}',
 					data: function(d){
 						d.request_type = $('select[name=request_type][data-type=new_request]').val();
-						d.company_type = $('select[name=company_type][data-type=new_request]').val();
-						d.permit_start = $('input[name=permit_start]').val();
+						d.permit_status = $('select[name=permit_status][data-type=new_request]').val();
+						// d.permit_status = $('input[name=permit_start]').val();
 						d.issued_date = filter.getAction();
 						d.today = filter.getToday();
-						d.status = ['pending', 'edit', 'processing'];
+						d.status = [
+							'new', 'edit', 'processing', 'pending from client',
+							'approved-unpaid', 'unprocessed', 'new-update  from client'
+						];
 					}
 				},
 				columnDefs: [
@@ -145,9 +150,9 @@
 					{ data: 'company_name'},
 					{ data: 'applied_date'},
 					{ data: 'artist_number'},
-					{ data: 'permit_status'},
 					// { data: 'company_type'},
 					{ data: 'request_type'},
+					{ data: 'permit_status'},
 				],
 
 				createdRow: function(row, data, index){

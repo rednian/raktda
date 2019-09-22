@@ -17,6 +17,7 @@ use App\ApproverProcedure;
 use App\PermitComment;
 use App\ArtistPermitDocument;
 use App\ArtistPermitComment;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\ArtistPermitCheck;
 use App\ArtistPermitChecklist;
@@ -27,7 +28,7 @@ class ArtistPermitController extends Controller
 {
     public function index()
     {
-        return view('admin.artist_permit.index', [
+	    return view('admin.artist_permit.index', [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
         ]);
@@ -68,8 +69,11 @@ class ArtistPermitController extends Controller
                 }
               }
               if($request->action == 'send_back'){
-                 $permit_status = 'edit';
-                  $comment_type = 'client';
+	               $permit->update(['permit_status'=>'  Pending from client', 'user_d'=>$user->user_id ]);
+	              if($request->comment){
+		              $request['type'] = 'client';
+		              $permit_comment = $permit->comment()->create($request->all());
+	              }
               }
 
               if($request->action == 'rejected'){
@@ -252,10 +256,12 @@ class ArtistPermitController extends Controller
 
     public function applicationDetails(Request $request, Permit $permit)
     {
+//    	$permit = Permit::with('artistpermit', 'artistpermit.check')->find($permit->permit_id);
       if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
         return view('admin.artist_permit.application-details', [
         	'page_title'=> 'artist permit details',
           'permit'=>$permit,
+//          ''
           'roles'=>Roles::where('type', 0)->get()
         ]);
     }
@@ -263,7 +269,7 @@ class ArtistPermitController extends Controller
     public function applicationDataTable(Request $request, Permit $permit)
     {
     	if($request->ajax()){
-    		$artist_permit = ArtistPermit::where('permit_id', $permit->permit_id)->get();
+    		$artist_permit = $permit->artistPermit()->orderBy('updated_at', 'desc');
     		return Datatables::of($artist_permit)
 			    ->addColumn('visa_type', function($artist_permit){
                          return ucwords($artist_permit->artist->visa_type);
@@ -293,7 +299,7 @@ class ArtistPermitController extends Controller
 			    ->editColumn('artist_status', function($artist_permit){
                      $class_name = 'default';
                      $status = $artist_permit->artist_permit_status;
-                     if($artist_permit->artist_permit_status == 'pending'){ $class_name = 'warning'; }
+                     if($artist_permit->artist_permit_status == 'unchecked'){ $class_name = 'warning'; }
                      if($artist_permit->artist_permit_status == 'disapproved'){ $class_name = 'danger'; }
                      if($artist_permit->artist_permit_status == 'approved'){ $class_name = 'success'; }
                       
@@ -305,6 +311,21 @@ class ArtistPermitController extends Controller
 			    ->rawColumns(['artist_status', 'check'])
 			    ->make(true);
         }       
+    }
+    public function applicationCommentDataTable(Request $request, Permit $permit, ArtistPermit $artistpermit)
+    {
+    	$comments = $artistpermit->comments()->orderBy('created_at', 'desc')->get();
+    	return DataTables::of($comments)
+		    ->addColumn('comment', function ($comments){
+		    	return ucfirst($comments->comment);
+		    })
+		    ->addColumn('commented_on', function ($comments){
+			    return $comments->created_at->format('d-M-Y');
+		    })
+		    ->addColumn('commented_by', function ($comments){
+			    return $comments->user->employee->emp_name;
+		    })
+		    ->make(true);
     }
 
     public function dataTable(Request $request)
@@ -320,24 +341,20 @@ class ArtistPermitController extends Controller
 	         ->when($request->request_type, function ($q) use ($request){
 	         	$q->where('request_type', $request->request_type);
 	         })
+	         ->when($request->permit_status, function($q) use ($request){
+	         	$q->where('permit_status', $request->permit_status);
+	         })
 	         ->when($request->permit_start, function ($q) use ($request){
 	         	$date = explode('-', $request->permit_start);
 	         	$q->whereBetween('issued_date', [ date('Y-m-d', strtotime($date[0])), date('Y-m-d', strtotime($date[1]))]);
 	         })
-//	         ->when($request->company_type, function($q) use ($request){
-//	         	$q->whereHas('company', function ($q) use ($request){
-//	         		$q->where('company_type', $request->company_type);
-//	          });
-//	         })0
 	         ->orderBy('created_at', 'DESC');
-//          ->toSql();
-//          dd($permit);
+
          return Datatables::of($permit)
 	         ->addColumn('artist_number', function($permit){
-	         	$total = $permit->artistpermit()->count();
-	         	$check = $permit->artistpermit()->where('artist_permit_status', '!=', 'pending')->count();
-//	         	if($check == 0){ return $total; }
-	         	return 'Checked '.$check.' of '.$total.' artist';
+		         $total = $permit->artistpermit()->count();
+		         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'pending')->count();
+	         	return 'Checked '.$check.' of '.$total;
 	         })
 	         ->addColumn('permit_status', function($permit){
 	         	$classname = $permit->permit_status == 'pending' ? 'warning': 'info';
@@ -374,17 +391,13 @@ class ArtistPermitController extends Controller
 		         return '<span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($permit->company->company_type).'</span>';
 	         })
 	         ->editColumn('request_type', function($permit){
-	         	$class_name = 'default';
-	         	if(strtolower($permit->request_type) == 'new'){$class_name = 'info'; }
-	         	if(strtolower($permit->request_type) == 'renew'){$class_name = 'success'; }
-	         	if(strtolower($permit->request_type) == 'cancel'){$class_name = 'danger'; }
-	         	if(strtolower($permit->request_type) == 'amend'){$class_name = 'warning'; }
-	         	return '<span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($permit->request_type).'</span>';
+	         	return ucwords($permit->request_type).' Application';
 	         })
 	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status'])
 	         ->make(true);
      }
     }
+
 
     public function artistDataTable(Request $request, Permit $permit)
     {

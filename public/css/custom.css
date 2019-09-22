@@ -59,18 +59,18 @@
 }
 .btn-warning{
   background: #fda900;
-  color: #fff;
+  color: #000;
 }
 .btn-warning:hover,.btn-warning:focus{
   background-color: #ffbf00;
   border: 1px solid #ffbf00;
-  color: #fff;
+  color: #000;
 }
 
 .btn-warning:not(:disabled):not(.disabled):active,
 .btn-warning:not(:disabled):not(.disabled).active, .show >
 .btn-warning.dropdown-toggle {
-  color: #fff;
+  color: #000;
   background-color: #eea200;
   border-color: #e19900;
 }
@@ -381,7 +381,7 @@ thead > tr > th.no-wrap.sorting_disabled > span{
   color: #fff;
 }
 .kt-badge.kt-badge--warning {
-  color: #fff;
+  color: #000;
   background: #ffb822;
 }
 
