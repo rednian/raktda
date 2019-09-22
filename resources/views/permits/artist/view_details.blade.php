@@ -48,48 +48,43 @@
             </div>
         </div>
 
-        <div class="tab-content">
-            <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
-                <div class="table-responsive">
-                    <table class="table table-striped table-borderless  " id="applied-artists-table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Profession</th>
-                                <th>Mobile</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        {{-- {{dd($permit_details)}} --}}
-                        <tbody>
-                            @foreach ($permit_details->artistPermit as $artistPermit)
-                            <tr>
-                                <td>{{$artistPermit->artist['firstname_en']}}</td>
-                                <td>{{$artistPermit->artist['lastname_en']}}</td>
-                                <td>{{$artistPermit->permitType['name_en']}}</td>
-                                <td>{{$artistPermit->mobile_number}}</td>
-                                <td>{{$artistPermit->email}}</td>
-                                <td>
-                                    <span class="kt-badge kt-badge--inline kt-badge--pill">
-                                        {{$artistPermit->artist_permit_status}}
-                                    </span>
-                                </td>
-                                <td class="text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
-                                        onclick="getArtistDetails({{$artistPermit->artist_permit_id}})"
-                                        class="btn-clean btn-icon btn-icon-md" title="View">
-                                        <i class="la la-file la-2x"></i>
-                                    </a></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-borderless  " id="applied-artists-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Profession</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                {{-- {{dd($permit_details)}} --}}
+                <tbody>
+                    @foreach ($permit_details->artistPermit as $artistPermit)
+                    <tr>
+                        <td>{{$artistPermit->artist['firstname_en']}}</td>
+                        <td>{{$artistPermit->artist['lastname_en']}}</td>
+                        <td>{{$artistPermit->permitType['name_en']}}</td>
+                        <td>{{$artistPermit->mobile_number}}</td>
+                        <td>{{$artistPermit->email}}</td>
+                        <td>
+                            {{ucwords($artistPermit->artist_permit_status)}}
+                        </td>
+                        <td class="text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
+                                onclick="getArtistDetails({{$artistPermit->artist_permit_id}})"
+                                class="btn-clean btn-icon btn-icon-md" title="View">
+                                <i class="la la-file la-2x"></i>
+                            </a></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
+
 
 
 
