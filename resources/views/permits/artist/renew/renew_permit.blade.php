@@ -73,6 +73,7 @@
                             <th>Profession</th>
                             <th>Mobile</th>
                             <th>Email</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -88,6 +89,11 @@
                             <td>{{$artist_detail->permitType['name_en']}}</td>
                             <td>{{$artist_detail->mobile_number}}</td>
                             <td>{{$artist_detail->email}}</td>
+                            <td>
+                                <span class="kt-badge kt-badge--inline kt-badge--pill">
+                                    {{$artist_detail->artist_permit_status}}
+                                </span>
+                            </td>
                             <td class="text-center">
                                 <a href="{{url('company/edit_artist/'.$artist_detail->id)}}"
                                     class="btn-clean btn-icon btn-icon-sm" title="Edit">

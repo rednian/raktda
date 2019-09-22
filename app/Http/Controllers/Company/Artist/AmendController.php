@@ -74,7 +74,8 @@ class AmendController extends Controller
                     'emirates_id' => $pd->identification_number,
                     'artist_permit_id' => $pd->artist_permit_id,
                     'person_code' => $pd->artist['person_code'],
-                    'is_old_artist' => 2
+                    'is_old_artist' => 2,
+                    'artist_permit_status' => $pd->artist_permit_status
                 ]);
 
                 $permit_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('document_name');

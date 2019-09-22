@@ -1241,10 +1241,6 @@
     $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
     $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
 
-    function clearPersonCode() {
-        $('#code').val('');
-    }
-
 
     const setToDate = () => {
         var permitFrom = $('#permit_from').val();
@@ -1303,16 +1299,22 @@
                         $('#ex_artist_email').html(data.artist_permit[$j].email);
                         $('#ex_artist_personcode').html(data.person_code);
                         var dateArray = data.birthdate.split('-');
-                        var dob = dateArray[2] + "-" + dateArray[1]  +"-"  + dateArray[0];
+                        var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                         $('#ex_artist_dob').html(dob);
                         $('#ex_artist_nationality').html(data.nationality);
                         var gender = data.artist_permit[$j].gender == 1 ? 'Male' : 'Female';
                         $('#ex_artist_gender').html(gender);
-                        $('#profImg').attr('src', data.artist_permit[$j].thumbnail ? "/storage/"+data.artist_permit[$j].thumbnail : '');
+                        $('#profImg').attr('src', data.artist_permit[$j].thumbnail ? "{{url('storage')}}/"+ data.artist_permit[$j].thumbnail : '');
                         $('#profImg').css('height', '150px');
                         $('#profImg').css('width', '150px');
                         $('#artist_exists').modal('show');
-                    }
+                        $('#alertMessage').modal('hide');
+                    }  else {
+                            setTimeout(searchCode(), 1000);
+                            $('#not_artist_personcode').html(code);
+                            $('#alertMessage').modal('show');
+                            $('#artist_exists').modal('hide');
+                        }
 
                 }
             });
@@ -1320,6 +1322,7 @@
     }
 
     function removeSelectedArtist(){
+        $('.ajax-file-upload-red').trigger('click');
         $('#artist_details').trigger('reset');
         $('#documents_required').trigger('reset');
         $('#artist_id').val('');
@@ -1330,23 +1333,31 @@
         $('#artist_permit_id').val('');
         $('#changeArtistLabel').addClass('d-none');
         $('#code').removeClass('mk-disabled');
+        $('#is_old_artist').val(1);
         $('#code').val('');
         PicUploadFunction();
         uploadFunction();
-        picUploader.reset();
     }
+
+    const clearPersonCode = () => {
+            $('#code').val('');
+            $('#is_old_artist').val(1);
+            $('#alertMessage').modal('hide');
+            $('#artist_exists').modal('hide');
+        }
 
 
         const setArtistDetails = () => {
+            $('.ajax-file-upload-red').trigger('click');
             let ad = $('#artistDetailswithcode').val();
             ad = JSON.parse(ad);
 
             var ap_count = ad.artist_permit.length;
             var i = ap_count - 1 ;
             // console.log(ad);
-            var dateArray = ad.birthdate.split('-');
             $('#is_old_artist').val(2);
-            var newDate = dateArray[2] + "-" + dateArray[1]  +"-"  + dateArray[0];
+
+            var dob = moment(ad.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#changeArtistLabel').removeClass('d-none');
             $('#changeArtistLabel').addClass('ml-2');
             $('#artist_id').val(ad.artist_id);
@@ -1358,32 +1369,34 @@
             $('#nationality').val(ad.nationality),
             $('#permit_type').val(ad.artist_permit[i].permit_type_id),
             $('#profession').val(ad.artist_permit[i].profession_id),
-            $('#passport').val(ad.artist_permit[i].passport_number),
-            $('#pp_expiry').val(ad.artist_permit[i].passport_expire_date),
-            $('#visa_type').val(ad.artist_permit[i].visa_type),
-            $('#visa_number').val(ad.artist_permit[i].visa_number),
-            $('#visa_expiry').val(ad.artist_permit[i].visa_expire_date),
+            $('#passport').val(ad.artist_permit[i].passport_number);
+            var ppExp = moment(ad.artist_permit[$i].passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#pp_expiry').val(ppExp),
+            $('#visa_type').val(ad.artist_permit[i].visa_type_id),
+            $('#visa_number').val(ad.artist_permit[i].visa_number);
+            var visaExp = moment(ad.artist_permit[$i].visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#visa_expiry').val(visaExp),
             $('#sp_name').val(ad.artist_permit[i].sponsor_name_en),
             $('#id_no').val(ad.artist_permit[i].emirates_id),
-            $('#language').val(ad.artist_permit[i].language),
-            $('#religion').val(ad.artist_permit[i].religion),
-            $('#gender').val(ad.artist_permit[i].gender),
-            $('#city').val(ad.artist_permit[i].city);
-            getAreas(ad.artist_permit[i].city);
+            $('#language').val(ad.artist_permit[i].language_id),
+            $('#religion').val(ad.artist_permit[i].religion_id),
+            $('#gender').val(ad.artist_permit[i].gender_id),
+            $('#city').val(ad.artist_permit[i].emirates_id);
+            getAreas(ad.artist_permit[i].emirates_id);
             $('#address').val(ad.artist_permit[i].address_en),
-            $('#uid_number').val(ad.artist_permit[i].uid_number),
-            $('#uid_expiry').val(ad.artist_permit[i].uid_expire_date),
-            $('#dob').val(newDate),
+            $('#uid_number').val(ad.artist_permit[i].uid_number);
+            var uidExp = moment(ad.artist_permit[$i].uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#uid_expiry').val(uidExp);
+            $('#dob').val(dob),
             $('#landline').val(ad.artist_permit[i].phone_number),
             $('#po_box').val(ad.artist_permit[i].po_box),
             $('#fax_no').val(ad.artist_permit[i].fax_number),
             $('#mobile').val(ad.artist_permit[i].mobile_number),
             $('#email').val(ad.artist_permit[i].email);
             $('#artist_permit_id').val(ad.artist_permit[i].artist_permit_id);
-            $('#area').val(ad.artist_permit[i].area);
+            $('#area').val(ad.artist_permit[i].area_id);
             PicUploadFunction();
             uploadFunction();
-            $('#artist_details').validate();
         }
 
 

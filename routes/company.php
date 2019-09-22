@@ -2,9 +2,11 @@
 
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/dashboard', function(){return redirect()->route('artist_permits.index'); })->name('company.dashboard');
+    Route::get('/dashboard', function () {
+        return redirect()->route('artist_permits.index');
+    })->name('company.dashboard');
 
-    Route::get('{company_name}/dashboard', function(){
+    Route::get('{company_name}/dashboard', function () {
         return redirect()->route('artist_permits.index');
     })->name('company.dashboard');
 
@@ -37,8 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('deletefile', $artistPermitLink . '\MainController@deleteDocuments')->name('company.delete_file');
     Route::get('get_permit_details/{id}', $artistPermitLink . '\MainController@get_permit_details')->name('company.get_permit_details');
     Route::get('update_is_edit/{id}', $artistPermitLink . '\MainController@update_is_edit')->name('company.update_is_edit');
-
-
+    Route::get('download_permit/{id}', $artistPermitLink . '\MainController@download_permit')->name('company.download_permit');
 
     Route::get('get_temp_photo_artist_permit_id/{id}', $artistPermitLink . '\MainController@get_temp_photo_artist_permit_id')->name('company.get_temp_photo_artist_permit_id');
     Route::post('get_temp_files_by_artist_permit_id', $artistPermitLink . '\MainController@get_temp_files_by_artist_permit_id')->name('company.get_temp_files_by_artist_permit_id');
@@ -68,6 +69,4 @@ Route::group(['middleware' => ['auth']], function () {
     // Amend Controller
     Route::get('amend_permit/{id}', $artistPermitLink . '\AmendController@amend_permit')->name('company.amend_permit');
     Route::get('replace_artist/{id}',  $artistPermitLink . '\AmendController@replace_artist')->name('company.replace_artist');
-
-    Route::get('download_permit', 'Company\ArtistController@download_permit')->name('company.download_permit');
 });

@@ -69,6 +69,7 @@
                             <th>Profession</th>
                             <th>Mobile</th>
                             <th>Email</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -84,7 +85,11 @@
                             <td>{{$artist_detail->permitType['name_en']}}</td>
                             <td>{{$artist_detail->mobile_number}}</td>
                             <td>{{$artist_detail->email}}</td>
-
+                            <td>
+                                <span class="kt-badge kt-badge--inline kt-badge--pill">
+                                    {{$artist_detail->artist_permit_status}}
+                                </span>
+                            </td>
                             <td class="text-center">
                                 <a href="{{url('company/replace_artist/'.$artist_detail->id)}}"
                                     class="btn-clean btn-icon btn-icon-sm" title="Edit">
@@ -250,10 +255,10 @@
             url: '{{route("company.move_temp_to_permit")}}',
             data: {permit_id: $('#permit_id').val()},
             success: function(result) {
-                // if(result.message[0] == 'success')
-                // {
-                    // window.location.href="{{url('company/artist_permits')}}";
-                // }
+                if(result.message[0] == 'success')
+                {
+                    window.location.href="{{url('company/artist_permits')}}";
+                }
             }
         });
     }

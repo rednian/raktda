@@ -25,6 +25,7 @@ use App\Areas;
 use App\VisaType;
 use App\ArtistTempData;
 use App\ArtistTempDocument;
+use PDF;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class MainController extends Controller
@@ -62,12 +63,14 @@ class MainController extends Controller
                 return 'None';
             }
         })->addColumn('action', function ($permit) {
-            if ($permit->permit_status == 'payment') {
+            if ($permit->permit_status == 'approved') {
                 return '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
-            } else if ($permit->permit_status == 'pending') {
-                return '<a href="edit_permit/' . $permit->permit_id . '"><span class="kt-badge kt-badge--warning kt-badge--inline">Edit </span></a>';
+            } else if ($permit->permit_status == 'new' || $permit->permit_status == 'pendingfromclient') {
+                return '<a href="edit_permit/' . $permit->permit_id . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><span onClick="cancel_permit(' . $permit->permit_id . ',\'' . $permit->permit_number . '\')" data-toggle="modal" data-target="#cancel_permit" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
             } else if ($permit->permit_status == 'rejected') {
                 return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">Rejected</span>';
+            } else if ($permit->permit_status == 'cancelled') {
+                return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">Cancelled</span>';
             }
         })->addColumn('permit_status', function ($permit) {
             return  $permit->permit_status;
@@ -76,20 +79,15 @@ class MainController extends Controller
         })->rawColumns(['action', 'details'])->make(true);
 
         /*
-        else if ($permit->permit_status == 'pending') {
-                return '<span onClick="cancel_permit(' . $permit->permit_id . ',\'' . $permit->permit_number . '\')" data-toggle="modal" data-target="#cancel_permit" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span';
-            }
-        else if ($permit->permit_status == 'cancelled') {
-            return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">Cancelled</span>';
-        }*/
+       */
     }
 
     public function get_permit_details($id)
     {
-        $p = Permit::with('artistPermit')->whereHas('artistPermit', function ($q) {
-            $q->where('artist_permit_status', '!=', 'removed');
-        })->where('permit_id', $id)->get();
-        dd($p);
+        // $p = Permit::with('artistPermit')->whereHas('artistPermit', function ($q) {
+        //     $q->where('artist_permit_status', '!=', 'removed');
+        // })->where('permit_id', $id)->get();
+        // dd($p);
         // $data_bundle['permit_number'] = $id;
         $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.permitType', 'artistPermit.artistPermitDocument')->where('permit_id', $id)->first();
         return view('permits.artist.view_details', $data_bundle);
@@ -133,8 +131,10 @@ class MainController extends Controller
             }
             return  '<span class="d-flex flex-column">' . $amendBtn . $renewBtn . '</span>';
         })->addColumn('details', function ($permit) {
-            return '<a href="' . route('company.get_permit_details', $permit->permit_id) . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
-        })->rawColumns(['action', 'details'])->make(true);
+            return '<a href="' . route('company.get_permit_details', $permit->permit_id) . '" title="View"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
+        })->addColumn('download', function ($permit) {
+            return '<a href="' . route('company.download_permit', $permit->permit_id) . '" title="Download"><span class="fa fa-file-download fa-2x"></i></a>';
+        })->rawColumns(['action', 'details', 'download'])->make(true);
     }
 
     // Function for Excel Export
@@ -334,16 +334,15 @@ class MainController extends Controller
         $artistDetails = json_decode($request->artistD, true);
         $documentDetails = json_decode($request->documentD, true);
 
-        $new_permit_no = $this->generatePermitNumber();
+        // $new_permit_no = $this->generatePermitNumber();
         $new_refer_no = $this->generateReferenceNumber();
 
         $permit = Permit::create([
             'work_location' => $permitDetails['workLocation'],
             'issued_date' => $permitDetails['fromDate'] ? Carbon::parse($permitDetails['fromDate'])->toDateString() : '',
             'expired_date' => $permitDetails['toDate'] ? Carbon::parse($permitDetails['toDate'])->toDateString() : '',
-            'permit_number' => $new_permit_no,
             'reference_number' => $new_refer_no,
-            'permit_status' => 'pending',
+            'permit_status' => 'new',
             'request_type' => 'new',
             'user_id' => Auth::user()->user_id,
             'created_by' => Auth::user()->user_id,
@@ -418,7 +417,7 @@ class MainController extends Controller
             }
 
             $artistPermit = ArtistPermit::create([
-                'artist_permit_status' => 'pending',
+                'artist_permit_status' => 'unchecked',
                 'artist_id' => $artist->artist_id,
                 'permit_id' => $permit->permit_id,
                 'created_at' => Carbon::now()->toDateTimeString(),
@@ -943,7 +942,8 @@ class MainController extends Controller
             'po_box' => $artistDetails[$i]['po_box'],
             'fax_number' => $artistDetails[$i]['fax_number'],
             'status' => 0,
-            'is_old_artist' => $artistDetails[$i]['is_old_artist']
+            'is_old_artist' => $artistDetails[$i]['is_old_artist'],
+            'artist_permit_status' => 'unchecked'
         ]);
 
         $tempData->artist_id = $artistDetails[$i]['is_old_artist']  == 2 ? $artistDetails[$i]['artist_id'] : '';
@@ -1088,7 +1088,7 @@ class MainController extends Controller
                     'identification_number' => $data->emirates_id,
                     'updated_at' => Carbon::now()->toDateTimeString(),
                     'updated_by' => Auth::user()->user_id,
-                    'artist_permit_status' => 'active'
+                    'artist_permit_status' => $data->artist_permit_status
                 );
 
                 $org = explode('/', $data->original);
@@ -1233,7 +1233,7 @@ class MainController extends Controller
             }
         }
 
-        $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'pending']);
+        $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'new', 'lock' => null]);
 
         if ($result) {
             ArtistTempData::where('permit_id', $permit_id)->delete();
@@ -1262,7 +1262,19 @@ class MainController extends Controller
 
     public function update_is_edit($id)
     {
-        Permit::where('permit_id', $id)->update(['is_edit' => 0]);
+        Permit::where('permit_id', $id)->update(['is_edit' => 0, lock => null]);
         return true;
+    }
+
+
+    public function download_permit($id)
+    {
+        // dd($id);
+        //Auth::user()->EmpClientI
+
+        $data['company_details'] = Company::find(Auth::user()->EmpClientId);
+        $data['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'artistPermit.artist.Nationality')->where('permit_id', $id)->first();
+        $pdf = PDF::loadView('permits.artist.permit_print', $data);
+        return $pdf->download('permit.pdf');
     }
 }
