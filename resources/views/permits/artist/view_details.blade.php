@@ -72,8 +72,10 @@
                                 <td>{{$artistPermit->permitType['name_en']}}</td>
                                 <td>{{$artistPermit->mobile_number}}</td>
                                 <td>{{$artistPermit->email}}</td>
-                                <td><span
-                                        class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{$artistPermit->artist['artist_status'] == 'active' ? 'success' : 'danger'}}">{{$artistPermit->artist['artist_status']}}</span>
+                                <td>
+                                    <span class="kt-badge kt-badge--inline kt-badge--pill">
+                                        {{$artistPermit->artist_permit_status}}
+                                    </span>
                                 </td>
                                 <td class="text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
                                         onclick="getArtistDetails({{$artistPermit->artist_permit_id}})"

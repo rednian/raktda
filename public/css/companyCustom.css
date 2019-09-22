@@ -412,7 +412,7 @@
 }
 
 #detail-permit td {
-    font-weight: bold;
+    font-weight: 400 !important;
 }
 
 .modal-header h5 {
@@ -490,4 +490,9 @@ input[type="text"]:disabled {
 
 input:focus, select:focus {
     border-color: var(--sub-brand-color) !important;
+}
+
+select option:first-child {
+    color: #ccc;
+    pointer-events: none;
 }

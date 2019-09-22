@@ -288,7 +288,8 @@
                                                 id="profession" placeholder="Profession">
                                                 <option value="">Select</option>
                                                 @foreach ($profession as $pf)
-                                                <option value="{{$pf->profession_id}}">{{$pf->name_en}}</option>
+                                                <option value="{{$pf->profession_id}}">{{ucwords($pf->name_en)}}
+                                                </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -602,16 +603,24 @@
                             Back
                         </div>
                     </a>
-                    <div id="add_new_btn_div">
-                        <div class="btn btn-outline-maroon btn-wide btn-pill btn-sm kt-font-bold kt-font-transform-u kt-margin-r-20"
-                            id="addNew_btn" style="display:none;" onclick="startToFront()">
-                            Add New Artist
+
+                    <div class="btn-group-sm btn-wide" role="group" id="submit--btn-group"
+                        data-ktwizard-type="action-submit">
+                        <button id="btnGroupVerticalDrop2" type="button" class="btn btn--yellow dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Actions
+                        </button>
+                        <div class="dropdown-menu p-0" aria-labelledby="btnGroupVerticalDrop2">
+                            <a class="dropdown-item btn--maroon btn-sm" href="#" id="addNew_btn"
+                                onclick="startToFront()">Save
+                                & Add New
+                                Artist</a>
+                            <a class="dropdown-item btn--yellow btn-sm" href="#" id="submit_btn">Finish & Submit
+                                Permit</a>
                         </div>
                     </div>
-                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
-                        style="display:none;">
-                        Apply
-                    </div>
+
+
 
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
@@ -698,7 +707,7 @@
                             data-dismiss="modal">Select</button>
                     </span> --}}
                 </div>
-                <div class="d-flex justify-content-center mt-4">
+                <div class="d-flex justify-content-center mt-4 mb-2">
                     <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails()"
                         data-dismiss="modal">Select this Artist</button>
                     <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not
@@ -726,7 +735,8 @@
             </div>
             <div class="modal-body">
                 <p class="text-center">Sorry ! We cannot find artist with With Person Code <span
-                        class="text--maroon kt-font-bold" id="not_artist_personcode"></span>. Please leave it blank!
+                        class="text--maroon kt-font-bold" id="not_artist_personcode"></span>.<br /> Please leave it
+                    blank!
                 </p>
                 <div class="d-flex justify-content-center mt-4">
                     <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"
@@ -1258,7 +1268,7 @@
                     success: function(result){
                         console.log(result)
                         localStorage.clear();
-                        window.location.href="/company/artist_permits";
+                        window.location.href="{{url('company/artist_permits')}}";
                     }
                 });
             }
@@ -1289,6 +1299,12 @@
                 PicUploadFunction();
                 wizard = new KTWizard("kt_wizard_v3");
                 wizard.goTo(3);
+                $('#fname_en').removeClass('mk-disabled');
+                $('#fname_ar').removeClass('mk-disabled');
+                $('#lname_en').removeClass('mk-disabled');
+                $('#lname_ar').removeClass('mk-disabled');
+                $('#changeArtistLabel').addClass('d-none');
+                $('#code').removeClass('mk-disabled');
             }
         }
 
@@ -1397,8 +1413,6 @@
             searchCode(e);
         });
 
-
-
         function searchCode(e){
             let code = $('#code').val();
             if(code){
@@ -1420,7 +1434,7 @@
                             $('#ex_artist_nationality').html(data.nationality);
                             var gender = data.artist_permit[$j].gender == 1 ? 'Male' : 'Female';
                             $('#ex_artist_gender').html(gender);
-                            $('#profImg').attr('src', data.artist_permit[$j].thumbnail ? "/storage/"+data.artist_permit[$j].thumbnail : '');
+                            $('#profImg').attr('src', data.artist_permit[$j].thumbnail ? "{{url('storage')}}/"+data.artist_permit[$j].thumbnail  : '');
                             $('#profImg').css('height', '150px');
                             $('#profImg').css('width', '150px');
                             $('#artist_exists').modal('show');
@@ -1430,6 +1444,7 @@
                             setTimeout(searchCode(), 1000);
                             $('#not_artist_personcode').html(code);
                             $('#alertMessage').modal('show');
+                            $('#artist_exists').modal('hide');
                         }
                     }
                 });
@@ -1437,6 +1452,7 @@
         }
 
         function removeSelectedArtist(){
+            $('.ajax-file-upload-red').trigger('click');
             $('#artist_details').trigger('reset');
             $('#documents_required').trigger('reset');
             $('#artist_id').val('');
@@ -1447,16 +1463,20 @@
             $('#artist_permit_id').val('');
             $('#changeArtistLabel').addClass('d-none');
             $('#code').removeClass('mk-disabled');
+            $('#is_old_artist').val(1);
             PicUploadFunction();
             uploadFunction();
         }
 
         const clearPersonCode = () => {
             $('#code').val('');
+            $('#is_old_artist').val(1);
+            $('#alertMessage').modal('hide');
+            $('#artist_exists').modal('hide');
         }
 
         const setArtistDetails = () => {
-
+            $('.ajax-file-upload-red').trigger('click');
             let ad = $('#artistDetailswithcode').val();
             ad = JSON.parse(ad);
             $ap_count = ad.artist_permit.length;

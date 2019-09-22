@@ -91,7 +91,7 @@
                                 <th>Profession</th>
                                 <th>Mobile</th>
                                 <th>Email</th>
-                                {{-- <th>Status</th> --}}
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -110,9 +110,11 @@
                                 <td>{{$artist_detail->permitType['name_en']}}</td>
                                 <td>{{$artist_detail->mobile_number}}</td>
                                 <td>{{$artist_detail->email}}</td>
-                                {{-- <td><span
-                                                    class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{$artist_details->artist['artist_status'] == 'active' ? 'success' : 'danger'}}">{{$artist_details->artist['artist_status']}}</span>
-                                </td> --}}
+                                <td>
+                                    <span class="kt-badge kt-badge--inline kt-badge--pill">
+                                        {{$artist_detail->artist_permit_status}}
+                                    </span>
+                                </td>
 
                                 <td class="text-center">
                                     <a href="{{url('company/edit_edit_artist/'.$artist_detail->id)}}"
@@ -132,11 +134,11 @@
                                         <i class="la la-trash la-2x"></i>
                                     </a>
                                     @endif
-                                    <a href="#" data-toggle="modal" data-target="#error_list"
+                                    {{-- <a href="#" data-toggle="modal" data-target="#error_list"
                                         onclick="getErrorFields({{$artist_detail->artist_permit_id}})"
-                                        class="btn-clean btn-icon btn-icon-sm" title="View">
-                                        <i class="la la-comment la-2x"></i>
-                                    </a>
+                                    class="btn-clean btn-icon btn-icon-sm" title="View">
+                                    <i class="la la-comment la-2x"></i>
+                                    </a> --}}
                                 </td>
                                 <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
                                 @php
@@ -156,83 +158,84 @@
                 </div>
             </div>
         </div>
-
-
-
-
-        <!--begin::Modal-->
-        <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body" id="detail-permit">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--end::Modal-->
-
-        <!--begin::Modal-->
-        <div class="modal fade" id="error_list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Fields to be corrected !</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body" id="field-list">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--end::Modal-->
-
-        <!--begin::Modal-->
-        <div class="modal fade" id="delartistmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Remove Artist</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{route('company.delete_artist')}}" method="POST">
-                            @csrf
-                            <p id="warning_text"></p>
-                            <input type="hidden" id="del_temp_id" name="del_temp_id" />
-                            <input type="hidden" name="del_artist_from" value="edit" />
-                            <input type="hidden" name="del_permit_id" id="del_permit_id">
-                            <input type="submit" value="Remove"
-                                class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--end::Modal-->
-
-
-
-
     </div>
 
-    @endsection
 
-    @section('script')
-    <script>
-        $.ajaxSetup({
+
+
+    <!--begin::Modal-->
+    <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body" id="detail-permit">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--end::Modal-->
+
+    <!--begin::Modal-->
+    <div class="modal fade" id="error_list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Fields to be corrected !</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body" id="field-list">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--end::Modal-->
+
+    <!--begin::Modal-->
+    <div class="modal fade" id="delartistmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Remove Artist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route('company.delete_artist')}}" method="POST">
+                        @csrf
+                        <p id="warning_text"></p>
+                        <input type="hidden" id="del_temp_id" name="del_temp_id" />
+                        <input type="hidden" name="del_artist_from" value="edit" />
+                        <input type="hidden" name="del_permit_id" id="del_permit_id">
+                        <input type="submit" value="Remove"
+                            class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--end::Modal-->
+
+
+
+
+</div>
+
+@endsection
+
+@section('script')
+<script>
+    $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
@@ -352,5 +355,5 @@
         }
 
 
-    </script>
-    @endsection
+</script>
+@endsection

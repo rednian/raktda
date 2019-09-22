@@ -41,7 +41,6 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>ReferNo.</th>
-                            <th>PermitNo.</th>
                             <th>FromDate</th>
                             <th>ToDate</th>
                             <th>Address</th>
@@ -67,6 +66,7 @@
                             <th>Status</th>
                             <th>Actions</th>
                             <th>Details</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -156,12 +156,11 @@
             serverSide: true,
             searching: true,
             // pageLength: 5,
-            order:[[5,'desc']],
+            order:[[4,'desc']],
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
             ajax:'{{route("company.fetch_applied_artists")}}',
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
-                { data: 'permit_number', name: 'permit_number' },
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'work_location', name: 'work_location' },
@@ -180,20 +179,13 @@
                 },
                 {
                     targets:3,
-                    width: '12%',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:4,
                     width: '10%',
                     render: function(data, type, full, meta) {
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
                 },
                 {
-                    targets:5,
+                    targets:4,
                     width: '12%',
                     render: function(data, type, full, meta) {
                         return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
@@ -247,6 +239,7 @@
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
+                { data: 'download', name: 'download' },
             ],
             columnDefs: [
                 {
@@ -265,7 +258,7 @@
                 },
                 {
                     targets:4,
-                    width: '15%',
+                    width: '10%',
                     render: function(data, type, full, meta) {
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
@@ -287,11 +280,19 @@
 					}
                 },
                 {
-                    targets:-3,
+                    targets:-4,
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
 						return `<span class="kt-font-bold">${data}</span>`;
+					}
+                },
+                {
+                    targets:-1,
+                    width: '5%',
+                    className:'text-center',
+                    render: function(data, type, full, meta) {
+						return data;
 					}
                 }
             ],
