@@ -122,6 +122,37 @@
 													<td>Trade License Number :</td>
 													<td>{{ $permit->company->company_trade_license }}</td>
 												</tr>
+												<tr>
+													<td>Company Status :</td>
+
+													<td>
+														@if($permit->company->company_status == 'active')
+															<span class="kt-badge kt-badge--success kt-badge--inline">{{ ucfirst($permit->company->company_status) }}</span>
+															@endif
+															@if($permit->company->company_status == 'block')
+																<span class="kt-badge kt-badge--danger kt-badge--inline">{{ ucfirst($permit->company->company_status) }}</span>
+															@endif
+												</td>
+												</tr>
+											</table>
+											<h6 class="kt-font-dark kt-font-bold kt-margin-b-10 kt-margin-t-15">Company Contact information</h6>
+											<table class="table table-borderless table-sm">
+												<tr>
+													<td> Contact Person :</td>
+													<td class=" kt-font-bolder">{{ ucwords($permit->company->contact_person) }}</td>
+												</tr>
+												<tr>
+													<td> Mobile Number :</td>
+													<td>{{ $permit->company->company_mobile_number }}</td>
+												</tr>
+												<tr>
+													<td> Phone Number :</td>
+													<td>{{ $permit->company->company_phone_number }}</td>
+												</tr>
+												<tr>
+													<td>Company Email :</td>
+													<td>{{ $permit->company->company_email }}</td>
+												</tr>
 											</table>
 										</div>
 									</section>
@@ -243,8 +274,6 @@
 				</div>
 			</div>
 		</div>
-		{{--  @include('', ['data' => $data])--}}
-
 		<?php
 		$artist_number = $permit->artistpermit()->count();
 		$check = $permit->artistpermit;
@@ -252,11 +281,13 @@
 		?>
 		@include('admin.artist_permit.includes.submit-action', ['permit' => $permit])
 		@include('admin.artist_permit.includes.comment-modal', ['permit' => $permit])
-		<div id="action-container">
-			<button id="btn-action" class="btn btn-warning btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">
-				Take Action
-			</button>
-		</div>
+		@if($type == 'new')
+			<div id="action-container">
+				<button id="btn-action" class="btn btn-warning btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">
+					Take Action
+				</button>
+			</div>
+		@endif
 		@endsection
 		@section('script')
 			<script type="text/javascript">
@@ -342,9 +373,12 @@
 								viewComment(data);
 								$('#comment-modal').modal('show');
 							});
-							$('td:not(:first-child)', row).click(function () {
-								location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application/' + data.artist_permit_id;
-							});
+							if('{{ $type }}' == 'new'){
+								$('td:not(:first-child)', row).click(function () {
+									location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application/' + data.artist_permit_id;
+								});
+							}
+
 						},
 						initComplete: function (settings, json) {
 							$('#artist-total').html(json.recordsTotal);

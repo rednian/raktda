@@ -28,6 +28,7 @@
 									<select name="action" class="form-control-sm form-control">
 										<option disabled selected>-Select Action-</option>
 										<option value="approve">Approve</option>
+										<option value="rejected">Reject</option>
 										<option value="approval">Need Approval</option>
 										<option value="send_back">Send Back To Client</option>
 									</select>

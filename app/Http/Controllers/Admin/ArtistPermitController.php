@@ -53,10 +53,10 @@ class ArtistPermitController extends Controller
                     'user_id' => $user->user_id,
                     'time_start' => $user_time['time_start'],
                     'time_end' => Carbon::now(),
-                    'status'=> 'processing'
+                    'status'=> 'approved'
                   ]);
 
-                  $permit->update(['permit_status'=>'approved', 'user_d'=>$user->user_id ]);
+                  $permit->update(['permit_status'=>'approved-unpaid', 'user_d'=>$users->user_id ]);
                   if ($request->comment) {
                     $permit_comment = $permit->comment()->create($request->all());
                     $permit_comment->approverComment()->attach($permit_approver->permit_approver_id);
@@ -85,9 +85,13 @@ class ArtistPermitController extends Controller
               }
             }
         DB::commit();
+	      $result = ['success', ' Permit has been rejected successfully ', 'Success'];
       } catch (Exception $e) {
-          DB::rollBack();
+      	DB::rollBack();
+	      $result = ['error', $e->getMessage(), 'Error'];
       }
+	    return redirect()->route('admin.artist_permit.index')->with('message', $result);
+
     }
 
     public function checkActivePermit(Request $request, Permit $permit, Artist $artist)
@@ -256,12 +260,11 @@ class ArtistPermitController extends Controller
 
     public function applicationDetails(Request $request, Permit $permit)
     {
-//    	$permit = Permit::with('artistpermit', 'artistpermit.check')->find($permit->permit_id);
       if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
         return view('admin.artist_permit.application-details', [
         	'page_title'=> 'artist permit details',
           'permit'=>$permit,
-//          ''
+          'type'=>$request->type,
           'roles'=>Roles::where('type', 0)->get()
         ]);
     }
@@ -312,6 +315,7 @@ class ArtistPermitController extends Controller
 			    ->make(true);
         }       
     }
+
     public function applicationCommentDataTable(Request $request, Permit $permit, ArtistPermit $artistpermit)
     {
     	$comments = $artistpermit->comments()->orderBy('created_at', 'desc')->get();
@@ -397,7 +401,6 @@ class ArtistPermitController extends Controller
 	         ->make(true);
      }
     }
-
 
     public function artistDataTable(Request $request, Permit $permit)
     {
