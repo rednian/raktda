@@ -106,18 +106,21 @@ class AmendController extends Controller
 
     public function replace_artist($temp_id)
     {
-        $artist_permit_id = ArtistTempData::where('id', $temp_id)->value('artist_permit_id');
+        // $artist_permit_id = ArtistTempData::where('id', $temp_id)->value('artist_permit_id');
         $permit_id = ArtistTempData::where('id', $temp_id)->value('permit_id');
 
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
-        $data_bundle['countries'] = Countries::all();
-        $data_bundle['permitTypes'] = PermitType::where('permit_type', 'artist')->where('status', 1)->get();
-        $data_bundle['languages'] = Language::all();
-        $data_bundle['religions'] = Religion::all();
-        $data_bundle['emirates'] = Emirates::all();
-        $data_bundle['visa_types'] = VisaType::all();
-        $data_bundle['areas'] = Areas::all();
-        $data_bundle['profession'] = Profession::all();
+        $data_bundle['countries'] = Countries::orderBy('country_enNationality', 'asc')->get();
+        $data_bundle['visa_types'] = VisaType::orderBy('visa_type_en', 'asc')->get();
+        $data_bundle['permitTypes'] = PermitType::orderBy('name_en', 'asc')
+            ->where('permit_type', 'artist')->where('status', 1)->get();
+        $data_bundle['languages'] = Language::orderBy('name_en', 'asc')->get();
+        $data_bundle['religions'] = Religion::orderBy('name_en', 'asc')->get();
+        $data_bundle['emirates'] = Emirates::orderBy('name_en', 'asc')->get();
+        $data_bundle['areas'] = Areas::orderBy('area_en', 'asc')->get();
+        $data_bundle['profession'] = Profession::orderBy('name_en', 'asc')->get();
+
+
         $data_bundle['permit_details'] = Permit::where('permit_id', $permit_id)->first();
         $data_bundle['artist_details'] = ArtistTempData::where('id', $temp_id)->where('status', 0)->first();
 
