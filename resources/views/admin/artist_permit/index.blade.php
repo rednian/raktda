@@ -4,7 +4,7 @@
    <div class="kt-portlet__body kt-padding-t-5" style="position: relative">
 		 <ul class="nav nav-tabs kt-margin-t-15 " role="tablist">
 			 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">New Request Permits</a></li>
-			 {{--<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#kt_tabs_1_2">Processing Permits</a></li>--}}
+			 <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#kt_tabs_1_2">Processing Permits</a></li>
 			 <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#kt_tabs_1_3">Rejected Permits</a></li>
 			 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kt_tabs_1_4">Approved Permits</a></li>
 		 </ul>
@@ -45,23 +45,22 @@
 								<div class="col-sm-4">
 									<label>Permit Status</label>
 									<select class="form-control form-control-sm" name="permit_status" data-type="new_request">
-										<option selected disabled>-Select All-</option>
+										<option selected disabled>-Select Permit Status-</option>
 										<option value="new">New</option>
-										<option value="processing">Processing</option>
-										<option value="pending from client">Pending from client</option>
-										<option value="New-update from client">New-update from client</option>
-										<option value="unprocessed">unprocessed</option>
-										<option value="locked">Locked</option>
+										<option value="modified">Pending from client</option>
+										<option value="modification request">New-update from client</option>
+										<option value="unprocessed">Unprocessed</option>
+										{{--<option value="locked">Locked</option>--}}
 									</select>
 								</div>
 								<div class="col-sm-4">
 									<label>Request Type</label>
 									<select class="form-control form-control-sm" name="request_type" data-type="new_request">
-										<option selected disabled>-Select All-</option>
-										<option value="new">New </option>
-										<option value="renew">Renew</option>
-										<option value="amend">Amend</option>
-										<option value="cancel">Cancel</option>
+										<option selected disabled>-Select Request Type-</option>
+										<option value="new">New Application</option>
+										<option value="renew">Renew Application</option>
+										<option value="amend">Amend Application</option>
+										<option value="cancel">Cancel Application</option>
 									</select>
 								</div>
 							</section>
@@ -71,7 +70,7 @@
 					<div class="row">
 						<div class="col-lg-6">
 							<button type="submit" class="btn btn-warning btn-sm btn-elevate kt-font-transform-u" id="kt_search">Apply Filter</button>
-							<button type="reset" class="btn btn-secondary btn-sm btn-elevate kt-font-bold kt-font-transform-u" id="kt_reset">Clear</button>
+							<button type="reset" class="btn btn-secondary btn-sm btn-elevate kt-font-bold kt-font-transform-u" id="kt_reset">Clear Filter</button>
 						</div>
 					</div>
 				</form>
@@ -93,6 +92,26 @@
 					</thead>
 				</table>
 
+			</div>
+			<div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
+				@include('admin.artist_permit.includes.summary')
+				<table class="table  table-hover  table-borderless table-striped" id="artist-permit-processing">
+					<thead class="thead-dark">
+					<tr>
+						<th>Reference No.</th>
+						<th>Company Name</th>
+						<th>Applied Date</th>
+						<th>No. of Artist
+							<span data-content="The number of artist that already checked"
+										data-original-title=""  data-container="body" data-toggle="kt-popover"
+										data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
+							</span>
+						</th>
+						<th>Request Type</th>
+						<th>Permit Status</th>
+					</tr>
+					</thead>
+				</table>
 			</div>
       <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
 				@include('admin.artist_permit.includes.summary')
@@ -120,6 +139,7 @@
 					<thead class="thead-dark">
 					<tr>
 						<th>Reference No.</th>
+						<th>Permit Number</th>
 						<th>Company Name</th>
 						<th>Applied Date</th>
 						<th>No. of Artist
@@ -143,6 +163,7 @@
 	$(document).ready(function(){
 		rejectedTable();
 		approvedTable();
+		processingTable();
 });
 
 	function approvedTable() {
@@ -164,6 +185,7 @@
 			],
 			columns: [
 				{ data: 'reference_number'},
+				{ data: 'permit_number'},
 				{ data: 'company_name'},
 				{ data: 'applied_date'},
 				{ data: 'artist_number'},
@@ -174,13 +196,41 @@
 
 			createdRow: function(row, data, index){
 				$(row).click(function(){
-					location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application?=approved';
+					location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application';
 				});
 			}
 		});
 	}
 
+	function processingTable(){
+		$('table#artist-permit-processing').DataTable({
+			ajax: {
+				url: '{{ route('admin.artist_permit.datatable') }}',
+				data: function(d){
+					d.status = ['approved-unpaid', 'modification request'];
+				}
+			},
+			columnDefs: [
+				{targets: '_all', className: 'no-wrap'},
+				{targets: 5,sortable: false},
+			],
+			columns: [
+				{ data: 'reference_number'},
+				{ data: 'company_name'},
+				{ data: 'applied_date'},
+				{ data: 'artist_number'},
+				// { data: 'company_type'},
+				{ data: 'request_type'},
+				{ data: 'permit_status'},
+			],
 
+			createdRow: function(row, data, index){
+				$(row).click(function(){
+					location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application';
+				});
+			}
+		});
+	}
 	function rejectedTable() {
 		$('table#artist-permit-rejected').DataTable({
 			ajax: {
@@ -210,7 +260,7 @@
 
 			createdRow: function(row, data, index){
 				$(row).click(function(){
-					location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application?=rejected';
+					location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application';
 				});
 			}
 		});
@@ -282,8 +332,7 @@
 					d.issued_date = filter.getAction();
 					d.today = filter.getToday();
 					d.status = [
-						'new', 'edit', 'processing', 'pending from client',
-						'approved-unpaid', 'unprocessed', 'new-update  from client'
+						'new', 'modified', 'processing', 'unprocessed'
 					];
 				}
 			},
@@ -303,7 +352,7 @@
 
 			createdRow: function(row, data, index){
 				$(row).click(function(){
-					location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application?type=new';
+					location.href = '{{ url('/artist_permit') }}/'+data.permit_id+'/application';
 				});
 			}
 		});

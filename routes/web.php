@@ -18,6 +18,7 @@ Route::middleware(['admin', 'auth'])->group(function(){
   //--------------------------------------------------------------------------
   // Artist
   //--------------------------------------------------------------------------
+	Route::get('/permit/artist', 'Admin\ArtistController@datatable')->name('admin.artist.datatable');
   Route::get('/permit/artist/{artist}', 'Admin\ArtistController@show')->name('admin.artist.show');
   
   Route::get('/permit/artist_permit/{artistpermit}/history', 'Admin\ArtistController@history')->name('admin.artist_permit.history');
@@ -44,7 +45,6 @@ Route::middleware(['admin', 'auth'])->group(function(){
 
   Route::get('/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')->name('admin.artist_permit.datatable');
 
-  Route::get('/permit/artist', 'Admin\ArtistController@index')->name('admin.artist.index');
 
 	Route::get('/arist_permit/{permit}/checkactivepermit/{artist}', 'Admin\ArtistPermitController@checkActivePermit')->name('admin.artist_permit.checkactivepermit');
 	Route::post('/artist_permit/{permit}/application','Admin\ArtistPermitController@submitApplication')->name('admin.artist_permit.submit');

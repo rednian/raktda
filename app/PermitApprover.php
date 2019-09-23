@@ -16,11 +16,15 @@ class PermitApprover extends Model
         return $this->belongsTo(Roles::class, 'role_id');
     }
 
-    public function comment()
+    public function  noteComment()
     {
-        return $this->belongsToMany(PermitComment::class, 'permit_approver_note', 'permit_comment_id', 'permit_approver_id');
+    	return $this->hasMany(PermitApproverNote::class, 'permit_approver_id');
     }
 
+    public function comment()
+    {
+        return $this->belongsToMany(PermitComment::class, 'permit_approver_note', 'permit_approver_id', 'permit_comment_id');
+    }
 
     public function user()
     {

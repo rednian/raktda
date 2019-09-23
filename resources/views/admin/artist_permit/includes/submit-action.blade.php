@@ -10,33 +10,33 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<div id="action-alert-selected1" class="alert alert-outline-dark fade show" role="alert">
-						<div class="alert-icon"><i class="flaticon-warning"></i></div>
-						<div class="alert-text">You selected  <span id=number-selected>0</span> artist of <span id="artist-total">0</span></div>
-						<div class="alert-close">
+					{{--<div id="action-alert-selected1" class="alert alert-outline-danger fade show" role="alert">--}}
+						{{--<div class="alert-icon"><i class="flaticon-warning"></i></div>--}}
+						{{--<div class="alert-text">Selected  <span id=number-selected>0</span> artist of <span id="artist-total">0</span></div>--}}
+						{{--<div class="alert-close">--}}
 							{{--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
 							{{--<span aria-hidden="true"><i class="la la-close"></i></span>--}}
 							{{--</button>--}}
-						</div>
-					</div>
+						{{--</div>--}}
+					{{--</div>--}}
 					<section class="kt-section kt-padding-10">
 						<div class="kt-section__desc">
 							@csrf
 							<div class="form-group form-group-xs row">
 								<label class="col-sm-2 col-form-label">Action <span class="text-danger">*</span></label>
-								<div class="col-sm-7">
-									<select name="action" class="form-control-sm form-control">
+								<div class="col-sm-8">
+									<select name="action" class="form-control-sm form-control custom-select">
 										<option disabled selected>-Select Action-</option>
-										<option value="approve">Approve</option>
-										<option value="rejected">Reject</option>
-										<option value="approval">Need Approval</option>
-										<option value="send_back">Send Back To Client</option>
+										<option value="approve">Approve Application & Notify client for payment</option>
+										<option value="send_back">Send back to client for modification of one or more artist information</option>
+										<option value="approval">Need higher Approval</option>
+										<option value="rejected">Reject Application & Notify client</option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group form-group-xs row d-none" id="approver">
 								<label class="col-sm-2 col-form-label">Approvers <span class="text-danger">*</span></label>
-								<div class="col-sm-7">
+								<div class="col-sm-8">
 									<div class="kt-checkbox-inline">
 										<label class="kt-checkbox">
 											<input disabled id="chk-inspector" checked type="checkbox" name="role_id[]"
@@ -53,7 +53,7 @@
 							</div>
 							<div class="form-group row">
 								<label class="col-sm-2 col-form-label">Notes</label>
-								<div class="col-sm-7">
+								<div class="col-sm-8">
 									<textarea name="comment" rows="4" class="form-control-sm form-control"></textarea>
 								</div>
 							</div>

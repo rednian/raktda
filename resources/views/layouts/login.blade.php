@@ -8,7 +8,7 @@
     <meta content="" name="description" />
     <meta content="" name="author" />
     <!-- ================== BEGIN BASE CSS STYLE ================== -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link href="{{ asset('/assets/css/login/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('/assets/css/login/animate.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('/assets/css/login/style.min.css') }}" rel="stylesheet" />
@@ -39,13 +39,13 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,.7);
+            background: rgba(128,38,43,0.8);
             /*background: rgba(128, 38, 43, .7);*/
 
         }
         .login.login-with-news-feed .news-caption, .register.register-with-news-feed .news-caption {
             background: none;
-            top: 160px;
+            top:150px;
 
         }
     </style>
@@ -66,7 +66,8 @@
             </div>
             <div class="news-feed-overlay"></div>
             <div class="news-caption">
-                <h3 class="caption-title text-center" style="color: #fff; font-size: 43px"> Ras Al Khaimah <br/> Smart Government Project</h3>
+                <img src="{{ asset('img/login-logo.svg') }}" style="width: 40%;" class="center-block">
+
                 {{--<p class="text-center">--}}
                     {{--Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque delectus dolores facere minus quaerat ut voluptate. Commodi doloribus eaque esse eum, fugit libero modi pariatur quidem quis vitae voluptatem?--}}
                 {{--</p>--}}
@@ -78,7 +79,8 @@
             <!-- begin login-header -->
             <div class="login-header">
                 <div class="brand">
-                    <img src="{{ asset('img/logo-en.svg') }}">
+                    <h3 class="caption-title text-center" style="color: #a63a3f"> Ras Al Khaimah <br/> Smart Government Project</h3>
+                    {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
                     <h4 style="margin-top: 10%;" class="text-center">Login to you Account</h4>
                 </div>
                 <div class="icon">

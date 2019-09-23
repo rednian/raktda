@@ -100,6 +100,14 @@
     font-weight: 600 !important;
 }
 
+.was-validated .form-control:valid, .form-control.is-valid {
+  background-image: none !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  background-color: #f7f8fa !important;
+}
+
 /*hover menu*/
 .kt-aside-menu.kt-menu__nav
 > .kt-menu__heading,.kt-aside-menu .kt-menu__nav
@@ -194,8 +202,8 @@ thead > tr > th.no-wrap.sorting_disabled > span{
 /*table*/
   .table .thead-dark th {
       color: #fff;
-      background-color: var(--danger) !important;
-      border-color: var(--danger) !important;
+      background-color: var(---danger) !important;
+      border-color: var(---danger) !important;
   }
 
   table tr td{

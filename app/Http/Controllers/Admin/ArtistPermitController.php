@@ -37,10 +37,10 @@ class ArtistPermitController extends Controller
     public function submitApplication(Request $request, Permit $permit)
     {
       try {
+      	dd($request->all());
         DB::beginTransaction();
            $user_time = $request->session()->get('user');
-           $user = Auth::user(); 
-
+           $user = Auth::user();
            $request['user_id'] = $user->user_id;
 
             if($request->action){
@@ -56,7 +56,7 @@ class ArtistPermitController extends Controller
                     'status'=> 'approved'
                   ]);
 
-                  $permit->update(['permit_status'=>'approved-unpaid', 'user_d'=>$users->user_id ]);
+                  $permit->update(['permit_status'=>'approved-unpaid', 'user_id'=>$user->user_id ]);
                   if ($request->comment) {
                     $permit_comment = $permit->comment()->create($request->all());
                     $permit_comment->approverComment()->attach($permit_approver->permit_approver_id);
@@ -69,11 +69,18 @@ class ArtistPermitController extends Controller
                 }
               }
               if($request->action == 'send_back'){
-	               $permit->update(['permit_status'=>'  Pending from client', 'user_d'=>$user->user_id ]);
+	               $permit->update(['permit_status'=>'modification request', 'user_d'=>$user->user_id ]);
 	              if($request->comment){
 		              $request['type'] = 'client';
 		              $permit_comment = $permit->comment()->create($request->all());
 	              }
+	              $permit_approver = $permit->approver()->create([
+		              'role_id'=>  $user->roles->where('NameEn', 'admin')->first()->role_id,
+		              'user_id' => $user->user_id,
+		              'time_start' => $user_time['time_start'],
+		              'time_end' => Carbon::now(),
+		              'status'=> 'request for modification '
+	              ]);
               }
 
               if($request->action == 'rejected'){
@@ -82,6 +89,13 @@ class ArtistPermitController extends Controller
                     $request['type'] = 'client';
                      $permit_comment = $permit->comment()->create($request->all());
                   }
+	              $permit_approver = $permit->approver()->create([
+		              'role_id'=>  $user->roles->where('NameEn', 'admin')->first()->role_id,
+		              'user_id' => $user->user_id,
+		              'time_start' => $user_time['time_start'],
+		              'time_end' => Carbon::now(),
+		              'status'=> 'rejected'
+	              ]);
               }
             }
         DB::commit();
@@ -108,7 +122,8 @@ class ArtistPermitController extends Controller
     {
       try {
          DB::beginTransaction();
-//         $permit->update(['permit_status', 'processing']);
+         $permit->update(['permit_status'=>'processing']);
+
 //	      if($permit->artistPermit()->where('artist_permit_status', 'reject')->count()){
 //
 //	      }
@@ -188,7 +203,7 @@ class ArtistPermitController extends Controller
           $class_name = 'info';
         }
 
-        return ' <span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($status).'</span>';
+        return ' <span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($approver->procedure->permitProcedure->status).'</span>';
       })
       ->rawColumns(['status'])
      ->make(true);
@@ -206,9 +221,11 @@ class ArtistPermitController extends Controller
         return $name;
       })
       ->editColumn('issued_date', function($artist_permit_document){
+      	if(strtolower($artist_permit_document->document_name) == 'medical certificate'){ return 'Not Required';}
         return $artist_permit_document->issued_date->format('d-M-Y');
       })
       ->editColumn('expired_date', function($artist_permit_document){
+	      if(strtolower($artist_permit_document->document_name) == 'medical certificate'){ return 'Not Required';}
         return $artist_permit_document->expired_date->format('d-M-Y');
       })
       ->addColumn('name', function($artist_permit_document){
@@ -260,11 +277,13 @@ class ArtistPermitController extends Controller
 
     public function applicationDetails(Request $request, Permit $permit)
     {
+//    	$permit = Permit::with('approver', 'approver.comment')->get();
+//    	dd($permit);
       if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
         return view('admin.artist_permit.application-details', [
         	'page_title'=> 'artist permit details',
           'permit'=>$permit,
-          'type'=>$request->type,
+//          'type'=>$request->type,
           'roles'=>Roles::where('type', 0)->get()
         ]);
     }
@@ -272,7 +291,7 @@ class ArtistPermitController extends Controller
     public function applicationDataTable(Request $request, Permit $permit)
     {
     	if($request->ajax()){
-    		$artist_permit = $permit->artistPermit()->orderBy('updated_at', 'desc');
+    		$artist_permit = $permit->artistPermit()->orderBy('updated_at');
     		return Datatables::of($artist_permit)
 			    ->addColumn('visa_type', function($artist_permit){
                          return ucwords($artist_permit->artist->visa_type);
@@ -280,12 +299,12 @@ class ArtistPermitController extends Controller
 			    ->addColumn('request_type', function($artist_permit){
                          return $artist_permit->permit->request_type;
                       })
-			    ->addColumn('nationality', function($artist_permit){
-                        return ucwords($artist_permit->artist->nationality);
-                     })
+			    ->addColumn('country', function($artist_permit){
+			    	return ucwords($artist_permit->artist->country->country_enName);
+			    })
 			    ->addColumn('type', function($artist_permit){
-                          return ucwords($artist_permit->type);
-                    })
+			    	return ucwords($artist_permit->type);
+			    })
 			    ->addColumn('age', function($artist_permit){
                         return $artist_permit->artist->age;
                     })
@@ -293,8 +312,8 @@ class ArtistPermitController extends Controller
                         return ucwords($artist_permit->artist->fullname);
                     })
 			    ->addColumn('profession', function($artist_permit){
-                        if(!$artist_permit->permitType){ return null; }
-                        return ucwords($artist_permit->permitType->name_en);
+                        if(!$artist_permit->profession){ return null; }
+                        return ucwords($artist_permit->profession->name_en);
                     })
 			    ->addColumn('person_code', function($artist_permit){
                         return $artist_permit->artist->person_code;
@@ -324,7 +343,7 @@ class ArtistPermitController extends Controller
 		    	return ucfirst($comments->comment);
 		    })
 		    ->addColumn('commented_on', function ($comments){
-			    return $comments->created_at->format('d-M-Y');
+			    return $comments->created_at->format('d-M-Y h:m a');
 		    })
 		    ->addColumn('commented_by', function ($comments){
 			    return $comments->user->employee->emp_name;
@@ -357,12 +376,41 @@ class ArtistPermitController extends Controller
          return Datatables::of($permit)
 	         ->addColumn('artist_number', function($permit){
 		         $total = $permit->artistpermit()->count();
-		         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'pending')->count();
+		         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
 	         	return 'Checked '.$check.' of '.$total;
 	         })
 	         ->addColumn('permit_status', function($permit){
-	         	$classname = $permit->permit_status == 'pending' ? 'warning': 'info';
-	         	return '<span class="kt-badge kt-badge--'.$classname.' kt-badge--inline">'.ucwords($permit->permit_status).'</span>';
+		         $class_name = 'default';
+		         $permit_status  = $permit->permit_status;
+		         if (
+		         	strtolower($permit->permit_status) == 'new' ||
+		          strtolower($permit->permit_status) == 'approved-unpaid' ||
+		          strtolower($permit->permit_status) == 'active'
+		         ) {
+			         $class_name = 'success';
+		         }
+		         if (strtolower($permit->permit_status) == 'processing' || strtolower($permit->permit_status) == 'modification request' ||
+			         strtolower($permit->permit_status) == 'modified') {
+			         $class_name = 'warning';
+		         }
+		         if (strtolower($permit->permit_status) == 'pending from client') {
+			         $class_name = 'info';
+		         }
+		         if (strtolower($permit->permit_status) == 'new-update from client') {
+			         $class_name = 'info';
+		         }
+		         if (
+		         	strtolower($permit->permit_status) == 'unprocessed' ||
+		          strtolower($permit->permit_status) == 'expired' ||
+		          strtolower($permit->permit_status) == 'rejected'
+		         ) {
+			         $class_name = 'danger';
+		         }
+		         if (strtolower($permit->permit_status) == 'modification request' ){
+		         	$permit_status = 'need modification';
+		         }
+
+	         	return '<span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($permit_status).'</span>';
 	         })
 	         ->editColumn('reference_number', function($permit){
                   return '<span class="kt-font-bold">'.$permit->reference_number.'</span>';

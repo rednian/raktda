@@ -18,6 +18,10 @@ class ArtistPermit extends Model implements Auditable
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at',  'uid_expire_date', 'passport_expire_date', 'visa_expire_date'];
 
+    public function transaction()
+    {
+
+    }
 
     public function profession()
     {

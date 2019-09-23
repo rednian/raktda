@@ -14,10 +14,10 @@ class ArtistController extends Controller
 
   public function index()
   {
-    return view('admin.artist.index',[
-            'page_title'=> 'Artist List',
-            'breadcrumb'=> 'admin.artist.index',
-        ]);
+//    return view('admin.artist.index',[
+//            'page_title'=> 'Artist List',
+//            'breadcrumb'=> 'admin.artist.index',
+//        ]);
   }
 
   public function show(Request $request, Artist $artist)
@@ -31,6 +31,14 @@ class ArtistController extends Controller
     	'page_title'=> $artist->fullname.' - details',
     	'artist_permit'=>$artist_permit
     ]);
+  }
+
+  public function datatable(Request $request)
+  {
+  	$artist = Artist::whereHas('permit', function($q){
+  		$q->orderBy('created_at','desc');
+		  })->get();
+  	return DataTables::of($artist)->make(true);
   }
 
 

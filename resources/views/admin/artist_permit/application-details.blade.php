@@ -1,6 +1,6 @@
 @extends('layouts.admin.admin-app')
 @section('content')
-	<div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border" id="kt_page_portlet">
+	<div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border" >
 		<div class="kt-portlet__head kt-portlet__head--sm">
 			<div class="kt-portlet__head-label">
 				<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Artist Permit Details</h3>
@@ -43,25 +43,37 @@
 													<td class="text-danger kt-font-bolder">{{ $permit->reference_number }}</td>
 												</tr>
 												<tr>
-													<td>Request Type :</td>
+													<td>Request Type:</td>
+													<td>{{ ucfirst($permit->request_type) }} Application</td>
+												</tr>
+												<tr>
+													<td>Permit Status :</td>
 													<td>
 														<?php
-														$class_name = 'default';
-														if ($permit->request_type == 'new') {
-															$class_name = 'info';
-														}
-														if ($permit->request_type == 'renew') {
+														$status = $permit->permit_status;
+														$class_name = 'warning';
+														if (strtolower($permit->permit_status) == 'new') {
 															$class_name = 'success';
 														}
-														if ($permit->request_type == 'cancel') {
+														if (strtolower($permit->permit_status) == 'processing' || strtolower($permit->permit_status) == 'modification request') {
+
+															$class_name = 'warning';
+														}
+														if (strtolower($permit->permit_status) == 'pending from client') {
+															$class_name = 'info';
+														}
+														if (strtolower($permit->permit_status) == 'new-update from client') {
+															$class_name = 'info';
+														}
+														if (strtolower($permit->permit_status) == 'unprocessed') {
 															$class_name = 'danger';
 														}
-														if ($permit->request_type == 'amend') {
-															$class_name = 'warning';
+														if(strtolower($permit->permit_status) == 'modification request'){
+															$status = 'need modification';
 														}
 														?>
 														<span
-															class="kt-badge kt-badge--inline kt-badge--{{$class_name}}">{{ ucwords($permit->request_type) }}</span>
+															class="kt-badge kt-badge--inline kt-badge--{{$class_name}}">{{ ucwords($status) }}</span>
 													</td>
 												</tr>
 												@if ($permit->number)
@@ -71,7 +83,7 @@
 													</tr>
 												@endif
 												<tr>
-													<td>Submitted Date:</td>
+													<td width="35%">Submitted Date:</td>
 													<td>
                             <span class="kt-font-transform-u">
                               {{ $permit->created_at ? $permit->created_at->format('d-M-Y') : null   }}
@@ -115,7 +127,7 @@
 											<h6 class="kt-font-dark kt-font-bold kt-margin-b-10">Company Information</h6>
 											<table class="table table-borderless table-sm">
 												<tr>
-													<td>Company Name :</td>
+													<td width="36%">Company Name :</td>
 													<td class="text-danger kt-font-bolder">{{ ucwords($permit->company->company_name) }}</td>
 												</tr>
 												<tr>
@@ -135,11 +147,11 @@
 												</td>
 												</tr>
 											</table>
-											<h6 class="kt-font-dark kt-font-bold kt-margin-b-10 kt-margin-t-15">Company Contact information</h6>
+											<h6 class="kt-font-dark kt-font-bold kt-margin-b-10 kt-margin-t-20">Company Contact information</h6>
 											<table class="table table-borderless table-sm">
 												<tr>
-													<td> Contact Person :</td>
-													<td class=" kt-font-bolder">{{ ucwords($permit->company->contact_person) }}</td>
+													<td width="36%"> Contact Person :</td>
+													<td class=" kt-font-bolder ">{{ ucwords($permit->company->contact_person) }}</td>
 												</tr>
 												<tr>
 													<td> Mobile Number :</td>
@@ -176,28 +188,37 @@
 						</div>
 						<div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
 							<div class="card-body">
+
 								<table class="table-striped table table-borderless">
 									<thead class="thead-dark">
 									<tr>
-										<th>User Role</th>
-										<th>Employee Name</th>
-										<th>Notes</th>
-										<th>Status</th>
+										<th class="no-wrap">User Role</th>
+										<th class="no-wrap">Checked By</th>
+										<th >Notes</th>
+										<th class="no-wrap">Checked Date</th>
+										<th class="no-wrap">Action Taken</th>
 									</tr>
 									</thead>
 									<tbody>
+
 									@foreach ($permit->approver as $approver)
 										<tr>
-											<td>{{ ucwords($approver->role->NameEn) }}</td>
-											<td>{{ ucwords($approver->user->employee->emp_name) }}</td>
-											<td></td>
+											<td class="no-wrap">{{ ucwords($approver->role->NameEn) }}</td>
+											<td class="no-wrap">{{ ucwords($approver->user->employee->emp_name) }}</td>
 											<td>
+												{{ $approver->noteComment }}
+											</td>
+											<td class="no-wrap">{{ $approver->created_at->format('d-M-Y h:m a') }}</td>
+											<td class="no-wrap">
 												@if ($approver->status == 'approved')
 													<span class="kt-badge kt-badge--success kt-badge--inline">{{ ucwords($approver->status) }}</span>
 												@endif
-												@if ($approver->status == 'pending')
-													<span class="kt-badge kt-badge--info kt-badge--inline">{{ ucwords($approver->status) }}</span>
+												@if ($approver->status == 'request for modification ')
+													<span class="kt-badge kt-badge--warning kt-badge--inline">{{ ucwords($approver->status) }}</span>
 												@endif
+													@if ($approver->status == 'rejected')
+														<span class="kt-badge kt-badge--danger kt-badge--inline">{{ ucwords($approver->status) }}</span>
+													@endif
 											</td>
 										</tr>
 									@endforeach
@@ -219,17 +240,20 @@
 							<?php  $is_artist_check = $permit->artistpermit()->where('artist_permit_status', 'unchecked')->exists(); ?>
 							<div id="action-alert" class="alert d-none alert-outline-danger fade show" role="alert">
 								<div class="alert-icon"><i class="flaticon-warning"></i></div>
-								<div class="alert-text">Please check each artist information before taking action!</div>
-								<div class="alert-close">
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										<span aria-hidden="true"><i class="la la-close"></i></span>
-									</button>
+								<div class="alert-text">Please check each artist with the action status of
+									<span class="kt-badge kt-badge--warning kt-badge--inline">Unchecked</span>
+									before taking action!
 								</div>
+								{{--<div class="alert-close">--}}
+									{{--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
+										{{--<span aria-hidden="true"><i class="la la-close"></i></span>--}}
+									{{--</button>--}}
+								{{--</div>--}}
 							</div>
 
 							<div id="action-alert-unselected" class="alert d-none alert-outline-danger fade show" role="alert">
 								<div class="alert-icon"><i class="flaticon-warning"></i></div>
-								<div class="alert-text">Please select atleast one artist before taking action!</div>
+								<div class="alert-text">Please check atleast one artist before taking action!</div>
 								<div class="alert-close">
 									{{--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
 										{{--<span aria-hidden="true"><i class="la la-close"></i></span>--}}
@@ -240,22 +264,10 @@
 							<table class="table table-hover table-borderless table-striped table-sm" id="artist-table">
 								<thead class="thead-dark">
 								<tr>
-									<th></th>
+									{{--<th></th>--}}
 									<th>Person Code</th>
-									<th>
-										Artist Name
-										<span data-content="Click the artist name to view the artist information and permit history."
-													data-original-title="" data-container="body" data-toggle="kt-popover"
-													data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-                     </span>
-									</th>
-									<th>
-										Age
-										<span data-content="hover the age to see the birthdate of the artist."
-													data-original-title="" data-container="body" data-toggle="kt-popover"
-													data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-                     </span>
-									</th>
+									<th>Artist Name</th>
+									<th>Age</th>
 									<th>Profession</th>
 									<th>Nationality</th>
 									<th>
@@ -281,32 +293,19 @@
 		?>
 		@include('admin.artist_permit.includes.submit-action', ['permit' => $permit])
 		@include('admin.artist_permit.includes.comment-modal', ['permit' => $permit])
-		@if($type == 'new')
+		{{--@if($type == 'new')--}}
 			<div id="action-container">
 				<button id="btn-action" class="btn btn-warning btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">
-					Take Action
+					Take Action for application
 				</button>
 			</div>
-		@endif
+		{{--@endif--}}
 		@endsection
 		@section('script')
 			<script type="text/javascript">
 				var artist = {};
-				var approver = {};
 				$(document).ready(function () {
-
-					$('select[name=action]').change(function(){
-						if($(this).val() == 'approval'){
-							$('#approver').removeClass('d-none');
-							$('#chk-inspector').removeAttr('disabled', true).attr('checked',true);
-							$('#-chk-manager').removeAttr('disabled', true).removeAttr('checked', true);
-						}
-						else{
-							$('#approver').addClass('d-none');
-							$('#chk-inspector').attr('disabled', true).attr('checked', true);
-							$('#-chk-manager').attr('disabled', true).removeAttr('checked', true);
-						}
-					});
+					submitAction();
 
 
 
@@ -316,33 +315,33 @@
 							url: '{{ route('admin.artist_permit.applicationdetails.datatable', $permit->permit_id) }}'
 						},
 						columnDefs: [
-							{targets: [0, 1, 2, 3, 6, 7], className: 'no-wrap'},
-							{
-								targets: 0,
-								searchable: false,
-								orderable: false,
-								// 'render': function(data, type, row, meta){
-								// 	if(type === 'display'){
-								// 		var html = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default dt-checkboxes">';
-								// 		    html += '<input type="checkbox" class="dt-checkboxes">';
-								// 		    html += '<span></span>';
-								// 		    html += '</label>';
-								// 	}
-								// 	return html;
-								// },
-								checkboxes: {
-									'selectRow': true,
-									// selectAllRender: '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default dt-checkboxes"><input type="checkbox"><span></span></label>'
-								}
-							}
+							{targets: [0,2, 5, 6], className: 'no-wrap'},
+							// {
+							// 	targets: 0,
+							// 	searchable: false,
+							// 	orderable: false,
+							// 	// 'render': function(data, type, row, meta){
+							// 	// 	if(type === 'display'){
+							// 	// 		var html = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default dt-checkboxes">';
+							// 	// 		    html += '<input type="checkbox" class="dt-checkboxes">';
+							// 	// 		    html += '<span></span>';
+							// 	// 		    html += '</label>';
+							// 	// 	}
+							// 	// 	return html;
+							// 	// },
+							// 	checkboxes: {
+							// 		'selectRow': true,
+							// 		selectAllRender: '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default dt-checkboxes"><input type="checkbox"><span></span></label>'
+							// 	}
+							// }
 						],
-						select: {
-							style: 'multi',
-							// selector: 'td:first-child'
-						},
-						order: [[1, 'asc']],
+						// select: {
+						// 	style: 'multi',
+						// 	selector: 'td:first-child'
+						// },
+						// order: [[1, 'asc']],
 						columns: [
-							{data: 'artist_permit_id'},
+							// {data: 'artist_permit_id'},
 							{data: 'person_code'},
 							{
 								render: function (type, data, full, meta) {
@@ -356,7 +355,7 @@
 								}
 							},
 							{data: 'profession'},
-							{data: 'nationality'},
+							{data: 'country'},
 							{data: 'artist_status'},
 							{
 								render: function (type, data, full, meta) {
@@ -373,11 +372,11 @@
 								viewComment(data);
 								$('#comment-modal').modal('show');
 							});
-							if('{{ $type }}' == 'new'){
+
 								$('td:not(:first-child)', row).click(function () {
 									location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application/' + data.artist_permit_id;
 								});
-							}
+
 
 						},
 						initComplete: function (settings, json) {
@@ -387,14 +386,14 @@
 
 
 					$('button#btn-action').click(function () {
-						var rows_selected = artist.column(0).checkboxes.selected();
-						$('#number-selected').html(rows_selected.length);
+						// var rows_selected = artist.column(0).checkboxes.selected();
+						// $('#number-selected').html(rows_selected.length);
 						if ('{{ $is_artist_check  }}') {
 							$('#action-alert').removeClass('d-none');
 						}
-						else if(rows_selected.length == 0){
-						$('#action-alert-unselected').removeClass('d-none');
-						}
+						// else if(rows_selected.length == 0){
+						// $('#action-alert-unselected').removeClass('d-none');
+						// }
 						else {
 							$('#action-alert-unselected').addClass('d-none');
 							$('#action-alert').addClass('d-none');
@@ -436,6 +435,21 @@
 					$('div.toolbar').html($('#action-container'));
 
 				});
+
+				function  submitAction() {
+					$('select[name=action]').change(function(){
+						if($(this).val() == 'approval'){
+							$('#approver').removeClass('d-none');
+							$('#chk-inspector').removeAttr('disabled', true).attr('checked',true);
+							$('#-chk-manager').removeAttr('disabled', true).removeAttr('checked', true);
+						}
+						else{
+							$('#approver').addClass('d-none');
+							$('#chk-inspector').attr('disabled', true).attr('checked', true);
+							$('#-chk-manager').attr('disabled', true).removeAttr('checked', true);
+						}
+					});
+				}
 
 				function viewComment(data) {
 					$('#comment-modal').on('shown.bs.modal', function () {

@@ -20,6 +20,11 @@ class Artist extends Model implements Auditable
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'birthdate'];
 
+    public function country()
+    {
+    	return $this->belongsTo(Countries::class, 'nationality','country_code');
+    }
+
     public function artistPermit()
     {
         return $this->hasMany(ArtistPermit::class, 'artist_id');
