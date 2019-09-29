@@ -637,6 +637,8 @@
                         Previous
                     </div>
 
+                    <input type="hidden" id="permit_id" value="{{$permit_id}}">
+
                     <a href="{{url('company/add_new_permit/'.$permit_id)}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                             Back
@@ -1399,6 +1401,8 @@
                 var to_date = $('#to_date').val();
                 var location = $('#location').val();
 
+                var permit_id = $('#permit_id').val();
+
                 var permitD = {
                     from : from_date,
                     to: to_date,
@@ -1410,12 +1414,13 @@
                     data: {
                         artistD: ad,
                         documentD: dd,
-                        permitD: permitD
+                        permitD: permitD,
+                        permit_id: permit_id
                     },
                     success: function (result) {
                         if(result.message[0]){
                             localStorage.clear();
-                            window.location.href = "{{url('company/add_new_permit')}}"+'/'+ result.permit_id;
+                            window.location.href = "{{url('company/add_new_permit')}}"+'/'+ permit_id;
                         }
                         console.log(result);
                         // $('#pleaseWaitDialog').modal('hide');

@@ -13,7 +13,7 @@
                             data-ktwizard-state="current" id="check_inst">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>01</span> >> Check Instructions
+                                    <span>01</span> Check Instructions
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -135,6 +135,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
 
 
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -591,6 +593,8 @@
                                             </div>
 
                                         </div>
+                                        <input type="hidden" id="issue_date" value="{{$artist_details->issue_date}}">
+                                        <input type="hidden" id="expiry_date" value="{{$artist_details->expiry_date}}">
                                         @php
                                         $i = 1;
                                         $user_id = Auth::user()->user_id;
@@ -710,7 +714,7 @@
     var picUploader ;
     var artistDetails = new Object();
     var documentDetails = new Object();
-    wizard = new KTWizard("kt_wizard_v3");
+
 
     $.ajaxSetup({
         headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -721,6 +725,8 @@
         localStorage.clear(); // clearing the localstorage
         uploadFunction(); // upload file
         PicUploadFunction();
+
+        wizard = new KTWizard("kt_wizard_v3");
 
         wizard.goTo(2); // skipping to the 3rd section
 
@@ -752,7 +758,7 @@
                 maxFileCount:1,
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                formData: {id: i, reqName: $('#req_name_'+i).val() , artistNo: $('#artist_number_doc').val()},
+                formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();
@@ -768,6 +774,7 @@
                             dataType: "json",
                             success: function(data)
                             {
+                                // console.log(data);
                                 let id = obj[0].id;
                                 let number = id.split("_");
                                 let issue_datetime = new Date(data.issued_date);
@@ -943,7 +950,6 @@
         });
 
         $( "#check_inst" ).on( "click", function() {
-            checkForTick();
             setThis('none', 'block', 'block', 'none');
         });
 
@@ -981,6 +987,7 @@
                 if ($('#agree').is(':checked')) {
                     $('#back_btn').css('display', 'none');
                     $('#prev_btn').css('display', 'block');
+                    $('#agree_cb > span').removeClass('compulsory');
                     wizard.goNext();
                 }
             }
@@ -993,7 +1000,7 @@
 
             checkForTick();
             // checking the next page is artist details
-            if(wizard.currentStep == 3)
+            if(wizard.currentStep == 2)
             {
                     stopNext(detailsValidator); // validating the artist details page
                     // object of array storing the artist details
@@ -1059,22 +1066,22 @@
             var artist_number = $('#artist_number').val();
             var hasFile = true;
             var hasFileArray = [];
-            documentDetails[artist_number] = {};
+            documentDetails = {};
             for(var i = 1; i <= $('#requirements_count').val(); i++)
             {
                 if ($('#ajax-file-upload_' + i).length) {
-                if($('#ajax-file-upload_'+i).contents().length == 0) {
-                    hasFileArray[i] = false;
-                    $("#ajax-upload_"+i).css('border', '2px dotted red');
-                }
-                else{
-                    hasFileArray[i] = true;
-                    $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
-                }
-                documentDetails[artist_number][i] = {
-                    issue_date :   $('#doc_issue_date_'+i).val(),
-                    exp_date : $('#doc_exp_date_'+i).val()
-                }
+                    if($('#ajax-file-upload_'+i).contents().length == 0) {
+                        hasFileArray[i] = false;
+                        $("#ajax-upload_"+i).css('border', '2px dotted red');
+                    }
+                    else{
+                        hasFileArray[i] = true;
+                        $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
+                    }
+                    documentDetails[i] = {
+                        issue_date :   $('#doc_issue_date_'+i).val(),
+                        exp_date : $('#doc_exp_date_'+i).val()
+                    }
                 }
             }
             if($('#pic-file-upload').contents().length == 0) {
@@ -1130,10 +1137,6 @@
         $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
         $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
 
-
-
-
-
         const getAreas = (city_id, sel_id) => {
             $.ajax({
                     url:"{{url('company/fetch_areas')}}"+'/'+city_id,
@@ -1159,7 +1162,8 @@
                 var temp_id = $('#temp_id').val();
                 var ad = localStorage.getItem('artistDetails');
                 var dd = localStorage.getItem('documentDetails');
-
+                var issue_d = $('#issue_date').val();
+                var expiry_d = $('#expiry_date').val();
 
             $.ajax({
                     url:"{{route('company.update_artist_temp_data')}}",
@@ -1172,6 +1176,8 @@
                         documentD: dd,
                         temp_id: temp_id,
                         permit_id: permit_id,
+                        issue_d: issue_d,
+                        expiry_d: expiry_d,
                         updateChecklist: true
                     },
                     success: function(result){

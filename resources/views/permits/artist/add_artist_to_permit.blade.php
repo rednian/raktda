@@ -140,6 +140,8 @@
                     </div>
                     <!--end: Form Wizard Step 1-->
 
+                    <input type="hidden" id="permit_from" value="{{$permit_details->issued_date}}">
+                    <input type="hidden" id="permit_to" value="{{$permit_details->expired_date}}">
 
                     <!--begin: Permit Details Wizard-->
 
@@ -741,7 +743,7 @@
                 maxFileCount:1,
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                formData: {id: i, reqName: $('#req_name_'+i).val() , artistNo: $('#artist_number_doc').val()},
+                formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
                 onLoad:function(obj)
                 {
                     $code = $('#code').val();
@@ -1071,7 +1073,7 @@
         var artist_number = $('#artist_number').val();
         var hasFile = true;
         var hasFileArray = [];
-        documentDetails[artist_number] = {};
+        documentDetails = {};
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
             if ($('#ajax-file-upload_' + i).length) {
@@ -1084,7 +1086,7 @@
                     hasFileArray[i] = true;
                     $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
                 }
-                documentDetails[artist_number][i] = {
+                documentDetails[i] = {
                     issue_date :   $('#doc_issue_date_'+i).val(),
                     exp_date : $('#doc_exp_date_'+i).val()
                 }
@@ -1339,6 +1341,9 @@
         var dd = localStorage.getItem('documentDetails');
         var artist_permit_id = $('#artist_permit_id').val();
 
+        var permit_from = $('#permit_from').val();
+        var permit_to = $('#permit_to').val();
+
         var permit_id = $('#permit_id').val();
         var from_page = $('#from_page').val();
 
@@ -1348,7 +1353,13 @@
         $.ajax({
                 url:"{{route('company.add_to_artist_temp_data')}}",
                 type: "POST",
-                data: { artistD: ad , documentD: dd , permit_id: permit_id},
+                data: {
+                    artistD: ad ,
+                    documentD: dd ,
+                    permit_id: permit_id,
+                    from: permit_from,
+                    to: permit_to
+                  },
                 success: function(result){
                     localStorage.clear();
                     if(from_page == 'amend'){

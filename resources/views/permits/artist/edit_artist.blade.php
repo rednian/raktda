@@ -776,7 +776,7 @@
                 maxFileCount:1,
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                formData: {id: i, reqName: $('#req_name_'+i).val() , artistNo: $('#artist_number_doc').val()},
+                formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();

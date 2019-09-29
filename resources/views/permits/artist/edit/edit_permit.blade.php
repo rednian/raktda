@@ -53,10 +53,12 @@
                     <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm">
                         <i class="la la-angle-left"></i>
                     </button>
+                    @if($permit_details->permit_status != 'modification request')
                     <a href="{{url('company/add_artist_to_permit/edit/'.$permit_details->permit_id)}}"
                         class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                         <i class="la la-plus"></i>
                     </a>
+                    @endif
                 </div>
 
             </div>
@@ -105,7 +107,7 @@
 
                             <td>{{$artist_detail->firstname_en}}</td>
                             <td>{{$artist_detail->lastname_en}}</td>
-                            <td>{{$artist_detail->permitType['name_en']}}</td>
+                            <td>{{$artist_detail->profession['name_en']}}</td>
                             <td>{{$artist_detail->mobile_number}}</td>
                             <td>{{$artist_detail->email}}</td>
                             <td>
@@ -258,52 +260,57 @@
     @section('script')
     <script>
         $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-    // $(window).on('unload',function () {
-    //     var ids = $('#temp_id_array').val();
-    //     $.ajax({
-    //             type: 'POST',
-    //             url: '{{url("company/check_update_is_edit")}}',
-    //             data: {permit_id: $('#permit_id').val(),  temp_ids: ids},
-    //             success: function(data) {
-    //                 console.log('this' +data);
-    //             }
-    //     });
-    // });
+        $(document).ready(function(){
 
-    $(window).on('beforeunload', function (e)
-    {
-        var permit_id = $('#permit_id').val();
-        var nextUrl = document.activeElement.href;
-        if(nextUrl == undefined){
-            return;
+            $('#kt_aside_menu ul li a').on('mouseenter', stopNavigate)
+                .on('mouseout', function () {
+                $(window).on('beforeunload', windowBeforeUnload);
+            });
+        })
+
+        function stopNavigate(event) {
+            $(window).off('beforeunload');
         }
-        var total = $('#total_artist_details').val();
-        var addUrl = "{{url('company/add_artist_to_permit/edit')}}/"+permit_id ;
-        if(nextUrl != addUrl ){
-            var tempArr = [];
-            for(var i = 0 ; i < total; i++){
-                var temp_id = $('#temp_id_'+i).val();
-                var tempUrl = "{{url('company/edit_edit_artist')}}"+'/' +temp_id ;
-                tempArr.push(tempUrl);
+
+        function windowBeforeUnload() {
+            // return 'Are you sure you want to leave?';
+
+            var permit_id = $('#permit_id').val();
+            var nextUrl = document.activeElement.href;
+            if(nextUrl == undefined){
+                return;
+            }
+            var total = $('#total_artist_details').val();
+            var addUrl = "{{url('company/add_artist_to_permit/edit')}}/"+permit_id ;
+            if(nextUrl != addUrl ){
+                var tempArr = [];
+                for(var i = 0 ; i < total; i++){
+                    var temp_id = $('#temp_id_'+i).val();
+                    var tempUrl = "{{url('company/edit_edit_artist')}}"+'/' +temp_id ;
+                    tempArr.push(tempUrl);
+                }
+
+                if(!tempArr.includes(nextUrl)){
+                    $.ajax({
+                        type: 'GET',
+                        url: "{{url('company/update_is_edit')}}"+"/" +permit_id,
+                        success: function(data) {
+                            // console.log('at last it worked');
+
+                        }
+                    });
+                }
+
             }
 
-            if(!tempArr.includes(nextUrl)){
-                $.ajax({
-                    type: 'GET',
-                    url: "{{url('company/update_is_edit')}}"+"/" +permit_id,
-                    success: function(data) {
-                        // console.log('at last it worked');
-                    }
-                });
-            }
-
+            return 'Are you sure you want to leave?';
         }
-    });
+
 
     $('#back_btn').click(function(){
         $total_artists = $('#total_artist_details').val();
@@ -327,8 +334,6 @@
                 }
         });
     }
-
-
 
 
     function getArtistDetails(id) {

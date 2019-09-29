@@ -90,6 +90,7 @@ class MainController extends Controller
     public function get_permit_details($id)
     {
         $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'artistPermit.artistPermitDocument')->where('permit_id', $id)->first();
+        // dd($data_bundle['permit_details']);
         return view('permits.artist.view_details', $data_bundle);
     }
 
@@ -440,29 +441,41 @@ class MainController extends Controller
         $artistDetails = json_decode($request->artistD, true);
         $documentDetails = json_decode($request->documentD, true);
 
-        // checking the table contains any drafts of the same permit id
-        $is_permit = ArtistTempData::where([
-            ['issue_date', Carbon::parse($permitDetails['from'])->toDateString()],
-            ['expiry_date', Carbon::parse($permitDetails['to'])->toDateString()],
-            ['work_location', $permitDetails['location']],
-            ['company_id', Auth::user()->EmpClientId],
-            ['created_by', Auth::user()->user_id],
-        ])->latest()->first();
+        // // checking the table contains any drafts of the same permit id
+        // $is_permit = ArtistTempData::where([
+        //     ['issue_date', Carbon::parse($permitDetails['from'])->toDateString()],
+        //     ['expiry_date', Carbon::parse($permitDetails['to'])->toDateString()],
+        //     ['work_location', $permitDetails['location']],
+        //     ['company_id', Auth::user()->EmpClientId],
+        //     ['created_by', Auth::user()->user_id],
+        // ])->exists();
 
-        // checking the company and user has any previous permit id
+        // // checking the company and user has any previous permit id
 
-        $last_permit_id = ArtistTempData::where([
-            ['company_id', Auth::user()->EmpClientId],
-            ['created_by', Auth::user()->user_id],
-        ])->latest()->first();
+        // $last_permit_id = ArtistTempData::where([
+        //     ['company_id', Auth::user()->EmpClientId],
+        //     ['created_by', Auth::user()->user_id],
+        // ])->latest()->first();
 
-        if ($is_permit != null) {
-            $permit_id = $is_permit->value('permit_id');
-        } else if ($last_permit_id) {
-            $permit_id = $last_permit_id->value('permit_id') + 1;
-        } else {
-            $permit_id = 1; // other wise give permit id as 1 only for drafts table
-        }
+        // if ($is_permit) {
+        //     dump('true');
+        //     $permit_arr = ArtistTempData::where([
+        //         ['issue_date', Carbon::parse($permitDetails['from'])->toDateString()],
+        //         ['expiry_date', Carbon::parse($permitDetails['to'])->toDateString()],
+        //         ['work_location', $permitDetails['location']],
+        //         ['company_id', Auth::user()->EmpClientId],
+        //         ['created_by', Auth::user()->user_id],
+        //     ])->orderBy('created_at', 'desc');
+
+        //     dump('true');
+        // } else if ($last_permit_id) {
+        //     dump('false');
+        //     $permit_id = $last_permit_id->value('permit_id') + 1;
+        // } else {
+        //     $permit_id = 1; // other wise give permit id as 1 only for drafts table
+        // }
+
+        $permit_id = $request->permit_id;
 
 
         $i = 1;
@@ -628,7 +641,7 @@ class MainController extends Controller
             $result = ['error', 'Error, Please Try Again', 'Error'];
         }
 
-        return response()->json(['message' => $result, 'permit_id' => $permit_id]);
+        return response()->json(['message' => $result]);
     }
 
     public function clear_the_temp_data(Request $request)
@@ -820,7 +833,7 @@ class MainController extends Controller
                     $artistPermit->created_by =  Auth::user()->user_id;
                     $artistPermit->save();
                     $artistID = $artist_id;
-                    $artistPermitId = $artistPermit->id;
+                    $artistPermitId = $artistPermit->artist_permit_id;
                 }
 
                 $issued_date = strtotime($issue_date);
@@ -1355,9 +1368,9 @@ class MainController extends Controller
 
         $userid = Auth::user()->user_id;
 
-        $pic_ext = session($userid . '_' . $i . '_ext');
+        $pic_ext = session($userid . '_ext');
 
-        if (Storage::exists(session($userid . '_' . $i . '_pic_file'))) {
+        if (Storage::exists(session($userid .  '_pic_file'))) {
 
             $check_path = 'public/' . $company_name . '/artist_permit/temp/' . $tempData->id . '/photos';
 
@@ -1374,10 +1387,10 @@ class MainController extends Controller
             $newThumbPath = 'public/' . $company_name . '/artist_permit/temp/' . $tempData->id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
             $newThumbPathLink = $company_name . '/artist_permit/temp/' . $tempData->id . '/photos/thumb_' . $next_file_no . '.' . $pic_ext;
 
-            Storage::move(session($userid . '_' . $i . '_pic_file'), $newPath);
-            Storage::move(session($userid . '_' . $i . '_thumb_file'), $newThumbPath);
+            Storage::move(session($userid .  '_pic_file'), $newPath);
+            Storage::move(session($userid . '_thumb_file'), $newThumbPath);
 
-            session()->forget([$userid . '_' . $i . '_pic_file', $userid . '_' . $i . '_thumb_file', $userid . '_' . $i . '_ext']);
+            session()->forget([$userid . '_pic_file', $userid . '_thumb_file', $userid .  '_ext']);
 
             $tempData->original  = $newPathLink;
             $tempData->thumbnail = $newThumbPathLink;
@@ -1385,7 +1398,15 @@ class MainController extends Controller
         }
 
 
-        $requirements = Requirement::where('requirement_type', 'artist')->get();
+        $issued_date = strtotime($request->from);
+        $expired_date = strtotime($request->to);
+        $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
+        if ($diff < 30) {
+            $requirements = Requirement::where('requirement_type', 'artist')->where('status', 1)->where('term', 'short')->get();
+        } else {
+            $requirements = Requirement::where('requirement_type', 'artist')->where('status', 1)->get();
+        }
+
         $requirement_ids = [];
         foreach ($requirements as $req) {
             array_push($requirement_ids, $req->requirement_id);
@@ -1393,9 +1414,9 @@ class MainController extends Controller
         $total = $requirements->count();
 
         for ($j = 1; $j <= $total; $j++) {
-            if (Storage::exists(session($userid . '_' . $i . '_doc_file_' . $j))) {
+            if (Storage::exists(session($userid .  '_doc_file_' . $j))) {
 
-                $ext = session($userid . '_' . $i . '_ext_' . $j);
+                $ext = session($userid . '_ext_' . $j);
 
                 $check_path = 'public/' . $company_name . '/artist_permit/temp/' . $tempData->id;
 
@@ -1410,12 +1431,10 @@ class MainController extends Controller
                 $newPathLink = $company_name . '/artist_permit/temp/' . $tempData->id . '/document_' . $next_file_no . '.' . $ext;
 
 
-                Storage::move(session($userid . '_' . $i . '_doc_file_' . $j), $newPath);
-                Storage::delete(session($userid . '_' . $i . '_doc_file_' . $j));
+                Storage::move(session($userid . '_doc_file_' . $j), $newPath);
+                Storage::delete(session($userid .  '_doc_file_' . $j));
 
-
-
-                session()->forget([$userid . '_' . $i . '_doc_file_' . $j, $userid . '_' . $i . '_ext_' . $j]);
+                session()->forget([$userid .  '_doc_file_' . $j, $userid . '_ext_' . $j]);
             } else {
                 $artistsD = ArtistPermitDocument::where('artist_permit_id', $tempData->artist_permit_id)->latest()->first();
                 $newPathLink = $artistsD->path;
@@ -1457,7 +1476,8 @@ class MainController extends Controller
             if ($data->status == 1) {
                 if ($data->artist_permit_id) {
                     ArtistPermit::where('artist_permit_id', $data->artist_permit_id)->update([
-                        'artist_permit_status' => 'inactive'
+                        'type' => 'remove',
+                        'deleted_at' => Carbon::now()
                     ]);
                 }
             } else {
@@ -1574,7 +1594,7 @@ class MainController extends Controller
                     $artistPermit->created_by =  Auth::user()->user_id;
                     $artistPermit->save();
                     $artistID = $artist_id;
-                    $artistPermitId = $artistPermit->id;
+                    $artistPermitId = $artistPermit->artist_permit_id;
                 }
 
 
@@ -1590,7 +1610,7 @@ class MainController extends Controller
 
                     $artist_temp_document = ArtistTempDocument::where('temp_data_id', $data->id)->where('requirement_id', $requirement_ids[$j - 1])->orderBy('created_at', 'desc')->first();
 
-                    if (isset($artist_temp_document->doc_id) && $artist_temp_document->doc_id != null) {
+                    if (!empty($artist_temp_document) && $artist_temp_document->doc_id == null) {
 
                         $temp_path = $artist_temp_document->path;
                         $te_pth = explode('/', $temp_path);
@@ -1632,14 +1652,12 @@ class MainController extends Controller
 
         $old_permit_status = Permit::where('permit_id', $permit_id)->value('permit_status');
 
-
-
         if ($old_permit_status == 'modification request') {
-            $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'modified', 'lock' => null]);
+            $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'modified', 'is_edit' => 0, 'lock' => null]);
         } else if ($old_permit_status == 'active') {
-            $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'new', 'request_type' => 'amend']);
+            $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'new', 'is_edit' => 0, 'request_type' => 'amend']);
         } else {
-            $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'new']);
+            $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'new', 'is_edit' => 0]);
         }
 
         if ($result) {

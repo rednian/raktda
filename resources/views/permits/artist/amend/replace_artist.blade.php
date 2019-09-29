@@ -599,6 +599,8 @@
                                             </div>
 
                                         </div>
+                                        <input type="hidden" id="issue_date" value="{{$artist_details->issue_date}}">
+                                        <input type="hidden" id="expiry_date" value="{{$artist_details->expiry_date}}">
                                         @php
                                         $i = 1;
                                         $issued_date = strtotime($artist_details->issue_date);
@@ -909,7 +911,7 @@
 
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
 
-                formData: {id: i, reqName: $('#req_name_'+i).val() , artistNo: $('#artist_number_doc').val()},
+                formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
 
                 onLoad:function(obj)
 
@@ -1093,8 +1095,6 @@
                 showDelete: true,
 
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-
-                formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
 
                 onLoad:function(obj)
 
@@ -1502,7 +1502,7 @@
 
             var hasFileArray = [];
 
-            documentDetails[artist_number] = {};
+            documentDetails = {};
 
             for(var i = 1; i <= $('#requirements_count').val(); i++)
 
@@ -1524,7 +1524,7 @@
 
                     }
 
-                    documentDetails[artist_number][i] = {
+                    documentDetails[i] = {
 
                         issue_date :   $('#doc_issue_date_'+i).val(),
 
@@ -1923,6 +1923,9 @@
 
             var dd = localStorage.getItem('documentDetails');
 
+            var issue_d = $('#issue_date').val();
+            var expiry_d = $('#expiry_date').val();
+
 
 
             $.ajaxSetup({
@@ -1941,7 +1944,14 @@
 
                     // data: { permitDetails: pd},
 
-                    data: {  permitId: artist_permit_id, artistD: ad , documentD: dd, updateChecklist: false},
+                    data: {
+                         permitId: artist_permit_id,
+                        artistD: ad ,
+                     documentD: dd,
+                     permit_id: permit_id,
+                     issue_d: issue_d,
+                        expiry_d: expiry_d,
+                     updateChecklist: false},
 
                     success: function(result){
 

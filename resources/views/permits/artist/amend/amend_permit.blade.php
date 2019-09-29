@@ -199,8 +199,21 @@
         }
     });
 
-    $(window).on('beforeunload', function (e)
-    {
+    $(document).ready(function(){
+
+    $('#kt_aside_menu ul li a').on('mouseenter', stopNavigate)
+        .on('mouseout', function () {
+        $(window).on('beforeunload', windowBeforeUnload);
+    });
+    })
+
+    function stopNavigate(event) {
+        $(window).off('beforeunload');
+    }
+
+
+    function windowBeforeUnload() {
+
         var permit_id = $('#permit_id').val();
         var nextUrl = document.activeElement.href;
         if(nextUrl == undefined){
@@ -227,7 +240,9 @@
             }
 
         }
-    });
+
+        return 'Are you sure you want to leave?';
+    }
 
     $('#back_btn').click(function(){
         $total_artists = $('#total_artist_details').val();
