@@ -14,15 +14,19 @@ class Artist extends Model implements Auditable
     protected $table = 'artist';
     protected $primaryKey = 'artist_id';
     protected $fillable = [
-
-        'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'nationality', 'birthdate', 'artist_status', 'gender_id',  'created_by', 'updated_by', 'deleted_by', 'person_code'
-
+        'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'country_id', 'birthdate', 'artist_status', 'gender_id',
+	     'created_by', 'updated_by', 'deleted_by', 'person_code'
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'birthdate'];
 
+    public function action()
+    {
+    	return $this->hasMany(ArtistAction::class, 'artist_id');
+    }
+
     public function country()
     {
-    	return $this->belongsTo(Countries::class, 'nationality','country_code');
+    	return $this->belongsTo(Country::class, 'country_id');
     }
 
     public function artistPermit()
@@ -52,6 +56,6 @@ class Artist extends Model implements Auditable
 
     public function Nationality()
     {
-        return $this->belongsTo(Countries::class, 'nationality',  'country_code');
+        return $this->belongsTo(Countries::class, 'nationality',  'country_id');
     }
 }

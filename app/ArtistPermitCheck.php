@@ -8,7 +8,7 @@ class ArtistPermitCheck extends Model
 {
     protected $table = 'artist_permit_check';
     protected $primaryKey = 'artist_permit_check_id';
-    protected $fillable = ['artist_permit_id', 'status'];
+    protected $fillable = ['artist_permit_id', 'action','user_id'];
 
     public function comment()
     {

@@ -22,12 +22,18 @@
 					<section class="kt-section kt-padding-10">
 						<div class="kt-section__desc">
 							@csrf
+							 <?php
+							 $all_artist = $permit->artistpermit()->count();
+							 $disaaproved_artist = $permit->artistpermit()->where('artist_permit_status', 'approved')->count();
+							 ?>
 							<div class="form-group form-group-xs row">
 								<label class="col-sm-2 col-form-label">Action <span class="text-danger">*</span></label>
 								<div class="col-sm-8">
 									<select name="action" class="form-control-sm form-control custom-select">
 										<option disabled selected>-Select Action-</option>
-										<option value="approve">Approve Application & Notify client for payment</option>
+										 @if($all_artist == $disaaproved_artist ){
+													<option value="approve">Approve Application & Notify client for payment</option>
+										 @endif
 										<option value="send_back">Send back to client for modification of one or more artist information</option>
 										<option value="approval">Need higher Approval</option>
 										<option value="rejected">Reject Application & Notify client</option>

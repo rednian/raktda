@@ -179,13 +179,13 @@
 																			<label for="example-search-input" class="col-4 col-form-label kt-font-dark">Nationality</label>
 																			<div class="col-lg-8">
 																				<div class="input-group input-group-sm">
-																					<input value="{{ ucwords($artist_permit->artist->nationality) }}" readonly type="text"
+																					<input value="{{ ucwords($artist_permit->artist->country->nationality_en) }}" readonly type="text"
 																								 class="form-control form-control-sm">
 																					<div class="input-group-append">
                                                <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
                                                    <input data-step="step-1" data-check="checklist"
-																													value="{{ ucwords($artist_permit->artist->nationality) }}" type="checkbox"
+																													value="{{ ucwords($artist_permit->artist->country->nationality_en) }}" type="checkbox"
 																													name="check[nationality]">
                                                    <span></span>
                                                  </label>
@@ -422,7 +422,7 @@
 																						value="{{ $artist_permit->language->name_en ? $artist_permit->language->name_en : null}}"
 																						type="text" readonly class="form-control form-control-sm">
 																					<div class="input-group-append">
-                                               <span class="input-group-text">
+                        			                    <span class="input-group-text">
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
                                                    <input data-step="step-1"
 																													value="{{ $artist_permit->language->name_en ? $artist_permit->language->name_en : null}}"
@@ -666,7 +666,7 @@
 																	</div>
 																	<div class="col-6">
 																		<div class="form-group form-group-sm row">
-																			<label for="example-search-input" class="col-4 col-form-label kt-font-dark">City</label>
+																			<label for="example-search-input" class="col-4 col-form-label kt-font-dark">Emirate</label>
 																			<div class="col-8">
 																				<div class="input-group input-group-sm">
 																					<input value="{{ ucwords($artist_permit->emirate->name_en) }}" type="text" readonly
@@ -787,14 +787,14 @@
 						<!--end: Form Wizard Step 3-->
 						<!--begin: Form Actions -->
 						<div class="kt-form__actions">
-							<button type="button" class="btn btn-elevate btn-maroon btn-sm kt-font-bold kt-font-transform-u"
+							<button type="button" class="btn btn-elevate btn-maroon btn-sm kt-font-bold kt-font-transform-u btn-wide"
 											data-ktwizard-type="action-prev">Previous
 							</button>
-							<button type="button" class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold kt-font-transform-u"
+							<button type="button" class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u"
 											data-ktwizard-type="action-next">Next
 							</button>
 							<div class="dropdown" data-ktwizard-type="action-submit">
-								<button class="btn btn-warning btn-sm kt-font-bold kt-font-transform-u dropdown-toggle" type="button"
+								<button class="btn btn-warning btn-sm btn-wide kt-font-bold kt-font-transform-u dropdown-toggle" type="button"
 												id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									Take action & finish
 								</button>

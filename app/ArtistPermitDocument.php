@@ -13,7 +13,7 @@ class ArtistPermitDocument extends Model
     protected $primaryKey = 'permit_document_id';
     protected $fillable = [
         'issued_date', 'expired_date', 'status', 'path', 'requirement_id',
-        'artist_permit_id', 'created_by', 'updated_by', 'deleled_by', 'document_name'
+        'artist_permit_id', 'created_by', 'updated_by', 'deleled_by'
     ];
     protected $dates = ['issued_date', 'expired_date', 'created_at'];
 

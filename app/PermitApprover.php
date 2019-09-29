@@ -23,7 +23,7 @@ class PermitApprover extends Model
 
     public function comment()
     {
-        return $this->belongsToMany(PermitComment::class, 'permit_approver_note', 'permit_approver_id', 'permit_comment_id');
+    	return $this->belongsToMany(PermitComment::class, 'permit_approver_note', 'permit_approver_id', 'permit_comment_id');
     }
 
     public function user()

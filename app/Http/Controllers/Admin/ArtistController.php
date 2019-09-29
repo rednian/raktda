@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use App\Permit;
+use Carbon\Carbon;
 use DB;
 use DataTables;
 
 use App\Artist;
+use App\ArtistAction;
 use App\ArtistPermit;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -35,14 +39,109 @@ class ArtistController extends Controller
 
   public function datatable(Request $request)
   {
-  	$artist = Artist::whereHas('permit', function($q){
-  		$q->orderBy('created_at','desc');
-		  })->get();
-  	return DataTables::of($artist)->make(true);
+  	$artist = Artist::whereHas('artistpermit', function($q){
+  		$q->has('profession');
+   })->whereHas('permit', function($q){
+  		$q->where('permit_status', '!=', 'draft');
+		  })
+	    ->when($request->artist_status, function($q) use ($request){
+	    	$q->where('artist_status', $request->artist_status);
+	    })
+	    ->orderby('updated_at', 'desc')->get();
+
+  	return DataTables::of($artist)
+	     ->editColumn('name', function($artist){
+	    	return  ucwords($artist->fullname);
+	     })
+	    ->addColumn('nationality', function($artist){
+	    	if(!$artist->country){ return null; }
+		    return ucwords($artist->country->nationality_en);
+	    })
+	    ->addColumn('mobile_number', function($artist){
+	    	return $artist->artistPermit()->latest()->first()->mobile_number;
+	    })
+	    ->addColumn('profession', function($artist){
+	    	return ucwords($artist->artistpermit()->latest()->first()->profession->name_en);
+	    })
+	    ->editColumn('artist_status', function($artist){
+	    	return ucfirst($artist->artist_status);
+	    })
+	    ->addColumn('active_permit', function($artist){
+	    	return $artist->permit()->where('permit_status', 'active')->whereDate('expired_date', '>=', Carbon::now())->count();
+	    })
+	    ->rawColumns(['name'])
+	    ->make(true);
   }
 
+  public function statusHistory(Request $request, Artist $artist)
+  {
+  	$action = ArtistAction::where('artist_id', $artist->artist_id)->get();
+  	return DataTables::of($action)
+	    ->editColumn('created_at', function($action){
+	    	return $action->created_at->format('d-M-Y h a');
+	    })
+	    ->addColumn('user', function($action){
+	    	return ucwords($action->user->employee->emp_name);
+	    })
+	    ->editColumn('action', function($action){
+	    	return artistStatus($action->action);
+	    })
+	    ->editColumn('remarks', function($action){
+	    	return ucfirst($action->remarks);
+	    })
+	    ->rawColumns(['action'])
+	    ->make(true);
+  }
 
-    public function history(Request $request, ArtistPermit $artistpermit)
+  public function permitHistory(Request $request, Artist $artist)
+  {
+  	$permit = Permit::whereHas('artistpermit', function($q) use ($artist){
+  		$q->where('artist_id', $artist->artist_id);
+   })
+	    ->whereNotIn('permit_status', ['draft'])
+	    ->orderBy('permit_status')
+	    ->orderBy('updated_at', 'desc')
+	    ->get();
+  	return DataTables::of($permit)
+	    ->editColumn('issued_date', function($permit){
+	    	if($permit->permit_status == 'new'){ return null; }
+	    	return $permit->issued_date->format('d-M-Y');
+	    })
+	    ->editColumn('reference_number', function($permit){
+	    	return '<span class="kt-font-bold">'.$permit->reference_number.'</span>';
+	    })
+	    ->editColumn('expired_date', function($permit){
+	      	if(!$permit->expired_date){ return null; }
+	      	if($permit->permit_status == 'new'){ return null; }
+	    	return $permit->issued_date->format('d-M-Y');
+	    })
+	    ->addColumn('company_name', function($permit){
+	    	return ucwords($permit->company->company_name);
+	    })
+	    ->editColumn('permit_status', function($permit){
+	    	$class_name = 'default';
+	    	$permit_status  = $permit->permit_status;
+	    	if (strtolower($permit->permit_status) == 'new' || strtolower($permit->permit_status) == 'approved-unpaid' || strtolower($permit->permit_status) == 'active') {
+	    		$class_name = 'success';
+	    	}
+	    	if (strtolower($permit->permit_status) == 'processing' || strtolower($permit->permit_status) == 'modification request' || strtolower($permit->permit_status) == 'modified') {
+	    		$class_name = 'warning';
+	    	}
+	    	if (strtolower($permit->permit_status) == 'pending from client') { $class_name = 'info'; }
+	    	if (strtolower($permit->permit_status) == 'new-update from client') { $class_name = 'info'; }
+	    	if (strtolower($permit->permit_status) == 'unprocessed' || strtolower($permit->permit_status) == 'expired' || strtolower($permit->permit_status) == 'rejected') {
+	    		$class_name = 'danger';
+	    	}
+	    	if (strtolower($permit->permit_status) == 'modification request' ){
+	    		$permit_status = 'need modification';
+	    	}
+	    	return '<span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($permit_status).'</span>';
+	    })
+	    ->rawColumns(['permit_status', 'reference_number'])
+	    ->make(true);
+  }
+
+  public function history(Request $request, ArtistPermit $artistpermit)
     {
         $artist_permit = $artistpermit->datatable()
                                       ->where('artist_permit.artist_id', $artistpermit->artist_id)

@@ -10,9 +10,10 @@ class Profession extends Model
     use SoftDeletes;
     protected $table = 'profession';
     protected $primaryKey = 'profession_id';
-    protected $fillable = ['name_en', 'name_ar'];
+    protected $fillable = ['name_en', 'name_ar', 'amount', 'is_multiple'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
-    public function artist()
+    public function artistPermit()
     {
         return $this->hasMany(ArtistPermit::class, 'profession_id');
     }
