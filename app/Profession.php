@@ -10,7 +10,7 @@ class Profession extends Model
     use SoftDeletes;
     protected $table = 'profession';
     protected $primaryKey = 'profession_id';
-    protected $fillable = ['name_en', 'name_ar'];
+    protected $fillable = ['name_en', 'name_ar', 'amount', 'name_ar'];
 
     public function artist()
     {

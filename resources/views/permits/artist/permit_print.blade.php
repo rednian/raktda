@@ -1,9 +1,11 @@
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
         * {
             font-family: DejaVu Sans, sans-serif;
+            letter-spacing: 0.05px;
             box-sizing: border-box;
         }
 
@@ -157,23 +159,33 @@
 
         }
 
+        #tda_logo {
+            height: 80px;
+            margin-right: 25px;
+        }
+
+        #govt_logo {
+            height: 40px;
+            margin-left: 25px;
+        }
+
         main {
             border: 1px solid black;
             height: 60%;
         }
     </style>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 </head>
 
 <body>
     <header>
         <table class="logo--header" style="width: 100%;">
             <tr>
-                <td><img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-en.svg') }}" /></td>
-                <td><img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-en.svg') }}" /></td>
+                <td><img id="govt_logo" alt="Logo" src="{{ asset('/img/print_govt_logo.png') }}" /></td>
+                <td><img id="tda_logo" alt="Logo" src="{{ asset('/img/print_tda_logo.png') }}" /></td>
             </tr>
         </table>
-        <table class="logo--header" style="margin-top: 25px;">
+        <table class="logo--header" style="margin-top: 15px;">
             <tr>
                 <th>
                     <p>Artist Permit</p>
@@ -275,6 +287,7 @@
             $i = 1 ;
             @endphp
             @foreach($permit_details->artistPermit as $artist_permit)
+            @if($artist_permit->artist_permit_status == 'approved')
             @if($i%2 != 0)
             <tr>
                 @endif
@@ -322,7 +335,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p>{{$artist_permit->artist['Nationality']['country_enNationality']}}</p>
+                                            <p>{{$artist_permit->artist['Nationality']['nationality_en']}}</p>
                                         </td>
                                         <td>
                                             <p>{{$artist_permit->artist['Nationality']['country_arNationality']}}</p>
@@ -379,6 +392,7 @@
             @php
             $i++;
             @endphp
+            @endif
             @endforeach
         </table>
     </main>

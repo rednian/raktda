@@ -38,11 +38,6 @@ class ArtistPermit extends Model implements Auditable
         return $this->hasMany(ArtistChecklist::class, 'artist_permit_id');
     }
 
-    public function permitType()
-    {
-        return $this->belongsTo(PermitType::class, 'permit_type_id');
-    }
-
     public function permit()
     {
         return $this->belongsTo(Permit::class, 'permit_id');

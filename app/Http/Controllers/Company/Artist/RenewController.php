@@ -12,10 +12,10 @@ use Auth;
 use App\Artist;
 use App\ArtistTempData;
 use App\Countries;
-use App\PermitType;
 use App\VisaType;
 use App\Language;
 use App\Religion;
+use App\Profession;
 use App\Emirates;
 use App\Areas;
 use App\ArtistTempDocument;
@@ -29,7 +29,7 @@ class RenewController extends Controller
         $old_permit_number = Permit::where('permit_id', $id)->latest()->value('permit_number');
         $number = explode('-', $old_permit_number);
         $new_pn = isset($number[1]) ? $number[0] . '-' . sprintf("%02d", (int) $number[1] + 1) : $old_permit_number . '-' . '01';
-        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.permitType')->where('permit_id', $id)->first();
+        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession')->where('permit_id', $id)->first();
 
         $is_edit =  Permit::where('permit_id', $id)->value('is_edit');
 
@@ -50,8 +50,7 @@ class RenewController extends Controller
                     'birthdate' =>  $pd->artist['birthdate'] ? Carbon::parse($pd->artist['birthdate'])->toDateString() : '',
                     'artist_id' => $pd->artist_id,
                     'permit_id' => $pd->permit_id,
-                    'profession' => $pd->profession_id,
-                    'permit_type_id' => $pd->permit_type_id,
+                    'profession_id' => $pd->profession_id,
                     'original' => $pd->original,
                     'thumbnail' => $pd->thumbnail,
                     'passport_number' => $pd->passport_number,
@@ -79,10 +78,13 @@ class RenewController extends Controller
                     'artist_permit_id' => $pd->artist_permit_id,
                     'person_code' => $pd->artist['person_code'],
                     'is_old_artist' => 2,
-                    'artist_permit_status' => $pd->artist_permit_status
+                    'artist_permit_status' => $pd->artist_permit_status,
+                    'issue_date' => $pd->issued_date,
+                    'expiry_date' => $pd->expired_date,
+                    'work_location' => $pd->work_location
                 ]);
 
-                $permit_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('document_name');
+                $permit_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('requirement_id');
 
 
                 foreach ($pd->artistPermitDocument as $ap) {
@@ -91,7 +93,7 @@ class RenewController extends Controller
                         'issued_date' => $ap->issued_date,
                         'expired_date' => $ap->expired_date,
                         'path' => $ap->path,
-                        'document_name' => $ap->document_name,
+                        'requirement_id' => $ap->requirement_id,
                         'artist_permit_id' => $ap->artist_permit_id,
                         'permit_id' => $pd->permit_id,
                         'temp_data_id' => $artist_temp->id,
@@ -116,21 +118,16 @@ class RenewController extends Controller
         $permit_id = ArtistTempData::where('id', $temp_id)->value('permit_id');
 
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
-        $data_bundle['countries'] = Countries::orderBy('country_enNationality', 'asc')->get();
-        $data_bundle['visa_types'] = VisaType::orderBy('visa_type_en', 'asc')->get();
-        $data_bundle['permitTypes'] = PermitType::orderBy('name_en', 'asc')
-            ->where('permit_type', 'artist')->where('status', 1)->get();
+        $data_bundle['countries'] = Countries::orderBy('nationality_en', 'asc')->get();
+        $data_bundle['visatypes'] = VisaType::orderBy('visa_type_en', 'asc')->get();
         $data_bundle['languages'] = Language::orderBy('name_en', 'asc')->get();
         $data_bundle['religions'] = Religion::orderBy('name_en', 'asc')->get();
         $data_bundle['emirates'] = Emirates::orderBy('name_en', 'asc')->get();
         $data_bundle['areas'] = Areas::orderBy('area_en', 'asc')->get();
         $data_bundle['profession'] = Profession::orderBy('name_en', 'asc')->get();
-
-        $data_bundle['artist_details'] = ArtistTempData::where('id', $temp_id)->first();
-        $data_bundle['permit_details'] = ArtistPermit::with('artist', 'permit', 'artistPermitDocument', 'permitType')->where('permit_id', $permit_id)->first();
-
-
-        return view('permits.artist.renew.edit_artist', $data_bundle);
+        $data_bundle['artist_details'] = ArtistTempData::with('Nationality', 'Profession')->where('id', $temp_id)->first();
+        $data_bundle['permit_details'] = ArtistPermit::with('artist', 'permit', 'artistPermitDocument', 'profession')->where('permit_id', $permit_id)->first();
+        return view('permits.artist.renew.edit_renew_artist', $data_bundle);
     }
 
 
@@ -155,8 +152,8 @@ class RenewController extends Controller
             'issued_date' => $n_issued_date,
             'expired_date' => $n_expired_date,
             'work_location' => $n_work_location,
-            'permit_status' => 'pending',
-            'request_type' => 'new',
+            'permit_status' => 'new',
+            'request_type' => 'renew',
             'company_id' => Auth::user()->EmpClientId,
             'created_at' => $current_time_string,
             'created_by' => $user_id
