@@ -123,7 +123,6 @@
         </div>
         <!-- end:: Content -->
       </div>
-      {{-- @include('layouts.admin.footer') --}}
     </div>
   </div>
 </div>

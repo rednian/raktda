@@ -275,6 +275,7 @@ class ArtistPermitController extends Controller
 
     		return Datatables::of($artist_permit)
 			    ->addColumn('nationality', function($artist_permit){
+			    	if(!$artist_permit->artist->country){ return null; }
 			    	return ucwords($artist_permit->artist->country->nationality_en);
 			    })
 			    ->addColumn('age', function($artist_permit){

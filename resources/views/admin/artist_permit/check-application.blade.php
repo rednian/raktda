@@ -849,7 +849,7 @@
 @endsection
 @section('script')
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
-	 <script src="{{ asset('/assets/js/wizard-3.js') }}"></script>
+{{--	 <script src="{{ asset('/assets/js/wizard-3.js') }}"></script>--}}
 	<script type="text/javascript">
 		new Vue({
 			el: '#app-wizard',
@@ -947,7 +947,7 @@
 
 			$('#document-table').DataTable({
 				ajax: {
-					url: '{{ url('/permit/artist_permit') }}/'+{{ $permit->permit_id }}+'/application/'+{{ $artist_permit->artist_permit_id }}+'/documentDatatable'
+					url: '{{ url('/artist_permit') }}/'+{{ $permit->permit_id }}+'/application/'+{{ $artist_permit->artist_permit_id }}+'/documentDatatable'
 				},
 				columnDefs: [
 					{targets: [3], className: 'no-wrap'},
@@ -983,8 +983,7 @@
 
 			$('#permit-history').DataTable({
 				ajax: {
-					url: '{{ url('/permit/artist_permit') }}/'+{{ $permit->permit_id }}+
-					'/application/'+{{ $artist_permit->artist_id }}+'/permitHistory'
+					url: '{{ url('/permit/artist_permit') }}/'+{{ $permit->permit_id }}+'/application/'+{{ $artist_permit->artist_id }}+'/permitHistory'
 				},
 				columnDefs: [
 					{targets: [0], className: 'no-wrap'},
