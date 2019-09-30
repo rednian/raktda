@@ -50,8 +50,8 @@
                        <span class="kt-menu__link-text">ARTIST PERMIT</span>
                    </a>
                </li>
-               <li class="kt-menu__item">
-                   <a href="javascript:void(0)" class="kt-menu__link ">
+               <li class="kt-menu__item {{ Request::is('event*') ? 'kt-menu__item--active': '' }}">
+                   <a href="{{ route('admin.event.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">EVENT PERMIT</span>
                    </a>
                </li>
