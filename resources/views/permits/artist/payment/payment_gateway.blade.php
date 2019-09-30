@@ -65,13 +65,13 @@
                             <tr>
                                 <td class="text-left">{{$ap->artist['firstname_en'] .' '.$ap->lastname_en }}</td>
                                 <td class="text-left">
-                                    {{$ap->permitType['name_en']}}
+                                    {{$ap->profession['name_en']}}
                                 </td>
                                 <td class="text-right">
-                                    {{$ap->permitType['amount']}}
+                                    {{$ap->profession['amount']}}
                                     @php
-                                    $fee+=$ap->permitType['amount'];
-                                    $vat = $ap->permitType['amount'] * 0.05;
+                                    $fee+=$ap->profession['amount'];
+                                    $vat = $ap->profession['amount'] * 0.05;
                                     $vat_t+= $vat;
                                     @endphp
                                 </td>
@@ -82,7 +82,7 @@
                                     {{$vat}}
                                 </td>
                                 <td class="text-right">
-                                    {{$ap->permitType['amount'] + $vat}}
+                                    {{$ap->profession['amount'] + $vat}}
                                 </td>
                             </tr>
                             @endif
