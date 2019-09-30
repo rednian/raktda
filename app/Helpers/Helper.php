@@ -1,4 +1,21 @@
-<?php 
+<?php
+	function permitStatus($status){
+		$status = strtolower($status);
+		$classname = null;
+		if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active'){ $classname = 'success'; }
+		if ($status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification'){ $classname = 'warning'; }
+		if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled'){ $classname = 'danger'; }
+		if($status == 'modification request'){ $status = 'need modification'; }
+
+		return '<span class="kt-badge kt-badge--'.$classname.' kt-badge--inline">'.ucwords($status).'</span>';
+
+	}
+
+	function artistStatus($status){
+		$classname =  $status == 'active'? 'success': 'danger';
+			return '<span class="kt-badge kt-badge--'.$classname.' kt-badge--inline">'.ucwords($status).'</span>';
+	}
+
 function label($label = []){
    return  '<span class="kt-badge  kt-badge--'.$label['class'].' kt-badge--inline kt-badge--pill">'.$label['status'].'</span>';
 }
@@ -32,25 +49,10 @@ function getDocumentType($filename = null){
     }
 }
 
-function defaultProfile($name, $isHidden = false){
-    $string = explode(' ', $name);
-    $profile_name = null;
-    
-    foreach ($string as $index => $char) { 
-        if($index < 2){
-         $profile_name .= substr($char, 0, 1); 
-        }
-    }
-
-    $hidden = $isHidden ? 'kt-hidden': '';
-
-    $classes = ['info','success','danger', 'warning','primary'];
-    $class = 'kt-widget__pic--'.$classes[array_rand($classes)].' kt-font-'.$classes[array_rand($classes)].' '.$hidden;
-    $html = '<div class="kt-widget__pic '.$class.' kt-font-boldest kt-font-light ">';
-    $html .= strtoupper($profile_name);
-    $html .= '</div>';
-
-    return $html;
+function defaultProfile($fname ,$lastname){
+    $fname = substr($fname, 0, 1);
+    $lastname = substr($lastname,0 ,1);
+    return strtoupper($fname.$lastname);
 
 }
 

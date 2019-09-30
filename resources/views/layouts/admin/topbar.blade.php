@@ -56,7 +56,8 @@
           <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
               <div class="kt-header__topbar-user">
                 @php
-                $name = ucwords(Auth::user()->NameEn);
+
+                $name = ucwords(Auth::user()->employee->emp_name);
                 $first_name = explode(' ', $name);
                 $first_name = $first_name[0];
                 $first_letter = substr($first_name, 0, 1);

@@ -1,7 +1,8 @@
-<table class="table  table-hover  table-borderless table-striped" id="artist-permit-processing">
+<table class="table  table-hover  table-borderless table-striped" id="artist-permit-approved">
 	 <thead class="thead-dark">
 	 <tr>
 			<th>Reference No.</th>
+			<th>Permit Number</th>
 			<th>Company Name</th>
 			<th>Applied Date</th>
 			<th>No. of Artist

@@ -1,4 +1,4 @@
-<table class="table  table-hover  table-borderless table-striped" id="artist-permit-processing">
+<table class="table  table-hover  table-borderless table-striped" id="artist-permit-rejected">
 	 <thead class="thead-dark">
 	 <tr>
 			<th>Reference No.</th>
