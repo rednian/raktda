@@ -18,7 +18,7 @@ class PaymentController extends Controller
 
     public function make_payment($id)
     {
-        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('permit_id', $id)->first();
+        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->first();
         return view('permits.artist.payment.payment', $data_bundle);
     }
 
@@ -27,7 +27,7 @@ class PaymentController extends Controller
 
     public function payment_gateway($id)
     {
-        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.permitType')->where('permit_id', $id)->first();
+        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->first();
         return view('permits.artist.payment.payment_gateway', $data_bundle);
     }
 

@@ -23,7 +23,7 @@
             <div class="kt-portlet__body">
 
                 <!--begin: Form Wizard Step 5-->
-                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                <div class="kt-wizard-v3__content py-5" data-ktwizard-type="step-content">
 
                     <div class="kt-form__section kt-form__section--first">
                         <div class="kt-wizard-v3__review">
@@ -108,7 +108,7 @@
 				confirmButtonText: 'Ok'
 			}).then((result) => {
 				if (result.value) {
-					window.location.href = '../artist_permits';
+					window.location.href = "{{url('company/artist_permits')}}";
 				}
 			})
 		}

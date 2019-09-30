@@ -5,9 +5,6 @@
 
 
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
-
-
 <div class="row">
     <div class="col-lg-12">
 
@@ -16,8 +13,6 @@
                 <div class="kt-portlet__head-label">
                     <h3 class="kt-portlet__head-title">Make Payment
                     </h3>
-                    <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
-                        <strong>{{$permit_details['permit_number']}}</strong></span>
                 </div>
 
                 <div class="kt-portlet__head-toolbar">
@@ -67,9 +62,11 @@
                                 <td>{{$artistPermit->permitType['name_en']}}</td>
                                 <td>{{$artistPermit->mobile_number}}</td>
                                 <td>{{$artistPermit->email}}</td>
-                                <td>{{ucwords($artistPermit->artist_permit_status)}}
+                                <td style="color:{{$artistPermit->artist_permit_status == 'approved' ? 'green' : 'red'}}"
+                                    class="kt-font-bold">
+                                    {{ucwords($artistPermit->artist_permit_status)}}
                                 </td>
-                                <td class="text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
+                                <td class=" text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
                                         onclick="getArtistDetails({{$artistPermit->artist_id}}, {{$artistPermit->artist_permit_id}})"
                                         class="btn-clean btn-icon btn-icon-md" title="View">
                                         <i class="la la-file la-2x"></i>
@@ -140,7 +137,7 @@
                 if(data)
                 {
                     var code = data.artist.person_code ? data.artist.person_code : '';
-                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td>' + code + '</td> <th>First Name</th> <td >' + data.artist.firstname_en + '</td>  </tr> <tr> <th>Last Name</th> <td>' + data.artist.lastname_en + '</td> <th>Nationality</th> <td >' + data.artist.nationality.country_enName + '</td>  </tr> <tr> <th>Email</th> <td>' + data.email + '</td> <th>Permit Type</th> <td >' + data.permit_type.name_en + '</td>  </tr> <tr> <th>Profession</th> <td>' + ( data.profession  ?  data.profession.name_en : '' )+ '</td> <th>Phone Number</th> <td >' + data.phone_number + '</td>  </tr><tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>UID Number</th> <td >' + data.uid_number + '</td> </tr> <tr> <th>DOB</th> <td >' + moment(data.artist.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr></table>');
+                    $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td >' + code + '</td><th>Profession</th> <td>' + ( data.profession  ?  data.profession.name_en : '' )+ '</td></tr><tr><th>First Name</th> <td >' + data.artist.firstname_en + '</td>  <th>Last Name</th> <td>' + data.artist.lastname_en + '</td> </tr><tr><th>First Name - Ar</th> <td >' + data.artist.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.artist.lastname_ar + '</td> </tr> <tr> <th> Nationality </th> <td >' + data.artist.nationality.nationality_en + '</td> <th>Email</th> <td>' + data.email + '</td>  </tr> <tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.artist.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Exp</th> <td >' +moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr> <tr>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td><th>Phone Number</th> <td >' + data.phone_number + '</td></tr></table>');
 
                 }
                 }

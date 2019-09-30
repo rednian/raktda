@@ -17,7 +17,7 @@ class Requirement extends Model implements Auditable
 
      public function requirementDocument()
      {
-        return $this->hasMany(ArtistDocument::class, 'requirement_id');
+        return $this->hasMany(ArtistPermitDocument::class, 'document_id');
      }
 
 }

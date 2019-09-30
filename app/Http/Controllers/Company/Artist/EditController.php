@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Countries;
 use App\ArtistPermit;
 use App\Requirement;
-use App\PermitType;
 use App\PermitComment;
 use App\ArtistPermitCheck;
 use App\Language;
@@ -17,6 +16,7 @@ use App\Areas;
 use App\Permit;
 use Carbon\Carbon;
 use App\VisaType;
+use App\Profession;
 use App\ArtistTempData;
 use App\ArtistTempDocument;
 use Cookie;
@@ -26,7 +26,8 @@ class EditController extends Controller
 
     public function edit_permit($id)
     {
-        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.permitType')->where('permit_id', $id)->first();
+
+        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession')->where('permit_id', $id)->first();
 
         $is_edit =  Permit::where('permit_id', $id)->value('is_edit');
 
@@ -44,13 +45,12 @@ class EditController extends Controller
                     'firstname_ar' =>  $pd->artist['firstname_ar'],
                     'lastname_en' =>  $pd->artist['lastname_en'],
                     'lastname_ar' =>  $pd->artist['lastname_ar'],
-                    'nationality' =>  $pd->artist['nationality'],
+                    'nationality' =>  $pd->artist['country_id'],
                     'gender' =>  $pd->artist['gender_id'],
                     'birthdate' =>  $pd->artist['birthdate'] ? Carbon::parse($pd->artist['birthdate'])->toDateString() : '',
                     'artist_id' => $pd->artist_id,
                     'permit_id' => $pd->permit_id,
-                    'permit_type_id' => $pd->permit_type_id,
-                    'profession' => $pd->profession_id,
+                    'profession_id' => $pd->profession_id,
                     'original' => $pd->original,
                     'thumbnail' => $pd->thumbnail,
                     'passport_number' => $pd->passport_number,
@@ -78,19 +78,22 @@ class EditController extends Controller
                     'artist_permit_id' => $pd->artist_permit_id,
                     'person_code' => $pd->artist['person_code'],
                     'is_old_artist' => 2,
-                    'artist_permit_status' => $pd->artist_permit_status
+                    'artist_permit_status' => $pd->artist_permit_status,
+                    'issue_date' => $pd->issued_date,
+                    'expiry_date' => $pd->expired_date,
+                    'work_location' => $pd->work_location
                 ]);
 
-                $permit_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('document_name');
+                $permit_doc_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('requirement_id');
 
 
-                foreach ($pd->artistPermitDocument as $ap) {
+                foreach ($permit_doc_details as $ap) {
                     ArtistTempDocument::create([
                         'status' => 2,
                         'issued_date' => $ap->issued_date,
                         'expired_date' => $ap->expired_date,
                         'path' => $ap->path,
-                        'document_name' => $ap->document_name,
+                        'requirement_id' => $ap->requirement_id,
                         'artist_permit_id' => $ap->artist_permit_id,
                         'permit_id' => $pd->permit_id,
                         'temp_data_id' => $artist_temp->id,
@@ -128,12 +131,9 @@ class EditController extends Controller
 
 
         $data_bundle['field_list'] = $result;
-
         $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
-        $data_bundle['countries'] = Countries::orderBy('country_enNationality', 'asc')->get();
-        $data_bundle['visa_types'] = VisaType::orderBy('visa_type_en', 'asc')->get();
-        $data_bundle['permitTypes'] = PermitType::orderBy('name_en', 'asc')
-            ->where('permit_type', 'artist')->where('status', 1)->get();
+        $data_bundle['countries'] = Countries::orderBy('nationality_en', 'asc')->get();
+        $data_bundle['visatypes'] = VisaType::orderBy('visa_type_en', 'asc')->get();
         $data_bundle['languages'] = Language::orderBy('name_en', 'asc')->get();
         $data_bundle['religions'] = Religion::orderBy('name_en', 'asc')->get();
         $data_bundle['emirates'] = Emirates::orderBy('name_en', 'asc')->get();
@@ -142,8 +142,8 @@ class EditController extends Controller
 
 
 
-        $data_bundle['permit_details'] = ArtistPermit::with('artist', 'artistPermitDocument', 'permitType', 'permit')->where('permit_id', $permit_id)->first();
-        $data_bundle['artist_details'] = ArtistTempData::with('permitType')->where('id', $temp_id)->first();
+        $data_bundle['permit_details'] = ArtistPermit::with('artist', 'artistPermitDocument', 'profession', 'permit')->where('permit_id', $permit_id)->first();
+        $data_bundle['artist_details'] = ArtistTempData::with('profession')->where('id', $temp_id)->first();
         return view('permits.artist.edit.edit_edit_artist', $data_bundle);
     }
 

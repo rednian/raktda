@@ -4,10 +4,6 @@
 
 
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
-
-
-
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
 
@@ -19,12 +15,16 @@
                     Artists Permits </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Existing
+                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Valid
                     Artists Permits</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">
+                    Artists Permits Drafts</a>
             </li>
             <li class="nav-item"
                 style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                <a href="{{ url('company/add_new_artist')}}">
+                <a href="{{ url('company/add_new_permit')}}">
                     <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
                         Add New Permit
                     </button>
@@ -40,11 +40,12 @@
                 <table class="table table-striped table-borderless" id="applied-artists-table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>ReferNo.</th>
-                            <th>FromDate</th>
-                            <th>ToDate</th>
-                            <th>Address</th>
-                            <th>AppliedOn</th>
+                            <th>Refer No.</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Location</th>
+                            <th>Artists</th>
+                            <th>Applied On</th>
                             <th>Status</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -57,22 +58,38 @@
                 <table class="table table-striped table-borderless " id="existing-artists-table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>ReferNo.</th>
-                            <th>PermitNo.</th>
-                            <th>FromDate</th>
-                            <th>ToDate</th>
-                            <th>Address</th>
-                            <th>AppliedOn</th>
-                            <th>Status</th>
+                            <th>Refer No.</th>
+                            <th>Permit No.</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Location</th>
+                            <th>Artists</th>
+                            <th>Applied On</th>
                             <th>Actions</th>
                             <th>Details</th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                    </tbody>
+
                 </table>
             </div>
+
+            <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
+                <table class="table table-striped table-borderless " id="drafts-artists-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Location</th>
+                            <th>Applied On</th>
+                            <th>Actions</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+
 
         </div>
 
@@ -95,7 +112,7 @@
                         <form action="{{route('company.cancel_permit')}}" id="cancel_permit_form" method="post"
                             novalidate>
                             {{csrf_field()}}
-                            <label>Are you sure to Cancel this Permit of ID <span class="text--maroon"
+                            <label>Are you sure to Cancel this Permit of Ref No. <span class="text--maroon"
                                     id="cancel_permit_number"></span>
                                 ?</label>
                             <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..."
@@ -168,14 +185,11 @@
 
         var table1 = $('#applied-artists-table').DataTable({
             responsive: true,
-            beforeSend: function (request) {
-                request.setRequestHeader("token", token);
-            },
             processing: false,
             serverSide: true,
             searching: true,
             // pageLength: 5,
-            order:[[4,'desc']],
+            order:[[5,'desc']],
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
             ajax:'{{route("company.fetch_applied_artists")}}',
             columns: [
@@ -183,6 +197,7 @@
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'work_location', name: 'work_location' },
+                { data: 'artist_count', name: 'artist_count' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
@@ -204,7 +219,7 @@
 					}
                 },
                 {
-                    targets:4,
+                    targets:5,
                     width: '12%',
                     render: function(data, type, full, meta) {
                         return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
@@ -220,11 +235,18 @@
 					}
                 },
                 {
+                    targets:4,
+                    className: 'text-center',
+                    render: function(data, type, full, meta) {
+                        return `<span class="kt-font-bold">${data}</span>`;
+					}
+                },
+                {
                     targets:-3,
                     width: '10%',
                     className: 'text-center',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
+						return `<span class="kt-font-bold kt-font-transform-c">${data}</span>`;
 					}
                 }
             ],
@@ -237,9 +259,9 @@
 
         var table2 = $('#existing-artists-table').DataTable({
             responsive: true,
-            beforeSend: function (request) {
-                request.setRequestHeader("token", token);
-            },
+            // beforeSend: function (request) {
+            //     request.setRequestHeader("token", token);
+            // },
             processing: false,
             serverSide: true,
             searching: true,
@@ -254,8 +276,8 @@
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'work_location', name: 'work_location' },
+                { data: 'artist_count', name: 'artist_count' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
                 { data: 'download', name: 'download' },
@@ -284,6 +306,14 @@
                 },
                 {
                     targets:5,
+                    width: '10%',
+                    className: 'text-center',
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}</span>`;
+					}
+                },
+                {
+                    targets:6,
                     width: '12%',
                     render: function(data, type, full, meta) {
                         return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
@@ -296,14 +326,6 @@
                     className: 'text-center',
                     render: function(data, type, full, meta) {
                         return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:-4,
-                    width: '10%',
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
 					}
                 },
                 {
@@ -320,12 +342,45 @@
             }
         });
 
+        var table3 = $('#drafts-artists-table').DataTable({
+            responsive: true,
+            processing: false,
+            serverSide: true,
+            searching: true,
+            // pageLength: 5,
+            deferRender: true,
+            // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+            order:[[3,'desc']],
+            ajax:'{{route("company.fetch_existing_drafts")}}',
+            columns: [
+                { data: 'issued_date', name: 'issued_date' },
+                { data: 'expired_date', name: 'expired_date' },
+                { data: 'work_location', name: 'work_location' },
+                { data: 'created_at', defaultContent: 'None', name: 'created_at' },
+                { data: 'action', name: 'action' },
+                { data: 'details', name: 'details' },
+            ],
+            columnDefs: [
+                {
+                    targets:-3,
+                    width: '12%',
+                    render: function(data, type, full, meta) {
+                        return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
+
+					}
+                },
+            ],
+            language: {
+                emptyTable: "No Existing Drafts"
+            }
+        });
+
 
     });
 
-    const cancel_permit = (id, number) => {
+    const cancel_permit = (id, refno) => {
         $('#cancel_permit_id').val(id);
-        $('#cancel_permit_number').html('<strong>'+number+'</strong>');
+        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
     }
 
     const show_cancelled = (id) => {

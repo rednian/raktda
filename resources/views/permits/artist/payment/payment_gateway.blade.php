@@ -3,8 +3,6 @@
 
 @section('content')
 
-
-<meta name="csrf-token" content="{{ csrf_token() }}">
 <!-- begin:: Content -->
 
 <div class="row">
@@ -51,7 +49,7 @@
                                 <th>Artist Permit Type</th>
                                 <th>Fee (AED)</th>
                                 <th>Extras (AED)</th>
-                                <th>Comments</th>
+                                <th>VAT(5%)</th>
                                 <th>Total (AED) </th>
                             </tr>
                         </thead>
@@ -59,30 +57,35 @@
                             @php
                             $extras = 0 ;
                             $fee = 0;
-                            $total = 0 ;
+                            $total = 0;
+                            $vat_t = 0;
                             @endphp
                             @foreach($permit_details->artistPermit as $ap)
+                            @if($ap->artist_permit_status == 'approved')
                             <tr>
-                                <td class="text-center">{{$ap->artist['firstname_en'] .' '.$ap->lastname_en }}</td>
-                                <td class="text-center">
+                                <td class="text-left">{{$ap->artist['firstname_en'] .' '.$ap->lastname_en }}</td>
+                                <td class="text-left">
                                     {{$ap->permitType['name_en']}}
                                 </td>
                                 <td class="text-right">
                                     {{$ap->permitType['amount']}}
                                     @php
                                     $fee+=$ap->permitType['amount'];
+                                    $vat = $ap->permitType['amount'] * 0.05;
+                                    $vat_t+= $vat;
                                     @endphp
                                 </td>
                                 <td class="text-right">
-
-                                </td>
-                                <td class="text-center">
-
+                                    0
                                 </td>
                                 <td class="text-right">
-                                    {{$ap->permitType['amount']}}
+                                    {{$vat}}
+                                </td>
+                                <td class="text-right">
+                                    {{$ap->permitType['amount'] + $vat}}
                                 </td>
                             </tr>
+                            @endif
                             @endforeach
                         </tbody>
                         <tfoot>
@@ -96,11 +99,11 @@
                                 <td class="kt-font-bold text-right">
                                     {{$extras}}
                                 </td>
-                                <td class="kt-font-bold">
-                                    &nbsp;
+                                <td class="kt-font-bold text-right">
+                                    {{$vat_t}}
                                 </td>
                                 <td class="kt-font-bold text-right">
-                                    {{$fee+$extras}}
+                                    {{$fee+$extras+$vat_t}}
                                 </td>
                             </tr>
                         </tfoot>

@@ -1,7 +1,13 @@
 @extends('layouts.app')
+
+
 @section('content')
-<link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
+
+<link href="{{ asset('/css/uploadfile.css') }}" rel="stylesheet">
+
+{{-- {{dd(session()->all())}} --}}
 <!-- begin:: Content -->
+{{-- <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"> --}}
 <div class="kt-portlet">
     <div class="kt-portlet__body kt-portlet__body--fit">
         <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
@@ -30,7 +36,8 @@
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> Upload Docs
+                                    <span>03</span> Upload Documents
+                                    <Docs></Docs>
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -138,15 +145,15 @@
                             </div>
                         </div>
                     </div>
+
+                    @php
+                    $user_id = Auth::user()->user_id;
+                    @endphp
                     <!--end: Form Wizard Step 1-->
 
-                    <input type="hidden" id="permit_from" value="{{$permit_details->issued_date}}">
-                    <input type="hidden" id="permit_to" value="{{$permit_details->expired_date}}">
-
-                    <!--begin: Permit Details Wizard-->
-
-
-                    <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
+                    <input type="hidden" id="from_date" value="{{session($user_id.'_apn_from_date')}}">
+                    <input type="hidden" id="to_date" value="{{session($user_id.'_apn_to_date')}}">
+                    <input type="hidden" id="location" value="{{session($user_id.'_apn_location')}}">
 
                     {{-- Artist details wizard Start --}}
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -470,25 +477,25 @@
                                                         </div>
 
                                                         {{-- </div>
-                                                    </div>
+                                                </div>
 
+                                            </div>
+                                        </div>
+
+
+                                        <div class="card">
+                                            <div class="card-header" id="headingThree6">
+                                                <div class="card-title collapsed" data-toggle="collapse"
+                                                    data-target="#collapseThree6" aria-expanded="false"
+                                                    aria-controls="collapseThree6">
+                                                    <h6 class="kt-font-transform-u">Address
+                                                        information</h6>
                                                 </div>
                                             </div>
-
-
-                                            <div class="card">
-                                                <div class="card-header" id="headingThree6">
-                                                    <div class="card-title collapsed" data-toggle="collapse"
-                                                        data-target="#collapseThree6" aria-expanded="false"
-                                                        aria-controls="collapseThree6">
-                                                        <h6 class="kt-font-transform-u">Address
-                                                            information</h6>
-                                                    </div>
-                                                </div>
-                                                <div id="collapseThree6" class="collapse show"
-                                                    aria-labelledby="headingThree6" data-parent="#accordionExample5">
-                                                    <div class="card-body">
-                                                        <div class="row"> --}}
+                                            <div id="collapseThree6" class="collapse show"
+                                                aria-labelledby="headingThree6" data-parent="#accordionExample5">
+                                                <div class="card-body">
+                                                    <div class="row"> --}}
                                                         <div class="col-md-4 form-group form-group-sm ">
                                                             <label for="address"
                                                                 class=" col-form-label kt-font-bold text-right">Emirate
@@ -537,11 +544,9 @@
                         </div>
                     </div>
 
-
                     <!--end: Form Wizard Step 3-->
 
-                    <input type="hidden" value="{{$permit_id}}" id="permit_id">
-                    <input type="hidden" value="{{$from}}" id="from_page">
+                    {{-- <div class="kt-spinner kt-spinner--lg kt-spinner--dark" style="display:none"></div> --}}
 
                     <!--begin: Form Wizard Step 3-->
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -567,9 +572,11 @@
                                         </div>
                                         @php
                                         $i = 1;
-                                        $issued_date = strtotime($permit_details->issued_date);
-                                        $expired_date = strtotime($permit_details->expired_date);
-                                        $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                                        $issued_date = strtotime(date('Y-m-d',
+                                        strtotime(session($user_id.'_apn_from_date'))));
+                                        $expired_date = strtotime(date('Y-m-d',
+                                        strtotime(session($user_id.'_apn_to_date'))));
+                                        $diff = round(abs($expired_date - $issued_date) / 60 / 60 / 24);
                                         @endphp
                                         @foreach ($requirements as $req)
                                         @if($req->term == 'long' && $diff > 30 || $req->term == 'short' )
@@ -624,30 +631,27 @@
                 </div>
 
 
-
                 <div class="kt-form__actions">
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
                         Previous
                     </div>
-                    @php
-                    if($from == 'amend'){
-                    $route_back = 'amend_permit/'.$permit_details->permit_id;
-                    } elseif($from == 'edit') {
-                    $route_back = 'edit_permit/'.$permit_details->permit_id;
-                    } elseif($from == 'renew') {
-                    $route_back = 'renew_permit/'.$permit_details->permit_id;
-                    }
-                    @endphp
-                    <a href="{{url('company/'.$route_back)}}">
+
+                    <input type="hidden" id="permit_id" value="{{$permit_id}}">
+
+                    <a href="{{url('company/add_new_permit/'.$permit_id)}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                             Back
                         </div>
                     </a>
-                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
-                        style="display:none;">
-                        Add
+
+
+                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-submit" id="submit_btn">Add
+                        Artist</a>
                     </div>
+
+
 
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
@@ -663,6 +667,7 @@
     </div>
 </div>
 </div>
+</div>
 
 <!-- end:: Content -->
 
@@ -673,6 +678,16 @@
     <i class="fa fa-arrow-up"></i>
 </div>
 <!-- end::Scrolltop -->
+
+<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-body">
+        <div id="ajax_loader" style="min-height: 100vh;">
+            <img src="{{asset('/img/ajax-loader.gif')}}" style="position: absolute; top:50%; left: 50%;">
+        </div>
+    </div>
+</div>
+
+<!--begin::Modal-->
 
 <div class="modal fade" id="artist_exists" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -691,185 +706,171 @@
 
 
 
+<!--end::Modal-->
+
+
+
+
 @endsection
+
+
 @section('script')
 <script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="{{asset('js/uploadfile.js')}}"></script>
+<script src="{{asset('/js/uploadfile.js')}}"></script>
 <script>
-    var fileUploadFns = [];
-    var picUploader ;
-    var artistDetails = new Object();
-    var documentDetails = new Object();
-
-    $(document).ready(function(){
-        localStorage.clear();
-        // upload file
-       uploadFunction();
-       PicUploadFunction();
-        $('.reqName').tooltip();
-
-        $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            type: "GET",
-            url:"{{route('clear_the_temp')}}"
+    $.ajaxSetup({
+            headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
         });
 
-    });
+        var fileUploadFns = [];
+        var picUploader;
+        var artistDetails = {};
+        var documentDetails = {};
+
+        $(document).ready(function () {
+            localStorage.clear();
+            uploadFunction();
+            PicUploadFunction();
+
+        });
 
 
-    const uploadFunction = () => {
-        // console.log($('#artist_number_doc').val());
-        for(var i = 1; i <= $('#requirements_count').val(); i++)
-        {
-            fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{route('company.uploadDocument')}}",
-                method: "POST",
-                allowedTypes: "jpeg,jpg,png,pdf",
-                fileName: "doc_file_"+i,
-                // showDownload: true,
-                // showPreview: true,
-                downloadStr: `<i class="la la-download"></i>`,
-                deleteStr: `<i class="la la-trash"></i>`,
-                showFileSize: false,
-                showFileCounter: false,
-                abortStr: '',
-                multiple: false,
-                maxFileCount:1,
-                showDelete: true,
-                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
-                onLoad:function(obj)
-                {
-                    $code = $('#code').val();
-                    if($code){
-                        $.ajaxSetup({
-                        headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-                        });
-                        $.ajax({
-                            cache: false,
-                            url: "{{route('company.get_files_uploaded')}}",
-                            type: 'POST',
-                            data: {artist_permit: $('#artist_permit_id').val(), reqId: $('#req_id_'+i).val()},
-                            dataType: "json",
-                            success: function(data)
-                            {
-                                // console.log('../../storage/'+data[0]["path"]);
-                                // console.log(data);
-                              if(data.length > 0) {
-                                let id = obj[0].id;
-                                let number = id.split("_");
-                                let issue_datetime = new Date(data['issued_date']);
-                                let exp_datetime = new Date(data['expired_date']);
-                                let formatted_issue_date = appendLeadingZeroes(issue_datetime.getDate()) + "-" + appendLeadingZeroes(issue_datetime.getMonth() + 1) + "-" + issue_datetime.getFullYear();
-                                let formatted_exp_date = appendLeadingZeroes(exp_datetime.getDate()) + "-" + appendLeadingZeroes(exp_datetime.getMonth() + 1) + "-" + exp_datetime.getFullYear();
+        const uploadFunction = () => {
+            // console.log($('#artist_number_doc').val());
+            for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
+                    // headers: {
+                    //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    // },
+                    url: "{{route('company.uploadDocument')}}",
+                    method: "POST",
+                    allowedTypes: "jpeg,jpg,png,pdf",
+                    fileName: "doc_file_" + i,
+                    // showDownload: true,
+                    downloadStr: `<i class="la la-download"></i>`,
+                    deleteStr: `<i class="la la-trash"></i>`,
+                    showFileSize: false,
+                    returnType: "json",
+                    showFileCounter: false,
+                    abortStr: '',
+                    multiple: false,
+                    maxFileCount: 1,
+                    showDelete: true,
+                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
+                    onLoad: function (obj) {
+                        $code = $('#code').val();
+                        if ($code) {
+                            $.ajaxSetup({
+                                headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
+                            });
+                            $.ajax({
+                                cache: false,
+                                url: "{{route('company.get_files_uploaded')}}",
+                                type: 'POST',
+                                data: {artist_permit: $('#artist_permit_num').val(), reqId: $('#req_id_' + i).val()},
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data) {
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let issue_datetime = new Date(data['issued_date']);
+                                        let exp_datetime = new Date(data['expired_date']);
+                                        let formatted_issue_date = appendLeadingZeroes(issue_datetime.getDate()) + "-" + appendLeadingZeroes(issue_datetime.getMonth() + 1) + "-" + issue_datetime.getFullYear();
+                                        let formatted_exp_date = appendLeadingZeroes(exp_datetime.getDate()) + "-" + appendLeadingZeroes(exp_datetime.getMonth() + 1) + "-" + exp_datetime.getFullYear();
 
-                                obj.createProgress(data["document_name"],'../../storage/'+data["path"],'');
-                                if(formatted_issue_date != NaN-NaN-NaN)
-                                {
-                                    $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
-                                    $('#doc_exp_date_'+number[1]).val(formatted_exp_date);
+                                        obj.createProgress(data["document_name"], "{{url('storage')}}"+'/' + data["path"], '');
+                                        if (formatted_issue_date != NaN - NaN - NaN) {
+                                            $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                            $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                        }
+                                    }
                                 }
-                              }
-                            }
-                        });
+                            });
+                        }
+
+                    },
+                    onError: function (files, status, errMsg, pd) {
+                        showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
+                        pd.statusbar.hide();
+                    },
+                    downloadCallback: function (files, pd) {
+                        console.log('files', files);
+                        console.log('pd', pd);
+                        // location.href="download_file/"+files[0];
+                        // $.ajaxSetup({
+                        //     headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
+                        //     });
+                        //     $.ajax({
+                        //         url: "{{route('company.download_file')}}",
+                        //         type: 'POST',
+                        //         data: {artist_permit: $('#artist_permit_num').val(), name: filename},
+                        //         success: function(data)
+                        //         {
+                        //             console.log(data);
+                        //         }
+                        //     });
+                        // location.href="download.php?filename="+filename;
                     }
+                });
+                $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
+                $('#fileuploader_' + i + ' + div').attr('id', 'ajax-file-upload_' + i);
+            }
+        };
 
-                },
-                downloadCallback:function(filename,pd)
-                {
-                    // $.ajaxSetup({
-                    //     headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-                    //     });
-                    //     $.ajax({
-                    //         url: "{{route('company.download_file')}}",
-                    //         type: 'POST',
-                    //         data: {artist_permit: $('#artist_permit_num').val(), name: filename},
-                    //         success: function(data)
-                    //         {
-                    //             console.log(data);
-                    //         }
-                    //     });
-                    // location.href="download.php?filename="+filename;
-                }
-            });
-            $('#fileuploader_'+i+' div').attr('id', 'ajax-upload_'+i);
-            $('#fileuploader_'+i+' + div').attr('id', 'ajax-file-upload_'+i);
+
+        function appendLeadingZeroes(n) {
+            if (n <= 9) {
+                return "0" + n;
+            }
+            return n
         }
-    }
 
-
-    function appendLeadingZeroes(n){
-        if(n <= 9){
-            return "0" + n;
-        }
-        return n
-    }
-
-    const PicUploadFunction = () => {
-        picUploader = $('#pic_uploader').uploadFile({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
+        const PicUploadFunction = () => {
+            picUploader = $('#pic_uploader').uploadFile({
                 url: "{{route('company.uploadPhoto')}}",
                 method: "POST",
                 allowedTypes: "jpeg,jpg,png",
                 fileName: "pic_file",
                 multiple: false,
-                maxFileCount:1,
-                showPreview:true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
                 showFileCounter: false,
+                abortStr: '',
                 previewHeight: '200px',
                 previewWidth: '200px',
-                abortStr: '',
+                returnType: "json",
+                maxFileCount: 1,
+                showPreview: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
-                onLoad:function(obj)
-                {
+                onLoad: function (obj) {
+                    // console.log(obj);
                     $code = $('#code').val();
-                    if($code){
+                    if ($code) {
                         $.ajaxSetup({
-                            headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
+                            headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
                         });
                         $.ajax({
-                            url: "{{url('company/get_files_uploaded_with_code')}}"+"/"+$code,
-                            success: function(data)
-                            {
-                                if(data[0].artist_permit[0].original)
-                                {
-                                    obj.createProgress('Profile Pic',"{{url('storage')}}"+'/'+data[0].artist_permit[0].original,'');
+                            url: "get_uploaded_artist_photo/" + $code,
+                            success: function (data) {
+                                if (data[0].artist_permit[0].original) {
+                                    obj.createProgress('Profile Pic', "{{url('storage')}}"+'/'+ data[0].artist_permit[0].original, '');
                                 }
                             }
                         });
                     }
+
                 },
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
-    }
+        };
 
 
-    // const insertIntoDrafts = (stepNo, data) => {
-    //         $.ajax({
-    //             headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //             },
-    //             url: "insert_artist_data_into_drafts",
-    //             type:'POST',
-    //             data: { data: data, step: stepNo, section: 'New'}
-    //         });
-    // }
-
-    var detailsValidator =  $('#artist_details').validate({
+        var detailsValidator = $('#artist_details').validate({
             ignore: [],
             rules: {
                 fname_en: 'required',
@@ -887,94 +888,83 @@
                 visa_number: 'required',
                 visa_expiry: 'required',
                 sp_name: 'required',
+                gender: 'required',
                 nationality: 'required',
                 address: 'required',
-                gender: 'required',
                 mobile: {
                     // number: true,
-                    required : true
-                } ,
+                    required: true
+                },
                 email: {
                     required: true,
                     email: true,
                 },
             },
             messages: {
-                fname_en: 'This field is required',
-                fname_ar: 'This field is required',
-                lname_en: 'This field is required',
-                lname_ar: 'This field is required',
-                permit_type: 'This field is required',
-                profession: 'This field is required',
-                dob: 'This field is required',
-                uid_number: 'This field is required',
-                uid_expiry: 'This field is required',
-                passport: 'This field is required',
-                pp_expiry: 'This field is required',
-                visa_type: 'This field is required',
-                visa_number: 'This field is required',
-                visa_expiry: 'This field is required',
-                sp_name: 'This field is required',
-                nationality: 'This field is required',
-                address: 'This field is required',
-                gender: 'This field is required',
+                fname_en: '',
+                fname_ar: '',
+                lname_en: '',
+                lname_ar: '',
+                profession: '',
+                dob: '',
+                uid_number: '',
+                uid_expiry: '',
+                permit_type: '',
+                passport: '',
+                pp_expiry: '',
+                visa_type: '',
+                visa_number: '',
+                visa_expiry: '',
+                sp_name: '',
+                gender: '',
+                nationality: '',
+                address: '',
                 mobile: {
                     // number: 'Please enter number',
-                    required : 'This field is required'
+                    required: ''
                 },
                 email: {
-                    required: 'This field is required',
-                    email: 'Enter a valid email',
+                    required: '',
+                    email: '',
                 },
             },
-            // invalidHandler: function(event, validator){
-            //     KTUtil.scrollTop();
-            //     Swal.fire({
-            //         title: "",
-            //         text:
-            //             "Please fill all the mandatory fields",
-            //         type: "error",
-            //         confirmButtonClass: "btn btn-secondary"
-            //     });
-
-            // },
         });
 
         var docRules = {};
         var docMessages = {};
 
-        for(var i = 1; i < $('#requirements_count').val(); i++)
-        {
-            docRules['doc_issue_date_'+i] = 'required';
-            docRules['doc_exp_date_'+i] = 'required';
-            docMessages['doc_issue_date_'+i] = 'This field is required';
-            docMessages['doc_exp_date_'+i] = 'This field is required';
+        for (var i = 1; i <= $('#requirements_count').val(); i++) {
+            docRules['doc_issue_date_' + i] = 'required';
+            docRules['doc_exp_date_' + i] = 'required';
+            docMessages['doc_issue_date_' + i] = '';
+            docMessages['doc_exp_date_' + i] = '';
         }
 
         var documentsValidator = $('#documents_required').validate({
             rules: docRules,
             messages: docMessages
-        })
+        });
 
-
-        $( "#check_inst" ).on( "click", function() {
+        $("#check_inst").on("click", function () {
             setThis('none', 'block', 'block', 'none');
         });
 
-        $( "#artist_det" ).on( "click", function() {
-            if(!checkForTick()) { return  };
-
-            detailsValidator.resetForm();
+        $("#artist_det").on("click", function () {
+            wizard = new KTWizard("kt_wizard_v3");
+            if (!checkForTick()) {
+                return
+            }
             setThis('block', 'block', 'none', 'none');
         });
 
-        $( "#upload_doc" ).on( "click", function() {
+        $("#upload_doc").on("click", function () {
             wizard = new KTWizard("kt_wizard_v3");
-            if(!checkForTick()) return ;
-            if(wizard.currentStep == 3){
+            if (!checkForTick()) return;
+            if (wizard.currentStep == 3) {
                 stopNext(detailsValidator);
                 return;
             }
+
             setThis('block', 'none', 'none', 'block');
         });
 
@@ -983,11 +973,14 @@
             $('#next_btn').css('display', next);
             $('#back_btn').css('display', back);
             $('#submit_btn').css('display', submit);
-        }
+            $('#submit--btn-group').css('display', submit);
+            $('#addNew_btn').css('display', submit); // display the add new artist button
+
+        };
 
         const checkForTick = () => {
             wizard = new KTWizard("kt_wizard_v3");
-            var result ;
+            var result;
             if (wizard.currentStep == 1) {
                 if ($('#agree').not(':checked')) {
                     wizard.stop();
@@ -1000,196 +993,244 @@
                     wizard.goNext();
                     result = true;
                 }
-            }else{
+            } else {
                 result = true;
             }
             return result;
-        }
+        };
 
 
+        $('#next_btn').click(function () {
 
+            wizard = new KTWizard("kt_wizard_v3");
 
-    $('#next_btn').click(function(){
-        wizard = new KTWizard("kt_wizard_v3");
+            checkForTick();
 
-        checkForTick();
+            // checking the next page is artist details
+            if (wizard.currentStep == 2) {
+                stopNext(detailsValidator);
+                KTUtil.scrollTop();// validating the artist details page
+                // object of array storing the artist details
+                var artist_id = $('#artist_number').val();
+                if (detailsValidator.form()) {
+                    $('#submit_btn').css('display', 'block'); // display the submit button
+                    $('#next_btn').css('display', 'none'); // hide the next button
+                    $('#addNew_btn').css('display', 'block'); // display the add new artist button
+                    $('#submit--btn-group').css('display', 'block');
+                    artistDetails[artist_id] = {
+                        id: $('#artist_id').val(),
+                        ap_id: $('#artist_permit_num').val(),
+                        code: $('#code').val(),
+                        fname_en: $('#fname_en').val(),
+                        fname_ar: $('#fname_ar').val(),
+                        lname_en: $('#lname_en').val(),
+                        lname_ar: $('#lname_ar').val(),
+                        nationality: $('#nationality').val(),
+                        profession: $('#profession').val(),
+                        passport: $('#passport').val(),
+                        ppExp: $('#pp_expiry').val(),
+                        visaType: $('#visa_type').val(),
+                        visaNumber: $('#visa_number').val(),
+                        visaExp: $('#visa_expiry').val(),
+                        spName: $('#sp_name').val(),
+                        idNo: $('#id_no').val(),
+                        language: $('#language').val(),
+                        religion: $('#religion').val(),
+                        gender: $('#gender').val(),
+                        city: $('#city').val(),
+                        area: $('#area').val(),
+                        address: $('#address').val(),
+                        fax_no: $('#fax_no').val(),
+                        po_box: $('#po_box').val(),
+                        uidNumber: $('#uid_number').val(),
+                        uidExp: $('#uid_expiry').val(),
+                        dob: $('#dob').val(),
+                        landline: $('#landline').val(),
+                        mobile: $('#mobile').val(),
+                        email: $('#email').val(),
+                        is_old_artist: $('#is_old_artist').val()
+                    };
 
-       // checking the next page is artist details
-       if(wizard.currentStep == 2)
-       {
-            stopNext(detailsValidator); // validating the artist details page
-            // object of array storing the artist details
-            var artist_id = $('#artist_number').val() ;
-            if(detailsValidator.form())
-            {
-                $('#submit_btn').css('display', 'block'); // display the submit button
-                $('#next_btn').css('display', 'none'); // hide the next button
-                artistDetails[artist_id] = {
-                    id: $('#permit_id').val(),
-                    artist_permit_id: $('#artist_permit_id').val(),
-                    artist_id: $('#artist_id').val(),
-                    code: $('#code').val(),
-                    fname_en: $('#fname_en').val(),
-                    fname_ar:  $('#fname_ar').val(),
-                    lname_en: $('#lname_en').val(),
-                    lname_ar:  $('#lname_ar').val(),
-                    nationality: $('#nationality').val(),
-                    profession: $('#profession').val(),
-                    permit_type: $('#permit_type').val(),
-                    passport: $('#passport').val(),
-                    ppExp: $('#pp_expiry').val(),
-                    visaType: $('#visa_type').val(),
-                    visaNumber: $('#visa_number').val(),
-                    visaExp: $('#visa_expiry').val(),
-                    spName: $('#sp_name').val(),
-                    idNo: $('#id_no').val(),
-                    language: $('#language').val(),
-                    religion: $('#religion').val(),
-                    gender: $('#gender').val(),
-                    city: $('#city').val(),
-                    area: $('#area').val(),
-                    address: $('#address').val(),
-                    uidNumber: $('#uid_number').val(),
-                    uidExp: $('#uid_expiry').val(),
-                    dob: $('#dob').val(),
-                    po_box: $('#po_box').val(),
-                    fax_number: $('#fax_no').val(),
-                    landline: $('#landline').val(),
-                    mobile: $('#mobile').val(),
-                    email: $('#email').val(),
-                    is_old_artist: $('#is_old_artist').val()
+                    localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
+                    // insertIntoDrafts(3, JSON.stringify(artistDetails));
                 }
-
-                localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
-
-                // insertIntoDrafts(3, JSON.stringify(artistDetails));
-            }
-        }
-    });
-
-
-
-    const docValidation = () => {
-        var artist_number = $('#artist_number').val();
-        var hasFile = true;
-        var hasFileArray = [];
-        documentDetails = {};
-        for(var i = 1; i <= $('#requirements_count').val(); i++)
-        {
-            if ($('#ajax-file-upload_' + i).length) {
-                if($('#ajax-file-upload_'+i).contents().length == 0) {
-                    hasFileArray[i] = false;
-                    $("#ajax-upload_"+i).css('border', '2px dotted red');
-                    KTUtil.scrollTop();
-                }
-                else{
-                    hasFileArray[i] = true;
-                    $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
-                }
-                documentDetails[i] = {
-                    issue_date :   $('#doc_issue_date_'+i).val(),
-                    exp_date : $('#doc_exp_date_'+i).val()
-                }
-            }
-        }
-        if($('#pic-file-upload').contents().length == 0) {
-            hasPicture = false;
-            $('#pic-upload').css('border', '2px dotted red');
-        }
-        else {
-            hasPicture = true;
-            $("#pic-upload").css('border', '2px dotted #A5A5C7');
-        }
-        if(hasFileArray.includes(false) || hasPicture == false){
-            hasFile = false;
-        } else {
-            hasFile = true;
-        }
-
-        localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
-        return hasFile ;
-    }
-
-
-    const stopNext = (validator_name) => {
-        wizard.on("beforeNext", function(wizardObj) {
-            if (validator_name.form() !== true) {
-                wizardObj.stop(); // don't go to the next step
             }
         });
-    }
-
-    $('#prev_btn').click(function(){
-        wizard = new KTWizard("kt_wizard_v3");
-        // alert(wizard.currentStep);
-       if(wizard.currentStep == 2){
-            $('#prev_btn').css('display', 'none');
-            $('#back_btn').css('display', 'block');
-       }
-       else
-       {
-            $('#prev_btn').css('display', 'block');
-            $('#next_btn').css('display', 'block');
-       }
-       $('#submit_btn').css('display', 'none');
-    });
 
 
-    const isExpiry = (num) => {
-        let val = $('#doc_type_'+num).val();
-        if((val == 'photograph') || (val == 'medical') ){
-            $('#doc_exp_date_'+num).css('display', 'none');
-            $('#doc_issue_date_'+num).css('display', 'none');
-            $('#doc_exp_date_'+num).removeAttr( "required" );
-            $('#doc_issue_date_'+num).removeAttr( "required" );
-        } else {
-            $('#doc_exp_date_'+num).css('display', 'block');
-            $('#doc_issue_date_'+num).css('display', 'block');
-            $('#doc_exp_date_'+num).prop('required',true);
-            $('#doc_issue_date_'+num).prop('required',true);
+        const docValidation = () => {
+            var artist_number = $('#artist_number').val();
+            var hasFile = true;
+            var hasFileArray = [];
+            for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                if ($('#ajax-file-upload_' + i).length) {
+                    if ($('#ajax-file-upload_' + i).contents().length == 0) {
+                        hasFileArray[i] = false;
+                        $("#ajax-upload_" + i).css('border', '2px dotted red');
+                    } else {
+                        hasFileArray[i] = true;
+                        $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
+                    }
+                    documentDetails[i] = {
+                        issue_date: $('#doc_issue_date_' + i).val(),
+                        exp_date: $('#doc_exp_date_' + i).val()
+                    }
+                }
+            }
+            if ($('#pic-file-upload').contents().length == 0) {
+                hasPicture = false;
+                $('#pic-upload').css('border', '2px dotted red');
+            } else {
+                hasPicture = true;
+                $("#pic-upload").css('border', '2px dotted #A5A5C7');
+            }
+            if (hasFileArray.includes(false) || hasPicture == false) {
+                hasFile = false;
+            } else {
+                hasFile = true;
+            }
+
+            localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
+            return hasFile;
+        };
+
+
+
+        const stopNext = (validator_name) => {
+            wizard.on("beforeNext", function (wizardObj) {
+                if (validator_name.form() !== true) {
+                    wizardObj.stop(); // don't go to the next step
+                }
+            });
+        };
+
+        $('#prev_btn').click(function () {
+            wizard = new KTWizard("kt_wizard_v3");
+            console.log(wizard.currentStep);
+            if (wizard.currentStep == 2) {
+                $('#prev_btn').css('display', 'none');
+                $('#back_btn').css('display', 'block');
+            } else {
+                $('#prev_btn').css('display', 'block');
+                $('#next_btn').css('display', 'block');
+            }
+            $('#addNew_btn').css('display', 'none');
+            $('#submit_btn').css('display', 'none');
+        });
+
+
+        const isExpiry = (num) => {
+            let val = $('#doc_type_' + num).val();
+            if ((val == 'photograph') || (val == 'medical')) {
+                $('#doc_exp_date_' + num).css('display', 'none');
+                $('#doc_issue_date_' + num).css('display', 'none');
+                $('#doc_exp_date_' + num).removeAttr("required");
+                $('#doc_issue_date_' + num).removeAttr("required");
+            } else {
+                $('#doc_exp_date_' + num).css('display', 'block');
+                $('#doc_issue_date_' + num).css('display', 'block');
+                $('#doc_exp_date_' + num).prop('required', true);
+                $('#doc_issue_date_' + num).prop('required', true);
+            }
+        };
+
+
+        $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+        $('#permit_from').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            orientation: "bottom left"
+        });
+        $('#permit_to').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            orientation: "bottom left"
+        });
+        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2});
+
+        $('#permit_from').on('changeDate', function (ev) {
+            $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
+            var selDate = ev.date;
+            var minDate = moment([selDate.getFullYear(), selDate.getMonth(), selDate.getDate()]).add(30, "days").format('DD-MM-YYYY');
+            $('#permit_to').datepicker('setStartDate', minDate);
+        });
+        $('#permit_to').on('changeDate', function (ev) {
+            $('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');
+        });
+        $('#dob').on('changeDate', function (ev) {
+            $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success');
+        });
+        $('#uid_expiry').on('changeDate', function (ev) {
+            $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');
+        });
+        $('#pp_expiry').on('changeDate', function (ev) {
+            $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');
+        });
+        $('#visa_expiry').on('changeDate', function (ev) {
+            $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');
+        });
+
+        for (var h = 0; h < $('#requirements_count').val(); h++) {
+            $('#doc_issue_date').on('changeDate', function (ev) {
+                $('#doc_issue_date').valid() || $('#doc_issue_date').removeClass('invalid').addClass('success');
+            });
+            $('#doc_exp_date').on('changeDate', function (ev) {
+                $('#doc_exp_date').valid() || $('#doc_exp_date').removeClass('invalid').addClass('success');
+            });
         }
-    }
 
 
-    $('.date-picker').datepicker({format: 'dd-mm-yyyy',autoclose: true});
+        const setToDate = () => {
+            var permitFrom = $('#permit_from').val();
+            var da = permitFrom.split('-');
+            var permitFrom = da[1] + '/' + da[0] + '/' + da[2];
+            var newDate = new Date(permitFrom);
+            newDate.setDate(newDate.getDate() + 30);
 
-    $('#dob').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true,startView: 2});
+            Date.prototype.toInputFormat = function () {
+                var yyyy = this.getFullYear().toString();
+                var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+                var dd = this.getDate().toString();
+                return (dd[1] ? dd : "0" + dd[0]) + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + yyyy;
+            };
+            $('#permit_to').val(newDate.toInputFormat());
+            $('#permit_to').valid();
+        };
 
-    $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
-    $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
-    $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
-    $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
 
 
 
-    const getAreas = (city_id) => {
-        $.ajax({
-                url:"{{url('company/fetch_areas')}}"+'/'+city_id,
-                success: function(result){
+        const getAreas = (city_id) => {
+            $.ajax({
+                url: "{{url('company/fetch_areas')}}" + '/' + city_id,
+                success: function (result) {
                     // console.log(result)
                     $('#area').empty();
                     $('#area').append('<option value=" ">Select</option>');
-                    for(let i = 0; i< result.length;i++)
-                    {
-                        $('#area').append('<option value="'+result[i].id+'">'+result[i].area_en+'</option>');
+                    for (let i = 0; i < result.length; i++) {
+                        $('#area').append('<option value="' + result[i].id + '">' + result[i].area_en + '</option>');
                     }
 
                 }
+            });
+
+        };
+
+        $('#code').change(function (e) {
+            searchCode(e);
         });
-    }
 
-    $('#code').change(function() {
-        searchCode();
-    });
+        function searchCode(e) {
+            let code = $('#code').val();
+            if (code) {
+                $.ajax({
+                    url: "{{url('company/searchCode')}}" + '/' + code,
+                    success: function (data) {
 
-    function searchCode(){
-        let code = $('#code').val();
-        if(code){
-            $.ajax({
-                url: "{{url('company/searchCode')}}"+ '/'+code,
-                success: function(data){
-                    // console.log(data);
-                    $('#artist_exists').modal({
+                        // console.log(data);
+                        $('#artist_exists').modal({
                                 backdrop: 'static',
                                 keyboard: false,
                                 show: true
@@ -1244,140 +1285,152 @@
                         alert("error!!!!");
 
                     }
-
-
-            });
+                });
+            }
         }
-    }
 
-    function removeSelectedArtist(){
-        $('.ajax-file-upload-red').trigger('click');
-        $('#artist_details').trigger('reset');
-        $('#documents_required').trigger('reset');
-        $('#artist_id').val('');
-        $('#fname_en').removeClass('mk-disabled');
-        $('#fname_ar').removeClass('mk-disabled');
-        $('#lname_en').removeClass('mk-disabled');
-        $('#lname_ar').removeClass('mk-disabled');
-        $('#artist_permit_id').val('');
-        $('#changeArtistLabel').addClass('d-none');
-        $('#code').removeClass('mk-disabled');
-        $('#is_old_artist').val(1);
-        $('#code').val('');
-        PicUploadFunction();
-        uploadFunction();
-        $('#artist_exists').modal('hide');
-    }
+        function removeSelectedArtist(){
+            $('.ajax-file-upload-red').trigger('click');
+            $('#artist_details').trigger('reset');
 
-    const clearPersonCode = () => {
+            $('#documents_required').trigger('reset');
+
+            $('#artist_id').val('');
+
+            $('#fname_en').removeClass('mk-disabled');
+
+            $('#fname_ar').removeClass('mk-disabled');
+
+            $('#lname_en').removeClass('mk-disabled');
+
+            $('#lname_ar').removeClass('mk-disabled');
+
+            $('#artist_permit_id').val('');
+
+            $('#changeArtistLabel').addClass('d-none');
+
+            $('#code').removeClass('mk-disabled');
+
+            $('#code').val('');
+            $('#is_old_artist').val(1);
+
+            PicUploadFunction();
+            uploadFunction();
+            $('#artist_exists').modal('hide');
+        }
+
+        function clearPersonCode() {
             $('#code').val('');
             $('#is_old_artist').val(1);
             $('#artist_exists').modal('hide');
         }
 
-
         const setArtistDetails = () => {
             $('.ajax-file-upload-red').trigger('click');
             let ad = $('#artistDetailswithcode').val();
             ad = JSON.parse(ad);
+            $ap_count = ad.artist_permit.length;
+            $i = $ap_count - 1;
 
-            console.log(ad);
-
-            var ap_count = ad.artist_permit.length;
-            var i = ap_count - 1 ;
-            // console.log(ad);
             $('#is_old_artist').val(2);
 
             var dob = moment(ad.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
+
             $('#changeArtistLabel').removeClass('d-none');
             $('#changeArtistLabel').addClass('ml-2');
             $('#artist_id').val(ad.artist_id);
-            $('#code').val(ad.person_code);$('#code').addClass('mk-disabled');
-            $('#fname_en').val(ad.firstname_en);$('#fname_en').addClass('mk-disabled');
-            $('#fname_ar').val(ad.firstname_ar);$('#fname_ar').addClass('mk-disabled');
-            $('#lname_en').val(ad.lastname_en);$('#lname_en').addClass('mk-disabled');
-            $('#lname_ar').val(ad.lastname_ar);$('#lname_ar').addClass('mk-disabled');
+            $('#code').val(ad.person_code);
+            $('#code').addClass('mk-disabled');
+            $('#fname_en').val(ad.firstname_en);
+            $('#fname_en').addClass('mk-disabled');
+            $('#fname_ar').val(ad.firstname_ar);
+            $('#fname_ar').addClass('mk-disabled');
+            $('#lname_en').val(ad.lastname_en);
+            $('#lname_en').addClass('mk-disabled');
+            $('#lname_ar').val(ad.lastname_ar);
+            $('#lname_ar').addClass('mk-disabled');
             $('#nationality').val(ad.country_id),
-            $('#permit_type').val(ad.artist_permit[i].permit_type_id),
-            $('#profession').val(ad.artist_permit[i].profession_id),
-            $('#passport').val(ad.artist_permit[i].passport_number);
-            var ppExp = moment(ad.artist_permit[i].passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            $('#pp_expiry').val(ppExp),
-            $('#visa_type').val(ad.artist_permit[i].visa_type_id),
-            $('#visa_number').val(ad.artist_permit[i].visa_number);
-            var visaExp = moment(ad.artist_permit[i].visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            $('#visa_expiry').val(visaExp),
-            $('#sp_name').val(ad.artist_permit[i].sponsor_name_en),
-            $('#id_no').val(ad.artist_permit[i].emirates_id),
-            $('#language').val(ad.artist_permit[i].language_id),
-            $('#religion').val(ad.artist_permit[i].religion_id),
+            $('#profession').val(ad.artist_permit[$i].profession_id),
+            $('#permit_type').val(ad.artist_permit[$i].permit_type_id),
+            $('#passport').val(ad.artist_permit[$i].passport_number);
+            var ppExp = moment(ad.artist_permit[$i].passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#pp_expiry').val(ppExp).datepicker('update');
+            var visaExp = moment(ad.artist_permit[$i].visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#visa_expiry').val(visaExp).datepicker('update');
+            var uidExp = moment(ad.artist_permit[$i].uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#uid_expiry').val(uidExp).datepicker('update');
+            $('#visa_type').val(ad.artist_permit[$i].visa_type_id),
+            $('#visa_number').val(ad.artist_permit[$i].visa_number),
+            $('#sp_name').val(ad.artist_permit[$i].sponsor_name_en),
+            $('#id_no').val(ad.artist_permit[$i].emirates_id),
+            $('#language').val(ad.artist_permit[$i].language_id),
+            $('#religion').val(ad.artist_permit[$i].religion_id),
             $('#gender').val(ad.gender_id),
-            $('#city').val(ad.artist_permit[i].emirates_id);
-            getAreas(ad.artist_permit[i].emirates_id);
-            $('#address').val(ad.artist_permit[i].address_en),
-            $('#uid_number').val(ad.artist_permit[i].uid_number);
-            var uidExp = moment(ad.artist_permit[i].uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            $('#uid_expiry').val(uidExp);
-            $('#dob').val(dob),
-            $('#landline').val(ad.artist_permit[i].phone_number),
-            $('#po_box').val(ad.artist_permit[i].po_box),
-            $('#fax_no').val(ad.artist_permit[i].fax_number),
-            $('#mobile').val(ad.artist_permit[i].mobile_number),
-            $('#email').val(ad.artist_permit[i].email);
-            $('#artist_permit_id').val(ad.artist_permit[i].artist_permit_id);
-            $('#area').val(ad.artist_permit[i].area_id);
+            $('#city').val(ad.artist_permit[$i].emirates_id);
+            getAreas(ad.artist_permit[$i].emirates_id);
+            $('#address').val(ad.artist_permit[$i].address_en),
+            $('#uid_number').val(ad.artist_permit[$i].uid_number),
+            $('#dob').val(dob).datepicker('update'),
+            $('#landline').val(ad.artist_permit[$i].phone_number),
+            $('#po_box').val(ad.artist_permit[$i].po_box),
+            $('#fax_no').val(ad.artist_permit[$i].fax_number),
+            $('#mobile').val(ad.artist_permit[$i].mobile_number),
+            $('#email').val(ad.artist_permit[$i].email);
+            $('#artist_permit_num').val(ad.artist_permit[$i].artist_permit_id);
+            $('#area').val(ad.artist_permit[$i].area_id);
             PicUploadFunction();
             uploadFunction();
+            $('#artist_exists').modal('hide');
+            // $('#artist_details').validate();
         }
-
 
         $('#submit_btn').click((e) => {
 
         var hasFile = docValidation();
 
-        if(documentsValidator.form() && hasFile){
+            if (documentsValidator.form() && hasFile) {
 
-        var ad = localStorage.getItem('artistDetails');
-        var dd = localStorage.getItem('documentDetails');
-        var artist_permit_id = $('#artist_permit_id').val();
+                var pd = localStorage.getItem('permitDetails');
+                var ad = localStorage.getItem('artistDetails');
+                var dd = localStorage.getItem('documentDetails');
+                // $('.kt-spinner').show();
 
-        var permit_from = $('#permit_from').val();
-        var permit_to = $('#permit_to').val();
+                // $('#pleaseWaitDialog').modal('show');
 
-        var permit_id = $('#permit_id').val();
-        var from_page = $('#from_page').val();
+                var from_date  = $('#from_date').val();
+                var to_date = $('#to_date').val();
+                var location = $('#location').val();
 
-        $.ajaxSetup({
-            headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-        });
-        $.ajax({
-                url:"{{route('company.add_to_artist_temp_data')}}",
-                type: "POST",
-                data: {
-                    artistD: ad ,
-                    documentD: dd ,
-                    permit_id: permit_id,
-                    from: permit_from,
-                    to: permit_to
-                  },
-                success: function(result){
-                    localStorage.clear();
-                    if(from_page == 'amend'){
-                        window.location.href="{{url('company/amend_permit')}}"+'/'+ permit_id;
-                    }else if(from_page == 'edit') {
-                        window.location.href="{{url('company/edit_permit')}}"+'/'+ permit_id;
-                    } else if(from_page == 'renew') {
-                        window.location.href="{{url('company/renew_permit')}}"+'/'+ permit_id;
-                    }
+                var permit_id = $('#permit_id').val();
+
+                var permitD = {
+                    from : from_date,
+                    to: to_date,
+                    location: location
                 }
-            });
-        }
-        })
+                $.ajax({
+                    url: "{{route('company.add_artist_to_draft')}}",
+                    type: "POST",
+                    data: {
+                        artistD: ad,
+                        documentD: dd,
+                        permitD: permitD,
+                        permit_id: permit_id
+                    },
+                    success: function (result) {
+                        if(result.message[0]){
+                            localStorage.clear();
+                            window.location.href = "{{url('company/add_new_permit')}}"+'/'+ permit_id;
+                        }
+                        console.log(result);
+                        // $('#pleaseWaitDialog').modal('hide');
+                    }
+                });
+            }
 
-
+        });
 
 
 </script>
-{{-- <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script> --}}
 
 @endsection
