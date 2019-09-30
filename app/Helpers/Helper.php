@@ -4,7 +4,7 @@
 		$classname = null;
 		if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active'){ $classname = 'success'; }
 		if ($status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification'){ $classname = 'warning'; }
-		if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected'){ $classname = 'danger'; }
+		if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled'){ $classname = 'danger'; }
 		if($status == 'modification request'){ $status = 'need modification'; }
 
 		return '<span class="kt-badge kt-badge--'.$classname.' kt-badge--inline">'.ucwords($status).'</span>';

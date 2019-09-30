@@ -34,6 +34,22 @@ class ArtistPermitController extends Controller
         ]);
     }
 
+    public function show(Permit $permit)
+    {
+    	return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no]);
+    }
+
+    public function applicationDetails(Request $request, Permit $permit)
+    {
+      if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
+        return view('admin.artist_permit.application-details', [
+        	'page_title'=> 'artist permit details',
+          'permit'=>$permit,
+//          'type'=>$request->type,
+          'roles'=>Roles::where('type', 0)->get()
+        ]);
+    }
+
     public function submitApplication(Request $request, Permit $permit)
     {
       try {
@@ -251,18 +267,6 @@ class ArtistPermitController extends Controller
             ->make(true);
     }
 
-    public function applicationDetails(Request $request, Permit $permit)
-    {
-//    	$permit = Permit::with('approver', 'approver.comment')->find($permit->permit);
-
-      if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
-        return view('admin.artist_permit.application-details', [
-        	'page_title'=> 'artist permit details',
-          'permit'=>$permit,
-//          'type'=>$request->type,
-          'roles'=>Roles::where('type', 0)->get()
-        ]);
-    }
 
     public function applicationDataTable(Request $request, Permit $permit)
     {
@@ -375,6 +379,9 @@ class ArtistPermitController extends Controller
     public function dataTable(Request $request)
     {
      if($request->ajax()){
+     	$limit = $request->length;
+     	$start = $request->start;
+
          $permit = Permit::has('artist')
 	          ->whereIn('permit_status', $request->status)
 	         ->when($request->today, function($q) use ($request){
@@ -395,6 +402,8 @@ class ArtistPermitController extends Controller
 	         })
 	         ->orderBy('updated_at', 'DESC');
 
+         $totalRecords = $permit->count();
+         $permit = $permit->offset($start)->limit($limit);
          return Datatables::of($permit)
 	         ->addColumn('artist_number', function($permit){
 		         $total = $permit->artistpermit()->count();
@@ -407,9 +416,9 @@ class ArtistPermitController extends Controller
 	         ->editColumn('reference_number', function($permit){
                   return '<span class="kt-font-bold">'.$permit->reference_number.'</span>';
                  })
-	         ->editColumn('applied_date', function($permit){
+	         ->addColumn('applied_date', function($permit){
 	         	if(!$permit->created_at) return null;
-	         	return $permit->created_at->format('d-M-Y');
+	         	return $permit->created_at->format('d-M-Y h:m a');
 	         })
 	         ->editColumn('permit_start', function($permit){
 	         	if(!$permit->issued_date) return null;
@@ -438,6 +447,7 @@ class ArtistPermitController extends Controller
 	         	return ucwords($permit->request_type).' Application';
 	         })
 	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status'])
+	          ->setTotalRecords($totalRecords)
 	         ->make(true);
      }
     }

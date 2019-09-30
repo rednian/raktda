@@ -132,6 +132,35 @@
 {{--							 </div>--}}
 {{--						</div>--}}
 				 </div>
+				  <div class="accordion accordion-solid accordion-toggle-plus kt-padding-t-20" id="accordion-status-history">
+						<div class="card">
+							 <div class="card-header" id="heading-one-status-history">
+									<div class="card-title" data-toggle="collapse" data-target="#collapse-one-status-history" aria-expanded="true" aria-controls="collapse-one-status-history">
+									 <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder"> Status History</h6>
+									</div>
+							 </div>
+							 <div id="collapse-one-status-history" class="collapse show" aria-labelledby="heading-one-status-history" data-parent="#accordion-status-history">
+									<div class="card-body">
+										 @if($artist_permit->artist->action->count() > 0)
+												<table class="table table-striped table-borderless table-hover table-head-noborder" id="status-history">
+												<thead class="thead-dark">
+												<tr>
+													 <th>Action Taken</th>
+													 <th>Unblock/Block Reasons</th>
+													 <th>Unblock/Block By</th>
+													 <th>Unblock/Block On</th>
+												</tr>
+												</thead>
+										 </table>
+												@else
+												@empty
+														Artist status is empty
+												 @endempty
+										 @endif
+									</div>
+							 </div>
+						</div>
+				 </div>
 				 <div class="accordion accordion-solid accordion-toggle-plus kt-padding-t-20" id="accordion-permit-history">
 						<div class="card">
 							 <div class="card-header" id="heading-one-permit-history">
@@ -160,35 +189,6 @@
 												 @endempty
 										 @endif
 										 
-									</div>
-							 </div>
-						</div>
-				 </div>
-				 <div class="accordion accordion-solid accordion-toggle-plus kt-padding-t-20" id="accordion-status-history">
-						<div class="card">
-							 <div class="card-header" id="heading-one-status-history">
-									<div class="card-title" data-toggle="collapse" data-target="#collapse-one-status-history" aria-expanded="true" aria-controls="collapse-one-status-history">
-									 <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder"> Status History</h6>
-									</div>
-							 </div>
-							 <div id="collapse-one-status-history" class="collapse show" aria-labelledby="heading-one-status-history" data-parent="#accordion-status-history">
-									<div class="card-body">
-										 @if($artist_permit->artist->action->count() > 0)
-												<table class="table table-striped table-borderless table-hover table-head-noborder" id="status-history">
-												<thead class="thead-dark">
-												<tr>
-													 <th>Action Taken</th>
-													 <th>Unblock/Block Reasons</th>
-													 <th>Unblock/Block By</th>
-													 <th>Unblock/Block On</th>
-												</tr>
-												</thead>
-										 </table>
-												@else
-												@empty
-														Artist status is empty
-												 @endempty
-										 @endif
 									</div>
 							 </div>
 						</div>

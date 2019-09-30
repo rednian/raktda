@@ -58,7 +58,6 @@
 													 </tr>
 													 </thead>
 													 <tbody>
-													 {{--{{dd($permit->approver->comment)}}--}}
 													 @foreach ($permit->approver as $approver)
 															<tr>
 																 <td class="no-wrap">{{ ucwords($approver->role->NameEn) }}</td>
@@ -67,19 +66,10 @@
 																 
 																 </td>
 																 <td class="no-wrap">{{ $approver->created_at->format('d-M-Y h:m a') }}</td>
-																 <td class="no-wrap">
-																		@if ($approver->status == 'approved')
-																			 <span class="kt-badge kt-badge--success kt-badge--inline">{{ ucwords($approver->status) }}</span>
-																		@endif
-																		@if ($approver->status == 'modification request')
-																			 <span class="kt-badge kt-badge--warning kt-badge--inline">{{ ucwords($approver->status) }}</span>
-																		@endif
-																		@if ($approver->status == 'rejected')
-																			 <span class="kt-badge kt-badge--danger kt-badge--inline">{{ ucwords($approver->status) }}</span>
-																		@endif
-																 </td>
+																 <td class="no-wrap">{!! permitStatus($approver->status) !!}</td>
 															</tr>
 													 @endforeach
+													 
 													 </tbody>
 												</table>
 										 </div>
@@ -180,14 +170,11 @@
 		$artist_number = $permit->artistpermit()->count();
 		$check = $permit->artistpermit;
 		?>
-			@include('admin.artist_permit.includes.submit-action', ['permit' => $permit])
 			@include('admin.artist_permit.includes.comment-modal', ['permit' => $permit])
 			@include('admin.artist_permit.includes.check-existing permit')
-			{{--@if($type == 'new')--}}
-			<div id="action-container">
-				 <button id="btn-action" class="btn btn-warning btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">Take Action for application</button>
-			</div>
-			{{--@endif--}}
+{{--			<div id="action-container">--}}
+{{--				 <button id="btn-action" class="btn btn-warning btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">Take Action for application</button>--}}
+{{--			</div>--}}
 			@endsection
 			@section('script')
 				 <script type="text/javascript">
@@ -195,6 +182,7 @@
             $(document).ready(function () {
                submitAction();
                artistTable();
+               existingPermit();
                permitHistory();
 
                $('button#btn-action').click(function () {
@@ -213,7 +201,7 @@
                   rules: {
                      comment: {
                         // required: true,
-                        minlength: 1,
+                        minlength: 1
                      },
                      action: {
                         required: true
@@ -309,7 +297,6 @@
                         } else {
 													 $('#existing-permit-alert').removeClass('d-none').find('.alert-text').html(data.existing_permit);
 													 $('#check-existing-permit-modal').find('a').attr('href', url);
-													 existingPermit(data);
                            $('#check-existing-permit-modal').modal('show');
                         }
                      });
@@ -320,8 +307,7 @@
                });
             }
 
-            function existingPermit(data) {
-               $('form#frm-existing-permit').find('a[href]').attr('href', '{{ url('/artist_permit/') }}/'+data.permit_id+'/application/'+data.artist_permit_id);
+            function existingPermit() {
                $('form#frm-existing-permit').validate({
                   rules: {
                      comment: {
@@ -331,18 +317,6 @@
                      }
                   }
                });
-               
-               $.ajax({
-									url: '{{ url('/artist_permit/') }}/'+data.permit_id+'/application/'+data.artist_permit_id+'/checklist',
-									data: $('form#frm-existing-permit').serialize(),
-									type: 'post',
-									dataType: 'json'
-							 }).done(function (response) {
-									if(response){
-									   artist.ajax().reload();
-									}
-               });
-               
             }
 
             function submitAction() {

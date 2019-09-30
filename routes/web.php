@@ -41,6 +41,8 @@ Route::middleware(['admin', 'auth'])->group(function(){
 	Route::get('/artist_permit/{permit}/application/{artistpermit}', 'Admin\ArtistPermitController@checkApplication')->name('admin.artist_permit.checkApplication');
 	Route::get('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@applicationDetails')->name('admin.artist_permit.applicationdetails');
 	Route::get('/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')->name('admin.artist_permit.datatable');
+
+	Route::get('/artist_permit/{permit}', 'Admin\ArtistPermitController@show')->name('admin.artist_permit.show');
 	Route::get('/artist_permit', 'Admin\ArtistPermitController@index')->name('admin.artist_permit.index');
 
   //--------------------------------------------------------------------------

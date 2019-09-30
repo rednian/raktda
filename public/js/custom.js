@@ -45,7 +45,7 @@ $(document).ready(function(){
           search: '',
           searchPlaceholder: 'Search...',
           lengthMenu: "_MENU_ ",
-          processing: '<div class="kt-spinner spinner-border kt-spinner-solid"></div>',
+          processing: '<div class="kt-spinner spinner-border kt-spinner-danger"></div>'
         }
     });
 

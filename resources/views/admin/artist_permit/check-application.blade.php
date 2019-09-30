@@ -230,8 +230,6 @@
 																				</div>
 																			</div>
 																		</div>
-
-
 																		<div class="form-group form-group-sm row">
 																			<label for="example-search-input" class="col-4 col-form-label kt-font-dark">Passport No. <span
 																					class="text-danger">*</span></label>
@@ -244,6 +242,25 @@
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
                                                    <input data-step="step-1" value="{{ ucwords($artist_permit->passport_number) }}"
 																													type="checkbox" name="check[passport_number]">
+                                                   <span></span>
+                                                 </label>
+                                               </span>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		 <div class="form-group form-group-sm row">
+																			<label for="example-search-input" class="col-4 col-form-label kt-font-dark">Visa No. <span
+																					class="text-danger">*</span></label>
+																			<div class="col-lg-8">
+																				<div class="input-group input-group-sm">
+																					<input value="{{ ucwords($artist_permit->visa_number) }}" readonly type="text"
+																								 class="form-control form-control-sm">
+																					<div class="input-group-append">
+                                               <span class="input-group-text">
+                                                 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                                   <input data-step="step-1" value="{{ ucwords($artist_permit->visa_number) }}"
+																													type="checkbox" name="check[visa_number]">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -446,6 +463,25 @@
                                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
                                                    <input data-step="step-1" value="{{ ucwords($artist_permit->uid_number) }}"
 																													type="checkbox" name="check[uid_number]">
+                                                   <span></span>
+                                                 </label>
+                                               </span>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		 	<div class="form-group form-group-sm row">
+																			<label for="example-search-input" class="col-4 col-form-label kt-font-dark">Visa Expiry<span
+																					class="text-danger">*</span></label>
+																			<div class="col-lg-8">
+																				<div class="input-group input-group-sm">
+																					<input value="{{ $artist_permit->visa_expire_date ? ucwords($artist_permit->visa_expire_date->format('d-M-Y')): null }}" readonly type="text"
+																								 class="form-control form-control-sm">
+																					<div class="input-group-append">
+                                               <span class="input-group-text">
+                                                 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                                   <input data-step="step-1" value="{{ $artist_permit->visa_expire_date ? ucwords($artist_permit->visa_expire_date->format('d-M-Y')): null }}"
+																													type="checkbox" name="check[visa_expiry_date]">
                                                    <span></span>
                                                  </label>
                                                </span>
@@ -751,34 +787,33 @@
 									<section class="row">
 										<div class="col kt-margin-t-20 kt-margin-b-20">
 											@include('admin.artist_permit.includes.comment')
-											@if ($existing_permit->count() > 0)
-												<div class="alert alert-outline-danger show" role="alert">
-													<div class="alert-icon"><i class="flaticon-danger"></i></div>
-													<div class="alert-text"><span class="text-danger kt-font-bold">
-                      {{ strtoupper($artist_permit->artist->fullName) }}
-                    </span> has <span class="text-danger kt-font-bolder">{{ $existing_permit->count() }}</span> active Permit.
-													</div>
-													<div class="alert-close">
-														<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-															<span aria-hidden="true"><i class="la la-close"></i></span>
-														</button>
-													</div>
-												</div>
-												<table class="table table-hover table-striped table-borderless" id="permit-history">
-													<thead class="thead-dark">
-													<tr>
-														<th>Reference No.</th>
-														<th>Company Name</th>
-														<th>Permit No.</th>
-														<th>Permit Start</th>
-														<th>Permit Expiry</th>
-														<th>Permit Status</th>
-													</tr>
-													</thead>
-												</table>
-											@else
-
-											@endif
+{{--											@if ($existing_permit->count() > 0)--}}
+{{--												<div class="alert alert-outline-danger show" role="alert">--}}
+{{--													<div class="alert-icon"><i class="flaticon-danger"></i></div>--}}
+{{--													<div class="alert-text"><span class="text-danger kt-font-bold">--}}
+{{--                      {{ strtoupper($artist_permit->artist->fullName) }}--}}
+{{--                    </span> has <span class="text-danger kt-font-bolder">{{ $existing_permit->count() }}</span> active Permit.--}}
+{{--													</div>--}}
+{{--													<div class="alert-close">--}}
+{{--														<button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
+{{--															<span aria-hidden="true"><i class="la la-close"></i></span>--}}
+{{--														</button>--}}
+{{--													</div>--}}
+{{--												</div>--}}
+{{--												<table class="table table-hover table-striped table-borderless" id="permit-history">--}}
+{{--													<thead class="thead-dark">--}}
+{{--													<tr>--}}
+{{--														<th>Reference No.</th>--}}
+{{--														<th>Company Name</th>--}}
+{{--														<th>Permit No.</th>--}}
+{{--														<th>Permit Start</th>--}}
+{{--														<th>Permit Expiry</th>--}}
+{{--														<th>Permit Status</th>--}}
+{{--													</tr>--}}
+{{--													</thead>--}}
+{{--												</table>--}}
+{{--											@else--}}
+{{--											@endif--}}
 										</div>
 									</section>
 								</div>
@@ -814,7 +849,7 @@
 @endsection
 @section('script')
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
-	 {{--<script src="{{ asset('/assets/js/wizard-3.js') }}"></script>--}}
+	 <script src="{{ asset('/assets/js/wizard-3.js') }}"></script>
 	<script type="text/javascript">
 		new Vue({
 			el: '#app-wizard',

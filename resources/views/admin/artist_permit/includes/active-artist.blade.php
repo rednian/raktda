@@ -35,14 +35,7 @@
 									@endif
 							 </select>
 						</div>
-						<div class="col-sm-4">
-							 	 <label>Artist Status</label>
-							  <select class="form-control custom-select" name="artist_status">
-									 	<option selected >-Select Artist Status -</option>
-									 <option value="active">Active</option>
-									 <option value="block">Block</option>
-								</select>
-						</div>
+						
 				 </section>
 			</div>
 	 </section>
@@ -74,7 +67,4 @@
 	 </tr>
 	 </thead>
 </table>
-<div id="active-artist-toolbar">
-	 <button type="button" class="btn btn-warning btn-sm kt-font-transform-u">Block Artist</button>
-</div>
 @include('admin.artist_permit.includes.active-artist-modal')

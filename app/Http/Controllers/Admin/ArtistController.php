@@ -24,6 +24,12 @@ class ArtistController extends Controller
 //        ]);
   }
 
+  public function updateStatus(Request $request, Artist $artist)
+  {
+  	$artist = $artist->update(['artist_status'=>$request->all()]);
+//  	$artist->action()->create([]);
+  }
+
   public function show(Request $request, Artist $artist)
   {
     $artist_permit = ArtistPermit::whereHas('permit', function($q){
@@ -39,23 +45,30 @@ class ArtistController extends Controller
 
   public function datatable(Request $request)
   {
-  	$artist = Artist::whereHas('artistpermit', function($q){
-  		$q->has('profession');
-   })->whereHas('permit', function($q){
-  		$q->where('permit_status', '!=', 'draft');
-		  })
-	    ->when($request->artist_status, function($q) use ($request){
-	    	$q->where('artist_status', $request->artist_status);
-	    })
-	    ->orderby('updated_at', 'desc')->get();
+  	if($request->ajax()){
+  		$limit = $request->length;
+  		$start = $request->start;
 
-  	return DataTables::of($artist)
-	     ->editColumn('name', function($artist){
+  		$artist = Artist::whereHas('artistpermit', function($q){
+  			$q->has('profession');
+  		})->whereHas('permit', function($q){
+  			$q->where('permit_status', '!=', 'draft');
+  		})
+		    ->when($request->artist_status, function($q) use ($request){
+		    	$q->where('artist_status', $request->artist_status);
+		    })
+		    ->orderby('updated_at', 'desc');
+
+  		$totalRecords = $artist->count();
+  		$artist = $artist->offset($start)->limit($limit);
+
+  		return DataTables::of($artist)
+	     ->addColumn('name', function($artist){
 	    	return  ucwords($artist->fullname);
 	     })
 	    ->addColumn('nationality', function($artist){
 	    	if(!$artist->country){ return null; }
-		    return ucwords($artist->country->nationality_en);
+		    return '<span class="flag-icon flag-icon-'.$artist->country->country_code.'"></span>' .ucwords($artist->country->nationality_en);
 	    })
 	    ->addColumn('mobile_number', function($artist){
 	    	return $artist->artistPermit()->latest()->first()->mobile_number;
@@ -69,8 +82,11 @@ class ArtistController extends Controller
 	    ->addColumn('active_permit', function($artist){
 	    	return $artist->permit()->where('permit_status', 'active')->whereDate('expired_date', '>=', Carbon::now())->count();
 	    })
-	    ->rawColumns(['name'])
-	    ->make(true);
+		    ->rawColumns(['name', 'nationality'])
+		    ->setTotalRecords($totalRecords)
+		    ->make(true);
+
+   }
   }
 
   public function statusHistory(Request $request, Artist $artist)

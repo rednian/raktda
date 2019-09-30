@@ -13,27 +13,64 @@
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="kt_tabs_1_1" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
-							 @include('admin.artist_permit.includes.new_request')
+               @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
+                  		 @include('admin.artist_permit.includes.new_request')
+                  @else
+                  @empty()
+                     No New Request Permit as of Today <span class="kt-font-bold">{{ date('d-M-Y h:m a') }}</span>
+                  @endempty
+               @endif
+					
 						</div>
 						<div class="tab-pane fade" id="kt_tabs_1_2" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
-							 @include('admin.artist_permit.includes.processing')
+                  @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request'])->count() > 0)
+                      @include('admin.artist_permit.includes.processing')
+                      @else
+                  @empty()
+                     No on Proccess permit
+                  @endempty
+               @endif
 						</div>
 						<div class="tab-pane fade" id="kt_tabs_1_3" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
-							 @include('admin.artist_permit.includes.approved')
+                 @if(\App\Permit::whereIn('permit_status', ['active'])->count() > 0)
+                      @include('admin.artist_permit.includes.approved')
+                      @else
+                  @empty()
+                     No Active permit
+                  @endempty
+               @endif
 						</div>
 						<div class="tab-pane fade" id="kt_tabs_1_4" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
-							 @include('admin.artist_permit.includes.archive')
+                  @if(\App\Permit::whereIn('permit_status', ['rejected', 'expired'])->count() > 0)
+                    @include('admin.artist_permit.includes.archive')
+                      @else
+                  @empty()
+                     No Expired or Rejected permit
+                  @endempty
+               @endif
 						</div>
 						<div class="tab-pane fade" id="kt_tabs_1_5" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
-							 @include('admin.artist_permit.includes.active-artist')
+               @if(\App\Artist::where('artist_status', 'active')->count() > 0)
+							    @include('admin.artist_permit.includes.active-artist')
+                  @else
+                  @empty()
+                     Active artist is empty
+                  @endempty
+               @endif
 						</div>
 						<div class="tab-pane fade" id="kt_tabs_1_6" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
-							 @include('admin.artist_permit.includes.block-artist')
+                  @if(\App\Artist::where('artist_status', 'blocked')->count() > 0)
+							   @include('admin.artist_permit.includes.block-artist')
+                  @else
+                   @empty()
+                        Blocked artist is empty
+                     @endempty
+               @endif
 						</div>
 				 </div>
 			</div>
@@ -55,26 +92,17 @@
       $(document).ready(function () {
          newRequest();
          $('.nav-tabs a').on('shown.bs.tab', function (event) {
+           
             var current_tab = $(event.target).text();
-            if (current_tab == 'Processing Permits') {
-               processingTable();
-            }
-            if (current_tab == 'Active Permits') {
-               approvedTable();
-            }
-            if (current_tab == 'Archive Permits') {
-               rejectedTable();
-            }
-            if (current_tab == 'Active Artists') {
-               activeArtistTable();
-            }
-            if (current_tab == 'Blocked Artists') {
-               blockArtistTable();
-            }
+            if (current_tab == 'Processing Permits') { processingTable(); }
+            if (current_tab == 'Active Permits') { approvedTable();}
+            if (current_tab == 'Archive Permits') { rejectedTable();}
+            if (current_tab == 'Active Artists') { activeArtistTable(); }
+            if (current_tab == 'Blocked Artists') { blockArtistTable();}
             var y = $(event.relatedTarget).text();  // previous tab
          });
       });
-
+      
       function blockArtistTable() {
          $('table#block-artist').DataTable({
             ajax: {
@@ -110,7 +138,7 @@
 
       function activeArtistTable() {
          var active_artist_table = $('table#active-artist').DataTable({
-            dom: '<"toolbar-active pull-left">frt<"pull-left"i>p',
+            dom: '<"toolbar-active pull-left"><"toolbar-active-1 pull-left">frt<"pull-left"i>p',
             ajax: {
                url: '{{ route('admin.artist.datatable') }}',
                data: function (d) {
@@ -120,7 +148,7 @@
             columnDefs: [
                {targets: [0, 1, 4, 5, 6], className: 'no-wrap'},
                {
-                  targets: 1,
+                  targets:0,
                   orderable: false,
                   checkboxes: {
                      selectRow: true
@@ -149,13 +177,15 @@
                $(row).click(function () {
 									location.href = '{{ url('/permit/artist/') }}/'+data.artist_id;
                });
-            },
+            }
          });
-         $('#active-artist-toolbar').find('button').click(function () {
-            var rows_selected = active_artist_table.column(0).checkboxes.selected();
-            
-            
-            if (rows_selected.length > 0) {
+        
+         $('div.toolbar-active').html('<button type="button" id="btn-active-action" class="btn btn-warning btn-sm kt-font-transform-u">Block Artist</button>');
+    
+         
+         $('button#btn-active-action').click(function () {
+              var rows_selected = active_artist_table.column(0).checkboxes.selected();
+               if (rows_selected.length > 0) {
                $('#active-artist-alert').addClass('d-none');
                $('#active-artist-modal').modal('show');
                
@@ -163,7 +193,8 @@
                $('#active-artist-alert').removeClass('d-none');
             }
          });
-         $('div.toolbar-active').html($('#active-artist-toolbar'));
+         
+        
       }
 
       function approvedTable() {
@@ -211,8 +242,8 @@
                }
             },
             columnDefs: [
-               {targets: '_all', className: 'no-wrap'},
-               {targets: 5, sortable: false},
+               {targets: [0, 4, 5], className: 'no-wrap'},
+               // {targets: , sortable: false},
             ],
             columns: [
                {data: 'reference_number'},
@@ -226,7 +257,7 @@
 
             createdRow: function (row, data, index) {
                $(row).click(function () {
-                  location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
+                  location.href = '{{ url('/artist_permit') }}/' + data.permit_id;
                });
             }
          });
@@ -242,12 +273,12 @@
                   // d.permit_status = $('input[name=permit_start]').val();
                   // d.issued_date = filter.getAction();
                   // d.today = filter.getToday();
-                  d.status = ['rejected', 'expired'];
+                  d.status = ['rejected', 'expired', 'cancelled'];
                }
             },
             columnDefs: [
                {targets: '_all', className: 'no-wrap'},
-               {targets: 5, sortable: false}
+               {targets: [5], sortable: false}
             ],
             columns: [
                {data: 'reference_number'},
@@ -320,12 +351,12 @@
                   // d.permit_status = $('input[name=permit_start]').val();
                   // d.issued_date = filter.getAction();
                   // d.today = filter.getToday();
-                  d.status = ['new', 'modified', 'unprocessed'];
+                  d.status = ['new', 'modified', 'unprocessed', 'processing'];
                }
             },
             columnDefs: [
                {targets: [0, 2, 4, 5], className: 'no-wrap'},
-               {targets: 5, sortable: false}
+               // {targets: 5, sortable: false}
             ],
             columns: [
                {data: 'reference_number'},

@@ -2,8 +2,7 @@
 	 <div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				 
-				 <form method="post" class="kt-form kt-form--fit kt-form--label-right" id="frm-existing-permit"
-							 action="{{ route('admin.artist_permit.submit', $permit->permit_id) }}">
+				 <form method="post" class="kt-form kt-form--fit kt-form--label-right" id="frm-existing-permit">
 						<div class="modal-header">
 							 <h5 class="modal-title" id="exampleModalLabel">Existing Permit</h5>
 							 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
@@ -18,8 +17,8 @@
 										 <div class="form-group">
 												<label>Remarks <span class="text-danger">*</span></label>
 												<textarea name="comment" rows="5" class="form-control-sm form-control" placeholder="Remarks for Client..."></textarea>
+												<input type="hidden" name="artist_permit_status" value="disapproved">
 										 </div>
-										 	 @csrf
 									</div>
 									<div class="form-group row">
 										 <div class="col-sm-12">
