@@ -111,12 +111,15 @@
                 </div>
 
 
+                <form action="{{route('company.payment', $permit_details->permit_id)}}" method="POST">
+                    @csrf
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
+                            id="pay_btn">PAY</button>
+                    </div>
 
-                <div class="d-flex justify-content-end">
-                    <a href="{{url('company/pay_fee/'.$permit_details->permit_id)}}">
-                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u">PAY</button>
-                    </a>
-                </div>
+
+                </form>
 
             </div>
         </div>
@@ -124,15 +127,5 @@
 </div>
 
 
-
-@endsection
-
-
-@section('script')
-
-<script>
-
-
-</script>
 
 @endsection

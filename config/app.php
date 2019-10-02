@@ -168,13 +168,14 @@ return [
         App\Providers\RouteServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Hoyvoy\CrossDatabase\CrossDatabaseServiceProvider::class,
         DougSisk\CountryState\CountryStateServiceProvider::class,
         'A6digital\Image\DefaultProfileImageServiceProvider',
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
     ],
     /*
     |--------------------------------------------------------------------------
@@ -228,7 +229,8 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class
 
     ],
 

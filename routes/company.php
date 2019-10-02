@@ -26,52 +26,34 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('add_artist_to_permit/{from}/{id}',  $artistPermitLink . '\MainController@add_artist_to_permit')->name('company.add_artist_to_permit');
     Route::post('add_to_artist_temp_data', $artistPermitLink . '\MainController@add_to_artist_temp_data')->name('company.add_to_artist_temp_data');
     Route::get('fetch_areas/{id}',  $artistPermitLink . '\MainController@fetch_areas')->name('company.fetch_areas');
-    Route::get('searchCode/{id}',  $artistPermitLink . '\MainController@searchCode')->name('company.searchCode');
+    Route::post('searchCode',  $artistPermitLink . '\MainController@searchCode')->name('company.searchCode');
     Route::post('download_file',  $artistPermitLink . '\MainController@download_file')->name('company.download_file');
     Route::post('move_temp_to_permit', $artistPermitLink . '\MainController@move_temp_to_permit')->name('company.move_temp_to_permit');
     Route::post('fetch_artist_details', $artistPermitLink . '\MainController@fetch_artist_details')->name('company.fetch_artist_details');
-    Route::post('get_files_by_artist_permit_id',  $artistPermitLink . '\MainController@get_files_by_artist_permit_id')->name('company.get_files_by_artist_permit_id');
-    Route::get('get_photo_by_artist_permit_id/{id}',  $artistPermitLink . '\MainController@get_photo_by_artist_permit_id')->name('company.get_photo_by_artist_permit_id');
     Route::post('fetch_artist_temp_data', $artistPermitLink . '\MainController@fetch_artist_temp_data')->name('company.fetch_artist_temp_data');
     Route::get('clear_the_temp', $artistPermitLink . '\MainController@clear_the_temp')->name('clear_the_temp');
     Route::post('cancel_permit',  $artistPermitLink . '\MainController@cancel_permit')->name('company.cancel_permit');
     Route::post('show_cancelled', $artistPermitLink . '\MainController@show_cancelled')->name('company.show_cancelled');
     Route::get('show_rejected/{id}', $artistPermitLink . '\MainController@show_rejected')->name('company.show_rejected');
     // Route::post('uploadfile', $artistPermitLink . '\MainController@uploadDocuments')->name('company.upload_file');
-
-
     Route::post('delete_artist_from_temp', $artistPermitLink . '\MainController@delete_artist_from_temp')->name('company.delete_artist_from_temp');
     Route::post('clear_the_temp_data', $artistPermitLink . '\MainController@clear_the_temp_data')->name('company.clear_the_temp_data');
     Route::get('view_draft_details/{id}', $artistPermitLink . '\DraftsController@view_draft_details')->name('company.view_draft_details');
-
-
-
     Route::post('uploadDocument', $artistPermitLink . '\MainController@uploadDocument')->name('company.uploadDocument');
     Route::post('uploadPhoto', $artistPermitLink . '\MainController@uploadPhoto')->name('company.uploadPhoto');
-
-    Route::post('deletefile', $artistPermitLink . '\MainController@deleteDocuments')->name('company.delete_file');
     Route::get('get_permit_details/{id}', $artistPermitLink . '\MainController@get_permit_details')->name('company.get_permit_details');
     Route::get('update_is_edit/{id}', $artistPermitLink . '\MainController@update_is_edit')->name('company.update_is_edit');
-    Route::get('download_permit/{id}', $artistPermitLink . '\MainController@download_permit')->name('company.download_permit');
+    Route::get('download_permit/{permit}', $artistPermitLink . '\MainController@download_permit')->name('company.download_permit');
     Route::get('add_new_artist/{id?}', $artistPermitLink . '\MainController@add_new_artist')->name('company.add_new_artist');
     Route::post('storePermitDetails', $artistPermitLink . '\MainController@storePermitDetails')->name('company.storePermitDetails');
-
-
     Route::get('get_temp_photo_temp_id/{id}', $artistPermitLink . '\MainController@get_temp_photo_temp_id')->name('company.get_temp_photo_temp_id');
     Route::post('get_temp_files_by_temp_id', $artistPermitLink . '\MainController@get_temp_files_by_temp_id')->name('company.get_temp_files_by_temp_id');
 
     Route::get('get_uploaded_artist_photo/{id}', $artistPermitLink . '\MainController@get_uploaded_artist_photo')->name('company.get_uploaded_artist_photo');
-
-
-
-
     //drafts
     Route::post('save_permit_to_drafts', $artistPermitLink . '\DraftsController@save_permit_to_drafts')->name('company.save_permit_to_drafts');
     Route::get('fetch_existing_drafts', $artistPermitLink . '\DraftsController@fetch_existing_drafts')->name('company.fetch_existing_drafts');
     Route::get('get_draft_details/{id}', $artistPermitLink . '\DraftsController@get_draft_details')->name('company.get_draft_details');
-
-
-
     // Edit Controller
     Route::get('edit_artist/{id}', $artistPermitLink . '\RenewController@edit_artist')->name('company.edit_artist');
     Route::get('update_checklist/{id}', $artistPermitLink . '\EditController@update_checklist')->name('company.update_checklist');
@@ -81,8 +63,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Payment Controller
     Route::get('make_payment/{id?}', $artistPermitLink . '\PaymentController@make_payment')->name('company.make_payment');
-    Route::get('payment_gateway/{id}', $artistPermitLink . '\PaymentController@payment_gateway')->name('company.payment_gateway');
-    Route::get('pay_fee/{id}', $artistPermitLink . '\PaymentController@pay_fee')->name('company.pay_fee');
+    Route::get('payment_gateway/{permit}', $artistPermitLink . '\PaymentController@payment_gateway')->name('company.payment_gateway');
+    Route::post('artistpermits/{permit}/payment', $artistPermitLink . '\PaymentController@payment')->name('company.payment');
+    Route::get('happiness_center/{id}', $artistPermitLink . '\PaymentController@happiness_center')->name('company.happiness_center');
     Route::post('submit_happiness', $artistPermitLink . '\PaymentController@submit_happiness')->name('company.submit_happiness');
 
     // Renew Controller
@@ -92,4 +75,18 @@ Route::group(['middleware' => ['auth']], function () {
     // Amend Controller
     Route::get('amend_permit/{id}', $artistPermitLink . '\AmendController@amend_permit')->name('company.amend_permit');
     Route::get('replace_artist/{id}',  $artistPermitLink . '\AmendController@replace_artist')->name('company.replace_artist');
+
+
+    // Routes for Artist Permits
+
+
+    $eventPermitLink = 'Company\Event';
+
+    // START ARTIST PERMIT
+    Route::resource('eventpermits', $eventPermitLink . '\MainController');
+    Route::post('eventpermits/cancel',  $eventPermitLink . '\MainController@cancel_permit')->name('company.eventpermits.cancel');
+
+    Route::get('fetch_applied_events',  $eventPermitLink . '\MainController@fetch_applied')->name('company.fetch_applied_events');
+    Route::get('fetch_existing_events',  $eventPermitLink . '\MainController@fetch_existing')->name('company.fetch_existing_events');
+    Route::get('fetch_event_drafts',  $eventPermitLink . '\MainController@fetch_drafts')->name('company.fetch_event_drafts');
 });

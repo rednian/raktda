@@ -16,7 +16,6 @@ use Excel;
 use Yajra\Datatables\Datatables;
 use App\Requirement;
 use App\Company;
-use App\PermitType;
 use App\Language;
 use App\Religion;
 use App\Emirates;
@@ -136,7 +135,7 @@ class MainController extends Controller
         })->addColumn('details', function ($permit) {
             return '<a href="' . route('company.get_permit_details', $permit->permit_id) . '" title="View"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . route('company.download_permit', $permit->permit_id) . '" target="_blank" title="Download"><span class="fa fa-file-download fa-2x"></i></a>';
+            return '<a href="' . route('company.download_permit', $permit) . '" target="_blank" title="Download"><span class="fa fa-file-download fa-2x"></i></a>';
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
 
@@ -855,7 +854,7 @@ class MainController extends Controller
 
                     $artist_temp_document = ArtistTempDocument::where('temp_data_id', $data->id)->where('requirement_id', $requirement_ids[$j - 1])->orderBy('created_at', 'desc')->first();
 
-                    if (!$artist_temp_document->doc_id) {
+                    if (!empty($artist_temp_document) && $artist_temp_document->doc_id == null) {
 
                         $temp_path = $artist_temp_document->path;
                         $te_pth = explode('/', $temp_path);
@@ -1066,9 +1065,23 @@ class MainController extends Controller
         return $areas;
     }
 
-    public function searchCode($id)
+    public function searchCode(Request $request)
     {
-        $artist_d = Artist::with('artistPermit', 'artistPermit.artistPermitDocument', 'Nationality', 'artistPermit.visaType')->where('person_code', $id)->first();
+        $permit_id = $request->permit_id;
+        $code = $request->code;
+        $user_id = Auth::user()->user_id;
+        $code_exists = ArtistTempData::where([
+            ['permit_id', $permit_id],
+            ['person_code', $code],
+            ['created_by', $user_id],
+        ])->exists();
+
+        if (!$code_exists) {
+            $artist_d = Artist::with('artistPermit', 'artistPermit.artistPermitDocument', 'Nationality', 'artistPermit.visaType')->where('person_code', $code)->first();
+        } else {
+            $artist_d = '';
+        }
+
         return $artist_d;
     }
 
@@ -1599,7 +1612,16 @@ class MainController extends Controller
 
 
 
-                $requirements = Requirement::where('requirement_type', 'artist')->get();
+                $issued_date = strtotime($data->issue_date);
+                $expired_date = strtotime($data->expiry_date);
+
+                $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                if ($diff < 30) {
+                    $requirements = Requirement::where('requirement_type', 'artist')->where('status', 1)->where('term', 'short')->get();
+                } else {
+                    $requirements = Requirement::where('requirement_type', 'artist')->where('status', 1)->get();
+                }
+
                 $requirement_ids = [];
                 foreach ($requirements as $req) {
                     array_push($requirement_ids, $req->requirement_id);
@@ -1692,14 +1714,14 @@ class MainController extends Controller
     }
 
 
-    public function download_permit($id)
+    public function download_permit(Permit $permit)
     {
-        // dd($id);
-        //Auth::user()->EmpClientI
-
         $data['company_details'] = Company::find(Auth::user()->EmpClientId);
-        $data['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'artistPermit.artist.Nationality')->where('permit_id', $id)->first();
+        $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'artist.Nationality')->get();
+        $data['permit_details'] = $permit;
         $pdf = PDF::loadView('permits.artist.permit_print', $data);
         return $pdf->stream('permit.pdf');
+        // $pdf = PDF::loadView('permits.artist.permit_print', $data);
+        // return $pdf->stream('permit.pdf');
     }
 }

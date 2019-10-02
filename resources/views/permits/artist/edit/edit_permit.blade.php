@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Permit - Smart Government Rak')
+
 @section('content')
 
 @if(count($staff_comments) > 0)

@@ -597,13 +597,17 @@
                                                     Date</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                    id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                                    id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" <?php
+                                                    if($req->validity != null || $req->validity != 0) {
+                                                ?> onchange="set_document_expiry({{$req->validity}}, {{$i}})"
+                                                    <?php } ?> />
                                             </div>
                                             <div class="col-lg-2 col-sm-12">
                                                 <label for="" class="text--maroon kt-font-bold"
                                                     title="Expiry Date">Expiry
                                                     Date</label>
-                                                <input type="text" class="form-control form-control-sm date-picker"
+                                                <input type="text"
+                                                    class="form-control form-control-sm date-picker {{($req->validity != null || $req->validity != 0) ? 'mk-disabled' : ''}}"
                                                     name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                     id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
                                             </div>
@@ -707,7 +711,6 @@
         // upload file
        uploadFunction();
        PicUploadFunction();
-        $('.reqName').tooltip();
 
         $.ajax({
             headers: {
@@ -718,6 +721,19 @@
         });
 
     });
+
+    function set_document_expiry(validity, id){
+            // alert(validity);
+            var noOfMonths = validity != 0 ? validity : 0 ;
+            var issue_date = $('#doc_issue_date_'+id).val();
+            var issue_date_year_format = moment(issue_date, 'DD-MM-YYYY' ).format('YYYY-MM-DD');
+            var expiryMonth = moment(issue_date_year_format).add(noOfMonths, 'M');
+            // var expiryMonthEnd = moment(expiryMonth).endOf('month');
+            // if(issue_date_year_format.date() != expiryMonth.date() && expiryMonth.isSame(expiryMonthEnd.format('YYYY-MM-DD'))){
+            //     expiryMonth = expiryMonth.add(1, 'd');
+            // }
+            $('#doc_exp_date_'+id).val(expiryMonth.format('DD-MM-YYYY'));
+        }
 
 
     const uploadFunction = () => {
@@ -760,22 +776,17 @@
                             success: function(data)
                             {
                                 // console.log('../../storage/'+data[0]["path"]);
-                                // console.log(data);
-                              if(data.length > 0) {
                                 let id = obj[0].id;
                                 let number = id.split("_");
-                                let issue_datetime = new Date(data['issued_date']);
-                                let exp_datetime = new Date(data['expired_date']);
-                                let formatted_issue_date = appendLeadingZeroes(issue_datetime.getDate()) + "-" + appendLeadingZeroes(issue_datetime.getMonth() + 1) + "-" + issue_datetime.getFullYear();
-                                let formatted_exp_date = appendLeadingZeroes(exp_datetime.getDate()) + "-" + appendLeadingZeroes(exp_datetime.getMonth() + 1) + "-" + exp_datetime.getFullYear();
-
-                                obj.createProgress(data["document_name"],'../../storage/'+data["path"],'');
+                                let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                obj.createProgress(data.requirement['requirement_name'],"{{url('storage')}}"+'/'+data.path,'');
                                 if(formatted_issue_date != NaN-NaN-NaN)
                                 {
                                     $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
                                     $('#doc_exp_date_'+number[1]).val(formatted_exp_date);
                                 }
-                              }
+
                             }
                         });
                     }
@@ -900,44 +911,34 @@
                 },
             },
             messages: {
-                fname_en: 'This field is required',
-                fname_ar: 'This field is required',
-                lname_en: 'This field is required',
-                lname_ar: 'This field is required',
-                permit_type: 'This field is required',
-                profession: 'This field is required',
-                dob: 'This field is required',
-                uid_number: 'This field is required',
-                uid_expiry: 'This field is required',
-                passport: 'This field is required',
-                pp_expiry: 'This field is required',
-                visa_type: 'This field is required',
-                visa_number: 'This field is required',
-                visa_expiry: 'This field is required',
-                sp_name: 'This field is required',
-                nationality: 'This field is required',
-                address: 'This field is required',
-                gender: 'This field is required',
+                fname_en: '',
+                fname_ar: '',
+                lname_en: '',
+                lname_ar: '',
+                profession: '',
+                dob: '',
+                uid_number: '',
+                uid_expiry: '',
+                permit_type: '',
+                passport: '',
+                pp_expiry: '',
+                visa_type: '',
+                visa_number: '',
+                visa_expiry: '',
+                sp_name: '',
+                gender: '',
+                nationality: '',
+                address: '',
                 mobile: {
                     // number: 'Please enter number',
-                    required : 'This field is required'
+                    required: ''
                 },
                 email: {
-                    required: 'This field is required',
-                    email: 'Enter a valid email',
+                    required: '',
+                    email: '',
                 },
             },
-            // invalidHandler: function(event, validator){
-            //     KTUtil.scrollTop();
-            //     Swal.fire({
-            //         title: "",
-            //         text:
-            //             "Please fill all the mandatory fields",
-            //         type: "error",
-            //         confirmButtonClass: "btn btn-secondary"
-            //     });
 
-            // },
         });
 
         var docRules = {};
@@ -1184,9 +1185,15 @@
 
     function searchCode(){
         let code = $('#code').val();
+        var permit_id = $('#permit_id').val();
         if(code){
             $.ajax({
-                url: "{{url('company/searchCode')}}"+ '/'+code,
+                url: "{{url('company/searchCode')}}",
+                type: 'POST',
+                data: {
+                    code: code,
+                    permit_id: permit_id
+                },
                 success: function(data){
                     // console.log(data);
                     $('#artist_exists').modal({
@@ -1236,7 +1243,9 @@
                         {
                             $('#person_code_modal').empty();
                             // setTimeout(searchCode(), 1000);
-                            $('#person_code_modal').append('<p class="text-center">Sorry ! We cannot find artist with this Person Code <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span>.<br /> Please leave it blank! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
+                            $('#person_code_modal').append('<p class="text-center">Sorry ! We cannot find artist with this Person Code <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span>. (or)<br /> This Person is already added to the Permit. <br /> Please Add Another Artist ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
+
+                            $('#not_artist_personcode').html(code);
                         }
 
                     },error:function(){

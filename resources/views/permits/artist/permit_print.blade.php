@@ -1,13 +1,13 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    {{-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> --}}
     <style>
-        * {
-            font-family: DejaVu Sans, sans-serif;
-            letter-spacing: 0.05px;
+        /* * {
+            font-family: XBRiyaz, sans-serif;
             box-sizing: border-box;
-        }
+
+        } */
 
         body {
             border: 1px solid #000;
@@ -286,7 +286,7 @@
             @php
             $i = 1 ;
             @endphp
-            @foreach($permit_details->artistPermit as $artist_permit)
+            @foreach($artist_details as $artist_permit)
             @if($artist_permit->artist_permit_status == 'approved')
             @if($i%2 != 0)
             <tr>
