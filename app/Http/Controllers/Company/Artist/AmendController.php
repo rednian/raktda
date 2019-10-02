@@ -85,7 +85,7 @@ class AmendController extends Controller
                         'issued_date' => $ap->issued_date,
                         'expired_date' => $ap->expired_date,
                         'path' => $ap->path,
-                        'document_name' => $ap->document_name,
+                        'requirement_id' => $ap->requirement_id,
                         'artist_permit_id' => $ap->artist_permit_id,
                         'permit_id' => $pd->permit_id,
                         'temp_data_id' => $artist_temp->id,
