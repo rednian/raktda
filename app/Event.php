@@ -10,18 +10,28 @@ class Event extends Model
 	protected $connection = 'mysql';
 	protected $table = 'event';
 	protected $primaryKey = 'event_id';
-	protected $dates = ['created_at', 'updated_at', 'deleted_at', 'issued_date', 'expired_date'];
+	protected $dates = ['created_at', 'updated_at', 'deleted_at', 'issued_date', 'expired_date', 'lock'];
 	protected $casts = ['is_displayable'=>'boolean'];
 	protected $fillable = [
 		 'name_en', 'name_ar', 'reference_number', 'issued_date', 'expired_date', 'time_start', 'time_end', 'permit_number', 'venue_en', 'venue_ar',
-		 'company_id', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable'
+		 'company_id', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock'
 		 ];
+
+	public function requirement()
+	{
+		return $this->hasMany(EventRequirement::class, 'event_id');
+	}
 
 	public function getExpiredDateAttribute($date)
 	{
 		if(!$date){ return null; }
 		return Carbon::parse($date)->format('d-M-Y');
 	}
+
+//	public function getLockAttribute($date)
+//	{
+//		if(!$date){ return null; } return $date;
+//	}
 
 	public function getIssuedDateAttribute($date)
 	{

@@ -2,25 +2,15 @@
 	 <div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				 <div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">New message</h5>
+						<h6 class="modal-title kt-font-transform-u" id="exampleModalLabel">Existing Event</h6>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						</button>
 				 </div>
 				 <div class="modal-body">
-						<form>
-							 <div class="form-group">
-									<label for="recipient-name" class="form-control-label">Recipient:</label>
-									<input type="text" class="form-control" id="recipient-name">
-							 </div>
-							 <div class="form-group">
-									<label for="message-text" class="form-control-label">Message:</label>
-									<textarea class="form-control" id="message-text"></textarea>
-							 </div>
-						</form>
+						<section id="kt_calendar"></section>
 				 </div>
 				 <div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Send message</button>
+						<button type="button" class="btn btn-secondary btn-sm btn-elevate kt-font-transform-u" data-dismiss="modal">Close</button>
 				 </div>
 			</div>
 	 </div>

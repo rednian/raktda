@@ -1,6 +1,13 @@
 @extends('layouts.admin.admin-app')
 @section('style')
 	 <link href="{{ asset('/assets/css/wizard-3.css') }}" rel="stylesheet" type="text/css"/>
+	 <style>
+			@media (min-width: 1024px){
+				  .modal-lg, .modal-xl { max-width: none; }
+				 .modal-dialog{ overflow-y: initial !important; margin: 0 0 0 1%}
+				 .modal-body{  	height: calc(100vh - 130px);  overflow-y: auto;  }
+			}
+	 </style>
 @stop
 @section('content')
 	 <div id="app-wizard" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
@@ -64,13 +71,12 @@
 																			 <button type="button" class="btn btn-sm btn-secondary  kt-font-transform-u" data-dismiss="alert" aria-label="Close">Close</button>
 																		</div>
 																 </div>
-																 <div id="kt_calendar"></div>
 																 <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-detail">
 																		<div class="card">
 																			 <div class="card-header" id="heading-detail">
 																					<div class="card-title" data-toggle="collapse" data-target="#collapse-detail" aria-expanded="true"
 																							 aria-controls="collapse-detail">
-																						 <h6 class="kt-font-bold kt-font-transform-u kt-font-dark"> Event Details</h6>
+																						 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Event Details</h6>
 																					</div>
 																			 </div>
 																			 <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
@@ -130,7 +136,7 @@
 																			 <div class="card-header" id="heading-date">
 																					<div class="card-title" data-toggle="collapse" data-target="#collapse-date" aria-expanded="true"
 																							 aria-controls="collapse-date">
-																						 <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">Date Details</h6>
+																						 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Date Details</h6>
 																					</div>
 																			 </div>
 																			 <div id="collapse-date" class="collapse show" aria-labelledby="heading-date" data-parent="#accordion-date">
@@ -206,7 +212,7 @@
 																			 <div class="card-header" id="heading-address">
 																					<div class="card-title" data-toggle="collapse" data-target="#collapse-address" aria-expanded="true"
 																							 aria-controls="collapse-address">
-																						 <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">Location Details</h6>
+																						 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Location Details</h6>
 																					</div>
 																			 </div>
 																			 <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
@@ -302,6 +308,12 @@
 																						 </div>
 																					</div>
 																			 </div>
+																		</div>
+																 </section>
+																 <section class=" kt-margin-t-10">
+																		<div class="col-md-12">
+																			  <button type="submit" name="status" value="approve" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u btn-wide">Approve</button>
+																			  <button type="submit" name="status" value="reject" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u btn-wide">Reject</button>
 																		</div>
 																 </section>
 															</div>
@@ -426,7 +438,7 @@
 												Previous
 										 </button>
 										 <button type="button" data-ktwizard-type="action-next"
-														 class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u">Next
+														 class="btn btn-elevate btn-maroon kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u">Next
 										 </button>
 										 <div data-ktwizard-type="action-submit" class="dropdown">
 												<button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -447,5 +459,170 @@
 	  @include('admin.event.includes.existing-event-modal')
 @stop
 @section('script')
+	 <script>
+			$(document).ready(function () {
+			     var todayDate = moment().startOf('day');
+            var YM = todayDate.format('YYYY-MM');
+            var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+            var TODAY = todayDate.format('YYYY-MM-DD');
+            var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
 
+            var calendarEl = document.getElementById('kt_calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+               plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+							 refetchResourcesOnNavigate: true,
+
+                isRTL: KTUtil.isRTL(),
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+
+                height: 800,
+                contentHeight: 750,
+                aspectRatio: 3,
+
+                views: {
+                    dayGridMonth: { buttonText: 'Month' },
+                    timeGridWeek: { buttonText: 'Week' },
+                    timeGridDay: { buttonText: 'Day' },
+                    listWeek: { buttonText: 'List' }
+                },
+
+                defaultView: 'dayGridMonth',
+                defaultDate: TODAY,
+
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                navLinks: true,
+                // events: [
+                //     {
+                //         title: 'All Day Event',
+                //         start: YM + '-01',
+                //         description: 'Toto lorem ipsum dolor sit incid idunt ut',
+                //         className: "fc-event-danger fc-event-solid-warning"
+                //     },
+                //     {
+                //         title: 'Reporting',
+                //         start: YM + '-14T13:30:00',
+                //         description: 'Lorem ipsum dolor incid idunt ut labore',
+                //         end: YM + '-14',
+                //         className: "fc-event-success"
+                //     },
+                //     {
+                //         title: 'Company Trip',
+                //         start: YM + '-02',
+                //         description: 'Lorem ipsum dolor sit tempor incid',
+                //         end: YM + '-03',
+                //         className: "fc-event-primary"
+                //     },
+                //     {
+                //         title: 'ICT Expo 2017 - Product Release',
+                //         start: YM + '-03',
+                //         description: 'Lorem ipsum dolor sit tempor inci',
+                //         end: YM + '-05',
+                //         className: "fc-event-light fc-event-solid-primary"
+                //     },
+                //     {
+                //         title: 'Dinner',
+                //         start: YM + '-12',
+                //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
+                //         end: YM + '-10'
+                //     },
+                //     {
+                //         id: 999,
+                //         title: 'Repeating Event',
+                //         start: YM + '-09T16:00:00',
+                //         description: 'Lorem ipsum dolor sit ncididunt ut labore',
+                //         className: "fc-event-danger"
+                //     },
+                //     {
+                //         id: 1000,
+                //         title: 'Repeating Event',
+                //         description: 'Lorem ipsum dolor sit amet, labore',
+                //         start: YM + '-16T16:00:00'
+                //     },
+                //     {
+                //         title: 'Conference',
+                //         start: YESTERDAY,
+                //         end: TOMORROW,
+                //         description: 'Lorem ipsum dolor eius mod tempor labore',
+                //         className: "fc-event-brand"
+                //     },
+                //     {
+                //         title: 'Meeting',
+                //         start: TODAY + 'T10:30:00',
+                //         end: TODAY + 'T12:30:00',
+                //         description: 'Lorem ipsum dolor eiu idunt ut labore'
+                //     },
+                //     {
+                //         title: 'Lunch',
+                //         start: TODAY + 'T12:00:00',
+                //         className: "fc-event-info",
+                //         description: 'Lorem ipsum dolor sit amet, ut labore'
+                //     },
+                //     {
+                //         title: 'Meeting',
+                //         start: TODAY + 'T14:30:00',
+                //         className: "fc-event-warning",
+                //         description: 'Lorem ipsum conse ctetur adipi scing'
+                //     },
+                //     {
+                //         title: 'Happy Hour',
+                //         start: TODAY + 'T17:30:00',
+                //         className: "fc-event-info",
+                //         description: 'Lorem ipsum dolor sit amet, conse ctetur'
+                //     },
+                //     {
+                //         title: 'Dinner',
+                //         start: TOMORROW + 'T05:00:00',
+                //         className: "fc-event-solid-danger fc-event-light",
+                //         description: 'Lorem ipsum dolor sit ctetur adipi scing'
+                //     },
+                //     {
+                //         title: 'Birthday Party',
+                //         start: TOMORROW + 'T07:00:00',
+                //         className: "fc-event-primary",
+                //         description: 'Lorem ipsum dolor sit amet, scing'
+                //     },
+                //     {
+                //         title: 'Click for Google',
+                //         url: 'http://google.com/',
+                //         start: YM + '-28',
+                //         className: "fc-event-solid-info fc-event-light",
+                //         description: 'Lorem ipsum dolor sit amet, labore'
+                //     }
+                // ],
+
+                // eventRender: function(info) {
+                //     var element = $(info.el);
+								//
+                //     if (info.event.extendedProps && info.event.extendedProps.description) {
+                //         if (element.hasClass('fc-day-grid-event')) {
+                //             element.data('content', info.event.extendedProps.description);
+                //             element.data('placement', 'top');
+                //             KTApp.initPopover(element);
+                //         } else if (element.hasClass('fc-time-grid-event')) {
+                //             element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                //         } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                //             element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                //         }
+                //     }
+                // }
+            });
+
+            calendar.render();
+            updateLock();
+      });
+			
+			function updateLock() {
+			   setInterval(function(){
+			      $.ajax({
+							 url: '{{ route('admin.event.lock', $event->event_id) }}',
+							 data: { active: true }
+						});
+				 }, 5000);
+      }
+	 </script>
 @stop

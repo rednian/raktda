@@ -22,6 +22,7 @@ Route::middleware(['admin', 'auth'])->group(function(){
 	Route::get('/event/datatable','Admin\EventController@dataTable')->name('admin.event.datatable');
 	Route::get('/event/{event}/application','Admin\EventController@application')->name('admin.event.application');
 	Route::get('/event/{event}','Admin\EventController@show')->name('admin.event.show');
+	Route::get('/event/{event}/lock','Admin\EventController@updateLock')->name('admin.event.lock');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist
