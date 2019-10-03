@@ -1,4 +1,7 @@
 @extends('layouts.admin.admin-app')
+@section('style')
+	 <link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
+@stop
 @section('content')
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
 			<div class="kt-portlet__body kt-padding-t-5" style="position: relative">
@@ -18,7 +21,7 @@
 										 <th>Event Name</th>
 										 <th>Applied Date</th>
 										 <th>Start On</th>
-										 <th>Event Status</th>
+										 <th>Status</th>
 									</tr>
 									</thead>
 							 </table>
@@ -54,14 +57,32 @@
          $('.nav-tabs a').on('shown.bs.tab', function (event) {
            
             var current_tab = $(event.target).text();
-            if (current_tab == 'New Event Requests'){   }
-          
-            var y = $(event.relatedTarget).text();  // previous tab
+            // if (current_tab == 'New Event Requests'){   }
+            
          });
       });
+      
       function newEvent() {
-         $('table#new-event-request').DataTable({
          
+         $('table#new-event-request').DataTable({
+            ajax: {
+               url: '{{ route('admin.event.datatable') }}',
+               data: function(d){ d.status = ['new'];  }
+            },
+            columnDefs:[
+               { targets: [0, 3, 4, 5], className: 'no-wrap'}
+            ],
+            columns: [
+               { data: 'reference_number' },
+               { data: 'company_name' },
+               { data: 'event_name' },
+               { data: 'created_at' },
+               { data: 'start_date' },
+               { data: 'status' }
+            ],
+            createdRow: function(row, data, index){
+               $(row).click(function () { location.href = '{{ url('/event') }}/'+data.event_id+'/application'; });
+            }
          });
       }
       

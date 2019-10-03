@@ -58,27 +58,32 @@ class ArtistPermit extends Model implements Auditable
 
 		public function emirate()
 		{
-			return $this->belongsTo(Emirates::class)->withDefault(['name_en' => null, 'name_ar' => null]);
+			return $this->belongsTo(Emirates::class)
+				 ->withDefault(['name_en' => null, 'name_ar' => null]);
 		}
 
 		public function area()
 		{
-			return $this->belongsTo(Areas::class)->withDefault(['name_en' => null, 'name_ar' => null]);
+			return $this->belongsTo(Areas::class)
+				 ->withDefault(['name_en' => null, 'name_ar' => null]);
 		}
 
 		public function language()
 		{
-			return $this->belongsTo(Language::class)->withDefault(['name_en' => null, 'name_ar' => null]);
+			return $this->belongsTo(Language::class)
+				 ->withDefault(['name_en' => null, 'name_ar' => null]);
 		}
 
 		public function religion()
 		{
-			return $this->belongsTo(Religion::class)->withDefault(['name_en' => null, 'name_ar' => null]);
+			return $this->belongsTo(Religion::class)
+				 ->withDefault(['name_en' => null, 'name_ar' => null]);
 		}
 
 		public function visaType()
 		{
-			return $this->belongsTo(VisaType::class)->withDefault(['visa_type_en' => null, 'visa_type_ar' => null]);
+			return $this->belongsTo(VisaType::class)
+				 ->withDefault(['visa_type_en' => null, 'visa_type_ar' => null]);
 		}
 }
 

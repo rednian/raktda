@@ -230,6 +230,10 @@ table tr td {
   color: #ffffff;
 }
 
+.select2{
+  width: 100% !important;
+}
+
 .dataTables_wrapper .pagination .page-item.active > .page-link {
   background: #a63a3f;
   color: #ffffff;
