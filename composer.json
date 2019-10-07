@@ -10,9 +10,8 @@
     "require": {
         "php": "^7.1.3",
         "a6digital/laravel-default-profile-image": "^2.0",
-        "barryvdh/laravel-dompdf": "^0.8.5",
+        "carlos-meneses/laravel-mpdf": "^2.1",
         "davejamesmiller/laravel-breadcrumbs": "5.x",
-        "dompdf/dompdf": "~0.8",
         "dougsisk/laravel-country-state": "^2.1",
         "fideloper/proxy": "^4.0",
         "hoyvoy/laravel-cross-database-subqueries": "^5.6",

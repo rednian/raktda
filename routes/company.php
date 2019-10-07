@@ -39,12 +39,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('show_rejected/{id}', $artistPermitLink . '\MainController@show_rejected')->name('company.show_rejected');
     // Route::post('uploadfile', $artistPermitLink . '\MainController@uploadDocuments')->name('company.upload_file');
 
-
     Route::post('delete_artist_from_temp', $artistPermitLink . '\MainController@delete_artist_from_temp')->name('company.delete_artist_from_temp');
     Route::post('clear_the_temp_data', $artistPermitLink . '\MainController@clear_the_temp_data')->name('company.clear_the_temp_data');
     Route::get('view_draft_details/{id}', $artistPermitLink . '\DraftsController@view_draft_details')->name('company.view_draft_details');
-
-
 
     Route::post('uploadDocument', $artistPermitLink . '\MainController@uploadDocument')->name('company.uploadDocument');
     Route::post('uploadPhoto', $artistPermitLink . '\MainController@uploadPhoto')->name('company.uploadPhoto');
@@ -62,15 +59,10 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('get_uploaded_artist_photo/{id}', $artistPermitLink . '\MainController@get_uploaded_artist_photo')->name('company.get_uploaded_artist_photo');
 
-
-
-
     //drafts
     Route::post('save_permit_to_drafts', $artistPermitLink . '\DraftsController@save_permit_to_drafts')->name('company.save_permit_to_drafts');
     Route::get('fetch_existing_drafts', $artistPermitLink . '\DraftsController@fetch_existing_drafts')->name('company.fetch_existing_drafts');
     Route::get('get_draft_details/{id}', $artistPermitLink . '\DraftsController@get_draft_details')->name('company.get_draft_details');
-
-
 
     // Edit Controller
     Route::get('edit_artist/{id}', $artistPermitLink . '\RenewController@edit_artist')->name('company.edit_artist');
@@ -92,4 +84,18 @@ Route::group(['middleware' => ['auth']], function () {
     // Amend Controller
     Route::get('amend_permit/{id}', $artistPermitLink . '\AmendController@amend_permit')->name('company.amend_permit');
     Route::get('replace_artist/{id}',  $artistPermitLink . '\AmendController@replace_artist')->name('company.replace_artist');
+
+
+    Route::resource('event', 'Company\EventController');
+    Route::get('event/payment', 'Company\EventController@payment')->name('company.event.payment');
+    Route::get('event/draft', 'Company\EventController@draft')->name('company.event.draft');
+    Route::get('event/download/{event}', 'Company\EventController@download')->name('company.event.download');
+    Route::post('event/cancel', 'Company\EventController@cancel')->name('event.cancel');
+    Route::get('event/upload/{event}', 'Company\EventController@upload')->name('company.event.upload');
+    Route::post('event/reject_reason/{event}', 'Company\EventController@reject_reason')->name('event.reject_reason');
+    Route::get('event/cancel_reason/{event}', 'Company\EventController@cancel_reason')->name('company.event.cancel_reason');
+
+    Route::get('fetch_applied_events', 'Company\EventController@fetch_applied')->name('company.event.fetch_applied');
+    Route::get('fetch_existing_events', 'Company\EventController@fetch_valid')->name('company.event.fetch_valid');
+    Route::get('fetch_event_drafts',  'Company\EventController@fetch_draft')->name('company.event.fetch_draft');
 });

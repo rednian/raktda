@@ -175,7 +175,8 @@ return [
         DougSisk\CountryState\CountryStateServiceProvider::class,
         'A6digital\Image\DefaultProfileImageServiceProvider',
         Intervention\Image\ImageServiceProvider::class,
-	     MaddHatter\LaravelFullcalendar\ServiceProvider::class,
+        MaddHatter\LaravelFullcalendar\ServiceProvider::class,
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class
     ],
     /*
     |--------------------------------------------------------------------------
@@ -225,12 +226,12 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Image' => Intervention\Image\Facades\Image::class,
-	     'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
+        'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
 
     ],
 
