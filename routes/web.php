@@ -15,26 +15,29 @@ Route::middleware(['admin', 'auth'])->group(function(){
       return redirect()->route('admin.artist_permit.index');
     })->name('admin.dashboard');
 
-    //--------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------------
 	// Event Permit
-	//--------------------------------------------------------------------------
+	//----------------------------------------------------------------------------------------------------------------
+	Route::get('/event','Admin\EventController@index')->name('admin.event.index');
+	Route::get('/event/datatable','Admin\EventController@dataTable')->name('admin.event.datatable');
 	Route::get('/event/{event}/application','Admin\EventController@application')->name('admin.event.application');
 	Route::get('/event/{event}','Admin\EventController@show')->name('admin.event.show');
-	Route::get('/event','Admin\EventController@index')->name('admin.event.index');
+	Route::get('/event/{event}/lock','Admin\EventController@updateLock')->name('admin.event.lock');
 
-  //--------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------------------
   // Artist
-  //--------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------------------
 	Route::get('/permit/artist', 'Admin\ArtistController@datatable')->name('admin.artist.datatable');
 	Route::get('/permit/artist/{artist}', 'Admin\ArtistController@show')->name('admin.artist.show');
+	Route::post('/permit/artist/{artist}/updatestatus', 'Admin\ArtistController@updatestatus')->name('admin.artist.update_status');
 	Route::get('/permit/artist/{artist}/permithistory', 'Admin\ArtistController@permithistory')->name('admin.artist.permit.history');
 	Route::get('/permit/artist/{artist}/status_history', 'Admin\ArtistController@statusHistory')->name('admin.artist.status_history');
 //
 	Route::get('/permit/artist_permit/{artistpermit}/history', 'Admin\ArtistController@history')->name('admin.artist_permit.history');
 
-  //--------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------------------
 // Artist Permit
-//--------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
 	Route::get('/artist_permit/{permit}/history', 'Admin\ArtistPermitController@permitHistory')
 		 ->name('admin.artist_permit.history');
 
@@ -75,9 +78,9 @@ Route::middleware(['admin', 'auth'])->group(function(){
 	Route::get('/artist_permit', 'Admin\ArtistPermitController@index')
 		 ->name('admin.artist_permit.index');
 
-  //--------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------------------
   // Settings
-  //--------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------------------
   
     //Permit Duration
     Route::resource('/settings/permit_duration', 'PermitDurationController');

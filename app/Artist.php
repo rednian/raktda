@@ -27,7 +27,8 @@ class Artist extends Model implements Auditable
 
     public function country()
     {
-    	return $this->belongsTo(Country::class, 'country_id');
+    	return $this->belongsTo(Country::class, 'country_id')
+		    ->withDefault(['name_en'=>null, 'name_ar'=>null, 'nationality_ar'=>null, 'nationality_en'=>null]);
     }
 
     public function artistPermit()
@@ -37,7 +38,8 @@ class Artist extends Model implements Auditable
 
     public function gender()
     {
-        return $this->belongsTo(Gender::class, 'gender_id');
+        return $this->belongsTo(Gender::class, 'gender_id')
+	         ->withDefault(['name_en'=>  null, 'name_ar'=>null]);
     }
 
     public function permit()

@@ -52,7 +52,8 @@ $(document).ready(function(){
     $('table').wrap('<div class="table-responsive-sm"></div>');
 
     // select2 settings
-    $('.select2').select2({dropdownAutoWidth:true});
+    $('.select2').select2({dropdownAutoWidth: true});
+    $('.kt-selectpicker').selectpicker();
   
       autosize.update($('textarea'));
 

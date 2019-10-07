@@ -176,6 +176,7 @@ return [
         DougSisk\CountryState\CountryStateServiceProvider::class,
         'A6digital\Image\DefaultProfileImageServiceProvider',
         Intervention\Image\ImageServiceProvider::class,
+	     MaddHatter\LaravelFullcalendar\ServiceProvider::class,
     ],
     /*
     |--------------------------------------------------------------------------
@@ -231,6 +232,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class
+	     'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
+
 
     ],
 
