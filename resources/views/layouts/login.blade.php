@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <title>RAKTDA | Login </title>
@@ -18,143 +18,160 @@
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
     <style>
-        .btn.btn-success{
+        .btn.btn-success {
             background: #80262b;
             border-color: #80262b;
             border-radius: 0;
         }
-        .btn.btn-success:hover{
+
+        .btn.btn-success:hover {
             background: #a63a3f;
             border-color: #a63a3f;
             border-radius: 0;
         }
-        .btn.btn-success.active, .btn.btn-success:active, .btn.btn-success:focus, .btn.btn-success:hover, .open .dropdown-toggle.btn-success {
+
+        .btn.btn-success.active,
+        .btn.btn-success:active,
+        .btn.btn-success:focus,
+        .btn.btn-success:hover,
+        .open .dropdown-toggle.btn-success {
             background: #a63a3f;
             border-color: #a63a3f;
         }
-        .form-control{
+
+        .form-control {
             border-radius: 0;
         }
+
         .news-feed-overlay {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: rgba(128,38,43,0.8);
+            background: rgba(128, 38, 43, 0.8);
             /*background: rgba(128, 38, 43, .7);*/
 
         }
-        .login.login-with-news-feed .news-caption, .register.register-with-news-feed .news-caption {
+
+        .login.login-with-news-feed .news-caption,
+        .register.register-with-news-feed .news-caption {
             background: none;
-            top:150px;
+            top: 150px;
 
         }
     </style>
 </head>
+
 <body class=" bg-white">
-<!-- begin #page-loader -->
-{{--<div id="page-loader" class="fade in"><span class="spinner"></span></div>--}}
-<!-- end #page-loader -->
+    <!-- begin #page-loader -->
+    {{--<div id="page-loader" class="fade in"><span class="spinner"></span></div>--}}
+    <!-- end #page-loader -->
 
-<!-- begin #page-container -->
-<div id="page-container">
-    <!-- begin login -->
-    <div class="login login-with-news-feed">
-        <!-- begin news-feed -->
-        <div class="news-feed">
-            <div class="news-image">
-                {{--<img src="{{ asset('assets/css/login/bg-3.jpg') }}" data-id="login-cover-image" alt="" />--}}
-            </div>
-            <div class="news-feed-overlay"></div>
-            <div class="news-caption">
-                <img src="{{ asset('img/login-logo.svg') }}" style="width: 40%;" class="center-block">
+    <!-- begin #page-container -->
+    <div id="page-container">
+        <!-- begin login -->
+        <div class="login login-with-news-feed">
+            <!-- begin news-feed -->
+            <div class="news-feed">
+                <div class="news-image">
+                    {{--<img src="{{ asset('assets/css/login/bg-3.jpg') }}" data-id="login-cover-image" alt="" />--}}
+                </div>
+                <div class="news-feed-overlay"></div>
+                <div class="news-caption">
+                    <img src="{{ asset('img/login-logo.svg') }}" style="width: 40%;" class="center-block">
 
-                {{--<p class="text-center">--}}
-                    {{--Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque delectus dolores facere minus quaerat ut voluptate. Commodi doloribus eaque esse eum, fugit libero modi pariatur quidem quis vitae voluptatem?--}}
-                {{--</p>--}}
-            </div>
-        </div>
-        <!-- end news-feed -->
-        <!-- begin right-content -->
-        <div class="right-content">
-            <!-- begin login-header -->
-            <div class="login-header">
-                <div class="brand">
-                    <h3 class="caption-title text-center" style="color: #a63a3f"> Ras Al Khaimah <br/> Smart Government Project</h3>
-                    {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
-                    <h4 style="margin-top: 10%;" class="text-center">Login to you Account</h4>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-sign-in"></i>
-                </div>
-            </div>
-            <!-- end login-header -->
-            <!-- begin login-content -->
-            <div class="login-content">
-                <form method="POST" action="{{ route('login') }}" class="margin-bottom-0">
-                    @csrf
-                    <div class="form-group m-b-15">
-                        <input autocomplete="off" autofocus type="text" @error('username') is-invalid @enderror" name="login" value="{{ old('login') }}" class="form-control input-lg" placeholder="Username" required />
-                        @error('username')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="form-group m-b-15">
-                        <input name="password" type="password" class="form-control input-lg  @error('password') is-invalid @enderror" placeholder="Password" required />
-                        @error('password')
-                            <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="checkbox m-b-30">
-                        <label>
-                            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} /> Remember Me
-                        </label>
-                    </div>
-                    <div class="login-buttons">
-                        <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
-                    </div>
-                    {{--<div class="m-t-20 m-b-40 p-b-40 text-inverse">--}}
-                        {{--Not a member yet? Click <a href="register_v3.html" class="text-success">here</a> to register.--}}
-                    {{--</div>--}}
-                    {{--<hr />--}}
                     {{--<p class="text-center">--}}
-                        {{--&copy; Color Admin All Right Reserved 2015--}}
+                    {{--Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque delectus dolores facere minus quaerat ut voluptate. Commodi doloribus eaque esse eum, fugit libero modi pariatur quidem quis vitae voluptatem?--}}
                     {{--</p>--}}
-                </form>
+                </div>
             </div>
-            <!-- end login-content -->
+            <!-- end news-feed -->
+            <!-- begin right-content -->
+            <div class="right-content">
+                <!-- begin login-header -->
+                <div class="login-header" style="width:auto;">
+                    <div class="brand">
+                        <h3 class="caption-title text-center" style="color: #a63a3f"> Ras Al Khaimah <br /> Smart
+                            Government Project</h3>
+                        {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
+                        <h4 style="margin-top: 10%;" class="text-center">Login to your Account</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-sign-in"></i>
+                    </div>
+                </div>
+                <!-- end login-header -->
+                <!-- begin login-content -->
+                <div class="login-content">
+                    <form method="POST" action="{{ route('login') }}" class="margin-bottom-0">
+                        @csrf
+                        <div class="form-group m-b-15">
+                            <input autocomplete="off" autofocus type="text" @error('username') is-invalid @enderror"
+                                name="login" value="{{ old('login') }}" class="form-control input-lg"
+                                placeholder="Username" required />
+                            @error('username')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="form-group m-b-15">
+                            <input name="password" type="password"
+                                class="form-control input-lg  @error('password') is-invalid @enderror"
+                                placeholder="Password" required />
+                            @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="checkbox m-b-30">
+                            <label>
+                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} />
+                                Remember Me
+                            </label>
+                        </div>
+                        <div class="login-buttons">
+                            <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
+                        </div>
+                        {{--<div class="m-t-20 m-b-40 p-b-40 text-inverse">--}}
+                        {{--Not a member yet? Click <a href="register_v3.html" class="text-success">here</a> to register.--}}
+                        {{--</div>--}}
+                        {{--<hr />--}}
+                        {{--<p class="text-center">--}}
+                        {{--&copy; Color Admin All Right Reserved 2015--}}
+                        {{--</p>--}}
+                    </form>
+                </div>
+                <!-- end login-content -->
+            </div>
+            <!-- end right-container -->
         </div>
-        <!-- end right-container -->
+        <!-- end login -->
     </div>
-    <!-- end login -->
-</div>
-<!-- end page container -->
+    <!-- end page container -->
 
-<!-- ================== BEGIN BASE JS ================== -->
-{{--<script src="assets/plugins/jquery/jquery-1.9.1.min.js"></script>--}}
-{{--<script src="assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>--}}
-{{--<script src="assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>--}}
-{{--<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>--}}
-{{--<!--[if lt IE 9]>--}}
-{{--<script src="assets/crossbrowserjs/html5shiv.js"></script>--}}
-{{--<script src="assets/crossbrowserjs/respond.min.js"></script>--}}
-{{--<script src="assets/crossbrowserjs/excanvas.min.js"></script>--}}
-{{--<![endif]-->--}}
-{{--<script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>--}}
-{{--<script src="assets/plugins/jquery-cookie/jquery.cookie.js"></script>--}}
-{{--<!-- ================== END BASE JS ================== -->--}}
+    <!-- ================== BEGIN BASE JS ================== -->
+    {{--<script src="assets/plugins/jquery/jquery-1.9.1.min.js"></script>--}}
+    {{--<script src="assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>--}}
+    {{--<script src="assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>--}}
+    {{--<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>--}}
+    {{--<!--[if lt IE 9]>--}}
+    {{--<script src="assets/crossbrowserjs/html5shiv.js"></script>--}}
+    {{--<script src="assets/crossbrowserjs/respond.min.js"></script>--}}
+    {{--<script src="assets/crossbrowserjs/excanvas.min.js"></script>--}}
+    {{--<![endif]-->--}}
+    {{--<script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>--}}
+    {{--<script src="assets/plugins/jquery-cookie/jquery.cookie.js"></script>--}}
+    {{--<!-- ================== END BASE JS ================== -->--}}
 
-{{--<!-- ================== BEGIN PAGE LEVEL JS ================== -->--}}
-{{--<script src="assets/js/apps.min.js"></script>--}}
-{{--<!-- ================== END PAGE LEVEL JS ================== -->--}}
+    {{--<!-- ================== BEGIN PAGE LEVEL JS ================== -->--}}
+    {{--<script src="assets/js/apps.min.js"></script>--}}
+    {{--<!-- ================== END PAGE LEVEL JS ================== -->--}}
 
-<script src="{{ asset('assets/vendors/general/jquery/dist/jquery.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
-<script>
-    $(document).ready(function(){
+    <script src="{{ asset('assets/vendors/general/jquery/dist/jquery.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function(){
 			$('.news-feed').backstretch([
 				'{{asset('/assets/css/login/1.jpg')}}',
 				'{{asset('/assets/css/login/2.jpg')}}',
@@ -165,6 +182,7 @@
 				duration: 3000
 			});
     });
-</script>
+    </script>
 </body>
+
 </html>

@@ -49,13 +49,15 @@
                     </a>
                 </li>
 
-                <li class="kt-menu__item kt-menu__item--active">
+                <li
+                    class="kt-menu__item {{ url()->current() == url('company/artist_permits') ? 'kt-menu__item--active' : ''}}">
                     <a href="{{url('company/artist_permits')}}" class="kt-menu__link">
                         <span class="kt-menu__link-text">ARTIST PERMIT</span>
                     </a>
                 </li>
-                <li class="kt-menu__item">
-                    <a href="javascript:void(0)" class="kt-menu__link ">
+                <li
+                    class="kt-menu__item {{ url()->current() == url('company/eventpermits') ? 'kt-menu__item--active' : ''}}">
+                    <a href="{{url('company/eventpermits')}}" class="kt-menu__link ">
                         <span class="kt-menu__link-text">EVENT PERMIT</span>
                     </a>
                 </li>

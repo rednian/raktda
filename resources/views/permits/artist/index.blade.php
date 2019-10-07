@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Artist Permits - Smart Government Rak')
+
 @section('content')
-
-
 
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
@@ -12,15 +12,15 @@
         <ul class="nav nav-tabs " role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Applied
-                    Artists Permits </a>
+                    Artist Permits </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Valid
-                    Artists Permits</a>
+                    Artist Permits</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">
-                    Artists Permits Drafts</a>
+                    Artist Permit Drafts</a>
             </li>
             <li class="nav-item"
                 style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
+@section('title', 'Payment Permit - Smart Government Rak')
+
 
 @section('content')
-
-
 
 <div class="row">
     <div class="col-lg-12">
@@ -59,7 +59,7 @@
                             <tr>
                                 <td>{{$artistPermit->artist['firstname_en']}}</td>
                                 <td>{{$artistPermit->artist['lastname_en']}}</td>
-                                <td>{{$artistPermit->permitType['name_en']}}</td>
+                                <td>{{$artistPermit->profession['name_en']}}</td>
                                 <td>{{$artistPermit->mobile_number}}</td>
                                 <td>{{$artistPermit->email}}</td>
                                 <td style="color:{{$artistPermit->artist_permit_status == 'approved' ? 'green' : 'red'}}"

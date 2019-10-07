@@ -79,15 +79,17 @@ class RenewController extends Controller
                     'person_code' => $pd->artist['person_code'],
                     'is_old_artist' => 2,
                     'artist_permit_status' => $pd->artist_permit_status,
-                    'issue_date' => $pd->issued_date,
-                    'expiry_date' => $pd->expired_date,
-                    'work_location' => $pd->work_location
+                    'issue_date' => $permit_details->issued_date,
+                    'expiry_date' => $permit_details->expired_date,
+                    'work_location' => $permit_details->work_location,
+                    'company_id' => $permit_details->company_id,
+                    'created_by' => $permit_details->created_by,
                 ]);
 
-                $permit_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('requirement_id');
+                $permit_doc_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('requirement_id');
 
 
-                foreach ($pd->artistPermitDocument as $ap) {
+                foreach ($permit_doc_details as $ap) {
                     ArtistTempDocument::create([
                         'status' => 2,
                         'issued_date' => $ap->issued_date,
@@ -266,17 +268,25 @@ class RenewController extends Controller
 
                 $artistPermit =  ArtistPermit::create($updateArray); // created the artist permit
 
+                $issued_date = strtotime($data->issue_date);
+                $expired_date = strtotime($data->expiry_date);
 
-                $requirements = Requirement::where('requirement_type', 'artist')->get();
-                $requirement_names = [];
+                $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                if ($diff < 30) {
+                    $requirements = Requirement::where('requirement_type', 'artist')->where('status', 1)->where('term', 'short')->get();
+                } else {
+                    $requirements = Requirement::where('requirement_type', 'artist')->where('status', 1)->get();
+                }
+
+                $requirement_ids = [];
                 foreach ($requirements as $req) {
-                    array_push($requirement_names, $req->requirement_name);
+                    array_push($requirement_ids, $req->requirement_id);
                 }
                 $total = $requirements->count();
 
                 for ($j = 1; $j <= $total; $j++) {
 
-                    $artist_temp_document = ArtistTempDocument::where('temp_data_id', $data->id)->where('document_name', $requirement_names[$j - 1])->orderBy('created_at', 'desc')->first();
+                    $artist_temp_document = ArtistTempDocument::where('temp_data_id', $data->id)->where('requirement_id', $requirement_ids[$j - 1])->orderBy('created_at', 'desc')->first();
 
                     if (!$artist_temp_document->doc_id) {
 
@@ -311,7 +321,7 @@ class RenewController extends Controller
                             'created_at' =>  $current_time_string,
                             'created_by' =>  $user_id,
                             'path' =>  $newPathLink,
-                            'document_name' => $artist_temp_document->document_name,
+                            'requirement_id' => $artist_temp_document->requirement_id,
                             'artist_permit_id' => $artistPermit->artist_perit_id
                         ]);
                     }

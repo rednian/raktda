@@ -72,18 +72,20 @@ class AmendController extends Controller
                     'artist_permit_status' => $pd->artist_permit_status,
                     'issue_date' => $permit_details->issued_date,
                     'expiry_date' => $permit_details->expired_date,
-                    'work_location' => $permit_details->work_location
+                    'work_location' => $permit_details->work_location,
+                    'company_id' => $permit_details->company_id,
+                    'created_by' => $permit_details->created_by,
                 ]);
 
-                $permit_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('document_name');
+                $permit_docs = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('requirement_id');
 
-                foreach ($pd->artistPermitDocument as $ap) {
+                foreach ($permit_docs as $ap) {
                     ArtistTempDocument::create([
                         'status' => 2,
                         'issued_date' => $ap->issued_date,
                         'expired_date' => $ap->expired_date,
                         'path' => $ap->path,
-                        'document_name' => $ap->document_name,
+                        'requirement_id' => $ap->requirement_id,
                         'artist_permit_id' => $ap->artist_permit_id,
                         'permit_id' => $pd->permit_id,
                         'temp_data_id' => $artist_temp->id,

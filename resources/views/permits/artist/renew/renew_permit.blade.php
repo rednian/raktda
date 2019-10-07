@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Renew Permit - Smart Government Rak')
+
 @section('content')
-
-
-
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
