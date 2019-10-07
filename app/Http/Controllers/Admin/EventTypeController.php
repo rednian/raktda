@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Auth;
 use App\EventType;
-use DataTables;
+use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Yajra\DataTables\DataTables;
 
 class EventTypeController extends Controller
 {
@@ -18,10 +18,30 @@ class EventTypeController extends Controller
 
     public function datatable(Request $request)
     {
-        if($request->ajax()){
-            $eventType =  EventType::all();
-            return Datatables::of($eventType)->make(true);
-        }
+    	$user = Auth::user();
+    	$type = EventType::orderBy('name_en');
+    	$start = $request->start;
+    	$length = $request->length;
+    	$totalRecords = $type->count();
+    	$type = $type->offset($start)->limit($length);
+
+    	return DataTables::of($type)
+		    ->addColumn('name', function($type) use ($user){
+		    	if($user->LanguageId == 1){ return ucwords($type->name_en); }
+		    	return $type->name_ar;
+		    })
+		    ->editColumn('amount', function($type){
+		    	if($type->amount){ return number_format($type->amount, 2).' AED';}
+		    	return null;
+		    })
+		    ->addColumn('description', function($type) use ($user){
+		    		if($user->LanguageId == 1){ return ucfirst($type->description_en); }
+		    		return $type->description_ar;
+		    })
+		    ->setTotalRecords($totalRecords)
+		    ->make(true);
+
+
     }
 
     public function isexist(Request $request)
@@ -35,7 +55,7 @@ class EventTypeController extends Controller
  
     public function create()
     {
-         return view('admin.settings.event-type.create');
+         return view('admin.settings.event.create', ['page_title'=>'Create Event Type']);
     }
 
     public function store(Request $request)

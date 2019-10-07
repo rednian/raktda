@@ -2,6 +2,7 @@
   ---danger: #80262b;
   ---danger-light: #a63a3f;
   ---warning: #ffbf00;
+  ---white: #fff;
 }
 
 .kt-spinner--danger {
@@ -10,7 +11,7 @@
 
 /*sidebar*/
 .kt-aside, .kt-aside-menu {
-  background-color: #fda900 !important;
+  background-color: #fff !important;
   /*background-color: #fda900 !important;*/
 }
 
@@ -124,7 +125,8 @@
 > .kt-menu__heading, .kt-aside-menu .kt-menu__nav
 > .kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover
 > .kt-menu__link {
-  background-color: #a63a3f !important;
+  background-color: rgba(97, 97, 97, 0.1) !important;
+  color: #80262b;
 
   font-weight: 700 !important;
   /*       border-top: 1px solid #e4e5e7 !important;

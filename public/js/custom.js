@@ -40,7 +40,10 @@ $(document).ready(function(){
         serverSide: true,
         destroy: true,
         pagingType: 'simple_numbers',
-        ajax: { global: false }, 
+        ajax: { global: false },
+      columnDefs:[
+        // {targets: '_all', className: 'no-wrap'}
+      ],
         language:{
           search: '',
           searchPlaceholder: 'Search...',
@@ -49,7 +52,7 @@ $(document).ready(function(){
         }
     });
 
-    $('table').wrap('<div class="table-responsive-sm"></div>');
+    // $('table').wrap('<div class="table-responsive"></div>');
 
     // select2 settings
     $('.select2').select2({dropdownAutoWidth: true});

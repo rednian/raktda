@@ -20,7 +20,7 @@
 	 </style>
 @stop
 @section('content')
-	 <div id="app-wizard" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
+	 <section id="app-wizard" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
 			<div class="kt-portlet__head kt-portlet__head--sm">
 				 <div class="kt-portlet__head-label">
 						<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ ucwords($event->name_en) }}- application</span></h3>
@@ -62,290 +62,273 @@
 													 <div class="kt-wizard-v3__nav-bar"></div>
 												</div>
 										 </a>
-{{--										 <a href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending" class="kt-wizard-v3__nav-item">--}}
-{{--												<div class="kt-wizard-v3__nav-body">--}}
-{{--													 <div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>4</span>Event Approvers</div>--}}
-{{--													 <div class="kt-wizard-v3__nav-bar"></div>--}}
-{{--												</div>--}}
-{{--										 </a>--}}
+										 {{--										 <a href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending" class="kt-wizard-v3__nav-item">--}}
+										 {{--												<div class="kt-wizard-v3__nav-body">--}}
+										 {{--													 <div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>4</span>Event Approvers</div>--}}
+										 {{--													 <div class="kt-wizard-v3__nav-bar"></div>--}}
+										 {{--												</div>--}}
+										 {{--										 </a>--}}
 									</div>
 							 </div>
 						</div>
 						<div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
-							 <section id="kt_form" class="kt-form">
+							 <form id="kt_form" class="kt-form">
 									<div data-ktwizard-type="step-content" data-ktwizard-state="current" class="kt-wizard-v3__content">
 										 <div class="kt-form__section kt-form__section--first">
 												<div class="kt-wizard-v3__form">
-													 <form action="{{ route('admin.event.checkapplication',$event->event_id) }}" id="frm-event-details" method="post">
-															<input type="hidden" name="step" value="1">
-															@csrf
-															<section class="row">
-																 <div class="col kt-margin-t-20 kt-margin-b-20">
-																		@include('admin.artist_permit.includes.comment')
-																		<div class="alert alert-outline-danger fade show" role="alert">
-																			 <div class="alert-text">
-																					<h6 class="alert-heading text-danger kt-font-transform-u">
-																						 Important
-																					</h6>
-																					<p>The venue of this event has/have 3 active event.</p>
-																					<hr>
-																					<button type="button" data-target="#event-exist-modal" data-toggle="modal"
-																									class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">Show Event Calendar
-																					</button>
-																					<button type="button" class="btn btn-sm btn-secondary  kt-font-transform-u" data-dismiss="alert" aria-label="Close">Close
-																					</button>
+													 <section class="row kt-margin-t-20 kt-margin-b-20">
+															<div class="col">
+																 @include('admin.artist_permit.includes.comment')
+																 <div class="alert alert-outline-danger fade show" role="alert">
+																		<div class="alert-text">
+																			 <h6 class="alert-heading text-danger kt-font-transform-u">Important</h6>
+																			 <p>The venue of this event has/have 3 active event.</p>
+																			 <hr>
+																			 <button type="button" data-target="#event-exist-modal" data-toggle="modal"
+																							 class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">Show Event Calendar
+																			 </button>
+																			 <button type="button" class="btn btn-sm btn-secondary  kt-font-transform-u" data-dismiss="alert" aria-label="Close">Close
+																			 </button>
+																		</div>
+																 </div>
+																 <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-detail">
+																		<div class="card">
+																			 <div class="card-header" id="heading-detail">
+																					<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-detail"
+																							 aria-expanded="true"
+																							 aria-controls="collapse-detail">
+																						 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Event Details</h6>
+																					</div>
+																			 </div>
+																			 <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
+																					<div class="card-body">
+																						 <div class="row form-group form-group-sm">
+																								<div class="col-md-6">
+																									 <label>Event Name <span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ ucfirst($event->name_en) }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append ">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="check[firstname]" value="Akshay" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
+																											</div>
+																									 </div>
+																								</div>
+																								<div class="col-md-6">
+																									 <label>Event Name (AR) <span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ ucfirst($event->name_ar) }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="event_name" value="Akshay" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
+																											</div>
+																									 </div>
+																								</div>
+																						 </div>
+																						 <div class="row form-group form-group-sm">
+																								<div class="col-md-6">
+																									 <label>Event Type <span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ ucfirst($event->type->name_en) }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="check[firstname]" value="Akshay" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
+																											</div>
+																									 </div>
+																								</div>
+																						 </div>
+																					</div>
 																			 </div>
 																		</div>
-																		<section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-detail">
-																			 <div class="card">
-																					<div class="card-header" id="heading-detail">
-																						 <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-detail"
-																									aria-expanded="true"
-																									aria-controls="collapse-detail">
-																								<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Event Details</h6>
-																						 </div>
+																 </section>
+																 <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-date">
+																		<div class="card">
+																			 <div class="card-header" id="heading-date">
+																					<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-date"
+																							 aria-expanded="true"
+																							 aria-controls="collapse-date">
+																						 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Date Details</h6>
 																					</div>
-																					<div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
-																						 <div class="card-body">
-																								<div class="row form-group form-group-sm">
-																									 <div class="col-md-6">
-																											<label>Event Name <span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ ucfirst($event->name_en) }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append ">
-																				<span class="input-group-text">
-																			 		<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																						<input data-step="step-1" name="check[firstname]" value="Akshay" type="checkbox">
-																						<span></span>
-																				 	</label>
-																				</span>
-																												 </div>
-																											</div>
-																									 </div>
-																									 <div class="col-md-6">
-																											<label>Event Name (AR) <span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ ucfirst($event->name_ar) }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="event_name" value="Akshay" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
+																			 </div>
+																			 <div id="collapse-date" class="collapse show" aria-labelledby="heading-date" data-parent="#accordion-date">
+																					<div class="card-body">
+																						 <div class="row form-group form-group-sm">
+																								<div class="col-3">
+																									 <label>Date Start<span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ $event->issued_date }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="chec" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
 																											</div>
 																									 </div>
 																								</div>
-																								<div class="row form-group form-group-sm">
-																									 <div class="col-md-6">
-																											<label>Event Type <span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ ucfirst($event->type->name_en) }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="check[firstname]" value="Akshay" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
+																								<div class="col-3">
+																									 <label>Date End<span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ $event->expired_date }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="chec" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
+																											</div>
+																									 </div>
+																								</div>
+																								<div class="col-3">
+																									 <label>Time Start<span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ $event->time_start }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="chec" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
+																											</div>
+																									 </div>
+																								</div>
+																								<div class="col-3">
+																									 <label>Time Start<span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ $event->time_end }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="chec" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
 																											</div>
 																									 </div>
 																								</div>
 																						 </div>
 																					</div>
 																			 </div>
-																		</section>
-																		<section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-date">
-																			 <div class="card">
-																					<div class="card-header" id="heading-date">
-																						 <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-date"
-																									aria-expanded="true"
-																									aria-controls="collapse-date">
-																								<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Date Details</h6>
-																						 </div>
+																		</div>
+																 </section>
+																 <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
+																		<div class="card">
+																			 <div class="card-header" id="heading-address">
+																					<div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
+																							 aria-expanded="true" aria-controls="collapse-address">
+																						 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Location Details</h6>
 																					</div>
-																					<div id="collapse-date" class="collapse show" aria-labelledby="heading-date" data-parent="#accordion-date">
-																						 <div class="card-body">
-																								<div class="row form-group form-group-sm">
-																									 <div class="col-3">
-																											<label>Date Start<span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ $event->issued_date }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="chec" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
+																			 </div>
+																			 <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
+																					<div class="card-body">
+																						 <div class="row form-group form-group-sm">
+																								<div class="col-6">
+																									 <label>Venue<span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ ucfirst($event->venue_en) }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="chec" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
 																											</div>
 																									 </div>
-																									 <div class="col-3">
-																											<label>Date End<span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ $event->expired_date }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="chec" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
+																								</div>
+																								<div class="col-6">
+																									 <label>Venue (AR)<span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ ucfirst($event->venue_ar) }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
 																											</div>
 																									 </div>
-																									 <div class="col-3">
-																											<label>Time Start<span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ $event->time_start }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="chec" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
+																								</div>
+																						 </div>
+																						 <div class="row form-group form-group-sm">
+																								<div class="col-3">
+																									 <label>Address<span class="text-danger">*</span></label>
+																									 <div class="input-group">
+																											<input value="{{ ucfirst($event->address) }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="chec" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
 																											</div>
 																									 </div>
-																									 <div class="col-3">
-																											<label>Time Start<span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ $event->time_end }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="chec" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
+																								</div>
+																								<div class="col-3">
+																									 <label>Area</label>
+																									 <div class="input-group">
+																											<input value="{{ ucfirst($event->area->area_en) }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="chec" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
+																											</div>
+																									 </div>
+																								</div>
+																								<div class="col-3">
+																									 <label>Emirate</label>
+																									 <div class="input-group">
+																											<input value="{{ ucfirst($event->emirate->name_en) }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="chec" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
+																											</div>
+																									 </div>
+																								</div>
+																								<div class="col-3">
+																									 <label>Country</label>
+																									 <div class="input-group">
+																											<input value="{{ ucfirst($event->country->name_en) }}" readonly="readonly" type="text" class="form-control">
+																											<div class="input-group-append">
+																												 <span class="input-group-text">
+																														<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																															 <input data-step="step-1" name="chec" type="checkbox">
+																															 <span></span>
+																														</label>
+																												 </span>
 																											</div>
 																									 </div>
 																								</div>
 																						 </div>
 																					</div>
 																			 </div>
-																		</section>
-																		<section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
-																			 <div class="card">
-																					<div class="card-header" id="heading-address">
-																						 <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address" aria-expanded="true"
-																									aria-controls="collapse-address">
-																								<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Location Details</h6>
-																						 </div>
-																					</div>
-																					<div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
-																						 <div class="card-body">
-																								<div class="row form-group form-group-sm">
-																									 <div class="col-6">
-																											<label>Venue<span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ ucfirst($event->venue_en) }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="chec" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
-																											</div>
-																									 </div>
-																									 <div class="col-6">
-																											<label>Venue (AR)<span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ ucfirst($event->venue_ar) }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
-																											</div>
-																									 </div>
-																								</div>
-																								<div class="row form-group form-group-sm">
-																									 <div class="col-3">
-																											<label>Address<span class="text-danger">*</span></label>
-																											<div class="input-group">
-																												 <input value="{{ ucfirst($event->address) }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="chec" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
-																											</div>
-																									 </div>
-																									 <div class="col-3">
-																											<label>Area</label>
-																											<div class="input-group">
-																												 <input value="{{ ucfirst($event->area->area_en) }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="chec" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
-																											</div>
-																									 </div>
-																									 <div class="col-3">
-																											<label>Emirate</label>
-																											<div class="input-group">
-																												 <input value="{{ ucfirst($event->emirate->name_en) }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="chec" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
-																											</div>
-																									 </div>
-																									 <div class="col-3">
-																											<label>Country</label>
-																											<div class="input-group">
-																												 <input value="{{ ucfirst($event->country->name_en) }}" readonly="readonly" type="text" class="form-control">
-																												 <div class="input-group-append">
-																									<span class="input-group-text">
-																										 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																												<input data-step="step-1" name="chec" type="checkbox">
-																												<span></span>
-																										 </label>
-																									</span>
-																												 </div>
-																											</div>
-																									 </div>
-																								</div>
-																						 </div>
-																					</div>
-																			 </div>
-																		</section>
-																		<section class=" kt-margin-t-10">
-																			 <div class="col-md-12">
-																					<button type="button" data-target="#event-action-modal" data-toggle="modal" name="status" value="approved"
-																									class="btn btn-sm btn-warning btn-elevate kt-font-transform-u btn-wide">Event Approval
-																					</button>
-																					{{--																					<button type="button" name="status" value="need approval" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">Need Approval</button>--}}
-																					<button type="submit" name="status" value="rejected"
-																									class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u btn-wide">Reject
-																					</button>
-																			 </div>
-																		</section>
-																 </div>
-															</section>
-													 </form>
+																		</div>
+																 </section>
+															</div>
+													 </section>
 												</div>
 										 </div>
 									</div>
@@ -440,13 +423,12 @@
 												</div>
 										 </div>
 									</div>
-							 </section>
+							 </form>
 						</div>
 				 </div>
 			</div>
-	 </div>
+	 </section>
 	 @include('admin.event.includes.existing-event-modal')
-	 @include('admin.event.includes.need-approval-modal')
 @stop
 @section('script')
 	 <script>
@@ -605,7 +587,25 @@
        calendar.render();
        updateLock();
        eventDetails();
+       wizard();
      });
+     
+     function wizard() {
+       $(document).on('change','input[type=checkbox]', function(){
+				if($(this).is(':checked')){
+					$(this).parents('.input-group').find('input[type=text]').addClass('is-valid').removeClass('is-invalid');
+					$(this).parents('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
+				}
+				else{
+					$(this).parents('.input-group').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
+					$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
+				}
+			});
+			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
+			 wizard.on("beforeNext", function(wizardObj) {
+			 
+			 });
+     }
 
      function eventDetails() {
        $('form button').click(function (e) {

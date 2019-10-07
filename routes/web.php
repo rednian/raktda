@@ -86,6 +86,15 @@ Route::middleware(['admin', 'auth'])->group(function(){
 //	Artist permit
 	Route::get('/settings', 'Admin\SettingController@index')->name('admin.setting.index');
 	Route::get('/settings/profession/datatable', 'Admin\ProfessionController@datatable')->name('admin.setting.profession.datatable');
+
+	//Event Type
+	 Route::get('/settings/event/datatable', 'Admin\EventTypeController@datatable')->name('admin.setting.event.datatable');
+	 Route::get('/settings/event/create', 'Admin\EventTypeController@create')->name('admin.setting.event.create');
+
+	 //Event Requirement
+	 Route::get('/settings/event/requirement/datatable', 'Admin\EventRequirementController@datatable')->name('admin.setting.event.requirement.datatable');
+
+
     //Permit Duration
     Route::resource('/settings/permit_duration', 'PermitDurationController');
 
