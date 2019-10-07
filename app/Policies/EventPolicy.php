@@ -31,15 +31,15 @@ class EventPolicy
      */
     public function view(User $user, Event $event)
     {
-    	dd($event->lock);
-    	if($event->lock->addMinutes(5) <= Carbon::now()){
+    	return true;
+    	if($event->lock > Carbon::now()->addMinutes(5)){
     		return false;
       }
     	else{
     		return true;
-    		if ($user->user_id == $event->last_check_by ){
-
-	      }
+//    		if ($user->user_id == $event->last_check_by ){
+//
+//	      }
       }
 
     }

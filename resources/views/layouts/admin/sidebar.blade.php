@@ -65,9 +65,9 @@
                        <span class="kt-menu__link-text">USER MANAGEMENT</span>
                    </a>
                </li>
-               <li class="kt-menu__item">
-                   <a href="javascript:void()" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">SETTINGS</span>
+               <li class="kt-menu__item {{ Request::is('settings*') ? 'kt-menu__item--active': '' }}">
+                   <a href="{{ route('admin.setting.index') }}" class="kt-menu__link ">
+                       <span class="kt-menu__link-text kt-font-transform-u">SYSTEM SETTINGS</span>
                    </a>
                </li>
            </ul>

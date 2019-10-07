@@ -37,18 +37,16 @@ class User extends Authenticatable implements Auditable
         'password', 'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected $casts = ['email_verified_at' => 'datetime',];
+
+    public  function company()
+    {
+    	return $this->belongsTo(Company::class, 'EmpClientId', 'company_id');
+    }
 
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'EmpClientId', 'employee_id');
-    }
-
-    public function isAdmin()
-    {
-        return $this->type == 1 ? true : false;
     }
 
     public function roles()

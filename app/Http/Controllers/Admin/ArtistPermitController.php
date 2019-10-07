@@ -9,20 +9,11 @@ use CountryState;
 use App\Artist;
 use App\Permit;
 use App\Roles;
-use App\Company;
 use App\ArtistPermit;
-use App\Procedure;
 use App\ApproverProcedure;
-use App\PermitComment;
-use App\ArtistPermitDocument;
 use App\ArtistPermitComment;
-use function foo\func;
 use Illuminate\Http\Request;
-use App\ArtistPermitCheck;
-use App\ArtistPermitChecklist;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
-use Symfony\Component\VarDumper\Cloner\Data;
 
 class ArtistPermitController extends Controller
 {
@@ -266,7 +257,6 @@ class ArtistPermitController extends Controller
             ->rawColumns(['permit_status'])
             ->make(true);
     }
-
 
     public function applicationDataTable(Request $request, Permit $permit)
     {

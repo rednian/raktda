@@ -860,7 +860,6 @@
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function () {
-
 			$('textarea[name=comment]').keyup(function(){
 				if($(this).val().length == 255){
 					$('#memo-error1').removeClass('d-none');
@@ -869,7 +868,6 @@
 					$('#memo-error1').addClass('d-none');
 				}
 			});
-
 			checkDisapprove();
 
 			var form = $('form#kt_form');

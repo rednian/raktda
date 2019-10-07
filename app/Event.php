@@ -18,40 +18,15 @@ class Event extends Model
 		 'company_id', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock'
 		 ];
 
+	public function comment()
+	{
+		return $this->hasMany(EventApprover::class, 'event_id');
+	}
+
 	public function requirement()
 	{
 		return $this->hasMany(EventRequirement::class, 'event_id');
 	}
-
-	public function getExpiredDateAttribute($date)
-	{
-		if(!$date){ return null; }
-		return Carbon::parse($date)->format('d-M-Y');
-	}
-
-//	public function getLockAttribute($date)
-//	{
-//		if(!$date){ return null; } return $date;
-//	}
-
-	public function getIssuedDateAttribute($date)
-	{
-		if(!$date){ return null; }
-		return Carbon::parse($date)->format('d-M-Y');
-	}
-
-	public function getTimeStartAttribute($date)
-	{
-		if(!$date){ return null; }
-		return Carbon::parse($date)->format('h:m a');
-	}
-
-	public function getTimeEndAttribute($date)
-	{
-		if(!$date){ return null; }
-		return Carbon::parse($date)->format('h:m a');
-	}
-
 
 	public function company()
 	{
@@ -77,4 +52,29 @@ class Event extends Model
 	{
 		return $this->belongsTo(EventType::class, 'event_type_id');
 	}
+
+	public function getExpiredDateAttribute($date)
+	{
+		if(!$date){ return null; }
+		return Carbon::parse($date)->format('d-M-Y');
+	}
+
+	public function getIssuedDateAttribute($date)
+	{
+		if(!$date){ return null; }
+		return Carbon::parse($date)->format('d-M-Y');
+	}
+
+	public function getTimeStartAttribute($date)
+	{
+		if(!$date){ return null; }
+		return Carbon::parse($date)->format('h:m a');
+	}
+
+	public function getTimeEndAttribute($date)
+	{
+		if(!$date){ return null; }
+		return Carbon::parse($date)->format('h:m a');
+	}
+
 }

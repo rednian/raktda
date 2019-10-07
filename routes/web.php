@@ -23,6 +23,7 @@ Route::middleware(['admin', 'auth'])->group(function(){
 	Route::get('/event/{event}/application','Admin\EventController@application')->name('admin.event.application');
 	Route::get('/event/{event}','Admin\EventController@show')->name('admin.event.show');
 	Route::get('/event/{event}/lock','Admin\EventController@updateLock')->name('admin.event.lock');
+	Route::post('/event/{event}','Admin\EventController@checkapplication')->name('admin.event.checkapplication');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist
@@ -81,7 +82,10 @@ Route::middleware(['admin', 'auth'])->group(function(){
   //---------------------------------------------------------------------------------------------------------------
   // Settings
   //---------------------------------------------------------------------------------------------------------------
-  
+
+//	Artist permit
+	Route::get('/settings', 'Admin\SettingController@index')->name('admin.setting.index');
+	Route::get('/settings/profession/datatable', 'Admin\ProfessionController@datatable')->name('admin.setting.profession.datatable');
     //Permit Duration
     Route::resource('/settings/permit_duration', 'PermitDurationController');
 

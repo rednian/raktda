@@ -17,6 +17,27 @@ class EventController extends Controller
 		return view('admin.event.index', ['page_title'=>'Event Permit']);
 	}
 
+	public function checkApplication(Request $request, Event $event)
+	{
+		$user = Auth::user();
+		$request['user_id'] = $user->user_id;
+		$request['role_id'] =$user->roles()->first()->role_id;
+		$status = null;
+		if ($request->step == '1'){
+			if($request->status == 'rejected' || $request->status == 'approved'){
+				$status = $request->status;
+			}
+			else{
+
+//				$status =
+			}
+				$event->update(['status', $request->status]);
+			$request['step'] = 'Event Information';
+			if($request->comment){ $event->comment()->create($request->all()); }
+
+		}
+	}
+
 	public function updateLock(Request $request, Event $event)
 	{
 		if($request->ajax()){
@@ -68,6 +89,7 @@ class EventController extends Controller
 				 ->whereIn('status', $request->status)
 				 ->orderBy('updated_at', 'desc');
 
+
 			 $totalRecords = $events->count();
          $events = $events->offset($start)->limit($length);
 
@@ -77,6 +99,9 @@ class EventController extends Controller
 				 })
 				 ->addColumn('event_name', function($event) use ($user){
 				 	return ucwords($event->name_en);
+				 })
+				 ->addColumn('type', function($e){
+				 	return null;
 				 })
 				 ->editColumn('created_at', function($event){
 				 	return $event->created_at->format('d-M-Y h:m a');
