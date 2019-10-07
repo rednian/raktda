@@ -167,15 +167,15 @@ class DraftsController extends Controller
                     'artist_permit_status' => $pd->artist_permit_status
                 ]);
 
-                $permit_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('document_name');
+                $permit_doc_details = \App\ArtistPermitDocument::where('artist_permit_id', $pd->artist_permit_id)->orderBy('created_at', 'desc')->get()->unique('requirement_id');
 
-                foreach ($pd->artistPermitDocument as $ap) {
+                foreach ($permit_doc_details as $ap) {
                     ArtistTempDocument::create([
                         'status' => 2,
                         'issued_date' => $ap->issued_date,
                         'expired_date' => $ap->expired_date,
                         'path' => $ap->path,
-                        'document_name' => $ap->document_name,
+                        'requirement_id' => $ap->requirement_id,
                         'artist_permit_id' => $ap->artist_permit_id,
                         'permit_id' => $pd->permit_id,
                         'temp_data_id' => $artist_temp->id,

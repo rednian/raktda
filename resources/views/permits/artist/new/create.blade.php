@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-
+@section('title', 'Add New Permit - Smart Government Rak')
 @section('content')
 
 {{-- {{dd(session()->all())}} --}}

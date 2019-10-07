@@ -65,13 +65,13 @@
                             <tr>
                                 <td class="text-left">{{$ap->artist['firstname_en'] .' '.$ap->lastname_en }}</td>
                                 <td class="text-left">
-                                    {{$ap->permitType['name_en']}}
+                                    {{$ap->profession['name_en']}}
                                 </td>
                                 <td class="text-right">
-                                    {{$ap->permitType['amount']}}
+                                    {{$ap->profession['amount']}}
                                     @php
-                                    $fee+=$ap->permitType['amount'];
-                                    $vat = $ap->permitType['amount'] * 0.05;
+                                    $fee+=$ap->profession['amount'];
+                                    $vat = $ap->profession['amount'] * 0.05;
                                     $vat_t+= $vat;
                                     @endphp
                                 </td>
@@ -82,7 +82,7 @@
                                     {{$vat}}
                                 </td>
                                 <td class="text-right">
-                                    {{$ap->permitType['amount'] + $vat}}
+                                    {{$ap->profession['amount'] + $vat}}
                                 </td>
                             </tr>
                             @endif
@@ -111,12 +111,15 @@
                 </div>
 
 
+                <form action="{{route('company.payment', $permit_details->permit_id)}}" method="POST">
+                    @csrf
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
+                            id="pay_btn">PAY</button>
+                    </div>
 
-                <div class="d-flex justify-content-end">
-                    <a href="{{url('company/pay_fee/'.$permit_details->permit_id)}}">
-                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u">PAY</button>
-                    </a>
-                </div>
+
+                </form>
 
             </div>
         </div>
@@ -124,15 +127,5 @@
 </div>
 
 
-
-@endsection
-
-
-@section('script')
-
-<script>
-
-
-</script>
 
 @endsection

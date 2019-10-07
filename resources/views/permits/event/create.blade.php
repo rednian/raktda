@@ -130,6 +130,7 @@
 
 
                     <form action="{{route('event.store')}}" method="POST">
+
                         @csrf
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first">
@@ -207,8 +208,10 @@
                                                                 <input type="text"
                                                                     class="form-control form-control-sm {{$errors->has('issued_date') ? 'is-invalid' : ''}}"
                                                                     name="issued_date" id="issued_date"
+
                                                                     placeholder="From Date"
                                                                     value="{{old('issued_date')}}">
+
                                                             </div>
                                                         </div>
 
@@ -228,6 +231,7 @@
                                                                     value="{{date('h:i a')}}" name="time_start"
                                                                     id="time_start" type="text"
                                                                     value="{{old('time_start')}}" />
+
                                                             </div>
 
                                                         </div>
@@ -239,8 +243,10 @@
                                                                     )</small></label>
                                                             <input type="text"
                                                                 class="form-control form-control-sm {{$errors->has('venue_en') ? 'is-invalid' : ''}}"
+
                                                                 name="venue_en" id="venue_en" placeholder="Venue"
                                                                 value="{{old('venue_en')}}">
+
                                                         </div>
 
 
@@ -258,8 +264,10 @@
                                                                 <input type="text"
                                                                     class="form-control form-control-sm {{$errors->has('expired_date') ? 'is-invalid' : ''}}"
                                                                     name="expired_date" id="expired_date"
+
                                                                     placeholder="To Date"
                                                                     value={{old('exprired_date')}}>
+
                                                             </div>
                                                         </div>
 
@@ -277,8 +285,10 @@
                                                                 <input
                                                                     class="form-control form-control-sm {{$errors->has('time_end') ? 'is-invalid' : ''}}"
                                                                     value="{{date('h:i a')}}" name="time_end"
+
                                                                     id="time_end" type="text"
                                                                     value={{old('time_end')}} />
+
                                                             </div>
 
                                                         </div>
@@ -296,6 +306,7 @@
                                                                 name="venue_ar" id="venue_ar" placeholder="Venue"
                                                                 value={{old('venue_ar')}}>
                                                         </div>
+
 
 
                                                     </div>
@@ -389,7 +400,9 @@
                                         </div>
 
 
+
                                     </div>
+
 
                                 </div>
                             </div>
@@ -403,12 +416,18 @@
 
 
 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                         <div class="kt-form__actions">
                             <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                 data-ktwizard-type="action-prev" id="prev_btn">
                                 Previous
                             </div>
 
+                                    </div>
 
                             <a href="{{url('company/event')}}">
                                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
@@ -451,6 +470,7 @@
                 </div>
 
                 </form>
+
 
 
             </div>
@@ -575,8 +595,10 @@
                     $('#back_btn').css('display', 'none');
                     $('#submit_btn').css('display', 'block');
                 }
+
             }
         });
+
 
 
         $('#prev_btn').click(function () {
@@ -627,6 +649,7 @@
                     $('#area_id').append('<option value=" ">Select</option>');
                     for (let i = 0; i < result.length; i++) {
                         $('#area_id').append('<option value="' + result[i].id + '">' + result[i].area_en + '</option>');
+
                     }
 
                 }
@@ -635,6 +658,42 @@
         };
 
 
+
+
+        $('#submit_btn').click((e) => {
+
+              /*  var from_date  = $('#from_date').val();
+                var to_date = $('#to_date').val();
+                var location = $('#location').val();
+
+                var permit_id = $('#permit_id').val();
+
+                var permitD = {
+                    from : from_date,
+                    to: to_date,
+                    location: location
+                }
+                // $.ajax({
+                //     url: "{{route('company.add_artist_to_draft')}}",
+                //     type: "POST",
+                //     data: {
+                //         artistD: ad,
+                //         documentD: dd,
+                //         permitD: permitD,
+                //         permit_id: permit_id
+                //     },
+                //     success: function (result) {
+                //         if(result.message[0]){
+                //             localStorage.clear();
+                //             window.location.href = "{{url('company/add_new_permit')}}"+'/'+ permit_id;
+                //         }
+                //         console.log(result);
+                //         // $('#pleaseWaitDialog').modal('hide');
+                //     }
+                // });
+            }*/
+
+        });
 
 
 
