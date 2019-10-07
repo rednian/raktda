@@ -19,12 +19,18 @@
                     Event Permits</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">
+
+                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">Permit Calendar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_4">
+
                     Event Permit Drafts</a>
             </li>
             <li class="nav-item"
                 style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                <a href="{{ url('company/eventpermits/create')}}">
+                <a href="{{ route('event.create')}}">
+
                     <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
                         Add New Permit
                     </button>
@@ -74,13 +80,22 @@
                 </table>
             </div>
 
+
             <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
+                <div class="kt-portlet__body">
+                    <div id="kt_calendar"></div>
+
+                </div>
+            </div>
+
+            <div class="tab-pane" id="kt_tabs_1_4" role="tabpanel">
                 <table class="table table-striped table-borderless " id="drafts-events-table">
                     <thead class="thead-dark">
                         <tr>
                             <th>From Date</th>
                             <th>To Date</th>
                             <th>Venue</th>
+                            <th>Venue-Ar</th>
                             <th>Applied On</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -93,25 +108,27 @@
 
         </div>
 
+
         <!--end: Datatable -->
 
 
 
         <!--begin::Modal-->
         <div class="modal fade" id="cancel_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+
             aria-hidden="true">
             <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
+
                         <h5 class="modal-title" id="exampleModalLabel">Cancel Permit</h5>
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
-
                     <div class="modal-body">
-                        <form action="{{route('company.eventpermits.cancel')}}" id="cancel_permit_form" method="post"
-                            novalidate>
-                            {{csrf_field()}}
+                        <form action="{{route('event.cancel')}}" id="cancel_permit_form" method="POST" novalidate>
+                            @csrf
                             <label>Are you sure to Cancel this Permit of Ref No. <span class="text--maroon"
                                     id="cancel_permit_number"></span>
                                 ?</label>
@@ -129,24 +146,29 @@
         <!--end::Modal-->
 
         <!--begin::Modal-->
+
         <div class="modal fade" id="cancelled_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+
             aria-hidden="true">
             <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
+
                         <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
+
                         <p id="cancelled_reason" class="text--maroon kt-font-bold kt-font-transform-i"></p>
+
                     </div>
                 </div>
             </div>
         </div>
 
         <!--end::Modal-->
-
         <!--begin::Modal-->
         <div class="modal fade" id="rejected_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -166,6 +188,9 @@
 
         <!--end::Modal-->
 
+        <input type="hidden" id="valid_events" value="{{json_encode($events)}}">
+
+
 
 
 
@@ -174,7 +199,13 @@
     @endsection
 
     @section('script')
+
+
     <script>
+        var events = JSON.parse($('#valid_events').val());
+
+        console.log(events);
+
         $(document).ready(function(){
 
         $.ajaxSetup({
@@ -185,19 +216,18 @@
 
         var table1 = $('#applied-events-table').DataTable({
             responsive: true,
-            processing: false,
+
+            processing: true,
             serverSide: true,
             searching: true,
-            // pageLength: 5,
-            order:[[5,'desc']],
-            // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            ajax:'{{route("company.fetch_applied_events")}}',
+            order:[[4,'desc']],
+            ajax:'{{route("company.event.fetch_applied")}}',
+
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'venue_en', name: 'venue_en' },
-                // { data: 'type.name_en', name: 'type.name_en' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
@@ -205,7 +235,8 @@
             ],
             columnDefs: [
                 {
-                    targets:2,
+                    targets:0,
+
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
 						return `<span class="kt-font-bold">${data}</span>`;
@@ -235,85 +266,54 @@
             }
         });
 
-/*
+
 
         var table2 = $('#existing-events-table').DataTable({
             responsive: true,
-            // beforeSend: function (request) {
-            //     request.setRequestHeader("token", token);
-            // },
-            processing: false,
+            processing: true,
             serverSide: true,
             searching: true,
-            // pageLength: 5,
             deferRender: true,
-            // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            order:[[5,'desc']],
-            ajax:'{{route("company.fetch_existing_events")}}',
+            order:[[4,'desc']],
+            ajax:'{{route("company.event.fetch_valid")}}',
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
-                { data: 'permit_number', name: 'permit_number' },
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
-                { data: 'work_location', name: 'work_location' },
-                { data: 'artist_count', name: 'artist_count' },
+                { data: 'venue_en', name: 'venue_en' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
+                { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
-                { data: 'download', name: 'download' },
             ],
             columnDefs: [
                 {
-                    targets:2,
-                    width: '12%',
+                    targets:0,
+                    className: 'dt-body-nowrap dt-head-nowrap',
+
                     render: function(data, type, full, meta) {
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
                 },
-                {
-                    targets:3,
-                    width: '12%',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
+
+
                 {
                     targets:4,
-                    width: '10%',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:5,
-                    width: '10%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:6,
-                    width: '12%',
+                    className:'dt-head-nowrap dt-body-nowrap',
                     render: function(data, type, full, meta) {
                         return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
 					}
                 },
+
+
                 {
-                    targets:1,
-                    width: '12%',
+                    targets:-3,
+                    width: '10%',
                     className: 'text-center',
                     render: function(data, type, full, meta) {
-                        return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:-1,
-                    width: '5%',
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-						return data;
+					return `<span class="kt-font-bold kt-font-transform-c">${data}</span>`;
+
 					}
                 }
             ],
@@ -322,20 +322,20 @@
             }
         });
 
-        var table3 = $('#drafts-artists-table').DataTable({
+        var table3 = $('#drafts-events-table').DataTable({
             responsive: true,
-            processing: false,
+            processing: true,
             serverSide: true,
             searching: true,
-            // pageLength: 5,
             deferRender: true,
-            // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            order:[[3,'desc']],
-            ajax:'{{route("company.fetch_event_drafts")}}',
+            order:[[4,'desc']],
+            ajax:   '{{route("company.event.fetch_draft")}}',
             columns: [
                 { data: 'issued_date', name: 'issued_date' },
                 { data: 'expired_date', name: 'expired_date' },
-                { data: 'work_location', name: 'work_location' },
+                { data: 'venue_en', name: 'venue_en' },
+                { data: 'venue_ar', name: 'venue_ar' },
+
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
@@ -353,7 +353,9 @@
             language: {
                 emptyTable: "No Event Permit Drafts"
             }
-        }); */
+
+        });
+
 
 
     });
@@ -364,14 +366,15 @@
     }
 
     const show_cancelled = (id) => {
+        var url = "{{route('company.event.cancel_reason', ':id')}}";
+        url = url.replace(':id', id);
         $.ajax({
-            url: "{{route('company.show_cancelled')}}",
-            type: 'POST',
-            data: {id:id},
+            url: url,
             success: function(data){
-            //  $("#div1").html(result);
-                // console.log(data);
-                $('#cancelled_reason').html(data[0].cancel_reason);
+                if(data) {
+                    $('#cancelled_reason').html(data);
+                }
+
             }
         });
     }
@@ -388,13 +391,15 @@
 
     const rejected_permit = id => {
         $.ajax({
-            url: "{{url('company/show_rejected')}}"+'/'+id,
+
+            url: "{{url('company/reject_reason')}}"+'/'+id,
             success: function(data){
-                $('#rejected_reason').html(data.comment);
+                $('#rejected_reason').html(data);
             }
         });
     }
 
-
     </script>
+    <script src="{{asset('js/list-view.js')}}"></script>
+
     @endsection

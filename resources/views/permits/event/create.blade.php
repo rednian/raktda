@@ -129,7 +129,8 @@
                     <input type="hidden" id="agreed_value" value="{{old('agreed')}}" />
 
 
-                    <form action="{{url('company/eventpermits')}}" method="POST">
+                    <form action="{{route('event.store')}}" method="POST">
+
                         @csrf
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first">
@@ -190,7 +191,7 @@
                                                             <input type="text"
                                                                 class="form-control form-control-sm {{$errors->has('name_ar') ? 'is-invalid' : ''}}"
                                                                 name="name_ar" id="name_ar" placeholder="Event Name"
-                                                                value="{{old('name_en')}}">
+                                                                value="{{old('name_ar')}}">
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-sm ">
@@ -207,7 +208,10 @@
                                                                 <input type="text"
                                                                     class="form-control form-control-sm {{$errors->has('issued_date') ? 'is-invalid' : ''}}"
                                                                     name="issued_date" id="issued_date"
-                                                                    placeholder="From Date" value="{{old('name_en')}}">
+
+                                                                    placeholder="From Date"
+                                                                    value="{{old('issued_date')}}">
+
                                                             </div>
                                                         </div>
 
@@ -226,7 +230,8 @@
                                                                     class="form-control form-control-sm {{$errors->has('time_start') ? 'is-invalid' : ''}}"
                                                                     value="{{date('h:i a')}}" name="time_start"
                                                                     id="time_start" type="text"
-                                                                    value="{{old('name_en')}}" />
+                                                                    value="{{old('time_start')}}" />
+
                                                             </div>
 
                                                         </div>
@@ -238,7 +243,10 @@
                                                                     )</small></label>
                                                             <input type="text"
                                                                 class="form-control form-control-sm {{$errors->has('venue_en') ? 'is-invalid' : ''}}"
-                                                                name="venue_en" id="venue_en" placeholder="Venue">
+
+                                                                name="venue_en" id="venue_en" placeholder="Venue"
+                                                                value="{{old('venue_en')}}">
+
                                                         </div>
 
 
@@ -256,7 +264,10 @@
                                                                 <input type="text"
                                                                     class="form-control form-control-sm {{$errors->has('expired_date') ? 'is-invalid' : ''}}"
                                                                     name="expired_date" id="expired_date"
-                                                                    placeholder="To Date">
+
+                                                                    placeholder="To Date"
+                                                                    value={{old('exprired_date')}}>
+
                                                             </div>
                                                         </div>
 
@@ -274,7 +285,10 @@
                                                                 <input
                                                                     class="form-control form-control-sm {{$errors->has('time_end') ? 'is-invalid' : ''}}"
                                                                     value="{{date('h:i a')}}" name="time_end"
-                                                                    id="time_end" type="text" />
+
+                                                                    id="time_end" type="text"
+                                                                    value={{old('time_end')}} />
+
                                                             </div>
 
                                                         </div>
@@ -289,7 +303,75 @@
                                                                     )</small></label>
                                                             <input type="text"
                                                                 class="form-control form-control-sm {{$errors->has('venue_ar') ? 'is-invalid' : ''}}"
-                                                                name="venue_ar" id="venue_ar" placeholder="Venue">
+                                                                name="venue_ar" id="venue_ar" placeholder="Venue"
+                                                                value={{old('venue_ar')}}>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card">
+                                            <div class="card-header" id="headingTwo6">
+                                                <div class="card-title collapsed" data-toggle="collapse"
+                                                    data-target="#collapseTwo6" aria-expanded="false"
+                                                    aria-controls="collapseTwo6">
+                                                    <h6 class="kt-font-transform-u">Contact
+                                                        information
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            {{--id="collapseTwo6"--}}
+                                            <div class="collapse show" aria-labelledby="headingTwo6"
+                                                data-parent="#accordionExample6">
+                                                <div class="card-body">
+
+                                                    <div class="row">
+
+
+                                                        <div class="col-md-4 form-group form-group-sm ">
+                                                            <label for="address"
+                                                                class=" col-form-label kt-font-bold text-right">Address
+                                                                <small>( <span class="text-danger">required</span>
+                                                                    )</small></label>
+                                                            <input type="text" class="form-control form-control-sm "
+                                                                name="address" id="address" placeholder="Address"
+                                                                value={{old('address')}}>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-sm ">
+                                                            <label for="emirate_id"
+                                                                class=" col-form-label kt-font-bold text-right">Emirate
+                                                                <small>( optional )</small></label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="emirate_id" id="emirate_id"
+                                                                onchange="getAreas(this.value)">
+                                                                <option value="">Select</option>
+                                                                @foreach($emirates as $em)
+                                                                <option value="{{$em->id}}"
+                                                                    {{$em->id == old('emirate_id') ? 'selected' : ''}}>
+                                                                    {{$em->name_en}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+
+                                                        <div class="col-md-4 form-group form-group-sm ">
+                                                            <label for="area_id"
+                                                                class=" col-form-label kt-font-bold text-right">Area
+                                                                <small>( optional )</small></label>
+                                                            <select class="  form-control form-control-sm "
+                                                                name="area_id" id="area_id">
+                                                                <option value="">Select</option>
+                                                                @foreach($areas as $ar)
+                                                                <option value="{{$ar->id}}"
+                                                                    {{$ar->id == old('area_id') ? 'selected' : ''}}>
+                                                                    {{$ar->area_en}}</option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-sm ">
@@ -310,68 +392,17 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="card">
-                                            <div class="card-header" id="headingTwo6">
-                                                <div class="card-title collapsed" data-toggle="collapse"
-                                                    data-target="#collapseTwo6" aria-expanded="false"
-                                                    aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-transform-u">Contact
-                                                        information
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                            <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
-                                                data-parent="#accordionExample6">
-                                                <div class="card-body">
-
-                                                    <div class="row">
-
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="address"
-                                                                class=" col-form-label kt-font-bold text-right">Address
-                                                                <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="address" id="address" placeholder="Address">
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="emirate_id"
-                                                                class=" col-form-label kt-font-bold text-right">Emirate
-                                                                <small>( optional )</small></label>
-                                                            <select class="  form-control form-control-sm "
-                                                                name="emirate_id" id="emirate_id">
-                                                                <option value="">Select</option>
-
-                                                            </select>
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="area_id"
-                                                                class=" col-form-label kt-font-bold text-right">Area
-                                                                <small>( optional )</small></label>
-                                                            <select class="  form-control form-control-sm "
-                                                                name="area_id" id="area_id">
-                                                                <option value="">Select</option>
-
-                                                            </select>
-                                                        </div>
 
 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
 
 
                                     </div>
+
 
                                 </div>
                             </div>
@@ -385,24 +416,47 @@
 
 
 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                         <div class="kt-form__actions">
                             <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                 data-ktwizard-type="action-prev" id="prev_btn">
                                 Previous
                             </div>
 
+                                    </div>
 
-                            <a href="{{url('company/eventpermits')}}">
+                            <a href="{{url('company/event')}}">
                                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                     id="back_btn">
                                     Back
                                 </div>
                             </a>
 
-                            <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                data-ktwizard-type="action-submit" id="submit_btn">
+                            {{-- <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                data-ktwizard-type="action-submit">
                                 Submit
-                            </button>
+                            </button> --}}
+
+                            <div class="btn-group" role="group" id="submit_btn">
+                                <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    data-ktwizard-type="action-submit">
+                                    Submit
+                                </button>
+                                <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
+                                    <button name="submit"
+                                        class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
+                                        value="finished">Finish &
+                                        Submit</button>
+                                    <button name="submit" class="dropdown-item btn btn-sm btn-secondary"
+                                        value="drafts">Save to Drafts</button>
+                                </div>
+                            </div>
+
 
 
 
@@ -416,6 +470,7 @@
                 </div>
 
                 </form>
+
 
 
             </div>
@@ -533,31 +588,16 @@
             wizard = new KTWizard("kt_wizard_v3");
 
 
-
-            checkForTick();
-
             // checking the next page is artist details
             if (wizard.currentStep == 1) {
-                $('#back_btn').css('display', 'none');
-                $('#submit_btn').css('display', 'block');
-                // stopNext(detailsValidator);
-                // KTUtil.scrollTop();// validating the artist details page
-                // var artist_id = $('#artist_number').val();
-                // if (detailsValidator.form()) {
-                //     $('#submit_btn').css('display', 'block'); // display the submit button
-                //     $('#next_btn').css('display', 'none'); // hide the next button
-                //     $('#addNew_btn').css('display', 'block'); // display the add new artist button
-                //     $('#submit--btn-group').css('display', 'block');
+                if(checkForTick())
+                {
+                    $('#back_btn').css('display', 'none');
+                    $('#submit_btn').css('display', 'block');
+                }
 
-                //     };
-
-                // }
             }
         });
-
-
-
-
 
 
 
@@ -605,16 +645,18 @@
                 url: "{{url('company/fetch_areas')}}" + '/' + city_id,
                 success: function (result) {
                     // console.log(result)
-                    $('#area').empty();
-                    $('#area').append('<option value=" ">Select</option>');
+                    $('#area_id').empty();
+                    $('#area_id').append('<option value=" ">Select</option>');
                     for (let i = 0; i < result.length; i++) {
-                        $('#area').append('<option value="' + result[i].id + '">' + result[i].area_en + '</option>');
+                        $('#area_id').append('<option value="' + result[i].id + '">' + result[i].area_en + '</option>');
+
                     }
 
                 }
             });
 
         };
+
 
 
 

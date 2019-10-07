@@ -50,14 +50,18 @@
                 </li>
 
                 <li
-                    class="kt-menu__item {{ url()->current() == url('company/artist_permits') ? 'kt-menu__item--active' : ''}}">
+
+                    class="kt-menu__item {{ (\Request::is('company/permit/*') || \Request::is('company/permit'))  ? 'kt-menu__item--active' : ''}}">
+
                     <a href="{{url('company/artist_permits')}}" class="kt-menu__link">
                         <span class="kt-menu__link-text">ARTIST PERMIT</span>
                     </a>
                 </li>
                 <li
-                    class="kt-menu__item {{ url()->current() == url('company/eventpermits') ? 'kt-menu__item--active' : ''}}">
-                    <a href="{{url('company/eventpermits')}}" class="kt-menu__link ">
+
+                    class="kt-menu__item {{ (\Request::is('company/event/*') || \Request::is('company/event')) ? 'kt-menu__item--active' : ''}}">
+                    <a href="{{url('company/event')}}" class="kt-menu__link ">
+
                         <span class="kt-menu__link-text">EVENT PERMIT</span>
                     </a>
                 </li>
