@@ -99,4 +99,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('fetch_existing_events', 'Company\EventController@fetch_valid')->name('company.event.fetch_valid');
     Route::get('fetch_event_drafts',  'Company\EventController@fetch_draft')->name('company.event.fetch_draft');
 
+    Route::get('event/fetch_requirements/{id}', 'Company\EventController@fetch_requirements')->name('company.event.get_requirements');
 });

@@ -55,26 +55,75 @@
         }
 
         #license_data,
-        #permit_data {
+        #permit_data,
+        #note_data {
             width: 100%;
             border-collapse: collapse;
             margin: 10px 0;
+        }
+
+        #date_data {
+            margin: 25px 0;
+            font-size: 12px;
+            border-collapse: collapse;
+        }
+
+        #date_data td {
+            padding: 0 25px;
         }
 
         #license_data tr td,
         #license_data tr th,
         #permit_data tr td,
         #permit_data tr th {
-            padding: 5px;
+            /* padding: 5px; */
+            /* text-align: center; */
+        }
+
+
+
+        td {
+            text-align: center;
         }
 
         #license_data tr th,
         #permit_data tr th {
             background: #ccc;
+            padding: 5px;
+        }
+
+        #note_data {
+            font-size: 12px;
+        }
+
+        #note_data th {
+            background: #80262b;
+            color: #fff;
+        }
+
+        #dept_name {
+            line-height: 10px;
+            font-size: 12px;
+        }
+
+        .subhead {
+            width: 15%;
+            font-size: 10px;
+            text-align: right;
+            padding-right: 5px;
         }
 
         .text-center {
             text-align: center;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 10px;
         }
     </style>
 </head>
@@ -106,18 +155,18 @@
         </thead>
         <tbody>
             <tr>
-                <td>Rakia56rz03125353</td>
-                <td>License Number</td>
-                <td>Rakia56rz03125353</td>
-                <td>License Number</td>
+                <td>RAKIA56RZ03125353</td>
+                <td class="subhead">رقم الرخصة <br />License Number</td>
+                <td>الحمرا مارينا <br />Al Hamra Marina LLC</td>
+                <td class="subhead">اسم المؤسسة <br />Name of Establishment</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-center">25/03/2019</td>
-                <td>Expiry</td>
+                <td colspan="3">25/03/2019</td>
+                <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-center">Benny Johnson Kurein</td>
-                <td>Licese owner</td>
+                <td colspan="3">بيني جونسون كورين <br /> Benny Johnson Kurein</td>
+                <td class="subhead">صاحب الترخيص <br />License owner</td>
             </tr>
         </tbody>
     </table>
@@ -131,39 +180,78 @@
         </thead>
         <tbody>
             <tr>
-                <td colspan="2" class="text-center">Health and fitness Event</td>
-                <td>License Number</td>
-                <td>Rakia56rz03125353</td>
+                <td colspan="2">Health and fitness Event</td>
+                <td>الصحة واللياقة الحدث</td>
+                <td class="subhead">اسم الحدث <br />Event Name</td>
             </tr>
             <tr>
-                <td colspan="2" class="text-center">Sport Event without Tickets</td>
-                <td>Expiry</td>
-                <td>Rakia56rz03125353</td>
+                <td colspan="2">Sport Event without Tickets</td>
+                <td>حدث رياضي بدون تذاكر</td>
+                <td class="subhead">نوع تصريح <br />Permit Type</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-center">Benny Johnson Kurein</td>
-                <td>Licese owner</td>
+                <td colspan="3">TLQA/001/2019</td>
+                <td class="subhead">تصريح لا <br />Permit No</td>
             </tr>
             <tr>
-                <td colspan="2" class="text-center">Sport Event without Tickets</td>
-                <td>Expiry</td>
-                <td>Rakia56rz03125353</td>
+                <td colspan="2">One Day</td>
+                <td>انقضاء</td>
+                <td class="subhead">فترة التصريح <br />Permit Period</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-center">Benny Johnson Kurein</td>
-                <td>Licese owner</td>
+                <td colspan="3">18/01/2019</td>
+                <td class="subhead">تاريخ التصريح<br /> Permit Date</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-center">Benny Johnson Kurein</td>
-                <td>Licese owner</td>
+                <td colspan="3">18/01/2019</td>
+                <td class="subhead">تاريخ انتهاء الصلاحية <br /> Permit Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="2" class="text-center">Sport Event without Tickets</td>
-                <td>Expiry</td>
-                <td>Rakia56rz03125353</td>
+                <td colspan="2">Al Hamra Marina</td>
+                <td>انقضاء</td>
+                <td class="subhead">موقعك <br />Location</td>
             </tr>
         </tbody>
     </table>
+
+    <table id="note_data" border="1">
+        <thead>
+            <tr>
+                <th>Note</th>
+                <th>ملحوظة</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Fitness Classes Shall be done by Professional trainers.</td>
+                <td>يجب أن يتم فصول اللياقة البدنية بواسطة مدربين محترفين</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="date_data" border="1">
+        <tr>
+            <td>Printing Date: </td>
+            <td>{{date('d/m/Y')}}</td>
+        </tr>
+    </table>
+
+    <div id="dept_name">
+        <h2>إدارة التراخيص السياحية * ضمان الجودة</h2>
+        <h3>Department of Tourism Licensing & Quality Assurance</h3>
+    </div>
+
+    <footer>
+        <div>
+            Department of Tourism Licensing & Quality Assurance - RAKTDA - Al Marjan Island - RAK - UAE, PO BOX 29798
+        </div>
+        <div>
+            T +97172338998, F +97172338118
+        </div>
+        <div>
+            TLQA@raktda.com &emsp; www.raktda.com
+        </div>
+    </footer>
 </body>
 
 </html>
