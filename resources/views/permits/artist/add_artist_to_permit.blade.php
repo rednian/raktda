@@ -839,7 +839,7 @@
                 showFileSize: false,
                 showFileCounter: false,
                 previewHeight: '200px',
-                previewWidth: '200px',
+                previewWidth: "auto",
                 abortStr: '',
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',

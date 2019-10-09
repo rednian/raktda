@@ -29,13 +29,13 @@ function is($model, $fieldname){
                   return true;
                 }
              }
-              
+
         }
-       
+
     }
 
     return false;
-   
+
 }
 
 function getDocumentType($filename = null){
@@ -98,8 +98,3 @@ function badgeName($name){
     return '<div class="kt-badge kt-badge--md kt-badge--'.$class.'">'.$pro.'</div>';
 
 }
-
-
-
-
- ?>

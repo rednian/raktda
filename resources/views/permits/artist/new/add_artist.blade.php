@@ -767,11 +767,8 @@
                                     if (data) {
                                         let id = obj[0].id;
                                         let number = id.split("_");
-<<<<<<< Updated upstream
-=======
                                         let issue_datetime = new Date(data['issued_date']);
                                         let exp_datetime = new Date(data['expired_date']);
->>>>>>> Stashed changes
                                         let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
 
@@ -813,7 +810,7 @@
                 showFileCounter: false,
                 abortStr: '',
                 previewHeight: '200px',
-                previewWidth: '200px',
+                previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
                 showPreview: true,
@@ -1202,7 +1199,6 @@
                     },
                     success: function (data) {
 
-                        // console.log(data);
                         $('#artist_exists').modal({
                                 backdrop: 'static',
                                 keyboard: false,

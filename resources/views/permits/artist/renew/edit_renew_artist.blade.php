@@ -874,7 +874,7 @@
                 showFileSize: false,
                 showFileCounter: false,
                 previewHeight: '200px',
-                previewWidth: '200px',
+                previewWidth: "auto",
                 abortStr: '',
                 showPreview:true,
                 showDelete: true,

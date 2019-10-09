@@ -1719,9 +1719,13 @@ class MainController extends Controller
         $data['company_details'] = Company::find(Auth::user()->EmpClientId);
         $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'artist.Nationality')->get();
         $data['permit_details'] = $permit;
-        $pdf = PDF::loadView('permits.artist.permit_print', $data);
-        return $pdf->stream('permit.pdf');
-        // $pdf = PDF::loadView('permits.artist.permit_print', $data);
-        // return $pdf->stream('permit.pdf');
+
+        $permitNumber = $permit->permit_number;
+
+        $pdf = PDF::loadView('permits.artist.permit_print', $data, [], [
+            'title' => 'Artist Permit',
+            'default_font_size' => 10
+        ]);
+        return $pdf->stream('Permit-' . $permitNumber . '.pdf');
     }
 }

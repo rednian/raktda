@@ -1084,8 +1084,7 @@
 
                 multiple: false,
                 previewHeight: '200px',
-                previewWidth: '200px',
-
+                previewWidth: "auto",
                 downloadStr: `<i class="la la-download"></i>`,
 
                 deleteStr: `<i class="la la-trash"></i>`,
