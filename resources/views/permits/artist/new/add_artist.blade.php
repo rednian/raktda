@@ -38,7 +38,6 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>03</span> Upload Documents
-                                    <Docs></Docs>
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -160,8 +159,9 @@
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
-                                <form id="artist_details">
+                                <form id="artist_details" novalidate>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -177,245 +177,390 @@
                                                     <input type="hidden" id="artist_id" />
                                                     <input type="hidden" id="is_old_artist" value="1" />
                                                     <div class="row">
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="artist_number"
-                                                                class=" col-form-label kt-font-bold text-right">Person
-                                                                Code</label><span id="changeArtistLabel"
-                                                                class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                                onclick="removeSelectedArtist()">Change </span>
-                                                            <input type="hidden" id="artist_number" value={{1}}>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="code" id="code" placeholder="Person Code">
-                                                        </div>
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="fname_en"
-                                                                class=" col-form-label kt-font-bold text-right">First
-                                                                Name <small>( <span class="text-danger">required
-                                                                    </span>)</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="fname_en" id="fname_en" placeholder="First Name">
-                                                        </div>
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="fname_en"
-                                                                class=" col-form-label kt-font-bold text-right">Last
-                                                                Name <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="lname_en" id="lname_en" placeholder="Last Name">
-                                                        </div>
-                                                        <input type="hidden" id="artist_permit_num">
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="profession"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                Profession <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <select class="form-control form-control-sm "
-                                                                name="profession" id="profession"
-                                                                placeholder="Profession">
-                                                                <option value="">Select</option>
-                                                                @foreach ($profession as $pt)
-                                                                <option value="{{$pt->profession_id}}">
-                                                                    {{ucwords($pt->name_en)}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="fname_ar"
-                                                                class=" col-form-label kt-font-bold text-right">First
-                                                                Name - Ar <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text"
-                                                                class="form-control form-control-sm text-right "
-                                                                name="fname_ar" id="fname_ar"
-                                                                placeholder="First Name in Arabic   ">
-                                                        </div>
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="lname_ar"
-                                                                class=" col-form-label kt-font-bold text-right">Last
-                                                                Name - Ar <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text"
-                                                                class="form-control form-control-sm text-right "
-                                                                name="lname_ar" id="lname_ar"
-                                                                placeholder="Last Name in Arabic">
-                                                        </div>
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="nationality"
-                                                                class=" col-form-label kt-font-bold text-right">Nationality
-                                                                <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <select class="form-control form-control-sm "
-                                                                name="nationality" id="nationality">
-                                                                {{--   - class for search in select  --}}
-                                                                <option value="">Select</option>
-                                                                @foreach ($countries as $ct)
-                                                                <option value="{{$ct->country_id}}">
-                                                                    {{$ct->nationality_en}}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="dob"
-                                                                class=" col-form-label kt-font-bold text-right">Birth
-                                                                Date <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                placeholder="DD-MM-YYYY" data-date-end-date="0d"
-                                                                name="dob" id="dob" />
-                                                        </div>
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="dob"
-                                                                class=" col-form-label kt-font-bold text-right">Gender
-                                                                <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <select class=" form-control form-control-sm " name="gender"
-                                                                id="gender">
-                                                                <option value="">Select</option>
-                                                                <option value="1">Male</option>
-                                                                <option value="2">Female</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="profession"
-                                                                class=" col-form-label kt-font-bold text-right">Passport
-                                                                No <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="passport" id="passport"
-                                                                placeholder="Passport Number">
-                                                        </div>
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="pp_expiry"
-                                                                class=" col-form-label kt-font-bold text-right">Passport
-                                                                Expire Date <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text"
-                                                                class="form-control form-control-sm date-picker "
-                                                                placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                                name="pp_expiry" id="pp_expiry" />
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="id_no"
-                                                                class=" col-form-label kt-font-bold text-right">Identification
-                                                                No <small>( optional
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="id_no" id="id_no"
-                                                                placeholder="Identification No.">
-                                                        </div>
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="artist_number"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Person
+                                                                        Code</label><span id="changeArtistLabel"
+                                                                        class="kt-badge  kt-badge--danger kt-badge--inline d-none"
+                                                                        onclick="removeSelectedArtist()">Change </span>
+                                                                    <input type="hidden" id="artist_number" value={{1}}>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm"
+                                                                                name="code" id="code"
+                                                                                placeholder="Person Code">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="fname_en"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">First
+                                                                        Name <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="fname_en" id="fname_en"
+                                                                                placeholder="First Name">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="visa_type"
-                                                                class=" col-form-label kt-font-bold text-right">Visa
-                                                                Type <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <select type="text" class="form-control form-control-sm "
-                                                                name="visa_type" id="visa_type">
-                                                                <option value="">Select</option>
-                                                                @foreach ($visatypes as $vt)
-                                                                <option value={{$vt->id}}>{{$vt->visa_type_en}}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="visa_number"
-                                                                class=" col-form-label kt-font-bold text-right">Visa
-                                                                Number <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="visa_number" id="visa_number"
-                                                                placeholder="Visa Number">
-                                                        </div>
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="visa_number"
-                                                                class=" col-form-label kt-font-bold text-right">Visa
-                                                                Expire Date <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text"
-                                                                class="form-control form-control-sm date-picker "
-                                                                placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                                name="visa_expiry" id="visa_expiry" />
-                                                        </div>
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="fname_en"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Last
+                                                                        Name <span class="text-danger">*</span></label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="lname_en" id="lname_en"
+                                                                                placeholder="Last Name">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="uid_number"
-                                                                class=" col-form-label kt-font-bold text-right">UID
-                                                                <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="uid_number" id="uid_number"
-                                                                placeholder="UID Number">
-                                                        </div>
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="nationality"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Nationality
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <select
+                                                                                class="form-control form-control-sm "
+                                                                                name="nationality" id="nationality">
+                                                                                {{--   - class for search in select  --}}
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($countries as $ct)
+                                                                                <option value="{{$ct->country_id}}">
+                                                                                    {{$ct->nationality_en}}
+                                                                                </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="dob"
-                                                                class=" col-form-label kt-font-bold text-right">UID
-                                                                Expire Date <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text"
-                                                                class="form-control form-control-sm date-picker "
-                                                                placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                                name="uid_expiry" id="uid_expiry" />
-                                                        </div>
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="dob"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Birth
+                                                                        Date <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                placeholder="DD-MM-YYYY"
+                                                                                data-date-end-date="0d" name="dob"
+                                                                                id="dob" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="language"
-                                                                class=" col-form-label kt-font-bold text-right">Languages
-                                                                <small>( optional )</small></label>
-                                                            <select class=" form-control form-control-sm "
-                                                                name="language" id="language">
-                                                                <option value="">Select</option>
-                                                                @foreach ($languages as $lang)
-                                                                <option value={{$lang->id}}>{{$lang->name_en}}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="sp_name"
-                                                                class=" col-form-label kt-font-bold text-right">Sponser
-                                                                Name <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="sp_name" id="sp_name" placeholder="Sponser Name">
-                                                        </div>
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="profession"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Passport
+                                                                        No<span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="passport" id="passport"
+                                                                                placeholder="Passport Number">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="religion"
-                                                                class=" col-form-label kt-font-bold text-right">Religion
-                                                                <small>( optional )</small></label>
-                                                            <select class=" form-control form-control-sm "
-                                                                name="religion" id="religion">
-                                                                <option value="">Select</option>
-                                                                @foreach ($religions as $reli)
-                                                                <option value={{$reli->id}}>{{$reli->name_en}}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="pp_expiry"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Passport
+                                                                        Expiry <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm date-picker "
+                                                                                placeholder="DD-MM-YYYY"
+                                                                                data-date-start-date="30d"
+                                                                                name="pp_expiry" id="pp_expiry" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="uid_number"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">UID
+                                                                        <span class="text-danger">*</span> </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="uid_number" id="uid_number"
+                                                                                placeholder="UID Number">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="dob"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">UID
+                                                                        Expire Date <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm date-picker "
+                                                                                placeholder="DD-MM-YYYY"
+                                                                                data-date-start-date="30d"
+                                                                                name="uid_expiry" id="uid_expiry" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+
+
+
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="religion"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Religion
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <select
+                                                                                class=" form-control form-control-sm "
+                                                                                name="religion" id="religion">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($religions as $reli)
+                                                                                <option value={{$reli->id}}>
+                                                                                    {{$reli->name_en}}
+                                                                                </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+                                                            </section>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+                                                                <input type="hidden" id="artist_permit_num">
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="profession"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">
+                                                                        Profession <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <select
+                                                                                class="form-control form-control-sm "
+                                                                                name="profession" id="profession"
+                                                                                placeholder="Profession">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($profession as $pt)
+                                                                                <option value="{{$pt->profession_id}}">
+                                                                                    {{ucwords($pt->name_en)}}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="fname_ar"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">First
+                                                                        Name - Ar <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm text-right "
+                                                                                name="fname_ar" id="fname_ar"
+                                                                                placeholder="First Name in Arabic">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="lname_ar"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Last
+                                                                        Name - Ar <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm text-right "
+                                                                                name="lname_ar" id="lname_ar"
+                                                                                placeholder="Last Name in Arabic">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="gender"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Gender
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <select
+                                                                                class=" form-control form-control-sm "
+                                                                                name="gender" id="gender">
+                                                                                <option value="">Select</option>
+                                                                                <option value="1">Male</option>
+                                                                                <option value="2">Female</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="visa_type"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
+                                                                        Type <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <select type="text"
+                                                                                class="form-control form-control-sm"
+                                                                                name="visa_type" id="visa_type">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($visatypes as $vt)
+                                                                                <option value={{$vt->id}}>
+                                                                                    {{$vt->visa_type_en}}
+                                                                                </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="visa_number"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
+                                                                        Number <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="visa_number" id="visa_number"
+                                                                                placeholder="Visa Number">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="visa_number"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
+                                                                        Expire Date <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm date-picker "
+                                                                                placeholder="DD-MM-YYYY"
+                                                                                data-date-start-date="30d"
+                                                                                name="visa_expiry" id="visa_expiry" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="id_no"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Identification
+                                                                        No </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="id_no" id="id_no"
+                                                                                placeholder="Identification No.">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="sp_name"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Sponser
+                                                                        Name <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="sp_name" id="sp_name"
+                                                                                placeholder="Sponser Name">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+
+                                                                <div class=" form-group form-group-sm row">
+                                                                    <label for="language"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Languages
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <select
+                                                                                class=" form-control form-control-sm "
+                                                                                name="language" id="language">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($languages as $lang)
+                                                                                <option value={{$lang->id}}>
+                                                                                    {{$lang->name_en}}
+                                                                                </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+
+                                                        </div>
 
 
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <br>
+                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
 
                                         <div class="card">
                                             <div class="card-header" id="headingTwo6">
@@ -428,94 +573,187 @@
                                                 </div>
                                             </div>
                                             <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
-                                                data-parent="#accordionExample6">
+                                                data-parent="#accordionExample7">
                                                 <div class="card-body">
 
                                                     <div class="row">
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="mobile"
-                                                                class=" col-form-label kt-font-bold text-right">Mobile
-                                                                No <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="mobile" id="mobile" placeholder="Mobile No.">
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="mobile"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Mobile
+                                                                        No <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="mobile" id="mobile"
+                                                                                placeholder="Mobile No.">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="landline"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Phone
+                                                                        No
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="landline" id="landline"
+                                                                                placeholder="Landline No.">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </section>
                                                         </div>
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="email"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Email
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                placeholder="Email" name="email"
+                                                                                id="email" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="email"
-                                                                class=" col-form-label kt-font-bold text-right">Email
-                                                                <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                placeholder="Email" name="email" id="email" />
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="address"
-                                                                class=" col-form-label kt-font-bold text-right">Address
-                                                                <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="address" id="address" placeholder="Address">
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="landline"
-                                                                class=" col-form-label kt-font-bold text-right">Phone
-                                                                No <small>( optional )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="landline" id="landline"
-                                                                placeholder="Landline No.">
-                                                        </div>
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="fax_no"
-                                                                class=" col-form-label kt-font-bold text-right">Fax
-                                                                No <small>( optional )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="fax_no" id="fax_no" placeholder="Fax No">
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="address"
-                                                                class=" col-form-label kt-font-bold text-right">Emirate
-                                                                <small>( optional )</small></label>
-                                                            <select class=" form-control form-control-sm " name="city"
-                                                                id="city" onChange="getAreas(this.value)">
-                                                                <option value="">Select</option>
-                                                                @foreach ($emirates as $em)
-                                                                <option value={{$em->id}}>{{$em->name_en}}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="address"
-                                                                class=" col-form-label kt-font-bold text-right">Area
-                                                                <small>( optional )</small></label>
-                                                            <select class="  form-control form-control-sm " name="area"
-                                                                id="area">
-                                                                <option value="">Select</option>
-
-                                                            </select>
-                                                        </div>
-
-
-
-
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="email"
-                                                                class=" col-form-label kt-font-bold text-right">PO
-                                                                Box <small>( optional )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="po_box" id="po_box" placeholder="PO box">
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="fax_no"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Fax
+                                                                        No </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="fax_no" id="fax_no"
+                                                                                placeholder="Fax No">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
+
+                                        <div class="card">
+                                            <div class="card-header" id="headingTwo7">
+                                                <div class="card-title collapsed" data-toggle="collapse"
+                                                    data-target="#collapseTwo7" aria-expanded="false"
+                                                    aria-controls="collapseTwo7">
+                                                    <h6 class="kt-font-transform-u">Address
+                                                        information
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div id="collapseTwo7" class="collapse show" aria-labelledby="headingTwo7"
+                                                data-parent="#accordionExample8">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="address"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Address
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="address" id="address"
+                                                                                placeholder="Address">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="address"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Area
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <select
+                                                                                class="  form-control form-control-sm "
+                                                                                name="area" id="area">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($areas as $ar)
+                                                                                <option value={{$ar->id}}>
+                                                                                    {{$ar->area_en}}
+                                                                                </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </section>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="email"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">PO
+                                                                        Box </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="po_box" id="po_box"
+                                                                                placeholder="PO box">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class=" form-group form-group-sm row">
+                                                                    <label for="address"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Emirate
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <select
+                                                                                class=" form-control form-control-sm "
+                                                                                name="city" id="city"
+                                                                                onChange="getAreas(this.value)">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($emirates as $em)
+                                                                                <option value={{$em->id}}>
+                                                                                    {{$em->name_en}}
+                                                                                </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </section>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
                                         </div>
 
 
@@ -690,11 +928,12 @@
 </div>
 
 
+
 @endsection
 
 
 @section('script')
-<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
+{{-- <script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="{{asset('/js/uploadfile.js')}}"></script>
 <script>
@@ -707,12 +946,28 @@
         var artistDetails = {};
         var documentDetails = {};
 
+
         $(document).ready(function () {
             localStorage.clear();
             uploadFunction();
             PicUploadFunction();
 
+            wizard = new KTWizard("kt_wizard_v3", {
+                startStep: 1
+            });
+
+            wizard.on("change", function(wizard) {
+                KTUtil.scrollTop();
+            });
+
         });
+
+        $('#agree').on('click', function(){
+            if($(this).is(':checked')) {
+                $('#agree_cb > span').removeClass('compulsory');
+            }
+        });
+
 
         function set_document_expiry(validity, id){
             // alert(validity);
@@ -921,20 +1176,15 @@
 
         $("#artist_det").on("click", function () {
             wizard = new KTWizard("kt_wizard_v3");
-            if (!checkForTick()) {
-                return
-            }
+
+            !checkForTick() ? wizard.stop() : wizard.goTo(2) ;
             setThis('block', 'block', 'none', 'none');
         });
 
         $("#upload_doc").on("click", function () {
             wizard = new KTWizard("kt_wizard_v3");
-            if (!checkForTick()) return;
-            if (wizard.currentStep == 3) {
-                stopNext(detailsValidator);
-                return;
-            }
-
+            !checkForTick() ? wizard.stop() : '' ;
+            !(detailsValidator.form()) ? wizard.stop() : wizard.goTo(3) ;
             setThis('block', 'none', 'none', 'block');
         });
 
@@ -947,31 +1197,37 @@
 
         const checkForTick = () => {
             wizard = new KTWizard("kt_wizard_v3");
-            var result;
-            if (wizard.currentStep == 1) {
-                if ($('#agree').not(':checked')) {
-                    wizard.stop();
-                    $('#agree_cb > span').addClass('compulsory');
-                    result = false;
-                }
-                if ($('#agree').is(':checked')) {
-                    $('#back_btn').css('display', 'none');
-                    $('#prev_btn').css('display', 'block');
-                    wizard.goNext();
-                    result = true;
-                }
-            } else {
+            var result ;
+            if ($('#agree').is(':checked')) {
+                $('#back_btn').css('display', 'none');
+                $('#prev_btn').css('display', 'block');
+                $('#agree_cb > span').removeClass('compulsory');
+                // wizard.goNext();
                 result = true;
+            }else {
+                wizard.stop();
+                $('#agree_cb > span').addClass('compulsory');
+                result = false;
             }
             return result;
-        };
+        }
 
 
-        $('#next_btn').click(function () {
+        $('#next_btn').click(function (e) {
 
             wizard = new KTWizard("kt_wizard_v3");
 
-            checkForTick();
+            if (wizard.currentStep == 1) {
+                if ($('#agree').is(':checked')) {
+                    $('#back_btn').css('display', 'none');
+                    $('#prev_btn').css('display', 'block');
+                    $('#agree_cb > span').removeClass('compulsory');
+                }else {
+                    wizard.stop();
+                    $('#agree_cb > span').addClass('compulsory');
+                }
+                return;
+            }
 
             // checking the next page is artist details
             if (wizard.currentStep == 2) {
@@ -1069,10 +1325,13 @@
             });
         };
 
-        $('#prev_btn').click(function () {
+        $('#prev_btn').click(function (e) {
             wizard = new KTWizard("kt_wizard_v3");
-            console.log(wizard.currentStep);
+            // console.log(wizard.currentStep);
+            // console.log(detailsValidator)
+            // console.log(detailsValidator.resetForm())
             if (wizard.currentStep == 2) {
+                // detailsValidator.resetForm();
                 $('#prev_btn').css('display', 'none');
                 $('#back_btn').css('display', 'block');
             } else {
