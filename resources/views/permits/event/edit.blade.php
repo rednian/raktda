@@ -550,7 +550,7 @@
                                     let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                     let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
 
-                                    obj.createProgress(data["document_name"], "{{url('storage')}}"+'/' + data["path"], '');
+                                    obj.createProgress(data["requirement"]['requirement_name'], "{{url('storage')}}"+'/' + data["path"], '');
                                     if (formatted_issue_date != NaN - NaN - NaN) {
                                         $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
                                         $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
@@ -609,11 +609,9 @@
         });
 
         $("#event_det").on("click", function () {
-            console.log('dd');
             if (!checkForTick()) {
                 return
             }
-            console.log('here');
             setThis('block', 'block', 'none', 'none');
         });
 

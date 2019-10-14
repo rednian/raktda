@@ -368,6 +368,7 @@
             </table>
         </header>
     </htmlpageheader>
+
     <div class="main">
         <table class="person--details">
             @php

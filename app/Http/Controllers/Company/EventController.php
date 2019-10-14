@@ -66,7 +66,7 @@ class EventController extends Controller
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_id'],
             'status' => 'new',
-            'company_id' => $cid,
+            'created_by' => Auth::user()->user_id,
             'reference_number' => $this->generateReferenceNumber()
         );
 
@@ -303,7 +303,7 @@ class EventController extends Controller
 
     function datatable_function($status)
     {
-        $permits = Event::with('type')->where('company_id', Auth::user()->EmpClientId);
+        $permits = Event::with('type')->where('created_by', Auth::user()->user_id);
 
         if ($status == 'applied') {
             $permits->where('status', '!=', 'active')->where('status', '!=', 'draft');
@@ -421,7 +421,7 @@ class EventController extends Controller
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_id'],
             'status' => 'draft',
-            'company_id' => $cid,
+            'created_by' =>  $userid,
         );
 
         $event = Event::create($input_Array);

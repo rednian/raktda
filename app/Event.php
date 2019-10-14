@@ -15,7 +15,7 @@ class Event extends Model
     protected $casts = ['is_displayable' => 'boolean'];
     protected $fillable = [
         'name_en', 'name_ar', 'reference_number', 'issued_date', 'expired_date', 'time_start', 'time_end', 'permit_number', 'venue_en', 'venue_ar',
-        'company_id', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock'
+        'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock', 'created_by'
     ];
 
     public function comment()
@@ -23,9 +23,12 @@ class Event extends Model
         return $this->hasMany(EventApprover::class, 'event_id');
     }
 
-    public function requirement()
+    public function requirements()
     {
-        return $this->hasMany(EventRequirement::class, 'event_id');
+        return $this->belongsToMany(Requirement::class, 'event_requirement', 'event_id', 'requirement_id')
+            ->where('requirement_type', 'event')
+            ->withPivot(['path', 'issued_date', 'expired_date'])
+            ->withTimestamps();
     }
 
     public function company()

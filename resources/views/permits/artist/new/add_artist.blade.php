@@ -1171,21 +1171,21 @@
         });
 
         $("#check_inst").on("click", function () {
+            console.log(stopNext(detailsValidator));
             setThis('none', 'block', 'block', 'none');
         });
 
         $("#artist_det").on("click", function () {
-            wizard = new KTWizard("kt_wizard_v3");
-
             !checkForTick() ? wizard.stop() : wizard.goTo(2) ;
-            setThis('block', 'block', 'none', 'none');
+            wizard.currentStep == 2 ? setThis('block', 'block', 'none', 'none') : '';
+            wizard.isFirstStep() ? setThis('none', 'block', 'block', 'none') : '';
         });
 
         $("#upload_doc").on("click", function () {
-            wizard = new KTWizard("kt_wizard_v3");
-            !checkForTick() ? wizard.stop() : '' ;
-            !(detailsValidator.form()) ? wizard.stop() : wizard.goTo(3) ;
-            setThis('block', 'none', 'none', 'block');
+            wizard.isFirstStep() ? !checkForTick() ? setThis('none', 'block', 'block', 'none') : '' : !(detailsValidator.form()) ? wizard.stop() : wizard.goTo(3) ;
+            wizard.isFirstStep() ? !(detailsValidator.form()) ? wizard.stop() : '' : '';
+            wizard.currentStep == 3 ? setThis('block', 'none', 'none', 'block') : '';
+            wizard.isFirstStep() ? setThis('none', 'block', 'block', 'none') : '';
         });
 
         const setThis = (prev, next, back, submit) => {

@@ -32,7 +32,7 @@
                 <a href="{{ route('event.create')}}">
 
                     <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
-                        Add New Permit
+                        Add New
                     </button>
                     <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                         <i class="la la-plus"></i>
@@ -210,7 +210,6 @@
 
         var table1 = $('#applied-events-table').DataTable({
             responsive: true,
-
             processing: true,
             serverSide: true,
             searching: true,

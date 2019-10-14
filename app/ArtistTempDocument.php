@@ -16,4 +16,9 @@ class ArtistTempDocument extends Model
     {
         return $this->belongsTo(ArtistTempData::class, 'artist_permit_id');
     }
+
+    public function requirement()
+    {
+        return $this->belongsTo(Requirement::class, 'requirement_id');
+    }
 }

@@ -45,7 +45,7 @@ class RenewController extends Controller
                     'firstname_ar' =>  $pd->artist['firstname_ar'],
                     'lastname_en' =>  $pd->artist['lastname_en'],
                     'lastname_ar' =>  $pd->artist['lastname_ar'],
-                    'nationality' =>  $pd->artist['nationality'],
+                    'nationality' =>  $pd->artist['country_id'],
                     'gender' =>  $pd->artist['gender_id'],
                     'birthdate' =>  $pd->artist['birthdate'] ? Carbon::parse($pd->artist['birthdate'])->toDateString() : '',
                     'artist_id' => $pd->artist_id,
@@ -168,7 +168,7 @@ class RenewController extends Controller
             if ($data->status != 1) {
 
                 $updateArray = array(
-                    'permit_type_id' => $data->permit_type_id,
+                    'profession_id' => $data->profession_id,
                     'passport_number' => $data->passport_number,
                     'uid_number' => $data->uid_number,
                     'uid_expire_date' => $data->uid_expire_date,
@@ -201,7 +201,7 @@ class RenewController extends Controller
                         'firstname_en' => $data->firstname_en,
                         'lastname_en' => $data->lastname_en,
                         'gender_id' => $data->gender,
-                        'nationality' => $data->nationality,
+                        'country_id' => $data->nationality,
                         'birthdate' => $data->birthdate,
                         'updated_at' => $current_time_string,
                         'updated_by' => $user_id
@@ -216,7 +216,7 @@ class RenewController extends Controller
                         'firstname_en' => $data->firstname_en,
                         'lastname_en' => $data->lastname_en,
                         'gender_id' => $data->gender,
-                        'nationality' => $data->nationality,
+                        'country_id' => $data->nationality,
                         'birthdate' => $data->birthdate,
                         'created_at' => $current_time_string,
                         'created_by' => $user_id
@@ -332,6 +332,7 @@ class RenewController extends Controller
         if ($permitTable) {
             ArtistTempData::where('permit_id', $permit_id)->delete();
             ArtistTempDocument::where('permit_id', $permit_id)->delete();
+            Permit::where('permit_id', $permitTable->permit_id)->update(['is_edit' => 0, "lock" => null]);
             $message = ['success', 'Permit Applied Successfully', 'Success'];
         } else {
             $message = ['error', 'Error, Please Try Again', 'Error'];
