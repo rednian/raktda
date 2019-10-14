@@ -1423,7 +1423,7 @@
                                 show: true
                             });
 
-                    if(data) {
+                    if(data.artist_permit) {
                             $('#person_code_modal').empty();
                             $('#person_code_modal').append('<div class="kt-widget30__item d-flex "> <div class="kt-widget30__pic my-auto mx-4"> <img id="profImg" title="image" alt="photo"> <p id="ex_artist_en_name" class="mt-2 mb-0"></p>  <p id="ex_artist_ar_name" class="mb-0"></p> </div> <div class="kt-widget30__info" id="PC_Popup_Table" style="flex:4;"> <table>  <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr><tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr>  <tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-end mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails()"data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
 
