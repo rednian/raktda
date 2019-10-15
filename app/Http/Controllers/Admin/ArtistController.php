@@ -1,16 +1,15 @@
 <?php
 
 	namespace App\Http\Controllers\Admin;
-	use Auth;
+
 	use App\Permit;
 	use Carbon\Carbon;
-	use DB;
-	use DataTables;
-
 	use App\Artist;
 	use App\ArtistAction;
 	use App\ArtistPermit;
-	use function foo\func;
+    use Illuminate\Support\Facades\Auth;
+    use Yajra\DataTables\Facades\DataTables;
+    use function foo\func;
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
 
@@ -24,10 +23,29 @@
 //        ]);
 		}
 
+
+		public function artist_block(Request $request){
+		    $data=$request->all();
+		    foreach ($data['id'] as $artist_id) {
+             $artist = Artist::where('artist_id', $artist_id)->first();
+
+             if ($artist->update(['artist_status' => 'blocked'])) {
+                 $artist_action = new ArtistAction();
+                 $artist_action->artist_id = $artist_id;
+                 $artist_action->employee_id = Auth::user()->employee->employee_id;
+                 $artist_action->remarks = $request->remarks;
+                 $artist_action->save();
+             }
+         }
+            return response()->json();
+
+		}
+
 		public function updateStatus(Request $request, Artist $artist)
 		{
+		    dd($request->all());
 			if ($request->is_multiple) {
-
+             dd('multiple');
 			} else {
 				$status = $request->status == 'block' ? 'blocked': 'active';
 				$artist->update(['artist_status' => $status]);
@@ -91,18 +109,22 @@
 						 }
 						 return '<span class="flag-icon flag-icon-'.$artist->country->country_code.'"></span>'.ucwords($artist->country->nationality_en);
 					 })
+
 					 ->addColumn('mobile_number', function($artist){
 						 return $artist->artistPermit()->latest()->first()->mobile_number;
 					 })
+
 					 ->addColumn('profession', function($artist){
 						 return ucwords($artist->artistpermit()->latest()->first()->profession->name_en);
 					 })
 					 ->editColumn('artist_status', function($artist){
 						 return ucfirst($artist->artist_status);
 					 })
+
 					 ->addColumn('active_permit', function($artist){
 						 return $artist->permit()->where('permit_status', 'active')->whereDate('expired_date', '>=', Carbon::now())->count();
 					 })
+
 					 ->rawColumns(['name', 'nationality'])
 					 ->setTotalRecords($totalRecords)
 					 ->make(true);
@@ -129,6 +151,8 @@
 				 ->rawColumns(['action'])
 				 ->make(true);
 		}
+
+
 
 		public function permitHistory(Request $request, Artist $artist)
 		{

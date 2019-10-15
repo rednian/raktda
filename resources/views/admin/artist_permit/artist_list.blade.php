@@ -1,7 +1,8 @@
-@extends('layouts.admin-app')
+                                                                                                                                                                                                                                                                                                                                                                                                    @extends('layouts.admin-app')
 @section('action')
      {{-- <a href="{{ route('permit_type.create') }}" style="margin-bottom: 2%" class="btn btn-brand active btn-raised pull-right btn-sm">New Permit Type</a> --}}
 @endsection
+
 @section('content')
 <section class="row">
     <div class="col">
@@ -49,7 +50,7 @@
 @endsection
 @section('script')
 <script>
-  artistPermitRequest = $('table#artist-request').DataTable({    
+  artistPermitRequest = $('table#artist-request').DataTable({
         ajax: {
         url: '{{ route('admin.artist_permit.requestDataTable') }}',
         data: function(data){
@@ -62,7 +63,7 @@
     ],
     columns: [
         { data: 'company_name'},
-        { data: 'submitted_date'},  
+        { data: 'submitted_date'},
         { data: 'issued_date'},
         { data: 'expired_date'},
         {
@@ -91,15 +92,15 @@
 
     createdRow: function(row ,data, index){
         var user_id = '{{ Auth::user()->user_id }}';
-  
+
         if(!data.lock || user_id == data.user_id ){
-            $('td', row).click(function(){ 
-                var url = '{{ url('permit/artist_permit') }}/' + data.permit_id+'/application-details'; 
-                location.href = url; 
+            $('td', row).click(function(){
+                var url = '{{ url('permit/artist_permit') }}/' + data.permit_id+'/application-details';
+                location.href = url;
               });
         }
 
-      
+
 
     },
 
@@ -109,10 +110,10 @@
       // var now = moment().tz('Asia/Dubai');
       // var issued_date = moment(data.issued_date).add(2, 'days');
 
-    
+
       // console.log(issued_date);
 
-       
+
       //   if ( column.qty < 1  ){
       //      $(row).addClass('danger');
       //    }

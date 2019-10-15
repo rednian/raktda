@@ -13,7 +13,7 @@ class Artist extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     protected $table = 'artist';
     protected $primaryKey = 'artist_id';
-    protected $fillable = [
+    protected $fillable = ['artist_status',
         'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'country_id', 'birthdate', 'artist_status', 'gender_id',
 	     'created_by', 'updated_by', 'deleted_by', 'person_code'
     ];

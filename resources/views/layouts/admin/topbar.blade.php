@@ -5,10 +5,10 @@
        <!--begin: Notifications -->
        <div class="kt-header__topbar-item dropdown">
            <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="30px,0px" aria-expanded="true">
-               <span class="kt-header__topbar-icon kt-pulse kt-pulse--danger"> 
-                <i class="flaticon2-bell-alarm-symbol"></i> 
+               <span class="kt-header__topbar-icon kt-pulse kt-pulse--danger">
+                <i class="flaticon2-bell-alarm-symbol"></i>
                     <span class="kt-pulse__ring"></span>
-              </span>               
+              </span>
                 <span class="kt-badge kt-badge--dot kt-badge--notify kt-badge--sm kt-badge--danger"></span>
            </div>
            <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg">
@@ -41,14 +41,14 @@
         <div class="kt-header__topbar-item kt-header__topbar-item--langs">
             <div id="lang" class="kt-header__topbar-wrapper" data-offset="10px,0px">
                 <span class="kt-header__topbar-icon {{ Auth::user()->LanguageId == 1 ? 'd-none' : '' }}  " data-lang="en">
-                    <span class="flag-icon flag-icon-gb"></span> 
+                    <span class="flag-icon flag-icon-gb"></span>
                 </span>
                 <span class="kt-header__topbar-icon {{ Auth::user()->LanguageId != 1 ? 'd-none' : '' }} " data-lang="ar">
-                    <span class="flag-icon flag-icon-ae"></span> 
+                    <span class="flag-icon flag-icon-ae"></span>
                 </span>
             </div>
         </div>
-        
+
       <!--end: Language bar -->
 
       <!--begin: User Bar -->
@@ -57,14 +57,14 @@
               <div class="kt-header__topbar-user">
                 @php
 
-                $name = ucwords(Auth::user()->employee->emp_name);
+                $name = ucwords(Auth::user()->NameEn);
                 $first_name = explode(' ', $name);
                 $first_name = $first_name[0];
                 $first_letter = substr($first_name, 0, 1);
                 @endphp
 
-                  <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span> <span class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords($first_name) }}</span> 
-                  <span class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span> 
+                  <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span> <span class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords($first_name) }}</span>
+                  <span class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
               </div>
           </div>
           <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg">
@@ -86,7 +86,7 @@
                          <div class="kt-notification__item-time"> Account settings and more </div>
                      </div>
                  </a>
-                 <div class="kt-notification__custom kt-space-between"> 
+                 <div class="kt-notification__custom kt-space-between">
                   <a href="{{ route('logout') }}"
                       onclick="event.preventDefault();document.getElementById('logout-form').submit();"
                       class="btn btn-brand btn-elevate btn-sm">Sign Out</a>

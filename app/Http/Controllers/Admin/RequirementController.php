@@ -10,13 +10,12 @@ use App\Http\Controllers\Controller;
 
 class RequirementController extends Controller
 {
- 
+
     public function index()
     {
         $requirements = Requirement::groupBy('requirement_type')->get();
         return view('admin/settings.requirement.index', ['requirements'=> $requirements ]);
     }
-
 
     public function create()
     {
@@ -35,7 +34,7 @@ class RequirementController extends Controller
         //
     }
 
-  
+
     public function edit($id)
     {
         //
@@ -91,7 +90,7 @@ class RequirementController extends Controller
                                 })
                                 ->get();
 
-             return Datatables::of($requirement)->make(true);  
+             return Datatables::of($requirement)->make(true);
         }
 
     }

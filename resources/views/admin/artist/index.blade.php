@@ -62,9 +62,10 @@ var artistTable = {};
                       render: function(type, data, full, meta){
                           var status = full.artist_status;
                           var classname = 'success';
-                          if(status == 'block'){ classname = 'danger'; }
+                          if(status == 'block'){ classname = 'danger';
+                          }
                           return '<span class="kt-badge kt-badge--inline kt-badge--pill   kt-badge--'+classname+'">'+status+'</span>';
-                      } 
+                      }
                     },
                     {
                       render: function(type, data, full, meta){
@@ -75,7 +76,7 @@ var artistTable = {};
 
                  fnCreatedRow: function(row ,data, index){
                  },
-          }); 
+          });
 
   });
 </script>

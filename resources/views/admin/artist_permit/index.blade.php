@@ -20,7 +20,7 @@
                      No New Request Permit as of Today <span class="kt-font-bold">{{ date('d-M-Y h:m a') }}</span>
                   @endempty
                @endif
-					
+
 						</div>
 						<div class="tab-pane fade" id="kt_tabs_1_2" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
@@ -30,7 +30,7 @@
                   @empty()
                      No on Proccess permit
                   @endempty
-               @endif
+                @endif
 						</div>
 						<div class="tab-pane fade" id="kt_tabs_1_3" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
@@ -92,7 +92,7 @@
       };
       $(document).ready(function () {
          newRequest();
-         
+
          $('.nav-tabs a').on('shown.bs.tab', function (event) {
             var current_tab = $(event.target).text();
             if (current_tab == 'Processing Permits' && !$.fn.dataTable.isDataTable('table#artist-permit-processing')) { processingTable(); }
@@ -103,7 +103,7 @@
             var y = $(event.relatedTarget).text();  // previous tab
          });
       });
-      
+
       function blockArtistTable() {
          $('table#block-artist').DataTable({
             ajax: {
@@ -113,9 +113,11 @@
                }
             },
             columnDefs: [
-               {targets: [0, 4, 5, 6], className: 'no-wrap'}
+               {targets: [0, 4, 5, 6], className: 'no-wrap'},
+
             ],
-            columns: [
+
+            columns : [
                {data: 'person_code'},
                {data: 'name'},
                {data: 'profession'},
@@ -125,19 +127,17 @@
                {
                   render: function (data, type, full, meta) {
                      var classname = full.artist_status == 'Active' ? 'success' : 'danger';
+
                      return '<span class="kt-badge kt-badge--' + classname + ' kt-badge--inline">' + full.artist_status + '</span>';
                   }
                }
             ],
             createdRow: function (row, data, index) {
-               $(row).click(function () {
-                  location.href = '{{ url('/permit/artist/') }}/' + data.artist_id;
-               });
             }
          });
       }
-
       function activeArtistTable() {
+
          active_artist_table = $('table#active-artist').DataTable({
             dom: '<"toolbar-active pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
             ajax: {
@@ -164,49 +164,75 @@
 
             order: [[1, 'asc']],
             columns: [
-               {data: 'artist_id'},
+                {data: 'artist_id'},
                {data: 'person_code'},
                {data: 'name'},
                {data: 'profession'},
                {data: 'nationality'},
                {data: 'mobile_number'},
-               {data: 'active_permit'}
+               {data: 'active_permit'},
+
+
             ],
             createdRow: function (row, data, index) {
                $('#active-artist-modal').on('shown.bs.modal', function () {
                   // console.log(123);
                });
-               
-               $(row).click(function () {
-									location.href = '{{ url('/permit/artist/') }}/'+data.artist_id;
-               });
-            }
+
+            //   $(row).click(function () {
+			//						location.href = '{{url('/permit/artist/')}}/'+data.artist_id;
+             //  });
+
+              }
          });
-        
+
+
          $('div.toolbar-active').html('<button type="button" id="btn-active-action" class="btn btn-warning kt-font-transform-u">Block Artist</button>');
          $('div.toolbar-active-1').html($('#active-profession-container'));
          $('div.toolbar-active-2').html($('#active-nationality-container'));
-         
+
          $('button#btn-active-action').click(function () {
+
               var rows_selected = active_artist_table.column(0).checkboxes.selected();
                if (rows_selected.length > 0) {
                $('#active-artist-alert').addClass('d-none');
                $('#active-artist-modal').modal('show');
-               
+
+                   $('#block_artist').click('submit', function(e) {
+                           e.preventDefault();
+                            artist_id=[]
+                           $.each(rows_selected, function(index, rowId) {
+                               artist_id.push(rowId);
+                           })
+                              if(artist_id.length>0){
+
+                                var remarks=$('#comment').val();
+                                  $.ajax({
+                                      type: 'post',
+                                      url: " {{route('admin.artist_block')}}",
+                                      data: {id:artist_id,remarks},
+                                      success: function (data) {
+                                                  $("#ajax-alert").show(500).css({ 'background-color': '#fff2f2','color': 'red','padding': '9px','border-radius': '7px','text-align': 'center'});
+                                                  setTimeout(function() { $("#ajax-alert").hide();
+                                                  $('#active-artist-modal').modal('hide');
+                                                   },2000);
+                                      }
+                                  });
+
+                              }
+                       })
             } else {
                $('#active-artist-alert').removeClass('d-none');
             }
          });
-         
-        
       }
 
       function approvedTable() {
          $('table#artist-permit-approved').DataTable({
             ajax: {
-               url: '{{ route('admin.artist_permit.datatable') }}',
+               url: '{{ route('admin.artist_permit.datatable')}}',
                data: function (d) {
-                  // d.request_type = $('select[name=request_type][data-type=new_request]').val();
+                  //     d.request_type = $('select[name=request_type][data-type=new_request]').val();
                   // d.permit_status = $('select[name=permit_status][data-type=new_request]').val();
                   // d.permit_status = $('input[name=permit_start]').val();
                   // d.issued_date = filter.getAction();
@@ -230,9 +256,8 @@
             ],
 
             createdRow: function (row, data, index) {
-               $(row).click(function () {
-                  location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
-               });
+
+
             }
          });
       }
@@ -242,6 +267,7 @@
             ajax: {
                url: '{{ route('admin.artist_permit.datatable') }}',
                data: function (d) {
+
                   d.status = ['approved-unpaid', 'modification request'];
                }
             },
@@ -314,6 +340,7 @@
             startDate: start,
             endDate: end,
             ranges: {
+
                'Today': [moment(), moment()],
                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
@@ -321,11 +348,12 @@
                'This Month': [moment().startOf('month'), moment().endOf('month')],
                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
+
          }, function (start, end, label) {
             $('input[name=permit_start].form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
          });
 
-         $('input[type=checkbox][data-type=new_request][name=today]').click(function () {
+         $('input[type=checkbox][data-type=new_request][name = today]').click(function () {
             filter.today = $(this).is(':checked') ? $(this).val() : null;
          });
 
@@ -378,4 +406,5 @@
          });
       }
 	 </script>
+
 @endsection
