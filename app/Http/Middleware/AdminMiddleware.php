@@ -6,12 +6,12 @@ use Auth;
 use App\Company;
 use Closure;
 
-class AdmminMiddleware
+class AdminMiddleware
 {
 
     public function handle($request, Closure $next)
     {
-        if(Auth::check() && $request->user()->type == 0){
+        if(Auth::check() && $request->user()->type != 4){
             $company = Company::find(Auth::user()->EmpClientId);
             $company_name = explode(' ', $company->company_name);
 

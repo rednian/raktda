@@ -1,9 +1,16 @@
 :root {
+  ---primary:#80262b;
+  ---p-dark: #4e0000;
+  ---p-light: #b45454;
   ---danger: #80262b;
   ---danger-light: #a63a3f;
   ---warning: #ffbf00;
   ---white: #fff;
+  ---gray: #f5f5f5;
 }
+
+
+
 
 .kt-spinner--danger {
   color: #a63a3f !important;
@@ -108,8 +115,8 @@
 /*menu color*/
 .kt-aside-menu .kt-menu__nav > .kt-menu__item > .kt-menu__heading .kt-menu__link-text,
 .kt-aside-menu .kt-menu__nav > .kt-menu__item > .kt-menu__link .kt-menu__link-text {
-  color: #000000;
-  font-weight: 600 !important;
+  color: #616161;
+  font-weight: 500 !important;
 }
 
 .was-validated .form-control:valid, .form-control.is-valid {
@@ -213,6 +220,11 @@ thead > tr > th.no-wrap.sorting_disabled > span {
 }
 
 /*table*/
+/*---------------table-----------------------*/
+/*.dataTables_wrapper .dataTable {
+     margin: 1px 0!important; 
+}*/
+
 .table .thead-dark th {
   color: #fff;
   background-color: var(---danger) !important;
@@ -223,21 +235,15 @@ table tr td {
   cursor: pointer;
 }
 
-.table-success {
-  background-color: rgba(10, 187, 135, 0.5) !important;
-}
 
-.dataTables_wrapper .pagination .page-item.active > .page-link {
+/*.dataTables_wrapper .pagination .page-item.active > .page-link {
   background: #80262b;
   color: #ffffff;
-}
+}*/
 
-.select2{
-  width: 100% !important;
-}
 
 .dataTables_wrapper .pagination .page-item.active > .page-link {
-  background: #a63a3f;
+  background: #c2c2c2;
   color: #ffffff;
 }
 

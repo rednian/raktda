@@ -134,10 +134,10 @@
  }
 
   .no-wrap{ white-space: nowrap; width: 1%;}
-
+/*
   div[class="toolbar"], div[class*="toolbar"]{
         float: left;
-  }
+  } */
   /*nav*/
 .nav-tabs {
     border-bottom: 1px solid #a63a3f;
@@ -219,6 +219,11 @@
 
 
 /* Buttons */
+
+.btn-sm {
+    cursor: pointer;
+}
+
 .btn--maroon {
     background-color: var(--main-brand-color);
     border: 2px solid var(--main-brand-color);
@@ -502,6 +507,7 @@ select option:first-child {
     color: #ccc;
     pointer-events: none;
 }
+
 
 
 /*  show view css */

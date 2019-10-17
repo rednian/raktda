@@ -4,10 +4,11 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-
+	// use SoftDeletes;
 	protected $connection = 'mysql';
 	protected $table = 'event';
 	protected $primaryKey = 'event_id';
@@ -15,17 +16,35 @@ class Event extends Model
 	protected $casts = ['is_displayable'=>'boolean'];
 	protected $fillable = [
 		 'name_en', 'name_ar', 'reference_number', 'issued_date', 'expired_date', 'time_start', 'time_end', 'permit_number', 'venue_en', 'venue_ar',
-		 'company_id', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock'
+		 'company_id', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock', 'approved_by', 'created_by'
 		 ];
 
-	public function comment()
+	public function applied()
 	{
+		return $this->belongsTo(User::class, 'created_by', 'user_id');
+	}
+
+	public function approve()
+{
 		return $this->hasMany(EventApprover::class, 'event_id');
 	}
 
-	public function requirement()
+	public function check()
 	{
-		return $this->hasMany(EventRequirement::class, 'event_id');
+		return $this->hasMany(EventCheck::class, 'event_id');
+	}
+
+	public function comment()
+	{
+		return $this->hasMany(EventComment::class, 'event_id');
+	}
+
+	public function requirements()
+	{
+		return $this->belongsToMany(Requirement::class, 'event_requirement', 'event_id', 'requirement_id')
+			 ->where('requirement_type', 'event')
+			 ->withPivot(['path', 'issued_date', 'expired_date'])
+			 ->withTimestamps();
 	}
 
 	public function company()

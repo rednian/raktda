@@ -1,17 +1,29 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    {{-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> --}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{$permit_details->permit_number}}- Artist Permit</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
-        /* * {
-            font-family: XBRiyaz, sans-serif;
-            box-sizing: border-box;
+        @page {
+            footer: page-footer;
+            header: page-header;
+        }
 
-        } */
+        * {
+            box-sizing: border-box;
+        }
 
         body {
-            border: 1px solid #000;
             padding: 5px;
+        }
+
+        header {
+            position: fixed;
+            top: 80px;
         }
 
         h5,
@@ -20,45 +32,130 @@
             margin: 0px;
         }
 
-        td p {
+        p {
             font-size: 10px;
         }
 
-        th p {
-            font-size: 10px;
-        }
-
-        .logo--header {
+        .logo--header,
+        .logo--logo-header {
             width: 100%;
+            position: absolute;
+        }
+
+        .logo--header tr th:nth-child(1),
+        .logo--logo-header tr td:nth-child(1) {
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        .logo--header tr th:nth-child(2),
+        .logo--logo-header tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .permit--number {
+            width: 100%;
+            position: absolute;
+            padding-top: 8px;
+        }
+
+        .permit--number tr td:nth-child(1) {
+            /* text-align: left; */
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        .permit--number tr td:nth-child(2) {
+            text-align: center;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .permit--number tr td:nth-child(3) {
+            /* text-align: right; */
+            text-align: right;
+        }
+
+        .issue--expiry {
+            width: 100%;
+            position: absolute;
+        }
+
+        .issue--expiry tr td:nth-child(1) {
+            text-align: left;
+        }
+
+        .issue--expiry tr td:nth-child(2) {
+            text-align: right;
+            float: right;
+        }
+
+        .date--row-1,
+        .date--row-2 {
+            width: 80%;
+        }
+
+        .date--row-1 tr td:nth-child(1),
+        .date--row-2 tr td:nth-child(1) {
+            text-align: left;
+        }
+
+        .date--row-1 tr td:nth-child(2),
+        .date--row-2 tr td:nth-child(2) {
+            text-align: center;
+        }
+
+        .date--row-1 tr td:nth-child(3),
+        .date--row-2 tr td:nth-child(3) {
+            text-align: right;
         }
 
 
-        .logo--header tr td:first-child {
+        .company-details {
+            width: 100%;
+            position: absolute;
+        }
+
+        /* .company-details tr td:nth-child(1) {
+            text-align: left;
+        } */
+
+        /* .company-details tr td:nth-child(2) {
+            text-align: right;
+        } */
+
+
+
+        .left--side-head,
+        .right--side-head {
+            width: 100%;
+            position: absolute;
+        }
+
+        .left--side-head tr td {
             text-align: left;
             float: left;
         }
 
-        .logo--header tr td:nth-child(2) {
-            float: right;
+        .right--side-head tr td {
             text-align: right;
         }
 
-        .company-details {
-            width: 100%;
-        }
-
-        .company-details table {
-            width: 100%;
-            margin-left: -2px;
-            margin-right: -2px;
+        .left--side-head tr td:nth-child(1),
+        .right--side-head tr td:nth-child(1) {
+            padding-bottom: 8px;
         }
 
 
         footer {
             position: fixed;
-            bottom: 105px;
+            bottom: 50px;
             left: 0;
             right: 0;
+        }
+
+        .print--footer {
+            padding-top: 15px;
         }
 
         .print--footer p {
@@ -73,44 +170,34 @@
             text-align: left;
             padding-left: 5px;
             font-size: 12px;
-            padding-bottom: 15px;
         }
 
-        /* .right--side-head,
-        .left--side-head {
-            width: 50%;
-        } */
-
-        .right--side-head {
-            text-align: right;
+        .person--details {
+            width: 100%;
         }
-
-        .left--side-head {
-            text-align: left;
-        }
-
-        /* .person--details {
-            border: 1px solid black;
-            margin: 5px;
-        } */
-
 
         .each--person-tab {
             position: relative;
             margin: 5px 2px;
-            /* margin: 5px;
-            padding: 5px; */
-            height: 250px;
+            width: 50%;
             border: 1px solid black;
         }
 
-        .each--person-tab table {
-            box-sizing: border-box;
+        .each--person-tab tr {
+            width: 100%;
         }
 
+        /* .each--person-tab .img--box img {
+            width: 150px;
+            height: 150px;
+        } */
 
-        .content--box tr th:first-child,
-        .content--box tr td:first-child {
+        .content--box table {
+            width: 100%;
+        }
+
+        .content--box tr th:nth-child(1),
+        .content--box tr td:nth-child(1) {
             text-align: left;
         }
 
@@ -123,17 +210,6 @@
             page-break-after: always;
         }
 
-        .permit--number {
-            width: 100%;
-        }
-
-        .permit--number tr th:nth-child(2) {
-            text-align: center;
-        }
-
-        .permit--number tr th:last-child {
-            text-align: right;
-        }
 
         .date--row-1 th:first-child {
             text-align: left;
@@ -147,17 +223,6 @@
             text-align: right;
         }
 
-        .img--box {
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        .img--box img {
-            width: 120px;
-            height: auto;
-            padding-bottom: 50px;
-
-        }
 
         #tda_logo {
             height: 80px;
@@ -169,119 +234,142 @@
             margin-left: 25px;
         }
 
-        main {
-            border: 1px solid black;
-            height: 60%;
+
+        .img--box {
+            width: 100px;
+        }
+
+        .main {
+            position: absolute;
+            border: 1px solid #000;
+            margin: 0 5px;
+            top: 28%;
+            width: 90%;
+            height: 58%;
         }
     </style>
 
 </head>
 
 <body>
-    <header>
-        <table class="logo--header" style="width: 100%;">
-            <tr>
-                <td><img id="govt_logo" alt="Logo" src="{{ asset('/img/print_govt_logo.png') }}" /></td>
-                <td><img id="tda_logo" alt="Logo" src="{{ asset('/img/print_tda_logo.png') }}" /></td>
-            </tr>
-        </table>
-        <table class="logo--header" style="margin-top: 15px;">
-            <tr>
-                <th>
-                    <p>Artist Permit</p>
-                </th>
-                <td>
-                    <p>تصريح الفنان</p>
-                </td>
-            </tr>
-        </table>
-        <table class="permit--number">
-            <tr>
-                <th>
-                    <p>Permit No</p>
-                </th>
-                <th>
-                    <p>{{$permit_details['permit_number']}}</p>
-                </th>
-                <th>
-                    <p>تصريح لا</p>
-                </th>
-            </tr>
-        </table>
+    <htmlpageheader name="page-header">
+        <header>
+            <table class="logo--logo-header">
+                <tr>
+                    <td><img id="govt_logo" alt="Logo" src="{{ asset('/img/print_govt_logo.png') }}" /></td>
+                    <td><img id="tda_logo" alt="Logo" src="{{ asset('/img/print_tda_logo.png') }}" /></td>
+                </tr>
+            </table>
+            <table class="logo--header" style="margin-top: 15px;">
+                <tr>
+                    <th>
+                        <p>Artist Permit</p>
+                    </th>
+                    <th>
+                        <p>تصريح الفنان</p>
+                    </th>
+                </tr>
+            </table>
+            <table class="permit--number">
+                <tr>
+                    <td>
+                        <h5>Permit No</h5>
+                    </td>
+                    <td>
+                        <h5>{{$permit_details['permit_number']}}</h5>
+                    </td>
+                    <td>
+                        <h5>تصريح لا</h5>
+                    </td>
+                </tr>
+            </table>
 
-        <table class="col-md-12 company-details">
-            <tr class="col-md-12">
-                <td class="col-md-5">
-                    <table class="left--side-head">
-                        <tr class="date--row-1">
-                            <th>
-                                <p>Expiry Date</p>
-                            </th>
-                            <td>
-                                <p>{{date('d-m-Y', strtotime($permit_details['issued_date']))}}</p>
-                            </td>
-                            <th>
-                                <p>تاريخ الانتهاء</p>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <p>Business Name</p>
-                            </th>
-                            <td colspan="2">
-                                <p>{{$company_details['company_name']}}</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <p>Work Location</p>
-                            </th>
-                            <td colspan="2">
-                                <p>{{$permit_details['work_location']}}</p>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td class="col-md-2">&nbsp;</td>
-                <td class="col-md-5 ">
-                    <table class="right--side-head">
-                        <tr class="date--row-2">
-                            <th>
-                                <p>Issue Date</p>
-                            </th>
-                            <td>
-                                <p>{{date('d-m-Y', strtotime($permit_details['expired_date']))}}</p>
-                            </td>
-                            <th>
-                                <p>تاريخ الانتهاء</p>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <p>فندق الحمرا فورت ومنتجع الشاطئ</p>
-                            </td>
-                            <th>
-                                <p>الاسم التجاري</p>
-                            </th>
+            <table class="col-md-12 issue--expiry">
+                <tr>
+                    <td>
+                        <table class="date--row-1">
+                            <tr>
+                                <td>
+                                    <h5>Expiry Date</h5>
+                                </td>
+                                <td>
+                                    <p>{{date('d-m-Y', strtotime($permit_details['issued_date']))}}</p>
+                                </td>
+                                <td>
+                                    <h5>تاريخ الانتهاء</h5>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
 
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <p>فندق الحمرا فورت ومنتجع الشاطئ</p>
-                            </td>
-                            <th>
-                                <p>مكان العمل</p>
-                            </th>
+                    <td>
+                        <table class="date--row-2">
+                            <tr>
+                                <td>
+                                    <h5>Issue Date</h5>
+                                </td>
+                                <td>
+                                    <p>{{date('d-m-Y', strtotime($permit_details['expired_date']))}}</p>
+                                </td>
+                                <td>
+                                    <h5>تاريخ الانتهاء</h5>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
 
-                        </tr>
-                    </table>
-                </td>
-            </tr>
 
-        </table>
-    </header>
-    {{-- --}}
-    <main>
+            <table class="company-details">
+                <tr>
+                    <td>
+                        <table class="left--side-head">
+                            <tr>
+                                <td>
+                                    <h5>Business Name</h5>
+                                </td>
+                                <td>
+                                    <p>{{$company_details['company_name']}}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Work Location</h5>
+                                </td>
+                                <td>
+                                    <p>{{$permit_details['work_location']}}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="right--side-head">
+                            <tr>
+                                <td>
+                                    <p>فندق الحمرا فورت ومنتجع الشاطئ</p>
+                                </td>
+                                <td>
+                                    <h5>الاسم التجاري</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>فندق الحمرا فورت ومنتجع الشاطئ</p>
+                                </td>
+                                <td>
+                                    <h5>مكان العمل</h5>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+        </header>
+    </htmlpageheader>
+
+    <div class="main">
         <table class="person--details">
             @php
             $i = 1 ;
@@ -291,87 +379,91 @@
             @if($i%2 != 0)
             <tr>
                 @endif
-                <td <?php if($i % 4 ==0){ ?> style="page-break-after: always;" <?php } ?>>
+                <td>
                     <table class="each--person-tab">
                         <tr>
                             <td class="img--box">
-                                <img src="{{url('storage').'/'.$artist_permit->thumbnail}}" alt="No Image">
+                                <div class="img--box-div">
+                                    <img src="{{url('storage').'/'.$artist_permit->thumbnail}}" alt="No Image"
+                                        style="width:100px;height: 100px;object-fit:cover;">
+                                </div>
                             </td>
                             <td class="content--box">
                                 <table>
                                     <tr>
-                                        <th>
-                                            <p>Person Code/ رمز الشخص </p>
-                                        </th>
-                                        <th>
-                                            <p>{{$artist_permit->artist['person_code']}}</p>
-                                        </th>
+                                        <td>
+                                            <h5>Person Code/ رمز الشخص </h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{$artist_permit->artist['person_code']}}</h5>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <th>
-                                            <p>Name</p>
-                                        </th>
-                                        <th>
-                                            <p>اسم</p>
-                                        </th>
+                                        <td>
+                                            <h5>Name</h5>
+                                        </td>
+                                        <td>
+                                            <h5>اسم</h5>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <p>{{$artist_permit->artist['firstname_en'].'
-                                                '.$artist_permit->artist['firstname_en']}}</p>
+                                                '.$artist_permit->artist['lastname_en']}}</p>
                                         </td>
                                         <td>
                                             <p>{{$artist_permit->artist['firstname_ar'].'
-                                                '.$artist_permit->artist['firstname_ar']}}</p>
+                                                '.$artist_permit->artist['lastname_ar']}}</p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>
-                                            <p>Nationality</p>
-                                        </th>
-                                        <th>
-                                            <p>جنسية</p>
-                                        </th>
+                                        <td>
+                                            <h5>Nationality</h5>
+                                        </td>
+                                        <td>
+                                            <h5>جنسية</h5>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <p>{{$artist_permit->artist['Nationality']['nationality_en']}}</p>
                                         </td>
                                         <td>
-                                            <p>{{$artist_permit->artist['Nationality']['country_arNationality']}}</p>
+                                            <p>{{$artist_permit->artist['Nationality']['nationality_ar']}}
+                                            </p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>
-                                            <p>Passport No</p>
-                                        </th>
+                                        <td>
+                                            <h5>Passport No/ رقم جواز السفر</h5>
+                                        </td>
                                         <td>
                                             <p>{{$artist_permit->passport_number}}</p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>
-                                            <p>UID No</p>
-                                        </th>
+                                        <td>
+                                            <h5>UID No/بأرقام تحديد الهوية</h5>
+                                        </td>
                                         <td>
                                             <p>{{$artist_permit->uid_number}}</p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>
-                                            <p>Date of Birth</p>
-                                        </th>
+                                        <td>
+                                            <h5>Date of Birth/تاريخ الميلاد</h5>
+                                        </td>
                                         <td>
                                             <p>{{date('d-m-Y',strtotime($artist_permit->artist['birthdate']))}}</p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>
-                                            <p>Profession</p>
-                                        </th>
-                                        <th>
-                                            <p>جنسية</p>
-                                        </th>
+                                        <td>
+                                            <h5>Profession</h5>
+                                        </td>
+                                        <td>
+                                            <h5>جنسية</h5>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -395,19 +487,20 @@
             @endif
             @endforeach
         </table>
-    </main>
-
-    <footer>
-        <div class="seal--space">
-            <p>Department of Tourism Licensing & Quality Assurance</p>
-        </div>
-        <div class="print--footer">
-            <p>Department of Tourism & Quality Assurance </p>
-            <p>+971 (0)7 2338884 Tel fax +971 (0)72 338118</p>
-            <p>tlqa@raktda.com</p>
-            <p>www.raktda.com</p>
-        </div>
-    </footer>
+    </div>
+    <htmlpagefooter name="page-footer">
+        <footer>
+            <div class="seal--space">
+                <p>Department of Tourism Licensing & Quality Assurance</p>
+            </div>
+            <div class="print--footer">
+                <p>Department of Tourism & Quality Assurance </p>
+                <p>+971 (0)7 2338884 Tel fax +971 (0)72 338118</p>
+                <p>tlqa@raktda.com</p>
+                <p>www.raktda.com</p>
+            </div>
+        </footer>
+    </htmlpagefooter>
 
 </body>
 

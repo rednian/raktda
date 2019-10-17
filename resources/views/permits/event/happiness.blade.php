@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add Event Permit - Smart Government Rak')
+@section('title', ' Event Permit Draft - Smart Government Rak')
 
 @section('content')
 
@@ -38,29 +38,26 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>03</span> Upload Docs
-                                    <Docs></Docs>
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" data-ktwizard-type="step" id="mk_payment">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>04</span> Payment
-                                    <Docs></Docs>
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
-                        </div>
-                        <div class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        </a>
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="happiness">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>05</span> Happiness
-                                    <Docs></Docs>
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
-                        </div>
+                        </a>
 
                     </div>
                 </div>
@@ -132,7 +129,7 @@
                                         </div>
                                     </div>
                                     <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                        <input type="checkbox" id="agree" name="agree"> I Read
+                                        <input type="checkbox" id="agree" name="agree" checked> I Read
                                         and understand all
                                         service rules, And agree to continue submitting it.
                                         <span></span>
@@ -157,6 +154,7 @@
                                                         information</h6>
                                                 </div>
                                             </div>
+                                            <input type="hidden" id="event_id" value="{{$event->event_id}}">
                                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
                                                 data-parent="#accordionExample5">
                                                 <div class="card-body">
@@ -168,13 +166,14 @@
                                                                 Event Type <small>( <span
                                                                         class="text-danger">required</span>
                                                                     )</small></label>
-                                                            <select class="form-control form-control-sm"
+                                                            <select class="form-control form-control-sm "
                                                                 name="event_type_id" id="event_type_id"
                                                                 placeholder="Type"
                                                                 onchange="getRequirementsList(this.value)">
                                                                 <option value="">Select</option>
                                                                 @foreach ($event_types as $pt)
-                                                                <option value="{{$pt->event_type_id}}">
+                                                                <option value="{{$pt->event_type_id}}"
+                                                                    {{$event->event_type_id == $pt->event_type_id ? 'selected' : ''}}>
                                                                     {{ucwords($pt->name_en)}}</option>
                                                                 @endforeach
                                                             </select>
@@ -187,8 +186,9 @@
                                                                 class=" col-form-label kt-font-bold text-right">Event
                                                                 Name <small>( <span class="text-danger">required
                                                                     </span>)</small></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="name_en" id="name_en" placeholder="Event Name">
+                                                            <input type="text" class="form-control form-control-sm "
+                                                                name="name_en" id="name_en" placeholder="Event Name"
+                                                                value="{{$event->name_en}}">
                                                         </div>
 
                                                         <div class=" col-md-4 form-group form-group-sm">
@@ -197,7 +197,8 @@
                                                                 Name - Ar<small>( <span class="text-danger">required
                                                                     </span>)</small></label>
                                                             <input type="text" class="form-control form-control-sm "
-                                                                name="name_ar" id="name_ar" placeholder="Event Name">
+                                                                name="name_ar" id="name_ar" placeholder="Event Name"
+                                                                value="{{$event->name_ar}}">
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-sm ">
@@ -211,9 +212,10 @@
                                                                         <i class="la la-calendar-check-o"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" class="form-control form-control-sm"
+                                                                <input type="text" class="form-control form-control-sm "
                                                                     name="issued_date" id="issued_date"
-                                                                    placeholder="From Date">
+                                                                    placeholder="From Date"
+                                                                    value="{{date('d-m-Y',strtotime($event->issued_date))}}">
 
                                                             </div>
                                                         </div>
@@ -230,8 +232,9 @@
                                                                     </span>
                                                                 </div>
                                                                 <input class="form-control form-control-sm"
-                                                                    value="{{date('h:i a', strtotime('10:00 AM'))}}"
-                                                                    name="time_start" id="time_start" type="text" />
+                                                                    value="{{date('h:i a')}}" name="time_start"
+                                                                    id="time_start" type="text"
+                                                                    value="{{$event->time_start}}" />
 
                                                             </div>
 
@@ -243,7 +246,8 @@
                                                                 Venue <small>( <span class="text-danger">required</span>
                                                                     )</small></label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                name="venue_en" id="venue_en" placeholder="Venue">
+                                                                name="venue_en" id="venue_en" placeholder="Venue"
+                                                                value="{{$event->venue_en}}">
 
                                                         </div>
 
@@ -259,9 +263,10 @@
                                                                         <i class="la la-calendar-check-o"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" class="form-control form-control-sm"
+                                                                <input type="text" class="form-control form-control-sm "
                                                                     name="expired_date" id="expired_date"
-                                                                    placeholder="To Date">
+                                                                    placeholder="To Date"
+                                                                    value={{date('d-m-Y',strtotime($event->expired_date))}}>
 
                                                             </div>
                                                         </div>
@@ -277,9 +282,9 @@
                                                                         <i class="la la-clock-o"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input class="form-control form-control-sm"
-                                                                    value="{{date('h:i a', strtotime('5:00 PM'))}}"
-                                                                    name="time_end" id="time_end" type="text" />
+                                                                <input class="form-control form-control-sm "
+                                                                    name="time_end" id="time_end" type="text"
+                                                                    value={{$event->time_end}} />
 
                                                             </div>
 
@@ -293,8 +298,9 @@
                                                                 Venue - Ar <small>( <span
                                                                         class="text-danger">required</span>
                                                                     )</small></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="venue_ar" id="venue_ar" placeholder="Venue">
+                                                            <input type="text" class="form-control form-control-sm "
+                                                                name="venue_ar" id="venue_ar" placeholder="Venue"
+                                                                value={{$event->venue_ar}}>
                                                         </div>
 
 
@@ -304,7 +310,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <br>
                                     <div class="card">
                                         <div class="card-header" id="headingTwo6">
                                             <div class="card-title collapsed" data-toggle="collapse"
@@ -329,7 +335,8 @@
                                                             <small>( <span class="text-danger">required</span>
                                                                 )</small></label>
                                                         <input type="text" class="form-control form-control-sm "
-                                                            name="address" id="address" placeholder="Address">
+                                                            name="address" id="address" placeholder="Address"
+                                                            value={{$event->address}}>
                                                     </div>
 
                                                     <div class="col-md-4 form-group form-group-sm ">
@@ -340,7 +347,8 @@
                                                             id="emirate_id" onchange="getAreas(this.value)">
                                                             <option value="">Select</option>
                                                             @foreach($emirates as $em)
-                                                            <option value="{{$em->id}}">
+                                                            <option value="{{$em->id}}"
+                                                                {{$em->id == $event->emirate_id ? 'selected' : ''}}>
                                                                 {{$em->name_en}}</option>
                                                             @endforeach
                                                         </select>
@@ -355,7 +363,8 @@
                                                             id="area_id">
                                                             <option value="">Select</option>
                                                             @foreach($areas as $ar)
-                                                            <option value="{{$ar->id}}">
+                                                            <option value="{{$ar->id}}"
+                                                                {{$ar->id == $event->area_id ? 'selected' : ''}}>
                                                                 {{$ar->area_en}}</option>
                                                             @endforeach
                                                         </select>
@@ -366,12 +375,14 @@
                                                             class=" col-form-label kt-font-bold text-right">Country
                                                             <small>( <span class="text-danger">required</span>
                                                                 )</small></label>
-                                                        <select class="form-control form-control-sm " name="country_id"
-                                                            id="country_id">
+                                                        <select
+                                                            class="form-control form-control-sm {{$errors->has('country_id') ? 'is-invalid' : ''}}"
+                                                            name="country_id" id="country_id">
                                                             {{--   - class for search in select  --}}
                                                             <option value="">Select</option>
                                                             @foreach ($countries as $ct)
-                                                            <option value="{{$ct->country_id}}">
+                                                            <option value="{{$ct->country_id}}"
+                                                                {{$event->country_id == $ct->country_id ? 'selected' : ''}}>
                                                                 {{$ct->name_en}}
                                                             </option>
                                                             @endforeach
@@ -396,13 +407,109 @@
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
-                                <form id="documents_required" method="post">
+                                <form id="documents_required">
 
 
                                 </form>
                             </div>
                         </div>
                     </div>
+
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        <div class="kt-form__section kt-form__section--first ">
+                            <div class="kt-wizard-v3__form">
+                                <form id="make_payment">
+                                    <div class="kt-widget5__info pb-4">
+                                        <div class="pb-2">
+                                            <span>From Date:</span>&emsp;
+                                            <span class="kt-font-info">{{$event->issued_date}}
+                                                {{$event->time_start}}</span>&emsp;&emsp;
+                                            <span>To Date:</span>&emsp;
+                                            <span class="kt-font-info">{{$event->expired_date}}
+                                                {{$event->time_end}}</span>&emsp;&emsp;
+                                            <span>Venue:</span>&emsp;
+                                            <span class="kt-font-info">{{$event->venue_en}}
+                                                {{$event->venue_ar}}</span>&emsp;&emsp;
+                                            <span>Reference No:</span>&emsp;
+                                            <span class="kt-font-info">{{$event->reference_number}}</span>&emsp;&emsp;
+                                        </div>
+                                    </div>
+                                    {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless table-striped">
+                                            <thead class="thead-dark">
+                                                <tr class="text-center">
+                                                    <th>Event Name</th>
+                                                    <th>Event Permit Type</th>
+                                                    <th>Fee (AED)</th>
+                                                    <th>VAT(5%)</th>
+                                                    <th>Total (AED) </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-left">
+                                                        {{$event->name_en}} <br />
+                                                        {{$event->name_ar }}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{$event->type['name_en']}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{$event->type['amount']}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{$event->type['amount'] * 0.05}}
+                                                        @php
+                                                        $vat = $event->type['amount'] * 0.05 ;
+                                                        @endphp
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{$event->type['amount'] + $vat}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                            <input type="hidden" id="amount" value="{{$event->type['amount']}}">
+                                            <input type="hidden" id="vat" value="{{$vat}}">
+                                        </table>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        <div class="kt-form__section kt-form__section--first ">
+                            <div class="kt-wizard-v3__form">
+                                <form id="happiness_center">
+                                    <input type="hidden" id="sel_value">
+                                    <div class="d-flex justify-content-around happiness--center">
+                                        <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 1)">
+
+                                            <?php echo file_get_contents('./img/happiness.svg'); ?>
+
+                                        </div>
+                                        <div id="notbad" style="cursor:pointer" onclick="makeSelected(this.id, 2)">
+
+                                            <?php echo file_get_contents('./img/notbad.svg'); ?>
+
+                                        </div>
+                                        <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id, 3)">
+
+                                            <?php echo file_get_contents('./img/sad.svg'); ?>
+
+                                        </div>
+                                        <input type="hidden" id="event" value={{$event->event_id}}>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
 
 
                     <div class="kt-form__actions">
@@ -418,20 +525,12 @@
                             </div>
                         </a>
 
-                        <div class="btn-group" role="group" id="submit--btn-group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Submit
-                            </button>
-                            <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
-                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
-                                    value="finished" id="submit_btn">Finish &
-                                    Submit</button>
-                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
-                                    id="draft_btn">Save
-                                    to Drafts</button>
-                            </div>
+
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-submit" id="submit_btn">
+                            Pay
                         </div>
+
 
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
@@ -442,8 +541,6 @@
                     </div>
 
                 </div>
-
-
 
 
             </div>
@@ -497,10 +594,35 @@
     var documentDetails = {};
 
     $(document).ready(function(){
+        wizard = new KTWizard("kt_wizard_v3");
+        wizard.goTo(5);
+        $('#back_btn').css('display', 'none');
+        $('#next_btn').css('display', 'none');
+        $('#submit_btn').css('display', 'block');
         localStorage.clear();
+        var event_type_id = $('#event_type_id').val();
+        getRequirementsList(event_type_id);
         uploadFunction();
-        $('#submit--btn-group').css('display', 'none');
     });
+
+    function makeSelected(id, value) {
+			// console.log(id);
+			if (id == 'happy') {
+				$('#happy svg path').attr('fill', '#80262b');
+				$('#notbad svg path').attr('fill', '#EA9400');
+				$('#sad svg path').attr('fill', '#EA9400');
+			} else if (id == 'notbad') {
+				$('#notbad svg path').attr('fill', '#80262b');
+				$('#happy svg path').attr('fill', '#EA9400');
+				$('#sad svg path').attr('fill', '#EA9400');
+			} else if (id == 'sad') {
+				$('#sad svg path').attr('fill', '#80262b');
+				$('#happy svg path').attr('fill', '#EA9400');
+				$('#notbad svg path').attr('fill', '#EA9400');
+            }
+
+            $('#sel_value').val(value);
+    }
 
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
@@ -522,6 +644,37 @@
                     showDelete: true,
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                     formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
+                    onLoad: function (obj) {
+
+                        $.ajaxSetup({
+                            headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
+                        });
+                        $.ajax({
+                            cache: false,
+                            url: "{{route('company.event.get_uploaded_docs')}}",
+                            type: 'POST',
+                            data: {eventId: $('#event_id').val() ,reqId: $('#req_id_' + i).val()},
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    let id = obj[0].id;
+                                    let number = id.split("_");
+                                    let issue_datetime = new Date(data['issued_date']);
+                                    let exp_datetime = new Date(data['expired_date']);
+                                    let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                    let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+
+                                    obj.createProgress(data["document_name"], "{{url('storage')}}"+'/' + data["path"], '');
+                                    if (formatted_issue_date != NaN - NaN - NaN) {
+                                        $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                        $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                    }
+                                }
+                            }
+                        });
+
+
+                    },
                     onError: function (files, status, errMsg, pd) {
                         showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
                         pd.statusbar.hide();
@@ -564,16 +717,6 @@
             },
         });
 
-        var docRules = {};
-        var docMessages = {};
-
-
-
-        var documentsValidator = $('#documents_required').validate({
-            rules: docRules,
-            messages: docMessages
-        });
-
 
         $("#check_inst").on("click", function () {
             setThis('none', 'block', 'block', 'none');
@@ -589,24 +732,49 @@
         $("#upload_doc").on("click", function () {
             wizard = new KTWizard("kt_wizard_v3");
             if (!checkForTick()) return;
-            if (wizard.currentStep == 3) {
+            if (wizard.currentStep == 2) {
                 stopNext(eventValidator);
-                return;
             }
-
-            setThis('block', 'none', 'none', 'block');
+            wizard.goTo(3);
+            setThis('block', 'block', 'none', 'none');
         });
+
+        $('#mk_payment').on('click', function(){
+            wizard = new KTWizard("kt_wizard_v3");
+            if(!checkForTick()) return ;
+            if (wizard.currentStep == 2) {
+                stopNext(eventValidator);
+            }
+            if (wizard.currentStep == 3) {
+                stopNext(documentsValidator);
+            }
+            wizard.goTo(4);
+            setThis('block', 'block', 'none', 'none');
+        })
+
+        $('#happiness').on('click', function(){
+            wizard = new KTWizard("kt_wizard_v3");
+            if(!checkForTick()) return ;
+            if (wizard.currentStep == 2) {
+                stopNext(eventValidator);
+            }
+            if (wizard.currentStep == 3) {
+                stopNext(documentsValidator);
+            }
+            setThis('block', 'none', 'none', 'block');
+        })
 
         const setThis = (prev, next, back, submit) => {
             $('#prev_btn').css('display', prev);
             $('#next_btn').css('display', next);
             $('#back_btn').css('display', back);
-            $('#submit--btn-group').css('display', submit);
+            $('#submit_btn').css('display', submit);
         };
 
         const checkForTick = () => {
             wizard = new KTWizard("kt_wizard_v3");
             var result;
+
             if ($('#agree').not(':checked')) {
                 wizard.stop();
                 $('#agree_cb > span').addClass('compulsory');
@@ -618,7 +786,6 @@
                 wizard.goNext();
                 result = true;
             }
-
             return result;
         };
 
@@ -633,8 +800,7 @@
             stopNext(eventValidator);
             KTUtil.scrollTop();// validating the artist details page
             if (eventValidator.form()) {
-                $('#next_btn').css('display', 'none'); // hide the next button
-                $('#submit--btn-group').css('display', 'block');
+                //$('#next_btn').css('display', 'block'); // hide the next button
                 eventdetails = {
                     event_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
@@ -654,6 +820,21 @@
                 localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
                 // insertIntoDrafts(3, JSON.stringify(artistDetails));
             }
+        }
+
+        if (wizard.currentStep == 3) {
+            stopNext(documentsValidator);
+            if(documentsValidator.form())
+            {
+                $('#next_btn').css('display', 'block');
+            }
+        }
+
+        if (wizard.currentStep == 4) {
+
+            $('#next_btn').css('display', 'none');
+            $('#submit_btn').css('display', 'block');
+
         }
         });
 
@@ -711,7 +892,7 @@
                 $('#prev_btn').css('display', 'block');
                 $('#next_btn').css('display', 'block');
             }
-            $('#submit--btn-group').css('display', 'none');
+            $('#submit_btn').css('display', 'none');
         });
 
 
@@ -758,62 +939,9 @@
 
         };
 
-        $('#submit_btn').click((e) => {
-
-            var hasFile = docValidation();
-
-                if (documentsValidator.form() && hasFile) {
-
-                    var ed = localStorage.getItem('eventdetails');
-                    var dd = localStorage.getItem('documentDetails');
-
-                        $.ajax({
-                            url: "{{route('event.store')}}",
-                            type: "POST",
-                            data: {
-                                eventD: ed,
-                                documentD: dd,
-                            },
-                            success: function (result) {
-                                console.log(result);
-                                if(result.message[0]){
-                                    localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}";
-                                }
-                            }
-                        });
-                }
-
-        });
-
-
-
-        $('#draft_btn').click((e) => {
-
-            var hasFile = docValidation();
-
-                if (documentsValidator.form() && hasFile) {
-
-                    var ed = localStorage.getItem('eventdetails');
-                    var dd = localStorage.getItem('documentDetails');
-
-                        $.ajax({
-                            url: "{{route('company.event.add_draft')}}",
-                            type: "POST",
-                            data: {
-                                eventD: ed,
-                                documentD: dd,
-                            },
-                            success: function (result) {
-                                if(result.message[0]){
-                                    localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}";
-                                }
-                            }
-                        });
-                }
-
-        });
+        var docRules = {};
+        var docMessages = {};
+        var documentsValidator = '';
 
 
         function getRequirementsList(id)
@@ -842,6 +970,11 @@
                             docMessages['doc_issue_date_' + j] = '';
                             docMessages['doc_exp_date_' + j] = '';
 
+                            documentsValidator = $('#documents_required').validate({
+                                    rules: docRules,
+                                    messages: docMessages
+                                });
+
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
 
                      }
@@ -851,7 +984,50 @@
                  }
                 }
             });
+
         }
+
+        // var happinessValidatior = $('#happiness_center').validate({
+
+        // })
+
+
+
+
+        $('#submit_btn').click((e) => {
+
+            var hasFile = docValidation();
+
+                if (documentsValidator.form() && hasFile) {
+
+                    var value =  $('#sel_value').val();
+
+                    if(value)
+                    {
+                        $.ajax({
+                            url: "{{route('event.submit_happiness')}}",
+                            type: "POST",
+                            data: {
+                                event_id:$('#event_id').val(),
+                                happiness: value,
+                            },
+                            success: function (result) {
+                                if(result.message[0]){
+                                    window.location.href = "{{route('event.index')}}";
+                                }
+                            }
+                        });
+                    } else {
+                        alert('Please Select Your Experience');
+                    }
+
+
+                }
+
+        });
+
+
+
 
 
 </script>

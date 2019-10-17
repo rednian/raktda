@@ -146,6 +146,7 @@
         </div>
     </header>
 
+
     <table id="license_data" border="1">
         <thead>
             <tr>
@@ -157,7 +158,7 @@
             <tr>
                 <td>RAKIA56RZ03125353</td>
                 <td class="subhead">رقم الرخصة <br />License Number</td>
-                <td>الحمرا مارينا <br />Al Hamra Marina LLC</td>
+                <td>الحمرا مارينا <br />{{$company_details->company_name}}</td>
                 <td class="subhead">اسم المؤسسة <br />Name of Establishment</td>
             </tr>
             <tr>
@@ -165,7 +166,8 @@
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3">بيني جونسون كورين <br /> Benny Johnson Kurein</td>
+                <td colspan="3">بيني جونسون كورين <br />
+                    {{$company_details->contact_person}}</td>
                 <td class="subhead">صاحب الترخيص <br />License owner</td>
             </tr>
         </tbody>
@@ -180,17 +182,17 @@
         </thead>
         <tbody>
             <tr>
-                <td colspan="2">Health and fitness Event</td>
-                <td>الصحة واللياقة الحدث</td>
+                <td colspan="2">{{$event_details->name_en}}</td>
+                <td>{{$event_details->name_ar}}</td>
                 <td class="subhead">اسم الحدث <br />Event Name</td>
             </tr>
             <tr>
-                <td colspan="2">Sport Event without Tickets</td>
-                <td>حدث رياضي بدون تذاكر</td>
+                <td colspan="2">{{$event_details->type['name_en']}}</td>
+                <td>{{$event_details->type['name_ar']}}</td>
                 <td class="subhead">نوع تصريح <br />Permit Type</td>
             </tr>
             <tr>
-                <td colspan="3">TLQA/001/2019</td>
+                <td colspan="3">{{$event_details->permit_number}}</td>
                 <td class="subhead">تصريح لا <br />Permit No</td>
             </tr>
             <tr>
@@ -199,16 +201,16 @@
                 <td class="subhead">فترة التصريح <br />Permit Period</td>
             </tr>
             <tr>
-                <td colspan="3">18/01/2019</td>
+                <td colspan="3">{{$event_details->issued_date}}</td>
                 <td class="subhead">تاريخ التصريح<br /> Permit Date</td>
             </tr>
             <tr>
-                <td colspan="3">18/01/2019</td>
+                <td colspan="3">{{$event_details->expired_date}}</td>
                 <td class="subhead">تاريخ انتهاء الصلاحية <br /> Permit Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="2">Al Hamra Marina</td>
-                <td>انقضاء</td>
+                <td colspan="2">{{$event_details->venue_en}}</td>
+                <td>{{$event_details->venue_ar}}</td>
                 <td class="subhead">موقعك <br />Location</td>
             </tr>
         </tbody>

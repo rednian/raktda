@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Edit Controller
     Route::get('edit_artist/{id}', $artistPermitLink . '\RenewController@edit_artist')->name('company.edit_artist');
+    Route::get('edit_artist_draft/{id}', $artistPermitLink . '\DraftsController@edit_artist_draft')->name('company.edit_artist_draft');
     Route::get('update_checklist/{id}', $artistPermitLink . '\EditController@update_checklist')->name('company.update_checklist');
     Route::get('edit_permit/{id}', $artistPermitLink . '\EditController@edit_permit')->name('company.edit_permit');
     Route::post('get_error_fields_list', $artistPermitLink . '\EditController@get_error_fields_list')->name('company.get_error_fields_list');
@@ -84,20 +85,23 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('amend_permit/{id}', $artistPermitLink . '\AmendController@amend_permit')->name('company.amend_permit');
     Route::get('replace_artist/{id}',  $artistPermitLink . '\AmendController@replace_artist')->name('company.replace_artist');
 
-
-
     Route::resource('event', 'Company\EventController');
-    Route::get('event/payment', 'Company\EventController@payment')->name('company.event.payment');
-    Route::get('event/draft', 'Company\EventController@draft')->name('company.event.draft');
-    Route::get('event/download/{event}', 'Company\EventController@download')->name('company.event.download');
+    Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
+    Route::get('event/payment/{event}', 'Company\EventController@payment')->name('company.event.payment');
+    Route::get('event/draft/{event}', 'Company\EventController@view_draft')->name('company.event.draft');
+    Route::post('event/draft/add', 'Company\EventController@add_draft')->name('company.event.add_draft');
+    Route::post('event/draft/update', 'Company\EventController@update_draft')->name('company.event.update_draft');
+    Route::get('event/download/{id}', 'Company\EventController@download')->name('company.event.download');
     Route::post('event/cancel', 'Company\EventController@cancel')->name('event.cancel');
     Route::get('event/upload/{event}', 'Company\EventController@upload')->name('company.event.upload');
     Route::post('event/reject_reason/{event}', 'Company\EventController@reject_reason')->name('event.reject_reason');
     Route::get('event/cancel_reason/{event}', 'Company\EventController@cancel_reason')->name('company.event.cancel_reason');
-
     Route::get('fetch_applied_events', 'Company\EventController@fetch_applied')->name('company.event.fetch_applied');
     Route::get('fetch_existing_events', 'Company\EventController@fetch_valid')->name('company.event.fetch_valid');
     Route::get('fetch_event_drafts',  'Company\EventController@fetch_draft')->name('company.event.fetch_draft');
-
     Route::get('event/fetch_requirements/{id}', 'Company\EventController@fetch_requirements')->name('company.event.get_requirements');
+    Route::post('event/get_uploaded_docs', 'Company\EventController@get_uploaded_docs')->name('company.event.get_uploaded_docs');
+    Route::post('event/make_payment', 'Company\EventController@make_payment')->name('company.event.make_payment');
+    Route::get('event/happiness/{event}', 'Company\EventController@happiness')->name('event.happiness');
+    Route::post('event/submit_happiness', 'Company\EventController@submit_happiness')->name('event.submit_happiness');
 });
