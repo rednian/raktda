@@ -19,6 +19,38 @@ mix.styles([
     'public/assets/css/demo1/skins/aside/dark.css'
 ], 'public/css/mandatory.css');
 
+mix.styles([
+  'public/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css',
+  'public/assets/vendors/custom/datatables/datatables.bundle.min.css',
+], 'public/css/custom-vendor.css');
+
+mix.styles([
+  'public/assets/vendors/custom/jquery-datatables-checkboxes/dataTables.checkboxes.css',
+  'public/assets/vendors/general/perfect-scrollbar/css/perfect-scrollbar.css',
+  'public/assets/vendors/custom/fancybox-master/dist/jquery.fancybox.css',
+  'public/assets/vendors/custom/fancybox-master/dist/jquery.fancybox.css',
+  'public/assets/vendors/general/tether/dist/css/tether.css',
+  'public/assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css',
+  'public/assets/vendors/general/bootstrap-datetime-picker/css/bootstrap-datetimepicker.css',
+  'public/assets/vendors/general/bootstrap-timepicker/css/bootstrap-timepicker.css',
+  'public/assets/vendors/general/bootstrap-daterangepicker/daterangepicker.css',
+  'public/assets/vendors/general/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.css',
+  'public/assets/vendors/general/bootstrap-select/dist/css/bootstrap-select.css',
+  'public/assets/vendors/general/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css',
+  'public/assets/vendors/general/select2/dist/css/select2.css',
+  'public/assets/vendors/general/ion-rangeslider/css/ion.rangeSlider.css',
+  'public/assets/vendors/general/nouislider/distribute/nouislider.css',
+  'public/assets/vendors/general/owl.carousel/dist/assets/owl.carousel.css',
+  'public/assets/vendors/general/owl.carousel/dist/assets/owl.theme.default.css',
+  'public/assets/vendors/general/dropzone/dist/dropzone.css',
+  'public/assets/vendors/general/summernote/dist/summernote.css',
+  'public/assets/vendors/general/bootstrap-markdown/css/bootstrap-markdown.min.css',
+  'public/assets/vendors/general/animate.css/animate.css',
+  'public/assets/vendors/general/toastr/build/toastr.css',
+  'public/assets/vendors/general/morris.js/morris.css',
+  'public/assets/vendors/general/sweetalert2/dist/sweetalert2.css',
+], 'public/css/vendor.css');
+
 mix.scripts([
     'public/assets/vendors/general/jquery-form/dist/jquery.form.min.js',
     'public/assets/vendors/general/block-ui/jquery.blockUI.js',

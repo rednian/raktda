@@ -10,6 +10,7 @@ use Yajra\DataTables\DataTables;
 
 class EventRequirementController extends Controller
 {
+
 	public function create()
 	{
 		return view('admin.settings.event.create', ['page_title']);
@@ -19,6 +20,7 @@ class EventRequirementController extends Controller
 	{
 
 	}
+
 	public function datatable(Request $request)
 	{
 		if($request->ajax()){

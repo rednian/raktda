@@ -52,7 +52,7 @@ $(document).ready(function(){
         }
     });
 
-    // $('table').wrap('<div class="table-responsive"></div>');
+    $('table').wrap('<div class="table-responsive"></div>');
 
     // select2 settings
     $('.select2').select2({dropdownAutoWidth: true});
