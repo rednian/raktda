@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class EventRequirement extends Model
 {
-    protected $table = 'event_requirement';
-    protected $primaryKey = 'event_requirement_id';
-    protected $dates = ['created_at', 'updated_at'];
-    protected $fillable = ['event_id', 'event_type_id', 'path', 'issued_date', 'expired_date'];
+	protected $table = 'event_requirement';
+	protected $primaryKey = 'event_requirement_id';
+	protected $dates = ['created_at', 'updated_at'];
+	protected $fillable = ['event_id', 'event_type_id', 'path', 'issued_date', 'expired_date', 'requirement_id'];
+
+	public function requirement()
+	{
+		return $this->belongsTo(Requirement::class, 'requirement_id')->where('requirement_type', 'event');
+	}
 
     public function type()
     {
@@ -18,5 +23,9 @@ class EventRequirement extends Model
     public function event()
     {
         return $this->belongsTo(Event::class, 'event_id');
+    }
+    public function requirement()
+    {
+        return $this->belongsTo(Requirement::class, 'requirement_id');
     }
 }

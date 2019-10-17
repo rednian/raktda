@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
+
 <!-- begin:: Content -->
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="kt-portlet">
@@ -620,8 +621,8 @@
                                             @php
                                             $i = 1;
                                             $user_id = Auth::user()->user_id;
-                                            $issued_date = strtotime(session($user_id.'_apn_from_date'));
-                                            $expired_date = strtotime(session($user_id.'_apn_to_date'));
+                                            $issued_date = strtotime($artist_details->issue_date);
+                                            $expired_date = strtotime($artist_details->expiry_date);
                                             $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
                                             @endphp
                                             @foreach ($requirements as $req)
@@ -652,13 +653,17 @@
                                                         Date</label>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                        id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                                        id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" <?php
+                                                        if($req->validity != null || $req->validity != 0) {
+                                                    ?> onchange="set_document_expiry({{$req->validity}}, {{$i}})"
+                                                        <?php } ?> />
                                                 </div>
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
                                                         title="Expiry Date">Expiry
                                                         Date</label>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
+                                                    <input type="text"
+                                                        class="form-control form-control-sm date-picker {{($req->validity != null || $req->validity != 0) ? 'mk-disabled' : ''}}"
                                                         name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                         id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
                                                 </div>
@@ -687,7 +692,7 @@
                         </div>
                         <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
 
-                        <a href="{{url('company/add_new_permit').'/'.$artist_details->id}}">
+                        <a href="{{url('company/view_draft_details').'/'.$artist_details->permit_id}}">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
@@ -752,6 +757,19 @@
 
     });
 
+    function set_document_expiry(validity, id){
+        // alert(validity);
+        var noOfMonths = validity != 0 ? validity : 0 ;
+        var issue_date = $('#doc_issue_date_'+id).val();
+        var issue_date_year_format = moment(issue_date, 'DD-MM-YYYY' ).format('YYYY-MM-DD');
+        var expiryMonth = moment(issue_date_year_format).add(noOfMonths, 'M');
+        // var expiryMonthEnd = moment(expiryMonth).endOf('month');
+        // if(issue_date_year_format.date() != expiryMonth.date() && expiryMonth.isSame(expiryMonthEnd.format('YYYY-MM-DD'))){
+        //     expiryMonth = expiryMonth.add(1, 'd');
+        // }
+        $('#doc_exp_date_'+id).val(expiryMonth.format('DD-MM-YYYY'));
+    }
+
 
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
@@ -776,7 +794,7 @@
                 maxFileCount:1,
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
+                formData: {id: i, reqId: $('#req_id_'+i).val() , artistNo: $('#artist_number_doc').val()},
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();
@@ -796,12 +814,10 @@
                                 // console.log('../../storage/'+data[0]["path"]);
                                 let id = obj[0].id;
                                 let number = id.split("_");
-                                let issue_datetime = new Date(data.issued_date);
-                                let exp_datetime = new Date(data.expired_date);
-                                let formatted_issue_date = appendLeadingZeroes(issue_datetime.getDate()) + "-" + appendLeadingZeroes(issue_datetime.getMonth() + 1) + "-" + issue_datetime.getFullYear();
-                                let formatted_exp_date = appendLeadingZeroes(exp_datetime.getDate()) + "-" + appendLeadingZeroes(exp_datetime.getMonth() + 1) + "-" + exp_datetime.getFullYear();
+                                let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
 
-                                obj.createProgress(data.document_name,"{{url('/storage')}}"+'/'+data.path,'');
+                                obj.createProgress(data.requirement['requirement_name'],"{{url('/storage')}}"+'/'+data.path,'');
                                 if(formatted_issue_date != NaN-NaN-NaN)
                                 {
                                     $('#doc_issue_date_'+number[1]).val(formatted_issue_date);

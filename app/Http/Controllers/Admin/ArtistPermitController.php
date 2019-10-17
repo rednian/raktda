@@ -372,6 +372,8 @@ class ArtistPermitController extends Controller
     public function dataTable(Request $request)
     {
      if($request->ajax()){
+//     	dd($request->all());
+
      	$limit = $request->length;
      	$start = $request->start;
 
@@ -384,7 +386,7 @@ class ArtistPermitController extends Controller
 	         	$q->whereDate('issued_date', '<=', $request->issued_date);
 	         })
 	         ->when($request->request_type, function ($q) use ($request){
-	         	$q->where('request_type', $request->request_type);
+	         	$q->whereIn('request_type', $request->request_type);
 	         })
 	         ->when($request->permit_status, function($q) use ($request){
 	         	$q->where('permit_status', $request->permit_status);

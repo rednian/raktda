@@ -151,448 +151,8 @@
                         <!--end: Form Wizard Step 1-->
 
 
-                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-                                    <form id="artist_details">
-                                        <div class="accordion accordion-solid accordion-toggle-plus"
-                                            id="accordionExample5">
-                                            <div class="card">
-                                                <div class="card-header" id="headingOne6">
-                                                    <div class="card-title collapsed" data-toggle="collapse"
-                                                        data-target="#collapseOne6" aria-expanded="true"
-                                                        aria-controls="collapseOne6">
-                                                        <h6 class="kt-font-transform-u">Personal
-                                                            information</h6>
-                                                    </div>
-                                                </div>
-                                                <div id="collapseOne6" class="collapse show"
-                                                    aria-labelledby="headingOne6" data-parent="#accordionExample5">
-                                                    <div class="card-body">
-                                                        <input type="hidden" id="artist_id"
-                                                            value="{{$artist_details->artist_id}}" />
-                                                        <input type="hidden" id="is_old_artist" />
-                                                        <div class="row">
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="artist_number"
-                                                                    class=" col-form-label kt-font-bold text-right">Person
-                                                                    Code</label><span id="changeArtistLabel"
-                                                                    class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                                    onclick="removeSelectedArtist()">Change </span>
-                                                                <input type="hidden" id="artist_number" value={{1}}>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="code" id="code" placeholder="Person Code"
-                                                                    value="{{$artist_details->person_code}}">
-                                                            </div>
-                                                            <div class="col-md-4 form-group form-group-xs">
-                                                                <label for="fname_en"
-                                                                    class=" col-form-label kt-font-bold text-right">First
-                                                                    Name <small>( <span class="text-danger">required
-                                                                        </span>)</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="fname_en" id="fname_en"
-                                                                    placeholder="First Name"
-                                                                    value="{{$artist_details->firstname_en  }}">
-                                                            </div>
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="fname_en"
-                                                                    class=" col-form-label kt-font-bold text-right">Last
-                                                                    Name <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="lname_en" id="lname_en"
-                                                                    placeholder="Last Name"
-                                                                    value="{{$artist_details->lastname_en  }}">
-                                                            </div>
-
-                                                            <input type="hidden" id="artist_permit_num">
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="profession"
-                                                                    class=" col-form-label kt-font-bold text-right">
-                                                                    Profession <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <select class="form-control form-control-sm "
-                                                                    name="profession" id="profession"
-                                                                    placeholder="Profession">
-                                                                    <option value="">Select</option>
-                                                                    @foreach ($profession as $pt)
-                                                                    <option value="{{$pt->profession_id}}"
-                                                                        <?php if($pt->profession_id == $artist_details->profession_id){ echo 'selected' ;}?>>
-                                                                        {{ucwords($pt->name_en)}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="fname_ar"
-                                                                    class=" col-form-label kt-font-bold text-right">First
-                                                                    Name - Ar <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text"
-                                                                    class="form-control form-control-sm text-right "
-                                                                    name="fname_ar" id="fname_ar"
-                                                                    placeholder="First Name in Arabic"
-                                                                    value="{{$artist_details->firstname_ar}}">
-                                                            </div>
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="lname_ar"
-                                                                    class=" col-form-label kt-font-bold text-right">Last
-                                                                    Name - Ar <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text"
-                                                                    class="form-control form-control-sm text-right "
-                                                                    name="lname_ar" id="lname_ar"
-                                                                    placeholder="Last Name in Arabic"
-                                                                    value="{{$artist_details->lastname_ar}}">
-                                                            </div>
-                                                            {{-- {{dd($artist_details)}} --}}
-                                                            <div
-                                                                class="col-md-4 for                    m-group form-group-sm ">
-                                                                <label for="nationality"
-                                                                    class=" col-form-label kt-font-bold text-right">Nationality
-                                                                    <small>( <span class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <select class="form-control form-control-sm "
-                                                                    name="nationality" id="nationality">
-                                                                    {{--   - class for search in select  --}}
-                                                                    <option value="">Select</option>
-                                                                    @foreach ($countries as $ct)
-                                                                    <option value="{{$ct->country_id}}" <?php
-                                                if($ct->country_id == $artist_details->nationality)
-                                                { echo 'selected ' ;}
-                                                                                     ?>>
-                                                                        {{$ct->nationality_en}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="dob"
-                                                                    class=" col-form-label kt-font-bold text-right">Birth
-                                                                    Date <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    placeholder="DD-MM-YYYY" data-date-end-date="0d"
-                                                                    name="dob" id="dob"
-                                                                    value="{{date('d-m-Y', strtotime($artist_details->birthdate))}}" />
-                                                            </div>
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="dob"
-                                                                    class=" col-form-label kt-font-bold text-right">Gender
-                                                                    <small>( <span class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <select class=" form-control form-control-sm "
-                                                                    name="gender" id="gender">
-                                                                    <option value="">Select</option>
-                                                                    <option value="1"
-                                                                        <?php if($artist_details->gender == 1) { echo 'selected' ; } ?>>
-                                                                        Male</option>
-                                                                    <option value="2"
-                                                                        <?php if($artist_details->gender == 2) { echo 'selected' ; } ?>>
-                                                                        Female</option>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="profession"
-                                                                    class=" col-form-label kt-font-bold text-right">Passport
-                                                                    No <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="passport" id="passport"
-                                                                    placeholder="Passport Number"
-                                                                    value="{{$artist_details->passport_number}}">
-                                                            </div>
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="pp_expiry"
-                                                                    class=" col-form-label kt-font-bold text-right">Passport
-                                                                    Expire Date <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text"
-                                                                    class="form-control form-control-sm date-picker "
-                                                                    placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                                    name="pp_expiry" id="pp_expiry"
-                                                                    value="{{date('d-m-Y', strtotime($artist_details->passport_expire_date))}}" />
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="id_no"
-                                                                    class=" col-form-label kt-font-bold text-right">Identification
-                                                                    No <small>( optional
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="id_no" id="id_no"
-                                                                    placeholder="Identification No."
-                                                                    value="{{$artist_details->emirates_id}}">
-                                                            </div>
-
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="visa_type"
-                                                                    class=" col-form-label kt-font-bold text-right">Visa
-                                                                    Type <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <select type="text"
-                                                                    class="form-control form-control-sm "
-                                                                    name="visa_type" id="visa_type">
-                                                                    <option value="">Select</option>
-                                                                    @foreach ($visatypes as $vt)
-                                                                    <option value={{$vt->id}} <?php
-
-                                                                            if($vt->id == $artist_details->visa_type){
-                                                                                echo 'selected' ;
-                                                                            }
-                                                                            ?>>{{$vt->visa_type_en}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="visa_number"
-                                                                    class=" col-form-label kt-font-bold text-right">Visa
-                                                                    Number <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="visa_number" id="visa_number"
-                                                                    placeholder="Visa Number"
-                                                                    value="{{$artist_details->visa_number}}">
-                                                            </div>
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="visa_number"
-                                                                    class=" col-form-label kt-font-bold text-right">Visa
-                                                                    Expire Date <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text"
-                                                                    class="form-control form-control-sm date-picker "
-                                                                    placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                                    name="visa_expiry" id="visa_expiry"
-                                                                    value="{{date('d-m-Y', strtotime($artist_details->visa_expire_date))}}" />
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="uid_number"
-                                                                    class=" col-form-label kt-font-bold text-right">UID
-                                                                    <small>( <span class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="uid_number" id="uid_number"
-                                                                    placeholder="UID Number"
-                                                                    value="{{$artist_details->uid_number}}">
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="dob"
-                                                                    class=" col-form-label kt-font-bold text-right">UID
-                                                                    Expire Date <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text"
-                                                                    class="form-control form-control-sm date-picker "
-                                                                    placeholder="DD-MM-YYYY" data-date-start-date="30d"
-                                                                    name="uid_expiry" id="uid_expiry"
-                                                                    value="{{date('d-m-Y', strtotime($artist_details->uid_expire_date))}}" />
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="language"
-                                                                    class=" col-form-label kt-font-bold text-right">Languages
-                                                                    <small>( optional )</small></label>
-                                                                <select class=" form-control form-control-sm "
-                                                                    name="language" id="language">
-                                                                    <option value="">Select</option>
-                                                                    @foreach ($languages as $lang)
-                                                                    <option value={{$lang->id}} <?php
-                                                                            if($lang->id == $artist_details->language){
-                                                                                echo 'selected';
-                                                                            }
-                                                                            ?>>{{$lang->name_en}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="sp_name"
-                                                                    class=" col-form-label kt-font-bold text-right">Sponser
-                                                                    Name <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="sp_name" id="sp_name"
-                                                                    placeholder="Sponser Name"
-                                                                    value="{{$artist_details->sponsor_name_en}}">
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="religion"
-                                                                    class=" col-form-label kt-font-bold text-right">Religion
-                                                                    <small>( optional )</small></label>
-                                                                <select class=" form-control form-control-sm "
-                                                                    name="religion" id="religion">
-                                                                    <option value="">Select</option>
-                                                                    @foreach ($religions as $reli)
-                                                                    <option value={{$reli->id}} <?php
-                                                                        if($reli->id == $artist_details->religion){
-                                                                            echo 'selected';
-                                                                        }
-                                                                        ?>>{{$reli->name_en}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card">
-                                                <div class="card-header" id="headingTwo6">
-                                                    <div class="card-title collapsed" data-toggle="collapse"
-                                                        data-target="#collapseTwo6" aria-expanded="false"
-                                                        aria-controls="collapseTwo6">
-                                                        <h6 class="kt-font-transform-u">Contact
-                                                            information
-                                                        </h6>
-                                                    </div>
-                                                </div>
-                                                <div id="collapseTwo6" class="collapse show"
-                                                    aria-labelledby="headingTwo6" data-parent="#accordionExample5">
-                                                    <div class="card-body">
-
-                                                        <div class="row">
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="mobile"
-                                                                    class=" col-form-label kt-font-bold text-right">Mobile
-                                                                    No <small>( <span
-                                                                            class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="mobile" id="mobile" placeholder="Mobile No."
-                                                                    value="{{$artist_details->mobile_number}}">
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="email"
-                                                                    class=" col-form-label kt-font-bold text-right">Email
-                                                                    <small>( <span class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    placeholder="Email" name="email" id="email"
-                                                                    value="{{$artist_details->email}}" />
-                                                            </div>
-
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="address"
-                                                                    class=" col-form-label kt-font-bold text-right">Address
-                                                                    <small>( <span class="text-danger">required</span>
-                                                                        )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="address" id="address" placeholder="Address"
-                                                                    value="{{$artist_details->address_en}}">
-                                                            </div>
-
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="landline"
-                                                                    class=" col-form-label kt-font-bold text-right">Phone
-                                                                    No <small>( optional )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="landline" id="landline"
-                                                                    placeholder="Landline No."
-                                                                    value="{{$artist_details->phone_number}}">
-                                                            </div>
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="fax_no"
-                                                                    class=" col-form-label kt-font-bold text-right">Fax
-                                                                    No <small>( optional )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="fax_no" id="fax_no" placeholder="Fax No"
-                                                                    value="{{$artist_details->fax_number}}">
-                                                            </div>
-
-                                                            {{-- </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="card">
-                                                        <div class="card-header" id="headingThree6">
-                                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                                data-target="#collapseThree6" aria-expanded="false"
-                                                                aria-controls="collapseThree6">
-                                                                <h6 class="kt-font-transform-u">Address
-                                                                    information</h6>
-                                                            </div>
-                                                        </div>
-                                                        <div id="collapseThree6" class="collapse show"
-                                                            aria-labelledby="headingThree6" data-parent="#accordionExample5">
-                                                            <div class="card-body">
-                                                                <div class="row"> --}}
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="address"
-                                                                    class=" col-form-label kt-font-bold text-right">Emirate
-                                                                    <small>( optional )</small></label>
-                                                                <select class=" form-control form-control-sm "
-                                                                    name="city" id="city"
-                                                                    onChange="getAreas(this.value)">
-                                                                    <option value="">Select</option>
-                                                                    @foreach ($emirates as $em)
-                                                                    <option value={{$em->id}}>{{$em->name_en}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="address"
-                                                                    class=" col-form-label kt-font-bold text-right">Area
-                                                                    <small>( optional )</small></label>
-                                                                <select class="  form-control form-control-sm "
-                                                                    name="area" id="area">
-                                                                    <option value="">Select</option>
-
-                                                                </select>
-                                                            </div>
-
-
-
-
-
-                                                            <div class="col-md-4 form-group form-group-sm ">
-                                                                <label for="email"
-                                                                    class=" col-form-label kt-font-bold text-right">PO
-                                                                    Box <small>( optional )</small></label>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="po_box" id="po_box" placeholder="PO box">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div> {{---end accordion---}}
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        @include('permits.artist.common.edit-artist-details-html', [ 'artist_details' =>
+                        $artist_details]);
 
 
 
@@ -830,19 +390,7 @@
                 },
                 downloadCallback:function(filename,pd)
                 {
-                    // $.ajaxSetup({
-                    //     headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-                    //     });
-                    //     $.ajax({
-                    //         url: "{{route('company.download_file')}}",
-                    //         type: 'POST',
-                    //         data: {artist_permit: $('#artist_permit_num').val(), name: filename},
-                    //         success: function(data)
-                    //         {
-                    //             console.log(data);
-                    //         }
-                    //     });
-                    // location.href="download.php?filename="+filename;
+
                 }
             });
             $('#fileuploader_'+i+' div').attr('id', 'ajax-upload_'+i);
@@ -874,7 +422,7 @@
                 showFileSize: false,
                 showFileCounter: false,
                 previewHeight: '200px',
-                previewWidth: '200px',
+                previewWidth: "auto",
                 abortStr: '',
                 showPreview:true,
                 showDelete: true,
@@ -917,7 +465,6 @@
                 lname_en: 'required',
                 lname_ar: 'required',
                 profession: 'required',
-                permit_type: 'required',
                 dob: 'required',
                 uid_number: 'required',
                 uid_expiry: 'required',
@@ -948,7 +495,6 @@
                 dob: '',
                 uid_number: '',
                 uid_expiry: '',
-                permit_type: '',
                 passport: '',
                 pp_expiry: '',
                 visa_type: '',
@@ -1058,7 +604,6 @@
                     lname_ar:  $('#lname_ar').val(),
                     nationality: $('#nationality').val(),
                     profession: $('#profession').val(),
-                    permit_type: $('#permit_type').val(),
                     passport: $('#passport').val(),
                     ppExp: $('#pp_expiry').val(),
                     visaType: $('#visa_type').val(),
@@ -1167,7 +712,7 @@
                     if(result.message[0] == 'success')
                     {
                         localStorage.clear();
-                        window.location.href="{{url('company/add_new_permit')}}"+'/'+ permit_id;
+                        window.location.href="{{url('company/renew_permit')}}"+'/'+ permit_id;
                     }
                 }
             });

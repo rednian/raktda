@@ -47,10 +47,9 @@
                             <tr class="text-center">
                                 <th>Artist Name</th>
                                 <th>Artist Permit Type</th>
-                                <th>Fee (AED)</th>
-                                <th>Extras (AED)</th>
-                                <th>VAT(5%)</th>
-                                <th>Total (AED) </th>
+                                <th class="text-right">Fee (AED)</th>
+                                <th class="text-right">VAT(5%)</th>
+                                <th class="text-right">Total (AED) </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,26 +62,25 @@
                             @foreach($permit_details->artistPermit as $ap)
                             @if($ap->artist_permit_status == 'approved')
                             <tr>
-                                <td class="text-left">{{$ap->artist['firstname_en'] .' '.$ap->lastname_en }}</td>
-                                <td class="text-left">
+                                <td class="text-center">{{$ap->artist['firstname_en'] .' '.$ap->artist['lastname_en'] }}
+                                </td>
+                                <td class="text-center">
                                     {{$ap->profession['name_en']}}
                                 </td>
                                 <td class="text-right">
-                                    {{$ap->profession['amount']}}
+                                    {{number_format($ap->profession['amount'],2)}}
                                     @php
                                     $fee+=$ap->profession['amount'];
                                     $vat = $ap->profession['amount'] * 0.05;
                                     $vat_t+= $vat;
                                     @endphp
                                 </td>
+
                                 <td class="text-right">
-                                    0
+                                    {{number_format($vat,2)}}
                                 </td>
                                 <td class="text-right">
-                                    {{$vat}}
-                                </td>
-                                <td class="text-right">
-                                    {{$ap->profession['amount'] + $vat}}
+                                    {{number_format($ap->profession['amount'] + $vat, 2)}}
                                 </td>
                             </tr>
                             @endif
@@ -94,16 +92,14 @@
                                     Total
                                 </td>
                                 <td class="kt-font-bold text-right">
-                                    {{$fee}}
+                                    {{number_format($fee,2)}}
+                                </td>
+
+                                <td class="kt-font-bold text-right">
+                                    {{number_format($vat_t,2)}}
                                 </td>
                                 <td class="kt-font-bold text-right">
-                                    {{$extras}}
-                                </td>
-                                <td class="kt-font-bold text-right">
-                                    {{$vat_t}}
-                                </td>
-                                <td class="kt-font-bold text-right">
-                                    {{$fee+$extras+$vat_t}}
+                                    {{number_format($fee+$extras+$vat_t,2)}}
                                 </td>
                             </tr>
                         </tfoot>

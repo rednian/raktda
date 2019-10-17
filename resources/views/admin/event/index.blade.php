@@ -1,127 +1,100 @@
 @extends('layouts.admin.admin-app')
 @section('style')
-	 <link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
 @stop
 @section('content')
 
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
 			<div class="kt-portlet__body kt-padding-t-5">
-				 <ul class="nav nav-tabs kt-margin-t-15 " role="tablist" id="artist-permit-nav">
-						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#kt_tabs_1_1" data-target="#kt_tabs_1_1">New Event Requests</a></li>
-						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#kt_tabs_1_2">Processing Events</a></li>
-						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#kt_tabs_1_3">Active Events</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kt_tabs_1_4">Archive Event</a></li>
+				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
+						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">New Event Requests</a></li>
+						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#proecessing-permit">Processing Events</a></li>
+						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Events</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archieve-permit">Archive Event</a></li>
 				 </ul>
 				 <div class="tab-content">
-						<div class="tab-pane show fade active" id="kt_tabs_1_1" role="tabpanel">
-							 <div class="accordion accordion-solid accordion-toggle-plus kt-margin-b-15" id="accordionExample6">
-									<div class="card">
-										 <div class="card-header" id="headingOne6">
-												<div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true"
-														 aria-controls="collapseOne6">
-													 <h6 class="kt-font-dark kt-font-transform-u"><i class="fa fa-filter"></i> Filters</h6>
-												</div>
-										 </div>
-										 <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6">
-												<div class="card-body  kt-padding-10 border kt-margin-t-5">
-													 <section class="row">
-																 <div class="col-2 col-xs-12">
-																		<div class="form-group form-group-xs">
-																			 <div class="kt-checkbox-inline kt-margin-t-20 kt-padding-t-10">
-																					<label class="kt-checkbox kt-checkbox--dark">
-																						 <input type="checkbox" name="today" data-type="new_request"> Submitted Today
-																						 <span></span>
-																					</label>
-																			 </div>
-																		</div>
-																 </div>
-																 <div class="col-2 col-xs-12">
-																		<div class="form-group form-group-xs">
-																			 <label>Applied Date</label>
-																			 <input type="text" class=" form-control form-control-sm" autocomplete="off" name="permit_start">
-																		</div>
-																 </div>
-																 <div class="col-2 col-xs-12">
-																		<div class="form-group form-group-xs">
-																			 <label>Permit Status</label>
-																			 <select class="form-control form-control-sm custom-select custom-select-sm">
-																					<option selected disabled>All Status</option>
-																					<option value="new">New</option>
-																					<option value="amend">Amend</option>
-																					<option value="unprocessed">Unprocessed</option>
-																			 </select>
-																		</div>
-																 </div>
-																 <div class="col-2 col-xs-12">
-																		<div class="form-group form-group-xs">
-																			 <label>Applicant Type</label>
-																			 <select class="form-control form-control-sm custom-select-sm custom-select">
-																					<option selected disabled>All Type</option>
-																					<option value="amend">Individual</option>
-																					<option value="new">Company</option>
-																					<option value="renew">Government</option>
-																			 </select>
-																		</div>
-																 </div>
-															</section>
-												</div>
-										 </div>
-									</div>
-							 </div>
-							 <table class="table table-head-noborder table-borderless table-striped" id="new-event-request">
+						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
+               @include('admin.artist_permit.includes.summary')
+							 <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
+									<label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
+									<select onchange="newEventTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15" id="new-permit-status">
+										 <option value="new">New</option>
+										 <option value="amend">Amend</option>
+									</select>
+									<label for="inlineFormInputName2" class="kt-margin-5"></label>
+									<select onchange="newEventTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15" id="new-applicant-type">
+										 <option value="1">Private</option>
+										 <option value="3">Government</option>
+										 <option value="2">Individual</option>
+									</select>
+									<label for="inlineFormInputName2"></label>
+									<input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
+							 </section>
+							 
+							 <table class="table table-hover " id="new-event-request">
 									<thead class="thead-dark">
 									<tr>
 										 <th>Reference No.</th>
+										 <th>Establishment</th>
+										 <th>Permit Owner</th>
 										 <th>Event Name</th>
-										 <th>Person Applied</th>
 										 <th>Applied Date</th>
 										 <th>Applicant Type</th>
-										 <th>Start On</th>
+										 <th>Start Date</th>
 										 <th>Status</th>
 									</tr>
 									</thead>
 							 </table>
 						</div>
-						<div class="tab-pane fade" id="kt_tabs_1_2" role="tabpanel">
+						<div class="tab-pane fade" id="proecessing-permit" role="tabpanel">
+               @include('admin.artist_permit.includes.summary')
 							 <table class="table table-head-noborder table-borderless table-striped" id="new-event-processing">
 									<thead class="thead-dark">
-									<tr>
-										 <th>Reference No.</th>
-										 <th>Establishment</th>
-										 <th>Event Name</th>
-										 <th>Applied Date</th>
-										 <th>Start On</th>
-										 <th>Status</th>
-									</tr>
-									</thead>
+                  <tr>
+                     <th>Reference No.</th>
+                     <th>Establishment</th>
+                     <th>Permit Owner</th>
+                     <th>Event Name</th>
+                     <th>Applied Date</th>
+                     <th>Applicant Type</th>
+                     <th>Start Date</th>
+                     <th>Status</th>
+                  </tr>
+                  </thead>
 							 </table>
 						</div>
-						<div class="tab-pane fade" id="kt_tabs_1_3" role="tabpanel">
+						<div class="tab-pane fade" id="=active-permit" role="tabpanel">4
+               @include('admin.artist_permit.includes.summary')
 							 <table class="table table-head-noborder table-borderless table-striped" id="new-event-active">
 									<thead class="thead-dark">
-									<tr>
-										 <th>Reference No.</th>
-										 <th>Establishment</th>
-										 <th>Event Name</th>
-										 <th>Applied Date</th>
-										 <th>Start On</th>
-										 <th>Status</th>
-									</tr>
-									</thead>
+                  <tr>
+                     <th>Reference No.</th>
+                     <th>Establishment</th>
+                     <th>Permit Owner</th>
+                     <th>Event Name</th>
+                     <th>Applied Date</th>
+                     <th>Applicant Type</th>
+                     <th>Start Date</th>
+                     <th>Status</th>
+                  </tr>
+                  </thead>
 							 </table>
 						</div>
-						<div class="tab-pane fade" id="kt_tabs_1_4" role="tabpanel">
+						<div class="tab-pane fade" id="archieve-permit" role="tabpanel">
+               @include('admin.artist_permit.includes.summary')
 							 <table class="table table-head-noborder table-borderless table-striped" id="new-event-archive">
 									<thead class="thead-dark">
-									<tr>
-										 <th>Reference No.</th>
-										 <th>Establishment</th>
-										 <th>Event Name</th>
-										 <th>Applied Date</th>
-										 <th>Start On</th>
-										 <th>Status</th>
-									</tr>
-									</thead>
+                  <tr>
+                     <th>Reference No.</th>
+                     <th>Establishment</th>
+                     <th>Permit Owner</th>
+                     <th>Event Name</th>
+                     <th>Applied Date</th>
+                     <th>Applicant Type</th>
+                     <th>Start Date</th>
+                     <th>Status</th>
+                  </tr>
+                  </thead>
 							 </table>
 						</div>
 				 </div>
@@ -130,6 +103,7 @@
 @endsection
 @section('script')
 	 <script type="text/javascript">
+			var newEventTable = {};
      var artistPermit = {};
      var filter = {
        today: null,
@@ -146,6 +120,17 @@
        processing();
        active();
        archive();
+
+       var hash = window.location.hash;
+        hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+
+        $('.nav-tabs a').click(function (e) {
+          $(this).tab('show');
+          var scrollmem = $('body').scrollTop();
+          window.location.hash = this.hash;
+          $('html,body').scrollTop(scrollmem);
+        });
+
        $('.nav-tabs a').on('shown.bs.tab', function (event) {
          var current_tab = $(event.target).text();
          if (current_tab == 'New Event Requests') {
@@ -155,105 +140,115 @@
      });
 
      function archive() {
-       $('table#new-event-archive').DataTable({
-         ajax: {
-           url: '{{ route('admin.event.datatable') }}',
-           data: function (d) {
-             d.status = ['rejected', 'cancelled', 'expired'];
-           }
-         },
-         columnDefs: [
-           {targets: [0, 3, 4, 5], className: 'no-wrap'}
-         ],
-         columns: [
-           {data: 'reference_number'},
-           {data: 'company_name'},
-           {data: 'event_name'},
-           {data: 'created_at'},
-           {data: 'start_date'},
-           {data: 'status'}
-         ],
-         createdRow: function (row, data, index) {
-           $(row).click(function () {
-             location.href = '{{ url('/event') }}/' + data.event_id + '/application';
-           });
-         }
-       });
+      $('table#new-event-archive').DataTable({
+        ajax: {
+          url: '{{ route('admin.event.datatable') }}',
+          data: function (d) {
+            d.status = $('select#new-permit-status').val();
+            d.type = $('select#new-applicant-type').val();
+          }
+        },
+        columnDefs: [
+          {targets: '_all', className: 'no-wrap'}
+        ],
+        columns: [
+          {data: 'reference_number'},
+          {data: 'establishment_name'},
+          {data: 'owner'},
+          {data: 'event_name'},
+          {data: 'created_at'},
+          {data: 'type'},
+          {data: 'start'},
+          {data: 'status'}
+        ],
+        createdRow: function (row, data, index) {
+          $(row).click(function () {
+            location.href = '{{ url('/event') }}/' + data.event_id + '/application';
+          });
+        }
+      });
      }
 
      function active() {
-
-       $('table#new-event-active').DataTable({
-         ajax: {
-           url: '{{ route('admin.event.datatable') }}',
-           data: function (d) {
-             d.status = ['active'];
-
-           }
-         },
-         columnDefs: [
-           {targets: [0, 3, 4, 5], className: 'no-wrap'}
-         ],
-         columns: [
-           {data: 'reference_number'},
-           {data: 'company_name'},
-           {data: 'event_name'},
-           {data: 'created_at'},
-           {data: 'start_date'},
-           {data: 'status'}
-         ],
-         createdRow: function (row, data, index) {
-           $(row).click(function () {
-             location.href = '{{ url('/event') }}/' + data.event_id + '/application';
-           });
-         }
-       });
+      $('table#new-event-active').DataTable({
+        ajax: {
+          url: '{{ route('admin.event.datatable') }}',
+          data: function (d) {
+            d.status = $('select#new-permit-status').val();
+            d.type = $('select#new-applicant-type').val();
+          }
+        },
+        columnDefs: [
+          {targets: '_all', className: 'no-wrap'}
+        ],
+        columns: [
+          {data: 'reference_number'},
+          {data: 'establishment_name'},
+          {data: 'owner'},
+          {data: 'event_name'},
+          {data: 'created_at'},
+          {data: 'type'},
+          {data: 'start'},
+          {data: 'status'}
+        ],
+        createdRow: function (row, data, index) {
+          $(row).click(function () {
+            location.href = '{{ url('/event') }}/' + data.event_id + '/application';
+          });
+        }
+      });
      }
 
      function processing() {
-       $('table#new-event-processing').DataTable({
-         ajax: {
-           url: '{{ route('admin.event.datatable') }}',
-           data: function (d) {
-             d.status = ['processing', 'approved-unpaid'];
-           }
-         },
-         columnDefs: [
-           {targets: [0, 3, 4, 5], className: 'no-wrap'}
-         ],
-         columns: [
-           {data: 'reference_number'},
-           {data: 'company_name'},
-           {data: 'event_name'},
-           {data: 'created_at'},
-           {data: 'start_date'},
-           {data: 'status'}
-         ],
-         createdRow: function (row, data, index) {
-           $(row).click(function () {
-             location.href = '{{ url('/event') }}/' + data.event_id + '/application';
-           });
-         }
-       });
+      $('table#new-event-processing').DataTable({
+        ajax: {
+          url: '{{ route('admin.event.datatable') }}',
+          data: function (d) {
+            d.status = $('select#new-permit-status').val();
+            d.type = $('select#new-applicant-type').val();
+          }
+        },
+        columnDefs: [
+          {targets: '_all', className: 'no-wrap'}
+        ],
+        columns: [
+          {data: 'reference_number'},
+          {data: 'establishment_name'},
+          {data: 'owner'},
+          {data: 'event_name'},
+          {data: 'created_at'},
+          {data: 'type'},
+          {data: 'start'},
+          {data: 'status'}
+        ],
+        createdRow: function (row, data, index) {
+          $(row).click(function () {
+            location.href = '{{ url('/event') }}/' + data.event_id + '/application';
+          });
+        }
+      });
      }
 
      function newEvent() {
-       $('table#new-event-request').DataTable({
+       newEventTable = $('table#new-event-request').DataTable({
          ajax: {
            url: '{{ route('admin.event.datatable') }}',
            data: function (d) {
-             d.status = ['new'];
+             d.status =  $('select#new-permit-status').val() ? $('select#new-permit-status').val(): ['new', 'amend'];
+             d.type = $('select#new-applicant-type').val();
            }
          },
          columnDefs: [
-           {targets: [0, 3, 4, 5], className: 'no-wrap'}
+           {targets: '_all', className: 'no-wrap'}
          ],
          columns: [
            {data: 'reference_number'},
-           {data: 'company_name'},
+           {data: 'establishment_name'},
+           {data: 'owner'},
            {data: 'event_name'},
            {data: 'created_at'},
-           {data: 'start_`'},
+           {data: 'type'},
+           {data: 'start'},
            {data: 'status'}
          ],
          createdRow: function (row, data, index) {
@@ -262,40 +257,28 @@
            });
          }
        });
-     }
 
-     function blockArtistTable() {
-       $('table#block-artist').DataTable({
-         ajax: {
-           url: '{{ route('admin.artist.datatable') }}',
-           data: function (d) {
-             d.artist_status = 'blocked';
-           }
-         },
-         columnDefs: [
-           {targets: [0, 4, 5, 6], className: 'no-wrap'}
-         ],
-         columns: [
-           {data: 'person_code'},
-           {data: 'name'},
-           {data: 'profession'},
-           {data: 'nationality'},
-           {data: 'mobile_number'},
-           {data: 'active_permit'},
-           {
-             render: function (data, type, full, meta) {
-               var classname = full.artist_status == 'Active' ? 'success' : 'danger';
-               return '<span class="kt-badge kt-badge--' + classname + ' kt-badge--inline">' + full.artist_status + '</span>';
-             }
-           }
-         ],
-         createdRow: function (row, data, index) {
-           $(row).click(function () {
-             location.href = '{{ url('/permit/artist/') }}/' + data.artist_id;
-           });
-         }
+       $('select#new-permit-status').select2({
+         minimumResultsForSearch: Infinity,
+         placeholder: 'Event Status',
+         autoWidth: true,
+         width: '21%',
+         // closeOnSelect: false,
+         allowClear: true,
+         tags: true
+       });
+
+       $('select#new-applicant-type').select2({
+         minimumResultsForSearch: Infinity,
+         placeholder: 'Applicant Type',
+         autoWidth: true,
+         width: '37%',
+         // closeOnSelect: false,
+         allowClear: true,
+         tags: true
        });
      }
-
 	 </script>
 @endsection
+
+	 

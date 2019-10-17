@@ -19,11 +19,8 @@ class User extends Authenticatable implements Auditable
     const UPDATED_AT = 'modifiedAt';
 
     protected $connection = 'bls';
-
-    protected $table = 'user';
-
+    protected $table = 'bls.user';
     protected $primaryKey = 'user_id';
-
     protected $fillable = [
         'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'
     ];

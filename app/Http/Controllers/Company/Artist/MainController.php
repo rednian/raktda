@@ -41,7 +41,7 @@ class MainController extends Controller
     public function fetch_applied_artists()
     {
 
-        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', '!=', 'active')->get();
+        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('created_by', Auth::user()->user_id)->where('permit_status', '!=', 'active')->get();
         //->has('artistPermitDocument')
 
         return Datatables::of($permits)->editColumn('created_at', function ($permits) {
@@ -97,7 +97,7 @@ class MainController extends Controller
 
     public function fetch_existing_artists()
     {
-        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('company_id', Auth::user()->EmpClientId)->where('permit_status', 'active')->get();
+        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('created_by', Auth::user()->user_id)->where('permit_status', 'active')->get();
 
         return Datatables::of($permits)->editColumn('created_at', function ($permits) {
             if ($permits->created_at) {
@@ -1703,7 +1703,7 @@ class MainController extends Controller
     {
         $temp_id = $request->temp_id;
         $reqid =  $request->reqId;
-        $artist_documents = ArtistTempDocument::where('temp_data_id', $temp_id)->where('requirement_id', $reqid)->orderBy('created_at', 'desc')->first();
+        $artist_documents = ArtistTempDocument::with('requirement')->where('temp_data_id', $temp_id)->where('requirement_id', $reqid)->orderBy('created_at', 'desc')->first();
         return $artist_documents;
     }
 
@@ -1719,9 +1719,13 @@ class MainController extends Controller
         $data['company_details'] = Company::find(Auth::user()->EmpClientId);
         $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'artist.Nationality')->get();
         $data['permit_details'] = $permit;
-        $pdf = PDF::loadView('permits.artist.permit_print', $data);
-        return $pdf->stream('permit.pdf');
-        // $pdf = PDF::loadView('permits.artist.permit_print', $data);
-        // return $pdf->stream('permit.pdf');
+
+        $permitNumber = $permit->permit_number;
+
+        $pdf = PDF::loadView('permits.artist.permit_print', $data, [], [
+            'title' => 'Artist Permit',
+            'default_font_size' => 10
+        ]);
+        return $pdf->stream('Permit-' . $permitNumber . '.pdf');
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add Event Permit - Smart Government Rak')
+@section('title', ' Event Permit Draft - Smart Government Rak')
 
 @section('content')
 
@@ -132,7 +132,7 @@
                                         </div>
                                     </div>
                                     <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                        <input type="checkbox" id="agree" name="agree"> I Read
+                                        <input type="checkbox" id="agree" name="agree" checked> I Read
                                         and understand all
                                         service rules, And agree to continue submitting it.
                                         <span></span>
@@ -157,6 +157,7 @@
                                                         information</h6>
                                                 </div>
                                             </div>
+                                            <input type="hidden" id="event_id" value="{{$event->event_id}}">
                                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
                                                 data-parent="#accordionExample5">
                                                 <div class="card-body">
@@ -168,13 +169,14 @@
                                                                 Event Type <small>( <span
                                                                         class="text-danger">required</span>
                                                                     )</small></label>
-                                                            <select class="form-control form-control-sm"
+                                                            <select class="form-control form-control-sm "
                                                                 name="event_type_id" id="event_type_id"
                                                                 placeholder="Type"
                                                                 onchange="getRequirementsList(this.value)">
                                                                 <option value="">Select</option>
                                                                 @foreach ($event_types as $pt)
-                                                                <option value="{{$pt->event_type_id}}">
+                                                                <option value="{{$pt->event_type_id}}"
+                                                                    {{$event->event_type_id == $pt->event_type_id ? 'selected' : ''}}>
                                                                     {{ucwords($pt->name_en)}}</option>
                                                                 @endforeach
                                                             </select>
@@ -187,8 +189,9 @@
                                                                 class=" col-form-label kt-font-bold text-right">Event
                                                                 Name <small>( <span class="text-danger">required
                                                                     </span>)</small></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="name_en" id="name_en" placeholder="Event Name">
+                                                            <input type="text" class="form-control form-control-sm "
+                                                                name="name_en" id="name_en" placeholder="Event Name"
+                                                                value="{{$event->name_en}}">
                                                         </div>
 
                                                         <div class=" col-md-4 form-group form-group-sm">
@@ -197,7 +200,8 @@
                                                                 Name - Ar<small>( <span class="text-danger">required
                                                                     </span>)</small></label>
                                                             <input type="text" class="form-control form-control-sm "
-                                                                name="name_ar" id="name_ar" placeholder="Event Name">
+                                                                name="name_ar" id="name_ar" placeholder="Event Name"
+                                                                value="{{$event->name_ar}}">
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-sm ">
@@ -211,9 +215,10 @@
                                                                         <i class="la la-calendar-check-o"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" class="form-control form-control-sm"
+                                                                <input type="text" class="form-control form-control-sm "
                                                                     name="issued_date" id="issued_date"
-                                                                    placeholder="From Date">
+                                                                    placeholder="From Date"
+                                                                    value="{{date('d-m-Y',strtotime($event->issued_date))}}">
 
                                                             </div>
                                                         </div>
@@ -230,8 +235,9 @@
                                                                     </span>
                                                                 </div>
                                                                 <input class="form-control form-control-sm"
-                                                                    value="{{date('h:i a', strtotime('10:00 AM'))}}"
-                                                                    name="time_start" id="time_start" type="text" />
+                                                                    value="{{date('h:i a')}}" name="time_start"
+                                                                    id="time_start" type="text"
+                                                                    value="{{$event->time_start}}" />
 
                                                             </div>
 
@@ -243,7 +249,8 @@
                                                                 Venue <small>( <span class="text-danger">required</span>
                                                                     )</small></label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                name="venue_en" id="venue_en" placeholder="Venue">
+                                                                name="venue_en" id="venue_en" placeholder="Venue"
+                                                                value="{{$event->venue_en}}">
 
                                                         </div>
 
@@ -259,9 +266,10 @@
                                                                         <i class="la la-calendar-check-o"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" class="form-control form-control-sm"
+                                                                <input type="text" class="form-control form-control-sm "
                                                                     name="expired_date" id="expired_date"
-                                                                    placeholder="To Date">
+                                                                    placeholder="To Date"
+                                                                    value={{date('d-m-Y',strtotime($event->expired_date))}}>
 
                                                             </div>
                                                         </div>
@@ -277,9 +285,9 @@
                                                                         <i class="la la-clock-o"></i>
                                                                     </span>
                                                                 </div>
-                                                                <input class="form-control form-control-sm"
-                                                                    value="{{date('h:i a', strtotime('5:00 PM'))}}"
-                                                                    name="time_end" id="time_end" type="text" />
+                                                                <input class="form-control form-control-sm "
+                                                                    name="time_end" id="time_end" type="text"
+                                                                    value={{$event->time_end}} />
 
                                                             </div>
 
@@ -293,8 +301,9 @@
                                                                 Venue - Ar <small>( <span
                                                                         class="text-danger">required</span>
                                                                     )</small></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="venue_ar" id="venue_ar" placeholder="Venue">
+                                                            <input type="text" class="form-control form-control-sm "
+                                                                name="venue_ar" id="venue_ar" placeholder="Venue"
+                                                                value={{$event->venue_ar}}>
                                                         </div>
 
 
@@ -329,7 +338,8 @@
                                                             <small>( <span class="text-danger">required</span>
                                                                 )</small></label>
                                                         <input type="text" class="form-control form-control-sm "
-                                                            name="address" id="address" placeholder="Address">
+                                                            name="address" id="address" placeholder="Address"
+                                                            value={{$event->address}}>
                                                     </div>
 
                                                     <div class="col-md-4 form-group form-group-sm ">
@@ -340,7 +350,8 @@
                                                             id="emirate_id" onchange="getAreas(this.value)">
                                                             <option value="">Select</option>
                                                             @foreach($emirates as $em)
-                                                            <option value="{{$em->id}}">
+                                                            <option value="{{$em->id}}"
+                                                                {{$em->id == $event->emirate_id ? 'selected' : ''}}>
                                                                 {{$em->name_en}}</option>
                                                             @endforeach
                                                         </select>
@@ -355,7 +366,8 @@
                                                             id="area_id">
                                                             <option value="">Select</option>
                                                             @foreach($areas as $ar)
-                                                            <option value="{{$ar->id}}">
+                                                            <option value="{{$ar->id}}"
+                                                                {{$ar->id == $event->area_id ? 'selected' : ''}}>
                                                                 {{$ar->area_en}}</option>
                                                             @endforeach
                                                         </select>
@@ -366,12 +378,14 @@
                                                             class=" col-form-label kt-font-bold text-right">Country
                                                             <small>( <span class="text-danger">required</span>
                                                                 )</small></label>
-                                                        <select class="form-control form-control-sm " name="country_id"
-                                                            id="country_id">
+                                                        <select
+                                                            class="form-control form-control-sm {{$errors->has('country_id') ? 'is-invalid' : ''}}"
+                                                            name="country_id" id="country_id">
                                                             {{--   - class for search in select  --}}
                                                             <option value="">Select</option>
                                                             @foreach ($countries as $ct)
-                                                            <option value="{{$ct->country_id}}">
+                                                            <option value="{{$ct->country_id}}"
+                                                                {{$event->country_id == $ct->country_id ? 'selected' : ''}}>
                                                                 {{$ct->name_en}}
                                                             </option>
                                                             @endforeach
@@ -396,7 +410,7 @@
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
-                                <form id="documents_required" method="post">
+                                <form id="documents_required">
 
 
                                 </form>
@@ -428,8 +442,8 @@
                                     value="finished" id="submit_btn">Finish &
                                     Submit</button>
                                 <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
-                                    id="draft_btn">Save
-                                    to Drafts</button>
+                                    id="draft_btn">Update
+                                    Draft</button>
                             </div>
                         </div>
 
@@ -442,8 +456,6 @@
                     </div>
 
                 </div>
-
-
 
 
             </div>
@@ -497,7 +509,12 @@
     var documentDetails = {};
 
     $(document).ready(function(){
+        wizard = new KTWizard("kt_wizard_v3");
+        wizard.goTo(2);
+        $('#back_btn').css('display', 'none');
         localStorage.clear();
+        var event_type_id = $('#event_type_id').val();
+        getRequirementsList(event_type_id);
         uploadFunction();
         $('#submit--btn-group').css('display', 'none');
     });
@@ -522,6 +539,37 @@
                     showDelete: true,
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                     formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
+                    onLoad: function (obj) {
+
+                        $.ajaxSetup({
+                            headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
+                        });
+                        $.ajax({
+                            cache: false,
+                            url: "{{route('company.event.get_uploaded_docs')}}",
+                            type: 'POST',
+                            data: {eventId: $('#event_id').val() ,reqId: $('#req_id_' + i).val()},
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    let id = obj[0].id;
+                                    let number = id.split("_");
+                                    let issue_datetime = new Date(data['issued_date']);
+                                    let exp_datetime = new Date(data['expired_date']);
+                                    let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                    let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+
+                                    obj.createProgress(data["document_name"], "{{url('storage')}}"+'/' + data["path"], '');
+                                    if (formatted_issue_date != NaN - NaN - NaN) {
+                                        $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                        $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                    }
+                                }
+                            }
+                        });
+
+
+                    },
                     onError: function (files, status, errMsg, pd) {
                         showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
                         pd.statusbar.hide();
@@ -564,15 +612,7 @@
             },
         });
 
-        var docRules = {};
-        var docMessages = {};
 
-
-
-        var documentsValidator = $('#documents_required').validate({
-            rules: docRules,
-            messages: docMessages
-        });
 
 
         $("#check_inst").on("click", function () {
@@ -758,62 +798,9 @@
 
         };
 
-        $('#submit_btn').click((e) => {
-
-            var hasFile = docValidation();
-
-                if (documentsValidator.form() && hasFile) {
-
-                    var ed = localStorage.getItem('eventdetails');
-                    var dd = localStorage.getItem('documentDetails');
-
-                        $.ajax({
-                            url: "{{route('event.store')}}",
-                            type: "POST",
-                            data: {
-                                eventD: ed,
-                                documentD: dd,
-                            },
-                            success: function (result) {
-                                console.log(result);
-                                if(result.message[0]){
-                                    localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}";
-                                }
-                            }
-                        });
-                }
-
-        });
-
-
-
-        $('#draft_btn').click((e) => {
-
-            var hasFile = docValidation();
-
-                if (documentsValidator.form() && hasFile) {
-
-                    var ed = localStorage.getItem('eventdetails');
-                    var dd = localStorage.getItem('documentDetails');
-
-                        $.ajax({
-                            url: "{{route('company.event.add_draft')}}",
-                            type: "POST",
-                            data: {
-                                eventD: ed,
-                                documentD: dd,
-                            },
-                            success: function (result) {
-                                if(result.message[0]){
-                                    localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}";
-                                }
-                            }
-                        });
-                }
-
-        });
+        var docRules = {};
+        var docMessages = {};
+        var documentsValidator = '';
 
 
         function getRequirementsList(id)
@@ -842,6 +829,11 @@
                             docMessages['doc_issue_date_' + j] = '';
                             docMessages['doc_exp_date_' + j] = '';
 
+                            documentsValidator = $('#documents_required').validate({
+                                    rules: docRules,
+                                    messages: docMessages
+                                });
+
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
 
                      }
@@ -851,7 +843,67 @@
                  }
                 }
             });
+
         }
+
+
+        $('#submit_btn').click((e) => {
+
+            var hasFile = docValidation();
+
+                if (documentsValidator.form() && hasFile) {
+
+                    var ed = localStorage.getItem('eventdetails');
+                    var dd = localStorage.getItem('documentDetails');
+
+                        $.ajax({
+                            url: "{{route('event.store')}}",
+                            type: "POST",
+                            data: {
+                                eventD: ed,
+                                documentD: dd,
+                            },
+                            success: function (result) {
+                                if(result.message[0]){
+                                    localStorage.clear();
+                                    window.location.href = "{{route('event.index')}}";
+                                }
+                            }
+                        });
+                }
+
+        });
+
+
+
+        $('#draft_btn').click((e) => {
+
+            var hasFile = docValidation();
+
+                if (documentsValidator.form() && hasFile) {
+
+                    var ed = localStorage.getItem('eventdetails');
+                    var dd = localStorage.getItem('documentDetails');
+
+                        $.ajax({
+                            url: "{{route('company.event.update_draft')}}",
+                            type: "POST",
+                            data: {
+                                eventD: ed,
+                                documentD: dd,
+                                evtId: $('#event_id').val()
+                            },
+                            success: function (result) {
+                                if(result.message[0]){
+                                    localStorage.clear();
+                                    window.location.href = "{{route('event.index')}}";
+                                }
+                            }
+                        });
+                }
+
+        });
+
 
 
 </script>
