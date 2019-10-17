@@ -168,7 +168,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
-        niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
@@ -232,8 +231,7 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
-	     'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
+        'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
 
 
 

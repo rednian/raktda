@@ -1,6 +1,6 @@
 @extends('layouts.admin.admin-app')
 @section('style')
-	 <link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
 @stop
 @section('content')
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
@@ -278,6 +278,7 @@
        });
      }
 	 
-	 
+
 	 </script>
 @endsection
+

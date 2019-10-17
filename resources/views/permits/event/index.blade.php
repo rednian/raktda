@@ -32,7 +32,7 @@
                 <a href="{{ route('event.create')}}">
 
                     <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
-                        Add New Permit
+                        Add New
                     </button>
                     <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                         <i class="la la-plus"></i>
@@ -47,12 +47,13 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>Refer No.</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
+                            <th>Name</th>
+                            <th>From </th>
+                            <th>To </th>
                             <th>Venue</th>
-                            {{-- <th>Type</th> --}}
+                            <th>Type</th>
                             <th>Applied On</th>
-                            <th>Status</th>
+                            {{-- <th>Status</th> --}}
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -64,16 +65,15 @@
                 <table class="table table-striped table-borderless " id="existing-events-table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Refer No.</th>
                             <th>Permit No.</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
+                            <th>Name</th>
+                            <th>From </th>
+                            <th>To </th>
                             <th>Venue</th>
-                            {{-- <th>Type</th> --}}
-                            <th>Applied On</th>
+                            <th>Type</th>
+                            {{-- <th>Applied On</th> --}}
                             <th>Actions</th>
                             <th>Details</th>
-                            <th></th>
                         </tr>
                     </thead>
 
@@ -84,7 +84,6 @@
             <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
                 <div class="kt-portlet__body">
                     <div id="kt_calendar"></div>
-
                 </div>
             </div>
 
@@ -92,10 +91,10 @@
                 <table class="table table-striped table-borderless " id="drafts-events-table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>From Date</th>
-                            <th>To Date</th>
+                            <th>From </th>
+                            <th>To </th>
                             <th>Venue</th>
-                            <th>Venue-Ar</th>
+                            <th>Name</th>
                             <th>Applied On</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -115,7 +114,6 @@
 
         <!--begin::Modal-->
         <div class="modal fade" id="cancel_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-
             aria-hidden="true">
             <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
@@ -148,7 +146,6 @@
         <!--begin::Modal-->
 
         <div class="modal fade" id="cancelled_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-
             aria-hidden="true">
             <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
@@ -200,11 +197,8 @@
 
     @section('script')
 
-
     <script>
         var events = JSON.parse($('#valid_events').val());
-
-        console.log(events);
 
         $(document).ready(function(){
 
@@ -216,20 +210,21 @@
 
         var table1 = $('#applied-events-table').DataTable({
             responsive: true,
-
             processing: true,
             serverSide: true,
             searching: true,
-            order:[[4,'desc']],
+            order:[[6,'desc']],
             ajax:'{{route("company.event.fetch_applied")}}',
 
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
+                { data: 'name_en', name: 'name_en' },
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'venue_en', name: 'venue_en' },
+                { data: 'type.name_en', name: 'type.name_en' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                { data: 'permit_status', name: 'permit_status' },
+                // { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
             ],
@@ -242,9 +237,47 @@
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
                 },
+                {
+                    targets:1,
 
+                    className: 'dt-body-nowrap dt-head-nowrap',
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}<br/>${full.name_ar}</span>`;
+					}
+                },
+                {
+                    targets:2,
+
+                    className: 'dt-body-nowrap dt-head-nowrap',
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}<br/>${full.time_start}</span>`;
+					}
+                },
+                {
+                    targets:3,
+
+                    className: 'dt-body-nowrap dt-head-nowrap',
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}<br/>${full.time_end}</span>`;
+					}
+                },
                 {
                     targets:4,
+                    className: 'dt-body-nowrap dt-head-nowrap',
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}<br/>${full.venue_ar}</span>`;
+					}
+                },
+                {
+                    targets:5,
+                    width: '15%',
+                    className: 'dt-body-nowrap dt-head-nowrap',
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}</span>`;
+					}
+                },
+                {
+                    targets:6,
                     className:'dt-head-nowrap dt-body-nowrap',
                     render: function(data, type, full, meta) {
                         return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
@@ -274,48 +307,66 @@
             serverSide: true,
             searching: true,
             deferRender: true,
-            order:[[4,'desc']],
             ajax:'{{route("company.event.fetch_valid")}}',
             columns: [
-                { data: 'reference_number', name: 'reference_number' },
+                { data: 'permit_number', name: 'permit_number' },
+                { data: 'name_en', name: 'name_en' },
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'venue_en', name: 'venue_en' },
-                { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                { data: 'permit_status', name: 'permit_status' },
+                { data: 'type.name_en', name: 'type.name_en' },
+                // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
             ],
             columnDefs: [
                 {
-                    targets:0,
+                    targets:1,
                     className: 'dt-body-nowrap dt-head-nowrap',
-
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}<br/>${full.name_ar}</span>`;
+					}
+                },
+                {
+                    targets:2,
+                    className: 'dt-body-nowrap dt-head-nowrap',
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}<br/>${full.time_start}</span>`;
+					}
+                },
+                {
+                    targets:3,
+                    width:'18%',
+                    className: 'dt-body-nowrap dt-head-nowrap',
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}<br/>${full.time_end}</span>`;
+					}
+                },
+                {
+                    targets:4,
+                    className: 'dt-body-nowrap dt-head-nowrap',
+                    render: function(data, type, full, meta) {
+						return `<span class="kt-font-bold">${data}<br/>${full.venue_ar}</span>`;
+					}
+                },
+                {
+                    targets:5,
+                    width: '12%',
+                    className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
                 },
 
+                // {
+                //     targets:-3,
+                //     width: '10%',
+                //     className: 'text-center',
+                //     render: function(data, type, full, meta) {
+				// 	return `<span class="kt-font-bold kt-font-transform-c">${data}</span>`;
 
-                {
-                    targets:4,
-                    className:'dt-head-nowrap dt-body-nowrap',
-                    render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
-
-					}
-                },
-
-
-                {
-                    targets:-3,
-                    width: '10%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-					return `<span class="kt-font-bold kt-font-transform-c">${data}</span>`;
-
-					}
-                }
+				// 	}
+                // }
             ],
             language: {
                 emptyTable: "No Existing Event Permits"
@@ -334,8 +385,7 @@
                 { data: 'issued_date', name: 'issued_date' },
                 { data: 'expired_date', name: 'expired_date' },
                 { data: 'venue_en', name: 'venue_en' },
-                { data: 'venue_ar', name: 'venue_ar' },
-
+                { data: 'name_en', name: 'name_en' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
@@ -349,6 +399,42 @@
 
 					}
                 },
+                {
+                    targets:0,
+                    width: '10%',
+                    className:'text-center',
+                    render: function(data, type, full, meta) {
+                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.time_start+'</span>';
+
+					}
+                },
+                {
+                    targets:1,
+                    width: '10%',
+                    className:'text-center',
+                    render: function(data, type, full, meta) {
+                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.time_end+'</span>';
+
+					}
+                },
+                {
+                    targets:2,
+                    width: '10%',
+                    className:'text-center',
+                    render: function(data, type, full, meta) {
+                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.venue_ar+'</span>';
+
+					}
+                },
+                {
+                    targets:3,
+                    width: '10%',
+                    className:'text-center',
+                    render: function(data, type, full, meta) {
+                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.name_ar+'</span>';
+
+					}
+                },
             ],
             language: {
                 emptyTable: "No Event Permit Drafts"
@@ -356,7 +442,7 @@
 
         });
 
-
+        calenderEvents();
 
     });
 
@@ -399,7 +485,100 @@
         });
     }
 
+    const calenderEvents = () => {
+        var todayDate = moment().startOf("day");
+            var YM = todayDate.format("YYYY-MM");
+            var YESTERDAY = todayDate
+                .clone()
+                .subtract(1, "day")
+                .format("YYYY-MM-DD");
+            var TODAY = todayDate.format("YYYY-MM-DD");
+            var TOMORROW = todayDate
+                .clone()
+                .add(1, "day")
+                .format("YYYY-MM-DD");
+
+            var calendarEl = document.getElementById("kt_calendar");
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ["interaction", "dayGrid", "timeGrid", "list"],
+
+                isRTL: KTUtil.isRTL(),
+                header: {
+                    left: "prev,next today",
+                    center: "title",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+                },
+
+                height: 800,
+                contentHeight: 750,
+                aspectRatio: 3, // see: https://fullcalendar.io/docs/aspectRatio
+
+                views: {
+                    dayGridMonth: { buttonText: "month" },
+                    timeGridWeek: { buttonText: "week" },
+                    timeGridDay: { buttonText: "day" },
+                    listDay: { buttonText: "list" },
+                    listWeek: { buttonText: "list" }
+                },
+
+                defaultView: "listWeek",
+                defaultDate: TODAY,
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                navLinks: true,
+                events: [
+                    @foreach($events as $evt)
+                        {
+                            title: '{{$evt->name_en}}',
+                            start: '{{date("Y-m-d", strtotime($evt->issued_date))}}',
+                            end: '{{date("Y-m-d", strtotime($evt->expired_date))}}',
+                            className: 'fc-event-solid-danger fc-event-light',
+                            description: '{{$evt->venue_en}}'
+                        },
+                    @endforeach
+                ],
+
+                eventRender: function(info) {
+                    var element = $(info.el);
+
+                    if (
+                        info.event.extendedProps &&
+                        info.event.extendedProps.description
+                    ) {
+                        if (element.hasClass("fc-day-grid-event")) {
+                            element.data(
+                                "content",
+                                info.event.extendedProps.description
+                            );
+                            element.data("placement", "top");
+                            KTApp.initPopover(element);
+                        } else if (element.hasClass("fc-time-grid-event")) {
+                            element
+                                .find(".fc-title")
+                                .append(
+                                    '<div class="fc-description">' +
+                                        info.event.extendedProps.description +
+                                        "</div>"
+                                );
+                        } else if (
+                            element.find(".fc-list-item-title").lenght !== 0
+                        ) {
+                            element
+                                .find(".fc-list-item-title")
+                                .append(
+                                    '<div class="fc-description">' +
+                                        info.event.extendedProps.description +
+                                        "</div>"
+                                );
+                        }
+                    }
+                }
+            });
+
+            calendar.render();
+    }
+
     </script>
-    <script src="{{asset('js/list-view.js')}}"></script>
+    {{-- <script src="{{asset('js/list-view.js')}}"></script> --}}
 
     @endsection

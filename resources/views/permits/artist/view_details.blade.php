@@ -65,7 +65,7 @@
                     <tr>
                         <td>{{$artistPermit->artist['firstname_en']}}</td>
                         <td>{{$artistPermit->artist['lastname_en']}}</td>
-                        <td>{{$artistPermit->permitType['name_en']}}</td>
+                        <td>{{$artistPermit->profession['name_en']}}</td>
                         <td>{{$artistPermit->mobile_number}}</td>
                         <td>{{$artistPermit->email}}</td>
                         <td>

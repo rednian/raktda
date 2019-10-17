@@ -73,7 +73,7 @@ class DraftsController extends Controller
                 return 'None';
             }
         })->addColumn('action', function ($permit) {
-            return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--success kt-badge--inline">View</span></a>';
+            return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">View / Update</span></a>';
         })->addColumn('details', function ($permit) {
             return '<a href="' . route('company.get_draft_details', $permit->permit_id) . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
         })->rawColumns(['action', 'details'])->make(true);
@@ -107,7 +107,7 @@ class DraftsController extends Controller
         $data['permit_id'] = $id;
 
 
-        return view('permits.artist.new.create', $data);
+        return view('permits.artist.draft.create', $data);
     }
 
 
@@ -192,5 +192,22 @@ class DraftsController extends Controller
         $data_bundle['permit_details'] =  Permit::where('permit_id', $id)->first();
         $data_bundle['artist_details'] = ArtistTempData::where('permit_id', $id)->where('status', 0)->get();
         return view('permits.artist.amend.amend_permit', $data_bundle);
+    }
+
+    public function edit_artist_draft($temp_id)
+    {
+        $permit_id = ArtistTempData::where('id', $temp_id)->value('permit_id');
+
+        $data_bundle['requirements'] = Requirement::where('requirement_type', 'artist')->get();
+        $data_bundle['countries'] = Countries::orderBy('nationality_en', 'asc')->get();
+        $data_bundle['visatypes'] = VisaType::orderBy('visa_type_en', 'asc')->get();
+        $data_bundle['languages'] = Language::orderBy('name_en', 'asc')->get();
+        $data_bundle['religions'] = Religion::orderBy('name_en', 'asc')->get();
+        $data_bundle['emirates'] = Emirates::orderBy('name_en', 'asc')->get();
+        $data_bundle['areas'] = Areas::orderBy('area_en', 'asc')->get();
+        $data_bundle['profession'] = Profession::orderBy('name_en', 'asc')->get();
+        $data_bundle['artist_details'] = ArtistTempData::with('Nationality', 'Profession')->where('id', $temp_id)->first();
+        $data_bundle['permit_details'] = ArtistPermit::with('artist', 'permit', 'artistPermitDocument', 'profession')->where('permit_id', $permit_id)->first();
+        return view('permits.artist.draft.edit_artist', $data_bundle);
     }
 }

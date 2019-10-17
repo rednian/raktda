@@ -24,4 +24,8 @@ class EventRequirement extends Model
     {
         return $this->belongsTo(Event::class, 'event_id');
     }
+    public function requirement()
+    {
+        return $this->belongsTo(Requirement::class, 'requirement_id');
+    }
 }

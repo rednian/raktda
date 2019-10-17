@@ -6,8 +6,7 @@
 		if($type == 4){ return 'employee'; }
 	}
 
-	function permitStatus($status)
-	{
+	function permitStatus($status){
 		$status = strtolower($status);
 		$classname = null;
 		if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active') {
@@ -24,22 +23,18 @@
 		}
 
 		return '<span class="kt-badge kt-badge--'.$classname.' kt-badge--inline">'.ucwords($status).'</span>';
-
 	}
 
-	function artistStatus($status)
-	{
+	function artistStatus($status){
 		$classname = $status == 'active' ? 'success' : 'danger';
 		return '<span class="kt-badge kt-badge--'.$classname.' kt-badge--inline">'.ucwords($status).'</span>';
 	}
 
-	function label($label = [])
-	{
+	function label($label = []){
 		return '<span class="kt-badge  kt-badge--'.$label['class'].' kt-badge--inline kt-badge--pill">'.$label['status'].'</span>';
 	}
 
-	function is($model, $fieldname)
-	{
+	function is($model, $fieldname){
 		if ($model->check()->exists()) {
 			if ($model->check()->first()->checklist()->exists()) {
 				$check = $model->check()->first()->checklist()->where('fieldname', $fieldname)->first();
@@ -57,8 +52,7 @@
 
 	}
 
-	function getDocumentType($filename = null)
-	{
+	function getDocumentType($filename = null){
 		if (!empty($filename)) {
 			$filename = explode('.', $filename);
 			$filename = strtolower(end($filename));
@@ -73,23 +67,19 @@
 		}
 	}
 
-	function defaultProfile($fname, $lastname)
-	{
+	function defaultProfile($fname, $lastname){
 		$fname = substr($fname, 0, 1);
 		$lastname = substr($lastname, 0, 1);
 		return strtoupper($fname.$lastname);
-
 	}
 
-	function profile($firstname = null, $lastname)
-	{
+	function profile($firstname = null, $lastname){
 		$lastname = strtoupper(substr($lastname, 0, 1));
 		$firstname = strtoupper(substr($firstname, 0, 1));
 		return $firstname.$lastname;
 	}
 
-	function profile2($data = [])
-	{
+	function profile2($data = []){
 		$html = '<div class="kt-user-card-v2">';
 		$html .= ' <div class="kt-user-card-v2__pic">';
 		$name = substr($data['name'], 0, 1);
@@ -105,8 +95,7 @@
 		return $html;
 	}
 
-	function defaultProfile2($name)
-	{
+	function defaultProfile2($name){
 		if ($name) {
 			$name = substr($name, 0, 1);
 			$classes = ['info', 'success', 'danger', 'warning', 'primary', 'brand', 'dark'];
@@ -115,8 +104,7 @@
 		}
 	}
 
-	function badgeName($name)
-	{
+	function badgeName($name){
 		$string = explode(' ', $name);
 		$profile_name = null;
 		foreach ($string as $char) {
@@ -127,6 +115,5 @@
 		return '<div class="kt-badge kt-badge--md kt-badge--'.$class.'">'.$pro.'</div>';
 
 	}
-
 
 ?>
