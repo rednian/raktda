@@ -41,11 +41,27 @@
 
 		}
 
+        public function artist_unblock(Request $request){
+            $data=$request->all();
+            foreach ($data['id'] as $artist_id) {
+                $artist = Artist::where('artist_id', $artist_id)->first();
+
+                if ($artist->update(['artist_status' => 'active'])) {
+                    $artist_action = new ArtistAction();
+                    $artist_action->artist_id = $artist_id;
+                    $artist_action->employee_id = Auth::user()->employee->employee_id;
+                    $artist_action->remarks = $request->remarks;
+                    $artist_action->save();
+                }
+            }
+            return response()->json();
+
+        }
+
 		public function updateStatus(Request $request, Artist $artist)
 		{
-		    dd($request->all());
 			if ($request->is_multiple) {
-             dd('multiple');
+
 			} else {
 				$status = $request->status == 'block' ? 'blocked': 'active';
 				$artist->update(['artist_status' => $status]);

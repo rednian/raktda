@@ -8,10 +8,8 @@
                   <h4 class="kt-portlet__head-title">Artist List</h4>
               </div>
               <div class="kt-portlet__head-toolbar">
-                 <a href="{{ URL::previous() }}" class="btn btn-sm btn-light ">
                    <i class="la la-arrow-left"></i>
-                   <span class="kt-hidden-mobile">Back</span>
-                 </a>
+                   <button class="kt-hidden-mobile" onclick="goBack()">Back</button>
                  <div class="dropdown dropdown-inline">
                      <button type="button" class="btn btn-clean btn-icon btn-sm btn-icon-md" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          <i class="flaticon-more"></i>
@@ -44,6 +42,16 @@
 <script type="text/javascript">
 var artistTable = {};
   $(document).ready(function(){
+      function goBack() {
+          window.history.back();
+
+      }
+
+
+          var url = "http://javarevisited.blogspot.com";
+         var location= $(location).attr('href',url);
+         console.log(location);
+
 
           artistTable = $('table#artist-table').DataTable({
                 ajax: {

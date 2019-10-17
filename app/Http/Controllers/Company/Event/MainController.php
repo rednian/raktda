@@ -22,6 +22,7 @@ class MainController extends Controller
     }
 
 
+
     public function create()
     {
         $data['event_types'] = EventType::all()->sortBy('name_en');

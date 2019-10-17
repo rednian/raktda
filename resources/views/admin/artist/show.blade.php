@@ -5,10 +5,11 @@
 				 <div class="kt-portlet__head-label">
 						<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">Artist profile</span></h3></div>
 				 <div class="kt-portlet__head-toolbar">
-						<a href="{{ URL::previous() }}" class="btn btn-sm btn-maroon btn-elevate  kt-font-transform-u">
+						<button id="clickme" class="btn btn-sm btn-maroon btn-elevate  kt-font-transform-u">
 							 <i class="la la-arrow-left"></i>Back
-						</a>
+                        </button>
 				 </div>
+
 			</div>
 			<div class="kt-portlet__body" style="padding-bottom: 0 !important;">
 				 <div class="accordion accordion-solid accordion-toggle-plus kt-margin-b-5" id="accordion-personal">
@@ -24,7 +25,6 @@
 												<div class="kt-widget__top">
 													 @if($artist_permit->thumbnail)
 															<div class="kt-widget__media">
-																 <img src="{{ asset('/storage/'.$artist_permit->thumbnail) }}" alt="image" class="img-thumbnail">
 															</div>
 													 @else
 															<div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-bolder kt-font-light">
@@ -43,7 +43,7 @@
 																			 <span
 																					 class="kt-badge kt-badge--bolder kt-badge kt-badge--inline kt-badge--lg kt-badge--unified-danger">{{ ucwords($artist_permit->artist->artist_status) }}</span>
 																		@endif
-																		
+
 																		<div class="dropdown dropdown-inline kt-margin-l-5" data-toggle="kt-tooltip-" title="Change label" data-placement="right">
 																			 <a href="#" class="btn btn-clean btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 																					<i class="fa fa-caret-down"></i>
@@ -76,7 +76,7 @@
 																 {{--										 <a href="#"><i class="flaticon2-calendar-3"></i>PR Manager </a>--}}
 																 {{--										 <a href="#"><i class="flaticon2-placeholder"></i>Melbourne</a>--}}
 															</div>
-													 
+
 													 </div>
 												</div>
 												{{--						<div class="kt-separator kt-separator--sm kt-separator--dashed kt-margin-t-10 kt-margin-b-10"></div>--}}
@@ -180,8 +180,8 @@
 							 </div>
 						</div>
 				 </section>
-				 
-				 
+
+
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
 						<li class="nav-item">
 							 <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_1" role="tab" aria-selected="true">Permit History</a>
@@ -230,13 +230,19 @@
 							 @endif
 						</div>
 				 </div>
-			
+
 			</div>
 	 </section>
 @endsection
 @section('script')
 	 <script>
       $(document).ready(function () {
+          $('#clickme').click(function(reload) {
+
+             //     window.location.hash = '#kt_tabs_1_5';
+                 //  window.location.reload(true);
+              window.history.back();
+          });
          permitHistory();
          statusHistory();
 
@@ -249,15 +255,12 @@
                }
             }
          });
-
       });
-
       function statusHistory() {
          $('table#status-history').DataTable({
             ajax: {
                url: '{{ route('admin.artist.status_history', $artist_permit->artist_id) }}',
                data: function (d) {
-
                }
             },
             columnDefs: [
