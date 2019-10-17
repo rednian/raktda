@@ -158,7 +158,7 @@
 										 </div>
 										 <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address" style="">
 												<div class="card-body" style="padding: 1px 1.25rem;">
-													 <table class="table table-borderless table-sm">
+                                                    <table class="table table-borderless table-sm">
 															<tbody>
 															<tr>
 																 <td width="15%">Address</td>

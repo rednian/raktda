@@ -251,6 +251,5 @@
             }
              return response()->json($data);
         }
-
 	}
 
