@@ -8,6 +8,9 @@ use App\Countries;
 use App\Emirates;
 use App\Areas;
 use App\Event;
+use App\Requirement;
+use App\EventRequirement;
+use App\EventTypeRequirement;
 use Auth;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
@@ -210,5 +213,11 @@ class EventController extends Controller
         }
 
         return $new_refer_no;
+    }
+
+    public function fetch_requirements($id)
+    {
+        $requirements = EventType::with('requirements')->where('event_type_id', $id)->first();
+        return $requirements;
     }
 }

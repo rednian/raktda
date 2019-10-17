@@ -477,26 +477,6 @@
                                                                 name="fax_no" id="fax_no" placeholder="Fax No">
                                                         </div>
 
-                                                        {{-- </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-
-                                        <div class="card">
-                                            <div class="card-header" id="headingThree6">
-                                                <div class="card-title collapsed" data-toggle="collapse"
-                                                    data-target="#collapseThree6" aria-expanded="false"
-                                                    aria-controls="collapseThree6">
-                                                    <h6 class="kt-font-transform-u">Address
-                                                        information</h6>
-                                                </div>
-                                            </div>
-                                            <div id="collapseThree6" class="collapse show"
-                                                aria-labelledby="headingThree6" data-parent="#accordionExample5">
-                                                <div class="card-body">
-                                                    <div class="row"> --}}
                                                         <div class="col-md-4 form-group form-group-sm ">
                                                             <label for="address"
                                                                 class=" col-form-label kt-font-bold text-right">Emirate
@@ -710,12 +690,6 @@
 </div>
 
 
-
-<!--end::Modal-->
-
-
-
-
 @endsection
 
 
@@ -793,6 +767,11 @@
                                     if (data) {
                                         let id = obj[0].id;
                                         let number = id.split("_");
+<<<<<<< Updated upstream
+=======
+                                        let issue_datetime = new Date(data['issued_date']);
+                                        let exp_datetime = new Date(data['expired_date']);
+>>>>>>> Stashed changes
                                         let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
 
@@ -812,22 +791,7 @@
                         pd.statusbar.hide();
                     },
                     downloadCallback: function (files, pd) {
-                        console.log('files', files);
-                        console.log('pd', pd);
-                        // location.href="download_file/"+files[0];
-                        // $.ajaxSetup({
-                        //     headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-                        //     });
-                        //     $.ajax({
-                        //         url: "{{route('company.download_file')}}",
-                        //         type: 'POST',
-                        //         data: {artist_permit: $('#artist_permit_num').val(), name: filename},
-                        //         success: function(data)
-                        //         {
-                        //             console.log(data);
-                        //         }
-                        //     });
-                        // location.href="download.php?filename="+filename;
+
                     }
                 });
                 $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
@@ -835,13 +799,6 @@
             }
         };
 
-
-        function appendLeadingZeroes(n) {
-            if (n <= 9) {
-                return "0" + n;
-            }
-            return n
-        }
 
         const PicUploadFunction = () => {
             picUploader = $('#pic_uploader').uploadFile({
@@ -989,9 +946,6 @@
             $('#next_btn').css('display', next);
             $('#back_btn').css('display', back);
             $('#submit_btn').css('display', submit);
-            $('#submit--btn-group').css('display', submit);
-            $('#addNew_btn').css('display', submit); // display the add new artist button
-
         };
 
         const checkForTick = () => {
@@ -1031,8 +985,6 @@
                 if (detailsValidator.form()) {
                     $('#submit_btn').css('display', 'block'); // display the submit button
                     $('#next_btn').css('display', 'none'); // hide the next button
-                    $('#addNew_btn').css('display', 'block'); // display the add new artist button
-                    $('#submit--btn-group').css('display', 'block');
                     artistDetails[artist_id] = {
                         id: $('#artist_id').val(),
                         ap_id: $('#artist_permit_num').val(),
@@ -1130,7 +1082,6 @@
                 $('#prev_btn').css('display', 'block');
                 $('#next_btn').css('display', 'block');
             }
-            $('#addNew_btn').css('display', 'none');
             $('#submit_btn').css('display', 'none');
         });
 

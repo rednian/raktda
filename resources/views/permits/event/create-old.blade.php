@@ -43,7 +43,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>04</span> Payment
@@ -52,7 +52,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>05</span> Happiness
@@ -94,19 +94,20 @@
                                             data-parent="#accordionExample6">
                                             <div class="card-body">
 
-
-                                                <table class="table table-borderless">
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
+                                                necessitatibus asperiores blanditiis vitae nemo ad.
+                                                {{-- <table class="table table-borderless">
                                                     <tr>
-                                                        <th>Event Permit Type</th>
+                                                        <th>Profession</th>
                                                         <th>Fee</th>
                                                     </tr>
-                                                    @foreach($event_types as $pt)
+                                                    @foreach($profession as $pt)
                                                     <tr>
                                                         <td>{{$pt->name_en}}</td>
-                                                        <td>{{$pt->amount}}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </table>
+                                                <td>{{$pt->amount}}</td>
+                                                </tr>
+                                                @endforeach
+                                                </table> --}}
 
 
                                             </div>
@@ -142,11 +143,15 @@
                         </div>
                     </div>
 
+                    <input type="hidden" id="agreed_value" value="{{old('agreed')}}" />
 
-                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                        <div class="kt-form__section kt-form__section--first">
-                            <div class="kt-wizard-v3__form">
-                                <form id="eventdetails">
+
+                    <form action="{{route('event.store')}}" method="POST">
+                        @csrf
+                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="kt-wizard-v3__form">
+                                    <input type="hidden" id="agreed" name="agreed" value="1" />
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
@@ -171,8 +176,7 @@
                                                             <select
                                                                 class="form-control form-control-sm {{$errors->has('event_type_id') ? 'is-invalid' : ''}}"
                                                                 name="event_type_id" id="event_type_id"
-                                                                placeholder="Type"
-                                                                onchange="getRequirementsList(this.value)">
+                                                                placeholder="Type">
                                                                 <option value="">Select</option>
                                                                 @foreach ($event_types as $pt)
                                                                 <option value="{{$pt->event_type_id}}"
@@ -222,7 +226,6 @@
                                                                     name="issued_date" id="issued_date"
                                                                     placeholder="From Date"
                                                                     value="{{old('issued_date')}}">
-
                                                             </div>
                                                         </div>
 
@@ -242,7 +245,6 @@
                                                                     value="{{date('h:i a')}}" name="time_start"
                                                                     id="time_start" type="text"
                                                                     value="{{old('time_start')}}" />
-
                                                             </div>
 
                                                         </div>
@@ -256,7 +258,6 @@
                                                                 class="form-control form-control-sm {{$errors->has('venue_en') ? 'is-invalid' : ''}}"
                                                                 name="venue_en" id="venue_en" placeholder="Venue"
                                                                 value="{{old('venue_en')}}">
-
                                                         </div>
 
 
@@ -276,7 +277,6 @@
                                                                     name="expired_date" id="expired_date"
                                                                     placeholder="To Date"
                                                                     value={{old('exprired_date')}}>
-
                                                             </div>
                                                         </div>
 
@@ -296,7 +296,6 @@
                                                                     value="{{date('h:i a')}}" name="time_end"
                                                                     id="time_end" type="text"
                                                                     value={{old('time_end')}} />
-
                                                             </div>
 
                                                         </div>
@@ -314,7 +313,6 @@
                                                                 name="venue_ar" id="venue_ar" placeholder="Venue"
                                                                 value={{old('venue_ar')}}>
                                                         </div>
-
 
 
                                                     </div>
@@ -406,88 +404,75 @@
                                                 </div>
                                             </div>
                                         </div>
-                                </form>
 
+
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
+                        <!--end: Form Wizard Step 3-->
 
+                        {{-- <div class="kt-spinner kt-spinner--lg kt-spinner--dark" style="display:none"></div> --}}
 
-
-                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                    <div class="kt-form__section kt-form__section--first ">
-                        <div class="kt-wizard-v3__form">
-                            <form id="documents_required" method="post">
+                        <!--begin: Form Wizard Step 3-->
 
 
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="kt-form__actions">
-                <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                    data-ktwizard-type="action-prev" id="prev_btn">
-                    Previous
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="kt-form__actions">
-    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev"
-        id="prev_btn">
-        Previous
-    </div>
+                        <div class="kt-form__actions">
+                            <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                data-ktwizard-type="action-prev" id="prev_btn">
+                                Previous
+                            </div>
 
 
-    <a href="{{url('company/event')}}">
-        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-            Back
-        </div>
-    </a>
+                            <a href="{{url('company/event')}}">
+                                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                    id="back_btn">
+                                    Back
+                                </div>
+                            </a>
 
-    {{-- <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            {{-- <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                                 data-ktwizard-type="action-submit">
                                 Submit
                             </button> --}}
 
-    <div class="btn-group" role="group" id="submit--btn-group">
-        <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false" data-ktwizard-type="action-submit">
-            Submit
-        </button>
-        <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
-            <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success" value="finished"
-                id="submit_btn">Finish &
-                Submit</button>
-            <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts">Save
-                to Drafts</button>
+                            <div class="btn-group" role="group" id="submit_btn">
+                                <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    data-ktwizard-type="action-submit">
+                                    Submit
+                                </button>
+                                <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
+                                    <button name="submit"
+                                        class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
+                                        value="finished">Finish &
+                                        Submit</button>
+                                    <button name="submit" class="dropdown-item btn btn-sm btn-secondary"
+                                        value="drafts">Save to Drafts</button>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                data-ktwizard-type="action-next" id="next_btn">
+                                Next Step
+                            </div>
+
+                        </div>
+
+                </div>
+
+                </form>
+
+
+            </div>
         </div>
     </div>
-
-
-    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next"
-        id="next_btn">
-        Next Step
-    </div>
-
-</div>
-
-</div>
-
-
-
-
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 
@@ -511,6 +496,21 @@
 
 <!--begin::Modal-->
 
+<div class="modal fade" id="artist_exists" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Person Code Search</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearPersonCode()">
+                </button>
+            </div>
+            <div class="modal-body" id="person_code_modal">
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <!--end::Modal-->
@@ -530,251 +530,71 @@
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
     });
 
-    var fileUploadFns = [];
-    var eventdetails = {};
-    var documentDetails = {};
-
     $(document).ready(function(){
-        localStorage.clear();
-        uploadFunction();
+        wizard = new KTWizard("kt_wizard_v3");
+        var is_agreed = $('#agreed_value').val();
+
+        if(is_agreed == 1){
+            wizard.goTo(2);
+            $('#back_btn').css('display', 'none');
+        }
+    })
+
+    $("#check_inst").on("click", function () {
+        setThis('none', 'block', 'block', 'none');
     });
 
-    const uploadFunction = () => {
-            // console.log($('#artist_number_doc').val());
-            for (var i = 1; i <= $('#requirements_count').val(); i++) {
-                fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
-                    url: "{{route('company.uploadDocument')}}",
-                    method: "POST",
-                    allowedTypes: "jpeg,jpg,png,pdf",
-                    fileName: "doc_file_" + i,
-                    // showDownload: true,
-                    downloadStr: `<i class="la la-download"></i>`,
-                    deleteStr: `<i class="la la-trash"></i>`,
-                    showFileSize: false,
-                    returnType: "json",
-                    showFileCounter: false,
-                    abortStr: '',
-                    multiple: false,
-                    maxFileCount: 1,
-                    showDelete: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                    formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
-                    onLoad: function (obj) {
-                        $code = $('#code').val();
-                        if ($code) {
-                            $.ajaxSetup({
-                                headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
-                            });
-                            $.ajax({
-                                cache: false,
-                                url: "{{route('company.get_files_uploaded')}}",
-                                type: 'POST',
-                                data: {artist_permit: $('#artist_permit_num').val(), reqId: $('#req_id_' + i).val()},
-                                dataType: "json",
-                                success: function (data) {
-                                    if (data) {
-                                        let id = obj[0].id;
-                                        let number = id.split("_");
-                                        let issue_datetime = new Date(data['issued_date']);
-                                        let exp_datetime = new Date(data['expired_date']);
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-
-                                        obj.createProgress(data["document_name"], "{{url('storage')}}"+'/' + data["path"], '');
-                                        if (formatted_issue_date != NaN - NaN - NaN) {
-                                            $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
-                                            $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
-                                        }
-                                    }
-                                }
-                            });
-                        }
-
-                    },
-                    onError: function (files, status, errMsg, pd) {
-                        showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
-                        pd.statusbar.hide();
-                    },
-                    downloadCallback: function (files, pd) {
-
-                    }
-                });
-                $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
-                $('#fileuploader_' + i + ' + div').attr('id', 'ajax-file-upload_' + i);
-            }
-        };
-
-
-        var eventValidator = $('#eventdetails').validate({
-            ignore: [],
-            rules: {
-                event_type_id: 'required',
-                name_en: 'required',
-                name_ar: 'required',
-                issued_date: 'required',
-                time_start: 'required',
-                venue_en: 'required',
-                expired_date: 'required',
-                time_end: 'required',
-                venue_ar: 'required',
-                address: 'required',
-            },
-            messages: {
-                event_type_id: '',
-                name_en: '',
-                name_ar: '',
-                issued_date: '',
-                time_start: '',
-                venue_en: '',
-                expired_date: '',
-                time_end: '',
-                venue_ar: '',
-                address: '',
-            },
-        });
-
-        var docRules = {};
-        var docMessages = {};
-
-        for (var i = 1; i <= $('#requirements_count').val(); i++) {
-            docRules['doc_issue_date_' + i] = 'required';
-            docRules['doc_exp_date_' + i] = 'required';
-            docMessages['doc_issue_date_' + i] = '';
-            docMessages['doc_exp_date_' + i] = '';
+    $("#artist_det").on("click", function () {
+        if (!checkForTick()) {
+            return
         }
+        setThis('block', 'none', 'none', 'block');
+    });
 
-        var documentsValidator = $('#documents_required').validate({
-            rules: docRules,
-            messages: docMessages
-        });
+    const setThis = (prev, next, back, submit) => {
+        $('#prev_btn').css('display', prev);
+        $('#next_btn').css('display', next);
+        $('#back_btn').css('display', back);
+        $('#submit_btn').css('display', submit);
+    };
 
-
-        $("#check_inst").on("click", function () {
-            setThis('none', 'block', 'block', 'none');
-        });
-
-        $("#artist_det").on("click", function () {
-            if (!checkForTick()) {
-                return
+    const checkForTick = () => {
+        wizard = new KTWizard("kt_wizard_v3");
+        var result;
+        if (wizard.currentStep == 1) {
+            if ($('#agree').not(':checked')) {
+                wizard.stop();
+                $('#agree_cb > span').addClass('compulsory');
+                result = false;
             }
-            setThis('block', 'none', 'none', 'block');
-        });
-
-        $("#upload_doc").on("click", function () {
-            wizard = new KTWizard("kt_wizard_v3");
-            if (!checkForTick()) return;
-            if (wizard.currentStep == 3) {
-                stopNext(detailsValidator);
-                return;
+            if ($('#agree').is(':checked')) {
+                $('#back_btn').css('display', 'none');
+                $('#prev_btn').css('display', 'block');
+                wizard.goNext();
+                result = true;
             }
-
-            setThis('block', 'none', 'none', 'block');
-        });
-
-        const setThis = (prev, next, back, submit) => {
-            $('#prev_btn').css('display', prev);
-            $('#next_btn').css('display', next);
-            $('#back_btn').css('display', back);
-            $('#submit_btn').css('display', submit);
-            $('#submit--btn-group').css('display', submit);
-        };
-
-        const checkForTick = () => {
-            wizard = new KTWizard("kt_wizard_v3");
-            var result;
-            if (wizard.currentStep == 1) {
-                if ($('#agree').not(':checked')) {
-                    wizard.stop();
-                    $('#agree_cb > span').addClass('compulsory');
-                    result = false;
-                }
-                if ($('#agree').is(':checked')) {
-                    $('#back_btn').css('display', 'none');
-                    $('#prev_btn').css('display', 'block');
-                    wizard.goNext();
-                    result = true;
-                }
-            }
-            return result;
-        };
+        } else {
+            result = true;
+        }
+        return result;
+    };
 
 
         $('#next_btn').click(function () {
 
-        wizard = new KTWizard("kt_wizard_v3");
+            wizard = new KTWizard("kt_wizard_v3");
 
-        checkForTick();
 
-        // checking the next page is artist details
-        if (wizard.currentStep == 2) {
-            // stopNext(eventValidator);
-            KTUtil.scrollTop();// validating the artist details page
-            if (detailsValidator.form()) {
-                $('#submit_btn').css('display', 'block'); // display the submit button
-                $('#next_btn').css('display', 'none'); // hide the next button
-                $('#submit--btn-group').css('display', 'block');
-                eventdetails = {
-                    event_id: $('#event_type_id').val(),
-                    name: $('#name_en').val(),
-                    name_ar: $('#name_ar').val(),
-                    issued_date: $('#issued_date').val(),
-                    time_start: $('#time_start').val(),
-                    venue_en: $('#venue_en').val(),
-                    expired_date: $('#expired_date').val(),
-                    time_end: $('#time_end').val(),
-                    venue_ar: $('#venue_ar').val(),
-                    address: $('#address').val(),
-                    emirate_id: $('#emirate_id').val(),
-                    area_id: $('#area_id').val(),
-                    country_id: $('#country_id').val()
-                };
-
-                localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
-                // insertIntoDrafts(3, JSON.stringify(artistDetails));
+            // checking the next page is artist details
+            if (wizard.currentStep == 1) {
+                if(checkForTick())
+                {
+                    $('#back_btn').css('display', 'none');
+                    $('#submit_btn').css('display', 'block');
+                }
             }
-        }
         });
 
-
-        const docValidation = () => {
-            var artist_number = $('#artist_number').val();
-            var hasFile = true;
-            var hasFileArray = [];
-            for (var i = 1; i <= $('#requirements_count').val(); i++) {
-                if ($('#ajax-file-upload_' + i).length) {
-                    if ($('#ajax-file-upload_' + i).contents().length == 0) {
-                        hasFileArray[i] = false;
-                        $("#ajax-upload_" + i).css('border', '2px dotted red');
-                    } else {
-                        hasFileArray[i] = true;
-                        $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
-                    }
-                    documentDetails[i] = {
-                        issue_date: $('#doc_issue_date_' + i).val(),
-                        exp_date: $('#doc_exp_date_' + i).val()
-                    }
-                }
-            }
-
-            if (hasFileArray.includes(false) ) {
-                hasFile = false;
-            } else {
-                hasFile = true;
-            }
-
-            localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
-                return hasFile;
-            };
-
-
-
-        const stopNext = (validator_name) => {
-            wizard.on("beforeNext", function (wizardObj) {
-                if (validator_name.form() !== true) {
-                    wizardObj.stop(); // don't go to the next step
-                }
-            });
-        };
 
         $('#prev_btn').click(function () {
             wizard = new KTWizard("kt_wizard_v3");
@@ -824,7 +644,6 @@
                     $('#area_id').append('<option value=" ">Select</option>');
                     for (let i = 0; i < result.length; i++) {
                         $('#area_id').append('<option value="' + result[i].id + '">' + result[i].area_en + '</option>');
-
                     }
 
                 }
@@ -832,82 +651,9 @@
 
         };
 
-        $('#submit_btn').click((e) => {
-
-            var hasFile = docValidation();
-
-                if (documentsValidator.form() && hasFile) {
-
-                    var ed = localStorage.getItem('eventdetails');
-                    var dd = localStorage.getItem('documentDetails');
-
-                        $.ajax({
-                            url: "{{route('event.store')}}",
-                            type: "POST",
-                            data: {
-                                eventD: ed,
-                                documentD: dd,
-                            },
-                            success: function (result) {
-                                if(result.message[0]){
-                                    localStorage.clear();
-                                    // window.location.href = "{{url('company/add_new_permit')}}"+'/'+ permit_id;
-                                }
-                            }
-                        });
-                }
-
-        });
 
 
 
-        $('#submit_btn').click((e) => {
-
-              /*  var from_date  = $('#from_date').val();
-                var to_date = $('#to_date').val();
-                var location = $('#location').val();
-
-                var permit_id = $('#permit_id').val();
-
-                var permitD = {
-                    from : from_date,
-                    to: to_date,
-                    location: location
-                }
-                // $.ajax({
-                //     url: "{{route('company.add_artist_to_draft')}}",
-                //     type: "POST",
-                //     data: {
-                //         artistD: ad,
-                //         documentD: dd,
-                //         permitD: permitD,
-                //         permit_id: permit_id
-                //     },
-                //     success: function (result) {
-                //         if(result.message[0]){
-                //             localStorage.clear();
-                //             window.location.href = "{{url('company/add_new_permit')}}"+'/'+ permit_id;
-                //         }
-                //         console.log(result);
-                //         // $('#pleaseWaitDialog').modal('hide');
-                //     }
-                // });
-            }*/
-
-        });
-
-
-        function getRequirementsList(id)
-        {
-            var url = "{{route('company.event.get_requirements', ':id')}}";
-            url = url.replace(':id', id);
-            $.ajax({
-                url: url,
-                success: function (result) {
-                  console.log(result.requirements)
-                }
-            });
-        }
 
 
 </script>

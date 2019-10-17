@@ -6,12 +6,11 @@
 				 #event-exist-modal .modal-lg, .modal-xl {
 						max-width: none;
 				 }
-				 
 				 #event-exist-modal .modal-dialog {
 						overflow-y: initial !important;
 						margin: 0 0 0 1%
 				 }
-				 
+
 				 #event-exist-modal .modal-body {
 						height: calc(100vh - 130px);
 						overflow-y: auto;
@@ -20,6 +19,7 @@
 	 </style>
 @stop
 @section('content')
+
 	 <section id="app-wizard" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
 			<div class="kt-portlet__head kt-portlet__head--sm">
 				 <div class="kt-portlet__head-label">
@@ -82,7 +82,7 @@
 																 <div class="alert alert-outline-danger fade show" role="alert">
 																		<div class="alert-text">
 																			 <h6 class="alert-heading text-danger kt-font-transform-u">Important</h6>
-																			 <p>The venue of this event has/have 3 active event.</p>
+																			 <p>The venue of this event has/have {{$existing_event->count()}} active event.</p>
 																			 <hr>
 																			 <button type="button" data-target="#event-exist-modal" data-toggle="modal"
 																							 class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">Show Event Calendar
@@ -380,7 +380,7 @@
 																								</tr>
 																								</thead>
 																						 </table>
-																					
+
 																					</div>
 																			 </div>
 																		</div>
@@ -427,6 +427,7 @@
 						</div>
 				 </div>
 			</div>
+
 	 </section>
 	 @include('admin.event.includes.existing-event-modal')
 @stop
@@ -468,6 +469,18 @@
          editable: true,
          eventLimit: true, // allow "more" link when too many events
          navLinks: true,
+
+           events: [
+                   @foreach($existing_event as $event)
+                  {
+                    title: '{{$event->name_en .' : '.$event->time_start}}',
+                    start: '{{$event->issued_date}}',
+                    description: '{{$event->name_ar}}',
+                   //end'{{--{{$event->expired_date}}--}}',
+                    className: "fc-event-danger fc-event-solid-warning",
+                  },
+                  @endforeach
+                ],
          // events: [
          //     {
          //         title: 'All Day Event',
@@ -477,7 +490,7 @@
          //     },
          //     {
          //         title: 'Reporting',
-         //         start: YM + '-14T13:30:00',
+         //        start: YM + '-14T13:30:00',
          //         description: 'Lorem ipsum dolor incid idunt ut labore',
          //         end: YM + '-14',
          //         className: "fc-event-success"
@@ -494,7 +507,7 @@
          //         start: YM + '-03',
          //         description: 'Lorem ipsum dolor sit tempor inci',
          //         end: YM + '-05',
-         //         className: "fc-event-light fc-event-solid-primary"
+         //        className: "fc-event-light fc-event-solid-primary"
          //     },
          //     {
          //         title: 'Dinner',
@@ -559,29 +572,29 @@
          //         description: 'Lorem ipsum dolor sit amet, scing'
          //     },
          //     {
-         //         title: 'Click for Google',
-         //         url: 'http://google.com/',
-         //         start: YM + '-28',
-         //         className: "fc-event-solid-info fc-event-light",
-         //         description: 'Lorem ipsum dolor sit amet, labore'
-         //     }
-         // ],
+          //        title: 'Click for Google',
+            //      url: 'http://google.com/',
+              //    start: YM + '-28',
+             //     className: "fc-event-solid-info fc-event-light",
+               //   description: 'Lorem ipsum dolor sit amet, labore'
+             // }
+          //],
 
-         // eventRender: function(info) {
-         //     var element = $(info.el);
-         //
-         //     if (info.event.extendedProps && info.event.extendedProps.description) {
-         //         if (element.hasClass('fc-day-grid-event')) {
-         //             element.data('content', info.event.extendedProps.description);
-         //             element.data('placement', 'top');
-         //             KTApp.initPopover(element);
-         //         } else if (element.hasClass('fc-time-grid-event')) {
-         //             element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-         //         } else if (element.find('.fc-list-item-title').lenght !== 0) {
-         //             element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-         //         }
-         //     }
-         // }
+          eventRender: function(info) {
+              var element = $(info.el);
+              if (info.event.extendedProps && info.event.extendedProps.description) {
+                  if (element.hasClass('fc-day-grid-event')) {
+                      element.data('content', info.event.extendedProps.description);
+
+                      element.data('placement', 'top');
+                      KTApp.initPopover(element);
+                  } else if (element.hasClass('fc-time-grid-event')) {
+                      element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                  } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                      element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                  }
+              }
+          }
        });
 
        calendar.render();
@@ -589,7 +602,7 @@
        eventDetails();
        wizard();
      });
-     
+
      function wizard() {
        $(document).on('change','input[type=checkbox]', function(){
 				if($(this).is(':checked')){
@@ -603,7 +616,7 @@
 			});
 			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 			 wizard.on("beforeNext", function(wizardObj) {
-			 
+
 			 });
      }
 

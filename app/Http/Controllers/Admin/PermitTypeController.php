@@ -44,9 +44,9 @@ class PermitTypeController extends Controller
          $permitType =  PermitType::when($request->permit_type, function($q) use ($request){
                                         $q->where('permit_type', $request->permit_type);
                                     })->when($request->status,function($q) use ($request){
-                                         $q->where('status', $request->status);   
+                                         $q->where('status', $request->status);
                                     })->get();
-         return Datatables::of($permitType)->make(true);   
+         return Datatables::of($permitType)->make(true);
         }
 
     }
@@ -73,6 +73,7 @@ class PermitTypeController extends Controller
         if($request->exit){
             return redirect()->route('permit_type.index')->with('message', $result);
         }
+
         return redirect()->back()->with('message', $result);
     }
 
@@ -103,7 +104,6 @@ class PermitTypeController extends Controller
                     $permit_type->update(['deleted_by'=>Auth::user()->user_id]);
                     $result = ['success', ucfirst($permit_type->name_en) .' Permit Type has been deleted successfully.', 'Success'];
                 }
-
             }catch(Exception $e){
                 $result = ['error', $e->getMessage(), 'Error'];
             }

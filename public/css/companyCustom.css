@@ -503,3 +503,45 @@ select option:first-child {
     pointer-events: none;
 }
 
+
+/*  show view css */
+
+.event--view-head {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.event--view-location {
+    text-align:right;
+}
+
+.event--view-details {
+    display: flex;
+    margin-top: 50px;
+    border-top:1px solid rgba(0,0,0,0.2);
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.event--view-detail-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+.event--view-detail-item-title {
+    padding-bottom:0.5rem;
+    font-weight: bold;
+    text-align:center;
+}
+
+.event--view-detail-item-value {
+    padding-left: 2rem;
+}
+
+#event-wizard--nav .kt-wizard-v3__nav-item{
+    flex: 0 0 20% !important;
+}

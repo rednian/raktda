@@ -55,6 +55,8 @@ class MainController extends Controller
     public function show($id)
     {
         $events = Event::with('type', 'emirate', 'area', 'country')->where('event_id', $id)->first();
+
+
         return view('permits.event.show', compact('events'));
     }
 

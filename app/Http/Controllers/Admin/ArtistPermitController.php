@@ -19,6 +19,7 @@ class ArtistPermitController extends Controller
 {
     public function index()
     {
+
 	    return view('admin.artist_permit.index', [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
@@ -93,6 +94,7 @@ class ArtistPermitController extends Controller
 
     public function checkActivePermit(Request $request, Permit $permit, Artist $artist)
     {
+
     	$permit = Permit::whereHas('artistpermit', function($q) use ($artist){
     		$q->where('artist_id',$artist->artist_id);
 	    })->where('permit_status', 'active')->get();
@@ -154,7 +156,7 @@ class ArtistPermitController extends Controller
 
         return view('admin.artist_permit.check-application', [
         	'page_title'=>'check artist details',
-          'permit'=>$permit, 
+          'permit'=>$permit,
           'existing_permit'=>$existing_permit,
           'artist_permit'=>$artistpermit
         ]);
@@ -318,7 +320,7 @@ class ArtistPermitController extends Controller
 			    })
 			    ->rawColumns(['artist_status', 'existing_permit'])
 			    ->make(true);
-        }       
+        }
     }
 
     public  function permitHistory(Request $request, Permit $permit)

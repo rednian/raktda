@@ -12,6 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class EventController extends Controller
 {
+
 	public function index()
 	{
 		return view('admin.event.index', ['page_title'=>'Event Permit']);
@@ -28,7 +29,6 @@ class EventController extends Controller
 				$status = $request->status;
 			}
 			else{
-
 //				$status =
 			}
 				$event->update(['status', $request->status]);
@@ -46,17 +46,16 @@ class EventController extends Controller
 	}
 
 	public function application(Request $request, Event $event)
-	{
-		$this->authorize('view', $event);
-		$event->update(['last_check_by'=>Auth::user()->user_id, 'lock'=>Carbon::now()]);
-
+    {
+        $this->authorize('view', $event);
+		$event->update(['last_check_by' => Auth::user()->user_id, 'lock'=>Carbon::now()]);
 
 
 		$existing_event = Event::where('event_id', '!=', $event->event_id)
 			 ->whereIn('status', ['processing', 'active', 'approved-unpaid'])
-			 ->whereBetween('time_end', [$event->time_start, $event->time_end])
-			 ->whereBetween('expired_date', [$event->issued_date, $event->expired_date])->count();
-//		dd($existing_event);
+			 ->whereBetween('time_end', [$event->time_start, $event->time_end])->get();
+
+
 		return view('admin.event.application', [
 			 'page_title'=>'Event Application',
 			 'event'=>$event,
@@ -74,7 +73,7 @@ class EventController extends Controller
 			 1,
 			 ['url' => 'http://full-calendar.io']
 		);
-		dd($event);
+
 		return view('admin.event.show', ['page_title'=>'']);
 	}
 

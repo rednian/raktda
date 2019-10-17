@@ -62,19 +62,19 @@ class Event extends Model
 	public function getIssuedDateAttribute($date)
 	{
 		if(!$date){ return null; }
-		return Carbon::parse($date)->format('d-M-Y');
+		return Carbon::parse($date)->format('Y-m-d');
 	}
 
 	public function getTimeStartAttribute($date)
 	{
 		if(!$date){ return null; }
-		return Carbon::parse($date)->format('h:m a');
+		return Carbon::parse($date)->format('h:i a');
 	}
 
-	public function getTimeEndAttribute($date)
+/*	public function getTimeEndAttribute($date)
 	{
 		if(!$date){ return null; }
-		return Carbon::parse($date)->format('h:m a');
-	}
+		return Carbon::parse($date)->format('h:i a');
+	}*/
 
 }

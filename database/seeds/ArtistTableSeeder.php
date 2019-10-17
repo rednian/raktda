@@ -11,6 +11,7 @@ class ArtistTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+          //
+        factory(\App\Artist::class, 20)->create();
     }
 }

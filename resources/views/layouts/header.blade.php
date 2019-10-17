@@ -197,8 +197,8 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
                 <div class="kt-header__topbar-user">
                     @php
-                    $name = ucwords(Auth::user()->NameEn);
-                    $first_name = explode(' ', $name);
+                    $contact_person = App\Company::findOrFail(Auth::user()->EmpClientId)->contact_person;
+                    $first_name = explode(' ', $contact_person);
                     $first_name = $first_name[0];
                     $first_letter = substr($first_name, 0, 1);
                     @endphp
@@ -217,8 +217,8 @@
                         <span
                             class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
                     </div>
-                    <div class="kt-user-card__name">{{ $name }}</div>
-                    <div class="kt-user-card__badge"> <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">23
+                    <div class="kt-user-card__name">{{ $contact_person }}</div>
+                    <div class="kt-user-card__badge"> <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">1
                             Notifications</span> </div>
                 </div>
                 <!--end: Head -->

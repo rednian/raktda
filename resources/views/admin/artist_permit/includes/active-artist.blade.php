@@ -57,6 +57,6 @@ $countries = \App\Country::has('artist')->get();
 						@endif
 				 </select>
 			</div>
-	 
+
 	 </div>
 </div>
