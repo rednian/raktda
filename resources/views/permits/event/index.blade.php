@@ -3,7 +3,7 @@
 @section('title', 'Event Permits - Smart Government Rak')
 
 @section('content')
-
+  
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
 
@@ -199,8 +199,6 @@
     @endsection
 
     @section('script')
-
-
     <script>
         var events = JSON.parse($('#valid_events').val());
 
@@ -392,14 +390,13 @@
     const rejected_permit = id => {
         $.ajax({
 
-            url: "{{url('company/reject_reason')}}"+'/'+id,
-            success: function(data){
+            url: "{{url('company/reject_reason')}}" + '/' + id,
+            success: function (data) {
                 $('#rejected_reason').html(data);
             }
         });
     }
-
     </script>
     <script src="{{asset('js/list-view.js')}}"></script>
+        @endsection
 
-    @endsection

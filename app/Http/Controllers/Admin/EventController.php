@@ -12,7 +12,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 class EventController extends Controller
 {
-
 	public function index()
 	{
 		return view('admin.event.index', ['page_title'=>'Event Permit']);
@@ -73,7 +72,6 @@ class EventController extends Controller
 			 1,
 			 ['url' => 'http://full-calendar.io']
 		);
-
 		return view('admin.event.show', ['page_title'=>'']);
 	}
 
@@ -87,10 +85,9 @@ class EventController extends Controller
 			$events = Event::has('type')
 				 ->whereIn('status', $request->status)
 				 ->orderBy('updated_at', 'desc');
-
-
 			 $totalRecords = $events->count();
          $events = $events->offset($start)->limit($length);
+
 
 			return DataTables::of($events)
 				 ->addColumn('company_name', function($event){

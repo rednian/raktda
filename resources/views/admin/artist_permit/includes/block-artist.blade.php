@@ -54,6 +54,8 @@
 			</div>
 	 </div>
 </form>
+
+<button style="font-size: 11px;padding: 6px;margin-bottom: 1%" class="btn btn-warning btn-xs" id="unblock-artist-button">UNBLOCK ARTIST</button>
 <table class="table  table-hover  table-borderless table-striped" id="block-artist">
 	 <thead class="thead-dark">
 	 <tr>
@@ -68,3 +70,6 @@
 	 </tr>
 	 </thead>
 </table>
+
+@include('admin.artist_permit.includes.artist-block-modal')
+
