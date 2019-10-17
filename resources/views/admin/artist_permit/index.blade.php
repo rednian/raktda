@@ -111,6 +111,26 @@
 
                   var rows_selected = block_artist_table.column(0).checkboxes.selected();
 
+              artist_id=[]
+              $.each(rows_selected, function(index, rowId) {
+                  artist_id.push(rowId);
+              })
+              if(artist_id.length>0){
+                  $.ajax({
+                      type: 'post',
+                      url: " {{route('admin.checked_list')}}",
+                      data: {id:artist_id},
+                      success: function (data) {
+                          var html=$('#unblock_checked_list').html('<tr><th>Sn</th><th>Name</th><th>Person Code</th></tr>')
+                          $.each(data, function(key,val) {
+                              var value=key+1;
+                              $(html).append( '<tr><td>'+value+'</td><td>' +val.firstname_en + ' '+  val.lastname_en + '</td><td>'+val.person_code+'</td></tr>' );
+                          });
+                      }
+                  });
+
+              }
+
                   if (rows_selected.length > 0) {
                       $('#block_artist_number').html(rows_selected.length+'  Artist Seleted').css({'color':'green'})
 
@@ -243,8 +263,26 @@
          $('div.toolbar-active-2').html($('#active-nationality-container'));
 
          $('button#btn-active-action').click(function () {
-
               var rows_selected = active_artist_table.column(0).checkboxes.selected();
+             artist_id=[]
+             $.each(rows_selected, function(index, rowId) {
+                 artist_id.push(rowId);
+             })
+             if(artist_id.length>0){
+                 $.ajax({
+                     type: 'post',
+                     url: " {{route('admin.checked_list')}}",
+                     data: {id:artist_id},
+                     success: function (data) {
+                       var html=$('#checked_list').html('<tr><th>Sn</th><th>Name</th><th>Person Code</th></tr>')
+                         $.each(data, function(key,val) {
+                            var value=key+1;
+                             $(html).append( '<tr><td>'+value+'</td><td>' +val.firstname_en + ' '+  val.lastname_en + '</td><td>'+val.person_code+'</td></tr>' );
+                         });
+                     }
+                 });
+
+             }
                if (rows_selected.length > 0) {
                $('#active-artist-alert').addClass('d-none');
                $('#active-artist-modal').modal('show');

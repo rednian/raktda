@@ -8,6 +8,11 @@
 							 </button>
 						</div>
 						<div class="modal-body">
+                            <div class="col">
+                               <table class="table table-borderless" id="checked_list"  style="padding: 5px">
+
+                               </table>
+                            </div>
 							 <section class="kt-section kt-padding-10">
 									<div class="kt-section__desc">
 										 @csrf

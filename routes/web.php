@@ -41,6 +41,8 @@ Route::middleware(['admin', 'auth'])->group(function(){
 
     Route::post('/artist_block', 'Admin\ArtistController@artist_block')->name('admin.artist_block');
     Route::post('/artist_unblock', 'Admin\ArtistController@artist_unblock')->name('admin.artist_unblock');
+    Route::post('/checked_list', 'Admin\ArtistController@checked_list')->name('admin.checked_list');
+
 
 
     //---------------------------------------------------------------------------------------------------------------
