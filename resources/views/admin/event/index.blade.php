@@ -316,7 +316,7 @@
             var status = $('select#processing-permit-status').val(); 
             var type = $('select#processing-applicant-type').val();
 
-            d.status = status.length > 0 ? status : ['approved-unpaid', 'processing', 'need approval'];
+            d.status = status.length > 0 ? status : ['approved-unpaid', 'processing', 'need approval', 'need modification'];
             d.type =  type.length > 0 ? type : null;
           }
         },

@@ -363,7 +363,7 @@
 																		 <option selected disabled>Select Action</option>
 																		 <option value="approved-unpaid">Approve Application</option>
 																		 <option value="need approval">Need Approval</option>
-																		 <option value="amend">Send back for Amendments</option>
+																		 <option value="need modification">Send back for Amendments</option>
 																		 <option value="rejected">Reject Application</option>
 																	</select>
 															 </div>

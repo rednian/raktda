@@ -27,21 +27,30 @@
 
 				$user = Auth::user();
 				$request['user_id'] = $user->user_id;
+				$request['checked_at'] = Carbon::now();
 				$event->check()->where('event_id', $event->event_id)->delete();
 				$event->check()->create($request->all());
 
-				if ($request->status == 'rejected' || $request->status == 'approved-unpaid' || $request->status == 'amend') {
+				if($request->status == 'rejected'  || $request->status == 'amend'){
+					$request['role_id'] = $user->roles()->first()->role_id;
+					if ($request->comment) {$comment = $event->comment()->create($request->all());}
+					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
+					$event->update(['status'=>$request->status]);
+				}
+
+				if ($request->status == 'approved-unpaid') {
 					if ($request->comment) { $comment = $event->comment()->create($request->all()); }
 					$request['role_id'] = $user->roles()->first()->role_id;
 					$request['type'] = $type = 1; 
-					$event->approve()->create($request->all());
+					$comment->approve()->create($request->all());
 					$event->update(['status'=>$request->status]);
 				}
-				else{
+
+				if($request->status == 'need approval'){
 					$request['role_id'] = $user->roles()->first()->role_id;
 					$request['type']  = 0; 
 					$comment = $event->comment()->create($request->all());
-					$comment->approve()->create(array_merge ($request->all(), ['event_id'=>$comment->event_id, 'checked_at'=>Carbon::now() ]));
+					$comment->approve()->create(array_merge ($request->all(), ['event_id'=>$comment->event_id ]));
 
 					foreach ($request->approver as $role_id) {
 						$request['role_id'] = $role_id;
@@ -51,6 +60,7 @@
 					}
 					$event->update(['status'=>'need approval']);
 				}
+		
 
 				DB::commit();
 				$result = ['success', ucfirst($event->name_en).' Successfully checked', 'Success'];

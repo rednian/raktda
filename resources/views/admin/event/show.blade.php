@@ -15,13 +15,11 @@
                         <i class="flaticon-more"></i>
                  </button>
                  <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                    @if ($tab != 'processing-permit')
-                        <a class="dropdown-item kt-font-trasnform-u" href="#"><i class="la la-download"></i> download</a>
-                    @endif
-                        <a class="dropdown-item kt-font-trasnform-u" href="#"><i class="la la-download"></i> download</a>
-                       
-                        {{-- <div class="dropdown-divider"></div> --}}
-                        {{-- <a class="dropdown-item" href="#"><i class="la la-cog"></i> Settings</a> --}}
+                        <a class="dropdown-item kt-font-trasnform-u" href="#">Cancel Permit</a>
+                        @if ($tab != 'processing-permit')
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item kt-font-trasnform-u" href="#"><i class="la la-download"></i> download</a>
+                        @endif
                  </div>
             </div>
          </div>
@@ -75,7 +73,7 @@
                     <h6 class="kt-font-dark">Permit Owner Information</h6>
                     <table class="table table-sm table-hover table-borderless">
                         <tr>
-                            <td>Name :</td>
+                            <td width="35%">Name :</td>
                             <td>{{ ucwords($event->owner->NameEn) }}</td>
                         </tr>
                         <tr>
@@ -95,6 +93,22 @@
                              <td>{{ $event->owner->email }}</td>
                         </tr>
                     </table>
+                     <h6 class="kt-font-dark">Establishment Information</h6>
+                     <table class="table table-borderless table-sm">
+                         <tr>
+                             <td width="35%">Establishment Name: </td>
+                         </tr>
+                         @if ($event->owner->type == 1)
+                            <tr>
+                                <td>Trade License No. :</td>
+                                <td>{{ $event->owner->company->company_trade_license }}</td>
+                            </tr> 
+                         @endif
+                         <tr>
+                            <td>Address:</td>
+                             <td>{{ $event->owner->company->company_address.' '.$event->owner->company->city.' '.$event->owner->company->country }}</td>
+                         </tr>
+                     </table>
                 </section>
             </div>
         </section>
