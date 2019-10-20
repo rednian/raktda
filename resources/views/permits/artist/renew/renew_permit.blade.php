@@ -117,7 +117,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" onclick="submit()">
+            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                 Re-Submit
             </div>
         </div>
@@ -291,7 +291,8 @@
         });
     }
 
-    function submit() {
+    $('#submit_btn').click(function() {
+        $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
         $.ajax({
             type: 'POST',
             url: '{{route("company.move_temp_to_permit_renew")}}',

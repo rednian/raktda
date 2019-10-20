@@ -505,6 +505,7 @@
         $('#back_btn').css('display', 'none');
         localStorage.clear();
         var event_type_id = $('#event_type_id').val();
+        // console.log(event_type_id);
         getRequirementsList(event_type_id);
         uploadFunction();
         $('#submit_btn').css('display', 'none');
@@ -665,7 +666,7 @@
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#submit_btn').css('display', 'block');
                 eventdetails = {
-                    event_id: $('#event_type_id').val(),
+                    event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
                     issued_date: $('#issued_date').val(),

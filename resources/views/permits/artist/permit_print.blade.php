@@ -179,7 +179,7 @@
         .each--person-tab {
             position: relative;
             margin: 5px 2px;
-            width: 50%;
+            /* width: 50%; */
             border: 1px solid black;
         }
 

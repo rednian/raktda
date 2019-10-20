@@ -153,7 +153,7 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" onclick="submit()">
+                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                     Re-Submit
                 </div>
             </div>
@@ -385,7 +385,8 @@
         return '<tr><td>'+doc.document_name+'</td><td>'+doc.issued_date+'</td><td>'+doc.expired_date+'</td><td><a href="'+base_url+'/storage/'+doc.path+'" target="_blank">View</a></td></tr>';
     }
 
-    function submit() {
+    $('#submit_btn').click(function() {
+        $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
         $.ajax({
             url: '{{route("company.move_temp_to_permit")}}',
             type: 'POST',

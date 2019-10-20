@@ -182,17 +182,21 @@
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Person
-                                                                        Code</label><span id="changeArtistLabel"
-                                                                        class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                                        onclick="removeSelectedArtist()">Change </span>
+                                                                        Code</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
-                                                                    <div class="col-lg-8">
+                                                                    <div class="col-lg-5">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="code" id="code"
                                                                                 placeholder="Person Code">
                                                                         </div>
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <span id="changeArtistLabel"
+                                                                            class="kt-badge  kt-badge--danger kt-badge--inline d-none"
+                                                                            onclick="removeSelectedArtist()">Change
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
@@ -867,6 +871,8 @@
                             Back
                         </div>
                     </a>
+                    {{--
+                    class="btn red mt-ladda-btn ladda-button mt-progress-demo" --}}
 
 
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
@@ -1505,7 +1511,7 @@
                         {
                             $('#person_code_modal').empty();
                             // setTimeout(searchCode(), 1000);
-                            $('#person_code_modal').append('<p class="text-center">Sorry ! We cannot find artist with this Person Code <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span>.(or)<br /> This Person is already added to the Permit. <br /> Please Add Another Artist ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
+                            $('#person_code_modal').append('<p class="text-center"><span class="text--maroon kt-font-bold">** Optional field</span><br/>Sorry ! No Artist Found with <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span>.(or) is already added. <br /> Please Add Another Artist ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
 
                             $('#not_artist_personcode').html(code);
                         }
@@ -1615,6 +1621,8 @@
         }
 
         $('#submit_btn').click((e) => {
+
+            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
         var hasFile = docValidation();
 

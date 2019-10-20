@@ -111,7 +111,7 @@ class EditController extends Controller
 
         $data_bundle['permit_details'] =  Permit::where('permit_id', $id)->first();
         $data_bundle['artist_details'] = ArtistTempData::where('permit_id', $id)->where('status', 0)->get();
-        $data_bundle['staff_comments'] = PermitComment::where('permit_id', $id)->get();
+        $data_bundle['staff_comments'] = PermitComment::where('permit_id', $id)->where('type', 1)->get();
         return view('permits.artist.edit.edit_permit', $data_bundle);
     }
 

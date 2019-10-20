@@ -1134,6 +1134,8 @@
 
     $('#submit_btn').click((e) => {
 
+        $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+
         var hasFile = docValidation();
 
         if(documentsValidator.form() && hasFile){

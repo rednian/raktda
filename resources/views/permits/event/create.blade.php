@@ -6,7 +6,9 @@
 
 <link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
 
+{{-- {{dd(session()->flush())}} --}}
 {{-- {{dd(session()->all())}} --}}
+
 <!-- begin:: Content -->
 {{-- <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"> --}}
 <div class="kt-portlet">
@@ -146,7 +148,7 @@
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
-                                <form id="eventdetails" novalidate>
+                                <form id="eventdetails" action="" novalidate>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
@@ -213,7 +215,7 @@
                                                                 </div>
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="issued_date" id="issued_date"
-                                                                    placeholder="From Date">
+                                                                    placeholder="From Date" data-date-start-date="+0d">
 
                                                             </div>
                                                         </div>
@@ -364,8 +366,7 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="country_id"
                                                             class=" col-form-label kt-font-bold text-right">Country
-                                                            <small>( <span class="text-danger">required</span>
-                                                                )</small></label>
+                                                        </label>
                                                         <select class="form-control form-control-sm " name="country_id"
                                                             id="country_id">
                                                             {{--   - class for search in select  --}}
@@ -495,6 +496,10 @@
     var fileUploadFns = [];
     var eventdetails = {};
     var documentDetails = {};
+    var docRules = {};
+    var docMessages = {};
+    var documentsValidator ;
+
 
     $(document).ready(function(){
         localStorage.clear();
@@ -506,7 +511,7 @@
             // console.log($('#artist_number_doc').val());
             for (var i = 1; i <= $('#requirements_count').val(); i++) {
                 fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
-                    url: "{{route('company.uploadDocument')}}",
+                    url: "{{route('event.uploadDocument')}}",
                     method: "POST",
                     allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "doc_file_" + i,
@@ -516,18 +521,42 @@
                     showFileSize: false,
                     returnType: "json",
                     showFileCounter: false,
+                    duplicateErrorStr: 'No duplicate files allowed',
+                    multiple: true,
+                    dragDrop: true,
                     abortStr: '',
-                    multiple: false,
-                    maxFileCount: 1,
+                    maxFileCount: 2,
                     showDelete: true,
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                     formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
+                    onLoad:function(obj)
+                    {
+                        var loadUrl = "{{route('event.resetUploadsSession', ':id')}}";
+                        loadUrl = loadUrl.replace(':id', $('#req_id_' + i).val());
+                        $.ajax({
+                            url: loadUrl,
+                            success: function(data)
+                            {
+                            }
+                        });
+                    },
                     onError: function (files, status, errMsg, pd) {
                         showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
                         pd.statusbar.hide();
                     },
                     downloadCallback: function (files, pd) {
 
+                    },
+                    deleteCallback: function(data,pd)
+                    {
+                        $.ajax({
+                            url: "{{route('event.deleteUploadedfile')}}",
+                            type: 'POST',
+                            data: {path: data.filepath, ext: data.ext, id: data.id},
+                            success: function (result) {
+                                console.log('success');
+                            }
+                        });
                     }
                 });
                 $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
@@ -564,17 +593,6 @@
             },
         });
 
-        var docRules = {};
-        var docMessages = {};
-
-
-
-        var documentsValidator = $('#documents_required').validate({
-            rules: docRules,
-            messages: docMessages
-        });
-
-
         $("#check_inst").on("click", function () {
             setThis('none', 'block', 'block', 'none');
         });
@@ -588,13 +606,9 @@
 
         $("#upload_doc").on("click", function () {
             wizard = new KTWizard("kt_wizard_v3");
-            if (!checkForTick()) return;
-            if (wizard.currentStep == 3) {
-                stopNext(eventValidator);
-                return;
-            }
-
-            setThis('block', 'none', 'none', 'block');
+            !checkForTick() ? wizard.stop : '';
+            wizard.currentStep == 2 ? stopNext(eventValidator): "";
+            eventValidator.form() ? setThis('block', 'none', 'none', 'block') : '';
         });
 
         const setThis = (prev, next, back, submit) => {
@@ -636,7 +650,7 @@
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#submit--btn-group').css('display', 'block');
                 eventdetails = {
-                    event_id: $('#event_type_id').val(),
+                    event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
                     issued_date: $('#issued_date').val(),
@@ -843,12 +857,18 @@
                             docMessages['doc_exp_date_' + j] = '';
 
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
-
                      }
                      uploadFunction();
+                      documentsValidator = $('#documents_required').validate({
+                        rules: docRules,
+                        messages: docMessages
+                    });
                  }else {
                     $('#documents_required').empty();
                  }
+
+
+
                 }
             });
         }

@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Add New Artist Permit
+            <h3 class="kt-portlet__head-title">View / Update Draft
             </h3>
         </div>
 
@@ -393,6 +393,7 @@
 
 
         $('#submit_btn').click((e) => {
+            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
                     url:"{{route('company.apply_artist_permit')}}",
@@ -405,6 +406,7 @@
         });
 
         $('#draft_btn').click((e) => {
+            $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
                     url:"{{route('company.save_permit_to_drafts')}}",

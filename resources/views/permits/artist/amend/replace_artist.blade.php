@@ -205,17 +205,21 @@
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Person
-                                                                        Code</label><span id="changeArtistLabel"
-                                                                        class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                                        onclick="removeSelectedArtist()">Change </span>
+                                                                        Code</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
-                                                                    <div class="col-lg-8">
+                                                                    <div class="col-lg-5">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="code" id="code"
                                                                                 placeholder="Person Code">
                                                                         </div>
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <span id="changeArtistLabel"
+                                                                            class="kt-badge  kt-badge--danger kt-badge--inline d-none"
+                                                                            onclick="removeSelectedArtist()">Change
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
@@ -2084,7 +2088,7 @@
 
         $('#submit_btn').click((e) => {
 
-
+            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var hasFile = docValidation();
 
 

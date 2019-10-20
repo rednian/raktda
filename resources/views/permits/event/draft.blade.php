@@ -676,7 +676,7 @@
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#submit--btn-group').css('display', 'block');
                 eventdetails = {
-                    event_id: $('#event_type_id').val(),
+                    event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
                     issued_date: $('#issued_date').val(),

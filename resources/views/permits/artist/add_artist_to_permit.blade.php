@@ -175,17 +175,21 @@
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Person
-                                                                        Code</label><span id="changeArtistLabel"
-                                                                        class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                                        onclick="removeSelectedArtist()">Change </span>
+                                                                        Code</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
-                                                                    <div class="col-lg-8">
+                                                                    <div class="col-lg-5">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="code" id="code"
                                                                                 placeholder="Person Code">
                                                                         </div>
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <span id="changeArtistLabel"
+                                                                            class="kt-badge  kt-badge--danger kt-badge--inline d-none"
+                                                                            onclick="removeSelectedArtist()">Change
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
@@ -1464,7 +1468,7 @@
                         {
                             $('#person_code_modal').empty();
                             // setTimeout(searchCode(), 1000);
-                            $('#person_code_modal').append('<p class="text-center">Sorry ! We cannot find artist with this Person Code <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span>. (or)<br /> This Person is already added to the Permit. <br /> Please Add Another Artist ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
+                            $('#person_code_modal').append('<p class="text-center">** Optional <br/> Sorry ! We cannot find artist with this Person Code <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span>. (or)<br /> This Person is already added to the Permit. <br /> Please Add Another Artist ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
 
                             $('#not_artist_personcode').html(code);
                         }
@@ -1500,10 +1504,10 @@
     }
 
     const clearPersonCode = () => {
-            $('#code').val('');
-            $('#is_old_artist').val(1);
-            $('#artist_exists').modal('hide');
-        }
+        $('#code').val('');
+        $('#is_old_artist').val(1);
+        $('#artist_exists').modal('hide');
+    }
 
 
         const setArtistDetails = () => {

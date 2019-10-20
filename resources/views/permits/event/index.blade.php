@@ -4,12 +4,13 @@
 
 @section('content')
 
+
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
 
     <div class="kt-portlet__body">
 
-        <ul class="nav nav-tabs " role="tablist">
+        <ul class="nav nav-tabs " role="tablist" id="kt_tabs_list">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Applied
                     Event Permits </a>
@@ -24,22 +25,21 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_4">
-
                     Event Permit Drafts</a>
             </li>
-            <li class="nav-item"
-                style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                <a href="{{ route('event.create')}}">
-
-                    <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
-                        Add New
-                    </button>
-                    <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
-                        <i class="la la-plus"></i>
-                    </button>
-                </a>
-            </li>
         </ul>
+
+        <span class="nav-item" style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
+            <a href="{{ route('event.create')}}">
+
+                <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
+                    Add New
+                </button>
+                <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                    <i class="la la-plus"></i>
+                </button>
+            </a>
+        </span>
 
         <div class="tab-content">
             <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
@@ -53,7 +53,6 @@
                             <th>Venue</th>
                             <th>Type</th>
                             <th>Applied On</th>
-                            {{-- <th>Status</th> --}}
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -71,7 +70,6 @@
                             <th>To </th>
                             <th>Venue</th>
                             <th>Type</th>
-                            {{-- <th>Applied On</th> --}}
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -188,9 +186,6 @@
         <input type="hidden" id="valid_events" value="{{json_encode($events)}}">
 
 
-
-
-
     </div>
 
     @endsection
@@ -198,6 +193,19 @@
     @section('script')
 
     <script>
+        $('#kt_tabs_list a').click(function(e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        $('ul .nav-tabs > li > a').on('shown.bs.tab', function(e) {
+            var id = $(e.target).attr("href").substr(1);
+            window.location.hash = id;
+        });
+
+        var hash = window.location.hash;
+        $('#kt_tabs_list a[href="' + hash + '"]').tab('show');
+
         var events = JSON.parse($('#valid_events').val());
 
         $(document).ready(function(){
@@ -476,14 +484,17 @@
 
 
     const rejected_permit = id => {
+        let url = "{{route('event.reject_reason', ':id')}}";
+        url = url.replace(':id', id);
+        event.reject_reason
         $.ajax({
-
-            url: "{{url('company/reject_reason')}}"+'/'+id,
+            url: url,
             success: function(data){
                 $('#rejected_reason').html(data);
             }
         });
     }
+
 
     const calenderEvents = () => {
         var todayDate = moment().startOf("day");

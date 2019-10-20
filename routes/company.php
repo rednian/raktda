@@ -94,7 +94,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('event/download/{id}', 'Company\EventController@download')->name('company.event.download');
     Route::post('event/cancel', 'Company\EventController@cancel')->name('event.cancel');
     Route::get('event/upload/{event}', 'Company\EventController@upload')->name('company.event.upload');
-    Route::post('event/reject_reason/{event}', 'Company\EventController@reject_reason')->name('event.reject_reason');
+    Route::get('event/reject_reason/{event}', 'Company\EventController@reject_reason')->name('event.reject_reason');
     Route::get('event/cancel_reason/{event}', 'Company\EventController@cancel_reason')->name('company.event.cancel_reason');
     Route::get('fetch_applied_events', 'Company\EventController@fetch_applied')->name('company.event.fetch_applied');
     Route::get('fetch_existing_events', 'Company\EventController@fetch_valid')->name('company.event.fetch_valid');
@@ -104,4 +104,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('event/make_payment', 'Company\EventController@make_payment')->name('company.event.make_payment');
     Route::get('event/happiness/{event}', 'Company\EventController@happiness')->name('event.happiness');
     Route::post('event/submit_happiness', 'Company\EventController@submit_happiness')->name('event.submit_happiness');
+    Route::post('uploadEventDocument', 'Company\EventController@uploadDocument')->name('event.uploadDocument');
+    Route::post('event/deleteUploadedfile', 'Company\EventController@deleteUploadFile')->name('event.deleteUploadedfile');
+    Route::get('event/resetUploadsSession/{id}', 'Company\EventController@resetUploadsSession')->name('event.resetUploadsSession');
 });

@@ -11,8 +11,8 @@
 
         <ul class="nav nav-tabs " role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Applied
-                    Artist Permits </a>
+                <a class="nav-link active" data-toggle="tab" href="#"
+                    data-target="#kt_tabs_1_1">{{__('words.applied_artist_permit')}}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Valid
@@ -22,18 +22,20 @@
                 <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">
                     Artist Permit Drafts</a>
             </li>
-            <li class="nav-item"
-                style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                <a href="{{ url('company/add_new_permit')}}">
-                    <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
-                        Add New Permit
-                    </button>
-                    <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
-                        <i class="la la-plus"></i>
-                    </button>
-                </a>
-            </li>
+
         </ul>
+
+        <span class="nav-item"
+            style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
+            <a href="{{ url('company/add_new_permit')}}">
+                <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
+                    Add New
+                </button>
+                <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                    <i class="la la-plus"></i>
+                </button>
+            </a>
+        </span>
 
         <div class="tab-content">
             <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
