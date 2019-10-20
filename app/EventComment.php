@@ -21,7 +21,7 @@ class EventComment extends Model
 		return $this->belongsTo(Event::class, 'event_id');
 	}
 
-	public function approver()
+	public function approve()
 	{
 		return $this->hasOne(EventApprover::class, 'event_comment_id');
 	}

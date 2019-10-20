@@ -12,11 +12,14 @@
 		if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active') {
 			$classname = 'success';
 		}
-		if ($status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification') {
+		if ($status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amend') {
 			$classname = 'warning';
 		}
 		if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled') {
 			$classname = 'danger';
+		}
+		if ($status == 'need approval') {
+			$classname = 'warning';
 		}
 		if ($status == 'modification request') {
 			$status = 'need modification';

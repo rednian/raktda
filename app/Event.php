@@ -10,7 +10,7 @@ class Event extends Model
 {
 	// use SoftDeletes;
 	protected $connection = 'mysql';
-	protected $table = 'event';
+	protected $table = 'rak_final.event';
 	protected $primaryKey = 'event_id';
 	protected $dates = ['created_at', 'updated_at', 'deleted_at', 'issued_date', 'expired_date', 'lock'];
 	protected $casts = ['is_displayable'=>'boolean'];
@@ -19,7 +19,7 @@ class Event extends Model
 		 'company_id', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock', 'approved_by', 'created_by'
 		 ];
 
-	public function applied()
+	public function owner()
 	{
 		return $this->belongsTo(User::class, 'created_by', 'user_id');
 	}

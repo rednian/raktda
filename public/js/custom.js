@@ -39,7 +39,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         destroy: true,
-        pagingType: 'simple_numbers',
+        // pagingType: 'simple_numbers',
         ajax: { global: false },
       columnDefs:[
         // {targets: '_all', className: 'no-wrap'}
@@ -93,7 +93,7 @@ $(document).ready(function(){
             }
         }).bind("ajaxError", function(event, request, settings, data){
             $.notify({
-                title: 'Somethings wrong!',
+                title: 'Somethings went wrong!',
                 message: data,
             },{
                 type: 'error',

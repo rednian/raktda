@@ -215,7 +215,9 @@
   color: var(---warning)
 }
 
-thead > tr > th.no-wrap.sorting_disabled > span {
+
+
+.dataTable > tbody > tr td {
   cursor: pointer;
 }
 
@@ -231,9 +233,9 @@ thead > tr > th.no-wrap.sorting_disabled > span {
   border-color: var(---danger) !important;
 }
 
-table tr td {
+/*table tr td {
   cursor: pointer;
-}
+}*/
 
 
 /*.dataTables_wrapper .pagination .page-item.active > .page-link {

@@ -9,22 +9,18 @@ class PermitApprover extends Model
     protected $connection = 'mysql';
     protected $table = 'permit_approver';
     protected $primaryKey = 'permit_approver_id';
-    protected $fillable = ['permit_id', 'user_id', 'role_id', 'time_start', 'time_end', 'procedure_id', 'status'];
+    protected $fillable = ['permit_id', 'role_id', 'time_start', 'time_end', 'procedure_id', 'status', 'permit_comment_id'];
 
     public function role()
     {
         return $this->belongsTo(Roles::class, 'role_id');
     }
 
-    public function  noteComment()
+    public function  comment()
     {
-    	return $this->hasMany(PermitApproverNote::class, 'permit_approver_id');
+    	return $this->belongsTo(PermitComment::class, 'permit_comment_id');
     }
 
-    public function comment()
-    {
-    	return $this->belongsToMany(PermitComment::class, 'permit_approver_note', 'permit_approver_id', 'permit_comment_id');
-    }
 
     public function user()
     {

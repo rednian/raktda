@@ -5,7 +5,6 @@ use Auth;
 use DataTables;
 use Carbon\Carbon;
 use CountryState;
-
 use App\Artist;
 use App\Permit;
 use App\Roles;
@@ -19,7 +18,6 @@ class ArtistPermitController extends Controller
 {
     public function index()
     {
-
 	    return view('admin.artist_permit.index', [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
@@ -37,7 +35,6 @@ class ArtistPermitController extends Controller
         return view('admin.artist_permit.application-details', [
         	'page_title'=> 'artist permit details',
           'permit'=>$permit,
-//          'type'=>$request->type,
           'roles'=>Roles::where('type', 0)->get()
         ]);
     }
@@ -45,6 +42,7 @@ class ArtistPermitController extends Controller
     public function submitApplication(Request $request, Permit $permit)
     {
       try {
+
         DB::beginTransaction();
            $user_time = $request->session()->get('user');
            $user = Auth::user();
@@ -89,12 +87,10 @@ class ArtistPermitController extends Controller
 	      $result = ['error', $e->getMessage(), 'Error'];
       }
 	    return redirect()->route('admin.artist_permit.index')->with('message', $result);
-
     }
 
     public function checkActivePermit(Request $request, Permit $permit, Artist $artist)
     {
-
     	$permit = Permit::whereHas('artistpermit', function($q) use ($artist){
     		$q->where('artist_id',$artist->artist_id);
 	    })->where('permit_status', 'active')->get();
@@ -112,6 +108,8 @@ class ArtistPermitController extends Controller
 //	      if($permit->artistPermit()->where('artist_permit_status', 'reject')->count()){
 //
 //	      }
+//         
+         // dd($request->all());         
          $artistpermit->update(['artist_permit_status'=>$request->artist_permit_status]);
 
          //delete the last checklist and replace with recent
@@ -144,7 +142,7 @@ class ArtistPermitController extends Controller
          $result = ['error', $e->getMessage(), 'Error'];
       }
 
-       return redirect()->route('admin.artist_permit.applicationdetails', $permit->permit_id)->with(['result'=>$result]);
+       return redirect()->route('admin.artist_permit.applicationdetails', $permit->permit_id)->with(['message'=>$result]);
     }
 
     public function checkApplication(Request $request,Permit $permit,  ArtistPermit $artistpermit)
@@ -372,30 +370,29 @@ class ArtistPermitController extends Controller
     public function dataTable(Request $request)
     {
      if($request->ajax()){
-//     	dd($request->all());
+    	// dd($request->all());
 
      	$limit = $request->length;
      	$start = $request->start;
 
          $permit = Permit::has('artist')
-	          ->whereIn('permit_status', $request->status)
-	         ->when($request->today, function($q) use ($request){
-              $q->where('created_at', 'like', $request->today.'%');
-         })
-	         ->when($request->issued_date,function ($q) use ($request){
-	         	$q->whereDate('issued_date', '<=', $request->issued_date);
-	         })
-	         ->when($request->request_type, function ($q) use ($request){
-	         	$q->whereIn('request_type', $request->request_type);
-	         })
-	         ->when($request->permit_status, function($q) use ($request){
-	         	$q->where('permit_status', $request->permit_status);
-	         })
-	         ->when($request->permit_start, function ($q) use ($request){
-	         	$date = explode('-', $request->permit_start);
-	         	$q->whereBetween('issued_date', [ date('Y-m-d', strtotime($date[0])), date('Y-m-d', strtotime($date[1]))]);
-	         })
-	         ->orderBy('updated_at', 'DESC');
+         ->when($request->today, function($q) use ($request){
+          $q->where('created_at', 'like', $request->today.'%');
+        })
+         ->when($request->issued_date,function ($q) use ($request){
+          $q->whereDate('issued_date', '<=', $request->issued_date);
+        })
+         ->when($request->request_type, function ($q) use ($request){
+          $q->whereIn('request_type', $request->request_type);
+        })
+         ->when($request->permit_status, function($q) use ($request){
+          $q->whereIn('permit_status', $request->permit_status);
+        })
+         ->when($request->permit_start, function ($q) use ($request){
+          $date = explode('-', $request->permit_start);
+          $q->whereBetween('issued_date', [ date('Y-m-d', strtotime($date[0])), date('Y-m-d', strtotime($date[1]))]);
+        })
+         ->orderBy('updated_at', 'DESC');
 
          $totalRecords = $permit->count();
          $permit = $permit->offset($start)->limit($limit);

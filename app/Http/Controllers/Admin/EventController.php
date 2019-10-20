@@ -2,6 +2,7 @@
 
 	namespace App\Http\Controllers\Admin;
 
+	use DB;
 	use App\Event;
 	use App\Http\Controllers\Controller;
 	use Carbon\Carbon;
@@ -20,26 +21,43 @@
 
 		public function submit(Request $request, Event $event)
 		{
-			$user = Auth::user();
-			$request['user_id'] = $user->user_id;
+			try {
+				DB::beginTransaction();
 
-			$event->check()->where('event_id', $event->event_id)->delete();
-			$event->check()->create($request->all());
+				$user = Auth::user();
+				$request['user_id'] = $user->user_id;
+				$event->check()->where('event_id', $event->event_id)->delete();
+				$event->check()->create($request->all());
 
-			if ($request->status == 'rejected' || $request->status == 'approved-unpaid' || $request->status == 'amend') {$type = 1; }
-			if ($request->comment) {
-				$comment = $event->comment()->create($request->all());
+				if ($request->status == 'rejected' || $request->status == 'approved-unpaid' || $request->status == 'amend') {
+					if ($request->comment) { $comment = $event->comment()->create($request->all()); }
+					$request['role_id'] = $user->roles()->first()->role_id;
+					$request['type'] = $type = 1; 
+					$event->approve()->create($request->all());
+					$event->update(['status'=>$request->status]);
+				}
+				else{
+					$request['role_id'] = $user->roles()->first()->role_id;
+					$request['type']  = 0; 
+					$comment = $event->comment()->create($request->all());
+					$comment->approve()->create(array_merge ($request->all(), ['event_id'=>$comment->event_id, 'checked_at'=>Carbon::now() ]));
+
+					foreach ($request->approver as $role_id) {
+						$request['role_id'] = $role_id;
+						$request['status'] = 'pending';
+						$request['user_id'] = null;
+						$event->approve()->create($request->all());
+					}
+					$event->update(['status'=>'need approval']);
+				}
+
+				DB::commit();
+				$result = ['success', ucfirst($event->name_en).' Successfully checked', 'Success'];
+			} catch (Exception $e) {
+				$result = ['error', $e->getMessage(), 'Error'];
+				DB::rollBack();
 			}
-
-
-			if ($request->status != 'need approval') {
-				$request['role_id'] = $user->roles()->first()->role_id;
-				$x = $event->approve()->create($request->all());
-				$event->update(['status' => $request->status]);
-			} else {
-
-			}
-
+			return redirect('/event#new-request')->with('message',$result);
 		}
 
 		public function updateLock(Request $request, Event $event)
@@ -53,9 +71,7 @@
 		public function application(Request $request, Event $event)
 		{
 			$this->authorize('view', $event);
-			$event->update(['last_check_by' => Auth::user()->user_id, 'lock' => Carbon::now()]);
-
-
+			$event->update(['last_check_by' => Auth::user()->user_id, 'lock' => Carbon::now(), 'status'=>'processing']);
 			$existing_event = Event::where('event_id', '!=', $event->event_id)
 				 ->whereIn('status', ['processing', 'active', 'approved-unpaid'])
 				 ->whereBetween('time_end', [$event->time_start, $event->time_end])
@@ -68,17 +84,9 @@
 			]);
 		}
 
-		public function show(Event $event)
+		public function show(Request $request, Event $event)
 		{
-			$event = Calendar::event(
-				 "Valentine's Day",
-				 true,
-				 '2015-02-14',
-				 '2015-02-14',
-				 1,
-				 ['url' => 'http://full-calendar.io']
-			);
-			return view('admin.event.show', ['page_title' => '']);
+			return view('admin.event.show', ['page_title' => '', 'event'=>$event, 'tab'=>$request->tab]);
 		}
 
 
@@ -113,11 +121,13 @@
 		{
 			// dd($request->all());
 			if ($request->ajax()) {
+
+
 				$user = Auth::user();
 //			$start = $request->start;
 //			$length = $request->length;
 			$events = Event::when($request->type, function($q) use ($request){
-				$q->whereHas('applied', function($q) use ($request){
+				$q->whereHas('owner', function($q) use ($request){
 					$q->where('type', $request->type);
 				});
 			})
@@ -125,19 +135,17 @@
 				$q->whereIn('status', $request->status);
 			})
 			->where('status', '!=', 'draft')
-			->orderBy('updated_at', 'desc')
-			->get();
-				// dd($events);
+			->orderBy('updated_at', 'desc');
 
 				return DataTables::of($events)
 					 ->addColumn('establishment_name', function($event){
-						 return $event->applied->type != 2 ? $event->applied->company->company_name : null;
+						 return $event->owner->type != 2 ? $event->owner->company->company_name : null;
 					 })
 					 ->addColumn('owner', function($event) use ($user){
 						 if ($user->LanguageId == 1) {
-							 return ucwords($event->applied->NameEn);
+							 return ucwords($event->owner->NameEn);
 						 }
-						 return $event->applied->NameAr;
+						 return $event->owner->NameAr;
 					 })
 					 ->addColumn('event_name', function($event) use ($user){
 						 if ($user->LanguageId == 1) {
@@ -146,7 +154,7 @@
 						 return $event->name_ar;
 					 })
 					 ->addColumn('type', function($event){
-						 return ucwords(userType($event->applied->type));
+						 return ucwords(userType($event->owner->type));
 					 })
 					 ->editColumn('created_at', function($event){
 						 return $event->created_at->format('d-M-Y');
@@ -157,8 +165,12 @@
 					 ->editColumn('status', function($event){
 						 return permitStatus($event->status);
 					 })
-					 ->rawColumns(['status'])
-//				 ->setTotalRecords($totalRecords)
+					 ->addColumn('action', function($event){
+					 	if($event->status == 'rejected'){ return null; }
+					 	return '<button class="btn btn-sm btn-elevate btn-outline-hover-danger"><i class="la la-download"></i> download</button>';
+					 })
+					 ->rawColumns(['status', 'action'])
+//				 ->setTotalRecords($totalRecords)s
 					 ->make(true);
 			}
 		}

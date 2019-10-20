@@ -23,7 +23,7 @@
 						</div>
 						<div class="tab-pane fade" id="processing-permit" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
-							 @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request'])->count() > 0)
+							 @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request', 'processing'])->count() > 0)
 									@include('admin.artist_permit.includes.processing')
 							 @else
 									@empty()
@@ -87,29 +87,24 @@
      };
 
      $(document).ready(function () {
-     
-       newRequest();
-
-       var hash = window.location.hash;
-        hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-
-        $('.nav-tabs a').click(function (e) {
-            $(this).tab('show');
-            var scrollmem = $('body').scrollTop();
-            window.location.hash = this.hash;
-            $('html,body').scrollTop(scrollmem);
-          });
-
+        newRequest();
+        
+        var hash = window.location.hash;
+         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+         $('.nav-tabs a').click(function (e) {
+             $(this).tab('show');
+             var scrollmem = $('body').scrollTop();
+             window.location.hash = this.hash;
+             $('html,body').scrollTop(scrollmem);
+           });
 
        $('.nav-tabs a').on('shown.bs.tab', function (event) {
-
          var current_tab = $(event.target).text();
          if (current_tab == 'Processing Permits' && !$.fn.dataTable.isDataTable('table#artist-permit-processing')) { processingTable(); }
          if (current_tab == 'Active Permits' && !$.fn.dataTable.isDataTable('table#artist-permit-approved')) { approvedTable(); }
          if (current_tab == 'Archive Permits' && !$.fn.dataTable.isDataTable('table#artist-permit-rejected')) { rejectedTable(); }
          if (current_tab == 'Active Artists' && !$.fn.dataTable.isDataTable('table#active-artist')) { activeArtistTable(); }
          if (current_tab == 'Blocked Artists' && !$.fn.dataTable.isDataTable('table#block-artist')) { blockArtistTable(); }
-         var y = $(event.relatedTarget).text();  // previous tab
        });
 
      });
@@ -407,7 +402,7 @@
                   // d.permit_status = $('input[name=permit_start]').val();
                   // d.issued_date = filter.getAction();
                   // d.today = filter.getToday();
-                  d.status = ['active', 'expired'];
+                  d.status = ['active'];
                }
             },
             columnDefs: [
@@ -437,8 +432,7 @@
             ajax: {
                url: '{{ route('admin.artist_permit.datatable') }}',
                data: function (d) {
-
-                  d.status = ['approved-unpaid', 'modification request'];
+                  d.status = ['approved-unpaid', 'modification request', 'processing'];
                }
             },
             columnDefs: [
@@ -664,12 +658,13 @@
          ajax: {
            url: '{{ route('admin.artist_permit.datatable') }}',
            data: function (d) {
+            var status = $('select#new-permit-status').val();
+
              d.request_type = $('select#new-request-type').val();
-             d.permit_status = $('select#new-permit-status').val();
+             d.permit_status = status.length > 0 ? status : ['new', 'modified', 'unprocessed'];
              // d.permit_status = $('input[name=permit_start]').val();
              // d.issued_date = filter.getAction();
              // d.today = filter.getToday();
-             d.status = ['new', 'modified', 'unprocessed', 'processing'];
            }
          },
          columnDefs: [

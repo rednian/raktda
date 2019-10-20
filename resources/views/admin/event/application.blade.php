@@ -64,10 +64,11 @@
 					 				<section class="row kt-margin-t-20 kt-margin-b-20">
 					 					<div class="col">
 					 						@include('admin.artist_permit.includes.comment')
-					 						<div class="alert alert-outline-danger fade show" role="alert">
+					 						@if ($existing_event->count() > 0)
+					 							<div class="alert alert-outline-danger fade show" role="alert">
 					 							<div class="alert-text">
 					 								<h6 class="alert-heading text-danger kt-font-transform-u">Important</h6>
-													<p>The venue of this event has/have 3 active event.</p>
+													<p>The venue of this event has {{ $existing_event->count() }} active event.</p>
 													<hr>
 													 <button type="button" data-target="#event-exist-modal" data-toggle="modal"
 														 class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">Show Event Calendar
@@ -77,6 +78,7 @@
 												</div>
 
 											 </div>
+					 						@endif
 											 <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-detail">
 												<div class="card">
 													<div class="card-header" id="heading-detail">
@@ -152,7 +154,7 @@
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
 																				 <label>Date Start<span class="text-danger">*</span></label>
-																				 <div class="input-group">
+																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->issued_date }}" name="issued_date" readonly="readonly" type="text"
 																									 class="form-control">
 																						<div class="input-group-append">
@@ -167,7 +169,7 @@
 																			</div>
 																			<div class="col-3">
 																				 <label>Date End<span class="text-danger">*</span></label>
-																				 <div class="input-group">
+																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->expired_date }}" name="expired_date" readonly="readonly" type="text"
 																									 class="form-control">
 																						<div class="input-group-append">
@@ -213,191 +215,191 @@
 														 </div>
 													</div>
 											 </section>
-														 <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
-																<div class="card">
-																	 <div class="card-header" id="heading-address">
-																			<div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
-																					 aria-expanded="true" aria-controls="collapse-address">
-																				 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Location Details</h6>
-																			</div>
-																	 </div>
-																	 <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
-																			<div class="card-body">
-																				 <div class="row form-group form-group-sm">
-																						<div class="col-6">
-																							 <label>Venue<span class="text-danger">*</span></label>
-																							 <div class="input-group input-group-sm">
-																									<input value="{{ ucfirst($event->venue_en) }}" name="venue_en" readonly="readonly" type="text"
-																												 class="form-control">
-																									<div class="input-group-append">
-																										 <span class="input-group-text">
-																												<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																													 <input data-step="step-1" type="checkbox">
-																													 <span></span>
-																												</label>
-																										 </span>
-																									</div>
-																							 </div>
-																						</div>
-																						<div class="col-6">
-																							 <label>Venue (AR)<span class="text-danger">*</span></label>
-																							 <div class="input-group input-group-sm">
-																									<input value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
-																												 class="form-control">
-																									<div class="input-group-append">
-																										 <span class="input-group-text">
-																												<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																													 <input data-step="step-1" type="checkbox">
-																													 <span></span>
-																												</label>
-																										 </span>
-																									</div>
-																							 </div>
+											 <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
+													<div class="card">
+														 <div class="card-header" id="heading-address">
+																<div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
+																		 aria-expanded="true" aria-controls="collapse-address">
+																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Location Details</h6>
+																</div>
+														 </div>
+														 <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
+																<div class="card-body">
+																	 <div class="row form-group form-group-sm">
+																			<div class="col-6">
+																				 <label>Venue<span class="text-danger">*</span></label>
+																				 <div class="input-group input-group-sm">
+																						<input value="{{ ucfirst($event->venue_en) }}" name="venue_en" readonly="readonly" type="text"
+																									 class="form-control">
+																						<div class="input-group-append">
+																							 <span class="input-group-text">
+																									<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																										 <input data-step="step-1" type="checkbox">
+																										 <span></span>
+																									</label>
+																							 </span>
 																						</div>
 																				 </div>
-																				 <div class="row form-group form-group-sm">
-																						<div class="col-3">
-																							 <label>Address<span class="text-danger">*</span></label>
-																							 <div class="input-group input-group-sm">
-																									<input value="{{ ucfirst($event->address) }}" name="address" readonly="readonly" type="text"
-																												 class="form-control">
-																									<div class="input-group-append">
-																										 <span class="input-group-text">
-																												<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																													 <input data-step="step-1" type="checkbox">
-																													 <span></span>
-																												</label>
-																										 </span>
-																									</div>
-																							 </div>
+																			</div>
+																			<div class="col-6">
+																				 <label>Venue (AR)<span class="text-danger">*</span></label>
+																				 <div class="input-group input-group-sm">
+																						<input value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
+																									 class="form-control">
+																						<div class="input-group-append">
+																							 <span class="input-group-text">
+																									<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																										 <input data-step="step-1" type="checkbox">
+																										 <span></span>
+																									</label>
+																							 </span>
 																						</div>
-																						<div class="col-3">
-																							 <label>Area</label>
-																							 <div class="input-group input-group-sm">
-																									<input value="{{ ucfirst($event->area->area_en) }}" name="area_en" readonly="readonly" type="text"
-																												 class="form-control">
-																									<div class="input-group-append">
-																										 <span class="input-group-text">
-																												<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																													 <input data-step="step-1" type="checkbox">
-																													 <span></span>
-																												</label>
-																										 </span>
-																									</div>
-																							 </div>
+																				 </div>
+																			</div>
+																	 </div>
+																	 <div class="row form-group form-group-sm">
+																			<div class="col-3">
+																				 <label>Address<span class="text-danger">*</span></label>
+																				 <div class="input-group input-group-sm">
+																						<input value="{{ ucfirst($event->address) }}" name="address" readonly="readonly" type="text"
+																									 class="form-control">
+																						<div class="input-group-append">
+																							 <span class="input-group-text">
+																									<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																										 <input data-step="step-1" type="checkbox">
+																										 <span></span>
+																									</label>
+																							 </span>
 																						</div>
-																						<div class="col-3">
-																							 <label>Emirate</label>
-																							 <div class="input-group input-group-sm">
-																									<input value="{{ ucfirst($event->emirate->name_en) }}" name="emirates" readonly="readonly" type="text"
-																												 class="form-control">
-																									<div class="input-group-append">
-																										 <span class="input-group-text">
-																												<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																													 <input data-step="step-1" type="checkbox">
-																													 <span></span>
-																												</label>
-																										 </span>
-																									</div>
-																							 </div>
+																				 </div>
+																			</div>
+																			<div class="col-3">
+																				 <label>Area</label>
+																				 <div class="input-group input-group-sm">
+																						<input value="{{ ucfirst($event->area->area_en) }}" name="area_en" readonly="readonly" type="text"
+																									 class="form-control">
+																						<div class="input-group-append">
+																							 <span class="input-group-text">
+																									<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																										 <input data-step="step-1" type="checkbox">
+																										 <span></span>
+																									</label>
+																							 </span>
 																						</div>
-																						<div class="col-3">
-																							 <label>Country</label>
-																							 <div class="input-group input-group-sm">
-																									<input value="{{ ucfirst($event->country->name_en) }}" name="country" readonly="readonly" type="text"
-																												 class="form-control">
-																									<div class="input-group-append">
-																										 <span class="input-group-text">
-																												<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																													 <input data-step="step-1"  type="checkbox">
-																													 <span></span>
-																												</label>
-																										 </span>
-																									</div>
-																							 </div>
+																				 </div>
+																			</div>
+																			<div class="col-3">
+																				 <label>Emirate</label>
+																				 <div class="input-group input-group-sm">
+																						<input value="{{ ucfirst($event->emirate->name_en) }}" name="emirates" readonly="readonly" type="text"
+																									 class="form-control">
+																						<div class="input-group-append">
+																							 <span class="input-group-text">
+																									<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																										 <input data-step="step-1" type="checkbox">
+																										 <span></span>
+																									</label>
+																							 </span>
+																						</div>
+																				 </div>
+																			</div>
+																			<div class="col-3">
+																				 <label>Country</label>
+																				 <div class="input-group input-group-sm">
+																						<input value="{{ ucfirst($event->country->name_en) }}" name="country" readonly="readonly" type="text"
+																									 class="form-control">
+																						<div class="input-group-append">
+																							 <span class="input-group-text">
+																									<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																										 <input data-step="step-1"  type="checkbox">
+																										 <span></span>
+																									</label>
+																							 </span>
 																						</div>
 																				 </div>
 																			</div>
 																	 </div>
 																</div>
-														 </section>
+														 </div>
 													</div>
 											 </section>
 										</div>
-								 </div>
-							</div>
-							<div data-ktwizard-type="step-content" class="kt-wizard-v3__content">
-								 <div class="kt-form__section kt-form__section--first">
-										<div class="kt-wizard-v3__form">
-											 <section class="row">
-													<div class="col kt-margin-t-20 kt-margin-b-20">
-														 @include('admin.artist_permit.includes.comment')
-														 <table class="table table-striped table-borderless table-light--warning" id="requirement-table">
-																<thead>
-																<tr>
-																	 <th>Requirement Name</th>
-																	 <th>Issued Date</th>
-																	 <th>Expired Date</th>
-																	 <th>Action</th>
-																</tr>
-																</thead>
-														 </table>
-													</div>
-											 </section>
-										</div>
-								 </div>
-							</div>
-							<div data-ktwizard-type="step-content" class="kt-wizard-v3__content">
-								 <div class="kt-form__section kt-form__section--first">
-										<div class="kt-wizard-v3__form">
-											 <section class="row">
-													<div class="col kt-margin-t-20 kt-margin-b-20">
-														  @include('admin.artist_permit.includes.comment')
-														 <section class="kt-form kt-form--label-right1">
-																<div class="form-group form-group-sm row">
-																	 <label class="col-lg-2 col-form-label">Action <span class="text-danger">*</span></label>
-																	 <div class="col-lg-5">
-																			<select name="status" id="" class="form-control custom-select" required>
-																				 <option selected disabled>Select Action</option>
-																				 <option value="approved-unpaid">Approve Application</option>
-																				 <option value="need approval">Need Approval</option>
-																				 <option value="amend">Send back for Amendments</option>
-																				 <option value="rejected">Reject Application</option>
-																			</select>
-																	 </div>
-																</div>
-																<div class="form-group row kt-hide">
-																	 <label class="col-lg-2 col-form-label">Approvers <span class="text-danger">*</span></label>
-																	 <div class="col-lg-5">
-																			<select id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
-																				 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
-																				 ->count() > 0)
-																						@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
-																				 ->get() as $role)
-																							 	<option value="{{ $role->role_id }}">{{ ucwords($role->NameEn) }}</option>
-																						@endforeach
-																				 @endif
-																	 </select>
-																	 </div>
-																</div>
-														 </section>
-													</div>
-											 </section>
-										</div>
-								 </div>
-							</div>
-							<div class="kt-form__actions">
-								 <button type="button" data-ktwizard-type="action-prev" class="btn btn-elevate btn-maroon btn-sm kt-font-bold kt-font-transform-u btn-wide">
-										Previous
-								 </button>
-								 <button type="button" data-ktwizard-type="action-next"
-												 class="btn btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u">Next
-								 </button>
-								 <div data-ktwizard-type="action-submit" class="dropdown">
-										<button type="submit" class="btn btn-warning btn-sm  kt-font-bold kt-font-transform-u">Submit</button>
-								 </div>
-							</div>
-					 </form>
+									 </section>
+								</div>
+						 </div>
+					</div>
+					<div data-ktwizard-type="step-content" class="kt-wizard-v3__content">
+						 <div class="kt-form__section kt-form__section--first">
+								<div class="kt-wizard-v3__form">
+									 <section class="row">
+											<div class="col kt-margin-t-20 kt-margin-b-20">
+												 @include('admin.artist_permit.includes.comment')
+												 <table class="table table-striped table-light--warning" id="requirement-table">
+														<thead class="thead-dark">
+														<tr>
+															 <th>Requirement Name</th>
+															 <th>Issued Date</th>
+															 <th>Expired Date</th>
+															 <th>Action</th>
+														</tr>
+														</thead>
+												 </table>
+											</div>
+									 </section>
+								</div>
+						 </div>
+					</div>
+					<div data-ktwizard-type="step-content" class="kt-wizard-v3__content">
+						 <div class="kt-form__section kt-form__section--first">
+								<div class="kt-wizard-v3__form">
+									 <section class="row">
+											<div class="col kt-margin-t-20 kt-margin-b-20">
+												  @include('admin.artist_permit.includes.comment')
+												 <section class="kt-form kt-form--label-right1">
+														<div class="form-group form-group-sm row">
+															 <label class="col-lg-2 col-form-label">Action <span class="text-danger">*</span></label>
+															 <div class="col-lg-5">
+																	<select name="status" id="" class="form-control custom-select" required>
+																		 <option selected disabled>Select Action</option>
+																		 <option value="approved-unpaid">Approve Application</option>
+																		 <option value="need approval">Need Approval</option>
+																		 <option value="amend">Send back for Amendments</option>
+																		 <option value="rejected">Reject Application</option>
+																	</select>
+															 </div>
+														</div>
+														<div class="form-group row kt-hide">
+															 <label class="col-lg-2 col-form-label">Approvers <span class="text-danger">*</span></label>
+															 <div class="col-lg-5">
+																	<select id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
+																		 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
+																		 ->count() > 0)
+																				@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
+																		 ->get() as $role)
+																					 	<option value="{{ $role->role_id }}">{{ ucwords($role->NameEn) }}</option>
+																				@endforeach
+																		 @endif
+															 </select>
+															 </div>
+														</div>
+												 </section>
+											</div>
+									 </section>
+								</div>
+						 </div>
+					</div>
+					<div class="kt-form__actions">
+						 <button type="button" data-ktwizard-type="action-prev" class="btn btn-elevate btn-maroon btn-sm kt-font-bold kt-font-transform-u btn-wide">
+								Previous
+						 </button>
+						 <button type="button" data-ktwizard-type="action-next"
+										 class="btn btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u">Next
+						 </button>
+						 <div data-ktwizard-type="action-submit" class="dropdown">
+								<button type="submit" class="btn btn-warning btn-sm  kt-font-bold kt-font-transform-u">Submit</button>
+						 </div>
+					</div>
+			 </form>
 				</div>
 		 </div>
 	</div>
@@ -461,105 +463,7 @@
                   },
                   @endforeach
                 ],
-         // events: [
-         //     {
-         //         title: 'All Day Event',
-         //         start: YM + '-01',
-         //         description: 'Toto lorem ipsum dolor sit incid idunt ut',
-         //         className: "fc-event-danger fc-event-solid-warning"
-         //     },
-         //     {
-         //         title: 'Reporting',
-         //        start: YM + '-14T13:30:00',
-         //         description: 'Lorem ipsum dolor incid idunt ut labore',
-         //         end: YM + '-14',
-         //         className: "fc-event-success"
-         //     },
-         //     {
-         //         title: 'Company Trip',
-         //         start: YM + '-02',
-         //         description: 'Lorem ipsum dolor sit tempor incid',
-         //         end: YM + '-03',
-         //         className: "fc-event-primary"
-         //     },
-         //     {
-         //         title: 'ICT Expo 2017 - Product Release',
-         //         start: YM + '-03',
-         //         description: 'Lorem ipsum dolor sit tempor inci',
-         //         end: YM + '-05',
-         //        className: "fc-event-light fc-event-solid-primary"
-         //     },
-         //     {
-         //         title: 'Dinner',
-         //         start: YM + '-12',
-         //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
-         //         end: YM + '-10'
-         //     },
-         //     {
-         //         id: 999,
-         //         title: 'Repeating Event',
-         //         start: YM + '-09T16:00:00',
-         //         description: 'Lorem ipsum dolor sit ncididunt ut labore',
-         //         className: "fc-event-danger"
-         //     },
-         //     {
-         //         id: 1000,
-         //         title: 'Repeating Event',
-         //         description: 'Lorem ipsum dolor sit amet, labore',
-         //         start: YM + '-16T16:00:00'
-         //     },
-         //     {
-         //         title: 'Conference',
-         //         start: YESTERDAY,
-         //         end: TOMORROW,
-         //         description: 'Lorem ipsum dolor eius mod tempor labore',
-         //         className: "fc-event-brand"
-         //     },
-         //     {
-         //         title: 'Meeting',
-         //         start: TODAY + 'T10:30:00',
-         //         end: TODAY + 'T12:30:00',
-         //         description: 'Lorem ipsum dolor eiu idunt ut labore'
-         //     },
-         //     {
-         //         title: 'Lunch',
-         //         start: TODAY + 'T12:00:00',
-         //         className: "fc-event-info",
-         //         description: 'Lorem ipsum dolor sit amet, ut labore'
-         //     },
-         //     {
-         //         title: 'Meeting',
-         //         start: TODAY + 'T14:30:00',
-         //         className: "fc-event-warning",
-         //         description: 'Lorem ipsum conse ctetur adipi scing'
-         //     },
-         //     {
-         //         title: 'Happy Hour',
-         //         start: TODAY + 'T17:30:00',
-         //         className: "fc-event-info",
-         //         description: 'Lorem ipsum dolor sit amet, conse ctetur'
-         //     },
-         //     {
-         //         title: 'Dinner',
-         //         start: TOMORROW + 'T05:00:00',
-         //         className: "fc-event-solid-danger fc-event-light",
-         //         description: 'Lorem ipsum dolor sit ctetur adipi scing'
-         //     },
-         //     {
-         //         title: 'Birthday Party',
-         //         start: TOMORROW + 'T07:00:00',
-         //         className: "fc-event-primary",
-         //         description: 'Lorem ipsum dolor sit amet, scing'
-         //     },
-         //     {
-          //        title: 'Click for Google',
-            //      url: 'http://google.com/',
-              //    start: YM + '-28',
-             //     className: "fc-event-solid-info fc-event-light",
-               //   description: 'Lorem ipsum dolor sit amet, labore'
-             // }
-          //],
-
+ 
           eventRender: function(info) {
               var element = $(info.el);
               if (info.event.extendedProps && info.event.extendedProps.description) {
@@ -591,17 +495,17 @@
        
        //show or hide the approver selection
        $('select[name=status]').change(function () {
-				 if($(this).val() == 'need approval') { approver.parents('.form-group').removeClass('kt-hide'); }
-				 else{ approver.parents('.form-group').addClass('kt-hide'); }
+		 if($(this).val() == 'need approval') { approver.parents('.form-group').removeClass('kt-hide'); }
+		 else{ approver.parents('.form-group').addClass('kt-hide'); }
        });
        
        approver.select2({
-				 minimumResultsForSearch: Infinity,
-				 placeholder: 'Select Approver',
-				 autoWidth: true,
-				 width: '100%',
-				 allowClear: true,
-				 tags: true
+		 minimumResultsForSearch: 'Infinity',
+		 placeholder: 'Select Approver',
+		 autoWidth: true,
+		 width: '100%',
+		 allowClear: true,
+		 tags: true
        });
        
        
@@ -655,26 +559,56 @@
 					$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 				}
 			});
-			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
+			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 			 wizard.on("beforeNext", function(wizardObj) {
+			 	if(wizardObj.currentStep == 1){
+ 						$('input[type=checkbox][data-step=step-1]').each(function () {
+ 							if(!$(this).is(':checked')){
+ 								$(this).parents('.input-group').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
+ 								wizardObj.stop();
+ 							}
+ 						});
+ 					}
+ 					if(wizardObj.currentStep == 2){
+						$('input[type=checkbox].step-2').each(function () {
+							if(!$(this).is(':checked')){
+								$(this).parents('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--danger');
+								wizardObj.stop();
+							}
+							else{
+								$(this).parents('label').removeClass('kt-checkbox--danger').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
+							}
+						});
+					}
 
 			 });
      }
 
      function eventDetails() {
-       $('form button').click(function (e) {
-         //rejected application
-         if ($(this).val() == 'rejected') {
-           $('form#frm-event-details').validate({
-             rules: {
-               comment: {required: true, maxlength: 255, minlength: 3}
-             },
-             invalidHandler: function (event, validator) {
-               KTUtil.scrollTop();
-             }
-           });
-         }
-       });
+     	$('form#kt_form').submit(function(){
+     	var validator = $('form#kt_form').validate();
+     		validator.element('select[name=status]');
+     	});
+     	
+     	// $('form#kt_form').validate({
+     	//   rules: {
+     	//     comment: {required: true, maxlength: 255, minlength: 3},
+     	//     status: {required: true},
+     	//   },
+     	//   invalidHandler: function (event, validator) {
+     	//     KTUtil.scrollTop();
+     	//     console.log($('textarea[name=comment]').val() );
+     	//   }
+     	// });
+     	// $('form#kt_form').submit(function(e){
+     	// 	e.preventDefault()
+
+     	// 	if( $('select[name=status]').val() != 'approved-unpaid' ){
+     	// 			// console.log($('select[name=status]').val());
+     		
+     	// 	}
+     	// });
+ 
      }
 
      function updateLock() {
