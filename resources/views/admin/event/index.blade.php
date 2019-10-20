@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
 @stop
 @section('content')
+
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
 			<div class="kt-portlet__body kt-padding-t-5">
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
@@ -393,7 +394,7 @@
          tags: true
        });
      }
-	
 	 </script>
 @endsection
 
+	 

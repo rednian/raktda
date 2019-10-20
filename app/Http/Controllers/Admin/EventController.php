@@ -19,6 +19,7 @@
 			return view('admin.event.index', ['page_title' => 'Event Permit']);
 		}
 
+
 		public function submit(Request $request, Event $event)
 		{
 			try {
@@ -76,6 +77,7 @@
 				 ->whereIn('status', ['processing', 'active', 'approved-unpaid'])
 				 ->whereBetween('time_end', [$event->time_start, $event->time_end])
 				 ->whereBetween('expired_date', [$event->issued_date, $event->expired_date])->get();
+
 
 			return view('admin.event.application', [
 				 'page_title' => 'Event Application',

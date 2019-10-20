@@ -77,6 +77,7 @@
 @endsection
 @section('script')
 	 <script type="text/javascript">
+
      var artistPermit = {};
      var active_artist_table;
      var filter = {
@@ -270,8 +271,50 @@
      //     }
      //  };
 
+
       function blockArtistTable() {
-         $('table#block-artist').DataTable({
+
+          $('button#unblock-artist-button').click(function () {
+
+                  var rows_selected = block_artist_table.column(0).checkboxes.selected();
+
+                  if (rows_selected.length > 0) {
+                      $('#block_artist_number').html(rows_selected.length+'  Artist Seleted').css({'color':'green'})
+
+                      $('#block-artist-alert').addClass('d-none');
+                      $('#block-artist-modal').modal('show');
+
+                      $('#unblock_artist').click('submit', function(e) {
+                          e.preventDefault();
+                          artist_id=[]
+                          $.each(rows_selected, function(index, rowId) {
+                              artist_id.push(rowId);
+                          })
+
+                          var remarks=$('#unblock_comment').val();
+                          if(artist_id.length>0){
+                              $.ajax({
+                                  type: 'post',
+                                  url: " {{route('admin.artist_unblock')}}",
+                                  data: {id:artist_id,remarks},
+                                  success: function (data) {
+                                      $("#delete-ajax-alert").show(500).css({ 'background-color': '#fff2f2','color': 'red','padding': '9px','border-radius': '7px','text-align': 'center'});
+                                      setTimeout(function() { $("#delete-ajax-alert").hide();
+                                          $('#block-artist-modal').modal('hide');
+                                      },2000);
+                                      $('table#block-artist').DataTable().ajax.reload(null, false);
+                                      ;
+                                  }
+                              });
+                          }
+                      })
+                  } else {
+                      $('#active-artist-alert').removeClass('d-none');
+                  }
+          });
+
+
+        block_artist_table=  $('table#block-artist').DataTable({
             ajax: {
                url: '{{ route('admin.artist.datatable') }}',
                data: function (d) {
@@ -280,10 +323,20 @@
             },
             columnDefs: [
                {targets: [0, 4, 5, 6], className: 'no-wrap'},
-
+                {
+                    targets:0,
+                    orderable: false,
+                    checkboxes: {
+                        selectRow: true
+                    }
+                }
             ],
+             select: {
+                 style: 'multi'
+             },
 
             columns : [
+               {data: 'artist_id'},
                {data: 'person_code'},
                {data: 'name'},
                {data: 'profession'},
@@ -303,6 +356,7 @@
          });
       }
       function activeArtistTable() {
+
          active_artist_table = $('table#active-artist').DataTable({
             dom: '<"toolbar-active pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
             ajax: {
@@ -344,9 +398,9 @@
                   // console.log(123);
                });
 
-            //   $(row).click(function () {
-			//						location.href = '{{url('/permit/artist/')}}/'+data.artist_id;
-             //  });
+               $(row).click(function () {
+									location.href = '{{url('/permit/artist/')}}/'+data.artist_id;
+            });
 
               }
          });
@@ -381,6 +435,8 @@
                                                   setTimeout(function() { $("#ajax-alert").hide();
                                                   $('#active-artist-modal').modal('hide');
                                                    },2000);
+                                                  $('table#active-artist').DataTable().ajax.reload(null, false);
+                                          ;
                                       }
                                   });
 
@@ -391,6 +447,7 @@
             }
          });
       }
+
 
       function approvedTable() {
          $('table#artist-permit-approved').DataTable({

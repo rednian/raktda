@@ -1,3 +1,4 @@
+
 <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
 	<?php
 	$countries = \App\Country::has('artist')->get();
@@ -30,8 +31,6 @@
 	 	@endif
 	 </select>
 </section>
-
-
 <table class="table  table-hover  table-borderless table-striped" id="block-artist">
 	 <thead class="thead-dark">
 	 <tr>
@@ -46,3 +45,6 @@
 	 </tr>
 	 </thead>
 </table>
+
+@include('admin.artist_permit.includes.artist-block-modal')
+
