@@ -243,5 +243,13 @@
 				 })
 				 ->make(true);
 		}
-
+		public  function checked_list(Request $request){
+		    $data=[];
+            foreach ($request->id as $item) {
+                $action = Artist::where('artist_id', $item)->orderBy('created_at', 'desc')->first();
+                array_push($data,$action);
+            }
+             return response()->json($data);
+        }
 	}
+
