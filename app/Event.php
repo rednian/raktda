@@ -10,7 +10,7 @@ class Event extends Model
 {
 	// use SoftDeletes;
 	protected $connection = 'mysql';
-	protected $table = 'rak_final.event';
+	protected $table = 'smartrak_smartgov.event';
 	protected $primaryKey = 'event_id';
 	protected $dates = ['created_at', 'updated_at', 'deleted_at', 'issued_date', 'expired_date', 'lock'];
 	protected $casts = ['is_displayable'=>'boolean'];

@@ -31,7 +31,12 @@
 									<label for="inlineFormInputName2"></label>
 									<input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
                   <label for=""></label>
-                  <input class="mb-2 mr-sm-2 kt-margin-l-15" data-off-text="All" data-on-text="Today" data-switch="true" data-size="small" type="checkbox">
+                  
+                  <div class="form-group row form-group-xs" style="margin-left: 5.5%">
+                    <div class="col-md-12 kt-padding-l-20">
+                      <input data-on-color="success" data-off-text="Submit All" data-on-text="Submit Today" data-switch="true" data-size="small" type="checkbox">
+                    </div>
+                  </div>
 							 </section>
 							 
 							 <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">

@@ -11,7 +11,7 @@ class Roles extends Model
 
     protected $connection = 'bls';
 
-    protected $table = 'roles';
+    protected $table = 'smartrak_bls.roles';
 
     protected $primaryKey = 'role_id';
 

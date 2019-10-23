@@ -19,7 +19,7 @@ class User extends Authenticatable implements Auditable
     const UPDATED_AT = 'modifiedAt';
 
     protected $connection = 'bls';
-    protected $table = 'bls.user';
+    protected $table = 'smartrak_bls.user';
     protected $primaryKey = 'user_id';
     protected $fillable = [
         'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number'
