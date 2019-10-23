@@ -3,48 +3,41 @@
 <link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
 @stop
 @section('content')
-
-<section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
-    <div class="kt-portlet__body kt-padding-t-5">
-        <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
-            role="tablist" id="artist-permit-nav">
-            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-                    data-target="#new-request">New Event Requests</a></li>
-            <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing Events</a>
-            </li>
-            <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Events</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Events</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#event-calendar">All Events Calendar</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane show fade active" id="new-request" role="tabpanel">
-                @include('admin.artist_permit.includes.summary')
-                <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
-                    <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span
-                            class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
-                    <select onchange="newEventTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15"
-                        id="new-permit-status">
-                        <option value="new">New</option>
-                        <option value="amend">Amend</option>
-                    </select>
-                    <label for="inlineFormInputName2" class="kt-margin-5"></label>
-                    <select onchange="newEventTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15"
-                        id="new-applicant-type">
-                        <option value="1">Private</option>
-                        <option value="3">Government</option>
-                        <option value="2">Individual</option>
-                    </select>
-                    <label for="inlineFormInputName2"></label>
-                    <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15"
-                        placeholder="Start date of permit" autocomplete="off">
-                    <label for=""></label>
-
-                    <div class="form-group row form-group-xs" style="margin-left: 5.5%">
-                        <div class="col-md-12 kt-padding-l-20">
-                            <input data-on-color="success" data-off-text="Submit All" data-on-text="Submit Today"
-                                data-switch="true" data-size="small" type="checkbox">
-                        </div>
+	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
+			<div class="kt-portlet__body kt-padding-t-5">
+        <section class="row">
+          <div class="col-md-12">
+                     <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">New Event Requests</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing Events</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Events</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Events</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#event-calendar">All Events Calendar</a></li>
+                     </ul>
+                      {{-- <input type="text" class="form-control form-control-sm" style="position: absolute; top: 0"> --}}
+          </div>
+        </section>
+				 <div class="tab-content">
+						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
+               @include('admin.artist_permit.includes.summary')
+							 <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
+									<label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
+									<select onchange="newEventTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15" id="new-permit-status">
+										 <option value="new">New</option>
+										 <option value="amend">Amend</option>
+									</select>
+									<label for="inlineFormInputName2" class="kt-margin-5"></label>
+									<select onchange="newEventTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15" id="new-applicant-type">
+										 <option value="1">Private</option>
+										 <option value="3">Government</option>
+										 <option value="2">Individual</option>
+									</select>
+									<label for="inlineFormInputName2"></label>
+									<input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
+                  <label for=""></label>
+                  
+                  <div class="form-group row form-group-xs" style="margin-left: 5.5%">
+                    <div class="col-md-12 kt-padding-l-20">
                     </div>
                 </section>
 
@@ -493,20 +486,5 @@
          tags: true
        });
      }
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 </script>
 @endsection
-=======
-</script>
-@endsection
-
-
->>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd
-=======
-</script>
-@endsection
-
-
->>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd

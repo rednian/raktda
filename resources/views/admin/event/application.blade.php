@@ -90,7 +90,7 @@
 														<div class="card-body">
 															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
-																	<label>Event Name <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">Event Name <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
 																		<input value="{{ ucfirst($event->name_en) }}" name="name_en" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append ">
@@ -104,7 +104,7 @@
 																	</div>
 																</div>
 																<div class="col-md-6">
-																	<label>Event Name (AR) <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">Event Name (AR) <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
 																		<input value="{{ ucfirst($event->name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append">
@@ -121,7 +121,7 @@
 
 															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
-																	 <label>Event Type <span class="text-danger">*</span></label>
+																	 <label class="kt-font-dark">Event Type <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
 																		<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
 																						 class="form-control">
@@ -153,7 +153,7 @@
 																<div class="card-body">
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label>Date Start<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Date Start<span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->issued_date }}" name="issued_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -168,7 +168,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Date End<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Date End<span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->expired_date }}" name="expired_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -183,7 +183,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Time Start<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Time Start<span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->time_start }}" name="time_start" readonly="readonly" type="text" class="form-control">
 																						<div class="input-group-append">
@@ -197,7 +197,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Time Start<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Time End<span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->time_end }}" name="time_end" readonly="readonly" type="text" class="form-control">
 																						<div class="input-group-append">
@@ -227,7 +227,7 @@
 																<div class="card-body">
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-6">
-																				 <label>Venue<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Venue<span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->venue_en) }}" name="venue_en" readonly="readonly" type="text"
 																									 class="form-control">
@@ -242,7 +242,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-6">
-																				 <label>Venue (AR)<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Venue (AR)<span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
 																									 class="form-control">
@@ -259,7 +259,7 @@
 																	 </div>
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label>Address<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Address<span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->address) }}" name="address" readonly="readonly" type="text"
 																									 class="form-control">
@@ -274,7 +274,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Area</label>
+																				 <label class="kt-font-dark">Area</label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->area->area_en) }}" name="area_en" readonly="readonly" type="text"
 																									 class="form-control">
@@ -289,7 +289,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Emirate</label>
+																				 <label class="kt-font-dark">Emirate</label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->emirate->name_en) }}" name="emirates" readonly="readonly" type="text"
 																									 class="form-control">
@@ -304,7 +304,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Country</label>
+																				 <label class="kt-font-dark">Country</label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->country->name_en) }}" name="country" readonly="readonly" type="text"
 																									 class="form-control">
@@ -555,7 +555,7 @@
 					$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 				}
 			});
-			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
+			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 			 wizard.on("beforeNext", function(wizardObj) {
 			 	if(wizardObj.currentStep == 1){
  						$('input[type=checkbox][data-step=step-1]').each(function () {
