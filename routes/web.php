@@ -28,11 +28,13 @@ Route::middleware(['admin', 'auth'])->group(function(){
 	//----------------------------------------------------------------------------------------------------------------
 	Route::get('/event','Admin\EventController@index')->name('admin.event.index');
 	Route::get('/event/datatable','Admin\EventController@dataTable')->name('admin.event.datatable');
+    Route::get('/event/calendar','Admin\EventController@calendar')->name('admin.event.calendar');
 	Route::get('/event/{event}/application','Admin\EventController@application')->name('admin.event.application');
 	Route::get('/event/{event}/application/datatable','Admin\EventController@applicationDatatable')->name('admin.event.applicationDatatable');
 	Route::get('/event/{event}','Admin\EventController@show')->name('admin.event.show');
 	Route::get('/event/{event}/lock','Admin\EventController@updateLock')->name('admin.event.lock');
 	Route::post('/event/{event}','Admin\EventController@submit')->name('admin.event.submit');
+    Route::get('/event/{event}/download','Admin\EventController@download')->name('admin.event.download');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist

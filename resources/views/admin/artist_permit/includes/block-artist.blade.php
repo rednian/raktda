@@ -31,17 +31,16 @@
 	 	@endif
 	 </select>
 </section>
-<table class="table  table-hover  table-borderless table-striped" id="block-artist">
-	 <thead class="thead-dark">
+<table class="table  table-hover  table-borderless table-striped border" id="block-artist">
+	 <thead>
 	 <tr>
 			<th></th>
-			<th>Person Code</th>
-			<th>Artist Name</th>
-			<th>Profession</th>
-			<th>Nationality</th>
-			<th>Mobile Number</th>
-			<th>Active Permit</th>
-			<th>Artist Status</th>
+			<th>PERSON CODE</th>
+			<th>ARTIST NAME</th>
+			<th>PROFESSION</th>
+			<th>NATIONALITY</th>
+			<th>MOBILE NUMBER</th>
+			<th>ACTIVE PERMIT</th>
 	 </tr>
 	 </thead>
 </table>

@@ -15,10 +15,9 @@
                         <i class="flaticon-more"></i>
                  </button>
                  <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                        <a class="dropdown-item kt-font-trasnform-u" href="#">Cancel Permit</a>
-                        @if ($tab != 'processing-permit')
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item kt-font-trasnform-u" href="#"><i class="la la-download"></i> download</a>
+                        @if ($event->status == 'active' || $event->status == 'expired')
+                            {{-- <div class="dropdown-divider"></div> --}}
+                            <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> download</a>
                         @endif
                  </div>
             </div>
@@ -94,21 +93,29 @@
                         </tr>
                     </table>
                      <h6 class="kt-font-dark">Establishment Information</h6>
-                     <table class="table table-borderless table-sm">
-                         <tr>
-                             <td width="35%">Establishment Name: </td>
-                         </tr>
-                         @if ($event->owner->type == 1)
-                            <tr>
-                                <td>Trade License No. :</td>
-                                <td>{{ $event->owner->company->company_trade_license }}</td>
-                            </tr> 
-                         @endif
-                         <tr>
-                            <td>Address:</td>
-                             <td>{{ $event->owner->company->company_address.' '.$event->owner->company->city.' '.$event->owner->company->country }}</td>
-                         </tr>
-                     </table>
+                     @if ($event->owner()->has('company') || $event->owner->type != 2)
+                       <table class="table table-borderless table-sm">
+                           <tr>
+                               <td width="35%">Establishment Name: </td>
+                               <td>{{ ucwords($event->owner->company->company_name) }}</td>
+                           </tr>
+                           @if ($event->owner->type == 1)
+                              <tr>
+                                  <td>Trade License No. :</td>
+                                  <td>{{ $event->owner->company->company_trade_license }}</td>
+                              </tr> 
+                           @endif
+                           <tr>
+                              <td>Address:</td>
+                               <td>{{ $event->owner->company->company_address.' '.$event->owner->company->city.' '.$event->owner->company->country }}</td>
+                           </tr>
+                       </table>
+                       @else
+                       @empty
+                        Establishment Information is not required for this Event Owner.
+                       @endempty
+                     @endif
+                     
                 </section>
             </div>
         </section>
@@ -122,14 +129,14 @@
                 </div>
                 <div id="collapse-approver" class="collapse show" aria-labelledby="headingOne-approver" data-parent="#accordion-approver">
                     <div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
-                        <table class="table table-hover">
-                            <thead class="thead-dark">
+                        <table class="table table-hover table-borderless border table-striped">
+                            <thead>
                                 <tr>
-                                    <th>Checked By</th>
-                                    <th>Remarks</th>
-                                    <th>User Group</th>
-                                    <th>Checked Date</th>
-                                    <th>Action</th>
+                                    <th>CHECKED BY</th>
+                                    <th>REMARKS</th>
+                                    <th>USER GROUP</th>
+                                    <th>CHECKED DATE</th>
+                                    <th>ACTION TAKEN</th>
                                 </tr>
                             </thead>
                             <tbody>

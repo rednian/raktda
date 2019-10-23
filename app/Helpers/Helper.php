@@ -1,4 +1,21 @@
 <?php
+	function eventType($type){
+		$classname = null;
+		if('entertainment events / without ticket' == strtolower($type) || 'entertainment events / with tcket' == strtolower($type)){ $classname = 'fc-event-success'; }
+		if('charity events / without ticket' == strtolower($type) || 'charity events / with ticket' == strtolower($type)){ $classname = 'fc-event-brand'; }
+		if('religious  events / without ticket' == strtolower($type) || 'religious  events / with ticket' == strtolower($type)){ $classname = 'fc-event-light fc-event-solid-primary'; }
+		if('business events' == strtolower($type) || 'business events' == strtolower($type)){ $classname = 'fc-event-danger'; }
+		if('sports events' == strtolower($type) || 'sports events' == strtolower($type)){ $classname = 'fc-event-warning'; }
+		return $classname;
+	}
+
+	function eventStatus($status){
+		$classname = null;
+		if('expired' == strtolower($status)){ $classname = 'fc-event-danger'; }
+		if('active' == strtolower($status) ){ $classname = 'fc-event-success'; }
+		return $classname;
+	}
+
 	function userType($type){
 		if($type == 1){ return 'private'; }
 		if($type == 2){ return 'individual'; }

@@ -10,7 +10,8 @@
 						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">New Event Requests</a></li>
 						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing Events</a></li>
 						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Events</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archieve-permit">Archive Events</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Events</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#event-calendar">All Events Calendar</a></li>
 				 </ul>
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
@@ -29,19 +30,21 @@
 									</select>
 									<label for="inlineFormInputName2"></label>
 									<input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
+                  <label for=""></label>
+                  <input class="mb-2 mr-sm-2 kt-margin-l-15" data-off-text="All" data-on-text="Today" data-switch="true" data-size="small" type="checkbox">
 							 </section>
 							 
-							 <table class="table table-hover " id="new-event-request">
-									<thead class="thead-dark">
+							 <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">
+									<thead>
 									<tr>
-										 <th>Reference No.</th>
-										 <th>Establishment</th>
-										 <th>Permit Owner</th>
-										 <th>Event Name</th>
-										 <th>Applied Date</th>
-										 <th>Applicant Type</th>
-										 <th>Start Date</th>
-										 <th>Status</th>
+										 <th>REFERENCE NO.</th>
+										 <th>ESTABLISHMENT</th>
+										 <th>PERMIT OWNER</th>
+										 <th>EVENT NAME</th>
+										 <th>APPLIED DATE</th>
+										 <th>APPLICANT TYPE</th>
+										 <th>PERMIT START</th>
+										 <th>STATUS</th>
 									</tr>
 									</thead>
 							 </table>
@@ -61,19 +64,19 @@
                      <option value="2">Individual</option>
                   </select>
                   <label for="inlineFormInputName2"></label>
-                  <input type="text" id="processing-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
+                  <input type="text" id="processing-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-5" placeholder="Start date of permit" autocomplete="off">
                 </section>
-							 <table class="table table-head-noborder table-borderless table-striped" id="new-event-processing">
-									<thead class="thead-dark">
+							 <table class="table table-head-noborder table-borderless table-striped border" id="new-event-processing">
+									<thead>
                   <tr>
-                     <th>Reference No.</th>
-                     <th>Establishment</th>
-                     <th>Permit Owner</th>
-                     <th>Event Name</th>
-                     <th>Applied Date</th>
-                     <th>Applicant Type</th>
-                     <th>Start Date</th>
-                     <th>Status</th>
+                     <th>REFERENCE NO.</th>
+                     <th>ESTABLISHMENT</th>
+                     <th>PERMIT OWNER</th>
+                     <th>EVENT NAME</th>
+                     <th>APPLIED DATE</th>
+                     <th>APPLICANT TYPE</th>
+                     <th>PERMIT START</th>
+                     <th>STATUS</th>
                   </tr>
                   </thead>
 							 </table>
@@ -97,22 +100,22 @@
                   <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
                 </section>
 
-							 <table class="table table-head-noborder table-borderless table-striped" id="new-event-active">
-									<thead class="thead-dark">
+							 <table class="table table-head-noborder table-borderless border table-striped" id="new-event-active">
+									<thead>
                   <tr>
-                     <th>Reference No.</th>
-                     <th>Permit No.</th>
-                     <th>Establishment</th>
-                     <th>Permit Owner</th>
-                     <th>Event Name</th>
-                     <th>Applied Date</th>
-                     <th>Applicant Type</th>
-                     <th>Actions</th>
+                      <th>REFERENCE NO.</th>
+                     <th>ESTABLISHMENT</th>
+                     <th>PERMIT OWNER</th>
+                     <th>EVENT NAME</th>
+                     <th>APPLIED DATE</th>
+                     <th>APPLICANT TYPE</th>
+                     <th>PERMIT START</th>
+                     <th>ACTION</th>
                   </tr>
                   </thead>
 							 </table>
 						</div>
-						<div class="tab-pane fade" id="archieve-permit" role="tabpanel">
+						<div class="tab-pane fade" id="archive-permit" role="tabpanel">
                @include('admin.artist_permit.includes.summary')
                <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
                  <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
@@ -129,26 +132,31 @@
                  <label for="inlineFormInputName2"></label>
                  <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
                </section>
-							 <table class="table table-head-noborder table-borderless table-striped" id="new-event-archive">
-									<thead class="thead-dark">
+							 <table class="table table-head-noborder table-borderless border" id="new-event-archive">
+									<thead>
                   <tr>
-                     <th>Reference No.</th>
-                     <th>Establishment</th>
-                     <th>Permit Owner</th>
-                     <th>Event Name</th>
-                     <th>Applicant Type</th>
-                     <th>Start Date</th>
-                     <th>Status</th>
-                     <th>Action</th>
+                      <th>REFERENCE NO.</th>
+                     <th>ESTABLISHMENT</th>
+                     <th>PERMIT OWNER</th>
+                     <th>EVENT NAME</th>
+                     <th>APPLIED DATE</th>
+                     <th>APPLICANT TYPE</th>
+                     <th>PERMIT START</th>
+                     <th>ACTION</th>
                   </tr>
                   </thead>
 							 </table>
 						</div>
+            <div class="tab-pane fade" id="event-calendar" role="tabpanel">
+              <section id="event-calendar"></section>
+            </div>
 				 </div>
 			</div>
 	 </section>
+   
 @endsection
 @section('script')
+
 	 <script type="text/javascript">
 			var newEventTable = {};
      var artistPermit = {};
@@ -166,7 +174,11 @@
        }
      };
      $(document).ready(function () {
+
+       $('[data-switch=true]').bootstrapSwitch();
+
        newEvent();
+       calendar();
        
        var hash = window.location.hash;
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
@@ -188,6 +200,66 @@
      
 
      });
+
+     function calendar(){
+      var todayDate = moment().startOf('day');
+          var YM = todayDate.format('YYYY-MM');
+          var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+          var TODAY = todayDate.format('YYYY-MM-DD');
+          var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+
+          var calendarEl = document.getElementById('event-calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+              plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+
+              isRTL: KTUtil.isRTL(),
+              header: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
+              },
+
+              height: 800,
+              contentHeight: 780,
+              aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
+
+              nowIndicator: true,
+              // now: TODAY + 'T09:25:00', // just for demo
+
+              views: {
+                  dayGridMonth: { buttonText: 'Month' },
+                  timeGridWeek: { buttonText: 'Week' },
+                  timeGridDay: { buttonText: 'Day' },
+                  listDay: { buttonText: 'Day List' },
+                  listWeek: { buttonText: 'Week List' }
+              },
+
+              defaultView: 'listWeek',
+              // defaultDate: TODAY,
+
+              editable: true,
+              eventLimit: true, // allow "more" link when too many events
+              navLinks: true,
+              events: '{{ route('admin.event.calendar') }}',
+              eventRender: function(info) {
+                  var element = $(info.el);
+
+                  if (info.event.extendedProps && info.event.extendedProps.description) {
+                      if (element.hasClass('fc-day-grid-event')) {
+                          element.data('content', info.event.extendedProps.description);
+                          element.data('placement', 'top');
+                          KTApp.initPopover(element);
+                      } else if (element.hasClass('fc-time-grid-event')) {
+                          element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>'); 
+                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>'); 
+                      }
+                  } 
+              }
+          });
+
+          calendar.render();
+     }
 
      function archive() {
       $('select#archive-permit-status').select2({
@@ -238,7 +310,7 @@
         ],
         createdRow: function (row, data, index) {
           $(row).click(function () {
-            location.href = '{{ url('/event') }}/' + data.event_id+'?tab=archieve-permit';
+            location.href = '{{ url('/event') }}/' + data.event_id+'?tab=archive-permit';
           });
         }
       });
@@ -282,6 +354,7 @@
           // {data: 'status'}
         ],
         createdRow: function (row, data, index) {
+          $('.btn-download', row).click(function(e){e.stopPropagation();});
           $(row).click(function () {
             location.href = '{{ url('/event') }}/' + data.event_id+'?tab=active-permit';
           });

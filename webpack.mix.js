@@ -115,7 +115,7 @@ mix.scripts([
 ], 'public/js/mandatory.js');
 
 mix.scripts([
-    'public/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js',
+    'public/assets/vendors/custom/fullcalendar/fullcalendar.bundle.min.js',
     'public/assets/vendors/custom/datatables/datatables.bundle.min.js',
     'public/assets/vendors/custom/jquery-datatables-checkboxes/dataTables.checkboxes.min.js',
     'public/assets/vendors/custom/fancybox-master/dist/jquery.fancybox.js',

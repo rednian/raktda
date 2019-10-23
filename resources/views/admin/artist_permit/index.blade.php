@@ -363,13 +363,6 @@
                {data: 'nationality'},
                {data: 'mobile_number'},
                {data: 'active_permit'},
-               {
-                  render: function (data, type, full, meta) {
-                     var classname = full.artist_status == 'Active' ? 'success' : 'danger';
-
-                     return '<span class="kt-badge kt-badge--' + classname + ' kt-badge--inline">' + full.artist_status + '</span>';
-                  }
-               }
             ],
             createdRow: function (row, data, index) {
             }

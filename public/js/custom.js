@@ -17,6 +17,9 @@ var KTAppOptions = {
         }
     }
 }; 
+
+
+
 $(document).ready(function(){
   $('input[type=checkbox]').each(function(){
       $(document).on('input[type=checkbox]','change',function(){

@@ -3,13 +3,13 @@
 	namespace App\Http\Controllers\Admin;
 
 	use DB;
+	use PDF;
+	use Auth;
+	use Calendar;
 	use App\Event;
-	use App\Http\Controllers\Controller;
 	use Carbon\Carbon;
 	use Illuminate\Http\Request;
-	use Illuminate\Support\Facades\Auth;
-	use MaddHatter\LaravelFullcalendar\Calendar;
-	use function PHPSTORM_META\type;
+	use App\Http\Controllers\Controller;
 	use Yajra\DataTables\Facades\DataTables;
 
 	class EventController extends Controller
@@ -17,6 +17,26 @@
 		public function index()
 		{
 			return view('admin.event.index', ['page_title' => 'Event Permit']);
+		}
+
+		public function calendar(Request $request)
+		{
+			$user = Auth::user();
+			$events = Event::whereIn('status',['active', 'expired'])->get();
+			$events = $events->map(function($event) use ($user){
+				return [
+					'title'=> $user->LanguageId == 1 ? $event->name_en : $event->name_ar,
+					// 'start'=> Carbon::createFromTimestamp($event->issued_date.$event->time_start),
+					'start'=> date('Y-m-d', strtotime($event->issued_date)).' '.date('H:m', strtotime($event->time_start)),
+					'end'=> date('Y-m-d', strtotime($event->expired_date)).' '.date('H:m', strtotime( $event->time_end)),
+					'id'=>$event->event_id,
+					'url'=> route('admin.event.show', $event->event_id).'?tab=event-calendar',
+					'description'=> 'Venue : '.$venue = $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
+					// 'allDay'=> false,
+					'className'=> eventStatus($event->status)
+				];
+			});
+			return response()->json($events);	
 		}
 
 
@@ -31,18 +51,19 @@
 				$event->check()->where('event_id', $event->event_id)->delete();
 				$event->check()->create($request->all());
 
-				if($request->status == 'rejected'  || $request->status == 'amend'){
+				if($request->status == 'rejected'  || $request->status == 'need modification'){
 					$request['role_id'] = $user->roles()->first()->role_id;
 					if ($request->comment) {$comment = $event->comment()->create($request->all());}
+					$request['type'] = 1;
 					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
 					$event->update(['status'=>$request->status]);
 				}
 
 				if ($request->status == 'approved-unpaid') {
-					if ($request->comment) { $comment = $event->comment()->create($request->all()); }
+					$comment = $event->comment()->create($request->all()); 
 					$request['role_id'] = $user->roles()->first()->role_id;
 					$request['type'] = $type = 1; 
-					$comment->approve()->create($request->all());
+					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
 					$event->update(['status'=>$request->status]);
 				}
 
@@ -76,6 +97,18 @@
 			if ($request->ajax()) {
 				$event->update(['last_check_by' => Auth::user()->user_id, 'lock' => Carbon::now()]);
 			}
+		}
+
+		public function download(Event $event)
+		{
+			$data['company_details'] = $event->owner->company;
+			$data['event_details'] = $event;
+
+			$pdf = PDF::loadView('permits.event.print', $data, [], [
+			    'title' => 'Event Permit',
+			    'default_font_size' => 10
+			]);
+			return $pdf->stream('Event-Permit.pdf');
 		}
 
 
@@ -179,7 +212,7 @@
 					 })
 					 ->addColumn('action', function($event){
 					 	if($event->status == 'rejected'){ return null; }
-					 	return '<button class="btn btn-sm btn-elevate btn-outline-hover-danger"><i class="la la-download"></i> download</button>';
+					 	return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-light"><i class="la la-download"></i> download</a>';
 					 })
 					 ->rawColumns(['status', 'action'])
 //				 ->setTotalRecords($totalRecords)s

@@ -15,21 +15,21 @@
 	 <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
 </section>
 
-<table class="table table-hover table-border table-light--dark" id="artist-permit">
-	<thead class="thead-dark">
+<table class="table table-hover table-borderless table-striped border" id="artist-permit">
+	<thead>
 	 <tr>
-	 	<th>Reference No.</th>
-		<th>Company Name</th>
+	 	<th>REFERENCE NO.</th>
+		<th>ESTABLISHMENT NAME</th>
 		<th>
-			No. of Artist
+			NO. OF ARTIST
 			<span data-content="The number of artist that already checked"
 				  data-original-title="" data-container="body" data-toggle="kt-popover"
 				  data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
 			</span>
 		</th>
-		<th>Applied Date</th>
-		<th>Request Type</th>
-		<th>Permit Status</th>
+		<th>APPLIED DATE</th>
+		<th>REQUEST TYPE</th>
+		<th>PERMIT STATUS</th>
 	 </tr>
 	 </thead>
 </table>

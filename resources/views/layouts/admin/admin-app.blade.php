@@ -36,7 +36,7 @@
   <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
   <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
 </head>
-<body class="kt-page--loading-enabled kt-page--loading  kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-aside--enabled kt-aside--fixed" >
+<body style="zoom:90%" class="kt-page--loading-enabled kt-page--loading  kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-aside--enabled kt-aside--fixed" >
 <!-- begin:: Page -->
 <!-- begin::Page loader -->
 <div class="kt-page-loader kt-page-loader--base">
@@ -88,8 +88,6 @@
 <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/custom-pages.js') }}"></script>
 <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
-</body>
-@yield('script')
 <script type="text/javascript">
   $(document).ready(function(){
 
@@ -123,5 +121,6 @@
     }
   });
 </script>
-<!-- end::Body -->
+@yield('script')
+</body>
 </html>

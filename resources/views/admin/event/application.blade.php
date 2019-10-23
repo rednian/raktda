@@ -371,7 +371,7 @@
 														<div class="form-group row kt-hide">
 															 <label class="col-lg-2 col-form-label">Approvers <span class="text-danger">*</span></label>
 															 <div class="col-lg-5">
-																	<select id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
+																	<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
 																		 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
 																		 ->count() > 0)
 																				@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
@@ -396,7 +396,7 @@
 										 class="btn btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u">Next
 						 </button>
 						 <div data-ktwizard-type="action-submit" class="dropdown">
-								<button type="submit" class="btn btn-warning btn-sm  kt-font-bold kt-font-transform-u">Submit</button>
+								<button id="btn-submit" type="submit" class="btn btn-warning btn-sm  kt-font-bold kt-font-transform-u">Submit</button>
 						 </div>
 					</div>
 			 </form>
@@ -409,12 +409,21 @@
 @section('script')
 	 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
 	 <script>
-			new Vue({
-				el: '#app-wizard',
-				data: {
-				  comment: null
-				}
-			});
+
+	 	// window.addEventListener('beforeunload', (event) => {
+	 	  // Cancel the event as stated by the standard.
+	 	  // event.preventDefault();
+	 	  // Chrome requires returnValue to be set.
+	 	  // event.returnValue = '';
+	 	// });
+
+		new Vue({
+			el: '#app-wizard',
+			data: {
+			  comment: null
+			}
+		});
+
      $(document).ready(function () {
        var todayDate = moment().startOf('day');
        var YM = todayDate.format('YYYY-MM');
@@ -507,19 +516,6 @@
 		 allowClear: true,
 		 tags: true
        });
-       
-       
-       // $('button[name=status]').click(function () {
-				//  if($(this).val() == 'rejected'){
-				//    $('form#kt_form').validate({
-				// 		 rules:{
-				// 		   comment: {
-				// 		     required: true
-				// 			 }
-				// 		 }
-				// 	 });
-				//  }
-       // });
      }
      
      function requirementTable(){
@@ -559,7 +555,7 @@
 					$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 				}
 			});
-			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
+			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
 			 wizard.on("beforeNext", function(wizardObj) {
 			 	if(wizardObj.currentStep == 1){
  						$('input[type=checkbox][data-step=step-1]').each(function () {
@@ -585,29 +581,48 @@
      }
 
      function eventDetails() {
-     	$('form#kt_form').submit(function(){
-     	var validator = $('form#kt_form').validate();
-     		validator.element('select[name=status]');
+     	$('form#kt_form').validate({
+     	  rules: {
+     	    'status': {required: true},
+     	  },
+     	  invalidHandler: function (event, validator) {
+     	    KTUtil.scrollTop();
+     	  }
      	});
-     	
-     	// $('form#kt_form').validate({
-     	//   rules: {
-     	//     comment: {required: true, maxlength: 255, minlength: 3},
-     	//     status: {required: true},
-     	//   },
-     	//   invalidHandler: function (event, validator) {
-     	//     KTUtil.scrollTop();
-     	//     console.log($('textarea[name=comment]').val() );
-     	//   }
-     	// });
-     	// $('form#kt_form').submit(function(e){
-     	// 	e.preventDefault()
 
-     	// 	if( $('select[name=status]').val() != 'approved-unpaid' ){
-     	// 			// console.log($('select[name=status]').val());
-     		
-     	// 	}
-     	// });
+
+
+     	$('form#kt_form').submit(function(e){
+
+     		if($('select[name=status]').val() != 'approved-unpaid' && $('textarea[name=comment]').val() == ''){
+     			e.preventDefault();
+     			// $('form#kt_form').validate().element('.txt-comment');
+     			$('textarea[name=comment]').addClass('is-invalid');
+     		}
+     		else{
+     			$('textarea[name=comment]').removeClass('is-invalid');
+     		}
+
+     		// if($('select[name=status]').val() == 'need approval'){
+     		// 	$('#approver').removeAttr('disabled', true);
+     		// }
+     		// else{
+     		// 	$('#approver').removeAttr('disabled', true);
+     		// }
+     	});
+
+     	$('select[name=status]').change(function(){
+     		if($(this).val() == 'need approval'){
+     			$('#select-approver').removeAttr('disabled');
+     		}
+     		else{
+     			$('#select-approver').attr('disabled', true);
+     		}
+     	});
+
+
+     	
+     
  
      }
 
