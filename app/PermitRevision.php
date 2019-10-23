@@ -9,7 +9,7 @@ class PermitRevision extends Model
 {
       use SoftDeletes;
       protected $table = 'permit_revision';
-      protected $primaryKey = ['permit_revision_id'];
+      protected $primaryKey = 'permit_revision_id';
       protected $fillable = [ 'permit_number', 'permit_id'];
 
 

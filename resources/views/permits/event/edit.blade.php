@@ -405,92 +405,98 @@
 
 
 
-
-
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
                                 <form id="documents_required">
 
 
-                                </form>
+                                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                                        <div class="kt-form__section kt-form__section--first ">
+                                            <div class="kt-wizard-v3__form">
+                                                <form id="documents_required">
+
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="kt-form__actions">
+                                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                            data-ktwizard-type="action-prev" id="prev_btn">
+                                            Previous
+                                        </div>
+
+
+                                        <a href="{{route('event.index')}}#applied">
+                                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                                id="back_btn">
+                                                Back
+                                            </div>
+                                        </a>
+
+
+                                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                            id="submit_btn">
+                                            Update
+                                        </div>
+
+
+
+                                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                            data-ktwizard-type="action-next" id="next_btn">
+                                            Next Step
+                                        </div>
+
+                                    </div>
+
                             </div>
+
+
                         </div>
                     </div>
-
-
-                    <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-prev" id="prev_btn">
-                            Previous
-                        </div>
-
-
-                        <a href="{{route('event.index')}}#applied">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                Back
-                            </div>
-                        </a>
-
-
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                            Update
-                        </div>
-
-
-
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-next" id="next_btn">
-                            Next Step
-                        </div>
-
-                    </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>
-</div>
-</div>
-</div>
 
-<!-- end:: Content -->
+    <!-- end:: Content -->
 
 
 
-<!-- begin::Scrolltop -->
-<div id="kt_scrolltop" class="kt-scrolltop">
-    <i class="fa fa-arrow-up"></i>
-</div>
-<!-- end::Scrolltop -->
+    <!-- begin::Scrolltop -->
+    <div id="kt_scrolltop" class="kt-scrolltop">
+        <i class="fa fa-arrow-up"></i>
+    </div>
+    <!-- end::Scrolltop -->
 
-<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
-    <div class="modal-body">
-        <div id="ajax_loader" style="min-height: 100vh;">
-            <img src="{{asset('/img/ajax-loader.gif')}}" style="position: absolute; top:50%; left: 50%;">
+    <div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-body">
+            <div id="ajax_loader" style="min-height: 100vh;">
+                <img src="{{asset('/img/ajax-loader.gif')}}" style="position: absolute; top:50%; left: 50%;">
+            </div>
         </div>
     </div>
-</div>
 
-<!--begin::Modal-->
-
-
-
-<!--end::Modal-->
+    <!--begin::Modal-->
 
 
 
+    <!--end::Modal-->
 
-@endsection
 
 
-@section('script')
-<script src="{{asset('js/company/uploadfile.js')}}"></script>
-<script src="{{asset('js/company/artist.js')}}"></script>
-<script>
-    $.ajaxSetup({
+
+    @endsection
+
+
+    @section('script')
+    <script src="{{asset('js/company/uploadfile.js')}}"></script>
+    <script src="{{asset('js/company/artist.js')}}"></script>
+    <script>
+        $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
     });
 
@@ -885,6 +891,6 @@
 
 
 
-</script>
+    </script>
 
-@endsection
+    @endsection

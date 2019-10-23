@@ -78,7 +78,8 @@
 
             <div class="tab-pane fade" id="calendar" role="tabpanel">
                 <div class="kt-portlet__body">
-                    <div id="event-calendar"></div>
+                    <div id="event-calendar">
+                    </div>
                 </div>
             </div>
 
@@ -188,7 +189,6 @@
     @endsection
 
     @section('script')
-
     <script>
         $('#kt_tabs_list a').click(function(e) {
             e.preventDefault();
@@ -374,7 +374,6 @@
 					}
                 },
 
-
             ],
             language: {
                 emptyTable: "No Existing Event Permits"
@@ -449,7 +448,6 @@
             }
 
         });
-
 
 
     });
@@ -548,6 +546,5 @@
      }
 
     </script>
-    {{-- <script src="{{asset('js/list-view.js')}}"></script> --}}
 
     @endsection

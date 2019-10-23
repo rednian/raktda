@@ -129,11 +129,17 @@
                     </div>
                     <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
                     <!--end: Form Wizard Step 1-->
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
                                 <form id="artist_details" novalidate>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -149,15 +155,27 @@
                                                     <input type="hidden" id="artist_id"
                                                         value="{{$artist_details->artist_id}}" />
                                                     <input type="hidden" id="is_old_artist" />
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                     <div class="row">
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Person
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                         Code</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                                     <div class="col-lg-5">
+=======
+                                                                        Code</label><span id="changeArtistLabel"
+                                                                        class="kt-badge  kt-badge--danger kt-badge--inline d-none"
+                                                                        onclick="removeSelectedArtist()">Change </span>
+                                                                    <input type="hidden" id="artist_number" value={{1}}>
+                                                                    <div class="col-lg-8">
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
@@ -165,12 +183,15 @@
                                                                                 placeholder="Person Code">
                                                                         </div>
                                                                     </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                     <div class="col-lg-3">
                                                                         <span id="changeArtistLabel"
                                                                             class="kt-badge  kt-badge--danger kt-badge--inline d-none"
                                                                             onclick="removeSelectedArtist()">Change
                                                                         </span>
                                                                     </div>
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
@@ -186,6 +207,12 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Last
@@ -199,6 +226,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="nationality"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Nationality
@@ -220,6 +251,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Birth
@@ -235,6 +270,11 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Passport
@@ -249,6 +289,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="pp_expiry"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Passport
@@ -264,6 +308,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="uid_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">UID
@@ -277,6 +325,11 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
                                                                         class="col-4 col-form-label kt-font-bold text-right">UID
@@ -292,6 +345,11 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="religion"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Religion
@@ -311,6 +369,13 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                             </section>
                                                         </div>
                                                         <div class="col-6">
@@ -337,11 +402,20 @@
                                                                                     {{ucwords($pt->name_en)}}</option>
                                                                                 @endforeach
                                                                             </select>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                             <input type="hidden" id="old_profession"
                                                                                 value="{{$artist_details->profession_id}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
+=======
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
                                                                         class="col-4 col-form-label kt-font-bold text-right">First
@@ -389,6 +463,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_type"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Visa
@@ -409,6 +491,11 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Visa
@@ -423,6 +510,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Visa
@@ -438,6 +529,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="id_no"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Identification
@@ -451,6 +546,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="sp_name"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Sponser
@@ -465,6 +564,11 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="language"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Languages
@@ -492,6 +596,10 @@
                                     </div>
                                     <br>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                         <div class="card">
                                             <div class="card-header" id="headingTwo6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -508,6 +616,10 @@
                                                     <div class="row">
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="mobile"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Mobile
@@ -522,6 +634,11 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="landline"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Phone
@@ -536,6 +653,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                             </section>
                                                         </div>
                                                         <div class="col-6">
@@ -569,6 +687,44 @@
                                                                 </div>
                                                             </section>
                                                         </div>
+=======
+
+
+                                                            </section>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="email"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Email
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                placeholder="Email" name="email"
+                                                                                id="email" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="fax_no"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Fax
+                                                                        No </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="fax_no" id="fax_no"
+                                                                                placeholder="Fax No">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                     </div>
                                                 </div>
                                             </div>
@@ -576,6 +732,10 @@
                                     </div>
                                     <br>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                         <div class="card">
                                             <div class="card-header" id="headingTwo7">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -606,13 +766,21 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="address"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Emirate
+=======
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="address"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Area
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                                 class=" form-control form-control-sm "
                                                                                 name="city" id="city"
                                                                                 onChange="getAreas(this.value)">
@@ -620,16 +788,32 @@
                                                                                 @foreach ($emirates as $em)
                                                                                 <option value={{$em->id}}>
                                                                                     {{$em->name_en}}
+=======
+                                                                                class="  form-control form-control-sm "
+                                                                                name="area" id="area">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($areas as $ar)
+                                                                                <option value={{$ar->id}}>
+                                                                                    {{$ar->area_en}}
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                             </section>
                                                         </div>
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
                                                                         class="col-4 col-form-label kt-font-bold text-right">PO
@@ -643,19 +827,37 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Area
+=======
+
+
+                                                                <div class=" form-group form-group-sm row">
+                                                                    <label for="address"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Emirate
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                                 class="  form-control form-control-sm "
                                                                                 name="area" id="area">
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($areas as $ar)
                                                                                 <option value={{$ar->id}}>
                                                                                     {{$ar->area_en}}
+=======
+                                                                                class=" form-control form-control-sm "
+                                                                                name="city" id="city"
+                                                                                onChange="getAreas(this.value)">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($emirates as $em)
+                                                                                <option value={{$em->id}}>
+                                                                                    {{$em->name_en}}
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -673,6 +875,12 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                     <!--begin: Form Wizard Step 3-->
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
@@ -1273,6 +1481,11 @@
                                 keyboard: false,
                                 show: true
                             });
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+                    if(data.artist_permit) {
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                             $('#person_code_modal').empty();
                         if(data.artist_permit){
                             let total_aps = data.artist_permit.length;

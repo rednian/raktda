@@ -10,13 +10,19 @@ use App\Http\Controllers\Controller;
 
 class RequirementController extends Controller
 {
- 
-    public function index()
-    {
-        $requirements = Requirement::groupBy('requirement_type')->get();
-        return view('admin/settings.requirement.index', ['requirements'=> $requirements ]);
-    }
 
+	public function index()
+	{
+		$data = [];
+		$requirement = Requirement::where('requirement_type', 'event')->get();
+		$requirement = $requirement->map(function($v) use ($data){
+			$data['name'] =  Auth::user()->LanguageId == 1 ? $v->requirement_name :  $v->requirement_name_ar;
+			$data['requirement_id'] = $v->requirement_id;
+			return $data;
+		});
+		return $requirement;
+		return response()->json(['data'=>$requirement]);
+	}
 
     public function create()
     {
@@ -26,7 +32,20 @@ class RequirementController extends Controller
 
     public function store(Request $request)
     {
-        //
+        return response()->json(['result'=>true, 'data'=>Requirement::create($request->all())]);
+    }
+
+    public function isexist(Request $request)
+    {
+    	if($request->requirement_name){
+    		$requirement = Requirement::where('requirement_name', $request->requirement_name)->where('requirement_type', 'event')->exists();
+    		return response()->json(($requirement ? $request->requirement_name. ' already exist.' : true));
+      }
+    	else{
+    		$requirement = Requirement::where('requirement_name_ar', $request->requirement_name_ar)->where('requirement_type', 'event')->exists();
+    		return response()->json(($requirement ?  $request->requirement_name_ar. ' already exist.' : true));
+      }
+
     }
 
 
@@ -35,7 +54,7 @@ class RequirementController extends Controller
         //
     }
 
-  
+
     public function edit($id)
     {
         //
@@ -91,7 +110,7 @@ class RequirementController extends Controller
                                 })
                                 ->get();
 
-             return Datatables::of($requirement)->make(true);  
+             return Datatables::of($requirement)->make(true);
         }
 
     }

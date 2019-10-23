@@ -6,16 +6,16 @@
 			to take action.
 	 </div>
 </div>
-<table class="table  table-hover  table-borderless table-striped" id="active-artist">
-	 <thead class="thead-dark">
+<table class="table  table-hover  table-borderless table-striped border" id="active-artist">
+	 <thead>
 	 <tr>
 			<th></th>
-			<th>Person Code</th>
-			<th>Artist Name</th>
-			<th>Profession</th>
-			<th>Nationality</th>
-			<th>Mobile Number</th>
-			<th>Active Permit</th>
+			<th>PERSON CODE</th>
+			<th>ARTIST NAME</th>
+			<th>PROFESSION</th>
+			<th>NATIONALITY</th>
+			<th>MOBILE NUMBER</th>
+			<th>ACTIVE PERMIT</th>
 	 </tr>
 	 </thead>
 </table>
@@ -57,6 +57,6 @@ $countries = \App\Country::has('artist')->get();
 						@endif
 				 </select>
 			</div>
-	 
+
 	 </div>
 </div>

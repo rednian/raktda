@@ -17,6 +17,9 @@ var KTAppOptions = {
         }
     }
 }; 
+
+
+
 $(document).ready(function(){
   $('input[type=checkbox]').each(function(){
       $(document).on('input[type=checkbox]','change',function(){
@@ -39,7 +42,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         destroy: true,
-        pagingType: 'simple_numbers',
+        // pagingType: 'simple_numbers',
         ajax: { global: false },
       columnDefs:[
         // {targets: '_all', className: 'no-wrap'}
@@ -52,7 +55,7 @@ $(document).ready(function(){
         }
     });
 
-    // $('table').wrap('<div class="table-responsive"></div>');
+    $('table').wrap('<div class="table-responsive"></div>');
 
     // select2 settings
     $('.select2').select2({dropdownAutoWidth: true});
@@ -93,7 +96,7 @@ $(document).ready(function(){
             }
         }).bind("ajaxError", function(event, request, settings, data){
             $.notify({
-                title: 'Somethings wrong!',
+                title: 'Somethings went wrong!',
                 message: data,
             },{
                 type: 'error',

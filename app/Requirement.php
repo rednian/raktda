@@ -11,9 +11,9 @@ class Requirement extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
-    protected $table = 'requirement';
-    protected $primaryKey = 'requirement_id';
-    protected $fillable = ['requirement_name', 'requirement_description', 'term', 'requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by'];
+     protected $table = 'requirement';
+     protected $primaryKey = 'requirement_id';
+     protected $fillable = ['requirement_name','requirement_name_ar', 'requirement_description', 'term','requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by'];
 
     public function requirementDocument()
     {

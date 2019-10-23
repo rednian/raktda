@@ -24,9 +24,8 @@ class User extends Authenticatable implements Auditable
     protected $table = 'user';
 
     protected $primaryKey = 'user_id';
-
     protected $fillable = [
-        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive', 'createby', 'modifiedby', 'EmpClientId', 'LanguageId'
+        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive', 'createby', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number'
     ];
 
     // protected $auditInclude = [

@@ -416,6 +416,8 @@
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 dir="rtl" name="lname_ar" id="lname_ar"
+                                                                                class="form-control form-control-sm text-right "
+                                                                                name="lname_ar" id="lname_ar"
                                                                                 placeholder="Last Name in Arabic">
                                                                         </div>
                                                                     </div>
@@ -437,9 +439,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-
-
 
 
                                                                 <div class="form-group form-group-sm row">
@@ -727,6 +726,8 @@
                                                                                 class="form-control form-control-sm "
                                                                                 name="po_box" id="po_box"
                                                                                 placeholder="PO box">
+
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -963,10 +964,9 @@
         PicUploadFunction();
 
         wizard = new KTWizard("kt_wizard_v3", {
-            startStep: 3
+            startStep: 1
         });
 
-        wizard.goTo(3);
         wizard.on("change", function(wizard) {
             KTUtil.scrollTop();
         });

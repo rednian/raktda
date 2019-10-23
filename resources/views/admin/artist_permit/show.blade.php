@@ -290,16 +290,7 @@
                         $('#comment-modal').modal('show');
                      });
 
-                     $(row).click(function () {
-                        var url = '{{ url('/artist_permit') }}/' + data.permit_id + '/application/' + data.artist_permit_id;
-                        if (!data.existing_permit) {
-                           location.href = url;
-                        } else {
-													 $('#existing-permit-alert').removeClass('d-none').find('.alert-text').html(data.existing_permit);
-													 $('#check-existing-permit-modal').find('a').attr('href', url);
-                           $('#check-existing-permit-modal').modal('show');
-                        }
-                     });
+                   
                   },
                   initComplete: function (settings, json) {
                      $('#artist-total').html(json.recordsTotal);

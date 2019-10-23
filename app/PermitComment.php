@@ -20,9 +20,9 @@ class PermitComment extends Model
         return $this->belongsToMany(ArtistPermitCheck::class, 'artist_permit_comment','permit_comment_id', 'artist_permit_check_id');
     }
 
-    public function approverComment()
+    public function approver()
     {
-          return $this->belongsToMany(PermitApprover::class, 'permit_approver_note','permit_comment_id', 'permit_approver_id');
+          return $this->hasMany(PermitApprover::class,'permit_comment_id');
     }
 
     public function artistPermit()

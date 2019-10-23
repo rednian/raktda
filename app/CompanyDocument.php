@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CompanyDocument extends Model
 {
          use SoftDeletes; 
-     protected $table = 'company';
+     protected $table = 'smartrak_bls.company';
      protected $primaryKey = 'company_id';
 
      public function company()
