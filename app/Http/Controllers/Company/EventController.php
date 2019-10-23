@@ -30,7 +30,8 @@ class EventController extends Controller
 
     public function index()
     {
-        return view('permits.event.index');
+        $events = Event::with('type')->where('company_id', Auth::user()->EmpClientId)->where('status', 'active')->get();
+        return view('permits.event.index', ['events' =>  $events]);
     }
 
 
