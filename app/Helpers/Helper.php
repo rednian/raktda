@@ -164,5 +164,5 @@ function badgeName($name)
     }
     $classes = ['info', 'success', 'danger', 'warning', 'primary', 'dark'];
     $class = $classes[array_rand($classes)];
-    return '<div class="kt-badge kt-badge--md kt-badge--' . $class . '">' . $profile_name . '</div>';
+    return '<div class="kt-badge kt-badge--md kt-badge--' . $class . '">' . $pro . '</div>';
 }

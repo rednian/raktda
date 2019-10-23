@@ -137,6 +137,7 @@
                             <div class="kt-wizard-v3__form">
                                 <form id="artist_details" novalidate>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -661,6 +662,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
                                     </div> {{---end accordion---}}
                                 </form>

@@ -133,6 +133,9 @@
 =======
 
 
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
@@ -156,6 +159,10 @@
                                                         value="{{$artist_details->artist_id}}" />
                                                     <input type="hidden" id="is_old_artist" />
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -166,15 +173,21 @@
                                                                     <label for="artist_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Person
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                         Code</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                                     <div class="col-lg-5">
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                         Code</label><span id="changeArtistLabel"
                                                                         class="kt-badge  kt-badge--danger kt-badge--inline d-none"
                                                                         onclick="removeSelectedArtist()">Change </span>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                                     <div class="col-lg-8">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
@@ -184,12 +197,15 @@
                                                                         </div>
                                                                     </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                     <div class="col-lg-3">
                                                                         <span id="changeArtistLabel"
                                                                             class="kt-badge  kt-badge--danger kt-badge--inline d-none"
                                                                             onclick="removeSelectedArtist()">Change
                                                                         </span>
                                                                     </div>
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 </div>
@@ -208,6 +224,12 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 
@@ -227,6 +249,10 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -252,6 +278,10 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -271,6 +301,11 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 
@@ -290,6 +325,10 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -309,6 +348,10 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -326,6 +369,11 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 
@@ -346,6 +394,11 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 
@@ -370,11 +423,17 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
 
 
 
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                             </section>
                                                         </div>
@@ -403,18 +462,24 @@
                                                                                 @endforeach
                                                                             </select>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                             <input type="hidden" id="old_profession"
                                                                                 value="{{$artist_details->profession_id}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
 
 
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
@@ -464,12 +529,18 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
 
 
 
 
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_type"
@@ -492,6 +563,11 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 
@@ -511,6 +587,10 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -530,6 +610,10 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -547,6 +631,10 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -565,6 +653,11 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 
@@ -597,7 +690,10 @@
                                     <br>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                         <div class="card">
@@ -617,6 +713,10 @@
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -635,6 +735,11 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 
@@ -653,6 +758,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                             </section>
                                                         </div>
@@ -687,6 +793,44 @@
                                                                 </div>
                                                             </section>
                                                         </div>
+=======
+
+
+                                                            </section>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="email"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Email
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                placeholder="Email" name="email"
+                                                                                id="email" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="fax_no"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Fax
+                                                                        No </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="fax_no" id="fax_no"
+                                                                                placeholder="Fax No">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 
@@ -733,6 +877,10 @@
                                     <br>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -767,19 +915,26 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="address"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Emirate
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Area
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                                 class=" form-control form-control-sm "
                                                                                 name="city" id="city"
@@ -789,12 +944,17 @@
                                                                                 <option value={{$em->id}}>
                                                                                     {{$em->name_en}}
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 class="  form-control form-control-sm "
                                                                                 name="area" id="area">
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($areas as $ar)
                                                                                 <option value={{$ar->id}}>
                                                                                     {{$ar->area_en}}
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 </option>
                                                                                 @endforeach
@@ -803,6 +963,10 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -811,6 +975,10 @@
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 =======
 
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
@@ -828,20 +996,27 @@
                                                                     </div>
                                                                 </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Area
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
 
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="address"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Emirate
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
                                                                                 class="  form-control form-control-sm "
                                                                                 name="area" id="area">
@@ -850,6 +1025,8 @@
                                                                                 <option value={{$ar->id}}>
                                                                                     {{$ar->area_en}}
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 class=" form-control form-control-sm "
                                                                                 name="city" id="city"
                                                                                 onChange="getAreas(this.value)">
@@ -857,6 +1034,9 @@
                                                                                 @foreach ($emirates as $em)
                                                                                 <option value={{$em->id}}>
                                                                                     {{$em->name_en}}
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 </option>
                                                                                 @endforeach
@@ -876,7 +1056,10 @@
                         </div>
                     </div>
 <<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
 =======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
 
 
@@ -1485,6 +1668,9 @@
 =======
 
                     if(data.artist_permit) {
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
 >>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                             $('#person_code_modal').empty();
                         if(data.artist_permit){

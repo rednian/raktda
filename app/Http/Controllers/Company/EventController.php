@@ -201,11 +201,7 @@ class EventController extends Controller
             'emirate_id' => $evd['emirate_id'],
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_type_id'],
-            'status' => 'new',
         );
-
-        $event = Event::where('event_id', $event_id)->update($input_Array);
-
         $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
         $requirement_ids = [];
 

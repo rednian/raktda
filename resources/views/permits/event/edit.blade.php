@@ -452,51 +452,56 @@
 
                                     </div>
 
+                                    <a href="{{url('company/event')}}">
+                                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                            id="back_btn">
+                                            Back
+                                        </div>
+                                    </a>
+
+
                             </div>
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- end:: Content -->
-
+        <!-- end:: Content -->
 
 
-    <!-- begin::Scrolltop -->
-    <div id="kt_scrolltop" class="kt-scrolltop">
-        <i class="fa fa-arrow-up"></i>
-    </div>
-    <!-- end::Scrolltop -->
 
-    <div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
-        <div class="modal-body">
-            <div id="ajax_loader" style="min-height: 100vh;">
-                <img src="{{asset('/img/ajax-loader.gif')}}" style="position: absolute; top:50%; left: 50%;">
+        <!-- begin::Scrolltop -->
+        <div id="kt_scrolltop" class="kt-scrolltop">
+            <i class="fa fa-arrow-up"></i>
+        </div>
+        <!-- end::Scrolltop -->
+
+        <div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-body">
+                <div id="ajax_loader" style="min-height: 100vh;">
+                    <img src="{{asset('/img/ajax-loader.gif')}}" style="position: absolute; top:50%; left: 50%;">
+                </div>
             </div>
         </div>
-    </div>
 
-    <!--begin::Modal-->
-
-
-
-    <!--end::Modal-->
+        <!--begin::Modal-->
 
 
 
+        <!--end::Modal-->
 
-    @endsection
 
 
-    @section('script')
-    <script src="{{asset('js/company/uploadfile.js')}}"></script>
-    <script src="{{asset('js/company/artist.js')}}"></script>
-    <script>
-        $.ajaxSetup({
+
+        @endsection
+
+
+        @section('script')
+        <script src="{{asset('js/company/uploadfile.js')}}"></script>
+        <script src="{{asset('js/company/artist.js')}}"></script>
+        <script>
+            $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
     });
 
@@ -891,6 +896,6 @@
 
 
 
-    </script>
+        </script>
 
-    @endsection
+        @endsection

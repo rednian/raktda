@@ -494,9 +494,16 @@
        });
      }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 </script>
 @endsection
+=======
+</script>
+@endsection
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd
 =======
 </script>
 @endsection

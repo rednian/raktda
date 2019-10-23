@@ -547,4 +547,98 @@
 
     </script>
 
-    @endsection
+
+    const calenderEvents = () => {
+    var todayDate = moment().startOf("day");
+    var YM = todayDate.format("YYYY-MM");
+    var YESTERDAY = todayDate
+    .clone()
+    .subtract(1, "day")
+    .format("YYYY-MM-DD");
+    var TODAY = todayDate.format("YYYY-MM-DD");
+    var TOMORROW = todayDate
+    .clone()
+    .add(1, "day")
+    .format("YYYY-MM-DD");
+
+    var calendarEl = document.getElementById("kt_calendar");
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+    plugins: ["interaction", "dayGrid", "timeGrid", "list"],
+
+    isRTL: KTUtil.isRTL(),
+    header: {
+    left: "prev,next today",
+    center: "title",
+    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+    },
+
+    height: 800,
+    contentHeight: 750,
+    aspectRatio: 3, // see: https://fullcalendar.io/docs/aspectRatio
+
+    views: {
+    dayGridMonth: { buttonText: "month" },
+    timeGridWeek: { buttonText: "week" },
+    timeGridDay: { buttonText: "day" },
+    listDay: { buttonText: "list" },
+    listWeek: { buttonText: "list" }
+    },
+
+    defaultView: "listWeek",
+    defaultDate: TODAY,
+    editable: true,
+    eventLimit: true, // allow "more" link when too many events
+    navLinks: true,
+    events: [
+    @foreach($events as $evt)
+    {
+    title: '{{$evt->name_en}}',
+    start: '{{date("Y-m-d", strtotime($evt->issued_date))}}',
+    end: '{{date("Y-m-d", strtotime($evt->expired_date))}}',
+    className: 'fc-event-solid-danger fc-event-light',
+    description: '{{$evt->venue_en}}'
+    },
+    @endforeach
+    ],
+
+    eventRender: function(info) {
+    var element = $(info.el);
+
+    if (
+    info.event.extendedProps &&
+    info.event.extendedProps.description
+    ) {
+    if (element.hasClass("fc-day-grid-event")) {
+    element.data(
+    "content",
+    info.event.extendedProps.description
+    );
+    element.data("placement", "top");
+    KTApp.initPopover(element);
+    } else if (element.hasClass("fc-time-grid-event")) {
+    element
+    .find(".fc-title")
+    .append(
+    '<div class="fc-description">' +
+        info.event.extendedProps.description +
+        "</div>"
+    );
+    } else if (
+    element.find(".fc-list-item-title").lenght !== 0
+    ) {
+    element
+    .find(".fc-list-item-title")
+    .append(
+    '<div class="fc-description">' +
+        info.event.extendedProps.description +
+        "</div>"
+    );
+    }
+    }
+    }
+    });
+
+    calendar.render();
+    }
+
+    </script>

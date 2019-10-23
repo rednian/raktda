@@ -732,7 +732,6 @@
                                                                     </div>
                                                                 </div>
 
-
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Area
