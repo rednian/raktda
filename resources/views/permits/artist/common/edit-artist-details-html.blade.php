@@ -26,18 +26,22 @@
                                                 <div class="form-group form-group-sm row">
                                                     <label for="artist_number"
                                                         class="col-4 col-form-label kt-font-bold text-right">Person
-                                                        Code</label><span id="changeArtistLabel"
-                                                        class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                        onclick="removeSelectedArtist()">Change </span>
+                                                        Code</label>
                                                     <input type="hidden" id="artist_number" value={{1}}>
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-5">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm"
                                                                 name="code" id="code"
                                                                 placeholder="Person Code"
-                                                                value="{{$artist_details->person_code}}">
+                                                                value="{{$artist_details->person_code != 0 ? $artist_details->person_code : ''}}">
                                                         </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <span id="changeArtistLabel"
+                                                            class="kt-badge  kt-badge--danger kt-badge--inline d-none"
+                                                            onclick="removeSelectedArtist()">Change
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group form-group-sm row">
@@ -560,47 +564,6 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group form-group-sm row">
-                                                    <label for="address"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Area
-                                                    </label>
-                                                    <div class="col-lg-8">
-                                                        <div class="input-group input-group-sm">
-                                                            <select
-                                                                class="  form-control form-control-sm "
-                                                                name="area" id="area">
-                                                                <option value="">Select</option>
-                                                                @foreach ($areas as $ar)
-                                                                <option value={{$ar->id}}>
-                                                                    {{$ar->area_en}}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </section>
-                                        </div>
-                                        <div class="col-6">
-                                            <section class="kt-form--label-right">
-
-                                                <div class="form-group form-group-sm row">
-                                                    <label for="email"
-                                                        class="col-4 col-form-label kt-font-bold text-right">PO
-                                                        Box </label>
-                                                    <div class="col-lg-8">
-                                                        <div class="input-group input-group-sm">
-                                                            <input type="text"
-                                                                class="form-control form-control-sm "
-                                                                name="po_box" id="po_box"
-                                                                placeholder="PO box"
-                                                                value="{{$artist_details->po_box}}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
                                                 <div class=" form-group form-group-sm row">
                                                     <label for="address"
                                                         class="col-4 col-form-label kt-font-bold text-right">Emirate
@@ -622,6 +585,48 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                
+                                            </section>
+                                        </div>
+                                        <div class="col-6">
+                                            <section class="kt-form--label-right">
+
+                                                <div class="form-group form-group-sm row">
+                                                    <label for="email"
+                                                        class="col-4 col-form-label kt-font-bold text-right">PO
+                                                        Box </label>
+                                                    <div class="col-lg-8">
+                                                        <div class="input-group input-group-sm">
+                                                            <input type="text"
+                                                                class="form-control form-control-sm "
+                                                                name="po_box" id="po_box"
+                                                                placeholder="PO box"
+                                                                value="{{$artist_details->po_box}}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group form-group-sm row">
+                                                    <label for="address"
+                                                        class="col-4 col-form-label kt-font-bold text-right">Area
+                                                    </label>
+                                                    <div class="col-lg-8">
+                                                        <div class="input-group input-group-sm">
+                                                            <select
+                                                                class="  form-control form-control-sm "
+                                                                name="area" id="area">
+                                                                <option value="">Select</option>
+                                                                @foreach ($areas as $ar)
+                                                                <option value={{$ar->id}}>
+                                                                    {{$ar->area_en}}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
 
                                             </section>

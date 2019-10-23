@@ -108,7 +108,7 @@
 				confirmButtonText: 'Ok'
 			}).then((result) => {
 				if (result.value) {
-					window.location.href = "{{url('company/artist_permits')}}";
+					window.location.href = "{{route('artist.index')}}#valid";
 				}
 			})
 		}

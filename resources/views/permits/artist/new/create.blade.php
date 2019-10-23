@@ -81,7 +81,7 @@
                                             onkeyup="checkFilled()"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
-                                    <div class="form-group col-lg-3">
+                                    {{-- <div class="form-group col-lg-3">
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
@@ -94,7 +94,7 @@
                                                 <span></span>
                                             </label>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </form>
                         </div>
@@ -131,8 +131,8 @@
                         <td>{{$ad->email}}</td>
                         <td>{{$ad->artist_permit_status}}</td>
                         <td>
-                            <a href="{{url('company/edit_artist/'.$ad->id)}}" class="btn-clean btn-icon btn-icon-sm"
-                                title="Edit">
+                            <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
+                                class="btn-clean btn-icon btn-icon-sm" title="Edit">
                                 <i class="la la-pencil la-2x"></i>
                             </a>
                             <a href="#" data-toggle="modal" data-target="#artist_details"
@@ -170,7 +170,7 @@
 
             <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
                 <?php if(count($artist_details) < 1){ echo 'disabled'; }?>>
-                Finish & Submit
+                Apply Permit
             </button>
         </div>
 
@@ -318,7 +318,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{url('company/artist_permits')}}";
+                window.location.href = "{{route('artist.index')}}#applied";
             }
         });
 
@@ -330,7 +330,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{url('company/artist_permits')}}";
+                        window.location.href="{{route('artist.index')}}#applied";
                     }
             });
         }
@@ -396,11 +396,11 @@
             $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
-                    url:"{{route('company.apply_artist_permit')}}",
+                    url:"{{route('artist.store')}}",
                     type: "POST",
                     data: { temp_permit_id:temp_permit_id },
                     success: function(result){
-                        window.location.href="{{url('company/artist_permits')}}";
+                        window.location.href="{{route('artist.index')}}#applied";
                     }
             });
         });
@@ -409,11 +409,11 @@
             $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
-                    url:"{{route('company.save_permit_to_drafts')}}",
+                    url:"{{route('artist.add_draft')}}",
                     type: "POST",
                     data: { temp_permit_id:temp_permit_id },
                     success: function(result){
-                        window.location.href="{{url('company/artist_permits')}}";
+                        window.location.href="{{route('artist.index')}}#draft";
                     }
                 });
         });

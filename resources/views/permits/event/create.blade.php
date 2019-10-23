@@ -199,7 +199,8 @@
                                                                 Name - Ar<small>( <span class="text-danger">required
                                                                     </span>)</small></label>
                                                             <input type="text" class="form-control form-control-sm "
-                                                                name="name_ar" id="name_ar" placeholder="Event Name">
+                                                                name="name_ar" dir="rtl" id="name_ar"
+                                                                placeholder="Event Name - Ar">
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-sm ">
@@ -317,14 +318,11 @@
                                                 </h6>
                                             </div>
                                         </div>
-                                        {{--id="collapseTwo6"--}}
+
                                         <div class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample6">
+                                            data-parent="#accordionExample6" id="collapseTwo6">
                                             <div class="card-body">
-
                                                 <div class="row">
-
-
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="address"
                                                             class=" col-form-label kt-font-bold text-right">Address
@@ -485,9 +483,8 @@
 
 
 @section('script')
-<script async src={{asset('js/new_artist_permit.js')}} type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="{{asset('js/uploadfile.js')}}"></script>
+<script src="{{asset('js/artist/uploadfile.js')}}"></script>
+<script src="{{asset('js/artist/artist.js')}}"></script>
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -502,6 +499,7 @@
 
 
     $(document).ready(function(){
+        setWizard();
         localStorage.clear();
         uploadFunction();
         $('#submit--btn-group').css('display', 'none');
@@ -531,7 +529,7 @@
                     formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
                     onLoad:function(obj)
                     {
-                        var loadUrl = "{{route('event.resetUploadsSession', ':id')}}";
+                        var loadUrl = "{{route('company.resetUploadsSession', ':id')}}";
                         loadUrl = loadUrl.replace(':id', $('#req_id_' + i).val());
                         $.ajax({
                             url: loadUrl,

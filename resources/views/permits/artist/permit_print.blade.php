@@ -408,12 +408,12 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p>{{$artist_permit->artist['firstname_en'].'
-                                                '.$artist_permit->artist['lastname_en']}}</p>
+                                            <p>{{$artist_permit->firstname_en.'
+                                                '.$artist_permit->lastname_en}}</p>
                                         </td>
                                         <td>
-                                            <p>{{$artist_permit->artist['firstname_ar'].'
-                                                '.$artist_permit->artist['lastname_ar']}}</p>
+                                            <p>{{$artist_permit->firstname_ar.'
+                                                '.$artist_permit->lastname_ar}}</p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -426,10 +426,10 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p>{{$artist_permit->artist['Nationality']['nationality_en']}}</p>
+                                            <p>{{$artist_permit->Nationality['nationality_en']}}</p>
                                         </td>
                                         <td>
-                                            <p>{{$artist_permit->artist['Nationality']['nationality_ar']}}
+                                            <p>{{$artist_permit->Nationality['nationality_ar']}}
                                             </p>
                                         </td>
                                     </tr>
@@ -454,7 +454,7 @@
                                             <h5>Date of Birth/تاريخ الميلاد</h5>
                                         </td>
                                         <td>
-                                            <p>{{date('d-m-Y',strtotime($artist_permit->artist['birthdate']))}}</p>
+                                            <p>{{date('d-m-Y',strtotime($artist_permit->birthdate))}}</p>
                                         </td>
                                     </tr>
                                     <tr>

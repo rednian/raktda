@@ -10,22 +10,19 @@
 
     <div class="kt-portlet__body">
 
-        <ul class="nav nav-tabs " role="tablist" id="kt_tabs_list">
+        <ul class="nav nav-tabs " role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Applied
+                <a class="nav-link active" data-toggle="tab" href="#" data-target="#applied">Applied
                     Event Permits </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Valid
-                    Event Permits</a>
+                <a class="nav-link" data-toggle="tab" href="#valid">Valid Event Permits</a>
             </li>
             <li class="nav-item">
-
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">Permit Calendar</a>
+                <a class="nav-link" data-toggle="tab" href="#calendar">Permit Calendar</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_4">
-                    Event Permit Drafts</a>
+                <a class="nav-link" data-toggle="tab" href="#draft">Event Permit Drafts</a>
             </li>
         </ul>
 
@@ -42,7 +39,7 @@
         </span>
 
         <div class="tab-content">
-            <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
+            <div class="tab-pane show fade active" id="applied" role="tabpanel">
                 <table class="table table-striped table-borderless" id="applied-events-table">
                     <thead class="thead-dark">
                         <tr>
@@ -60,7 +57,7 @@
                 </table>
 
             </div>
-            <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
+            <div class="tab-pane fade" id="valid" role="tabpanel">
                 <table class="table table-striped table-borderless " id="existing-events-table">
                     <thead class="thead-dark">
                         <tr>
@@ -79,13 +76,13 @@
             </div>
 
 
-            <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
+            <div class="tab-pane fade" id="calendar" role="tabpanel">
                 <div class="kt-portlet__body">
                     <div id="kt_calendar"></div>
                 </div>
             </div>
 
-            <div class="tab-pane" id="kt_tabs_1_4" role="tabpanel">
+            <div class="tab-pane fade" id="draft" role="tabpanel">
                 <table class="table table-striped table-borderless " id="drafts-events-table">
                     <thead class="thead-dark">
                         <tr>
@@ -198,17 +195,26 @@
             $(this).tab('show');
         });
 
-        $('ul .nav-tabs > li > a').on('shown.bs.tab', function(e) {
-            var id = $(e.target).attr("href").substr(1);
-            window.location.hash = id;
-        });
+        // $('ul .nav-tabs > li > a').on('shown.bs.tab', function(e) {
+        //     var id = $(e.target).attr("href").substr(1);
+        //     window.location.hash = id;
+        // });
 
-        var hash = window.location.hash;
-        $('#kt_tabs_list a[href="' + hash + '"]').tab('show');
+        // var hash = window.location.hash;
+        // $('#kt_tabs_list a[href="' + hash + '"]').tab('show');
 
         var events = JSON.parse($('#valid_events').val());
 
         $(document).ready(function(){
+
+            var hash = window.location.hash;
+            hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+            $('.nav-tabs a').click(function (e) {
+            $(this).tab('show');
+            var scrollmem = $('body').scrollTop();
+            window.location.hash = this.hash;
+            $('html,body').scrollTop(scrollmem);
+            });
 
         $.ajaxSetup({
             headers: {
@@ -366,15 +372,7 @@
 					}
                 },
 
-                // {
-                //     targets:-3,
-                //     width: '10%',
-                //     className: 'text-center',
-                //     render: function(data, type, full, meta) {
-				// 	return `<span class="kt-font-bold kt-font-transform-c">${data}</span>`;
 
-				// 	}
-                // }
             ],
             language: {
                 emptyTable: "No Existing Event Permits"
@@ -490,7 +488,7 @@
         $.ajax({
             url: url,
             success: function(data){
-                $('#rejected_reason').html(data);
+                $('#rejected_reason').html(data.comment);
             }
         });
     }

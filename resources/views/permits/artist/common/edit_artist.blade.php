@@ -45,6 +45,7 @@
                 </div>
 
                 <input type="hidden" id="artist_permit_id" value="{{$artist_details->artist_permit_id }}">
+                <input type="hidden" id="temp_artist_id" value="{{$artist_details->artist_id }}">
                 <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
                 <input type="hidden" id="issue_date" value="{{$artist_details->issue_date}}">
                 <input type="hidden" id="expiry_date" value="{{$artist_details->expiry_date}}">
@@ -148,13 +149,13 @@
                             </div>
                         </div>
 
-                        <!--end: Form Wizard Step 1-->
+                        <input type="hidden" id="fromPage" value={{$from}}>
+                        <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
+                        <!--end: Form Wizard Step 1-->
 
                         @include('permits.artist.common.edit-artist-details-html', [ 'artist_details' =>
                         $artist_details]);
-
-
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -252,7 +253,7 @@
                         </div>
                         <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
 
-                        <a href="{{url('company/renew_permit').'/'.$artist_details->id}}">
+                        <a href="{{url('company/view_draft_details').'/'.$artist_details->permit_id}}">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
@@ -292,9 +293,9 @@
 
 
 @section('script')
-<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="{{asset('js/uploadfile.js')}}"></script>
+<script src="{{asset('js/company/uploadfile.js')}}"></script>
+<script src="{{asset('js/company/artist.js')}}"></script>
 <script>
     var fileUploadFns = [];
     var picUploader ;
@@ -302,7 +303,9 @@
     var documentDetails = new Object();
 
     $(document).ready(function(){
+
         localStorage.clear();
+        setWizard();
         // upload file
        uploadFunction();
        PicUploadFunction();
@@ -317,24 +320,11 @@
 
     });
 
-    function set_document_expiry(validity, id){
-        // alert(validity);
-        var noOfMonths = validity != 0 ? validity : 0 ;
-        var issue_date = $('#doc_issue_date_'+id).val();
-        var issue_date_year_format = moment(issue_date, 'DD-MM-YYYY' ).format('YYYY-MM-DD');
-        var expiryMonth = moment(issue_date_year_format).add(noOfMonths, 'M');
-        // var expiryMonthEnd = moment(expiryMonth).endOf('month');
-        // if(issue_date_year_format.date() != expiryMonth.date() && expiryMonth.isSame(expiryMonthEnd.format('YYYY-MM-DD'))){
-        //     expiryMonth = expiryMonth.add(1, 'd');
-        // }
-        $('#doc_exp_date_'+id).val(expiryMonth.format('DD-MM-YYYY'));
-    }
-
-
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
+            const requiId = $('#req_id_'+i).val();
             fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
                 headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -343,8 +333,6 @@
                 method: "POST",
                 allowedTypes: "jpeg,jpg,png,pdf",
                 fileName: "doc_file_"+i,
-                // showDownload: true,
-                // showPreview: true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
@@ -353,8 +341,9 @@
                 multiple: false,
                 maxFileCount:1,
                 showDelete: true,
+                showDownload: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                formData: {id: i, reqId: $('#req_id_'+i).val() , artistNo: $('#artist_number_doc').val()},
+                formData: {id: i, reqId: requiId , artistNo: $('#artist_number_doc').val()},
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();
@@ -366,18 +355,19 @@
                             cache: false,
                             url: "{{route('company.get_temp_files_by_temp_id')}}",
                             type: 'POST',
-                            data: {temp_id:  temp_id, reqId: $('#req_id_'+i).val()},
+                            data: {temp_id:  temp_id, reqId: requiId },
+
                             dataType: "json",
                             success: function(data)
                             {
-
                                 // console.log('../../storage/'+data[0]["path"]);
                                 let id = obj[0].id;
                                 let number = id.split("_");
                                 let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                 let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-
-                                obj.createProgress(data.requirement['requirement_name'],"{{url('/storage')}}"+'/'+data.path,'');
+                                const d = data["path"].split("/");
+                                let docName = d[d.length - 1];
+                                obj.createProgress(docName,"{{url('/storage')}}"+'/'+data.path,'');
                                 if(formatted_issue_date != NaN-NaN-NaN)
                                 {
                                     $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
@@ -388,22 +378,29 @@
                     }
 
                 },
-                downloadCallback:function(filename,pd)
+                downloadCallback:function(files,pd)
                 {
-
-                }
+                    if(files[0]) {
+                        let user_id = $('#user_id').val();
+                        let artistId = $('#temp_artist_id').val();
+                        let this_url = user_id + '/artist/' + artistId +'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    } else {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }
+                },
             });
             $('#fileuploader_'+i+' div').attr('id', 'ajax-upload_'+i);
             $('#fileuploader_'+i+' + div').attr('id', 'ajax-file-upload_'+i);
         }
-    }
-
-
-    function appendLeadingZeroes(n){
-        if(n <= 9){
-            return "0" + n;
-        }
-        return n
     }
 
     const PicUploadFunction = () => {
@@ -449,6 +446,10 @@
                     }
 
                 },
+                onError: function (files, status, errMsg, pd) {
+                    showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
+                    pd.statusbar.hide();
+                }
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
@@ -465,18 +466,30 @@
                 lname_en: 'required',
                 lname_ar: 'required',
                 profession: 'required',
-                dob: 'required',
+                permit_type: 'required',
+                dob: {
+                    required: true,
+                    dateNL: true
+                },
                 uid_number: 'required',
-                uid_expiry: 'required',
+                uid_expiry: {
+                    required: true,
+                    dateNL: true
+                },
                 passport: 'required',
-                pp_expiry: 'required',
+                pp_expiry:{
+                    required: true,
+                    dateNL: true
+                },
                 visa_type: 'required',
                 visa_number: 'required',
-                visa_expiry: 'required',
+                visa_expiry: {
+                    required: true,
+                    dateNL: true
+                },
                 sp_name: 'required',
                 nationality: 'required',
                 address: 'required',
-
                 mobile: {
                     // number: true,
                     required : true
@@ -495,6 +508,7 @@
                 dob: '',
                 uid_number: '',
                 uid_expiry: '',
+                permit_type: '',
                 passport: '',
                 pp_expiry: '',
                 visa_type: '',
@@ -536,18 +550,14 @@
         });
 
         $( "#artist_det" ).on( "click", function() {
-            if(!checkForTick()) { return  };
+            if(!checkForTick()) return ;
             setThis('block', 'block', 'none', 'none');
         });
 
         $( "#upload_doc" ).on( "click", function() {
             wizard = new KTWizard("kt_wizard_v3");
             if(!checkForTick()) return ;
-            if(wizard.currentStep == 3){
-                stopNext(detailsValidator);
-                return;
-            }
-            setThis('block', 'none', 'none', 'block');
+            wizard.currentStep == 3 ? ( detailsValidator.form() ? setThis('block', 'none', 'none', 'block') : stopNext(detailsValidator) ) : setThis('block', 'none', 'none', 'block') ;
         });
 
         const setThis = (prev, next, back, submit) => {
@@ -595,7 +605,7 @@
                 $('#submit_btn').css('display', 'block'); // display the submit button
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#addNew_btn').css('display', 'block'); // display the add new artist button
-                artistDetails[artist_id] = {
+                artistDetails = {
                     id: $('#artist_id').val(),
                     code: $('#code').val(),
                     fname_en: $('#fname_en').val(),
@@ -604,6 +614,7 @@
                     lname_ar:  $('#lname_ar').val(),
                     nationality: $('#nationality').val(),
                     profession: $('#profession').val(),
+                    permit_type: $('#permit_type').val(),
                     passport: $('#passport').val(),
                     ppExp: $('#pp_expiry').val(),
                     visaType: $('#visa_type').val(),
@@ -629,8 +640,6 @@
                 }
 
                 localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
-
-                // insertIntoDrafts(3, JSON.stringify(artistDetails));
             }
         }
     });
@@ -691,12 +700,13 @@
         var dd = localStorage.getItem('documentDetails');
         var issue_d = $('#issue_date').val();
         var expiry_d = $('#expiry_date').val();
+        var fromPage = $('#fromPage').val();
 
         $.ajaxSetup({
 			headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
 		});
         $.ajax({
-                url:"{{route('company.update_artist_temp_data')}}",
+                url:"{{route('company.update_artist_temp')}}",
                 type: "POST",
                 // processData:false,
                 // data: { permitDetails: pd},
@@ -707,14 +717,30 @@
                     permit_id: permit_id,
                     issue_d: issue_d,
                     expiry_d: expiry_d,
-                    updateChecklist: false
+                    from: fromPage
                 },
                 success: function(result){
                     // console.log(result)
                     if(result.message[0] == 'success')
                     {
-                        localStorage.clear();
-                        window.location.href="{{url('company/renew_permit')}}"+'/'+ permit_id;
+                        localStorage.clear(); let toUrl = '';
+                        if(fromPage == 'new')
+                        {
+                            toUrl = "{{url('company/add_new_permit')}}";
+                            window.location.href= toUrl +'/'+ permit_id;
+                        } else {
+                            toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => ':from'])}}";;
+                            if(fromPage == 'amend'){
+                                toUrl = toUrl.replace(':from', 'amend');
+                            }else if(fromPage == 'edit') {
+                                toUrl = toUrl.replace(':from', 'edit');
+                            } else if(fromPage == 'renew') {
+                                toUrl = toUrl.replace(':from', 'renew');
+                            }
+                            toUrl = toUrl.replace(':id', permit_id);
+                            window.location.href= toUrl ;
+                        }
+
                     }
                 }
             });
@@ -765,8 +791,8 @@
         autoclose: true
     })
 
-    $('#permit_from').on('changeDate', function(ev) {$('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');});
-    $('#permit_to').on('changeDate', function(ev) {$('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');});
+    $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2, endDate:'-10Y'});
+
     $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
     $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
     $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});

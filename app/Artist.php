@@ -13,33 +13,24 @@ class Artist extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     protected $table = 'artist';
     protected $primaryKey = 'artist_id';
-    protected $fillable = [
-        'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'country_id', 'birthdate', 'artist_status', 'gender_id',
-	     'created_by', 'updated_by', 'deleted_by', 'person_code'
-    ];
+    protected $fillable = ['artist_status', 'created_by', 'updated_by', 'deleted_by', 'person_code'];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'birthdate'];
 
     public function action()
     {
-    	return $this->hasMany(ArtistAction::class, 'artist_id');
+        return $this->hasMany(ArtistAction::class, 'artist_id');
     }
 
     public function country()
     {
-    	return $this->belongsTo(Country::class, 'country_id')
-		    ->withDefault(['name_en'=>null, 'name_ar'=>null, 'nationality_ar'=>null, 'nationality_en'=>null]);
+        return $this->belongsTo(Country::class, 'country_id')
+            ->withDefault(['name_en' => null, 'name_ar' => null, 'nationality_ar' => null, 'nationality_en' => null]);
     }
 
     public function artistPermit()
     {
         return $this->hasMany(ArtistPermit::class, 'artist_id');
-    }
-
-    public function gender()
-    {
-        return $this->belongsTo(Gender::class, 'gender_id')
-	         ->withDefault(['name_en'=>  null, 'name_ar'=>null]);
     }
 
     public function permit()
@@ -55,10 +46,5 @@ class Artist extends Model implements Auditable
     public function getAgeAttribute()
     {
         return Carbon::parse($this->attributes['birthdate'])->age;
-    }
-
-    public function Nationality()
-    {
-        return $this->belongsTo(Countries::class, 'country_id', 'country_id');
     }
 }

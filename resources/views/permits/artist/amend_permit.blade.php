@@ -82,13 +82,13 @@
                             {{ucwords($artist_detail->artist_permit_status)}}
                         </td>
                         <td class="text-center">
-                            <a href="{{url('company/replace_artist/'.$artist_detail->id)}}"
-                                class="btn-clean btn-icon btn-icon-sm" title="Edit">
+                            <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
+                                class="btn-clean btn-icon btn-icon-sm" title="Replace Artist">
                                 <i class="la la-refresh la-2x"></i>
                             </a>
                             <a href="#" data-toggle="modal" data-target="#artist_details"
                                 onclick="getArtistDetails({{$artist_detail->id}})"
-                                class="btn-clean btn-icon btn-icon-sm" title="View">
+                                class="btn-clean btn-icon btn-icon-sm" title="View Artist">
                                 <i class="la la-file la-2x"></i>
                             </a>
                             @if(count($artist_details) > 1)
@@ -250,7 +250,7 @@
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {
-            window.location.href = "{{url('company/artist_permits')}}";
+            window.location.href = "{{route('artist.index')}}#valid";
         }
     });
 
@@ -262,7 +262,7 @@
                 data: { permit_id: temp_permit_id, from: 'amend'},
                 async: true,
                 success: function(result){
-                    window.location.href="{{url('company/artist_permits')}}";
+                    window.location.href="{{route('artist.index')}}#valid";
                 }
         });
     }
@@ -274,7 +274,6 @@
             url: '{{route("company.fetch_artist_temp_data")}}',
             data: {artist_temp_id:id},
             success: function(data) {
-                console.log(data);
                 $('#detail-permit').empty();
             if(data)
             {
@@ -303,16 +302,16 @@
         $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
         $.ajax({
             type: 'POST',
-            url: '{{route("company.move_temp_to_permit")}}',
+            url: '{{route("artist.update_permit")}}',
             data: {permit_id: $('#permit_id').val()},
             success: function(result) {
                 if(result.message[0] == 'success')
                 {
-                    window.location.href="{{url('company/artist_permits')}}";
+                    window.location.href="{{route('artist.index')}}#applied";
                 }
             }
         });
-    }
+    });
 
 
 </script>

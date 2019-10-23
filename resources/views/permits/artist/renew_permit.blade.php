@@ -8,10 +8,7 @@
         <div class="kt-portlet__head-label">
             <h3 class="kt-portlet__head-title">Renew Artist Permit
             </h3>
-            <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
-                <strong>{{$new_permit_num}}</strong></span>
         </div>
-        <input type="hidden" id="permit_number" value="{{$new_permit_num}}">
         <div class="kt-portlet__head-toolbar ">
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
@@ -81,14 +78,14 @@
                     <tr>
                         <td>{{$artist_detail->firstname_en}}</td>
                         <td>{{$artist_detail->lastname_en}}</td>
-                        <td>{{$artist_detail->permitType['name_en']}}</td>
+                        <td>{{$artist_detail->profession['name_en']}}</td>
                         <td>{{$artist_detail->mobile_number}}</td>
                         <td>{{$artist_detail->email}}</td>
                         <td>
                             {{ucwords($artist_detail->artist_permit_status)}}
                         </td>
                         <td class="text-center">
-                            <a href="{{url('company/edit_artist/'.$artist_detail->id)}}"
+                            <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
                                 class="btn-clean btn-icon btn-icon-sm" title="Edit">
                                 <i class="la la-pencil la-2x"></i>
                             </a>
@@ -230,7 +227,7 @@
             var tempArr = [];
             for(var i = 0 ; i < total; i++){
                 var temp_id = $('#temp_id_'+i).val();
-                var tempUrl = "{{url('company/edit_artist')}}"+'/' +temp_id ;
+                var tempUrl = "{{url('company/artist/permit')}}"+'/' +temp_id +'/renew';
                 tempArr.push(tempUrl);
             }
 
@@ -255,7 +252,7 @@
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {
-            window.location.href = "{{url('company/artist_permits')}}";
+            window.location.href = "{{route('artist.index')}}#valid";
         }
     });
 
@@ -267,7 +264,7 @@
                 data: { permit_id: temp_permit_id,from: 'renew'},
                 async: true,
                 success: function(result){
-                    window.location.href="{{url('company/artist_permits')}}";
+                    window.location.href="{{route('artist.index')}}#valid";
                 }
         });
     }
@@ -293,24 +290,21 @@
 
     $('#submit_btn').click(function() {
         $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+        var temp_permit_id = $('#permit_id').val();
         $.ajax({
             type: 'POST',
-            url: '{{route("company.move_temp_to_permit_renew")}}',
+            url: '{{route("artist.store")}}',
             data: {
-                permit_id: $('#permit_id').val(),
-                work_location: $('#work_location').val(),
-                issued_date: $('#issued_date').val(),
-                expired_date: $('#expired_date').val(),
-                permit_number:$('#permit_number').val()
+                temp_permit_id:temp_permit_id
             },
             success: function(data) {
                 // console.log(data);
               if(data.message[0] == 'success') {
-                window.location.href="{{url('company/artist_permits')}}";
+                window.location.href="{{route('artist.index')}}#valid";
               }
             }
         });
-    }
+    });
 
     function delArtist(temp_id, permit_id, fname, lname) {
         $('#del_temp_id').val(temp_id);

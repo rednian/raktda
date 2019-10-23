@@ -165,12 +165,12 @@
         <div class="d-flex justify-content-between">
             <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="draft_btn"
                 <?php if(count($artist_details) < 1){ echo 'disabled'; }?>>
-                Save to Drafts
+                Update to Drafts
             </button>
 
             <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
                 <?php if(count($artist_details) < 1){ echo 'disabled'; }?>>
-                Finish & Submit
+                Apply Permit
             </button>
         </div>
 
@@ -318,7 +318,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{url('company/artist_permits')}}";
+                window.location.href = "{{url('artist.index')}}#draft";
             }
         });
 
@@ -330,7 +330,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{url('company/artist_permits')}}";
+                        window.location.href="{{route('artist.index')}}#draft";
                     }
             });
         }
@@ -396,11 +396,11 @@
             $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
-                    url:"{{route('company.apply_artist_permit')}}",
+                    url:"{{route('artist.store')}}",
                     type: "POST",
                     data: { temp_permit_id:temp_permit_id },
                     success: function(result){
-                        window.location.href="{{url('company/artist_permits')}}";
+                        window.location.href="{{route('artist.index')}}#applied";
                     }
             });
         });
@@ -409,11 +409,11 @@
             $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
-                    url:"{{route('company.save_permit_to_drafts')}}",
+                    url:"{{route('artist.add_draft')}}",
                     type: "POST",
                     data: { temp_permit_id:temp_permit_id },
                     success: function(result){
-                        window.location.href="{{url('company/artist_permits')}}";
+                        window.location.href="{{route('artist.index')}}#draft";
                     }
                 });
         });

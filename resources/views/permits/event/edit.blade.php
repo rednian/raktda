@@ -38,7 +38,7 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>03</span> Upload Docs
-                                    <Docs></Docs>
+
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -47,7 +47,7 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>04</span> Payment
-                                    <Docs></Docs>
+
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -56,7 +56,7 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>05</span> Happiness
-                                    <Docs></Docs>
+
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -64,9 +64,9 @@
 
                     </div>
                 </div>
-
-                <!--end: Form Wizard Nav -->
             </div>
+
+            <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
 
             <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
@@ -200,8 +200,8 @@
                                                                 Name - Ar<small>( <span class="text-danger">required
                                                                     </span>)</small></label>
                                                             <input type="text" class="form-control form-control-sm "
-                                                                name="name_ar" id="name_ar" placeholder="Event Name"
-                                                                value="{{$event->name_ar}}">
+                                                                name="name_ar" id="name_ar" dir="rtl"
+                                                                placeholder="Event Name" value="{{$event->name_ar}}">
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-sm ">
@@ -426,7 +426,7 @@
                         </div>
 
 
-                        <a href="{{url('company/event')}}">
+                        <a href="{{route('event.index')}}#applied">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
@@ -487,9 +487,8 @@
 
 
 @section('script')
-<script async src={{asset('js/new_artist_permit.js')}} type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="{{asset('js/uploadfile.js')}}"></script>
+<script src="{{asset('js/company/uploadfile.js')}}"></script>
+<script src="{{asset('js/company/artist.js')}}"></script>
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -500,11 +499,13 @@
     var documentDetails = {};
 
     $(document).ready(function(){
+        setWizard();
         wizard = new KTWizard("kt_wizard_v3");
         wizard.goTo(2);
         $('#back_btn').css('display', 'none');
         localStorage.clear();
         var event_type_id = $('#event_type_id').val();
+        setEventDetails();
         // console.log(event_type_id);
         getRequirementsList(event_type_id);
         uploadFunction();
@@ -514,23 +515,25 @@
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
             for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                let requiId = $('#req_id_' + i).val() ;
                 fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
-                    url: "{{route('company.uploadDocument')}}",
+                    url: "{{route('event.uploadDocument')}}",
                     method: "POST",
                     allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "doc_file_" + i,
-                    // showDownload: true,
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
                     returnType: "json",
                     showFileCounter: false,
+                    duplicateErrorStr: 'No duplicate files allowed',
                     abortStr: '',
-                    multiple: false,
-                    maxFileCount: 1,
+                    multiple: true,
+                    maxFileCount: 2,
                     showDelete: true,
+                    showDownload: true,
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                    formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
+                    formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
                     onLoad: function (obj) {
 
                         $.ajaxSetup({
@@ -540,34 +543,53 @@
                             cache: false,
                             url: "{{route('company.event.get_uploaded_docs')}}",
                             type: 'POST',
-                            data: {eventId: $('#event_id').val() ,reqId: $('#req_id_' + i).val()},
+                            data: {eventId: $('#event_id').val() ,reqId: requiId},
                             dataType: "json",
                             success: function (data) {
                                 if (data) {
-                                    let id = obj[0].id;
-                                    let number = id.split("_");
-                                    let issue_datetime = new Date(data['issued_date']);
-                                    let exp_datetime = new Date(data['expired_date']);
-                                    let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                                    let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-
-                                    obj.createProgress(data["requirement"]['requirement_name'], "{{url('storage')}}"+'/' + data["path"], '');
-                                    if (formatted_issue_date != NaN - NaN - NaN) {
-                                        $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
-                                        $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
-                                    }
+                                    let j = 1 ;
+                                   for(data of data) {
+                                        if(j <= 2 ){
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let issue_datetime = new Date(data['issued_date']);
+                                        let exp_datetime = new Date(data['expired_date']);
+                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        const d = data["path"].split("/");
+                                        let docName = d[d.length - 1];
+                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                        if (formatted_issue_date != NaN - NaN - NaN) {
+                                            $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                            $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                        }
+                                        }
+                                    j++;
+                                   }
                                 }
                             }
                         });
-
-
                     },
                     onError: function (files, status, errMsg, pd) {
                         showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
                         pd.statusbar.hide();
                     },
                     downloadCallback: function (files, pd) {
-
+                        if(files[0]) {
+                        let user_id = $('#user_id').val();
+                        let eventId = $('#event_id').val();
+                        let this_url = user_id + '/event/' + eventId +'/'+requiId+'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        ); } else {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                        }
                     }
                 });
                 $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
@@ -610,21 +632,13 @@
         });
 
         $("#event_det").on("click", function () {
-            if (!checkForTick()) {
-                return
-            }
-            setThis('block', 'block', 'none', 'none');
+            !checkForTick() ? '' : setThis('block', 'block', 'none', 'none') ;
         });
 
         $("#upload_doc").on("click", function () {
             wizard = new KTWizard("kt_wizard_v3");
-            if (!checkForTick()) return;
-            if (wizard.currentStep == 2) {
-                stopNext(eventValidator);
-                return;
-            }
-
-            setThis('block', 'none', 'none', 'block');
+            wizard.currentStep == 2 ? (!eventValidator.form() ? stopNext(eventValidator) : setThis('block', 'none', 'none', 'block')) : setThis('block', 'none', 'none', 'block');
+            ;
         });
 
         const setThis = (prev, next, back, submit) => {
@@ -665,7 +679,14 @@
             if (eventValidator.form()) {
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#submit_btn').css('display', 'block');
-                eventdetails = {
+                setEventDetails();
+                // insertIntoDrafts(3, JSON.stringify(artistDetails));
+            }
+        }
+        });
+
+        function setEventDetails(){
+            eventdetails = {
                     event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
@@ -679,13 +700,9 @@
                     emirate_id: $('#emirate_id').val(),
                     area_id: $('#area_id').val(),
                     country_id: $('#country_id').val()
-                };
-
-                localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
-                // insertIntoDrafts(3, JSON.stringify(artistDetails));
-            }
+            };
+            localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
         }
-        });
 
 
         const docValidation = () => {
@@ -845,9 +862,6 @@
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
-
-
-
                         $.ajax({
                             url: "{{route('company.event.update_event')}}",
                             type: "POST",

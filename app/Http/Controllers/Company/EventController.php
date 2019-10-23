@@ -20,6 +20,7 @@ use PDF;
 use App\Company;
 use App\EventTransaction;
 use App\Transaction;
+use App\EventComment;
 use Session;
 use Storage;
 
@@ -66,7 +67,7 @@ class EventController extends Controller
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_type_id'],
             'status' => 'new',
-            'created_by' => Auth::user()->user_id,
+            'created_by' => $userid,
             'reference_number' => $this->generateReferenceNumber()
         );
 
@@ -80,10 +81,6 @@ class EventController extends Controller
             array_push($requirement_ids, $req->requirement_id);
         }
         $total = $requirements['requirements']->count();
-
-        $company_array = Company::find(Auth::user()->EmpClientId);
-        $company_name = str_replace(' ', '_', $company_array->company_name);
-        $company_name = strtolower($company_name);
 
         $event_id = $event->event_id;
 
@@ -102,7 +99,7 @@ class EventController extends Controller
                         if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
                             $ext = session($userid . '_ext_' . $l)[$k];
 
-                            $check_path = 'public/' . $company_name . '/event/' . $event_id . '/' . $l;
+                            $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
 
                             if (Storage::exists($check_path)) {
                                 $file_count = count(Storage::files($check_path));
@@ -112,8 +109,8 @@ class EventController extends Controller
                             }
 
                             $date = date('d_m_Y_H_i_s');
-                            $newPath = 'public/' . $company_name . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-                            $newPathLink = $company_name . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+                            $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+                            $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
 
                             Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
                         } else {
@@ -126,7 +123,7 @@ class EventController extends Controller
                             'created_at' =>  Carbon::now()->toDateTimeString(),
                             'created_by' =>  Auth::user()->user_id,
                             'event_type_id' => $evd['event_type_id'],
-                            'requirement_id' => $requirement_ids[$j],
+                            'requirement_id' => $l,
                             'event_id' => $event_id,
                             'path' =>  $newPathLink,
                         ]);
@@ -147,10 +144,10 @@ class EventController extends Controller
         return response()->json(['message' => $result]);
     }
 
-    public function show(Event $event)
+    public function show(Request $request, Event $event)
     {
         $event = $event->with('requirements')->first();
-        return view('permits.event.show', compact('event'));
+        return view('permits.event.show', ['event' => $event, 'tab' => $request->tab]);
     }
 
     public function edit(Event $event)
@@ -188,18 +185,16 @@ class EventController extends Controller
         );
 
         $event = Event::where('event_id', $event_id)->update($input_Array);
+
         $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
         $requirement_ids = [];
+
 
         foreach ($requirements->requirements as $req) {
             array_push($requirement_ids, $req->requirement_id);
         }
 
         $total = $requirements['requirements']->count();
-        $company_array = Company::find(Auth::user()->EmpClientId);
-        $company_name = str_replace(' ', '_', $company_array->company_name);
-        $company_name = strtolower($company_name);
-
 
         if ($dod) {
 
@@ -208,46 +203,49 @@ class EventController extends Controller
                 $l = $requirement_ids[$j];
                 $m = $j + 1;
 
-                $total_docs = count(session($userid . '_doc_file_' . $l));
+                if (session($userid . '_doc_file_' . $l)) {
 
-                if ($total_docs > 0) {
+                    $total_docs = count(session($userid . '_doc_file_' . $l));
 
-                    for ($k = 0; $k < $total_docs; $k++) {
-                        if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
-                            $ext = session($userid . '_ext_' . $l)[$k];
+                    if ($total_docs > 0) {
 
-                            $check_path = 'public/' . $company_name . '/event/' . $event_id . '/' . $l;
+                        for ($k = 0; $k < $total_docs; $k++) {
+                            if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
+                                $ext = session($userid . '_ext_' . $l)[$k];
 
-                            if (Storage::exists($check_path)) {
-                                $file_count = count(Storage::files($check_path));
-                                $next_file_no = $file_count + 1;
+                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+
+                                if (Storage::exists($check_path)) {
+                                    $file_count = count(Storage::files($check_path));
+                                    $next_file_no = $file_count + 1;
+                                } else {
+                                    $next_file_no = 1;
+                                }
+
+                                $date = date('d_m_Y_H_i_s');
+                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
                             } else {
-                                $next_file_no = 1;
+                                $newPathLink = '';
                             }
 
-                            $date = date('d_m_Y_H_i_s');
-                            $newPath = 'public/' . $company_name . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-                            $newPathLink = $company_name . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-
-                            Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
-                        } else {
-                            $newPathLink = '';
+                            EventRequirement::create([
+                                'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
+                                'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
+                                'created_at' =>  Carbon::now()->toDateTimeString(),
+                                'created_by' =>  Auth::user()->user_id,
+                                'event_type_id' => $evd['event_type_id'],
+                                'requirement_id' => $l,
+                                'event_id' => $event_id,
+                                'path' =>  $newPathLink,
+                            ]);
                         }
+                        $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
 
-                        EventRequirement::create([
-                            'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
-                            'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
-                            'created_at' =>  Carbon::now()->toDateTimeString(),
-                            'created_by' =>  Auth::user()->user_id,
-                            'event_type_id' => $evd['event_type_id'],
-                            'requirement_id' => $requirement_ids[$j],
-                            'event_id' => $event_id,
-                            'path' =>  $newPathLink,
-                        ]);
+                        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                     }
-                    $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
-
-                    Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                 }
             }
         }
@@ -281,7 +279,9 @@ class EventController extends Controller
     }
 
     public function reject_reason($id)
-    { }
+    {
+        return EventComment::with('event')->where('event_id', $id)->latest()->first();
+    }
 
     public function upload(Event $event)
     {
@@ -354,8 +354,8 @@ class EventController extends Controller
                         return '<a href="' . route('company.event.payment', $permit->event_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
                     } else if ($permit->status == 'new') {
                         return '<a href="' . route('event.edit', $permit->event_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal" data-target="#cancel_permit" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
-                    } else if ($permit->status == 'uploadrequest') {
-                        return '<a href="' . route('company.event.upload', $permit->event_id) . '"><span class="kt-badge kt-badge--info  kt-badge--inline kt-margin-r-5">Upload </span></a>';
+                    } else if ($permit->status == 'need amendments') {
+                        return '<a href="' . route('event.edit', $permit->event_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a>';
                     } else if ($permit->status == 'rejected') {
                         return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">Rejected</span>';
                     } else if ($permit->status == 'cancelled') {
@@ -375,8 +375,20 @@ class EventController extends Controller
             }
         })->addColumn('permit_status', function ($permit) {
             return  $permit->status;
-        })->addColumn('details', function ($permit) {
-            return '<a href="' . route('event.show', $permit->event_id) . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
+        })->addColumn('details', function ($permit)  use ($status) {
+            $from = '';
+            switch ($status) {
+                case 'applied':
+                    $from = 'applied';
+                    break;
+                case 'valid':
+                    $from = 'valid';
+                    break;
+                case 'draft':
+                    $from = 'draft';
+                    break;
+            }
+            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
         })->rawColumns(['action', 'details'])->make(true);
     }
 
@@ -410,7 +422,8 @@ class EventController extends Controller
         $event_id = $request->eventId;
         $req_id = $request->reqId;
 
-        $docs = EventRequirement::with('requirement')->where('event_id', $event_id)->where('requirement_id', $req_id)->latest()->first();
+        $docs = EventRequirement::with('requirement')->where('event_id', $event_id)->where('requirement_id', $req_id)->orderBy('created_at', 'desc')->get();
+        // dd($docs);
         return $docs;
     }
 
@@ -452,10 +465,6 @@ class EventController extends Controller
         }
         $total = $requirements->count();
 
-        $company_array = Company::find(Auth::user()->EmpClientId);
-        $company_name = str_replace(' ', '_', $company_array->company_name);
-        $company_name = strtolower($company_name);
-
         $event_id = $event->event_id;
 
         if ($dod) {
@@ -473,7 +482,7 @@ class EventController extends Controller
                         if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
                             $ext = session($userid . '_ext_' . $l)[$k];
 
-                            $check_path = 'public/' . $company_name . '/event/' . $event_id . '/' . $l;
+                            $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
 
                             if (Storage::exists($check_path)) {
                                 $file_count = count(Storage::files($check_path));
@@ -483,8 +492,8 @@ class EventController extends Controller
                             }
 
                             $date = date('d_m_Y_H_i_s');
-                            $newPath = 'public/' . $company_name . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-                            $newPathLink = $company_name . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+                            $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+                            $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
 
                             Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
                         } else {
@@ -497,7 +506,7 @@ class EventController extends Controller
                             'created_at' =>  Carbon::now()->toDateTimeString(),
                             'created_by' =>  Auth::user()->user_id,
                             'event_type_id' => $evd['event_type_id'],
-                            'requirement_id' => $requirement_ids[$j],
+                            'requirement_id' => $l,
                             'event_id' => $event_id,
                             'path' =>  $newPathLink,
                         ]);
@@ -567,10 +576,6 @@ class EventController extends Controller
         }
         $total = $requirements->count();
 
-        $company_array = Company::find(Auth::user()->EmpClientId);
-        $company_name = str_replace(' ', '_', $company_array->company_name);
-        $company_name = strtolower($company_name);
-
         if ($dod) {
 
             for ($j = 0; $j < $total; $j++) {
@@ -578,46 +583,49 @@ class EventController extends Controller
                 $l = $requirement_ids[$j];
                 $m = $j + 1;
 
-                $total_docs = count(session($userid . '_doc_file_' . $l));
+                if (session($userid . '_doc_file_' . $l)) {
 
-                if ($total_docs > 0) {
+                    $total_docs = count(session($userid . '_doc_file_' . $l));
 
-                    for ($k = 0; $k < $total_docs; $k++) {
-                        if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
-                            $ext = session($userid . '_ext_' . $l)[$k];
+                    if ($total_docs > 0) {
 
-                            $check_path = 'public/' . $company_name . '/event/' . $event_id . '/' . $l;
+                        for ($k = 0; $k < $total_docs; $k++) {
+                            if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
+                                $ext = session($userid . '_ext_' . $l)[$k];
 
-                            if (Storage::exists($check_path)) {
-                                $file_count = count(Storage::files($check_path));
-                                $next_file_no = $file_count + 1;
+                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+
+                                if (Storage::exists($check_path)) {
+                                    $file_count = count(Storage::files($check_path));
+                                    $next_file_no = $file_count + 1;
+                                } else {
+                                    $next_file_no = 1;
+                                }
+
+                                $date = date('d_m_Y_H_i_s');
+                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
                             } else {
-                                $next_file_no = 1;
+                                $newPathLink = '';
                             }
 
-                            $date = date('d_m_Y_H_i_s');
-                            $newPath = 'public/' . $company_name . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-                            $newPathLink = $company_name . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-
-                            Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
-                        } else {
-                            $newPathLink = '';
+                            EventRequirement::create([
+                                'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
+                                'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
+                                'created_at' =>  Carbon::now()->toDateTimeString(),
+                                'created_by' =>  Auth::user()->user_id,
+                                'event_type_id' => $evd['event_type_id'],
+                                'requirement_id' => $l,
+                                'event_id' => $event_id,
+                                'path' =>  $newPathLink,
+                            ]);
                         }
+                        $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
 
-                        EventRequirement::create([
-                            'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
-                            'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
-                            'created_at' =>  Carbon::now()->toDateTimeString(),
-                            'created_by' =>  Auth::user()->user_id,
-                            'event_type_id' => $evd['event_type_id'],
-                            'requirement_id' => $requirement_ids[$j],
-                            'event_id' => $event_id,
-                            'path' =>  $newPathLink,
-                        ]);
+                        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                     }
-                    $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
-
-                    Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                 }
             }
         }
@@ -738,14 +746,11 @@ class EventController extends Controller
 
     public function uploadDocument(Request $request)
     {
-        $name = str_replace(" ", "_", $request->reqName);
         $user_id = Auth::user()->user_id;
         $date = date('d_m_Y_H_i_s');
         $reqId = $request->reqId;
-        $file = $request->files->get('doc_file_' . $request->id);
-        $filename = $request->files->get('doc_file_' . $request->id)->getClientOriginalName();
         $ext = $request->files->get('doc_file_' . $request->id)->getClientOriginalExtension();
-        $path  = Storage::putFileAs('public/' . $user_id . '/temp/' . $reqId, $request->files->get('doc_file_' . $request->id), $name . '_' . $date);
+        $path  = Storage::putFileAs('public/' . $user_id . '/temp/' . $reqId, $request->files->get('doc_file_' . $request->id), 'document_' . $request->id . '_' . $date . '.' . $ext);
         if (!Session::exists($user_id . '_doc_file_' . $reqId)) {
             session()->put($user_id . '_doc_file_' . $reqId, []);
             session()->put($user_id . '_ext_' . $reqId, []);
@@ -774,10 +779,5 @@ class EventController extends Controller
         session()->put(Auth::user()->user_id . '_doc_file_' . $reqId, $files);
         session()->put(Auth::user()->user_id . '_ext_' . $reqId, $exts);
         return $filepath;
-    }
-    public function resetUploadsSession($id)
-    {
-        Session::forget(Auth::user()->user_id . '_doc_file_' . $id);
-        Session::forget(Auth::user()->user_id . '_ext_' . $id);
     }
 }
