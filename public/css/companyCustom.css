@@ -390,10 +390,10 @@
     border: none !important;
 }
 
-.ajax-file-upload-filename {
+/* .ajax-file-upload-filename {
     position: absolute;
     bottom: 0;
-}
+} */
 
 .ajax-file-upload-statusbar {
     border: none !important;

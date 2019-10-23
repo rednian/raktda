@@ -1,84 +1,44 @@
 @extends('layouts.app')
-
 @section('content')
-
 <link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
-
 <div class="kt-portlet">
-
     <div class="kt-portlet__body kt-portlet__body--fit">
-
         <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
-
             <div class="kt-grid__item">
-
-
-
-                <!--begin: Form Wizard Nav -->
-
                 <div class="kt-wizard-v3__nav">
-
                     <div class="kt-wizard-v3__nav-items">
-
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
                             data-ktwizard-state="current" id="check_inst">
-
                             <div class="kt-wizard-v3__nav-body">
-
                                 <div class="kt-wizard-v3__nav-label">
-
                                     <span>01</span> Check Instructions
-
                                 </div>
-
                                 <div class="kt-wizard-v3__nav-bar"></div>
-
                             </div>
-
                         </a>
-
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
-
                             <div class="kt-wizard-v3__nav-body">
-
                                 <div class="kt-wizard-v3__nav-label">
-
                                     <span>02</span> Artist Details
-
                                 </div>
-
                                 <div class="kt-wizard-v3__nav-bar"></div>
-
                             </div>
-
                         </a>
-
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
-
                             <div class="kt-wizard-v3__nav-body">
-
                                 <div class="kt-wizard-v3__nav-label">
-
                                     <span>03</span> Upload Docs
-
                                 </div>
-
                                 <div class="kt-wizard-v3__nav-bar"></div>
-
                             </div>
-
                         </a>
-
                     </div>
-
                 </div>
-
             </div>
 
-
+            <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
 
             <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
-
                 <!--begin: Form Wizard Form-->
                 {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
                 <div class="kt-form w-100 px-5" id="kt_form">
@@ -88,7 +48,6 @@
                             <div class="kt-wizard-v3__form">
                                 <!--begin::Accordion-->
                                 <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-
                                     <div class="card">
                                         <div class="card-header" id="headingTwo6">
                                             <div class="card-title" data-toggle="collapse" data-target="#collapseTwo6"
@@ -99,7 +58,6 @@
                                         <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
                                             data-parent="#accordionExample6">
                                             <div class="card-body">
-
                                                 <table class="table table-borderless">
                                                     <tr>
                                                         <th>Document</th>
@@ -112,7 +70,6 @@
                                                     </tr>
                                                     @endforeach
                                                 </table>
-
                                             </div>
                                         </div>
                                     </div>
@@ -139,8 +96,6 @@
                                                     </tr>
                                                     @endforeach
                                                 </table>
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -159,7 +114,6 @@
                                                 terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
                                                 skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
                                                 Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
                                             </div>
                                         </div>
                                     </div>
@@ -173,10 +127,16 @@
                             </div>
                         </div>
                     </div>
-
+                    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
                     <!--end: Form Wizard Step 1-->
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
 
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
@@ -198,18 +158,37 @@
                                                     <input type="hidden" id="artist_id"
                                                         value="{{$artist_details->artist_id}}" />
                                                     <input type="hidden" id="is_old_artist" />
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                     <div class="row">
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Person
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+                                                                        Code</label>
+                                                                    <input type="hidden" id="artist_number" value={{1}}>
+                                                                    <div class="col-lg-5">
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                         Code</label><span id="changeArtistLabel"
                                                                         class="kt-badge  kt-badge--danger kt-badge--inline d-none"
                                                                         onclick="removeSelectedArtist()">Change </span>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                                     <div class="col-lg-8">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
@@ -217,6 +196,18 @@
                                                                                 placeholder="Person Code">
                                                                         </div>
                                                                     </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+                                                                    <div class="col-lg-3">
+                                                                        <span id="changeArtistLabel"
+                                                                            class="kt-badge  kt-badge--danger kt-badge--inline d-none"
+                                                                            onclick="removeSelectedArtist()">Change
+                                                                        </span>
+                                                                    </div>
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
@@ -232,9 +223,18 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
 
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Last
@@ -248,7 +248,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="nationality"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Nationality
@@ -270,7 +277,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Birth
@@ -286,8 +300,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Passport
@@ -302,7 +324,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="pp_expiry"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Passport
@@ -318,7 +347,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="uid_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">UID
@@ -332,8 +368,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
                                                                         class="col-4 col-form-label kt-font-bold text-right">UID
@@ -349,8 +393,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="religion"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Religion
@@ -370,10 +422,19 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
 
 
 
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                             </section>
                                                         </div>
                                                         <div class="col-6">
@@ -400,12 +461,26 @@
                                                                                     {{ucwords($pt->name_en)}}</option>
                                                                                 @endforeach
                                                                             </select>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+                                                                            <input type="hidden" id="old_profession"
+                                                                                value="{{$artist_details->profession_id}}">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
 
 
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
                                                                         class="col-4 col-form-label kt-font-bold text-right">First
@@ -453,11 +528,20 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
 
 
 
 
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_type"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Visa
@@ -478,8 +562,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Visa
@@ -494,7 +586,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Visa
@@ -510,7 +609,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="id_no"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Identification
@@ -524,7 +630,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="sp_name"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Sponser
@@ -539,8 +652,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="language"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Languages
@@ -568,7 +689,13 @@
                                     </div>
                                     <br>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                         <div class="card">
                                             <div class="card-header" id="headingTwo6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -582,11 +709,17 @@
                                             <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
                                                 data-parent="#accordionExample7">
                                                 <div class="card-body">
-
                                                     <div class="row">
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="mobile"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Mobile
@@ -601,8 +734,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="landline"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Phone
@@ -617,6 +758,42 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+                                                            </section>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="email"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Email
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                placeholder="Email" name="email"
+                                                                                id="email" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="fax_no"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Fax
+                                                                        No </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="fax_no" id="fax_no"
+                                                                                placeholder="Fax No">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+=======
 
 
                                                             </section>
@@ -653,6 +830,45 @@
                                                                 </div>
                                                             </section>
                                                         </div>
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+
+                                                            </section>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <section class="kt-form--label-right">
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="email"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Email
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                placeholder="Email" name="email"
+                                                                                id="email" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="fax_no"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Fax
+                                                                        No </label>
+                                                                    <div class="col-lg-8">
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm "
+                                                                                name="fax_no" id="fax_no"
+                                                                                placeholder="Fax No">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                     </div>
                                                 </div>
                                             </div>
@@ -660,7 +876,14 @@
                                     </div>
                                     <br>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                         <div class="card">
                                             <div class="card-header" id="headingTwo7">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -691,32 +914,74 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+                                                                <div class=" form-group form-group-sm row">
+                                                                    <label for="address"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Emirate
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Area
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+                                                                                class=" form-control form-control-sm "
+                                                                                name="city" id="city"
+                                                                                onChange="getAreas(this.value)">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($emirates as $em)
+                                                                                <option value={{$em->id}}>
+                                                                                    {{$em->name_en}}
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 class="  form-control form-control-sm "
                                                                                 name="area" id="area">
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($areas as $ar)
                                                                                 <option value={{$ar->id}}>
                                                                                     {{$ar->area_en}}
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                             </section>
                                                         </div>
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
                                                                         class="col-4 col-form-label kt-font-bold text-right">PO
@@ -730,15 +995,38 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+                                                                <div class="form-group form-group-sm row">
+                                                                    <label for="address"
+                                                                        class="col-4 col-form-label kt-font-bold text-right">Area
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
 
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="address"
                                                                         class="col-4 col-form-label kt-font-bold text-right">Emirate
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+                                                                                class="  form-control form-control-sm "
+                                                                                name="area" id="area">
+                                                                                <option value="">Select</option>
+                                                                                @foreach ($areas as $ar)
+                                                                                <option value={{$ar->id}}>
+                                                                                    {{$ar->area_en}}
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 class=" form-control form-control-sm "
                                                                                 name="city" id="city"
                                                                                 onChange="getAreas(this.value)">
@@ -746,6 +1034,10 @@
                                                                                 @foreach ($emirates as $em)
                                                                                 <option value={{$em->id}}>
                                                                                     {{$em->name_en}}
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -763,9 +1055,15 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
 
 
 
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                     <!--begin: Form Wizard Step 3-->
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
@@ -774,7 +1072,6 @@
                                     <input type="hidden" id="artist_number_doc" value={{1}}>
                                     <input type="hidden" id="requirements_count" value={{count($requirements)}}>
                                     <div class="kt-form__section kt-form__section--first">
-
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
                                                 <label class="kt-font-bold text--maroon"> Artist Photo</label>
@@ -786,7 +1083,6 @@
                                                 <div id="pic_uploader">Upload
                                                 </div>
                                             </div>
-
                                         </div>
                                         <input type="hidden" id="issue_date" value="{{$artist_details->issue_date}}">
                                         <input type="hidden" id="expiry_date" value="{{$artist_details->expiry_date}}">
@@ -808,7 +1104,6 @@
                                             <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
                                             <input type="hidden" value="{{$req->requirement_name}}"
                                                 id="req_name_{{$i}}">
-
                                             <div class="col-lg-4 col-sm-12">
                                                 <label style="visibility:hidden">hidden</label>
                                                 <div id="fileuploader_{{$i}}">Upload
@@ -838,113 +1133,51 @@
                                             </div>
                                             @endif
                                         </div>
-
-
                                         @php
                                         $i++;
                                         @endphp
                                         @endif
                                         @endforeach
-
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
                 <div class="kt-form__actions">
-
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
-
                         Previous
-
                     </div>
-
-
-
                     <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
-
                     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
-
-
-
                     <a href="{{url('company/amend_permit/'.$permit_details->permit_id)}}">
-
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-
                             Back
-
                         </div>
-
                     </a>
-
-
-
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
                         style="display:none;">
-
                         Submit
-
                     </div>
-
-
-
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
-
                         Next Step
-
                     </div>
-
-
-
                 </div>
-
-
-
             </div>
-
-
-
             <!--end: Form Wizard Form-->
-
         </div>
-
     </div>
-
 </div>
-
 </div>
-
 </div>
-
-
-
 <!-- end:: Content -->
-
-
-
-
-
-
-
 <!-- begin::Scrolltop -->
-
 <div id="kt_scrolltop" class="kt-scrolltop">
-
     <i class="fa fa-arrow-up"></i>
-
 </div>
-
 <!-- end::Scrolltop -->
-
-
-
 <!--begin::Modal-->
-
 <div class="modal fade" id="artist_exists" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
     aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
@@ -959,15 +1192,8 @@
         </div>
     </div>
 </div>
-
-
-
 <!--end::Modal-->
-
-
-
 <!--begin::Modal-->
-
 <div class="modal fade" id="alert_profession" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
@@ -985,425 +1211,209 @@
         </div>
     </div>
 </div>
-
-
-
-
 <!--end::Modal-->
-
 @endsection
-
 @section('script')
-
-<script async src={{asset('./js/new_artist_permit.js')}} type="text/javascript"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-
-<script src="{{asset('js/uploadfile.js')}}"></script>
-
+<script src="{{asset('js/company/uploadfile.js')}}"></script>
+<script src="{{asset('js/company/artist.js')}}"></script>
 <script>
     var fileUploadFns = [];
-
     var picUploader ;
-
     var artistDetails = new Object();
-
     var documentDetails = new Object();
-
-
-
     $(document).ready(function()
-
     {
-
         localStorage.clear();
-
-        // upload file
-
+        setWizard();
         uploadFunction();
-
         PicUploadFunction();
-
         $.ajax({
-
             headers: {
-
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
             },
-
             type: "GET",
-
             url:"{{route('clear_the_temp')}}"
-
         });
-
         wizard = new KTWizard("kt_wizard_v3");
-
         wizard.goTo(2);
-
-
-
         $('#back_btn').css('display', 'none');
-
-
-
         // fetchFromDrafts();
-
     });
 
-
-
-    function set_document_expiry(validity, id){
-        // alert(validity);
-        var noOfMonths = validity != 0 ? validity : 0 ;
-        var issue_date = $('#doc_issue_date_'+id).val();
-        var issue_date_year_format = moment(issue_date, 'DD-MM-YYYY' ).format('YYYY-MM-DD');
-        var expiryMonth = moment(issue_date_year_format).add(noOfMonths, 'M');
-        // var expiryMonthEnd = moment(expiryMonth).endOf('month');
-        // if(issue_date_year_format.date() != expiryMonth.date() && expiryMonth.isSame(expiryMonthEnd.format('YYYY-MM-DD'))){
-        //     expiryMonth = expiryMonth.add(1, 'd');
-        // }
-        $('#doc_exp_date_'+id).val(expiryMonth.format('DD-MM-YYYY'));
-    }
-
-
-
     const uploadFunction = () => {
-
         // console.log($('#artist_number_doc').val());
-
         for(var i = 1; i <= $('#requirements_count').val(); i++)
-
         {
-
             fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
-
                 headers: {
-
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
                 },
-
                 url: "{{route('company.uploadDocument')}}",
-
                 method: "POST",
-
                 allowedTypes: "jpeg,jpg,png,pdf",
-
                 fileName: "doc_file_"+i,
-
-                // showDownload: true,
-
                 downloadStr: `<i class="la la-download"></i>`,
-
                 deleteStr: `<i class="la la-trash"></i>`,
-
                 showFileSize: false,
-
                 returnType: "json",
-
                 showFileCounter: false,
-
                 abortStr: '',
-
                 multiple: false,
-
                 maxFileCount:1,
-
                 showDelete: true,
-
+                showDownload: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-
                 formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
-
                 onLoad:function(obj)
-
                 {
-
                     $code = $('#code').val();
-
                     if($code){
-
                         $.ajaxSetup({
-
                         headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-
                         });
-
                         $.ajax({
-
                             cache: false,
-
                             url: "{{route('company.get_files_uploaded')}}",
-
                             type: 'POST',
-
                             data: {artist_permit: $('#artist_permit_num').val(), reqName: $('#req_name_'+i).val()},
-
                             dataType: "json",
-
                             success: function(data)
-
                             {
-
-
                                 let id = obj[0].id;
-
                                 let number = id.split("_");
-
                                 let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                 let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-
-
-
                                 obj.createProgress(data.requirement['requirement_name'],"{{url('storage')}}"+'/'+data.path,'');
-
                                 if(formatted_issue_date != NaN-NaN-NaN)
-
                                 {
-
                                     $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
-
                                     $('#doc_exp_date_'+number[1]).val(formatted_exp_date);
-
                                 }
-
                             }
-
                         });
-
                     }
-
-
-
                 },
-
                 onError: function(files, status, errMsg, pd) {
-
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
-
                     pd.statusbar.hide();
-
                 },
-
                 downloadCallback:function(files,pd)
-
                 {
-
-                    console.log('files',files);
-
-                    console.log('pd',pd);
-
-                    // location.href="download_file/"+files[0];
-
-                    // $.ajaxSetup({
-
-                    //     headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-
-                    //     });
-
-                    //     $.ajax({
-
-                    //         url: "{{route('company.download_file')}}",
-
-                    //         type: 'POST',
-
-                    //         data: {artist_permit: $('#artist_permit_num').val(), name: filename},
-
-                    //         success: function(data)
-
-                    //         {
-
-                    //             console.log(data);
-
-                    //         }
-
-                    //     });
-
-                    // location.href="download.php?filename="+filename;
-
+                    if(files[0]) {
+                        let user_id = $('#user_id').val();
+                        let artistId = $('#artist_id').val();
+                        let this_url = user_id + '/artist/' + artistId +'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    } else {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }
                 }
-
             });
-
             $('#fileuploader_'+i+' div').attr('id', 'ajax-upload_'+i);
-
             $('#fileuploader_'+i+' + div').attr('id', 'ajax-file-upload_'+i);
-
         }
-
     }
-
-
-
-    // appends 0's to month of the day
-
-    function appendLeadingZeroes(n){
-
-        if(n <= 9){
-
-            return "0" + n;
-
-        }
-
-        return n
-
-    }
-
-
-
     const PicUploadFunction = () => {
-
         picUploader = $('#pic_uploader').uploadFile({
-
                 headers: {
-
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
                 },
-
                 url: "{{route('company.uploadPhoto')}}",
-
                 method: "POST",
-
                 allowedTypes: "jpeg,jpg,png",
-
                 fileName: "pic_file",
-
                 multiple: false,
                 previewHeight: '200px',
                 previewWidth: "auto",
                 downloadStr: `<i class="la la-download"></i>`,
-
                 deleteStr: `<i class="la la-trash"></i>`,
-
                 showFileSize: false,
-
                 showFileCounter: false,
-
                 abortStr: '',
-
                 returnType: "json",
-
                 maxFileCount:1,
-
                 showPreview:true,
-
                 showDelete: true,
-
+                showDownload: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-
                 onLoad:function(obj)
-
                 {
-
                     $code = $('#code').val();
-
                     if($code){
-
                         $.ajaxSetup({
-
                             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-
                         });
-
                         $.ajax({
-
                             url: "{{url('company/get_files_uploaded_with_code')}}"+'/'+$code,
-
                             success: function(data)
-
                             {
-
                                 if(data[0].artist_permit[0].original)
-
                                 {
-
                                     obj.createProgress('Profile Pic',"{{url('storage')}}"+'/'+data[0].artist_permit[0].original,'');
-
                                 }
-
                             }
-
                         });
-
                     }
-
-
-
                 },
-
+                onError: function (files, status, errMsg, pd) {
+                    showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
+                    pd.statusbar.hide();
+                }
             });
-
             $('#pic_uploader div').attr('id', 'pic-upload');
-
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
-
     }
 
-
-
-
     var detailsValidator =  $('#artist_details').validate({
-
             ignore: [],
-
             rules: {
-
                 fname_en: 'required',
-
                 fname_ar: 'required',
-
                 lname_en: 'required',
-
                 lname_ar: 'required',
-
                 permit_type: 'requried',
-
                 profession: 'required',
-
-                dob: 'required',
-
-                uid_number: 'required',
-
-                uid_expiry: 'required',
-
-                passport: 'required',
-
-                pp_expiry: 'required',
-
-                visa_type: 'required',
-
-                visa_number: 'required',
-
-                visa_expiry: 'required',
-
-                gender: 'required',
-
-                sp_name: 'required',
-
-                nationality: 'required',
-
-                address: 'required',
-
-                mobile: {
-
-
-                    required : true
-
-                } ,
-
-                email: {
-
+                dob: {
                     required: true,
-
-                    email: true,
-
+                    dateNL: true
                 },
-
+                uid_number: 'required',
+                uid_expiry: {
+                    required: true,
+                    dateNL: true
+                },
+                passport: 'required',
+                pp_expiry: {
+                    required: true,
+                    dateNL: true
+                },
+                visa_type: 'required',
+                visa_number: 'required',
+                visa_expiry: {
+                    required: true,
+                    dateNL: true
+                },
+                gender: 'required',
+                sp_name: 'required',
+                nationality: 'required',
+                address: 'required',
+                mobile: {
+                    required : true
+                } ,
+                email: {
+                    required: true,
+                    email: true,
+                },
             },
-
             messages: {
                 fname_en: '',
                 fname_ar: '',
@@ -1433,87 +1443,43 @@
                 },
             },
         });
-
-
-
         var docRules = {};
-
         var docMessages = {};
-
-
-
         for(var i = 1; i < $('#requirements_count').val(); i++)
-
         {
-
             docRules['doc_issue_date_'+i] = 'required';
-
             docRules['doc_exp_date_'+i] = 'required';
-
             docMessages['doc_issue_date_'+i] = 'This field is required';
-
             docMessages['doc_exp_date_'+i] = 'This field is required';
-
         }
-
-
-
         var documentsValidator = $('#documents_required').validate({
-
             rules: docRules,
-
             messages: docMessages
-
         });
-
-
-
         $( "#check_inst" ).on( "click", function() {
             setThis('none', 'block', 'block', 'none');
         });
-
         $( "#artist_det" ).on( "click", function() {
             if(!checkForTick()) { return  };
             setThis('block', 'block', 'none', 'none');
         });
-
-
-
         $( "#upload_doc" ).on( "click", function() {
-
             wizard = new KTWizard("kt_wizard_v3");
             if(!checkForTick()) return ;
-
             if(wizard.currentStep == 3){
                 stopNext(detailsValidator);
                 return;
             }
             setThis('block', 'none', 'none', 'block');
-
         });
-
-
-
         const setThis = (prev, next, back, submit) => {
-
             $('#prev_btn').css('display', prev);
-
             $('#next_btn').css('display', next);
-
             $('#back_btn').css('display', back);
-
             $('#submit_btn').css('display', submit);
-
         }
-
-
-
-
-
         const checkForTick = () => {
-
             wizard = new KTWizard("kt_wizard_v3");
-
             var result ;
             if (wizard.currentStep == 1) {
                 if ($('#agree').not(':checked')) {
@@ -1531,630 +1497,338 @@
                 result = true;
             }
             return result;
-
         }
-
-
-
-
-
         $('#next_btn').click(function(){
-
             wizard = new KTWizard("kt_wizard_v3");
-
             checkForTick();
-
             // checking the next page is artist details
-
             if(wizard.currentStep == 2)
-
             {
-
                     stopNext(detailsValidator); // validating the artist details page
                     // object of array storing the artist details
-
                     var artist_id = $('#artist_number').val() ;
-
                     if(detailsValidator.form())
-
                     {
-
                         $('#submit_btn').css('display', 'block'); // display the submit button
-
                         $('#next_btn').css('display', 'none'); // hide the next button
-
                         $('#addNew_btn').css('display', 'block'); // display the add new artist button
-
-                        artistDetails[artist_id] = {
-
+                        artistDetails = {
                             id: $('#artist_id').val(),
-
                             code: $('#code').val(),
-
                             fname_en: $('#fname_en').val(),
-
                             fname_ar:  $('#fname_ar').val(),
-
                             lname_en: $('#lname_en').val(),
-
                             lname_ar:  $('#lname_ar').val(),
-
                             nationality: $('#nationality').val(),
-
                             permit_type: $('#permit_type').val(),
-
                             profession: $('#profession').val(),
-
                             passport: $('#passport').val(),
-
                             ppExp: $('#pp_expiry').val(),
-
                             visaType: $('#visa_type').val(),
-
                             visaNumber: $('#visa_number').val(),
-
                             visaExp: $('#visa_expiry').val(),
-
                             spName: $('#sp_name').val(),
-
                             idNo: $('#id_no').val(),
-
                             language: $('#language').val(),
-
                             religion: $('#religion').val(),
-
                             gender: $('#gender').val(),
-
                             city: $('#city').val(),
-
                             area: $('#area').val(),
-
                             address: $('#address').val(),
-
                             fax_number: $('#fax_no').val(),
-
                             po_box: $('#po_box').val(),
-
                             uidNumber: $('#uid_number').val(),
-
                             uidExp: $('#uid_expiry').val(),
-
                             dob: $('#dob').val(),
-
                             landline: $('#landline').val(),
-
                             mobile: $('#mobile').val(),
-
                             email: $('#email').val(),
-
                             is_old_artist: $('#is_old_artist').val()
-
                         }
-
                         localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
-
                         // insertIntoDrafts(3, JSON.stringify(artistDetails));
-
                     }
-
                 }
-
         });
-
-
-
         $('#prev_btn').click(function(){
-
             if(wizard.currentStep == 2){
-
                     $('#prev_btn').css('display', 'none');
-
                     $('#back_btn').css('display', 'block');
             } else{
-
                     $('#prev_btn').css('display', 'block');
-
                     $('#next_btn').css('display', 'block');
-
             }
-
             $('#submit_btn').css('display', 'none');
-
             $('#addNew_btn').css('display', 'none');
-
         });
-
-
-
         const docValidation = () => {
-
             var artist_number = $('#artist_number').val();
-
             var hasFile = true;
-
             var hasFileArray = [];
-
             documentDetails = {};
-
             for(var i = 1; i <= $('#requirements_count').val(); i++)
-
             {
                 if ($('#ajax-file-upload_' + i).length) {
                     if($('#ajax-file-upload_'+i).contents().length == 0) {
-
                         hasFileArray[i] = false;
-
                         $("#ajax-upload_"+i).css('border', '2px dotted red');
-
                     }
-
                     else{
-
                         hasFileArray[i] = true;
-
                         $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
-
                     }
-
                     documentDetails[i] = {
-
                         issue_date :   $('#doc_issue_date_'+i).val(),
-
                         exp_date : $('#doc_exp_date_'+i).val()
-
                     }
                 }
-
             }
-
             if($('#pic-file-upload').contents().length == 0) {
-
                 hasPicture = false;
-
                 $('#pic-upload').css('border', '2px dotted red');
-
             }
-
             else {
-
                 hasPicture = true;
-
                 $("#pic-upload").css('border', '2px dotted #A5A5C7');
-
             }
-
             if(hasFileArray.includes(false) || hasPicture == false){
-
                 hasFile = false;
-
             } else {
-
                 hasFile = true;
-
             }
-
-
-
             localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
-
             return hasFile ;
-
         }
-
-
-
         const stopNext = (validator_name) => {
-
             wizard.on("beforeNext", function(wizardObj) {
-
                 if (validator_name.form() !== true) {
-
                     wizardObj.stop(); // don't go to the next step
-
                 }
-
             });
-
         }
-
-
-
-
-
         const isExpiry = (num) => {
-
             let val = $('#doc_type_'+num).val();
-
             if((val == 'photograph') || (val == 'medical') ){
-
                 $('#doc_exp_date_'+num).css('display', 'none');
-
                 $('#doc_issue_date_'+num).css('display', 'none');
-
                 $('#doc_exp_date_'+num).removeAttr( "required" );
-
                 $('#doc_issue_date_'+num).removeAttr( "required" );
-
             } else {
-
                 $('#doc_exp_date_'+num).css('display', 'block');
-
                 $('#doc_issue_date_'+num).css('display', 'block');
-
                 $('#doc_exp_date_'+num).prop('required',true);
-
                 $('#doc_issue_date_'+num).prop('required',true);
-
             }
-
         }
-
-
-
-
-
         $('.date-picker').datepicker({ format: 'dd-mm-yyyy', autoclose: true});
 
+        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2, endDate:'-10Y'});
 
         $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
-
         $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
-
         $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
-
         $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
-
-
-
         const getAreas = (city_id) => {
-
           if(city_id){
             $.ajax({
-
                 url:"{{url('company/fetch_areas')}}"+'/'+city_id,
-
                 success: function(result){
-
                     // console.log(result)
-
                     $('#area').empty();
-
                     $('#area').append('<option value=" ">Select</option>');
-
                     for(let i = 0; i< result.length;i++)
-
                     {
-
                         $('#area').append('<option value="'+result[i].id+'">'+result[i].area_en+'</option>');
-
                     }
-
-
-
                 }
-
                 });
           }
-
         }
-
-
-
         $('#code').change(function() {
-
             searchCode();
-
         });
-
-
-
-
-
         function searchCode(){
-
             let code = $('#code').val();
             var permit_id = $('#permit_id').val();
             if(code){
-
                 $.ajax({
-
-                    url:"{{url('company/searchCode')}}",
+                    url:"{{route('company.searchCode')}}",
                     type: 'POST',
                     data: {
                         code: code,
                         permit_id: permit_id
                     },
                     success: function(data){
-
                         $('#artist_exists').modal({
                                 backdrop: 'static',
                                 keyboard: false,
                                 show: true
                             });
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+=======
 
                     if(data.artist_permit) {
+<<<<<<< HEAD:resources/views/permits/artist/replace_artist.blade.php
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
+=======
+>>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd:resources/views/permits/artist/amend/replace_artist.blade.php
                             $('#person_code_modal').empty();
-                            $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr> <tr> <th>Phone:</th> <td id="ex_artist_phonenumber"></td> </tr> <tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails()"data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
-
-                            $('#artistDetailswithcode').val(JSON.stringify(data));
-
-                            $('#ex_artist_en_name').html((data.firstname_en != null ?  data.firstname_en : '') + ' ' + (data.lastname_en != null ? data.lastname_en : ''));
-
-                            $('#ex_artist_ar_name').html((data.firstname_ar != null ?  data.firstname_ar : '') + ' '+ (data.lastname_ar != null ? data.lastname_ar : ''));
-
-                            $total_aps = data.artist_permit.length;
-
-                            $j = $total_aps - 1 ;
-
-                            $('#ex_artist_mobilenumber').html(data.artist_permit[$j].mobile_number);
-
-                            $('#ex_artist_phonenumber').html(data.artist_permit[$j].phone_number);
-
-                            $('#ex_artist_email').html(data.artist_permit[$j].email);
-
-                            $('#ex_artist_personcode').html(data.person_code);
-
-                            var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
-
-                            $('#ex_artist_dob').html(dob);
-
-                            $('#ex_artist_nationality').html(data.nationality);
-
-                            var gender = data.artist_permit[$j].gender == 1 ? 'Male' : 'Female';
-
-                            $('#ex_artist_gender').html(gender);
-
-                            $('#profImg').attr('src', data.artist_permit[$j].thumbnail ? "{{url('storage')}}"+'/'+data.artist_permit[$j].thumbnail : '');
-
-                            $('#profImg').css({
-                                height: '150px',
-                                width: '150px'
-                            });
+                        if(data.artist_permit){
+                            let total_aps = data.artist_permit.length;
+                            let j = total_aps - 1 ;
+                            if(total_aps > 0) {
+                                $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails()"data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
+                                $('#artistDetailswithcode').val(JSON.stringify(data));
+                                let apd = data.artist_permit[j];
+                                $('#ex_artist_en_name').html((apd.firstname_en != null ?  apd.firstname_en : '') + ' ' + (apd.lastname_en != null ? apd.lastname_en : ''));
+                                $('#ex_artist_ar_name').html((apd.firstname_ar != null ?  apd.firstname_ar : '') + ' '+ (apd.lastname_ar != null ? apd.lastname_ar : ''));
+                                $('#ex_artist_mobilenumber').html(apd.mobile_number);
+                                $('#ex_artist_email').html(apd.email);
+                                $('#ex_artist_personcode').html(data.person_code);
+                                var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
+                                $('#ex_artist_dob').html(dob);
+                                $('#ex_artist_nationality').html(apd.nationality.nationality_en);
+                                var gender = apd.gender == 1 ? 'Male' : 'Female';
+                                $('#ex_artist_gender').html(gender);
+                                $('#profImg').attr('src', apd.thumbnail ? "{{url('storage')}}"+'/'+apd.thumbnail : '');
+                                $('#profImg').css({
+                                    height: '150px',
+                                    width: '135px',
+                                    objectFit: 'cover',
+                                    padding: '5px',
+                                    border: '1px solid rgba(0,0,0,0.4)'
+                                });
+                            }
                         }
                         else
                         {
-                            $('#person_code_modal').empty();
-                            // setTimeout(searchCode(), 1000);
-                            $('#person_code_modal').append('<p class="text-center">Sorry ! We cannot find artist with this Person Code <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span>.(or)<br /> This Person is already added to the Permit. <br /> Please Add Another Artist ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
-
-                            $('#not_artist_personcode').html(code);
+                            $('#person_code_modal').append('<p class="text-center"><span class="text--maroon kt-font-bold">** Optional field</span><br/>Sorry ! No Artist Found with <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> ( or  is already added ). <br /> Please Add Another Artist ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
                         }
-
-
-
                     },error:function(){
-
                         alert("error!!!!");
-
                     }
-
                 });
-
             }
-
         }
-
-
-
         function clearPersonCode() {
             $('#code').val('');
             $('#is_old_artist').val(1);
             $('#artist_exists').modal('hide');
         }
-
-
-
         function removeSelectedArtist(){
             $('.ajax-file-upload-red').trigger('click');
             $('#artist_details').trigger('reset');
-
             $('#documents_required').trigger('reset');
-
             $('#artist_id').val('');
-
             $('#fname_en').removeClass('mk-disabled');
-
             $('#fname_ar').removeClass('mk-disabled');
-
             $('#lname_en').removeClass('mk-disabled');
-
             $('#lname_ar').removeClass('mk-disabled');
-
             $('#artist_permit_id').val('');
-
             $('#changeArtistLabel').addClass('d-none');
-
             $('#code').removeClass('mk-disabled');
-
             $('#code').val('');
             $('#is_old_artist').val(1);
-
             PicUploadFunction();
             uploadFunction();
             $('#artist_exists').modal('hide');
         }
-
-
-
         const setArtistDetails = () => {
-
             $('.ajax-file-upload-red').trigger('click');
             let ad = $('#artistDetailswithcode').val();
-
             var old_profession = $('#old_profession').val();
-
             ad = JSON.parse(ad);
-
             var artist_permit_count = ad.artist_permit.length;
-
-            var pr_index = artist_permit_count - 1 ;
-
-            if(old_profession != ad.artist_permit[pr_index].profession){
-
+            var i = artist_permit_count - 1 ;
+            let apd = ad.artist_permit[i] ;
+            if(old_profession != apd.profession){
                 $('#code').val('');
                 $('#alert_profession').modal('show');
                 return ;
-
             }
-
             $('#artist_exists').modal('hide');
-
-
             $('#is_old_artist').val(2);
-
-            var dob = moment(ad.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
-
+            var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#changeArtistLabel').removeClass('d-none');
-
             $('#changeArtistLabel').addClass('ml-2');
-
             $('#artist_id').val(ad.artist_id);
-
             $('#code').val(ad.person_code);$('#code').addClass('mk-disabled');
-
-            $('#fname_en').val(ad.firstname_en);$('#fname_en').addClass('mk-disabled');
-
-            $('#fname_ar').val(ad.firstname_ar);$('#fname_ar').addClass('mk-disabled');
-
-            $('#lname_en').val(ad.lastname_en);$('#lname_en').addClass('mk-disabled');
-
-            $('#lname_ar').val(ad.lastname_ar);$('#lname_ar').addClass('mk-disabled');
-
-            $('#nationality').val(ad.nationality);
-
-            var ppExp = moment(ad.artist_permit[$i].passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            $('#fname_en').val(apd.firstname_en);$('#fname_en').addClass('mk-disabled');
+            $('#fname_ar').val(apd.firstname_ar);$('#fname_ar').addClass('mk-disabled');
+            $('#lname_en').val(apd.lastname_en);$('#lname_en').addClass('mk-disabled');
+            $('#lname_ar').val(apd.lastname_ar);$('#lname_ar').addClass('mk-disabled');
+            $('#nationality').val(apd.country_id);
+            var ppExp = moment(apd.passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#pp_expiry').val(ppExp);
-            var visaExp = moment(ad.artist_permit[$i].visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            var visaExp = moment(apd.visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#visa_expiry').val(visaExp);
-            var uidExp = moment(ad.artist_permit[$i].uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            var uidExp = moment(apd.uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#uid_expiry').val(uidExp);
-
-            $('#permit_type').val(ad.artist_permit[i].permit_type_id),
-
-            $('#profession').val(ad.artist_permit[i].profession),
-
-            $('#passport').val(ad.artist_permit[i].passport_number),
-
-            $('#visa_type').val(ad.artist_permit[i].visa_type),
-
-            $('#visa_number').val(ad.artist_permit[i].visa_number),
-
-
-            $('#sp_name').val(ad.artist_permit[i].sponsor_name_en),
-
-            $('#id_no').val(ad.artist_permit[i].emirates_id),
-
-            $('#language').val(ad.artist_permit[i].language),
-
-            $('#religion').val(ad.artist_permit[i].religion),
-
-            $('#gender').val(ad.artist_permit[i].gender),
-
-            $('#city').val(ad.artist_permit[i].city);
-
-            getAreas(ad.artist_permit[i].city);
-
-            $('#address').val(ad.artist_permit[i].address_en),
-
-            $('#uid_number').val(ad.artist_permit[i].uid_number),
-
+            $('#permit_type').val(apd.permit_type_id),
+            $('#profession').val(apd.profession),
+            $('#passport').val(apd.passport_number),
+            $('#visa_type').val(apd.visa_type),
+            $('#visa_number').val(apd.visa_number),
+            $('#sp_name').val(apd.sponsor_name_en),
+            $('#id_no').val(apd.emirates_id),
+            $('#language').val(apd.language),
+            $('#religion').val(apd.religion),
+            $('#gender').val(apd.gender),
+            $('#city').val(apd.city);
+            getAreas(apd.city);
+            $('#address').val(apd.address_en),
+            $('#uid_number').val(apd.uid_number),
             $('#dob').val(dob),
-
-            $('#landline').val(ad.artist_permit[i].phone_number),
-
-            $('#po_box').val(ad.artist_permit[i].po_box),
-
-            $('#fax_no').val(ad.artist_permit[i].fax_number),
-
-            $('#mobile').val(ad.artist_permit[i].mobile_number),
-
-            $('#email').val(ad.artist_permit[i].email);
-
-            $('#artist_permit_id').val(ad.artist_permit[i].artist_permit_id);
-
-            $('#area').val(ad.artist_permit[i].area);
-
+            $('#landline').val(apd.phone_number),
+            $('#po_box').val(apd.po_box),
+            $('#fax_no').val(apd.fax_number),
+            $('#mobile').val(apd.mobile_number),
+            $('#email').val(apd.email);
+            $('#artist_permit_id').val(apd.artist_permit_id);
+            $('#area').val(apd.area);
             PicUploadFunction();
-
             uploadFunction();
-
         }
-
-
-
         $('#submit_btn').click((e) => {
-
-
+            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var hasFile = docValidation();
-
-
-
             if(documentsValidator.form() && hasFile){
-
-
-
             var artist_permit_id = $('#artist_permit_id').val();
-
             var permit_id = $('#permit_id').val();
-
             var ad = localStorage.getItem('artistDetails');
-
             var dd = localStorage.getItem('documentDetails');
-
             var issue_d = $('#issue_date').val();
             var expiry_d = $('#expiry_date').val();
-
-
-
+            let fromPage= 'amend';
             $.ajaxSetup({
-
                 headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-
             });
-
             $.ajax({
-
-                    url:"{{route('company.update_artist_temp_data')}}",
-
+                    url:"{{route('company.update_artist_temp')}}",
                     type: "POST",
-
                     // processData:false,
-
                     // data: { permitDetails: pd},
-
                     data: {
-                         permitId: artist_permit_id,
+                        permitId: permit_id,
                         artistD: ad ,
-                     documentD: dd,
-                     permit_id: permit_id,
-                     issue_d: issue_d,
+                        documentD: dd,
+                        issue_d: issue_d,
                         expiry_d: expiry_d,
-                     updateChecklist: false},
-
+                        temp_id: $('#temp_id').val(),
+                        from: fromPage
+                    },
                     success: function(result){
-
                         // console.log(result)
-
                         if(result.message[0] == 'success')
-
                         {
-
                             localStorage.clear();
-
-                            window.location.href="{{url('company/amend_permit')}}"+'/'+ permit_id;
-
+                            let toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => 'amend'])}}";;
+                            toUrl = toUrl.replace(':id', permit_id);
+                            window.location.href= toUrl ;
                         }
-
                     }
-
                 });
-
             }
-
         })
-
-
-
 </script>
-
 @endsection

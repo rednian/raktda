@@ -19,10 +19,13 @@ class User extends Authenticatable implements Auditable
     const UPDATED_AT = 'modifiedAt';
 
     protected $connection = 'bls';
-    protected $table = 'smartrak_bls.user';
+    //smartrak_bls
+
+    protected $table = 'user';
+
     protected $primaryKey = 'user_id';
     protected $fillable = [
-        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number'
+        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive', 'createby', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number'
     ];
 
     // protected $auditInclude = [
@@ -38,7 +41,7 @@ class User extends Authenticatable implements Auditable
 
     public  function company()
     {
-    	return $this->belongsTo(Company::class, 'EmpClientId', 'company_id');
+        return $this->belongsTo(Company::class, 'EmpClientId', 'company_id');
     }
 
     public function employee()
@@ -50,5 +53,4 @@ class User extends Authenticatable implements Auditable
     {
         return $this->belongsToMany(Roles::class, 'roleuser', 'role_id', 'user_id');
     }
-
 }

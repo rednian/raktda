@@ -298,12 +298,9 @@
     </script>
     <script src="{{ asset('/assets/vendors/custom/bootbox/bootbox.all.min.js') }}" type="text/javascript"></script>
     {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script> --}}
-    <script src="{{ asset('/js/companyCustom.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
     <!--end::Page Vendors -->
 
-    <!--begin::Page Scripts(used by this page) -->
-    {{-- <script src="{{ asset('/assets/js/demo1/pages/dashboard.js') }}" type="text/javascript"></script> --}}
-    <!--end::Page Scripts -->
 </body>
 @yield('script')
 <script type="text/javascript">

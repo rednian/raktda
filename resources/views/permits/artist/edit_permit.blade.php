@@ -117,7 +117,7 @@
                             </td>
 
                             <td class="text-center">
-                                <a href="{{url('company/edit_edit_artist/'.$artist_detail->id)}}"
+                                <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                     class="btn-clean btn-icon btn-icon-sm" title="Edit">
                                     <i class="la la-pencil la-2x"></i>
                                 </a>
@@ -134,11 +134,7 @@
                                     <i class="la la-trash la-2x"></i>
                                 </a>
                                 @endif
-                                {{-- <a href="#" data-toggle="modal" data-target="#error_list"
-                                        onclick="getErrorFields({{$artist_detail->artist_permit_id}})"
-                                class="btn-clean btn-icon btn-icon-sm" title="View">
-                                <i class="la la-comment la-2x"></i>
-                                </a> --}}
+
                             </td>
                             <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
                             @php
@@ -153,7 +149,7 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" onclick="submit()">
+                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                     Re-Submit
                 </div>
             </div>
@@ -293,7 +289,8 @@
                 var tempArr = [];
                 for(var i = 0 ; i < total; i++){
                     var temp_id = $('#temp_id_'+i).val();
-                    var tempUrl = "{{url('company/edit_edit_artist')}}"+'/' +temp_id ;
+                    var tempUrl = "{{url('artist/edit')}}"+'/' +temp_id + '/edit' ;
+                    // var tempUrl = "{{url('company/edit_edit_artist')}}"+'/' +temp_id ;
                     tempArr.push(tempUrl);
                 }
 
@@ -320,7 +317,7 @@
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {
-            window.location.href = "{{url('company/artist_permits')}}";
+            window.location.href = "{{route('artist.index')}}#applied";
         }
     });
 
@@ -332,7 +329,7 @@
                 data: { permit_id: temp_permit_id, from: 'edit'},
                 async: true,
                 success: function(result){
-                    window.location.href="{{url('company/artist_permits')}}";
+                    window.location.href="{{route('artist.index')}}#applied";
                 }
         });
     }
@@ -356,56 +353,33 @@
         });
     }
 
-
-    function getErrorFields(id) {
-        $.ajax({
-            type: 'POST',
-            url: '{{route("company.get_error_fields_list")}}',
-            data: {artist_permit_id:id},
-            success: function(data) {
-                console.log(data);
-                $('#field-list').empty();
-                $('#field-list').css('display', 'inline');
-               if(data)
-               {
-                    $('#field-list').append('Please Add correct values for the following Fields: <br /><br />');
-                   for(var i = 0;i < data.checklist.length; i++){
-                        $('#field-list').append('<span class="text--maroon kt-font-bold">'+ data.checklist[i].fieldname+'</span>')
-                        i + 1 == data.checklist.length ?  $('#field-list').append('. ') :$('#field-list').append(', ');
-                   }
-               } else {
-                    $('#field-list').append('No Comments')
-               }
-            }
-        });
-    }
-
     const showDocumentsFn = (doc) => {
         var base_url = window.location.origin;
         return '<tr><td>'+doc.document_name+'</td><td>'+doc.issued_date+'</td><td>'+doc.expired_date+'</td><td><a href="'+base_url+'/storage/'+doc.path+'" target="_blank">View</a></td></tr>';
     }
 
-    function submit() {
+    $('#submit_btn').click(function() {
+        $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
         $.ajax({
-            url: '{{route("company.move_temp_to_permit")}}',
+            url: '{{route("artist.update_permit")}}',
             type: 'POST',
             data: {permit_id: $('#permit_id').val()},
             success: function(result) {
                 if(result.message[0] == 'success')
                 {
-                    window.location.href="{{url('company/artist_permits')}}";
+                    window.location.href="{{route('artist.index')}}#applied";
                 }
             }
         });
-    }
+    });
 
     function delArtist(temp_id, permit_id, fname, lname) {
-            $('#del_temp_id').val(temp_id);
-            $('#del_permit_id').val(permit_id);
-            $('#del_fname').val(fname);
-            $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
-            $('#warning_text').css('color', '#580000')
-        }
+        $('#del_temp_id').val(temp_id);
+        $('#del_permit_id').val(permit_id);
+        $('#del_fname').val(fname);
+        $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
+        $('#warning_text').css('color', '#580000')
+    }
 
 
     </script>

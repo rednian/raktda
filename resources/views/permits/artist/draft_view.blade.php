@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Add New Artist Permit
+            <h3 class="kt-portlet__head-title">View / Update Draft
             </h3>
         </div>
 
@@ -81,7 +81,7 @@
                                             onkeyup="checkFilled()"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
-                                    {{-- <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-3">
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
@@ -94,7 +94,7 @@
                                                 <span></span>
                                             </label>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -131,7 +131,7 @@
                         <td>{{$ad->email}}</td>
                         <td>{{$ad->artist_permit_status}}</td>
                         <td>
-                            <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
+                            <a href="{{url('company/edit_artist_draft/'.$ad->id)}}"
                                 class="btn-clean btn-icon btn-icon-sm" title="Edit">
                                 <i class="la la-pencil la-2x"></i>
                             </a>
@@ -165,7 +165,7 @@
         <div class="d-flex justify-content-between">
             <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="draft_btn"
                 <?php if(count($artist_details) < 1){ echo 'disabled'; }?>>
-                Save to Drafts
+                Update to Drafts
             </button>
 
             <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
@@ -318,7 +318,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{route('artist.index')}}#applied";
+                window.location.href = "{{url('artist.index')}}#draft";
             }
         });
 
@@ -330,7 +330,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#applied";
+                        window.location.href="{{route('artist.index')}}#draft";
                     }
             });
         }

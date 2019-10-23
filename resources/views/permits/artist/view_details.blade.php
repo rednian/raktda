@@ -2,9 +2,6 @@
 
 @section('content')
 
-
-
-
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
@@ -17,14 +14,14 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{url('company/artist_permits')}}" class="btn btn--maroon btn-elevate btn-sm">
+                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn--maroon btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{url('company/artist_permits')}}" class="btn btn--maroon btn-elevate btn-sm">
+                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn--maroon btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                 </a>
             </div>
@@ -63,8 +60,8 @@
                 <tbody>
                     @foreach ($permit_details->artistPermit as $artistPermit)
                     <tr>
-                        <td>{{$artistPermit->artist['firstname_en']}}</td>
-                        <td>{{$artistPermit->artist['lastname_en']}}</td>
+                        <td>{{$artistPermit->firstname_en}}</td>
+                        <td>{{$artistPermit->lastname_en}}</td>
                         <td>{{$artistPermit->profession['name_en']}}</td>
                         <td>{{$artistPermit->mobile_number}}</td>
                         <td>{{$artistPermit->email}}</td>
@@ -132,7 +129,7 @@
                if(data)
                {
                 var code = data.artist.person_code ? data.artist.person_code : '';
-                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td >' + code + '</td><th>Profession</th> <td>' + ( data.profession  ?  data.profession.name_en : '' )+ '</td></tr><tr><th>First Name</th> <td >' + data.artist.firstname_en + '</td>  <th>Last Name</th> <td>' + data.artist.lastname_en + '</td> </tr><tr><th>First Name - Ar</th> <td >' + data.artist.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.artist.lastname_ar + '</td> </tr> <tr> <th> Nationality </th> <td >' + data.artist.nationality.nationality_en + '</td> <th>Email</th> <td>' + data.email + '</td>  </tr> <tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.artist.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Exp</th> <td >' +moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr> <tr>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td><th>Phone Number</th> <td >' + data.phone_number + '</td></tr></table>');
+                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td >' + code + '</td><th>Profession</th> <td>' + ( data.profession  ?  data.profession.name_en : '' )+ '</td></tr><tr><th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td> </tr><tr><th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td> </tr> <tr> <th> Nationality </th> <td >' + data.nationality.nationality_en + '</td> <th>Email</th> <td>' + data.email + '</td>  </tr> <tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Exp</th> <td >' +moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr></table>');
 
                }
             }

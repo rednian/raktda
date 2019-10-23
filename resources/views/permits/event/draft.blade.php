@@ -425,8 +425,7 @@
                             Previous
                         </div>
 
-
-                        <a href="{{url('company/event')}}">
+                        <a href="{{route('event.index')}}#draft">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
@@ -496,9 +495,9 @@
 
 
 @section('script')
-<script async src={{asset('js/new_artist_permit.js')}} type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="{{asset('js/uploadfile.js')}}"></script>
+<script src="{{asset('js/company/uploadfile.js')}}"></script>
+<script src="{{asset('js/company/artist.js')}}"></script>
+
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -509,6 +508,7 @@
     var documentDetails = {};
 
     $(document).ready(function(){
+        setWizard();
         wizard = new KTWizard("kt_wizard_v3");
         wizard.goTo(2);
         $('#back_btn').css('display', 'none');
@@ -676,7 +676,7 @@
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#submit--btn-group').css('display', 'block');
                 eventdetails = {
-                    event_id: $('#event_type_id').val(),
+                    event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
                     issued_date: $('#issued_date').val(),

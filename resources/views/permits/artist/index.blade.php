@@ -11,32 +11,32 @@
 
         <ul class="nav nav-tabs " role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Applied
-                    Artist Permits </a>
+                <a class="nav-link active" data-toggle="tab" href="#"
+                    data-target="#applied">{{__('words.applied_artist_permit')}}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Valid
-                    Artist Permits</a>
+                <a class="nav-link" data-toggle="tab" href="#valid">Valid Artist Permits</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">
-                    Artist Permit Drafts</a>
+                <a class="nav-link" data-toggle="tab" href="#draft">Artist Permit Drafts</a>
             </li>
-            <li class="nav-item"
-                style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                <a href="{{ url('company/add_new_permit')}}">
-                    <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
-                        Add New Permit
-                    </button>
-                    <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
-                        <i class="la la-plus"></i>
-                    </button>
-                </a>
-            </li>
+
         </ul>
 
+        <span class="nav-item"
+            style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
+            <a href="{{ url('company/add_new_permit')}}">
+                <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
+                    Add New
+                </button>
+                <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                    <i class="la la-plus"></i>
+                </button>
+            </a>
+        </span>
+
         <div class="tab-content">
-            <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
+            <div class="tab-pane active" id="applied" role="tabpanel">
                 <table class="table table-striped table-borderless" id="applied-artists-table">
                     <thead class="thead-dark">
                         <tr>
@@ -54,7 +54,7 @@
                 </table>
 
             </div>
-            <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
+            <div class="tab-pane" id="valid" role="tabpanel">
                 <table class="table table-striped table-borderless " id="existing-artists-table">
                     <thead class="thead-dark">
                         <tr>
@@ -74,7 +74,7 @@
                 </table>
             </div>
 
-            <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
+            <div class="tab-pane" id="draft" role="tabpanel">
                 <table class="table table-striped table-borderless " id="drafts-artists-table">
                     <thead class="thead-dark">
                         <tr>
@@ -183,6 +183,15 @@
             }
         });
 
+        var hash = window.location.hash;
+            hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+            $('.nav-tabs a').click(function (e) {
+            $(this).tab('show');
+            var scrollmem = $('body').scrollTop();
+            window.location.hash = this.hash;
+            $('html,body').scrollTop(scrollmem);
+        });
+
         var table1 = $('#applied-artists-table').DataTable({
             responsive: true,
             processing: false,
@@ -268,7 +277,7 @@
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            order:[[5,'desc']],
+            order:[[6,'desc']],
             ajax:'{{route("company.fetch_existing_artists")}}',
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
@@ -338,7 +347,7 @@
                 }
             ],
             language: {
-                emptyTable: "No Existing Artist Permits"
+                emptyTable: "No Valid Artist Permits"
             }
         });
 

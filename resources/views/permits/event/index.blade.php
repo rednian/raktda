@@ -3,7 +3,8 @@
 @section('title', 'Event Permits - Smart Government Rak')
 
 @section('content')
-  
+
+
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
 
@@ -11,38 +12,34 @@
 
         <ul class="nav nav-tabs " role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Applied
+                <a class="nav-link active" data-toggle="tab" href="#" data-target="#applied">Applied
                     Event Permits </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Valid
-                    Event Permits</a>
+                <a class="nav-link" data-toggle="tab" href="#valid">Valid Event Permits</a>
             </li>
             <li class="nav-item">
-
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">Permit Calendar</a>
+                <a class="nav-link" data-toggle="tab" href="#calendar">Permit Calendar</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_4">
-
-                    Event Permit Drafts</a>
-            </li>
-            <li class="nav-item"
-                style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                <a href="{{ route('event.create')}}">
-
-                    <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
-                        Add New
-                    </button>
-                    <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
-                        <i class="la la-plus"></i>
-                    </button>
-                </a>
+                <a class="nav-link" data-toggle="tab" href="#draft">Event Permit Drafts</a>
             </li>
         </ul>
 
+        <span class="nav-item" style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
+            <a href="{{ route('event.create')}}">
+
+                <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
+                    Add New
+                </button>
+                <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                    <i class="la la-plus"></i>
+                </button>
+            </a>
+        </span>
+
         <div class="tab-content">
-            <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
+            <div class="tab-pane show fade active" id="applied" role="tabpanel">
                 <table class="table table-striped table-borderless" id="applied-events-table">
                     <thead class="thead-dark">
                         <tr>
@@ -53,7 +50,6 @@
                             <th>Venue</th>
                             <th>Type</th>
                             <th>Applied On</th>
-                            {{-- <th>Status</th> --}}
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -61,7 +57,7 @@
                 </table>
 
             </div>
-            <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
+            <div class="tab-pane fade" id="valid" role="tabpanel">
                 <table class="table table-striped table-borderless " id="existing-events-table">
                     <thead class="thead-dark">
                         <tr>
@@ -71,7 +67,6 @@
                             <th>To </th>
                             <th>Venue</th>
                             <th>Type</th>
-                            {{-- <th>Applied On</th> --}}
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -81,13 +76,14 @@
             </div>
 
 
-            <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
+            <div class="tab-pane fade" id="calendar" role="tabpanel">
                 <div class="kt-portlet__body">
-                    <div id="kt_calendar"></div>
+                    <div id="event-calendar">
+                    </div>
                 </div>
             </div>
 
-            <div class="tab-pane" id="kt_tabs_1_4" role="tabpanel">
+            <div class="tab-pane fade" id="draft" role="tabpanel">
                 <table class="table table-striped table-borderless " id="drafts-events-table">
                     <thead class="thead-dark">
                         <tr>
@@ -188,18 +184,39 @@
         <input type="hidden" id="valid_events" value="{{json_encode($events)}}">
 
 
-
-
-
     </div>
 
     @endsection
 
     @section('script')
     <script>
+        $('#kt_tabs_list a').click(function(e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        // $('ul .nav-tabs > li > a').on('shown.bs.tab', function(e) {
+        //     var id = $(e.target).attr("href").substr(1);
+        //     window.location.hash = id;
+        // });
+
+        // var hash = window.location.hash;
+        // $('#kt_tabs_list a[href="' + hash + '"]').tab('show');
+
         var events = JSON.parse($('#valid_events').val());
 
         $(document).ready(function(){
+
+            var hash = window.location.hash;
+            hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+            $('.nav-tabs a').click(function (e) {
+            $(this).tab('show');
+            var scrollmem = $('body').scrollTop();
+            window.location.hash = this.hash;
+            $('html,body').scrollTop(scrollmem);
+            });
+
+            calendarEvents();
 
         $.ajaxSetup({
             headers: {
@@ -357,15 +374,6 @@
 					}
                 },
 
-                // {
-                //     targets:-3,
-                //     width: '10%',
-                //     className: 'text-center',
-                //     render: function(data, type, full, meta) {
-				// 	return `<span class="kt-font-bold kt-font-transform-c">${data}</span>`;
-
-				// 	}
-                // }
             ],
             language: {
                 emptyTable: "No Existing Event Permits"
@@ -441,7 +449,6 @@
 
         });
 
-        calenderEvents();
 
     });
 
@@ -475,61 +482,52 @@
 
 
     const rejected_permit = id => {
+        let url = "{{route('event.reject_reason', ':id')}}";
+        url = url.replace(':id', id);
+        event.reject_reason
         $.ajax({
-
-            url: "{{url('company/reject_reason')}}" + '/' + id,
-            success: function (data) {
-                $('#rejected_reason').html(data);
+            url: url,
+            success: function(data){
+                $('#rejected_reason').html(data.comment);
             }
         });
     }
-    </script>
-    <script src="{{asset('js/list-view.js')}}"></script>
 
 
-    const calenderEvents = () => {
-        var todayDate = moment().startOf("day");
-            var YM = todayDate.format("YYYY-MM");
-            var YESTERDAY = todayDate
-                .clone()
-                .subtract(1, "day")
-                .format("YYYY-MM-DD");
-            var TODAY = todayDate.format("YYYY-MM-DD");
-            var TOMORROW = todayDate
-                .clone()
-                .add(1, "day")
-                .format("YYYY-MM-DD");
-
-            var calendarEl = document.getElementById("kt_calendar");
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ["interaction", "dayGrid", "timeGrid", "list"],
-
-                isRTL: KTUtil.isRTL(),
-                header: {
-                    left: "prev,next today",
-                    center: "title",
-                    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
-                },
-
-                height: 800,
-                contentHeight: 750,
-                aspectRatio: 3, // see: https://fullcalendar.io/docs/aspectRatio
-
-                views: {
-                    dayGridMonth: { buttonText: "month" },
-                    timeGridWeek: { buttonText: "week" },
-                    timeGridDay: { buttonText: "day" },
-                    listDay: { buttonText: "list" },
-                    listWeek: { buttonText: "list" }
-                },
-
-                defaultView: "listWeek",
-                defaultDate: TODAY,
-                editable: true,
-                eventLimit: true, // allow "more" link when too many events
-                navLinks: true,
-                events: [
-                    @foreach($events as $evt)
+    function calendarEvents(){
+      var todayDate = moment().startOf('day');
+          var YM = todayDate.format('YYYY-MM');
+          var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+          var TODAY = todayDate.format('YYYY-MM-DD');
+          var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+          var calendarEl = document.getElementById('event-calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+              plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+              isRTL: KTUtil.isRTL(),
+              header: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
+              },
+              height: 800,
+              contentHeight: 780,
+              aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
+              nowIndicator: true,
+              // now: TODAY + 'T09:25:00', // just for demo
+              views: {
+                  dayGridMonth: { buttonText: 'Month' },
+                  timeGridWeek: { buttonText: 'Week' },
+                  timeGridDay: { buttonText: 'Day' },
+                  listDay: { buttonText: 'Day List' },
+                  listWeek: { buttonText: 'Week List' }
+              },
+              defaultView: 'listWeek',
+              // defaultDate: TODAY,
+              editable: true,
+              eventLimit: true, // allow "more" link when too many events
+              navLinks: true,
+              events: [
+                @foreach($events as $evt)
                         {
                             title: '{{$evt->name_en}}',
                             start: '{{date("Y-m-d", strtotime($evt->issued_date))}}',
@@ -538,47 +536,25 @@
                             description: '{{$evt->venue_en}}'
                         },
                     @endforeach
-                ],
-
-                eventRender: function(info) {
-                    var element = $(info.el);
-
-                    if (
-                        info.event.extendedProps &&
-                        info.event.extendedProps.description
-                    ) {
-                        if (element.hasClass("fc-day-grid-event")) {
-                            element.data(
-                                "content",
-                                info.event.extendedProps.description
-                            );
-                            element.data("placement", "top");
-                            KTApp.initPopover(element);
-                        } else if (element.hasClass("fc-time-grid-event")) {
-                            element
-                                .find(".fc-title")
-                                .append(
-                                    '<div class="fc-description">' +
-                                        info.event.extendedProps.description +
-                                        "</div>"
-                                );
-                        } else if (
-                            element.find(".fc-list-item-title").lenght !== 0
-                        ) {
-                            element
-                                .find(".fc-list-item-title")
-                                .append(
-                                    '<div class="fc-description">' +
-                                        info.event.extendedProps.description +
-                                        "</div>"
-                                );
-                        }
-                    }
-                }
-            });
-
-            calendar.render();
-    }
+              ],
+              eventRender: function(info) {
+                  var element = $(info.el);
+                  if (info.event.extendedProps && info.event.extendedProps.description) {
+                      if (element.hasClass('fc-day-grid-event')) {
+                          element.data('content', info.event.extendedProps.description);
+                          element.data('placement', 'top');
+                          KTApp.initPopover(element);
+                      } else if (element.hasClass('fc-time-grid-event')) {
+                          element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                      }
+                  }
+              }
+          });
+          calendar.render();
+     }
 
     </script>
 
+    @endsection

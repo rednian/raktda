@@ -6,7 +6,9 @@
 
 <link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
 
+{{-- {{dd(session()->flush())}} --}}
 {{-- {{dd(session()->all())}} --}}
+
 <!-- begin:: Content -->
 {{-- <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"> --}}
 <div class="kt-portlet">
@@ -38,7 +40,7 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>03</span> Upload Docs
-                                    <Docs></Docs>
+
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -47,7 +49,7 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>04</span> Payment
-                                    <Docs></Docs>
+
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -56,7 +58,7 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>05</span> Happiness
-                                    <Docs></Docs>
+
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -146,7 +148,7 @@
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
-                                <form id="eventdetails" novalidate>
+                                <form id="eventdetails" action="" novalidate>
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
@@ -197,7 +199,8 @@
                                                                 Name - Ar<small>( <span class="text-danger">required
                                                                     </span>)</small></label>
                                                             <input type="text" class="form-control form-control-sm "
-                                                                name="name_ar" id="name_ar" placeholder="Event Name">
+                                                                name="name_ar" dir="rtl" id="name_ar"
+                                                                placeholder="Event Name - Ar">
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-sm ">
@@ -213,7 +216,7 @@
                                                                 </div>
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="issued_date" id="issued_date"
-                                                                    placeholder="From Date">
+                                                                    placeholder="From Date" data-date-start-date="+0d">
 
                                                             </div>
                                                         </div>
@@ -315,14 +318,11 @@
                                                 </h6>
                                             </div>
                                         </div>
-                                        {{--id="collapseTwo6"--}}
+
                                         <div class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample6">
+                                            data-parent="#accordionExample6" id="collapseTwo6">
                                             <div class="card-body">
-
                                                 <div class="row">
-
-
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="address"
                                                             class=" col-form-label kt-font-bold text-right">Address
@@ -364,8 +364,7 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="country_id"
                                                             class=" col-form-label kt-font-bold text-right">Country
-                                                            <small>( <span class="text-danger">required</span>
-                                                                )</small></label>
+                                                        </label>
                                                         <select class="form-control form-control-sm " name="country_id"
                                                             id="country_id">
                                                             {{--   - class for search in select  --}}
@@ -392,60 +391,82 @@
 
 
 
-
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
                                 <form id="documents_required" method="post">
 
+                                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                                        <div class="kt-form__section kt-form__section--first ">
+                                            <div class="kt-wizard-v3__form">
+                                                <form id="documents_required" method="post">
 
-                                </form>
+                                                    <div class="kt-wizard-v3__content"
+                                                        data-ktwizard-type="step-content">
+                                                        <div class="kt-form__section kt-form__section--first ">
+                                                            <div class="kt-wizard-v3__form">
+                                                                <form id="documents_required" method="post">
+
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="kt-form__actions">
+                                                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                                            data-ktwizard-type="action-prev" id="prev_btn">
+                                                            Previous
+                                                        </div>
+
+
+                                                        <a href="{{url('company/event')}}">
+                                                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                                                id="back_btn">
+                                                                Back
+                                                            </div>
+                                                        </a>
+
+                                                        <div class="btn-group" role="group" id="submit--btn-group">
+                                                            <button id="btnGroupDrop1" type="button"
+                                                                class="btn btn--yellow btn-sm dropdown-toggle"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
+                                                                Submit
+                                                            </button>
+                                                            <div class="dropdown-menu py-0"
+                                                                aria-labelledby="btnGroupDrop1">
+                                                                <button name="submit"
+                                                                    class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
+                                                                    value="finished" id="submit_btn">Finish &
+                                                                    Submit</button>
+                                                                <button name="submit"
+                                                                    class="dropdown-item btn btn-sm btn-secondary"
+                                                                    value="drafts" id="draft_btn">Save
+                                                                    to Drafts</button>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                                            data-ktwizard-type="action-next" id="next_btn">
+                                                            Next Step
+                                                        </div>
+
+                                                    </div>
+
+                                            </div>
+
+
+
+
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-prev" id="prev_btn">
-                            Previous
-                        </div>
-
-
-                        <a href="{{url('company/event')}}">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                Back
-                            </div>
-                        </a>
-
-                        <div class="btn-group" role="group" id="submit--btn-group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Submit
-                            </button>
-                            <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
-                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
-                                    value="finished" id="submit_btn">Finish &
-                                    Submit</button>
-                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
-                                    id="draft_btn">Save
-                                    to Drafts</button>
-                            </div>
-                        </div>
-
-
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-next" id="next_btn">
-                            Next Step
-                        </div>
-
-                    </div>
-
                 </div>
-
-
-
-
             </div>
         </div>
     </div>
@@ -483,10 +504,8 @@
 @endsection
 
 
-@section('script')
-<script async src={{asset('js/new_artist_permit.js')}} type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="{{asset('js/uploadfile.js')}}"></script>
+<script src="{{asset('js/artist/artist.js')}}">
+</script>
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -495,8 +514,13 @@
     var fileUploadFns = [];
     var eventdetails = {};
     var documentDetails = {};
+    var docRules = {};
+    var docMessages = {};
+    var documentsValidator ;
+
 
     $(document).ready(function(){
+        setWizard();
         localStorage.clear();
         uploadFunction();
         $('#submit--btn-group').css('display', 'none');
@@ -506,7 +530,7 @@
             // console.log($('#artist_number_doc').val());
             for (var i = 1; i <= $('#requirements_count').val(); i++) {
                 fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
-                    url: "{{route('company.uploadDocument')}}",
+                    url: "{{route('event.uploadDocument')}}",
                     method: "POST",
                     allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "doc_file_" + i,
@@ -516,18 +540,42 @@
                     showFileSize: false,
                     returnType: "json",
                     showFileCounter: false,
+                    duplicateErrorStr: 'No duplicate files allowed',
+                    multiple: true,
+                    dragDrop: true,
                     abortStr: '',
-                    multiple: false,
-                    maxFileCount: 1,
+                    maxFileCount: 2,
                     showDelete: true,
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                     formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
+                    onLoad:function(obj)
+                    {
+                        var loadUrl = "{{route('company.resetUploadsSession', ':id')}}";
+                        loadUrl = loadUrl.replace(':id', $('#req_id_' + i).val());
+                        $.ajax({
+                            url: loadUrl,
+                            success: function(data)
+                            {
+                            }
+                        });
+                    },
                     onError: function (files, status, errMsg, pd) {
                         showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
                         pd.statusbar.hide();
                     },
                     downloadCallback: function (files, pd) {
 
+                    },
+                    deleteCallback: function(data,pd)
+                    {
+                        $.ajax({
+                            url: "{{route('event.deleteUploadedfile')}}",
+                            type: 'POST',
+                            data: {path: data.filepath, ext: data.ext, id: data.id},
+                            success: function (result) {
+                                console.log('success');
+                            }
+                        });
                     }
                 });
                 $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
@@ -564,17 +612,6 @@
             },
         });
 
-        var docRules = {};
-        var docMessages = {};
-
-
-
-        var documentsValidator = $('#documents_required').validate({
-            rules: docRules,
-            messages: docMessages
-        });
-
-
         $("#check_inst").on("click", function () {
             setThis('none', 'block', 'block', 'none');
         });
@@ -588,13 +625,9 @@
 
         $("#upload_doc").on("click", function () {
             wizard = new KTWizard("kt_wizard_v3");
-            if (!checkForTick()) return;
-            if (wizard.currentStep == 3) {
-                stopNext(eventValidator);
-                return;
-            }
-
-            setThis('block', 'none', 'none', 'block');
+            !checkForTick() ? wizard.stop : '';
+            wizard.currentStep == 2 ? stopNext(eventValidator): "";
+            eventValidator.form() ? setThis('block', 'none', 'none', 'block') : '';
         });
 
         const setThis = (prev, next, back, submit) => {
@@ -636,7 +669,7 @@
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#submit--btn-group').css('display', 'block');
                 eventdetails = {
-                    event_id: $('#event_type_id').val(),
+                    event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
                     issued_date: $('#issued_date').val(),
@@ -843,12 +876,18 @@
                             docMessages['doc_exp_date_' + j] = '';
 
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
-
                      }
                      uploadFunction();
+                      documentsValidator = $('#documents_required').validate({
+                        rules: docRules,
+                        messages: docMessages
+                    });
                  }else {
                     $('#documents_required').empty();
                  }
+
+
+
                 }
             });
         }

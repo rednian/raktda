@@ -2,24 +2,22 @@
 
 @section('content')
 
-
-
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Artist Permit Drafted Details</h3>
+            <h3 class="kt-portlet__head-title">Artist Permit Draft Details</h3>
         </div>
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{url('company/artist_permits')}}" class="btn btn--maroon btn-elevate btn-sm">
+                <a href="{{route('artist.index')}}#draft" class="btn btn--maroon btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{url('company/artist_permits')}}" class="btn btn--maroon btn-elevate btn-sm">
+                <a href="{{route('artist.index')}}#draft" class="btn btn--maroon btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                 </a>
             </div>
