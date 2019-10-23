@@ -225,7 +225,7 @@
             var tempArr = [];
             for(var i = 0 ; i < total; i++){
                 var temp_id = $('#temp_id_'+i).val();
-                var tempUrl = "{{url('company/replace_artist')}}"+'/' +temp_id ;
+                var tempUrl = "{{url('artist/edit')}}"+'/' +temp_id + '/amend' ;
                 tempArr.push(tempUrl);
             }
 

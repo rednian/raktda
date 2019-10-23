@@ -129,6 +129,7 @@
                     <!--end: Form Wizard Step 1-->
                     <input type="hidden" id="permit_from" value="{{$permit_details->issued_date}}">
                     <input type="hidden" id="permit_to" value="{{$permit_details->expired_date}}">
+                    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
                     <!--begin: Permit Details Wizard-->
                     <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
                     {{-- Artist details wizard Start --}}
@@ -874,7 +875,9 @@
                                 let number = id.split("_");
                                 let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                 let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                                obj.createProgress(data.requirement['requirement_name'],"{{url('storage')}}"+'/'+data.path,'');
+                                const d = data["path"].split("/");
+                                let docName = d[d.length - 1];
+                                obj.createProgress(docName,"{{url('storage')}}"+'/'+data.path,'');
                                 if(formatted_issue_date != NaN-NaN-NaN)
                                 {
                                     $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
@@ -886,12 +889,22 @@
                 },
                 downloadCallback:function(files,pd)
                 {
-                    let file_path = files.filepath;
-                    let path = file_path.replace('public/','');
-                    window.open(
-                    "{{url('storage')}}"+'/' + path,
-                    '_blank'
-                    );
+                    if(files[0]) {
+                        let user_id = $('#user_id').val();
+                        let artistId = $('#artist_id').val();
+                        let this_url = user_id + '/artist/' + artistId +'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    } else {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }
                 },
                 onError: function (files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');

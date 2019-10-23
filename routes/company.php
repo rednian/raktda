@@ -74,11 +74,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('event/fetch_requirements/{id}', 'Company\EventController@fetch_requirements')->name('company.event.get_requirements');
     Route::post('event/get_uploaded_docs', 'Company\EventController@get_uploaded_docs')->name('company.event.get_uploaded_docs');
     Route::post('event/make_payment', 'Company\EventController@make_payment')->name('company.event.make_payment');
+    Route::get('event/calendar', 'Company\EventController@calendarFn')->name('company.event.calendar');
     Route::get('event/happiness/{event}', 'Company\EventController@happiness')->name('event.happiness');
     Route::post('event/submit_happiness', 'Company\EventController@submit_happiness')->name('event.submit_happiness');
     Route::post('uploadEventDocument', 'Company\EventController@uploadDocument')->name('event.uploadDocument');
     Route::post('event/deleteUploadedfile', 'Company\EventController@deleteUploadFile')->name('event.deleteUploadedfile');
-
 
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 });

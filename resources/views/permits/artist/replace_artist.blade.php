@@ -127,6 +127,7 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
                     <!--end: Form Wizard Step 1-->
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
@@ -908,12 +909,22 @@
                 },
                 downloadCallback:function(files,pd)
                 {
-                    let file_path = files.filepath;
-                    let path = file_path.replace('public/','');
-                    window.open(
-                    "{{url('storage')}}"+'/' + path,
-                    '_blank'
-                    );
+                    if(files[0]) {
+                        let user_id = $('#user_id').val();
+                        let artistId = $('#artist_id').val();
+                        let this_url = user_id + '/artist/' + artistId +'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    } else {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }
                 }
             });
             $('#fileuploader_'+i+' div').attr('id', 'ajax-upload_'+i);

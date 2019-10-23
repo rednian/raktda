@@ -23,14 +23,14 @@ use App\Transaction;
 use App\EventComment;
 use Session;
 use Storage;
+use Calendar;
 
 class EventController extends Controller
 {
 
     public function index()
     {
-        $events = Event::with('type')->where('created_by', Auth::user()->user_id)->where('status', 'active')->get();
-        return view('permits.event.index', ['events' =>  $events]);
+        return view('permits.event.index');
     }
 
 
@@ -158,6 +158,26 @@ class EventController extends Controller
         $data['areas'] = Areas::all()->sortBy('name_en');
         $data['event'] = $event;
         return view('permits.event.edit', $data);
+    }
+
+    public function calendarFn()
+    {
+        $user = Auth::user();
+        $events = Event::where('created_by', $user->user_id)->whereIn('status', ['active', 'expired'])->get();
+        $events = $events->map(function ($event) use ($user) {
+            return [
+                'title' => $user->LanguageId == 1 ? $event->name_en : $event->name_ar,
+                // 'start'=> Carbon::createFromTimestamp($event->issued_date.$event->time_start),
+                'start' => date('Y-m-d', strtotime($event->issued_date)) . ' ' . date('H:m', strtotime($event->time_start)),
+                'end' => date('Y-m-d', strtotime($event->expired_date)) . ' ' . date('H:m', strtotime($event->time_end)),
+                'id' => $event->event_id,
+                'url' => route('event.show', $event->event_id) . '?tab=calendar',
+                'description' => 'Venue : ' . $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
+                // 'allDay'=> false,
+                // 'className' => eventStatus($event->status)
+            ];
+        });
+        return response()->json($events);
     }
 
     public function update_event(Request $request)
