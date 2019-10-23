@@ -26,6 +26,7 @@ use App\ArtistTempData;
 use App\ArtistTempDocument;
 use App\PermitComment;
 use PDF;
+use App\Transaction;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ArtistController extends Controller
