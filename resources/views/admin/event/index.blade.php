@@ -160,7 +160,7 @@
                             <th>EVENT NAME</th>
                             <th>APPLIED DATE</th>
                             <th>APPLICANT TYPE</th>
-                            <th>PERMIT START</th>
+                            <th>PERMIT STATUS</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>

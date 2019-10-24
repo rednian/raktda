@@ -21,7 +21,7 @@ class User extends Authenticatable implements Auditable
     protected $connection = 'bls';
     //smartrak_bls
 
-    protected $table = 'user';
+    protected $table = 'smartrak_bls.user';
 
     protected $primaryKey = 'user_id';
     protected $fillable = [

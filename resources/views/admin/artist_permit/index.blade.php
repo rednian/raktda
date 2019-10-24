@@ -750,10 +750,7 @@
             var status = $('select#new-permit-status').val();
 
              d.request_type = $('select#new-request-type').val();
-             d.permit_status = status.length > 0 ? status : ['new', 'modified', 'unprocessed'];
-             // d.permit_status = $('input[name=permit_start]').val();
-             // d.issued_date = filter.getAction();
-             // d.today = filter.getToday();
+             d.status = status.length > 0 ? status : ['new', 'modified', 'unprocessed'];
            }
          },
          columnDefs: [

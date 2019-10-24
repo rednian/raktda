@@ -334,13 +334,13 @@
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
 												 @include('admin.artist_permit.includes.comment')
-												 <table class="table table-striped table-light--warning" id="requirement-table">
-														<thead class="thead-dark">
+												 <table class="table table-striped border borderless table-hover" id="requirement-table">
+														<thead>
 														<tr>
-															 <th>Requirement Name</th>
-															 <th>Issued Date</th>
-															 <th>Expired Date</th>
-															 <th>Action</th>
+															 <th>REQUIREMENT NAME</th>
+															 <th>ISSUED DATE</th>
+															 <th>EXPIRED DATE</th>
+															 <th>ACTION</th>
 														</tr>
 														</thead>
 												 </table>
@@ -355,7 +355,7 @@
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
 												  @include('admin.artist_permit.includes.comment')
-												 <section class="kt-form kt-form--label-right1">
+												 <section class="kt-form kt-form--label-right">
 														<div class="form-group form-group-sm row">
 															 <label class="col-lg-2 col-form-label">Action <span class="text-danger">*</span></label>
 															 <div class="col-lg-5">
@@ -383,6 +383,46 @@
 															 </div>
 														</div>
 												 </section>
+												   @if ($event->approve()->exists())
+												   <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-20" id="accordion-approver">
+												       <div class="card">
+												           <div class="card-header" id="headingOne-approver">
+												               <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapse-approver"
+												                   aria-expanded="true" aria-controls="collapse-approver">
+												                   <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Checked & Approval History</h6>
+												               </div>
+												           </div>
+												           <div id="collapse-approver" class="collapse show" aria-labelledby="headingOne-approver" data-parent="#accordion-approver">
+												               <div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
+												                   <table class="table table-hover table-borderless border table-striped">
+												                       <thead>
+												                           <tr>
+												                               <th>CHECKED BY</th>
+												                               <th>REMARKS</th>
+												                               <th>USER GROUP</th>
+												                               <th>CHECKED DATE</th>
+												                               <th>ACTION TAKEN</th>
+												                           </tr>
+												                       </thead>
+												                       <tbody>
+												                           @if ($event->approve()->exists())
+												                           @foreach ($event->approve()->orderBy('updated_at')->get() as $approve)
+												                               <tr>
+												                                   <td>{{ ucwords($approve->user->NameEn) }}</td>
+												                                   <td>{{ ($approve->comment->comment) }}</td>
+												                                   <td>{{ ucwords($approve->role->NameEn) }}</td>
+												                                   <td>{{ $approve->checked_at ? $approve->checked_at->format('d-M-Y') : null }}</td>
+												                                   <td>{{ $approve->status }}</td>
+												                               </tr>
+												                           @endforeach
+												                           @endif
+												                       </tbody>
+												                   </table>
+												               </div>
+												           </div>
+												       </div>  
+												   </div>
+												   @endif
 											</div>
 									 </section>
 								</div>

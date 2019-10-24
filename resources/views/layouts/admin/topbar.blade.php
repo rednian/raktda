@@ -64,7 +64,7 @@
                 <div class="kt-header__topbar-user">
                     @php
 
-                    <<<<<<< HEAD <<<<<<< HEAD $name=ucwords(Auth::user()->NameEn);
+                        $name=ucwords(Auth::user()->NameEn);
                         $first_name = explode(' ', $name);
                         $first_name = $first_name[0];
                         $first_letter = substr($first_name, 0, 1);
@@ -114,104 +114,5 @@
         <!--end: User Bar -->
     </div>
     <!-- end:: Header Topbar -->
-    =======
-    $name = ucwords(Auth::user()->NameEn);
-    $first_name = explode(' ', $name);
-    $first_name = $first_name[0];
-    $first_letter = substr($first_name, 0, 1);
-    @endphp
-
-    <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span> <span
-        class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords($first_name) }}</span>
-    <span
-        class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
-</div>
-</div>
-<div
-    class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg">
-    <!--begin: Head -->
-    <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
-        <div class="kt-user-card__avatar">
-            <span
-                class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
-        </div>
-        <div class="kt-user-card__name">{{ $name }}</div>
-        <div class="kt-user-card__badge"> <span class="btn btn-label-success btn-sm btn-bold btn-font-md">1
-                Notifications</span> </div>
-    </div>
-    <!--end: Head -->
-    <!--begin: Navigation -->
-    <div class="kt-notification">
-        <a href="javascript:void(0)" class="kt-notification__item">
-            <div class="kt-notification__item-icon"> <i class="flaticon2-calendar-3 kt-font-success"></i> </div>
-            <div class="kt-notification__item-details">
-                <div class="kt-notification__item-title kt-font-bold"> My Profile </div>
-                <div class="kt-notification__item-time"> Account settings and more </div>
-            </div>
-        </a>
-        <div class="kt-notification__custom kt-space-between">
-            <a href="{{ route('logout') }}"
-                onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                class="btn btn-brand btn-elevate btn-sm">Sign Out</a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf
-            </form>
-        </div>
-    </div>
-    <!--end: Navigation -->
-</div>
-</div>
-<!--end: User Bar -->
-</div>
-<!-- end:: Header Topbar -->
->>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd
-=======
-$name = ucwords(Auth::user()->NameEn);
-$first_name = explode(' ', $name);
-$first_name = $first_name[0];
-$first_letter = substr($first_name, 0, 1);
-@endphp
-
-<span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span> <span
-    class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords($first_name) }}</span>
-<span
-    class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
-</div>
-</div>
-<div
-    class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg">
-    <!--begin: Head -->
-    <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
-        <div class="kt-user-card__avatar">
-            <span
-                class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
-        </div>
-        <div class="kt-user-card__name">{{ $name }}</div>
-        <div class="kt-user-card__badge"> <span class="btn btn-label-success btn-sm btn-bold btn-font-md">1
-                Notifications</span> </div>
-    </div>
-    <!--end: Head -->
-    <!--begin: Navigation -->
-    <div class="kt-notification">
-        <a href="javascript:void(0)" class="kt-notification__item">
-            <div class="kt-notification__item-icon"> <i class="flaticon2-calendar-3 kt-font-success"></i> </div>
-            <div class="kt-notification__item-details">
-                <div class="kt-notification__item-title kt-font-bold"> My Profile </div>
-                <div class="kt-notification__item-time"> Account settings and more </div>
-            </div>
-        </a>
-        <div class="kt-notification__custom kt-space-between">
-            <a href="{{ route('logout') }}"
-                onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                class="btn btn-brand btn-elevate btn-sm">Sign Out</a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf
-            </form>
-        </div>
-    </div>
-    <!--end: Navigation -->
-</div>
-</div>
-<!--end: User Bar -->
-</div>
-<!-- end:: Header Topbar -->
->>>>>>> 89e250024409d4e7a0d42d95ce2f832e2ef066fd
+   
 </div>

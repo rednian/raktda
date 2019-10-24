@@ -502,6 +502,7 @@
 
 
 @endsection
+@section('script')
 
 
 <script src="{{asset('js/artist/artist.js')}}">

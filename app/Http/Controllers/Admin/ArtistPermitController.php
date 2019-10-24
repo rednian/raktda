@@ -265,14 +265,14 @@ class ArtistPermitController extends Controller
 
     		return Datatables::of($artist_permit)
 			    ->addColumn('nationality', function($artist_permit){
-			    	if(!$artist_permit->artist->country){ return null; }
-			    	return ucwords($artist_permit->artist->country->nationality_en);
+			    	if(!$artist_permit->country){ return null; }
+			    	return ucwords($artist_permit->country->nationality_en);
 			    })
 			    ->addColumn('age', function($artist_permit){
-			    	return $artist_permit->artist->age;
+			    	return $artist_permit->age;
 			    })
 			    ->addColumn('fullname', function($artist_permit){
-			    	return ucwords($artist_permit->artist->fullname);
+			    	return ucwords($artist_permit->fullname);
 			    })
 			    ->addColumn('profession', function($artist_permit){
 			    	if(!$artist_permit->profession){ return null; }
@@ -370,10 +370,10 @@ class ArtistPermitController extends Controller
     public function dataTable(Request $request)
     {
      if($request->ajax()){
-    	// dd($request->all());
 
      	$limit = $request->length;
      	$start = $request->start;
+
 
          $permit = Permit::has('artist')
          ->when($request->today, function($q) use ($request){
@@ -385,8 +385,8 @@ class ArtistPermitController extends Controller
          ->when($request->request_type, function ($q) use ($request){
           $q->whereIn('request_type', $request->request_type);
         })
-         ->when($request->permit_status, function($q) use ($request){
-          $q->whereIn('permit_status', $request->permit_status);
+         ->when($request->status, function($q) use ($request){
+          $q->whereIn('permit_status', $request->status);
         })
          ->when($request->permit_start, function ($q) use ($request){
           $date = explode('-', $request->permit_start);
