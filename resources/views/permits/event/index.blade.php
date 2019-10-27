@@ -8,40 +8,46 @@
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
 
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-5">
+        <section class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
+                    role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#applied" data-target="#applied">Applied
+                            Event Permits </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#valid">Valid Event Permits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#calendar">Permit Calendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#draft">Event Permit Drafts</a>
+                    </li>
+                    <span class="nav-item"
+                        style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
+                        <a href="{{ route('event.create')}}">
 
-        <ul class="nav nav-tabs " role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" data-target="#applied">Applied
-                    Event Permits </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#valid">Valid Event Permits</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#calendar">Permit Calendar</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#draft">Event Permit Drafts</a>
-            </li>
-        </ul>
+                            <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
+                                Add New
+                            </button>
+                            <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                                <i class="la la-plus"></i>
+                            </button>
+                        </a>
+                    </span>
+                </ul>
 
-        <span class="nav-item" style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-            <a href="{{ route('event.create')}}">
 
-                <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
-                    Add New
-                </button>
-                <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
-                    <i class="la la-plus"></i>
-                </button>
-            </a>
-        </span>
+            </div>
+        </section>
 
         <div class="tab-content">
             <div class="tab-pane show fade active" id="applied" role="tabpanel">
-                <table class="table table-striped table-borderless" id="applied-events-table">
-                    <thead class="thead-dark">
+                <table class="table table-striped table-hover table-borderless border" id="applied-events-table">
+                    <thead>
                         <tr>
                             <th>Refer No.</th>
                             <th>Name</th>
@@ -58,8 +64,8 @@
 
             </div>
             <div class="tab-pane fade" id="valid" role="tabpanel">
-                <table class="table table-striped table-borderless " id="existing-events-table">
-                    <thead class="thead-dark">
+                <table class="table table-striped table-borderless border" id="existing-events-table">
+                    <thead>
                         <tr>
                             <th>Permit No.</th>
                             <th>Name</th>
@@ -84,8 +90,8 @@
             </div>
 
             <div class="tab-pane fade" id="draft" role="tabpanel">
-                <table class="table table-striped table-borderless " id="drafts-events-table">
-                    <thead class="thead-dark">
+                <table class="table table-striped table-borderless border" id="drafts-events-table">
+                    <thead>
                         <tr>
                             <th>From </th>
                             <th>To </th>
@@ -103,94 +109,96 @@
 
         </div>
 
-
-        <!--end: Datatable -->
-
+</section>
 
 
-        <!--begin::Modal-->
-        <div class="modal fade" id="cancel_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
+<!--end: Datatable -->
 
-                        <h5 class="modal-title" id="exampleModalLabel">Cancel Permit</h5>
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{route('event.cancel')}}" id="cancel_permit_form" method="POST" novalidate>
-                            @csrf
-                            <label>Are you sure to Cancel this Permit of Ref No. <span class="text--maroon"
-                                    id="cancel_permit_number"></span>
-                                ?</label>
-                            <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..."
-                                style="resize:none;" class="form-control" id="cancel_reason"></textarea>
-                            <input type="hidden" id="cancel_permit_id" name="permit_id">
-                            <input type="submit" class="btn btn-sm btn--yellow popup-submit-btn" value="Cancel Permit">
-                        </form>
-                    </div>
 
-                </div>
+<!--begin::Modal-->
+<div class="modal fade" id="cancel_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="exampleModalLabel">Cancel Permit</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
             </div>
-        </div>
-
-        <!--end::Modal-->
-
-        <!--begin::Modal-->
-
-        <div class="modal fade" id="cancelled_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
-
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <p id="cancelled_reason" class="text--maroon kt-font-bold kt-font-transform-i"></p>
-
-                    </div>
-                </div>
+            <div class="modal-body">
+                <form action="{{route('event.cancel')}}" id="cancel_permit_form" method="POST" novalidate>
+                    @csrf
+                    <label>Are you sure to Cancel this Permit of Ref No. <span class="text--maroon"
+                            id="cancel_permit_number"></span>
+                        ?</label>
+                    <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..." style="resize:none;"
+                        class="form-control" id="cancel_reason"></textarea>
+                    <input type="hidden" id="cancel_permit_id" name="permit_id">
+                    <input type="submit" class="btn btn-sm btn--yellow popup-submit-btn" value="Cancel Permit">
+                </form>
             </div>
+
         </div>
-
-        <!--end::Modal-->
-        <!--begin::Modal-->
-        <div class="modal fade" id="rejected_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Rejected Reason</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="rejected_reason" class="text--maroon kt-font-bold kt-font-transform-i"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--end::Modal-->
-
-        <input type="hidden" id="valid_events" value="{{json_encode($events)}}">
-
-
     </div>
+</div>
 
-    @endsection
+<!--end::Modal-->
 
-    @section('script')
-    <script>
-        $('#kt_tabs_list a').click(function(e) {
+<!--begin::Modal-->
+
+<div class="modal fade" id="cancelled_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <p id="cancelled_reason" class="text--maroon kt-font-bold kt-font-transform-i"></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end::Modal-->
+<!--begin::Modal-->
+<div class="modal fade" id="rejected_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Rejected Reason</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="rejected_reason" class="text--maroon kt-font-bold kt-font-transform-i"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end::Modal-->
+
+<input type="hidden" id="valid_events" value="{{json_encode($events)}}">
+
+
+</div>
+
+@endsection
+
+@section('script')
+<script>
+    $('#kt_tabs_list a').click(function(e) {
             e.preventDefault();
             $(this).tab('show');
         });
@@ -555,6 +563,6 @@
           calendar.render();
      }
 
-    </script>
+</script>
 
-    @endsection
+@endsection

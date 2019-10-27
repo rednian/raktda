@@ -95,15 +95,16 @@
                                                 <table class="table table-borderless">
                                                     <tr>
                                                         <th>Event Permit Type</th>
-                                                        <th>Fee</th>
+                                                        <th class="text-right">Fee (AED)</th>
                                                     </tr>
                                                     @foreach($event_types as $pt)
                                                     <tr>
                                                         <td>{{$pt->name_en}}</td>
-                                                        <td>{{$pt->amount}}</td>
+                                                        <td class="text-right">{{number_format($pt->amount,2)}}</td>
                                                     </tr>
                                                     @endforeach
                                                 </table>
+
 
 
                                             </div>
@@ -339,19 +340,16 @@
                                                             value={{$event->address}}>
                                                     </div>
 
+
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="emirate_id"
                                                             class=" col-form-label kt-font-bold text-right">Emirate
-                                                            <small>( optional )</small></label>
+                                                        </label>
                                                         <select class="form-control form-control-sm" name="emirate_id"
-                                                            id="emirate_id" onchange="getAreas(this.value)">
-                                                            <option value="">Select</option>
-                                                            @foreach($emirates as $em)
-                                                            <option value="{{$em->id}}"
-                                                                {{$em->id == $event->emirate_id ? 'selected' : ''}}>
-                                                                {{$em->name_en}}</option>
-                                                            @endforeach
+                                                            id="emirate_id">
+                                                            <option value="5">Ras Al Khaimah</option>
                                                         </select>
+
                                                     </div>
 
 
@@ -373,21 +371,15 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="country_id"
                                                             class=" col-form-label kt-font-bold text-right">Country
-                                                            <small>( <span class="text-danger">required</span>
-                                                                )</small></label>
-                                                        <select
-                                                            class="form-control form-control-sm {{$errors->has('country_id') ? 'is-invalid' : ''}}"
-                                                            name="country_id" id="country_id">
-                                                            {{--   - class for search in select  --}}
-                                                            <option value="">Select</option>
-                                                            @foreach ($countries as $ct)
-                                                            <option value="{{$ct->country_id}}"
-                                                                {{$event->country_id == $ct->country_id ? 'selected' : ''}}>
-                                                                {{$ct->name_en}}
+                                                        </label>
+                                                        <select class="form-control form-control-sm " name="country_id"
+                                                            id="country_id">
+                                                            <option value="232">
+                                                                United Arab Emirates
                                                             </option>
-                                                            @endforeach
                                                         </select>
                                                     </div>
+
 
 
                                                 </div>

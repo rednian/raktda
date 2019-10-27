@@ -38,9 +38,7 @@ class EventController extends Controller
     public function create()
     {
         $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['countries'] = Countries::all()->sortBy('name_en');
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
-        $data['areas'] = Areas::all()->sortBy('name_en');
+        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         return view('permits.event.create', $data);
     }
 
@@ -154,9 +152,7 @@ class EventController extends Controller
     public function edit(Event $event)
     {
         $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['countries'] = Countries::all()->sortBy('name_en');
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
-        $data['areas'] = Areas::all()->sortBy('name_en');
+        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['event'] = $event;
         return view('permits.event.edit', $data);
     }
@@ -202,16 +198,30 @@ class EventController extends Controller
             'emirate_id' => $evd['emirate_id'],
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_type_id'],
+            'status' => 'amended'
         );
-        $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
-        $requirement_ids = [];
 
+        $event = Event::where('event_id', $event_id)->update($input_Array);
+
+        $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
+
+        $total_req = $requirements['requirements']->count();
+
+        $requirement_ids = [];
 
         foreach ($requirements->requirements as $req) {
             array_push($requirement_ids, $req->requirement_id);
         }
 
-        $total = $requirements['requirements']->count();
+        $add_req = Event::with('additionalRequirements')->where('event_id', $event_id)->first();
+
+        foreach ($add_req->additionalRequirements as $req) {
+            array_push($requirement_ids, $req->requirement_id);
+        }
+
+        $total_addi = $add_req['additionalRequirements']->count();
+
+        $total = (int) $total_req + (int) $total_addi;
 
         if ($dod) {
 
@@ -341,7 +351,7 @@ class EventController extends Controller
         if ($status == 'applied') {
             $permits->where('status', '!=', 'active')->where('status', '!=', 'draft');
         } else if ($status == 'valid') {
-            $permits->where('status', 'active')->OrderBy('updated_at', 'desc');
+            $permits->whereIn('status', ['active', 'expired'])->OrderBy('updated_at', 'desc');
         } else if ($status == 'draft') {
             $permits->where('status', 'draft');
         }
@@ -371,7 +381,7 @@ class EventController extends Controller
                         return '<a href="' . route('company.event.payment', $permit->event_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
                     } else if ($permit->status == 'new') {
                         return '<a href="' . route('event.edit', $permit->event_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal" data-target="#cancel_permit" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
-                    } else if ($permit->status == 'need amendments') {
+                    } else if ($permit->status == 'need modification') {
                         return '<a href="' . route('event.edit', $permit->event_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a>';
                     } else if ($permit->status == 'rejected') {
                         return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">Rejected</span>';
@@ -432,6 +442,11 @@ class EventController extends Controller
     {
         $requirements = EventType::with('requirements')->where('event_type_id', $id)->latest()->first();
         return $requirements;
+    }
+
+    public function fetch_additional_requirements($id)
+    {
+        return Event::with('additionalRequirements')->where('event_id', $id)->first();
     }
 
     public function get_uploaded_docs(Request $request)
@@ -548,9 +563,7 @@ class EventController extends Controller
     public function view_draft(Event $event)
     {
         $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['countries'] = Countries::all()->sortBy('name_en');
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
-        $data['areas'] = Areas::all()->sortBy('name_en');
+        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['event'] = $event;
         return view('permits.event.draft', $data);
     }
@@ -583,15 +596,16 @@ class EventController extends Controller
 
         $event = Event::where('event_id', $event_id)->update($input_Array);
 
-        $requirements_ar = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
-
-        $requirements = $requirements_ar['requirements'];
+        $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
 
         $requirement_ids = [];
-        foreach ($requirements as $req) {
+
+
+        foreach ($requirements->requirements as $req) {
             array_push($requirement_ids, $req->requirement_id);
         }
-        $total = $requirements->count();
+
+        $total = $requirements['requirements']->count();
 
         if ($dod) {
 
@@ -660,9 +674,7 @@ class EventController extends Controller
     public function payment(Event $event)
     {
         $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['countries'] = Countries::all()->sortBy('name_en');
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
-        $data['areas'] = Areas::all()->sortBy('name_en');
+        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['event'] = $event;
         return view('permits.event.payment', $data);
     }
@@ -745,9 +757,7 @@ class EventController extends Controller
     public function happiness(Event $event)
     {
         $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['countries'] = Countries::all()->sortBy('name_en');
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
-        $data['areas'] = Areas::all()->sortBy('name_en');
+        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['event'] = $event;
         return view('permits.event.happiness', $data);
     }

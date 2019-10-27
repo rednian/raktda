@@ -98,12 +98,12 @@
                                                 <table class="table table-borderless">
                                                     <tr>
                                                         <th>Event Permit Type</th>
-                                                        <th>Fee</th>
+                                                        <th class="text-right">Fee (AED)</th>
                                                     </tr>
                                                     @foreach($event_types as $pt)
                                                     <tr>
                                                         <td>{{$pt->name_en}}</td>
-                                                        <td>{{$pt->amount}}</td>
+                                                        <td class="text-right">{{number_format($pt->amount,2)}}</td>
                                                     </tr>
                                                     @endforeach
                                                 </table>
@@ -345,16 +345,12 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="emirate_id"
                                                             class=" col-form-label kt-font-bold text-right">Emirate
-                                                            <small>( optional )</small></label>
+                                                        </label>
                                                         <select class="form-control form-control-sm" name="emirate_id"
-                                                            id="emirate_id" onchange="getAreas(this.value)">
-                                                            <option value="">Select</option>
-                                                            @foreach($emirates as $em)
-                                                            <option value="{{$em->id}}"
-                                                                {{$em->id == $event->emirate_id ? 'selected' : ''}}>
-                                                                {{$em->name_en}}</option>
-                                                            @endforeach
+                                                            id="emirate_id">
+                                                            <option value="5">Ras Al Khaimah</option>
                                                         </select>
+
                                                     </div>
 
 
@@ -366,8 +362,7 @@
                                                             id="area_id">
                                                             <option value="">Select</option>
                                                             @foreach($areas as $ar)
-                                                            <option value="{{$ar->id}}"
-                                                                {{$ar->id == $event->area_id ? 'selected' : ''}}>
+                                                            <option value="{{$ar->id}}">
                                                                 {{$ar->area_en}}</option>
                                                             @endforeach
                                                         </select>
@@ -376,19 +371,12 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="country_id"
                                                             class=" col-form-label kt-font-bold text-right">Country
-                                                            <small>( <span class="text-danger">required</span>
-                                                                )</small></label>
-                                                        <select
-                                                            class="form-control form-control-sm {{$errors->has('country_id') ? 'is-invalid' : ''}}"
-                                                            name="country_id" id="country_id">
-                                                            {{--   - class for search in select  --}}
-                                                            <option value="">Select</option>
-                                                            @foreach ($countries as $ct)
-                                                            <option value="{{$ct->country_id}}"
-                                                                {{$event->country_id == $ct->country_id ? 'selected' : ''}}>
-                                                                {{$ct->name_en}}
+                                                        </label>
+                                                        <select class="form-control form-control-sm " name="country_id"
+                                                            id="country_id">
+                                                            <option value="{{232}}">
+                                                                United Arab Emirates
                                                             </option>
-                                                            @endforeach
                                                         </select>
                                                     </div>
 
@@ -527,7 +515,7 @@
                     method: "POST",
                     allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "doc_file_" + i,
-                    // showDownload: true,
+                    showDownload: true,
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
@@ -552,19 +540,28 @@
                             dataType: "json",
                             success: function (data) {
                                 if (data) {
-                                    let id = obj[0].id;
-                                    let number = id.split("_");
-                                    let issue_datetime = new Date(data['issued_date']);
-                                    let exp_datetime = new Date(data['expired_date']);
-                                    let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                                    let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-
-                                    obj.createProgress(data["document_name"], "{{url('storage')}}"+'/' + data["path"], '');
-                                    if (formatted_issue_date != NaN - NaN - NaN) {
-                                        $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
-                                        $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                    let j = 1 ;
+                                    for(data of data) {
+                                        if(j <= 2 ){
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let issue_datetime = new Date(data['issued_date']);
+                                        let exp_datetime = new Date(data['expired_date']);
+                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        const d = data["path"].split("/");
+                                        let docName = d[d.length - 1];
+                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                        if (formatted_issue_date != NaN - NaN - NaN) {
+                                            $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                            $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                        }
+                                        }
+                                        j++;
                                     }
+
                                 }
+
                             }
                         });
 
@@ -575,7 +572,12 @@
                         pd.statusbar.hide();
                     },
                     downloadCallback: function (files, pd) {
-
+                        let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
                     }
                 });
                 $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
@@ -590,10 +592,16 @@
                 event_type_id: 'required',
                 name_en: 'required',
                 name_ar: 'required',
-                issued_date: 'required',
+                issued_date: {
+                    required: true,
+                    dateNL: true
+                },
                 time_start: 'required',
                 venue_en: 'required',
-                expired_date: 'required',
+                expired_date: {
+                    required: true,
+                    dateNL: true
+                },
                 time_end: 'required',
                 venue_ar: 'required',
                 address: 'required',
@@ -602,10 +610,16 @@
                 event_type_id: '',
                 name_en: '',
                 name_ar: '',
-                issued_date: '',
+                issued_date: {
+                    required: "",
+                    dateNL: ""
+                },
                 time_start: '',
                 venue_en: '',
-                expired_date: '',
+                expired_date: {
+                    required: "",
+                    dateNL: ""
+                },
                 time_end: '',
                 venue_ar: '',
                 address: '',
@@ -774,7 +788,9 @@
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
+            var expDate = moment(minDate, 'DD-MM-YYYY').add('month', 1);
             $('#expired_date').datepicker('setStartDate', minDate);
+            $('#expired_date').val(expDate.format("DD-MM-YYYY"));
         });
         $('#expired_date').on('changeDate', function (ev) {
             $('#expired_date').valid() || $('#expired_date').removeClass('invalid').addClass('success');
