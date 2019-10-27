@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 use DB;
+use PDF;
 use Auth;
 use DataTables;
 use Carbon\Carbon;
@@ -22,6 +23,21 @@ class ArtistPermitController extends Controller
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
         ]);
+    }
+
+    public function download(Permit $permit)
+    {
+      $data['company_details'] = $permit->owner->user_id;
+      $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'nationality')->get();
+      $data['permit_details'] = $permit;
+
+      $permitNumber = $permit->permit_number;
+
+      $pdf = PDF::loadView('permits.artist.permit_print', $data, [], [
+          'title' => 'Artist Permit',
+          'default_font_size' => 10
+      ]);
+      return $pdf->stream('Permit-' . $permitNumber . '.pdf');
     }
 
     public function show(Permit $permit)
@@ -438,7 +454,10 @@ class ArtistPermitController extends Controller
 	         ->editColumn('request_type', function($permit){
 	         	return ucwords($permit->request_type).' Application';
 	         })
-	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status'])
+           ->addColumn('action', function($permit){
+            return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-light"><i class="la la-download"></i> download</a>';
+           })
+	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action'])
 	          ->setTotalRecords($totalRecords)
 	         ->make(true);
      }

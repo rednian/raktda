@@ -12,7 +12,7 @@
 							</span>
 			</th>
 			<th>REQUEST TYPE</th>
-			<th>PERMIT STATUS</th>
+			<th>ACTION</th>
 	 </tr>
 	 </thead>
 </table>

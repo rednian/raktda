@@ -506,7 +506,7 @@
                {data: 'artist_number'},
                // { data: 'company_type'},
                {data: 'request_type'},
-               {data: 'permit_status'},
+               {data: 'action'},
             ],
 
             createdRow: function (row, data, index) {
@@ -701,7 +701,7 @@
        var start = moment().subtract(29, 'days');
        var end = moment();
 
-       $('input[name=permit_start]').daterangepicker({
+       $('input#new-applied-date').daterangepicker({
          autoUpdateInput: false,
          buttonClasses: 'btn',
          applyClass: 'btn-warning btn-sm btn-elevate',
@@ -717,7 +717,7 @@
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
          }
        }, function (start, end, label) {
-         $('input[name=permit_start].form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+         $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
        });
 
        $('input[type=checkbox][data-type=new_request][name=today]').click(function () {

@@ -335,14 +335,14 @@
 											<div class="col kt-margin-t-20 kt-margin-b-20">
 												 @include('admin.artist_permit.includes.comment')
 												 <table class="table table-striped border borderless table-hover" id="requirement-table">
-														<thead>
+													<thead>
 														<tr>
 															 <th>REQUIREMENT NAME</th>
 															 <th>ISSUED DATE</th>
 															 <th>EXPIRED DATE</th>
 															 <th>ACTION</th>
 														</tr>
-														</thead>
+													</thead>
 												 </table>
 											</div>
 									 </section>
@@ -355,34 +355,68 @@
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
 												  @include('admin.artist_permit.includes.comment')
-												 <section class="kt-form kt-form--label-right">
-														<div class="form-group form-group-sm row">
-															 <label class="col-lg-2 col-form-label">Action <span class="text-danger">*</span></label>
-															 <div class="col-lg-5">
-																	<select name="status" id="" class="form-control custom-select" required>
-																		 <option selected disabled>Select Action</option>
-																		 <option value="approved-unpaid">Approve Application</option>
-																		 <option value="need approval">Need Approval</option>
-																		 <option value="need modification">Send back for Amendments</option>
-																		 <option value="rejected">Reject Application</option>
-																	</select>
-															 </div>
-														</div>
-														<div class="form-group row kt-hide">
-															 <label class="col-lg-2 col-form-label">Approvers <span class="text-danger">*</span></label>
-															 <div class="col-lg-5">
-																	<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
-																		 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
-																		 ->count() > 0)
-																				@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
-																		 ->get() as $role)
-																					 	<option value="{{ $role->role_id }}">{{ ucwords($role->NameEn) }}</option>
-																				@endforeach
-																		 @endif
-															 </select>
-															 </div>
-														</div>
-												 </section>
+												   <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-action">
+												  	<div class="card">
+												  		<div class="card-header" id="heading-action">
+												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-action" aria-expanded="true" aria-controls="collapse-action">
+												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Event action</h6>
+												  			</div>
+												  		 </div>
+												  		 <div id="collapse-action" class="collapse show" aria-labelledby="heading-action" data-parent="#accordion-action">
+												  			<div class="card-body">
+												  				<section class="row">
+												  					<div class="col-md-6">
+												  						<div class="form-group form-group-sm">
+												  							<label for="" class="kt-font-dark">Action <span class="text-danger">*</span></label>
+												  							<select name="status" id="" class="form-control custom-select" required>
+												  								 <option selected disabled>Select Action</option>
+												  								 <option value="approved-unpaid">Approve Application</option>
+												  								 <option value="need approval">Need Approval</option>
+												  								 <option value="need modification">Send back for Amendments</option>
+												  								 <option value="rejected">Reject Application</option>
+												  							</select>												  	
+												  						</div>
+												  						<div class="form-group form-group-sm kt-hide">
+												  							<label for="" class="kt-font-dark">Approvers <span class="text-danger">*</span></label>
+												  							<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
+												  										 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
+												  										 ->count() > 0)
+												  												@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
+												  										 ->get() as $role)
+												  													 	<option value="{{ $role->role_id }}">{{ ucwords($role->NameEn) }}</option>
+												  												@endforeach
+												  										 @endif
+												  							 </select>
+												  						</div>
+												  					</div>
+												  				</section>
+												  			</div>
+												  		</div>
+												  	</div>
+												  </section>
+												   <section class="accordion kt-hide kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-requirements">
+												  	<div class="card">
+												  		<div class="card-header" id="heading-requirements">
+												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
+												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Additional Requirements</h6>
+												  			</div>
+												  		 </div>
+												  		 <div id="collapse-requirements" class="collapse show" aria-labelledby="heading-requirements" data-parent="#accordion-requirements">
+												  			<div class="card-body">
+												  				<table class="table table-borderless table-hover table-striped  border" id="additional-requirement">
+												  					<thead>
+												  						<tr>
+												  							<th></th>
+												  							<th>REQUIREMENT NAME</th>
+												  						</tr>
+												  					</thead>
+												  				</table>
+												  			</div>
+												  		</div>
+												  	</div>
+												  </section>
+												  
+												 
 												   @if ($event->approve()->exists())
 												   <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-20" id="accordion-approver">
 												       <div class="card">
@@ -449,6 +483,7 @@
 @section('script')
 	 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
 	 <script>
+	 	var add_requirements_table = {};
 
 	 	// window.addEventListener('beforeunload', (event) => {
 	 	  // Cancel the event as stated by the standard.
@@ -531,11 +566,12 @@
        });
 
        calendar.render();
-       updateLock();
+       // updateLock();
        eventDetails();
        wizard();
        requirementTable();
        formSubmit();
+       additionalRequirementTable();
      });
 
      
@@ -550,12 +586,69 @@
        
        approver.select2({
 		 minimumResultsForSearch: 'Infinity',
+		 maximumSelectionLength: 2,
 		 placeholder: 'Select Approver',
 		 autoWidth: true,
 		 width: '100%',
 		 allowClear: true,
 		 tags: true
        });
+
+       $('select#select-additional').select2({
+       	minimumResultsForSearch: 'Infinity',
+       	// maximumSelectionLength: 2,
+       	// placeholder: '',
+       	autoWidth: true,
+       	width: '100%',
+       	allowClear: true,
+       	tags: true
+       });
+     }
+
+     function additionalRequirementTable(){
+     	add_requirements_table = $('table#additional-requirement').DataTable({
+     		  dom: '<"toolbar-add pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
+     		ajax:{
+     			url: '{{ route('admin.event.additionalrequirementdatatable', $event->event_id) }}'
+     		},
+     		serverSide: false,
+     		columnDefs:[
+     		{targets: 0, checkboxes: { selectRow: true }, sortable: false, className: 'no-wrap'}
+     		],
+     		select:{ style: 'multi' },
+     		columns: [
+     			{ data: 'requirement_id'},
+     			{data: 'name'},
+     		]
+     	});
+
+     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm kt-font-dark"><u>Add requirement not in the list?</u></button>');
+     	 $('#btn-add').on( 'click', function () {
+     	 	console.log(123456);
+     	        add_requirements_table.row.add( [
+     	            counter +'.1',
+     	            {name: 'heelo'}
+     	        
+     	        ] ).draw( false );
+     	 
+     	        counter++;
+     	    } );
+     	 
+     	    // Automatically add a first row of data
+     	    // $('#btn-add').click();
+
+
+     	var row_selected = add_requirements_table.column(0).checkboxes.selected();
+     	$('form#kt_form').submit(function(e){
+     		// e.preventDefault();
+     		var form = this;
+     		$.each(row_selected, function(i, v){
+     			$(form).append($('input').attr('type', 'hidden').attr('name', 'requirement_id[]').val(v));
+     		});
+     		// row_selected.each(function(v){
+     			
+     		// });
+     	});
      }
      
      function requirementTable(){
@@ -595,7 +688,7 @@
 					$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 				}
 			});
-			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
+			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
 			 wizard.on("beforeNext", function(wizardObj) {
 			 	if(wizardObj.currentStep == 1){
  						$('input[type=checkbox][data-step=step-1]').each(function () {
@@ -657,6 +750,15 @@
      		}
      		else{
      			$('#select-approver').attr('disabled', true);
+     		}
+     		if($(this).val() == 'need modification'){
+     			$('#accordion-requirements').removeClass('kt-hide');
+
+     		}
+     		else{
+     			$('#accordion-requirements').addClass('kt-hide');
+     			console.log(add_requirements_table.column(0).checkboxes.deselectAll());
+     			// add_requirements_table.column(0).checkboxes.deselectAll();
      		}
      	});
 

@@ -370,7 +370,6 @@
           {data: 'created_at'},
           {data: 'type'},
           {data: 'action'},
-          // {data: 'status'}
         ],
         createdRow: function (row, data, index) {
           $('.btn-download', row).click(function(e){e.stopPropagation();});
@@ -441,7 +440,7 @@
             var status = $('select#new-permit-status').val();
             var type = $('select#new-applicant-type').val();
 
-             d.status = status.length > 0 ? status : ['new', 'amend'];
+             d.status = status.length > 0 ? status : ['new', 'amended'];
              d.type =  type.length > 0 ? type : null;
 
            }

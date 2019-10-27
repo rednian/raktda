@@ -19,6 +19,11 @@ class Event extends Model
         'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock', 'created_by'
     ];
 
+    public function additionalRequirements()
+    {
+        return $this->belongsToMany(Requirement::class, 'event_additional_requirement', 'event_id', 'requirement_id')->where('requirement_type', 'event');
+    }
+
     public function approve()
     {
         return $this->hasMany(EventApprover::class, 'event_id');

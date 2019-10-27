@@ -7,6 +7,7 @@
   ---warning: #ffbf00;
   ---white: #fff;
   ---gray: #f5f5f5;
+  ---gray-light: #edeef4;
 }
 .kt-spinner--danger { color: #a63a3f !important; }
 
@@ -15,9 +16,16 @@
 
 .kt-aside__brand .kt-aside__brand-logo img { padding: 0 5px; width: 260px; }
 
+#kt_aside{
+   box-shadow: 4px 0 5px -2px #888;
+}
+
 
 /*sidebar*/
-.kt-aside, .kt-aside-menu, .kt-aside__brand { background-color: var(---white) !important; }
+.kt-aside, .kt-aside-menu, .kt-aside__brand { background-color: var(---gray-light) !important;  }
+.kt-aside, .kt-aside-mune, . kt-aside__brand{
+  /*box-shadow: 0 4px 8px 0 rgba(248, 249, 250, 1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+}
 
 .kt-aside-menu .kt-menu__nav { padding-top: 0; }
 
@@ -37,6 +45,7 @@
 > .kt-menu__link {
   background-color: var(---p-light) !important;
   font-weight: bold !important;
+   box-shadow: 4px 0 5px -2px #888;
 }
 
 .kt-aside-menu .kt-menu__nav>.kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover>.kt-menu__heading .kt-menu__link-text, .kt-aside-menu .kt-menu__nav>.kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover>.kt-menu__link .kt-menu__link-text {
@@ -48,6 +57,7 @@
 .kt-menu__heading, .kt-aside-menu .kt-menu__nav >
 .kt-menu__item.kt-menu__item--active > .kt-menu__link {
   background-color: var(---p-light) !important;
+   box-shadow: 10px 0 5px -2px #888 !important;
   /*   border-bottom: 1px solid #a63a3f !important;
      border-top: 1px solid #a63a3f !important;*/
   font-weight: 600 !important;
