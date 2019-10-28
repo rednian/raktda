@@ -153,7 +153,7 @@
 																<div class="card-body">
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Date Start<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Date Start <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->issued_date }}" name="issued_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -168,7 +168,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Date End<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Date End <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->expired_date }}" name="expired_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -183,7 +183,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Time Start<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Time Start <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->time_start }}" name="time_start" readonly="readonly" type="text" class="form-control">
 																						<div class="input-group-append">
@@ -197,7 +197,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Time End<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Time End <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->time_end }}" name="time_end" readonly="readonly" type="text" class="form-control">
 																						<div class="input-group-append">
@@ -242,7 +242,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-6">
-																				 <label class="kt-font-dark">Venue (AR)<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Venue (AR) <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
 																									 class="form-control">
@@ -259,7 +259,7 @@
 																	 </div>
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Address<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Address <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->address) }}" name="address" readonly="readonly" type="text"
 																									 class="form-control">
@@ -365,7 +365,7 @@
 												  		 <div id="collapse-action" class="collapse show" aria-labelledby="heading-action" data-parent="#accordion-action">
 												  			<div class="card-body">
 												  				<section class="row">
-												  					<div class="col-md-6">
+												  					<div class="col-md-4">
 												  						<div class="form-group form-group-sm">
 												  							<label for="" class="kt-font-dark">Action <span class="text-danger">*</span></label>
 												  							<select name="status" id="" class="form-control custom-select" required>
@@ -398,7 +398,9 @@
 												  	<div class="card">
 												  		<div class="card-header" id="heading-requirements">
 												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
-												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Additional Requirements</h6>
+												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">Additional Requirements</span>
+												  					<small class="text-muted">Select Addtional Requirements from the list or add new requirement.</small>
+												  				</h6>
 												  			</div>
 												  		 </div>
 												  		 <div id="collapse-requirements" class="collapse show" aria-labelledby="heading-requirements" data-parent="#accordion-requirements">
@@ -571,7 +573,6 @@
        wizard();
        requirementTable();
        formSubmit();
-       additionalRequirementTable();
      });
 
      
@@ -618,36 +619,23 @@
      		select:{ style: 'multi' },
      		columns: [
      			{ data: 'requirement_id'},
-     			{data: 'name'},
+     			{ data: 'name'},
      		]
      	});
 
-     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm kt-font-dark"><u>Add requirement not in the list?</u></button>');
+     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark">Add New Requirement</button>');
      	 $('#btn-add').on( 'click', function () {
-     	 	console.log(123456);
-     	        add_requirements_table.row.add( [
-     	            counter +'.1',
-     	            {name: 'heelo'}
-     	        
-     	        ] ).draw( false );
+     	 	var data = {requirement_id: '', name: '<input type="text" autocomplete="off" class="form-control form-control-sm" name="requirements[]" placeholder="write new requirement">'};
+     	 	add_requirements_table.row.add(data).draw();
+     	    });
      	 
-     	        counter++;
-     	    } );
      	 
-     	    // Automatically add a first row of data
-     	    // $('#btn-add').click();
-
-
-     	var row_selected = add_requirements_table.column(0).checkboxes.selected();
      	$('form#kt_form').submit(function(e){
-     		// e.preventDefault();
      		var form = this;
-     		$.each(row_selected, function(i, v){
-     			$(form).append($('input').attr('type', 'hidden').attr('name', 'requirement_id[]').val(v));
-     		});
-     		// row_selected.each(function(v){
-     			
-     		// });
+     		   var rows_selected = add_requirements_table.column(0).checkboxes.selected();
+     		   rows_selected.each(function(v){
+     		   	  $(form).append( $('<input>').attr('type', 'hidden').attr('name', 'requirements_id[]').val(v) );
+     		   });
      	});
      }
      
@@ -688,7 +676,7 @@
 					$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 				}
 			});
-			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
+			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 			 wizard.on("beforeNext", function(wizardObj) {
 			 	if(wizardObj.currentStep == 1){
  						$('input[type=checkbox][data-step=step-1]').each(function () {
@@ -753,7 +741,7 @@
      		}
      		if($(this).val() == 'need modification'){
      			$('#accordion-requirements').removeClass('kt-hide');
-
+     			additionalRequirementTable();
      		}
      		else{
      			$('#accordion-requirements').addClass('kt-hide');

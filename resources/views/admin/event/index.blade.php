@@ -50,7 +50,7 @@
                             <th>EVENT NAME</th>
                             <th>APPLIED DATE</th>
                             <th>APPLICANT TYPE</th>
-                            <th>PERMIT START</th>
+                            {{-- <th>PERMIT START</th> --}}
                             <th>STATUS</th>
                         </tr>
                     </thead>
@@ -87,7 +87,7 @@
                             <th>EVENT NAME</th>
                             <th>APPLIED DATE</th>
                             <th>APPLICANT TYPE</th>
-                            <th>PERMIT START</th>
+                            {{-- <th>PERMIT START</th> --}}
                             <th>STATUS</th>
                         </tr>
                     </thead>
@@ -122,9 +122,8 @@
                             <th>ESTABLISHMENT</th>
                             <th>PERMIT OWNER</th>
                             <th>EVENT NAME</th>
-                            <th>APPLIED DATE</th>
-                            <th>APPLICANT TYPE</th>
                             <th>PERMIT START</th>
+                            <th>APPLICANT TYPE</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
@@ -158,7 +157,7 @@
                             <th>ESTABLISHMENT</th>
                             <th>PERMIT OWNER</th>
                             <th>EVENT NAME</th>
-                            <th>APPLIED DATE</th>
+                            {{-- <th>APPLIED DATE</th> --}}
                             <th>APPLICANT TYPE</th>
                             <th>PERMIT STATUS</th>
                             <th>ACTION</th>
@@ -323,11 +322,12 @@
           {data: 'owner'},
           {data: 'event_name'},
           {data: 'type'},
-          {data: 'start'},
+          // {data: 'start'},
           {data: 'status'},
           {data: 'action'},
         ],
         createdRow: function (row, data, index) {
+          $('.btn-download', row).click(function(e) { e.stopPropagation(); });
           $(row).click(function () {
             location.href = '{{ url('/event') }}/' + data.event_id+'?tab=archive-permit';
           });
@@ -363,11 +363,11 @@
         ],
         columns: [
           {data: 'reference_number'},
-          {data: 'permit_number'},
+          // {data: 'permit_number'},
           {data: 'establishment_name'},
           {data: 'owner'},
           {data: 'event_name'},
-          {data: 'created_at'},
+          {data: 'start'},
           {data: 'type'},
           {data: 'action'},
         ],
@@ -421,7 +421,7 @@
           {data: 'event_name'},
           {data: 'created_at'},
           {data: 'type'},
-          {data: 'start'},
+          // {data: 'start'},
           {data: 'status'}
         ],
         createdRow: function (row, data, index) {
@@ -455,7 +455,7 @@
            {data: 'event_name'},
            {data: 'created_at'},
            {data: 'type'},
-           {data: 'start'},
+           // {data: 'start'},
            {data: 'status'}
          ],
          createdRow: function (row, data, index) {

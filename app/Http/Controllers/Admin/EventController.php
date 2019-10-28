@@ -46,9 +46,7 @@
 		{
 			try {
 				DB::beginTransaction();
-
-				dd($request->all());
-
+			
 				$user = Auth::user();
 				$request['user_id'] = $user->user_id;
 				$request['checked_at'] = Carbon::now();
@@ -57,8 +55,15 @@
 
 				if($request->status == 'rejected'  || $request->status == 'need modification'){
 					if($request->status == 'need modification'){
+						if($request->requirements_id){
+							$requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
+							$event->additionalRequirements()->sync($requirements_id);
+						}
 						if($request->requirements){
-							
+							foreach ($request->requirements as $requirement) {
+								$requirement = Requirement::create(['requirement_name'=>$requirement, 'requirement_type'=>'event']);
+							}
+							// $requirement->type()->sync($event->type->event_type_id);							
 						}
 					}
 					$request['role_id'] = $user->roles()->first()->role_id;
@@ -147,7 +152,13 @@
 		{
 			$requirements = Requirement::whereDoesntHave('type.event', function($q) use ($event){
 				$q->where('event_id', $event->event_id);
-			})->where('requirement_type', 'event')->get();
+			})
+			->whereDoesntHave('additionalRequirements', function($q) use ($event){
+				$q->where('event_id', $event->event_id);
+			})
+			->where('requirement_type', 'event')
+			->get();
+			// dd($requirements);
 
 			return DataTables::of($requirements)
 			->addColumn('name', function($requirement) use ($request){
@@ -165,7 +176,6 @@
 		{
 			$event = $event->requirements()->get();
 			$user = Auth::user();
-//		dd($event->first()->pivot);
 			return DataTables::of($event)
 				 ->addColumn('name', function($event) use ($user){
 					 $name = $user->LanguageId == 1 ? $event->requirement_name : $event->requirement_name_ar;
