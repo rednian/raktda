@@ -90,46 +90,49 @@ class EventController extends Controller
                 $l = $requirement_ids[$j];
                 $m = $j + 1;
 
-                $total_docs = count(session($userid . '_doc_file_' . $l));
+                if (Session::has($userid . '_doc_file_' . $l)) {
 
-                if ($total_docs > 0) {
+                    $total_docs = count(session($userid . '_doc_file_' . $l));
 
-                    for ($k = 0; $k < $total_docs; $k++) {
-                        if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
-                            $ext = session($userid . '_ext_' . $l)[$k];
+                    if ($total_docs > 0) {
 
-                            $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+                        for ($k = 0; $k < $total_docs; $k++) {
+                            if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
+                                $ext = session($userid . '_ext_' . $l)[$k];
 
-                            if (Storage::exists($check_path)) {
-                                $file_count = count(Storage::files($check_path));
-                                $next_file_no = $file_count + 1;
+                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+
+                                if (Storage::exists($check_path)) {
+                                    $file_count = count(Storage::files($check_path));
+                                    $next_file_no = $file_count + 1;
+                                } else {
+                                    $next_file_no = 1;
+                                }
+
+                                $date = date('d_m_Y_H_i_s');
+                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
                             } else {
-                                $next_file_no = 1;
+                                $newPathLink = '';
                             }
 
-                            $date = date('d_m_Y_H_i_s');
-                            $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-                            $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-
-                            Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
-                        } else {
-                            $newPathLink = '';
+                            EventRequirement::create([
+                                'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
+                                'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
+                                'created_at' =>  Carbon::now()->toDateTimeString(),
+                                'created_by' =>  Auth::user()->user_id,
+                                'event_type_id' => $evd['event_type_id'],
+                                'requirement_id' => $l,
+                                'event_id' => $event_id,
+                                'path' =>  $newPathLink,
+                            ]);
                         }
+                        $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
 
-                        EventRequirement::create([
-                            'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
-                            'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
-                            'created_at' =>  Carbon::now()->toDateTimeString(),
-                            'created_by' =>  Auth::user()->user_id,
-                            'event_type_id' => $evd['event_type_id'],
-                            'requirement_id' => $l,
-                            'event_id' => $event_id,
-                            'path' =>  $newPathLink,
-                        ]);
+                        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                     }
-                    $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
-
-                    Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                 }
             }
         }
@@ -487,15 +490,15 @@ class EventController extends Controller
 
         $event = Event::create($input_Array);
 
-        $requirements_ar = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
-
-        $requirements = $requirements_ar['requirements'];
+        $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
 
         $requirement_ids = [];
-        foreach ($requirements as $req) {
+
+        foreach ($requirements['requirements'] as $req) {
             array_push($requirement_ids, $req->requirement_id);
         }
-        $total = $requirements->count();
+
+        $total = $requirements['requirements']->count();
 
         $event_id = $event->event_id;
 
@@ -581,8 +584,8 @@ class EventController extends Controller
         $input_Array = array(
             'name_en' => $evd['name'],
             'name_ar' => $evd['name_ar'],
-            'issued_date' => $evd['issued_date'],
-            'expired_date' => $evd['expired_date'],
+            'issued_date' =>  Carbon::parse($evd['issued_date'])->toDateTimeString(),
+            'expired_date' =>  Carbon::parse($evd['expired_date'])->toDateTimeString(),
             'time_start' => $evd['time_start'],
             'time_end' => $evd['time_end'],
             'address' => $evd['address'],

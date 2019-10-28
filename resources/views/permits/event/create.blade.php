@@ -404,7 +404,7 @@
                         </div>
 
 
-                        <a href="{{url('company/event')}}">
+                        <a href="{{route('event.index')}}#applied">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
@@ -810,6 +810,8 @@
             var hasFile = docValidation();
 
                 if (documentsValidator.form() && hasFile) {
+
+                    $('#submit--btn-group').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');

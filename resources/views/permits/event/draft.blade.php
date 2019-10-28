@@ -641,12 +641,13 @@
         });
 
         $("#upload_doc").on("click", function () {
-            wizard = new KTWizard("kt_wizard_v3");
-            if (!checkForTick()) return;
-            if (wizard.currentStep == 3) {
-                stopNext(eventValidator);
-                return;
-            }
+            // wizard = new KTWizard("kt_wizard_v3");
+            // if (!checkForTick()) return;
+            // if (wizard.currentStep == 3) {
+
+            // }
+
+            $('#next_btn').trigger('click');
 
             setThis('block', 'none', 'none', 'block');
         });
@@ -882,7 +883,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}";
+                                    window.location.href = "{{route('event.index')}}#applied";
                                 }
                             }
                         });
@@ -912,7 +913,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}";
+                                    window.location.href = "{{route('event.index')}}#draft";
                                 }
                             }
                         });
