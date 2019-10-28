@@ -35,6 +35,7 @@ Route::middleware(['admin', 'auth'])->group(function(){
 	Route::get('/event/{event}/lock','Admin\EventController@updateLock')->name('admin.event.lock');
 	Route::post('/event/{event}','Admin\EventController@submit')->name('admin.event.submit');
     Route::get('/event/{event}/download','Admin\EventController@download')->name('admin.event.download');
+    Route::get('/event/{event}/addition-requirement-datatable','Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist
@@ -59,6 +60,8 @@ Route::middleware(['admin', 'auth'])->group(function(){
 //---------------------------------------------------------------------------------------------------------------
     Route::get('/artist_permit/{permit}/history', 'Admin\ArtistPermitController@permitHistory')
         ->name('admin.artist_permit.history');
+
+    Route::get('/artist_permit/{permit}/download', 'Admin\ArtistPermitController@download')->name('admin.artist_permit.download');
 
     Route::get('/artist_permit/{permit}/application/approver', 'Admin\ArtistPermitController@approverDataTable')
         ->name('admin.artist_permit.approverDataTable');

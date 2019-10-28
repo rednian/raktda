@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 use DB;
+use PDF;
 use Auth;
 use DataTables;
 use Carbon\Carbon;
@@ -22,6 +23,21 @@ class ArtistPermitController extends Controller
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
         ]);
+    }
+
+    public function download(Permit $permit)
+    {
+      $data['company_details'] = $permit->owner->user_id;
+      $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'nationality')->get();
+      $data['permit_details'] = $permit;
+
+      $permitNumber = $permit->permit_number;
+
+      $pdf = PDF::loadView('permits.artist.permit_print', $data, [], [
+          'title' => 'Artist Permit',
+          'default_font_size' => 10
+      ]);
+      return $pdf->stream('Permit-' . $permitNumber . '.pdf');
     }
 
     public function show(Permit $permit)
@@ -265,14 +281,14 @@ class ArtistPermitController extends Controller
 
     		return Datatables::of($artist_permit)
 			    ->addColumn('nationality', function($artist_permit){
-			    	if(!$artist_permit->artist->country){ return null; }
-			    	return ucwords($artist_permit->artist->country->nationality_en);
+			    	if(!$artist_permit->country){ return null; }
+			    	return ucwords($artist_permit->country->nationality_en);
 			    })
 			    ->addColumn('age', function($artist_permit){
-			    	return $artist_permit->artist->age;
+			    	return $artist_permit->age;
 			    })
 			    ->addColumn('fullname', function($artist_permit){
-			    	return ucwords($artist_permit->artist->fullname);
+			    	return ucwords($artist_permit->fullname);
 			    })
 			    ->addColumn('profession', function($artist_permit){
 			    	if(!$artist_permit->profession){ return null; }
@@ -370,10 +386,10 @@ class ArtistPermitController extends Controller
     public function dataTable(Request $request)
     {
      if($request->ajax()){
-    	// dd($request->all());
 
      	$limit = $request->length;
      	$start = $request->start;
+
 
          $permit = Permit::has('artist')
          ->when($request->today, function($q) use ($request){
@@ -385,8 +401,8 @@ class ArtistPermitController extends Controller
          ->when($request->request_type, function ($q) use ($request){
           $q->whereIn('request_type', $request->request_type);
         })
-         ->when($request->permit_status, function($q) use ($request){
-          $q->whereIn('permit_status', $request->permit_status);
+         ->when($request->status, function($q) use ($request){
+          $q->whereIn('permit_status', $request->status);
         })
          ->when($request->permit_start, function ($q) use ($request){
           $date = explode('-', $request->permit_start);
@@ -438,7 +454,10 @@ class ArtistPermitController extends Controller
 	         ->editColumn('request_type', function($permit){
 	         	return ucwords($permit->request_type).' Application';
 	         })
-	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status'])
+           ->addColumn('action', function($permit){
+            return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-light"><i class="la la-download"></i> download</a>';
+           })
+	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action'])
 	          ->setTotalRecords($totalRecords)
 	         ->make(true);
      }

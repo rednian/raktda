@@ -476,6 +476,7 @@
 <!--end::Modal-->
 
 @endsection
+@section('script')
 
 @section('script')
 

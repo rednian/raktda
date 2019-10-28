@@ -12,7 +12,7 @@
 			<option value="unprocessed">Unprocessed</option>
 	 </select>
 	 <label for="inlineFormInputName2"></label>
-	 <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
+	 {{-- <input type="text" id="new-applied-date" data-tab="new" class="form-control mb-2 mr-sm-2 kt-margin-l-15 kt-margin-t-5" placeholder="Start Date" autocomplete="off"> --}}
 </section>
 
 <table class="table table-hover table-borderless table-striped border" id="artist-permit">

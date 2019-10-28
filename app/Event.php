@@ -59,17 +59,17 @@ class Event extends Model
 
     public function area()
     {
-        return $this->belongsTo(Areas::class, 'area_id', 'id')->withDefault(['name_en' => null, 'name_ar' => null]);
+        return $this->belongsTo(Areas::class, 'area_id', 'id')->withDefault(['name_en'=> null, 'name_ar'=>null]);
     }
 
     public function emirate()
     {
-        return $this->belongsTo(Emirates::class, 'emirate_id', 'id')->withDefault(['name_en' => null, 'name_ar' => null]);
+        return $this->belongsTo(Emirates::class, 'emirate_id', 'id')->withDefault(['name_en'=> null, 'name_ar'=>null]);
     }
 
     public function country()
     {
-        return $this->belongsTo(Country::class, 'country_id')->withDefault(['name_en' => null, 'name_ar' => null]);
+        return $this->belongsTo(Country::class, 'country_id')->withDefault(['name_en'=> null, 'name_ar'=>null]);
     }
 
     public function type()

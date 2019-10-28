@@ -15,24 +15,15 @@
 
 	class ArtistController extends Controller
 	{
-		public function index()
-		{
-//    return view('admin.artist.index',[
-//            'page_title'=> 'Artist List',
-//            'breadcrumb'=> 'admin.artist.index',
-//        ]);
-		}
-
-
 		public function artist_block(Request $request){
-		    $data=$request->all();
+			$data=$request->all();
 		    foreach ($data['id'] as $artist_id) {
              $artist = Artist::where('artist_id', $artist_id)->first();
 
              if ($artist->update(['artist_status' => 'blocked'])) {
                  $artist_action = new ArtistAction();
                  $artist_action->artist_id = $artist_id;
-                 $artist_action->employee_id = Auth::user()->employee->employee_id;
+                 $artist_action->user_id = Auth::user()->user_id;
                  $artist_action->remarks = $request->remarks;
                  $artist_action->save();
              }
@@ -49,7 +40,7 @@
                 if ($artist->update(['artist_status' => 'active'])) {
                     $artist_action = new ArtistAction();
                     $artist_action->artist_id = $artist_id;
-                    $artist_action->employee_id = Auth::user()->employee->employee_id;
+                    $artist_action->user_id = Auth::user()->user_id;
                     $artist_action->remarks = $request->remarks;
                     $artist_action->save();
                 }
@@ -68,7 +59,7 @@
 				$artist->action()->create([
 					 'remarks'=>$request->remarks,
 					 'action'=> $status,
-					 'employee_id'=>Auth::user()->employee->employee_id,
+					 'user_id'=>Auth::user()->user_id,
 				]);
 			}
 			return redirect()->back()->with(['']);
@@ -79,10 +70,10 @@
 			$artist_permit = ArtistPermit::whereHas('permit', function($q){
 				$q->whereNotIn('permit_status', ['draft', 'edit']);
 			})
-				 ->where('artist_id', $artist->artist_id)->latest()->first();
+			->where('artist_id', $artist->artist_id)->latest()->first();
 
 			return view('admin.artist.show', [
-				 'page_title' => $artist->fullname.' - details',
+				 'page_title' => $artist_permit->fullname.' - details',
 				 'artist_permit' => $artist_permit
 			]);
 		}
@@ -93,37 +84,35 @@
 				$limit = $request->length;
 				$start = $request->start;
 
-				$artist = Artist::whereHas('artistpermit', function($q){
-					$q->has('profession');
+				$artist = Artist::has('artistpermit.profession')
+				->whereHas('permit', function($q){
+					$q->whereNotIn('permit_status',['draft', 'edit']);
 				})
-					 ->whereHas('permit', function($q){
-						 $q->where('permit_status', '!=', 'draft');
-					 })
-					 ->when($request->artist_status, function($q) use ($request){
-						 $q->where('artist_status', $request->artist_status);
-					 })
-					 ->when($request->profession_id, function($q) use ($request){
-						 $q->whereHas('artistpermit', function($q) use ($request){
-							 $q->where('profession_id', $request->profession_id);
-						 });
-					 })
-					 ->when($request->country_id, function($q) use ($request){
-						 $q->where('country_id', $request->country_id);
-					 })
-					 ->orderby('updated_at', 'desc');
+				->when($request->artist_status, function($q) use ($request){
+					$q->where('artist_status', $request->artist_status);
+				})
+				->when($request->profession_id, function($q) use ($request){
+					$q->whereHas('artistpermit', function($q) use ($request){
+						$q->where('profession_id', $request->profession_id);
+					});
+				})
+				->when($request->country_id, function($q) use ($request){
+					$q->whereHas('artistpermit', function($q) use ($request){
+						$q->where('country_id', $request->country_id);
+					});
+				})
+				->orderby('updated_at', 'desc');
+
 
 				$totalRecords = $artist->count();
 				$artist = $artist->offset($start)->limit($limit);
 
 				return DataTables::of($artist)
 					 ->addColumn('name', function($artist){
-						 return ucwords($artist->fullname);
+						 return ucwords($artist->artistpermit()->latest()->first()->fullname);
 					 })
 					 ->addColumn('nationality', function($artist){
-						 if (!$artist->country) {
-							 return null;
-						 }
-						 return '<span class="flag-icon flag-icon-'.$artist->country->country_code.'"></span>'.ucwords($artist->country->nationality_en);
+					 	return ucwords($artist->artistpermit()->first()->country->nationality_en);
 					 })
 
 					 ->addColumn('mobile_number', function($artist){
@@ -156,7 +145,7 @@
 					 return $action->created_at->format('d-M-Y h a');
 				 })
 				 ->addColumn('employee_name', function($action){
-					 return ucwords($action->employee->emp_name);
+					 return ucwords($action->user->NameEn);
 				 })
 				 ->editColumn('action', function($action){
 					 return artistStatus($action->action);

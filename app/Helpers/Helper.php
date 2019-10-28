@@ -55,7 +55,7 @@ function permitStatus($status)
     if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active') {
         $classname = 'success';
     }
-    if ($status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amend') {
+    if ($status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended') {
         $classname = 'warning';
     }
     if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled') {

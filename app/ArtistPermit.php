@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -59,6 +60,13 @@ class ArtistPermit extends Model implements Auditable
         return $this->belongsTo(Emirates::class)->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id')
+            ->withDefault(['name_en' => null, 'name_ar' => null, 'nationality_ar' => null, 'nationality_en' => null]);
+    }
+
+
     public function area()
     {
         return $this->belongsTo(Areas::class)->withDefault(['name_en' => null, 'name_ar' => null]);
@@ -93,5 +101,15 @@ class ArtistPermit extends Model implements Auditable
     public function Nationality()
     {
         return $this->belongsTo(Countries::class, 'country_id', 'country_id');
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->firstname_en . ' ' . $this->lastname_en;
+    }
+
+    public function getAgeAttribute()
+    {
+        return Carbon::parse($this->attributes['birthdate'])->age;
     }
 }

@@ -8,6 +8,7 @@
 	use Calendar;
 	use App\Event;
 	use Carbon\Carbon;
+	use App\Requirement;
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
 	use Yajra\DataTables\Facades\DataTables;
@@ -16,6 +17,7 @@
 	{
 		public function index()
 		{
+			$event = Event::whereDate('expired_date', Carbon::now())->update(['status'=>'expired']);
 			return view('admin.event.index', ['page_title' => 'Event Permit']);
 		}
 
@@ -44,7 +46,7 @@
 		{
 			try {
 				DB::beginTransaction();
-
+			
 				$user = Auth::user();
 				$request['user_id'] = $user->user_id;
 				$request['checked_at'] = Carbon::now();
@@ -52,6 +54,18 @@
 				$event->check()->create($request->all());
 
 				if($request->status == 'rejected'  || $request->status == 'need modification'){
+					if($request->status == 'need modification'){
+						if($request->requirements_id){
+							$requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
+							$event->additionalRequirements()->sync($requirements_id);
+						}
+						if($request->requirements){
+							foreach ($request->requirements as $requirement) {
+								$requirement = Requirement::create(['requirement_name'=>$requirement, 'requirement_type'=>'event']);
+							}
+							// $requirement->type()->sync($event->type->event_type_id);							
+						}
+					}
 					$request['role_id'] = $user->roles()->first()->role_id;
 					if ($request->comment) {$comment = $event->comment()->create($request->all());}
 					$request['type'] = 1;
@@ -115,7 +129,7 @@
 		public function application(Request $request, Event $event)
 		{
 			$this->authorize('view', $event);
-			$event->update(['last_check_by' => Auth::user()->user_id, 'lock' => Carbon::now(), 'status'=>'processing']);
+			// $event->update(['last_check_by' => Auth::user()->user_id, 'lock' => Carbon::now(), 'status'=>'processing']);
 			$existing_event = Event::where('event_id', '!=', $event->event_id)
 				 ->whereIn('status', ['processing', 'active', 'approved-unpaid'])
 				 ->whereBetween('time_end', [$event->time_start, $event->time_end])
@@ -134,12 +148,34 @@
 			return view('admin.event.show', ['page_title' => '', 'event'=>$event, 'tab'=>$request->tab]);
 		}
 
+		public function addRequirementDatatable(Request $request, Event $event)
+		{
+			$requirements = Requirement::whereDoesntHave('type.event', function($q) use ($event){
+				$q->where('event_id', $event->event_id);
+			})
+			->whereDoesntHave('additionalRequirements', function($q) use ($event){
+				$q->where('event_id', $event->event_id);
+			})
+			->where('requirement_type', 'event')
+			->get();
+			// dd($requirements);
+
+			return DataTables::of($requirements)
+			->addColumn('name', function($requirement) use ($request){
+				if($request->user()->LanguageId == 1){ return ucfirst($requirement->requirement_name); }
+				return $requirement->requirement_name_ar;
+			})
+			->addColumn('description', function($requirement){
+				return ucfirst($requirement->requirement_description);
+			})
+			->make(true);
+		}
+
 
 		public function applicationDatatable(Request $request, Event $event)
 		{
 			$event = $event->requirements()->get();
 			$user = Auth::user();
-//		dd($event->first()->pivot);
 			return DataTables::of($event)
 				 ->addColumn('name', function($event) use ($user){
 					 $name = $user->LanguageId == 1 ? $event->requirement_name : $event->requirement_name_ar;

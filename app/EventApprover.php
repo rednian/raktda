@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EventApprover extends Model
 {
 	protected $connection = 'mysql';
-	protected $table = 'event_approver';
+	protected $table = 'smartrak_smartgov.event_approver';
 	protected $primaryKey = 'event_approver_id';
 	protected $fillable = ['event_id', 'user_id', 'role_id', 'status', 'event_comment_id', 'type', 'checked_at'];
 	protected $dates = ['created_at', 'updated_at', 'checked_at'];

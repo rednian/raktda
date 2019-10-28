@@ -10,6 +10,7 @@
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">Active Artists</a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">Blocked Artists</a></li>
 				 </ul>
+      
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
@@ -505,7 +506,7 @@
                {data: 'artist_number'},
                // { data: 'company_type'},
                {data: 'request_type'},
-               {data: 'permit_status'},
+               {data: 'action'},
             ],
 
             createdRow: function (row, data, index) {
@@ -700,7 +701,7 @@
        var start = moment().subtract(29, 'days');
        var end = moment();
 
-       $('input[name=permit_start]').daterangepicker({
+       $('input#new-applied-date').daterangepicker({
          autoUpdateInput: false,
          buttonClasses: 'btn',
          applyClass: 'btn-warning btn-sm btn-elevate',
@@ -716,7 +717,7 @@
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
          }
        }, function (start, end, label) {
-         $('input[name=permit_start].form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+         $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
        });
 
        $('input[type=checkbox][data-type=new_request][name=today]').click(function () {
@@ -749,10 +750,7 @@
             var status = $('select#new-permit-status').val();
 
              d.request_type = $('select#new-request-type').val();
-             d.permit_status = status.length > 0 ? status : ['new', 'modified', 'unprocessed'];
-             // d.permit_status = $('input[name=permit_start]').val();
-             // d.issued_date = filter.getAction();
-             // d.today = filter.getToday();
+             d.status = status.length > 0 ? status : ['new', 'modified', 'unprocessed'];
            }
          },
          columnDefs: [

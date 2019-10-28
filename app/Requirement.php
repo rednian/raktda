@@ -15,6 +15,11 @@ class Requirement extends Model implements Auditable
      protected $primaryKey = 'requirement_id';
      protected $fillable = ['requirement_name','requirement_name_ar', 'requirement_description', 'term','requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by'];
 
+     public function additionalRequirements()
+     {
+         return $this->belongsToMany(Requirement::class, 'event_additional_requirement', 'event_id', 'requirement_id')->where('requirement_type', 'event');
+     }
+
     public function requirementDocument()
     {
         return $this->hasMany(ArtistPermitDocument::class, 'document_id');

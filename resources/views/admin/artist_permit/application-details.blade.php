@@ -92,7 +92,7 @@
 							 <div class="card-header" id="accordion-permit-artist-heading-one">
 									<div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#accordion-permit-artist-collapse-one"
 											 aria-expanded="true" aria-controls="accordion-permit-artist-collapse-one">
-										 <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Artist History</h6>
+										 <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Artist List</h6>
 									</div>
 							 </div>
 							 <div id="accordion-permit-artist-collapse-one" class="collapse show" aria-labelledby="accordion-permit-artist-heading-one"

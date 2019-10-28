@@ -47,7 +47,7 @@
 									</div>
 									<div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
 										 <div class="card-body">
-												<table class="table-striped table table-borderless">
+												<table class="table-striped table table-borderless table-hover">
 													 <thead class="thead-dark">
 													 <tr>
 															<th class="no-wrap">User Role</th>
