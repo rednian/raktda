@@ -98,15 +98,16 @@
                                                 <table class="table table-borderless">
                                                     <tr>
                                                         <th>Event Permit Type</th>
-                                                        <th>Fee</th>
+                                                        <th class="text-right">Fee (AED)</th>
                                                     </tr>
                                                     @foreach($event_types as $pt)
                                                     <tr>
                                                         <td>{{$pt->name_en}}</td>
-                                                        <td>{{$pt->amount}}</td>
+                                                        <td class="text-right">{{number_format($pt->amount,2)}}</td>
                                                     </tr>
                                                     @endforeach
                                                 </table>
+
 
 
                                             </div>
@@ -345,16 +346,12 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="emirate_id"
                                                             class=" col-form-label kt-font-bold text-right">Emirate
-                                                            <small>( optional )</small></label>
+                                                        </label>
                                                         <select class="form-control form-control-sm" name="emirate_id"
-                                                            id="emirate_id" onchange="getAreas(this.value)">
-                                                            <option value="">Select</option>
-                                                            @foreach($emirates as $em)
-                                                            <option value="{{$em->id}}"
-                                                                {{$em->id == $event->emirate_id ? 'selected' : ''}}>
-                                                                {{$em->name_en}}</option>
-                                                            @endforeach
+                                                            id="emirate_id">
+                                                            <option value="5">Ras Al Khaimah</option>
                                                         </select>
+
                                                     </div>
 
 
@@ -376,21 +373,17 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="country_id"
                                                             class=" col-form-label kt-font-bold text-right">Country
-                                                            <small>( <span class="text-danger">required</span>
-                                                                )</small></label>
-                                                        <select
-                                                            class="form-control form-control-sm {{$errors->has('country_id') ? 'is-invalid' : ''}}"
-                                                            name="country_id" id="country_id">
-                                                            {{--   - class for search in select  --}}
-                                                            <option value="">Select</option>
-                                                            @foreach ($countries as $ct)
-                                                            <option value="{{$ct->country_id}}"
-                                                                {{$event->country_id == $ct->country_id ? 'selected' : ''}}>
-                                                                {{$ct->name_en}}
+                                                        </label>
+                                                        <select class="form-control form-control-sm " name="country_id"
+                                                            id="country_id">
+                                                            <option value="{{232}}">
+                                                                United Arab Emirates
                                                             </option>
-                                                            @endforeach
                                                         </select>
                                                     </div>
+
+
+
 
 
                                                 </div>
@@ -408,106 +401,96 @@
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
+                                <input type="hidden" id="requirements_count" />
                                 <form id="documents_required">
 
-
-                                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                                        <div class="kt-form__section kt-form__section--first ">
-                                            <div class="kt-wizard-v3__form">
-                                                <form id="documents_required">
-
-
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="kt-form__actions">
-                                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                            data-ktwizard-type="action-prev" id="prev_btn">
-                                            Previous
-                                        </div>
-
-
-                                        <a href="{{route('event.index')}}#applied">
-                                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                                id="back_btn">
-                                                Back
-                                            </div>
-                                        </a>
-
-
-                                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                            id="submit_btn">
-                                            Update
-                                        </div>
-
-
-
-                                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                            data-ktwizard-type="action-next" id="next_btn">
-                                            Next Step
-                                        </div>
-
-                                    </div>
-
-                                    <a href="{{url('company/event')}}">
-                                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                            id="back_btn">
-                                            Back
-                                        </div>
-                                    </a>
-
-
+                                </form>
+                                <input type="hidden" id="addi_requirements_count">
+                                <form id="addi_documents_required">
+                                </form>
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="kt-form__actions">
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-prev" id="prev_btn">
+                            Previous
+                        </div>
+
+
+                        <a href="{{route('event.index')}}#applied">
+                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                                Back
+                            </div>
+                        </a>
+
+
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+                            Update
+                        </div>
+
+
+
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-next" id="next_btn">
+                            Next Step
+                        </div>
+
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
+    </div>
+</div>
+</div>
 
-        <!-- end:: Content -->
+<!-- end:: Content -->
 
 
 
-        <!-- begin::Scrolltop -->
-        <div id="kt_scrolltop" class="kt-scrolltop">
-            <i class="fa fa-arrow-up"></i>
+<!-- begin::Scrolltop -->
+<div id="kt_scrolltop" class="kt-scrolltop">
+    <i class="fa fa-arrow-up"></i>
+</div>
+<!-- end::Scrolltop -->
+
+<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-body">
+        <div id="ajax_loader" style="min-height: 100vh;">
+            <img src="{{asset('/img/ajax-loader.gif')}}" style="position: absolute; top:50%; left: 50%;">
         </div>
-        <!-- end::Scrolltop -->
+    </div>
+</div>
 
-        <div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
-            <div class="modal-body">
-                <div id="ajax_loader" style="min-height: 100vh;">
-                    <img src="{{asset('/img/ajax-loader.gif')}}" style="position: absolute; top:50%; left: 50%;">
-                </div>
-            </div>
-        </div>
-
-        <!--begin::Modal-->
+<!--begin::Modal-->
 
 
 
-        <!--end::Modal-->
+<!--end::Modal-->
 
 
 
 
-        @endsection
+@endsection
 
 
-        @section('script')
-        <script src="{{asset('js/company/uploadfile.js')}}"></script>
-        <script src="{{asset('js/company/artist.js')}}"></script>
-        <script>
-            $.ajaxSetup({
+@section('script')
+<script src="{{asset('js/company/uploadfile.js')}}"></script>
+<script src="{{asset('js/company/artist.js')}}"></script>
+<script>
+    $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
     });
 
     var fileUploadFns = [];
     var eventdetails = {};
     var documentDetails = {};
+    var addidocumentDetails = {};
 
     $(document).ready(function(){
         setWizard();
@@ -517,15 +500,17 @@
         localStorage.clear();
         var event_type_id = $('#event_type_id').val();
         setEventDetails();
-        // console.log(event_type_id);
+        let event_id = $('#event_id').val();
         getRequirementsList(event_type_id);
+        getAddtionalRequirementsList(event_id);
         uploadFunction();
         $('#submit_btn').css('display', 'none');
     });
 
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
-            for (var i = 1; i <= $('#requirements_count').val(); i++) {
+            let totalLength = parseInt($('#requirements_count').val())  + parseInt($('#addi_requirements_count').val());
+            for (var i = 1; i <= totalLength; i++) {
                 let requiId = $('#req_id_' + i).val() ;
                 fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
                     url: "{{route('event.uploadDocument')}}",
@@ -719,7 +704,7 @@
         const docValidation = () => {
             var hasFile = true;
             var hasFileArray = [];
-            var reqCount = $('#requirements_count').val();
+            var reqCount = parseInt($('#requirements_count').val()) + parseInt($('#addi_requirements_count').val());
             if(reqCount > 0)
             {
                 for (var i = 1; i <= reqCount; i++) {
@@ -747,8 +732,8 @@
             }
 
             localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
-                return hasFile;
-            };
+            return hasFile;
+        };
 
 
 
@@ -792,7 +777,9 @@
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
+            var expDate = moment(minDate, 'DD-MM-YYYY').add('month', 1);
             $('#expired_date').datepicker('setStartDate', minDate);
+            $('#expired_date').val(expDate.format("DD-MM-YYYY"));
         });
         $('#expired_date').on('changeDate', function (ev) {
             $('#expired_date').valid() || $('#expired_date').removeClass('invalid').addClass('success');
@@ -819,6 +806,7 @@
         var docRules = {};
         var docMessages = {};
         var documentsValidator = '';
+        var addiDocumentsValidator = '';
 
 
         function getRequirementsList(id)
@@ -831,15 +819,15 @@
                  if(result){
                     $('#documents_required').empty();
                      var res = result.requirements;
-                     $('#documents_required').append('<input hidden id="requirements_count" value="'+ res.length +'" />');
+                     $('#requirements_count').val(res.length);
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd"></div><div class="col-lg-2 col-sm-12" id="exp_dd"></div></div>');
+                         $('#documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required)
                          {
-                            $('#issue_dd').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
-                            $('#exp_dd').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
+                            $('#issue_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
+                            $('#exp_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
                          }
 
                             docRules['doc_issue_date_' + j] = 'required';
@@ -864,12 +852,55 @@
 
         }
 
+        async function getAddtionalRequirementsList(id)
+        {
+            var url = "{{route('company.event.get_additional_requirements', ':id')}}";
+            url = url.replace(':id', id);
+            $.ajax({
+                url: url,
+                success: function (result) {
+                 if(result){
+                    $('#addi_documents_required').empty();
+                     var res = result.additional_requirements;
+                     $('#addi_requirements_count').val(res.length);
+                     var j =  parseInt($('#requirements_count').val()) + 1 ;
+                     if(j != NaN){
+                     for(var i = 0; i < res.length; i++){
+                         $('#addi_documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+
+                         if(res[i].dates_required)
+                         {
+                            $('#issue_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
+                            $('#exp_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
+                         }
+
+                            docRules['doc_issue_date_' + j] = 'required';
+                            docRules['doc_exp_date_' + j] = 'required';
+                            docMessages['doc_issue_date_' + j] = '';
+                            docMessages['doc_exp_date_' + j] = '';
+
+                            addiDocumentsValidator = $('#addi_documents_required').validate({
+                                    rules: docRules,
+                                    messages: docMessages
+                                });
+                                j++;
+                         $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+
+                     }
+                     }
+                     uploadFunction();
+                 }
+                }
+            });
+
+        }
+
 
         $('#submit_btn').click((e) => {
 
             var hasFile = docValidation();
 
-                if (documentsValidator.form() && hasFile) {
+                if (documentsValidator.form() && addiDocumentsValidator.form() && hasFile) {
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
@@ -896,6 +927,6 @@
 
 
 
-        </script>
+</script>
 
-        @endsection
+@endsection

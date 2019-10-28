@@ -192,12 +192,9 @@
        }
      };
      $(document).ready(function () {
-
        $('[data-switch=true]').bootstrapSwitch();
-
        newEvent();
        calendar();
-
        var hash = window.location.hash;
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
         $('.nav-tabs a').click(function (e) {
@@ -206,7 +203,6 @@
           window.location.hash = this.hash;
           $('html,body').scrollTop(scrollmem);
         });
-
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var current_tab = $(e.target).text();
         console.log(current_tab);
@@ -214,36 +210,27 @@
         if('Active Events' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-active')){ active(); }
         if('Archive Events' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-archive')){ archive(); }
       });
-
-
-
      });
-
      function calendar(){
       var todayDate = moment().startOf('day');
           var YM = todayDate.format('YYYY-MM');
           var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
           var TODAY = todayDate.format('YYYY-MM-DD');
           var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
-
           var calendarEl = document.getElementById('event-calendar');
           var calendar = new FullCalendar.Calendar(calendarEl, {
               plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-
               isRTL: KTUtil.isRTL(),
               header: {
                   left: 'prev,next today',
                   center: 'title',
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
-
               height: 800,
               contentHeight: 780,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
-
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
-
               views: {
                   dayGridMonth: { buttonText: 'Month' },
                   timeGridWeek: { buttonText: 'Week' },
@@ -251,17 +238,14 @@
                   listDay: { buttonText: 'Day List' },
                   listWeek: { buttonText: 'Week List' }
               },
-
               defaultView: 'listWeek',
               // defaultDate: TODAY,
-
               editable: true,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
               events: '{{ route('admin.event.calendar') }}',
               eventRender: function(info) {
                   var element = $(info.el);
-
                   if (info.event.extendedProps && info.event.extendedProps.description) {
                       if (element.hasClass('fc-day-grid-event')) {
                           element.data('content', info.event.extendedProps.description);
@@ -275,10 +259,8 @@
                   }
               }
           });
-
           calendar.render();
      }
-
      function archive() {
       $('select#archive-permit-status').select2({
         minimumResultsForSearch: Infinity,
@@ -289,7 +271,6 @@
         allowClear: true,
         tags: true
       });
-
       $('select#archive-applicant-type').select2({
         minimumResultsForSearch: Infinity,
         placeholder: 'Applicant Type',
@@ -299,18 +280,14 @@
         allowClear: true,
         tags: true
       });
-
      eventArchiveTable = $('table#new-event-archive').DataTable({
         ajax: {
           url: '{{ route('admin.event.datatable') }}',
           data: function (d) {
-
           var status = $('select#processing-permit-status').val();
           var type = $('select#processing-applicant-type').val();
-
           d.status = status.length > 0 ? status : ['expired', 'rejected'];
           d.type =  type.length > 0 ? type : null;
-
           }
         },
         columnDefs: [
@@ -334,7 +311,6 @@
         }
       });
      }
-
      function active() {
       $('select#active-applicant-type').select2({
         minimumResultsForSearch: Infinity,
@@ -345,14 +321,12 @@
         allowClear: true,
         tags: true
       });
-
       eventActiveTable = $('table#new-event-active').DataTable({
         ajax: {
           url: '{{ route('admin.event.datatable') }}',
           data: function (d) {
             var status = $('select#processing-permit-status').val();
             var type = $('select#processing-applicant-type').val();
-
             // d.status = status.length > 0 ? status : ['approved-unpaid', 'unprocessed'];
             d.status = ['active'];
             d.type =  type.length > 0 ? type : null;
@@ -379,7 +353,6 @@
         }
       });
      }
-
      function processing() {
       $('select#processing-permit-status').select2({
         minimumResultsForSearch: Infinity,
@@ -390,7 +363,6 @@
         allowClear: true,
         tags: true
       });
-
       $('select#processing-applicant-type').select2({
         minimumResultsForSearch: Infinity,
         placeholder: 'Applicant Type',
@@ -406,7 +378,6 @@
           data: function (d) {
             var status = $('select#processing-permit-status').val();
             var type = $('select#processing-applicant-type').val();
-
             d.status = status.length > 0 ? status : ['approved-unpaid', 'processing', 'need approval', 'need modification'];
             d.type =  type.length > 0 ? type : null;
           }
@@ -431,7 +402,6 @@
         }
       });
      }
-
      function newEvent() {
        newEventTable = $('table#new-event-request').DataTable({
          ajax: {
@@ -439,10 +409,8 @@
            data: function (d) {
             var status = $('select#new-permit-status').val();
             var type = $('select#new-applicant-type').val();
-
              d.status = status.length > 0 ? status : ['new', 'amended'];
              d.type =  type.length > 0 ? type : null;
-
            }
          },
          columnDefs: [
@@ -464,7 +432,6 @@
            });
          }
        });
-
        $('select#new-permit-status').select2({
          minimumResultsForSearch: Infinity,
          placeholder: 'Event Status',
@@ -474,7 +441,6 @@
          allowClear: true,
          tags: true
        });
-
        $('select#new-applicant-type').select2({
          minimumResultsForSearch: Infinity,
          placeholder: 'Applicant Type',

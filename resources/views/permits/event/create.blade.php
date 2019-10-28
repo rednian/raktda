@@ -100,12 +100,12 @@
                                                 <table class="table table-borderless">
                                                     <tr>
                                                         <th>Event Permit Type</th>
-                                                        <th>Fee</th>
+                                                        <th class="text-right">Fee (AED)</th>
                                                     </tr>
                                                     @foreach($event_types as $pt)
                                                     <tr>
                                                         <td>{{$pt->name_en}}</td>
-                                                        <td>{{$pt->amount}}</td>
+                                                        <td class="text-right">{{number_format($pt->amount,2)}}</td>
                                                     </tr>
                                                     @endforeach
                                                 </table>
@@ -335,15 +335,12 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="emirate_id"
                                                             class=" col-form-label kt-font-bold text-right">Emirate
-                                                            <small>( optional )</small></label>
+                                                        </label>
                                                         <select class="form-control form-control-sm" name="emirate_id"
-                                                            id="emirate_id" onchange="getAreas(this.value)">
-                                                            <option value="">Select</option>
-                                                            @foreach($emirates as $em)
-                                                            <option value="{{$em->id}}">
-                                                                {{$em->name_en}}</option>
-                                                            @endforeach
+                                                            id="emirate_id">
+                                                            <option value="5">Ras Al Khaimah</option>
                                                         </select>
+
                                                     </div>
 
 
@@ -367,13 +364,9 @@
                                                         </label>
                                                         <select class="form-control form-control-sm " name="country_id"
                                                             id="country_id">
-                                                            {{--   - class for search in select  --}}
-                                                            <option value="">Select</option>
-                                                            @foreach ($countries as $ct)
-                                                            <option value="{{$ct->country_id}}">
-                                                                {{$ct->name_en}}
+                                                            <option value="{{232}}">
+                                                                United Arab Emirates
                                                             </option>
-                                                            @endforeach
                                                         </select>
                                                     </div>
 
@@ -396,80 +389,64 @@
                             <div class="kt-wizard-v3__form">
                                 <form id="documents_required" method="post">
 
-                                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                                        <div class="kt-form__section kt-form__section--first ">
-                                            <div class="kt-wizard-v3__form">
-                                                <form id="documents_required" method="post">
-
-                                                    <div class="kt-wizard-v3__content"
-                                                        data-ktwizard-type="step-content">
-                                                        <div class="kt-form__section kt-form__section--first ">
-                                                            <div class="kt-wizard-v3__form">
-                                                                <form id="documents_required" method="post">
 
 
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="kt-form__actions">
-                                                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                                            data-ktwizard-type="action-prev" id="prev_btn">
-                                                            Previous
-                                                        </div>
-
-
-                                                        <a href="{{url('company/event')}}">
-                                                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                                                id="back_btn">
-                                                                Back
-                                                            </div>
-                                                        </a>
-
-                                                        <div class="btn-group" role="group" id="submit--btn-group">
-                                                            <button id="btnGroupDrop1" type="button"
-                                                                class="btn btn--yellow btn-sm dropdown-toggle"
-                                                                data-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false">
-                                                                Submit
-                                                            </button>
-                                                            <div class="dropdown-menu py-0"
-                                                                aria-labelledby="btnGroupDrop1">
-                                                                <button name="submit"
-                                                                    class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
-                                                                    value="finished" id="submit_btn">Finish &
-                                                                    Submit</button>
-                                                                <button name="submit"
-                                                                    class="dropdown-item btn btn-sm btn-secondary"
-                                                                    value="drafts" id="draft_btn">Save
-                                                                    to Drafts</button>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                                            data-ktwizard-type="action-next" id="next_btn">
-                                                            Next Step
-                                                        </div>
-
-                                                    </div>
-
-                                            </div>
-
-
-
-
-                                        </div>
-                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="kt-form__actions">
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-prev" id="prev_btn">
+                            Previous
+                        </div>
+
+
+                        <a href="{{url('company/event')}}">
+                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                                Back
+                            </div>
+                        </a>
+
+                        <div class="btn-group" role="group" id="submit--btn-group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Submit
+                            </button>
+                            <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
+                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
+                                    value="finished" id="submit_btn">Finish &
+                                    Submit</button>
+                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
+                                    id="draft_btn">Save
+                                    to Drafts</button>
+                            </div>
+                        </div>
+
+
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-next" id="next_btn">
+                            Next Step
+                        </div>
+
+                    </div>
+
                 </div>
+
+
+
+
             </div>
         </div>
     </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -498,15 +475,13 @@
 
 <!--end::Modal-->
 
-
-
-
 @endsection
 @section('script')
 
+@section('script')
 
-<script src="{{asset('js/artist/artist.js')}}">
-</script>
+<script src="{{asset('js/company/artist.js')}}"></script>
+<script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -535,7 +510,7 @@
                     method: "POST",
                     allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "doc_file_" + i,
-                    // showDownload: true,
+                    showDownload: true,
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
@@ -565,7 +540,12 @@
                         pd.statusbar.hide();
                     },
                     downloadCallback: function (files, pd) {
-
+                        let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
                     },
                     deleteCallback: function(data,pd)
                     {
@@ -768,7 +748,9 @@
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
+            var expDate = moment(minDate, 'DD-MM-YYYY').add('month', 1);
             $('#expired_date').datepicker('setStartDate', minDate);
+            $('#expired_date').val(expDate.format("DD-MM-YYYY")).datepicker('update');
         });
         $('#expired_date').on('changeDate', function (ev) {
             $('#expired_date').valid() || $('#expired_date').removeClass('invalid').addClass('success');
@@ -798,6 +780,8 @@
 
                 if (documentsValidator.form() && hasFile) {
 
+                    $('#submit--btn-group').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
 
@@ -812,7 +796,7 @@
                                 console.log(result);
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}";
+                                    window.location.href = "{{route('event.index')}}#applied";
                                 }
                             }
                         });
@@ -841,7 +825,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}";
+                                    window.location.href = "{{route('event.index')}}#draft";
                                 }
                             }
                         });
@@ -886,8 +870,6 @@
                  }else {
                     $('#documents_required').empty();
                  }
-
-
 
                 }
             });
