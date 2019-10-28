@@ -38,7 +38,7 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>03</span> Upload Docs
-                                    <Docs></Docs>
+
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -47,7 +47,7 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>04</span> Payment
-                                    <Docs></Docs>
+
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -56,7 +56,7 @@
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>05</span> Happiness
-                                    <Docs></Docs>
+
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -67,6 +67,8 @@
 
                 <!--end: Form Wizard Nav -->
             </div>
+
+            <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
 
             <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
@@ -200,8 +202,8 @@
                                                                 Name - Ar<small>( <span class="text-danger">required
                                                                     </span>)</small></label>
                                                             <input type="text" class="form-control form-control-sm "
-                                                                name="name_ar" id="name_ar" placeholder="Event Name"
-                                                                value="{{$event->name_ar}}">
+                                                                name="name_ar" id="name_ar" dir="rtl"
+                                                                placeholder="Event Name" value="{{$event->name_ar}}">
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-sm ">
@@ -269,7 +271,7 @@
                                                                 <input type="text" class="form-control form-control-sm "
                                                                     name="expired_date" id="expired_date"
                                                                     placeholder="To Date"
-                                                                    value={{date('d-m-Y',strtotime($event->expired_date))}}>
+                                                                    value="{{date('d-m-Y',strtotime($event->expired_date))}}">
 
                                                             </div>
                                                         </div>
@@ -287,7 +289,7 @@
                                                                 </div>
                                                                 <input class="form-control form-control-sm "
                                                                     name="time_end" id="time_end" type="text"
-                                                                    value={{$event->time_end}} />
+                                                                    value="{{$event->time_end}}" />
 
                                                             </div>
 
@@ -302,8 +304,8 @@
                                                                         class="text-danger">required</span>
                                                                     )</small></label>
                                                             <input type="text" class="form-control form-control-sm "
-                                                                name="venue_ar" id="venue_ar" placeholder="Venue"
-                                                                value={{$event->venue_ar}}>
+                                                                name="venue_ar" id="venue_ar" dir="rtl"
+                                                                placeholder="Venue - Ar" value="{{$event->venue_ar}}">
                                                         </div>
 
 
@@ -339,7 +341,7 @@
                                                                 )</small></label>
                                                         <input type="text" class="form-control form-control-sm "
                                                             name="address" id="address" placeholder="Address"
-                                                            value={{$event->address}}>
+                                                            value="{{$event->address}}">
                                                     </div>
 
                                                     <div class="col-md-4 form-group form-group-sm ">
@@ -362,7 +364,8 @@
                                                             id="area_id">
                                                             <option value="">Select</option>
                                                             @foreach($areas as $ar)
-                                                            <option value="{{$ar->id}}">
+                                                            <option value="{{$ar->id}}"
+                                                                {{$ar->id == $event->area_id ? 'selected' : ''}}>
                                                                 {{$ar->area_en}}</option>
                                                             @endforeach
                                                         </select>
@@ -420,7 +423,7 @@
                         </a>
 
                         <div class="btn-group" role="group" id="submit--btn-group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
+                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle "
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Submit
                             </button>
@@ -510,8 +513,9 @@
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
             for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                let requiId = $('#req_id_' + i).val() ;
                 fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
-                    url: "{{route('company.uploadDocument')}}",
+                    url: "{{route('event.uploadDocument')}}",
                     method: "POST",
                     allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "doc_file_" + i,
@@ -523,10 +527,10 @@
                     showFileCounter: false,
                     abortStr: '',
                     multiple: false,
-                    maxFileCount: 1,
+                    maxFileCount: 2,
                     showDelete: true,
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                    formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
+                    formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
                     onLoad: function (obj) {
 
                         $.ajaxSetup({
@@ -536,7 +540,7 @@
                             cache: false,
                             url: "{{route('company.event.get_uploaded_docs')}}",
                             type: 'POST',
-                            data: {eventId: $('#event_id').val() ,reqId: $('#req_id_' + i).val()},
+                            data: {eventId: $('#event_id').val() ,reqId: requiId},
                             dataType: "json",
                             success: function (data) {
                                 if (data) {
@@ -551,7 +555,7 @@
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         let docName = d[d.length - 1];
-                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                        obj.createProgress(docName, "{{asset('storage')}}"+'/' + data["path"], '');
                                         if (formatted_issue_date != NaN - NaN - NaN) {
                                             $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
                                             $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
@@ -572,12 +576,21 @@
                         pd.statusbar.hide();
                     },
                     downloadCallback: function (files, pd) {
-                        let file_path = files.filepath;
+                        if(files[0]) {
+                        let user_id = $('#user_id').val();
+                        let eventId = $('#event_id').val();
+                        let this_url = user_id + '/event/' + eventId +'/'+requiId+'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        ); } else {
+                            let file_path = files.filepath;
                             let path = file_path.replace('public/','');
                             window.open(
                         "{{url('storage')}}"+'/' + path,
                         '_blank'
                         );
+                        }
                     }
                 });
                 $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
@@ -703,7 +716,8 @@
                     address: $('#address').val(),
                     emirate_id: $('#emirate_id').val(),
                     area_id: $('#area_id').val(),
-                    country_id: $('#country_id').val()
+                    country_id: $('#country_id').val(),
+                    event_draft_id: $('#event_id').val()
                 };
 
                 localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
@@ -791,6 +805,7 @@
             var minDate = new Date(selected.date.valueOf());
             var expDate = moment(minDate, 'DD-MM-YYYY').add('month', 1);
             $('#expired_date').datepicker('setStartDate', minDate);
+            $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
             $('#expired_date').val(expDate.format("DD-MM-YYYY"));
         });
         $('#expired_date').on('changeDate', function (ev) {
@@ -833,12 +848,12 @@
                      $('#documents_required').append('<input hidden id="requirements_count" value="'+ res.length +'" />');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd"></div><div class="col-lg-2 col-sm-12" id="exp_dd"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required)
                          {
-                            $('#issue_dd').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
-                            $('#exp_dd').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
+                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
+                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
                          }
 
                             docRules['doc_issue_date_' + j] = 'required';
@@ -870,6 +885,9 @@
 
                 if (documentsValidator.form() && hasFile) {
 
+                    $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+
+
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
 
@@ -879,6 +897,7 @@
                             data: {
                                 eventD: ed,
                                 documentD: dd,
+                                from: 'draft',
                             },
                             success: function (result) {
                                 if(result.message[0]){
@@ -898,6 +917,9 @@
             var hasFile = docValidation();
 
                 if (documentsValidator.form() && hasFile) {
+
+                    $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');

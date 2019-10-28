@@ -297,7 +297,8 @@
                                                                         class="text-danger">required</span>
                                                                     )</small></label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                name="venue_ar" id="venue_ar" placeholder="Venue">
+                                                                name="venue_ar" dir="rtl" id="venue_ar"
+                                                                placeholder="Venue - Ar">
                                                         </div>
 
 
@@ -570,10 +571,16 @@
                 event_type_id: 'required',
                 name_en: 'required',
                 name_ar: 'required',
-                issued_date: 'required',
+                issued_date: {
+                    required: true,
+                    dateNL: true
+                },
                 time_start: 'required',
                 venue_en: 'required',
-                expired_date: 'required',
+                expired_date: {
+                    required: true,
+                    dateNL: true
+                },
                 time_end: 'required',
                 venue_ar: 'required',
                 address: 'required',
@@ -749,6 +756,7 @@
             var minDate = new Date(selected.date.valueOf());
             var expDate = moment(minDate, 'DD-MM-YYYY').add('month', 1);
             $('#expired_date').datepicker('setStartDate', minDate);
+            $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
             $('#expired_date').val(expDate.format("DD-MM-YYYY")).datepicker('update');
         });
         $('#expired_date').on('changeDate', function (ev) {
@@ -779,7 +787,7 @@
 
                 if (documentsValidator.form() && hasFile) {
 
-                    $('#submit--btn-group').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+                    $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
@@ -790,6 +798,7 @@
                             data: {
                                 eventD: ed,
                                 documentD: dd,
+                                from: 'new'
                             },
                             success: function (result) {
                                 console.log(result);
@@ -811,7 +820,7 @@
 
                 if (documentsValidator.form() && hasFile) {
 
-                    $('#submit--btn-group').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+                    $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
@@ -848,12 +857,12 @@
                      $('#documents_required').append('<input hidden id="requirements_count" value="'+ res.length +'" />');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd"></div><div class="col-lg-2 col-sm-12" id="exp_dd"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required)
                          {
-                            $('#issue_dd').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
-                            $('#exp_dd').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
+                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
+                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
                          }
 
                             docRules['doc_issue_date_' + j] = 'required';

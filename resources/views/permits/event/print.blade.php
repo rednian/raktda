@@ -196,14 +196,7 @@
                 <td class="subhead">تصريح لا <br />Permit No</td>
             </tr>
             <tr>
-                @php
-                $issued_date = strtotime($event_details->issued_date);
-                $expired_date = strtotime($event_details->expired_date);
-                $diff = abs(round($expired_date - $issued_date)) / 60 / 60 / 24;
-                $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-                $days_in_words = ucwords($f->format($diff));
-                @endphp
-                <td colspan="2">{{$days_in_words}} {{$diff > 1 ? 'Days' : 'Day'}} </td>
+                {{-- <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'Days' : 'Day'}} </td> --}}
                 <td>انقضاء</td>
                 <td class="subhead">فترة التصريح <br />Permit Period</td>
             </tr>

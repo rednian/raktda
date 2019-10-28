@@ -7,7 +7,6 @@
 
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
-
     <div class="kt-portlet__body kt-padding-t-5">
         <section class="row">
             <div class="col-md-12">
@@ -21,7 +20,7 @@
                         <a class="nav-link" data-toggle="tab" href="#valid">Valid Event Permits</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#calendar">Permit Calendar</a>
+                        <a class="nav-link" data-toggle="tab" href="#calendar">Event Calendar</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#draft">Event Permit Drafts</a>
@@ -55,7 +54,7 @@
                             <th>To </th>
                             <th>Venue</th>
                             <th>Type</th>
-                            <th>Applied On</th>
+                            <th>status</th>
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -237,7 +236,7 @@
             processing: true,
             serverSide: true,
             searching: true,
-            order:[[6,'desc']],
+            // order:[[6,'desc']],
             ajax:'{{route("company.event.fetch_applied")}}',
 
             columns: [
@@ -247,8 +246,8 @@
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'venue_en', name: 'venue_en' },
                 { data: 'type.name_en', name: 'type.name_en' },
-                { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                // { data: 'permit_status', name: 'permit_status' },
+                // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
+                { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
             ],
@@ -300,14 +299,14 @@
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
                 },
-                {
-                    targets:6,
-                    className:'dt-head-nowrap dt-body-nowrap',
-                    render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
+                // {
+                //     targets:6,
+                //     className:'dt-head-nowrap dt-body-nowrap',
+                //     render: function(data, type, full, meta) {
+                //         return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
-					}
-                },
+				// 	}
+                // },
 
                 {
                     targets:-3,
