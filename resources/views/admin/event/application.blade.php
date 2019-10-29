@@ -341,6 +341,7 @@
 													<thead>
 														<tr>
 															 <th>REQUIREMENT NAME</th>
+															 {{-- <th>FILES</th> --}}
 															 <th>ISSUED DATE</th>
 															 <th>EXPIRED DATE</th>
 															 <th>ACTION</th>
@@ -669,10 +670,11 @@
 					  data: function(d){},
 				 },
 				 columnDefs:[
-					 {targets: [3], className: 'no-wrap'}
+					 {targets: [1,2, 3], className: 'no-wrap'}
 				 ],
 				 columns:[
 					 {data: 'name'},
+					 // {data: 'files'},
 					 {data: 'issued_date'},
 					 {data: 'expired_date'},
            {
@@ -699,7 +701,7 @@
 					$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 				}
 			});
-			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
+			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
 			 wizard.on("beforeNext", function(wizardObj) {
 			 	if(wizardObj.currentStep == 1){
  						$('input[type=checkbox][data-step=step-1]').each(function () {

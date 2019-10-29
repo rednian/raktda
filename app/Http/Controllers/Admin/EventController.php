@@ -74,7 +74,7 @@
 					$request['type'] = 1;
 					if ($request->comment) {$comment = $event->comment()->create($request->all());}
 					if($request->status == 'need modification'){
-						$request['status'] = 'send back for amendaments';
+						$request['status'] = 'send back for amendments';
 					}
 					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
 					$event->update(['status'=>$request->status]);
@@ -182,11 +182,14 @@
 		public function applicationDatatable(Request $request, Event $event)
 		{
 			$event = $event->requirements()->get();
+			// dd($event);
+			// $requirements =  Requirement::has('event')->get();	
 			$user = Auth::user();
 			return DataTables::of($event)
-				 ->addColumn('name', function($event) use ($user){
-					 $name = $user->LanguageId == 1 ? $event->requirement_name : $event->requirement_name_ar;
-					 return '<a href="'.asset('/storage/'.$event->pivot->path).'"  data-fancybox data-fancybox data-caption="'.$name.'">'.$name.'</a>';
+				 ->addColumn('name', function($requirement) use ($user){
+					 $name = $user->LanguageId == 1 ? $requirement->requirement_name : $requirement->requirement_name_ar;
+					 // dd($requirement->event);
+					 return '<a href="'.asset('/storage/'.$requirement->pivot->path).'"  data-fancybox data-fancybox data-caption="'.$name.'">'.$name.'</a>';
 				 })
 				 ->addColumn('issued_date', function($event){
 				 	if($event->dates_required == 1){
@@ -201,7 +204,30 @@
 				 	}
 					 return 'Not Required';
 				 })
-				 ->rawColumns(['name'])
+				 ->addColumn('files', function($event){
+				 	// <div class="kt-badge kt-badge__pics">
+						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer">
+						// 										<img src="./assets/media/users/100_7.jpg" alt="image">
+						// 									</a>
+						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Alison Brandy">
+						// 										<img src="./assets/media/users/100_3.jpg" alt="image">
+						// 									</a>
+						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Selina Cranson">
+						// 										<img src="./assets/media/users/100_2.jpg" alt="image">
+						// 									</a>
+						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Luke Walls">
+						// 										<img src="./assets/media/users/100_13.jpg" alt="image">
+						// 									</a>
+						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Micheal York">
+						// 										<img src="./assets/media/users/100_4.jpg" alt="image">
+						// 									</a>
+						// 									<a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
+						// 										+12
+						// 									</a>
+						// 								</div>
+				 	return null;
+				 })
+				 ->rawColumns(['name', 'files'])
 				 ->make(true);
 //		}
 		}

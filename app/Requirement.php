@@ -15,9 +15,17 @@ class Requirement extends Model implements Auditable
      protected $primaryKey = 'requirement_id';
      protected $fillable = ['requirement_name','requirement_name_ar', 'dates_required', 'requirement_description', 'term','requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by'];
 
+     public function event()
+     {
+        return $this->belongsToMany(Event::class, 'event_requirement', 'requirement_id', 'event_id')
+            ->withPivot(['path', 'issued_date', 'expired_date'])
+            ->where('requirement_type', 'event')
+            ->withTimestamps();
+     }
+
      public function additionalRequirements()
      {
-         return $this->belongsToMany(Requirement::class, 'event_additional_requirement', 'event_id', 'requirement_id')->where('requirement_type', 'event');
+         return $this->belongsToMany(Requirement::class, 'event_additional_requirement', 'requirement_id', 'event_id')->where('requirement_type', 'event');
      }
 
     public function requirementDocument()
