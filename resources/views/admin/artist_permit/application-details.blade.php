@@ -37,55 +37,42 @@
 									</div>
 							 </div>
 						</div>
-						@if ($permit->approver->count() > 0)
-							 <div class="card">
-									<div class="card-header" id="headingThree5">
-										 <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse"
-													data-target="#collapseThree5" aria-expanded="true" aria-controls="collapseThree5">
-												<h6 class="kt-font-dark kt-font-transform-u">Approvers</h6>
-										 </div>
-									</div>
-									<div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
-										 <div class="card-body">
-												<table class="table-striped table table-borderless">
-													 <thead class="thead-dark">
-													 <tr>
-															<th class="no-wrap">User Role</th>
-															<th class="no-wrap">Checked By</th>
-															<th>Notes</th>
-															<th class="no-wrap">Checked Date</th>
-															<th class="no-wrap">Action Taken</th>
-													 </tr>
-													 </thead>
-													 <tbody>
-													 {{--{{dd($permit->approver->comment)}}--}}
-													 @foreach ($permit->approver as $approver)
-															<tr>
-																 <td class="no-wrap">{{ ucwords($approver->role->NameEn) }}</td>
-																 <td class="no-wrap">{{ ucwords($approver->user->employee->emp_name) }}</td>
-																 <td>
-																 
-																 </td>
-																 <td class="no-wrap">{{ $approver->created_at->format('d-M-Y h:m a') }}</td>
-																 <td class="no-wrap">
-																		@if ($approver->status == 'approved')
-																			 <span class="kt-badge kt-badge--success kt-badge--inline">{{ ucwords($approver->status) }}</span>
-																		@endif
-																		@if ($approver->status == 'modification request')
-																			 <span class="kt-badge kt-badge--warning kt-badge--inline">{{ ucwords($approver->status) }}</span>
-																		@endif
-																		@if ($approver->status == 'rejected')
-																			 <span class="kt-badge kt-badge--danger kt-badge--inline">{{ ucwords($approver->status) }}</span>
-																		@endif
-																 </td>
-															</tr>
-													 @endforeach
-													 </tbody>
-												</table>
-										 </div>
-									</div>
-							 </div>
-						@endif
+                        @if ($permit->comment()->count() > 0)
+                         <div class="card">
+                            <div class="card-header" id="headingThree5">
+                                 <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse"
+                                            data-target="#collapseThree5" aria-expanded="true" aria-controls="collapseThree5">
+                                        <h6 class="kt-font-dark kt-font-transform-u">checked & Approval History</h6>
+                                 </div>
+                            </div>
+                            <div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
+                             <div class="card-body">
+                                <table class=" border table-striped table table-borderless table-hover">
+                                     <thead>
+                                         <tr>
+                                            <th>CHECKED BY</th>
+                                            <th>REMARKS</th>
+                                            <th>USER GROUP</th>
+                                            <th>CHECKED DATE</th>
+                                            <th>ACTION TAKEN</th>
+                                         </tr>
+                                     </thead>
+                                     <tbody>
+                                        @foreach($permit->comment()->doesntHave('artistPermitComment')->orderBy('created_at', 'desc')->get() as $comment)
+                                            <tr>
+                                                <td>{{ ucwords($comment->user->NameEn) }}</td>
+                                                <td>{{ ucfirst($comment->comment) }}</td>
+                                                <td>{{ ucfirst($comment->role->NameEn) }}</td>
+                                                <td>{{ $comment->created_at->format('d-M-Y') }}</td>
+                                                <td>{{ ucfirst($comment->action) }}</td>
+                                            </tr>
+                                        @endforeach
+                                     </tbody>
+                                </table>
+                             </div>
+                            </div>
+                         </div>
+                        @endif
 				 </div>
 				  <section class="accordion accordion-solid accordion-toggle-plus kt-margin-t-15" id="accordion-permit-artist">
 						<div class="card">
@@ -111,22 +98,22 @@
 												<div class="alert-text">Please check atleast one artist before taking action!</div>
 												<div class="alert-close"></div>
 										 </div>
-										 <table class="table table-hover table-borderless table-striped table-sm" id="artist-table">
-												<thead class="thead-dark">
+										 <table class="table table-hover table-borderless table-striped border table-sm" id="artist-table">
+												<thead>
 												<tr>
-													 <th>Person Code</th>
-													 <th>Artist Name</th>
-													 <th>Age</th>
-													 <th>Profession</th>
-													 <th>Nationality</th>
+													 <th>PERSON CODE</th>
+													 <th>ARSTIST NAME</th>
+													 <th>AGE</th>
+													 <th>PROFESSION</th>
+													 <th>NATIONALITY</th>
 													 <th>
-															Action Status
+															ACTION STATUS
 															<span data-content="Click the artist name to view the artist information and permit history."
 																		data-original-title="" data-container="body" data-toggle="kt-popover"
 																		data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
 															</span>
 													 </th>
-													 <th>Action</th>
+													 <th></th>
 												</tr>
 												</thead>
 										 </table>
@@ -154,7 +141,7 @@
 							?>
 										 @if($permit_history->count() > 0)
 												<table class="table table-striped table-borderless table-hover" id="table-permit-history">
-													 <thead class="thead-dark">
+													 <thead>
 													 <tr>
 															<th>Applied Date</th>
 															<th>Issued Date</th>
@@ -347,7 +334,7 @@
 
             function submitAction() {
                $('select[name=action]').change(function () {
-                  if ($(this).val() == 'approval') {
+                  if ($(this).val() == 'need approval') {
                      $('#approver').removeClass('d-none');
                      $('#chk-inspector').removeAttr('disabled', true).attr('checked', true);
                      $('#-chk-manager').removeAttr('disabled', true).removeAttr('checked', true);
@@ -365,7 +352,7 @@
                   $('button[type=reset]').trigger('click');
                   $('table#table-comment').DataTable({
                      ajax: {
-                        url: '{{ url('/arist_permit') }}/'+{{$permit->permit_id}}+'/application/'+data.artist_permit_id + '/comment/datatable'
+                        url: '{{ url('/artist_permit') }}/'+{{$permit->permit_id}}+'/application/'+data.artist_permit_id + '/comment/datatable'
                      },
                      columnDefs: [
                         {targets: [1, 2], className: 'no-wrap'}

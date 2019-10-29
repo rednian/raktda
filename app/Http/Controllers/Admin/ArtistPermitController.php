@@ -58,44 +58,43 @@ class ArtistPermitController extends Controller
     public function submitApplication(Request $request, Permit $permit)
     {
       try {
-
         DB::beginTransaction();
+
            $user_time = $request->session()->get('user');
            $user = Auth::user();
            $request['user_id'] = $user->user_id;
+           $request['role_id'] =  $user->roles->where('NameEn', 'admin')->first()->role_id;
 
-            if($request->action){
-              $permit_status= null;
-              $comment_type = null;
-              $approver_status = null;
-
-              if($request->action == 'approve'){ $approver_status = $permit_status = 'approved-unpaid'; $comment_type = 'client'; }
-	            if($request->action == 'send_back'){ $approver_status = $permit_status = 'modification request'; $comment_type = 'client'; }
-	            if($request->action == 'rejected'){ $approver_status = $permit_status = 'rejected'; $comment_type = 'client'; }
-	            if($request->action == 'approval'){ $approver_status = 'need approval'; $comment_type = 'staff'; }
-
-	            $permit_approver = $permit->approver()->create([
-		            'role_id'=>  $user->roles->where('NameEn', 'admin')->first()->role_id,
-		            'user_id' => $user->user_id,
-		            'time_start' => $user_time['time_start'],
-		            'time_end' => Carbon::now(),
-		            'status'=> $approver_status
-	            ]);
-
-	            if ($request->comment) {
-		            $permit_comment = $permit->comment()->create($request->all());
-		            $permit_comment->approverComment()->attach($permit_approver->permit_approver_id);
-	            }
-
-	            $permit->update(['permit_status'=>$permit_status , 'user_id'=>$user->user_id ]);
-
-              if($request->role_id){
-                foreach ($request->role_id as $role_id) {
-                  $permit->approver()->create(['role_id'=>$role_id, 'status'=>'pending']);
+           switch ($request->action) {
+             case 'approved-unpaid':
+              $permit->comment()->create($request->all());
+               break;
+              case 'rejected';
+                $request['type'] = 1;
+                 $permit->comment()->create($request->all());
+              break;
+              case 'send_back':
+                $request['type'] = 1;
+                $request['action'] = 'modification request';
+               $permit->comment()->create($request->all());
+              break;
+              case 'need approval':
+               $request['type'] = 1;
+               $permit->comment()->create($request->all());
+               if($request->role){
+                foreach ($request->role as $role_id) {
+                  $permit->comment()->create([
+                    'action'=>'pending',
+                    'role_id'=>$role_id,
+                    'user_id'=> null,
+                    'comment'=> null,
+                  ]); 
                 }
-              }
+               }
+              break;
+           }
+             $permit->update(['permit_status'=>$request->action]);
 
-            }
         DB::commit();
 	      $result = ['success', ' Permit has been rejected successfully ', 'Success'];
       } catch (Exception $e) {
@@ -119,7 +118,7 @@ class ArtistPermitController extends Controller
     {
       try {
          DB::beginTransaction();
-         $permit->update(['permit_status'=>'processing']);
+         // $permit->update(['permit_status'=>'processing']);
 
 //	      if($permit->artistPermit()->where('artist_permit_status', 'reject')->count()){
 //
@@ -135,9 +134,9 @@ class ArtistPermitController extends Controller
          if($request->comment){
 	         $request['permit_id'] = $permit->permit_id;
 	         $request['user_id'] = Auth::user()->user_id;
-	         $request['type'] = 'client';
+	         $request['type'] = 1;
 	         $comment = $permit->comment()->create($request->all());
-	         $artist_permit_check->comment()->attach($comment->permit_comment_id,['artist_permit_id'=>$artistpermit->artist_permit_id]);
+           $comment->artistPermitComment()->attach($artistpermit->artist_permit_id);
          }
 
          if($request->check){
@@ -369,6 +368,7 @@ class ArtistPermitController extends Controller
 
     public function applicationCommentDataTable(Request $request, Permit $permit, ArtistPermit $artistpermit)
     {
+
     	$comments = $artistpermit->comments()->orderBy('created_at', 'desc')->get();
     	return DataTables::of($comments)
 		    ->addColumn('comment', function ($comments){
@@ -378,7 +378,7 @@ class ArtistPermitController extends Controller
 			    return $comments->created_at->format('d-M-Y h:m a');
 		    })
 		    ->addColumn('commented_by', function ($comments){
-			    return $comments->user->employee->emp_name;
+			    return $comments->user->NameEn;
 		    })
 		    ->make(true);
     }

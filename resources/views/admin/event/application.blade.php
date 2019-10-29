@@ -56,6 +56,7 @@
 				</div>
 				</div>
 				<div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
+
 					 <form id="kt_form" class="kt-form"  method="post" action="{{ route('admin.event.submit', $event->event_id) }}">
 					 	@csrf
 					 	<div data-ktwizard-type="step-content" data-ktwizard-state="current" class="kt-wizard-v3__content">
@@ -63,6 +64,7 @@
 					 			<div class="kt-wizard-v3__form">
 					 				<section class="row kt-margin-t-20 kt-margin-b-20">
 					 					<div class="col">
+					 						@include('admin.event.includes.latest-comment')
 					 						@include('admin.artist_permit.includes.comment')
 					 						@if ($existing_event->count() > 0)
 					 							<div class="alert alert-outline-danger fade show" role="alert">
@@ -333,6 +335,7 @@
 								<div class="kt-wizard-v3__form">
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
+												@include('admin.event.includes.latest-comment')
 												 @include('admin.artist_permit.includes.comment')
 												 <table class="table table-striped border borderless table-hover" id="requirement-table">
 													<thead>
@@ -354,6 +357,7 @@
 								<div class="kt-wizard-v3__form">
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
+												@include('admin.event.includes.latest-comment')
 												  @include('admin.artist_permit.includes.comment')
 												   <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-action">
 												  	<div class="card">
@@ -417,8 +421,6 @@
 												  		</div>
 												  	</div>
 												  </section>
-												  
-												 
 												   @if ($event->approve()->exists())
 												   <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-20" id="accordion-approver">
 												       <div class="card">
@@ -609,6 +611,7 @@
      function additionalRequirementTable(){
      	add_requirements_table = $('table#additional-requirement').DataTable({
      		  dom: '<"toolbar-add pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
+     		  'pageLength': 20,
      		ajax:{
      			url: '{{ route('admin.event.additionalrequirementdatatable', $event->event_id) }}'
      		},
@@ -616,6 +619,9 @@
      		columnDefs:[
      		{targets: 0, checkboxes: { selectRow: true }, sortable: false, className: 'no-wrap'}
      		],
+     		language:{
+     			'sEmptyTable': 'Requirement list is empty. <span class="kt-font-bold kt-font-transform-u kt-font-dark">Please add new requirements</span>'
+     		},
      		select:{ style: 'multi' },
      		columns: [
      			{ data: 'requirement_id'},
@@ -623,9 +629,26 @@
      		]
      	});
 
-     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark">Add New Requirement</button>');
+     	var counter = 0;
+
+     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">Add New Requirement</button>');
      	 $('#btn-add').on( 'click', function () {
-     	 	var data = {requirement_id: '', name: '<input type="text" autocomplete="off" class="form-control form-control-sm" name="requirements[]" placeholder="write new requirement">'};
+     	 	var html = '<section class="row">';
+     	 		html += '	<div class="col-sm-6">'
+     	 		html += '		<div class="form-group form-group-xs">';
+     	 		html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="write new requirement">';
+     	 		html += '		</div>';
+     	 		html += '	</div>';
+     	 		html += '	<div class="col-sm-6">';
+     	 		html + '		<div class="form-group form-group-xs">';
+     	 		html += '			<div class="kt-checkbox--inline kt-forn-dark">';
+     	 		html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> Issued date & Expired date required?<span></span></label>';
+     	 		html += '			</div>';
+     	 		html += '		</div>';
+     	 		html += '	</div>';
+     	 		html += '</section>';
+     	 	var data = {requirement_id: '', name: html };
+     	 	counter++;
      	 	add_requirements_table.row.add(data).draw();
      	    });
      	 
@@ -745,7 +768,7 @@
      		}
      		else{
      			$('#accordion-requirements').addClass('kt-hide');
-     			console.log(add_requirements_table.column(0).checkboxes.deselectAll());
+     			// console.log(add_requirements_table.column(0).checkboxes.deselectAll());
      			// add_requirements_table.column(0).checkboxes.deselectAll();
      		}
      	});

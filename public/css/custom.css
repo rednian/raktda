@@ -115,7 +115,7 @@
 }
 
 .btn-maroon {
-  background-color: var(---danger);
+  background-color: var(---p-light);
   border: 2px solid var(--main-brand-color);
   color: #fff;
 }

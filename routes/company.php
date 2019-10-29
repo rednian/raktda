@@ -7,7 +7,7 @@ Route::group(['middleware' => ['auth']], function () {
     })->name('company.dashboard');
 
     Route::get('{company_name}/dashboard', function () {
-        return redirect()->route('artist.index');
+        return redirect()->route('event.index');
     })->name('company.dashboard');
 
     Route::resource('artist', 'Company\ArtistController');

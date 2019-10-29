@@ -23,6 +23,7 @@
 
 		public function calendar(Request $request)
 		{
+
 			$user = Auth::user();
 			$events = Event::whereIn('status',['active', 'expired'])->get();
 			$events = $events->map(function($event) use ($user){
@@ -34,8 +35,7 @@
 					'id'=>$event->event_id,
 					'url'=> route('admin.event.show', $event->event_id).'?tab=event-calendar',
 					'description'=> 'Venue : '.$venue = $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
-					// 'allDay'=> false,
-					'className'=> eventStatus($event->status)
+					'className'=> eventType($event->type->name_en),
 				];
 			});
 			return response()->json($events);	
@@ -61,14 +61,21 @@
 						}
 						if($request->requirements){
 							foreach ($request->requirements as $requirement) {
-								$requirement = Requirement::create(['requirement_name'=>$requirement, 'requirement_type'=>'event']);
+								$requirement = Requirement::create([
+									'requirement_name'=>$requirement['name'], 
+									'dates_required'=>!empty($requirement['date']) ? 1 : 0 , 
+									'requirement_type'=>'event'
+								]);
+								$event->additionalRequirements()->attach($requirement->requirement_id);
 							}
-							// $requirement->type()->sync($event->type->event_type_id);							
 						}
 					}
 					$request['role_id'] = $user->roles()->first()->role_id;
-					if ($request->comment) {$comment = $event->comment()->create($request->all());}
 					$request['type'] = 1;
+					if ($request->comment) {$comment = $event->comment()->create($request->all());}
+					if($request->status == 'need modification'){
+						$request['status'] = 'send back for amendaments';
+					}
 					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
 					$event->update(['status'=>$request->status]);
 				}
@@ -182,15 +189,16 @@
 					 return '<a href="'.asset('/storage/'.$event->pivot->path).'"  data-fancybox data-fancybox data-caption="'.$name.'">'.$name.'</a>';
 				 })
 				 ->addColumn('issued_date', function($event){
-					 if ($event->dates_required && $event->issued_date) {
-						 return $event->issued_date->format('d-M-Y');
-					 }
+				 	if($event->dates_required == 1){
+				 		 return date('d-M-Y', strtotime($event->issued_date));
+				 	}
+
 					 return 'Not Required';
 				 })
 				 ->addColumn('expired_date', function($event){
-					 if ($event->dates_required && $event->expired_date) {
-						 return $event->expired_date->format('d-M-Y');
-					 }
+					if($event->dates_required == 1){
+				 		 return date('d-M-Y', strtotime($event->expired_date));
+				 	}
 					 return 'Not Required';
 				 })
 				 ->rawColumns(['name'])

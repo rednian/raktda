@@ -238,7 +238,7 @@
                   listDay: { buttonText: 'Day List' },
                   listWeek: { buttonText: 'Week List' }
               },
-              defaultView: 'listWeek',
+              defaultView: 'dayGridMonth',
               // defaultDate: TODAY,
               editable: true,
               eventLimit: true, // allow "more" link when too many events

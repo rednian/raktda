@@ -10,15 +10,6 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					{{--<div id="action-alert-selected1" class="alert alert-outline-danger fade show" role="alert">--}}
-						{{--<div class="alert-icon"><i class="flaticon-warning"></i></div>--}}
-						{{--<div class="alert-text">Selected  <span id=number-selected>0</span> artist of <span id="artist-total">0</span></div>--}}
-						{{--<div class="alert-close">--}}
-							{{--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
-							{{--<span aria-hidden="true"><i class="la la-close"></i></span>--}}
-							{{--</button>--}}
-						{{--</div>--}}
-					{{--</div>--}}
 					<section class="kt-section kt-padding-10">
 						<div class="kt-section__desc">
 							@csrf
@@ -32,10 +23,10 @@
 									<select name="action" class="form-control-sm form-control custom-select">
 										<option disabled selected>-Select Action-</option>
 										 @if($all_artist == $disaaproved_artist ){
-													<option value="approve">Approve Application & Notify client for payment</option>
+													<option value="approved-unpaid">Approve Application & Notify client for payment</option>
 										 @endif
 										<option value="send_back">Send back to client for modification of one or more artist information</option>
-										<option value="approval">Need higher Approval</option>
+										<option value="need approval">Need higher Approval</option>
 										<option value="rejected">Reject Application & Notify client</option>
 									</select>
 								</div>
@@ -45,12 +36,12 @@
 								<div class="col-sm-8">
 									<div class="kt-checkbox-inline">
 										<label class="kt-checkbox">
-											<input disabled id="chk-inspector" checked type="checkbox" name="role_id[]"
+											<input disabled id="chk-inspector" checked type="checkbox" name="role[]"
 														 value="{{ $roles->where('NameEn','inspector')->first()->role_id }}"> Inspector
 											<span></span>
 										</label>
 										<label class="kt-checkbox">
-											<input disabled id="-chk-manager" type="checkbox" name="role_id[]" value="{{ $roles->where('NameEn','manager')->first()->role_id }}">
+											<input disabled id="-chk-manager" type="checkbox" name="role[]" value="{{ $roles->where('NameEn','manager')->first()->role_id }}">
 											Manager
 											<span></span>
 										</label>

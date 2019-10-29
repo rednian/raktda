@@ -13,7 +13,7 @@ class Requirement extends Model implements Auditable
 
      protected $table = 'requirement';
      protected $primaryKey = 'requirement_id';
-     protected $fillable = ['requirement_name','requirement_name_ar', 'requirement_description', 'term','requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by'];
+     protected $fillable = ['requirement_name','requirement_name_ar', 'dates_required', 'requirement_description', 'term','requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by'];
 
      public function additionalRequirements()
      {

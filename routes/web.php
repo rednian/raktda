@@ -15,7 +15,7 @@ Route::get('/live', function(){
 });
 
 Auth::routes(['register' => false]);
-Route::post('/update_language', 'admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
+Route::post('/update_language', 'Admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
 
 Route::middleware(['admin', 'auth'])->group(function(){
 
@@ -61,6 +61,9 @@ Route::middleware(['admin', 'auth'])->group(function(){
     Route::get('/artist_permit/{permit}/history', 'Admin\ArtistPermitController@permitHistory')
         ->name('admin.artist_permit.history');
 
+    Route::get('/artist_permit/{permit}/application/{artistpermit}/comment/datatable','Admin\ArtistPermitController@applicationCommentDataTable')
+            ->name('admin.artist_permit.comment.datatable');
+
     Route::get('/artist_permit/{permit}/download', 'Admin\ArtistPermitController@download')->name('admin.artist_permit.download');
 
     Route::get('/artist_permit/{permit}/application/approver', 'Admin\ArtistPermitController@approverDataTable')
@@ -80,9 +83,6 @@ Route::middleware(['admin', 'auth'])->group(function(){
 
     Route::post('/artist_permit/{permit}/application/{artistpermit}/checklist', 'Admin\ArtistPermitController@artistChecklist')
         ->name('admin.artist_permit.checklist');
-
-    Route::get('/artist_permit/{permit}/application/{artistpermit}/comment/datatable','Admin\ArtistPermitController@applicationCommentDataTable')
-        ->name('admin.artist_permit.comment.datatable');
 
     Route::get('/artist_permit/{permit}/application/datatable', 'Admin\ArtistPermitController@applicationDataTable')
         ->name('admin.artist_permit.applicationdetails.datatable');
