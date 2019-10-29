@@ -196,7 +196,7 @@
                 <td class="subhead">تصريح لا <br />Permit No</td>
             </tr>
             <tr>
-                {{-- <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'Days' : 'Day'}} </td> --}}
+                <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'Days' : 'Day'}} </td>
                 <td>انقضاء</td>
                 <td class="subhead">فترة التصريح <br />Permit Period</td>
             </tr>
@@ -239,7 +239,7 @@
     </table>
 
     <div id="dept_name">
-        <h2>إدارة التراخيص السياحية * ضمان الجودة</h2>
+        <h2>إدارة التراخيص السياحية وضمان الجودة</h2>
         <h3>Department of Tourism Licensing & Quality Assurance</h3>
     </div>
 

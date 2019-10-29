@@ -138,12 +138,12 @@ class EventController extends Controller
                             ]);
                         }
                         $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
-
-                        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                     }
                 }
             }
         }
+
+        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/');
 
         if ($event) {
             $result = ['success', 'Event Permit Applied Successfully', 'Success'];
@@ -184,7 +184,7 @@ class EventController extends Controller
                 'url' => route('event.show', $event->event_id) . '?tab=calendar',
                 'description' => 'Venue : ' . $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
                 // 'allDay'=> false,
-                // 'className' => eventStatus($event->status)
+                'className' => eventType($event->type->name_en)
             ];
         });
         return response()->json($events);
@@ -332,7 +332,7 @@ class EventController extends Controller
     {
         $data['company_details'] = Company::find(Auth::user()->EmpClientId);
         $data['event_details'] = Event::with('type', 'country')->where('event_id', $id)->first();
-        /* $from = Event::where('event_id', $id)->first()->issued_date;
+        $from = Event::where('event_id', $id)->first()->issued_date;
         $to = Event::where('event_id', $id)->first()->expired_date;
         $from_date_formatted = Carbon::parse($from);
         $to_date_formatted = Carbon::parse($to);
@@ -340,7 +340,7 @@ class EventController extends Controller
         $numberToWords = new NumberToWords();
         $numberTransformer = $numberToWords->getNumberTransformer('en');
         $data['diff'] = $diff;
-        $data['days'] = $numberTransformer->toWords($diff);*/
+        $data['days'] = $numberTransformer->toWords($diff);
 
         $pdf = PDF::loadView('permits.event.print', $data, [], [
             'title' => 'Event Permit',
@@ -569,12 +569,12 @@ class EventController extends Controller
                             ]);
                         }
                         $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
-
-                        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                     }
                 }
             }
         }
+
+        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/');
 
 
         if ($event) {
@@ -599,6 +599,7 @@ class EventController extends Controller
     {
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
+        $dnd = json_decode($request->documentN, true);
         $event_id = $request->evtId;
 
         // $cid = Auth::user()->EmpClientId ? Auth::user()->EmpClientId : '';
@@ -626,12 +627,35 @@ class EventController extends Controller
 
         $requirement_ids = [];
 
-
         foreach ($requirements->requirements as $req) {
             array_push($requirement_ids, $req->requirement_id);
         }
 
         $total = $requirements['requirements']->count();
+
+        if ($dnd) {
+            $eventDocs = EventRequirement::where('event_id', $event_id)->get();
+            $filenames = [];
+            for ($i = 1; $i <= count($dnd); $i++) {
+                $reqId = $dnd[$i]['reqId'];
+                foreach ($dnd[$i]['fileNames'] as $file) {
+                    if ($file) {
+                        array_push($filenames, $reqId . '/' . $file);
+                    }
+                }
+            }
+
+            foreach ($eventDocs as $doc) {
+                $name = explode('/', $doc->path);
+                $namee = $name[3] . '/' . end($name);
+                if (!in_array($namee, $filenames)) {
+                    EventRequirement::where('event_id', $event_id)->where('path', 'like', '%' . $namee)->delete();
+                    Storage::delete('public/' . $doc->path);
+                }
+            }
+        }
+
+
 
         if ($dod) {
 
@@ -680,12 +704,14 @@ class EventController extends Controller
                             ]);
                         }
                         $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
-
-                        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                     }
                 }
             }
         }
+
+        Storage::deleteDirectory('public/' . $userid . '/temp/');
+
+
 
 
         if ($event) {

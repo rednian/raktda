@@ -726,6 +726,7 @@
         }
         });
 
+        let documentNames = {};
 
         const docValidation = () => {
             var hasFile = true;
@@ -734,6 +735,11 @@
             if(reqCount > 0)
             {
                 for (var i = 1; i <= reqCount; i++) {
+                let children = $('#ajax-file-upload_' + i).children();
+                let fileNames = Object.keys(children).map(function(key){
+                    return children[key].innerText != undefined ? children[key].innerText : '';
+                });
+
                 if ($('#ajax-file-upload_' + i).length) {
                     if ($('#ajax-file-upload_' + i).contents().length == 0) {
                         hasFileArray[i] = false;
@@ -745,6 +751,10 @@
                     documentDetails[i] = {
                         issue_date: $('#doc_issue_date_' + i).val(),
                         exp_date: $('#doc_exp_date_' + i).val()
+                    }
+                    documentNames[i] = {
+                        reqId: $('#req_id_'+i).val(),
+                        fileNames
                     }
                 }
             }
@@ -758,6 +768,7 @@
             }
 
             localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
+            localStorage.setItem('documentNames', JSON.stringify(documentNames));
                 return hasFile;
             };
 
@@ -883,6 +894,7 @@
 
             var hasFile = docValidation();
 
+
                 if (documentsValidator.form() && hasFile) {
 
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
@@ -890,6 +902,7 @@
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
+                    var dn = localStorage.getItem('documentNames');
 
                         $.ajax({
                             url: "{{route('event.store')}}",
@@ -897,6 +910,7 @@
                             data: {
                                 eventD: ed,
                                 documentD: dd,
+                                documentN: dn,
                                 from: 'draft',
                             },
                             success: function (result) {
@@ -923,6 +937,7 @@
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
+                    var dn = localStorage.getItem('documentNames');
 
                         $.ajax({
                             url: "{{route('company.event.update_draft')}}",
@@ -930,6 +945,7 @@
                             data: {
                                 eventD: ed,
                                 documentD: dd,
+                                documentN: dn,
                                 evtId: $('#event_id').val()
                             },
                             success: function (result) {

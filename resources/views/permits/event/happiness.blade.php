@@ -522,7 +522,7 @@
 
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-submit" id="submit_btn">
-                            Pay
+                            Submit
                         </div>
 
 
