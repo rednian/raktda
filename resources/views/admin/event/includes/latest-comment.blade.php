@@ -17,7 +17,7 @@
                         </span>
                         <span class="kt-badge kt-badge--success kt-badge--inline kt-margin-r-5">{{ ucfirst($approve->status) }}</span>
                         <span class="kt-notes__desc" data-toggle="kt-tooltip" data-skin="dark" data-placement="top" data-original-title="{{ $approve->created_at->format('F d, Y h:m A') }}">
-                           {{ $approve->created_at->format('d-M-Y') }}
+                            <u>{{ $approve->created_at->format('d-M-Y') }}</u>
                         </span>
                     </div>
                 </div>
