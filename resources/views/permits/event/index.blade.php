@@ -188,8 +188,6 @@
 
 <!--end::Modal-->
 
-<input type="hidden" id="valid_events" value="{{json_encode($events)}}">
-
 
 </div>
 
@@ -210,7 +208,6 @@
         // var hash = window.location.hash;
         // $('#kt_tabs_list a[href="' + hash + '"]').tab('show');
 
-        var events = JSON.parse($('#valid_events').val());
 
         $(document).ready(function(){
 
@@ -253,19 +250,11 @@
             ],
             columnDefs: [
                 {
-                    targets:0,
-
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
                     targets:1,
 
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.name_ar}</span>`;
+						return `<span >${data}<br/>${full.name_ar}</span>`;
 					}
                 },
                 {
@@ -273,7 +262,7 @@
 
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.time_start}</span>`;
+						return `<span >${data}<br/>${full.time_start}</span>`;
 					}
                 },
                 {
@@ -281,14 +270,14 @@
 
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.time_end}</span>`;
+						return `<span >${data}<br/>${full.time_end}</span>`;
 					}
                 },
                 {
                     targets:4,
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.venue_ar}</span>`;
+						return `<span >${data}<br/>${full.venue_ar}</span>`;
 					}
                 },
                 {
@@ -296,14 +285,14 @@
                     width: '15%',
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
+						return `<span >${data}</span>`;
 					}
                 },
                 // {
                 //     targets:6,
                 //     className:'dt-head-nowrap dt-body-nowrap',
                 //     render: function(data, type, full, meta) {
-                //         return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
+                //         return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
 				// 	}
                 // },
@@ -313,7 +302,7 @@
                     width: '10%',
                     className: 'text-center',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold kt-font-transform-c">${data}</span>`;
+						return `<span class="kt-font-transform-c">${data}</span>`;
 					}
                 }
             ],
@@ -347,14 +336,14 @@
                     targets:1,
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.name_ar}</span>`;
+						return `<span >${data}<br/>${full.name_ar}</span>`;
 					}
                 },
                 {
                     targets:2,
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.time_start}</span>`;
+						return `<span >${data}<br/>${full.time_start}</span>`;
 					}
                 },
                 {
@@ -362,14 +351,14 @@
                     width:'18%',
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.time_end}</span>`;
+						return `<span >${data}<br/>${full.time_end}</span>`;
 					}
                 },
                 {
                     targets:4,
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.venue_ar}</span>`;
+						return `<span >${data}<br/>${full.venue_ar}</span>`;
 					}
                 },
                 {
@@ -377,7 +366,7 @@
                     width: '12%',
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
+						return `<span >${data}</span>`;
 					}
                 },
 
@@ -409,7 +398,7 @@
                     targets:-3,
                     width: '12%',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
+                        return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
 					}
                 },
@@ -418,7 +407,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.time_start+'</span>';
+                        return '<span >'+ data +' <br/> '+full.time_start+'</span>';
 
 					}
                 },
@@ -427,7 +416,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.time_end+'</span>';
+                        return '<span >'+ data +' <br/> '+full.time_end+'</span>';
 
 					}
                 },
@@ -436,7 +425,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.venue_ar+'</span>';
+                        return '<span >'+ data +' <br/> '+full.venue_ar+'</span>';
 
 					}
                 },
@@ -445,7 +434,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.name_ar+'</span>';
+                        return '<span >'+ data +' <br/> '+full.name_ar+'</span>';
 
 					}
                 },
@@ -454,7 +443,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data+'</span>';
+                        return '<span >'+ data+'</span>';
 
 					}
                 },
@@ -463,7 +452,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +'</span>';
+                        return '<span >'+ data +'</span>';
 
 					}
                 },
@@ -478,9 +467,27 @@
     });
 
     const cancel_permit = (id, refno) => {
-        $('#cancel_permit_id').val(id);
-        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+        var url = "{{route('company.event.get_status', ':id')}}";
+        url = url.replace(':id', id);
+        $.ajax({
+            url: url,
+            success: function(result){
+               result = result.replace(/\s/g, '');
+                if(result != '') {
+                    if(result == 'new'){
+                        $('#cancel_permit').modal('show');
+                        $('#cancel_permit_id').val(id);
+                        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+                    }else {
+                            alert('Permit is already in processing');
+                    }
+
+                }
+            }
+        });
+
     }
+
 
     const show_cancelled = (id) => {
         var url = "{{route('company.event.cancel_reason', ':id')}}";
@@ -518,58 +525,7 @@
         });
     }
 
-    /*
-    function calendarEvents(){
-      var todayDate = moment().startOf('day');
-          var YM = todayDate.format('YYYY-MM');
-          var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
-          var TODAY = todayDate.format('YYYY-MM-DD');
-          var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
-          var calendarEl = document.getElementById('event-calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-              plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-              isRTL: KTUtil.isRTL(),
-              header: {
-                  left: 'prev,next today',
-                  center: 'title',
-                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
-              },
-              height: 800,
-              contentHeight: 780,
-              aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
-              nowIndicator: true,
-              // now: TODAY + 'T09:25:00', // just for demo
-              views: {
-                  dayGridMonth: { buttonText: 'Month' },
-                  timeGridWeek: { buttonText: 'Week' },
-                  timeGridDay: { buttonText: 'Day' },
-                  listDay: { buttonText: 'Day List' },
-                  listWeek: { buttonText: 'Week List' }
-              },
-              defaultView: 'dayGridMonth',
-              // defaultDate: TODAY,
-              editable: true,
-              eventLimit: true, // allow "more" link when too many events
-              navLinks: true,
-              events: '{{ route('company.event.calendar') }}',
-              eventRender: function(info) {
-                  var element = $(info.el);
-                  if (info.event.extendedProps && info.event.extendedProps.description) {
-                      if (element.hasClass('fc-day-grid-event')) {
-                          element.data('content', info.event.extendedProps.description);
-                          element.data('placement', 'top');
-                          KTApp.initPopover(element);
-                      } else if (element.hasClass('fc-time-grid-event')) {
-                          element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
-                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      }
-                  }
-              }
-          });
-          calendar.render();
-     }
-     */
+
 
      function calendarEvents(){
       var todayDate = moment().startOf('day');
@@ -586,8 +542,8 @@
                   center: 'title',
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
-              height: 800,
-              contentHeight: 780,
+              height: 'auto',
+              contentHeight: 450,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo

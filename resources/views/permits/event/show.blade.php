@@ -69,7 +69,7 @@
                 <table class="table table-hover table-borderless border table-striped">
                     <thead class="text-center">
                         <tr>
-                            <th>Document Name</th>
+                            <th class="text-left">Document Name</th>
                             <th>Issue Date</th>
                             <th>Expiry Date</th>
                             <th>View</th>

@@ -677,6 +677,8 @@
         }
         });
 
+        let documentNames = {};
+
 
         const docValidation = () => {
             var hasFile = true;
@@ -685,6 +687,11 @@
             if(reqCount > 0)
             {
                 for (var i = 1; i <= reqCount; i++) {
+                let children = $('#ajax-file-upload_' + i).children();
+                let fileNames = Object.keys(children).map(function(key){
+                    return children[key].innerText != undefined ? children[key].innerText : '';
+                });
+
                 if ($('#ajax-file-upload_' + i).length) {
                     if ($('#ajax-file-upload_' + i).contents().length == 0) {
                         hasFileArray[i] = false;
@@ -696,6 +703,10 @@
                     documentDetails[i] = {
                         issue_date: $('#doc_issue_date_' + i).val(),
                         exp_date: $('#doc_exp_date_' + i).val()
+                    }
+                    documentNames[i] = {
+                        reqId: $('#req_id_'+i).val(),
+                        fileNames
                     }
                 }
             }
@@ -709,6 +720,7 @@
             }
 
             localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
+            localStorage.setItem('documentNames', JSON.stringify(documentNames));
                 return hasFile;
             };
 
@@ -791,6 +803,7 @@
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
+                    var dn = localStorage.getItem('documentNames');
 
                         $.ajax({
                             url: "{{route('event.store')}}",
@@ -798,6 +811,7 @@
                             data: {
                                 eventD: ed,
                                 documentD: dd,
+                                documentN: dn,
                                 from: 'new'
                             },
                             success: function (result) {
@@ -859,7 +873,7 @@
                          var j = i+ 1 ;
                          $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
-                         if(res[i].dates_required)
+                         if(res[i].dates_required == "1")
                          {
                             $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
                             $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')

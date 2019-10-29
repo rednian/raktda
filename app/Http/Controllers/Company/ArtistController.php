@@ -82,7 +82,7 @@ class ArtistController extends Controller
                 case 'applied':
                     if ($permit->permit_status == 'approved-unpaid') {
                         return '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
-                    } else if ($permit->permit_status == 'new' && $permit->lock == '') {
+                    } else if ($permit->permit_status == 'new') { //&& $permit->lock == ''
                         return '<a href="' . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><span onClick="cancel_permit(' . $permit->permit_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal" data-target="#cancel_permit" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     } else if ($permit->permit_status == 'modification request') {
                         return '<a href="' . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a>';
@@ -192,7 +192,7 @@ class ArtistController extends Controller
     public function fetch_artist_temp_data(Request $request)
     {
         $id = $request->artist_temp_id;
-        $artists = ArtistTempData::with('Nationality', 'Profession')->where('id', $id)->first();
+        $artists = ArtistTempData::with('Nationality', 'Profession', 'visaType')->where('id', $id)->first();
         return $artists;
     }
 
@@ -782,7 +782,7 @@ class ArtistController extends Controller
         }
 
         if ($permit) {
-            $result = ['success', 'Permit Applied Successfully', 'Success'];
+            $result = ['success', 'Artist Permit Applied Successfully', 'Success'];
         } else {
             $result = ['error', 'Error, Please Try Again', 'Error'];
         }

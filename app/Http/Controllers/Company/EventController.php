@@ -30,8 +30,7 @@ class EventController extends Controller
 
     public function index()
     {
-        $events = Event::with('type')->where('created_by', Auth::user()->user_id)->where('status', 'active')->get();
-        return view('permits.event.index', ['events' =>  $events]);
+        return view('permits.event.index');
     }
 
 
@@ -80,6 +79,30 @@ class EventController extends Controller
             $input_Array['time_end'] = Carbon::parse($evd['time_end'])->toDateTimeString();
             $event = Event::where('event_id', $evd['event_draft_id'])->update($input_Array);
             $event_id = $evd['event_draft_id'];
+
+            $dnd = json_decode($request->documentNames, true);
+
+            if ($dnd) {
+                $eventDocs = EventRequirement::where('event_id', $event_id)->get();
+                $filenames = [];
+                for ($i = 1; $i <= count($dnd); $i++) {
+                    $reqId = $dnd[$i]['reqId'];
+                    foreach ($dnd[$i]['fileNames'] as $file) {
+                        if ($file) {
+                            array_push($filenames, $reqId . '/' . $file);
+                        }
+                    }
+                }
+
+                foreach ($eventDocs as $doc) {
+                    $name = explode('/', $doc->path);
+                    $namee = $name[3] . '/' . end($name);
+                    if (!in_array($namee, $filenames)) {
+                        EventRequirement::where('event_id', $event_id)->where('path', 'like', '%' . $namee)->delete();
+                        Storage::delete('public/' . $doc->path);
+                    }
+                }
+            }
         }
 
         $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
@@ -167,6 +190,9 @@ class EventController extends Controller
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['staff_comments'] = $event->comment()->where('type', 1)->get();
         $data['event'] = $event;
+        if ($event->status == 'processing') {
+            return redirect('company/event');
+        }
         return view('permits.event.edit', $data);
     }
 
@@ -194,6 +220,7 @@ class EventController extends Controller
     {
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
+        $dnd = json_decode($request->documentNames, true);
         $event_id = $request->event_id;
         $userid = Auth::user()->user_id;
 
@@ -235,6 +262,28 @@ class EventController extends Controller
         $total_addi = $add_req['additionalRequirements']->count();
 
         $total = (int) $total_req + (int) $total_addi;
+
+        if ($dnd) {
+            $eventDocs = EventRequirement::where('event_id', $event_id)->get();
+            $filenames = [];
+            for ($i = 1; $i <= count($dnd); $i++) {
+                $reqId = $dnd[$i]['reqId'];
+                foreach ($dnd[$i]['fileNames'] as $file) {
+                    if ($file) {
+                        array_push($filenames, $reqId . '/' . $file);
+                    }
+                }
+            }
+
+            foreach ($eventDocs as $doc) {
+                $name = explode('/', $doc->path);
+                $namee = $name[3] . '/' . end($name);
+                if (!in_array($namee, $filenames)) {
+                    EventRequirement::where('event_id', $event_id)->where('path', 'like', '%' . $namee)->delete();
+                    Storage::delete('public/' . $doc->path);
+                }
+            }
+        }
 
         if ($dod) {
 
@@ -313,6 +362,11 @@ class EventController extends Controller
         return redirect()->route('event.index');
     }
 
+    public function get_status($id)
+    {
+        return Event::where('event_id', $id)->first()->status;
+    }
+
     public function cancel_reason($id = null)
     {
         return Event::where('event_id', $id)->first()->cancel_reason;
@@ -336,7 +390,7 @@ class EventController extends Controller
         $to = Event::where('event_id', $id)->first()->expired_date;
         $from_date_formatted = Carbon::parse($from);
         $to_date_formatted = Carbon::parse($to);
-        $diff = $from_date_formatted->diffInDays($to_date_formatted);
+        $diff = $from_date_formatted->diffInDays($to_date_formatted) == 0 ? 1 : $from_date_formatted->diffInDays($to_date_formatted);
         $numberToWords = new NumberToWords();
         $numberTransformer = $numberToWords->getNumberTransformer('en');
         $data['diff'] = $diff;
@@ -371,7 +425,7 @@ class EventController extends Controller
         $permits = Event::with('type')->orderBy('created_at', 'desc')->where('created_by', Auth::user()->user_id);
 
         if ($status == 'applied') {
-            $permits->where('status', '!=', 'active')->where('status', '!=', 'draft');
+            $permits->where('status', '!=', 'active')->where('status', '!=', 'draft')->where('status', '!=', 'expired');
         } else if ($status == 'valid') {
             $permits->whereIn('status', ['active', 'expired'])->OrderBy('updated_at', 'desc');
         } else if ($status == 'draft') {
@@ -402,7 +456,7 @@ class EventController extends Controller
                     if ($permit->status == 'approved-unpaid') {
                         return '<a href="' . route('company.event.payment', $permit->event_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
                     } else if ($permit->status == 'new') {
-                        return '<a href="' . route('event.edit', $permit->event_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal" data-target="#cancel_permit" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
+                        return '<a href="' . route('event.edit', $permit->event_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     } else if ($permit->status == 'need modification') {
                         return '<a href="' . route('event.edit', $permit->event_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a>';
                     } else if ($permit->status == 'rejected') {
@@ -412,7 +466,7 @@ class EventController extends Controller
                     }
                     break;
                 case 'valid':
-                    if ($permit->status == 'active') {
+                    if ($permit->status == 'active' || $permit->status == 'expired') {
                         return '<a href="' . route('company.event.download', $permit->event_id) . '"  title="Download" target="_blank"><span class="kt-badge kt-badge--success kt-badge--inline">Download</span></a>';
                     }
                     break;

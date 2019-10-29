@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('fetch_event_drafts',  'Company\EventController@fetch_draft')->name('company.event.fetch_draft');
     Route::get('event/fetch_requirements/{id}', 'Company\EventController@fetch_requirements')->name('company.event.get_requirements');
     Route::get('event/get_additional_requirements/{id}', 'Company\EventController@fetch_additional_requirements')->name('company.event.get_additional_requirements');
+    Route::get('event/get_status/{id}', 'Company\EventController@get_status')->name('company.event.get_status');
     Route::post('event/get_uploaded_docs', 'Company\EventController@get_uploaded_docs')->name('company.event.get_uploaded_docs');
     Route::post('event/make_payment', 'Company\EventController@make_payment')->name('company.event.make_payment');
     Route::get('company/event/calendar', 'Company\EventController@calendarFn')->name('company.event.calendar');

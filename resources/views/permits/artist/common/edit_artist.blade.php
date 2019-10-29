@@ -259,7 +259,7 @@
                             </div>
                         </a>
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                            Update
+                            Update & Submit
                         </div>
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
@@ -736,6 +736,8 @@
                                 toUrl = toUrl.replace(':from', 'edit');
                             } else if(fromPage == 'renew') {
                                 toUrl = toUrl.replace(':from', 'renew');
+                            } else if(fromPage == 'draft') {
+                                toUrl = toUrl.replace(':from', 'draft');
                             }
                             toUrl = toUrl.replace(':id', permit_id);
                             window.location.href= toUrl ;

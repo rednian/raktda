@@ -103,12 +103,12 @@
                                                 <table class="table table-borderless">
                                                     <tr>
                                                         <th>Profession</th>
-                                                        <th>Fee</th>
+                                                        <th class="text-right">Fee (AED)</th>
                                                     </tr>
                                                     @foreach($profession as $pt)
                                                     <tr>
                                                         <td>{{$pt->name_en}}</td>
-                                                        <td>{{$pt->amount}}</td>
+                                                        <td class="text-right">{{number_format($pt->amount,2)}}</td>
                                                     </tr>
                                                     @endforeach
                                                 </table>
@@ -1594,11 +1594,11 @@
 
         $('#submit_btn').click((e) => {
 
-            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
-
         var hasFile = docValidation();
 
             if (documentsValidator.form() && hasFile) {
+
+                $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
                 var pd = localStorage.getItem('permitDetails');
                 var ad = localStorage.getItem('artistDetails');

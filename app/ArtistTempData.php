@@ -50,6 +50,6 @@ class ArtistTempData extends Model
 
     public function visaType()
     {
-        return $this->belongsTo(VisaType::class, 'visa_type_id', 'id');
+        return $this->belongsTo(VisaType::class, 'visa_type', 'id');
     }
 }
