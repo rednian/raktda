@@ -2,17 +2,17 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Artist Comment</h5>
+				<h5 class="modal-title" id="exampleModalLabel">ARTIST COMMENT</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
 			<div class="modal-body">
-				<table class="table table-borderless table-striped  table-hover" id="table-comment">
-					<thead class="thead-dark">
+				<table class="table table-borderless table-striped  table-hover border" id="table-comment">
+					<thead>
 					<tr>
-						<th>Comment</th>
-						<th>Commented By</th>
-						<th>Commented On</th>
+						<th>REMARKS</th>
+						<th>CHECKED BY</th>
+						<th>CHECKED DATE</th>
 					</tr>
 					</thead>
 				</table>

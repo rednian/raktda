@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 use DB;
+use PDF;
 use Auth;
 use DataTables;
 use Carbon\Carbon;
@@ -24,6 +25,21 @@ class ArtistPermitController extends Controller
         ]);
     }
 
+    public function download(Permit $permit)
+    {
+      $data['company_details'] = $permit->owner->user_id;
+      $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'nationality')->get();
+      $data['permit_details'] = $permit;
+
+      $permitNumber = $permit->permit_number;
+
+      $pdf = PDF::loadView('permits.artist.permit_print', $data, [], [
+          'title' => 'Artist Permit',
+          'default_font_size' => 10
+      ]);
+      return $pdf->stream('Permit-' . $permitNumber . '.pdf');
+    }
+
     public function show(Permit $permit)
     {
     	return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no]);
@@ -42,44 +58,43 @@ class ArtistPermitController extends Controller
     public function submitApplication(Request $request, Permit $permit)
     {
       try {
-
         DB::beginTransaction();
+
            $user_time = $request->session()->get('user');
            $user = Auth::user();
            $request['user_id'] = $user->user_id;
+           $request['role_id'] =  $user->roles->where('NameEn', 'admin')->first()->role_id;
 
-            if($request->action){
-              $permit_status= null;
-              $comment_type = null;
-              $approver_status = null;
-
-              if($request->action == 'approve'){ $approver_status = $permit_status = 'approved-unpaid'; $comment_type = 'client'; }
-	            if($request->action == 'send_back'){ $approver_status = $permit_status = 'modification request'; $comment_type = 'client'; }
-	            if($request->action == 'rejected'){ $approver_status = $permit_status = 'rejected'; $comment_type = 'client'; }
-	            if($request->action == 'approval'){ $approver_status = 'need approval'; $comment_type = 'staff'; }
-
-	            $permit_approver = $permit->approver()->create([
-		            'role_id'=>  $user->roles->where('NameEn', 'admin')->first()->role_id,
-		            'user_id' => $user->user_id,
-		            'time_start' => $user_time['time_start'],
-		            'time_end' => Carbon::now(),
-		            'status'=> $approver_status
-	            ]);
-
-	            if ($request->comment) {
-		            $permit_comment = $permit->comment()->create($request->all());
-		            $permit_comment->approverComment()->attach($permit_approver->permit_approver_id);
-	            }
-
-	            $permit->update(['permit_status'=>$permit_status , 'user_id'=>$user->user_id ]);
-
-              if($request->role_id){
-                foreach ($request->role_id as $role_id) {
-                  $permit->approver()->create(['role_id'=>$role_id, 'status'=>'pending']);
+           switch ($request->action) {
+             case 'approved-unpaid':
+              $permit->comment()->create($request->all());
+               break;
+              case 'rejected';
+                $request['type'] = 1;
+                 $permit->comment()->create($request->all());
+              break;
+              case 'send_back':
+                $request['type'] = 1;
+                $request['action'] = 'modification request';
+               $permit->comment()->create($request->all());
+              break;
+              case 'need approval':
+               $request['type'] = 1;
+               $permit->comment()->create($request->all());
+               if($request->role){
+                foreach ($request->role as $role_id) {
+                  $permit->comment()->create([
+                    'action'=>'pending',
+                    'role_id'=>$role_id,
+                    'user_id'=> null,
+                    'comment'=> null,
+                  ]); 
                 }
-              }
+               }
+              break;
+           }
+             $permit->update(['permit_status'=>$request->action]);
 
-            }
         DB::commit();
 	      $result = ['success', ' Permit has been rejected successfully ', 'Success'];
       } catch (Exception $e) {
@@ -103,7 +118,7 @@ class ArtistPermitController extends Controller
     {
       try {
          DB::beginTransaction();
-         $permit->update(['permit_status'=>'processing']);
+         // $permit->update(['permit_status'=>'processing']);
 
 //	      if($permit->artistPermit()->where('artist_permit_status', 'reject')->count()){
 //
@@ -119,9 +134,9 @@ class ArtistPermitController extends Controller
          if($request->comment){
 	         $request['permit_id'] = $permit->permit_id;
 	         $request['user_id'] = Auth::user()->user_id;
-	         $request['type'] = 'client';
+	         $request['type'] = 1;
 	         $comment = $permit->comment()->create($request->all());
-	         $artist_permit_check->comment()->attach($comment->permit_comment_id,['artist_permit_id'=>$artistpermit->artist_permit_id]);
+           $comment->artistPermitComment()->attach($artistpermit->artist_permit_id);
          }
 
          if($request->check){
@@ -265,14 +280,14 @@ class ArtistPermitController extends Controller
 
     		return Datatables::of($artist_permit)
 			    ->addColumn('nationality', function($artist_permit){
-			    	if(!$artist_permit->artist->country){ return null; }
-			    	return ucwords($artist_permit->artist->country->nationality_en);
+			    	if(!$artist_permit->country){ return null; }
+			    	return ucwords($artist_permit->country->nationality_en);
 			    })
 			    ->addColumn('age', function($artist_permit){
-			    	return $artist_permit->artist->age;
+			    	return $artist_permit->age;
 			    })
 			    ->addColumn('fullname', function($artist_permit){
-			    	return ucwords($artist_permit->artist->fullname);
+			    	return ucwords($artist_permit->fullname);
 			    })
 			    ->addColumn('profession', function($artist_permit){
 			    	if(!$artist_permit->profession){ return null; }
@@ -353,6 +368,7 @@ class ArtistPermitController extends Controller
 
     public function applicationCommentDataTable(Request $request, Permit $permit, ArtistPermit $artistpermit)
     {
+
     	$comments = $artistpermit->comments()->orderBy('created_at', 'desc')->get();
     	return DataTables::of($comments)
 		    ->addColumn('comment', function ($comments){
@@ -362,7 +378,7 @@ class ArtistPermitController extends Controller
 			    return $comments->created_at->format('d-M-Y h:m a');
 		    })
 		    ->addColumn('commented_by', function ($comments){
-			    return $comments->user->employee->emp_name;
+			    return $comments->user->NameEn;
 		    })
 		    ->make(true);
     }
@@ -370,10 +386,10 @@ class ArtistPermitController extends Controller
     public function dataTable(Request $request)
     {
      if($request->ajax()){
-    	// dd($request->all());
 
      	$limit = $request->length;
      	$start = $request->start;
+
 
          $permit = Permit::has('artist')
          ->when($request->today, function($q) use ($request){
@@ -385,8 +401,8 @@ class ArtistPermitController extends Controller
          ->when($request->request_type, function ($q) use ($request){
           $q->whereIn('request_type', $request->request_type);
         })
-         ->when($request->permit_status, function($q) use ($request){
-          $q->whereIn('permit_status', $request->permit_status);
+         ->when($request->status, function($q) use ($request){
+          $q->whereIn('permit_status', $request->status);
         })
          ->when($request->permit_start, function ($q) use ($request){
           $date = explode('-', $request->permit_start);
@@ -438,7 +454,10 @@ class ArtistPermitController extends Controller
 	         ->editColumn('request_type', function($permit){
 	         	return ucwords($permit->request_type).' Application';
 	         })
-	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status'])
+           ->addColumn('action', function($permit){
+            return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-light"><i class="la la-download"></i> download</a>';
+           })
+	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action'])
 	          ->setTotalRecords($totalRecords)
 	         ->make(true);
      }

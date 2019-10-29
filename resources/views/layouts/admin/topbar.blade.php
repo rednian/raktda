@@ -63,13 +63,11 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
                 <div class="kt-header__topbar-user">
                     @php
-
-                    $name=ucwords(Auth::user()->NameEn);
-                    $first_name = explode(' ', $name);
-                    $first_name = $first_name[0];
-                    $first_letter = substr($first_name, 0, 1);
-                    @endphp
-
+                        $name=ucwords(Auth::user()->NameEn);
+                        $first_name = explode(' ', $name);
+                        $first_name = $first_name[0];
+                        $first_letter = substr($first_name, 0, 1);
+                        @endphp
                     <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span> <span
                         class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords($first_name) }}</span>
                     <span
@@ -114,5 +112,4 @@
         <!--end: User Bar -->
     </div>
     <!-- end:: Header Topbar -->
-
 </div>

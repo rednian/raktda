@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EventComment extends Model
 {
-	protected $table = 'event_comment';
+	protected $table = 'smartrak_smartgov.event_comment';
 	protected $primaryKey = 'event_comment_id';
 	protected $fillable = ['event_id', 'user_id', 'type', 'comment'];
 	protected $dates = ['created_at', 'updated_at'];

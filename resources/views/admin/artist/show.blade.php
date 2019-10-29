@@ -193,15 +193,15 @@
 				 <div class="tab-content">
 						<div class="tab-pane active" id="kt_tabs_6_1" role="tabpanel">
 							 @if($artist_permit->permit()->count() > 0)
-									<table class="table table-striped table-borderless table-hover table-head-noborder" id="artist-permit-history">
-										 <thead class="thead-dark">
+									<table class="table table-striped table-borderless table-hover border" id="artist-permit-history">
+										 <thead>
 										 <tr>
-												<th>Reference No.</th>
-												<th>Company Name</th>
-												<th>Permit No.</th>
-												<th>Issued Date</th>
-												<th>Expired Date</th>
-												<th>Permit Status</th>
+												<th>REFERENCE NO.</th>
+												<th>ESTABLISHMENT NAME</th>
+												<th>PERMIT NO.</th>
+												<th>ISSUED DATE</th>
+												<th>EXPIRED DATE</th>
+												<th>PERMIT STATUS</th>
 										 </tr>
 										 </thead>
 									</table>
@@ -213,13 +213,13 @@
 						</div>
 						<div class="tab-pane" id="kt_tabs_6_2" role="tabpanel">
 							 @if($artist_permit->artist->action->count() > 0)
-									<table class="table table-striped table-borderless table-hover table-head-noborder" id="status-history">
-										 <thead class="thead-dark">
+									<table class="table table-striped table-borderless table-hover border table-hover" id="status-history">
+										 <thead>
 										 <tr>
-												<th>Unblock/Block By</th>
-												<th>Unblock/Block Reasons</th>
-												<th>Unblock/Block On</th>
-												<th>Action Taken</th>
+											<th>UNBLOCKED/BLOCKED BY</th>
+											<th>REMARKS</th>
+											<th>ACTION DATE</th>
+											<th>ACTION TAKEN</th>
 										 </tr>
 										 </thead>
 									</table>

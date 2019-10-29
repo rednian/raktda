@@ -22,12 +22,6 @@ class Artist extends Model implements Auditable
         return $this->hasMany(ArtistAction::class, 'artist_id');
     }
 
-    public function country()
-    {
-        return $this->belongsTo(Country::class, 'country_id')
-            ->withDefault(['name_en' => null, 'name_ar' => null, 'nationality_ar' => null, 'nationality_en' => null]);
-    }
-
     public function artistPermit()
     {
         return $this->hasMany(ArtistPermit::class, 'artist_id');
@@ -38,13 +32,4 @@ class Artist extends Model implements Auditable
         return $this->belongsToMany(Permit::class, 'artist_permit', 'artist_id', 'permit_id');
     }
 
-    public function getFullNameAttribute()
-    {
-        return $this->firstname_en . ' ' . $this->lastname_en;
-    }
-
-    public function getAgeAttribute()
-    {
-        return Carbon::parse($this->attributes['birthdate'])->age;
-    }
 }

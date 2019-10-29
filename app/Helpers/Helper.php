@@ -1,21 +1,32 @@
 <?php
+function language($data){
+    $user = Auth::user()->LanguageId;
+
+    return $user  == 1 ? $data['en'] : $data['ar']; 
+}
+
 function eventType($type)
 {
+
     $classname = null;
-    if ('entertainment events / without ticket' == strtolower($type) || 'entertainment events / with tcket' == strtolower($type)) {
-        $classname = 'fc-event-success';
+    if ('entertainment events / without ticket' == strtolower($type) || 'entertainment events / with ticket' == strtolower($type)) {
+        $classname = 'fc-event-solid-warning';
     }
     if ('charity events / without ticket' == strtolower($type) || 'charity events / with ticket' == strtolower($type)) {
-        $classname = 'fc-event-brand';
+        $classname = 'fc-event-solid-info';
     }
     if ('religious  events / without ticket' == strtolower($type) || 'religious  events / with ticket' == strtolower($type)) {
         $classname = 'fc-event-light fc-event-solid-primary';
     }
     if ('business events' == strtolower($type) || 'business events' == strtolower($type)) {
-        $classname = 'fc-event-danger';
+        $classname = 'fc-event-solid-danger';
     }
     if ('sports events' == strtolower($type) || 'sports events' == strtolower($type)) {
-        $classname = 'fc-event-warning';
+        $classname = 'fc-event-solid-success';
+    }
+
+    if('painting event' == strtolower($type)){
+           $classname = 'fc-event-solid-dark';
     }
     return $classname;
 }
@@ -55,7 +66,7 @@ function permitStatus($status)
     if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active') {
         $classname = 'success';
     }
-    if ($status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amend') {
+    if ($status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended') {
         $classname = 'warning';
     }
     if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled') {

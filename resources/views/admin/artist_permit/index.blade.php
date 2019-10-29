@@ -10,6 +10,7 @@
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">Active Artists</a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">Blocked Artists</a></li>
 				 </ul>
+      
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
@@ -23,7 +24,7 @@
 						</div>
 						<div class="tab-pane fade" id="processing-permit" role="tabpanel">
 							 @include('admin.artist_permit.includes.summary')
-							 @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request', 'processing'])->count() > 0)
+							 @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request', 'processing', 'need approval'])->count() > 0)
 									@include('admin.artist_permit.includes.processing')
 							 @else
 									@empty()
@@ -87,10 +88,10 @@
        getToday: function () { return this.today; }
      };
 
+       var hash = window.location.hash;
+
      $(document).ready(function () {
         newRequest();
-        
-        var hash = window.location.hash;
          hash && $('ul.nav a[href="' + hash + '"]').tab('show');
          $('.nav-tabs a').click(function (e) {
              $(this).tab('show');
@@ -109,168 +110,6 @@
        });
 
      });
-
-     // function blockArtistTable() {
-     //   $('table#block-artist').DataTable({
-     //     ajax: {
-     //       url: '{{ route('admin.artist.datatable') }}',
-     //       data: function (d) {
-     //         d.artist_status = 'blocked';
-     //       }
-     //     },
-     //     columnDefs: [
-     //       {targets: [0, 4, 5, 6], className: 'no-wrap'}
-     //     ],
-     //     columns: [
-     //       {data: 'person_code'},
-     //       {data: 'name'},
-     //       {data: 'profession'},
-     //       {data: 'nationality'},
-     //       {data: 'mobile_number'},
-     //       {data: 'active_permit'},
-     //       {
-     //         render: function (data, type, full, meta) {
-     //           var classname = full.artist_status == 'Active' ? 'success' : 'danger';
-     //           return '<span class="kt-badge kt-badge--' + classname + ' kt-badge--inline">' + full.artist_status + '</span>';
-     //         }
-     //       }
-     //     ],
-     //     createdRow: function (row, data, index) {
-     //       $(row).click(function () {
-     //         location.href = '{{ url('/permit/artist/') }}/' + data.artist_id;
-     //       });
-     //     }
-     //   });
-     // }
-
-     // function activeArtistTable() {
-     //   active_artist_table = $('table#active-artist').DataTable({
-     //     dom: '<"toolbar-active pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
-     //     ajax: {
-     //       url: '{{ route('admin.artist.datatable') }}',
-     //       data: function (d) {
-     //         d.artist_status = 'active';
-     //         d.profession_id = $('select[name=profession_id]').val();
-     //         d.country_id = $('select[name=country_id]').val();
-     //       }
-     //     },
-     //     columnDefs: [
-     //       {targets: [0, 1, 4, 5, 6], className: 'no-wrap'},
-     //       {
-     //         targets: 0,
-     //         orderable: false,
-     //         checkboxes: {
-     //           selectRow: true
-     //         }
-     //       }
-     //     ],
-     //     select: {
-     //       style: 'multi'
-     //     },
-
-     //     order: [[1, 'asc']],
-     //     columns: [
-     //       {data: 'artist_id'},
-     //       {data: 'person_code'},
-     //       {data: 'name'},
-     //       {data: 'profession'},
-     //       {data: 'nationality'},
-     //       {data: 'mobile_number'},
-     //       {data: 'active_permit'}
-     //     ],
-     //     createdRow: function (row, data, index) {
-     //       $('#active-artist-modal').on('shown.bs.modal', function () {
-     //       });
-
-     //       $(row).click(function () {
-     //         location.href = '{{ url('/permit/artist/') }}/' + data.artist_id;
-     //       });
-     //     }
-     //   });
-
-     //   $('div.toolbar-active').html('<button type="button" id="btn-active-action" class="btn btn-sm btn-warning kt-font-transform-u">Block Artist</button>');
-     //   $('div.toolbar-active-1').html($('#active-profession-container'));
-     //   $('div.toolbar-active-2').html($('#active-nationality-container'));
-
-     //   $('button#btn-active-action').click(function () {
-     //     var rows_selected = active_artist_table.column(0).checkboxes.selected();
-     //     if (rows_selected.length > 0) {
-     //       $('#active-artist-alert').addClass('d-none');
-     //       $('#active-artist-modal').modal('show');
-
-     //     } else {
-     //       $('#active-artist-alert').removeClass('d-none');
-     //     }
-     //   });
-
-
-     // }
-
-     // function approvedTable() {
-     //   $('table#artist-permit-approved').DataTable({
-     //     ajax: {
-     //       url: '{{ route('admin.artist_permit.datatable') }}',
-     //       data: function (d) {
-     //         // d.request_type = $('select[name=request_type][data-type=new_request]').val();
-     //         // d.permit_status = $('select[name=permit_status][data-type=new_request]').val();
-     //         // d.permit_status = $('input[name=permit_start]').val();
-     //         // d.issued_date = filter.getAction();
-     //         // d.today = filter.getToday();
-     //         d.status = ['active', 'expired'];
-     //       }
-     //     },
-     //     columnDefs: [
-     //       {targets: '_all', className: 'no-wrap'},
-     //       {targets: 5, sortable: false},
-     //     ],
-     //     columns: [
-     //       {data: 'reference_number'},
-     //       {data: 'permit_number'},
-     //       {data: 'company_name'},
-     //       {data: 'applied_date'},
-     //       {data: 'artist_number'},
-     //       // { data: 'company_type'},
-     //       {data: 'request_type'},
-     //       {data: 'permit_status'},
-     //     ],
-
-     //     createdRow: function (row, data, index) {
-     //       $(row).click(function () {
-     //         location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
-     //       });
-     //     }
-     //   });
-     // }
-
-     // function processingTable() {
-     //   $('table#artist-permit-processing').DataTable({
-     //     ajax: {
-     //       url: '{{ route('admin.artist_permit.datatable') }}',
-     //       data: function (d) {
-     //         d.status = ['approved-unpaid', 'modification request'];
-     //       }
-     //     },
-     //     columnDefs: [
-     //       {targets: [0, 4, 5], className: 'no-wrap'},
-     //       // {targets: , sortable: false},
-     //     ],
-     //     columns: [
-     //       {data: 'reference_number'},
-     //       {data: 'company_name'},
-     //       {data: 'applied_date'},
-     //       {data: 'artist_number'},
-     //       // { data: 'company_type'},
-     //       {data: 'request_type'},
-     //       {data: 'permit_status'},
-     //     ],
-
-     //     createdRow: function (row, data, index) {
-     //       $(row).click(function () {
-     //         location.href = '{{ url('/artist_permit') }}/' + data.permit_id;
-     //       });
-     //     }
-     //  };
-
 
       function blockArtistTable() {
 
@@ -393,7 +232,6 @@
             select: {
                style: 'multi'
             },
-
             order: [[1, 'asc']],
             columns: [
                 {data: 'artist_id'},
@@ -403,8 +241,6 @@
                {data: 'nationality'},
                {data: 'mobile_number'},
                {data: 'active_permit'},
-
-
             ],
             createdRow: function (row, data, index) {
                $('#active-artist-modal').on('shown.bs.modal', function () {
@@ -412,14 +248,14 @@
                });
 
                $(row).click(function () {
-									location.href = '{{url('/permit/artist/')}}/'+data.artist_id;
+									location.href = '{{url('/permit/artist/')}}/'+data.artist_id+'?tab='+hash;
             });
 
               }
          });
 
 
-         $('div.toolbar-active').html('<button type="button" id="btn-active-action" class="btn btn-warning kt-font-transform-u">Block Artist</button>');
+         $('div.toolbar-active').html('<button type="button" id="btn-active-action" class="btn btn-warning btn-sm kt-font-transform-u">Block Artist</button>');
          $('div.toolbar-active-1').html($('#active-profession-container'));
          $('div.toolbar-active-2').html($('#active-nationality-container'));
 
@@ -485,11 +321,6 @@
             ajax: {
                url: '{{ route('admin.artist_permit.datatable')}}',
                data: function (d) {
-                  //     d.request_type = $('select[name=request_type][data-type=new_request]').val();
-                  // d.permit_status = $('select[name=permit_status][data-type=new_request]').val();
-                  // d.permit_status = $('input[name=permit_start]').val();
-                  // d.issued_date = filter.getAction();
-                  // d.today = filter.getToday();
                   d.status = ['active'];
                }
             },
@@ -503,14 +334,14 @@
                {data: 'company_name'},
                {data: 'applied_date'},
                {data: 'artist_number'},
-               // { data: 'company_type'},
                {data: 'request_type'},
-               {data: 'permit_status'},
+               {data: 'action'},
             ],
 
             createdRow: function (row, data, index) {
-
-
+              $(row).click(function () {
+                 location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#active-permit';
+              });
             }
          });
       }
@@ -520,12 +351,11 @@
             ajax: {
                url: '{{ route('admin.artist_permit.datatable') }}',
                data: function (d) {
-                  d.status = ['approved-unpaid', 'modification request', 'processing'];
+                  d.status = ['approved-unpaid', 'modification request', 'processing', 'need approval'];
                }
             },
             columnDefs: [
                {targets: [0, 4, 5], className: 'no-wrap'},
-               // {targets: , sortable: false},
             ],
             columns: [
                {data: 'reference_number'},
@@ -539,138 +369,17 @@
 
             createdRow: function (row, data, index) {
                $(row).click(function () {
-                  location.href = '{{ url('/artist_permit') }}/' + data.permit_id;
+                  location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#processing-permit';
                });
             }
          });
       }
-
-      // function rejectedTable() {
-      //    $('table#artist-permit-rejected').DataTable({
-      //       ajax: {
-      //          url: '{{ route('admin.artist_permit.datatable') }}',
-      //          data: function (d) {
-      //             // d.request_type = $('select[name=request_type][data-type=new_request]').val();
-      //             // d.permit_status = $('select[name=permit_status][data-type=new_request]').val();
-      //             // d.permit_status = $('input[name=permit_start]').val();
-      //             // d.issued_date = filter.getAction();
-      //             // d.today = filter.getToday();
-      //             d.status = ['rejected', 'expired', 'cancelled'];
-      //          }
-      //       },
-      //       columnDefs: [
-      //          {targets: '_all', className: 'no-wrap'},
-      //          {targets: [5], sortable: false}
-      //       ],
-      //       columns: [
-      //          {data: 'reference_number'},
-      //          {data: 'company_name'},
-      //          {data: 'applied_date'},
-      //          {data: 'artist_number'},
-      //          // { data: 'company_type'},
-      //          {data: 'request_type'},
-      //          {data: 'permit_status'},
-      //       ],
-
-      //       createdRow: function (row, data, index) {
-      //          $(row).click(function () {
-      //             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
-      //          });
-      //       }
-      //    });
-      // }
-
-      // function newRequest() {
-      //    var start = moment().subtract(29, 'days');
-      //    var end = moment();
-
-      //    $('input[name=permit_start]').daterangepicker({
-      //       autoUpdateInput: false,
-      //       buttonClasses: 'btn',
-      //       applyClass: 'btn-warning btn-sm btn-elevate',
-      //       cancelClass: 'btn-secondary btn-sm btn-elevate',
-      //       startDate: start,
-      //       endDate: end,
-      //       ranges: {
-
-      //          'Today': [moment(), moment()],
-      //          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      //          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      //          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      //          'This Month': [moment().startOf('month'), moment().endOf('month')],
-      //          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-      //       }
-
-      //    }, function (start, end, label) {
-      //       $('input[name=permit_start].form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
-      //    });
-
-      //    $('input[type=checkbox][data-type=new_request][name = today]').click(function () {
-      //       filter.today = $(this).is(':checked') ? $(this).val() : null;
-      //    });
-
-      //    $('input[type=checkbox][data-type=new_request][name=issued_date]').click(function () {
-      //       filter.action_needed = $(this).is(':checked') ? $(this).val() : null;
-      //    });
-
-      //    var new_request_form = $('form#new-request-frm');
-      //    new_request_form.submit(function (e) {
-      //       e.preventDefault();
-      //       artistPermit.ajax.reload(null, false);
-      //    });
-
-      //    new_request_form.find('button[type=reset]').click(function () {
-      //       filter.today = null;
-      //       filter.action_needed = null;
-      //       new_request_form[0].reset();
-      //       artistPermit.ajax.reload(null, false);
-      //    });
-
-      //    artistPermit = $('table#artist-permit').DataTable({
-      //       ajax: {
-      //          url: '{{ route('admin.artist_permit.datatable') }}',
-      //          data: function (d) {
-      //             d.request_type = $('select[name=request_type][data-type=new_request]').val();
-      //             d.permit_status = $('select[name=permit_status][data-type=new_request]').val();
-      //             // d.permit_status = $('input[name=permit_start]').val();
-      //             // d.issued_date = filter.getAction();
-      //             // d.today = filter.getToday();
-      //             d.status = ['new', 'modified', 'unprocessed', 'processing'];
-      //          }
-      //       },
-      //       columnDefs: [
-      //          {targets: [0, 2, 4, 5], className: 'no-wrap'},
-      //          // {targets: 5, sortable: false}
-      //       ],
-      //       columns: [
-      //          {data: 'reference_number'},
-      //          {data: 'company_name'},
-      //          {data: 'applied_date'},
-      //          {data: 'artist_number'},
-      //          {data: 'request_type'},
-      //          {data: 'permit_status'}
-      //       ],
-      //       createdRow: function (row, data, index) {
-      //          $(row).click(function () {
-      //             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
-      //          });
-      //       }
-      //    });
-      // }
-// =======
-//        });
-//      }
 
      function rejectedTable() {
        $('table#artist-permit-rejected').DataTable({
          ajax: {
            url: '{{ route('admin.artist_permit.datatable') }}',
            data: function (d) {
-             // d.request_type = $('select[name=request_type][data-type=new_request]').val();
-             // d.permit_status = $('select[name=permit_status][data-type=new_request]').val();
-             // d.permit_status = $('input[name=permit_start]').val();
-             // d.issued_date = filter.getAction();
-             // d.today = filter.getToday();
              d.status = ['rejected', 'expired', 'cancelled'];
            }
          },
@@ -683,14 +392,13 @@
            {data: 'company_name'},
            {data: 'applied_date'},
            {data: 'artist_number'},
-           // { data: 'company_type'},
            {data: 'request_type'},
            {data: 'permit_status'},
          ],
 
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
+             location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#archive-permit';
            });
          }
        });
@@ -700,7 +408,7 @@
        var start = moment().subtract(29, 'days');
        var end = moment();
 
-       $('input[name=permit_start]').daterangepicker({
+       $('input#new-applied-date').daterangepicker({
          autoUpdateInput: false,
          buttonClasses: 'btn',
          applyClass: 'btn-warning btn-sm btn-elevate',
@@ -716,7 +424,7 @@
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
          }
        }, function (start, end, label) {
-         $('input[name=permit_start].form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+         $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
        });
 
        $('input[type=checkbox][data-type=new_request][name=today]').click(function () {
@@ -749,10 +457,7 @@
             var status = $('select#new-permit-status').val();
 
              d.request_type = $('select#new-request-type').val();
-             d.permit_status = status.length > 0 ? status : ['new', 'modified', 'unprocessed'];
-             // d.permit_status = $('input[name=permit_start]').val();
-             // d.issued_date = filter.getAction();
-             // d.today = filter.getToday();
+             d.status = status.length > 0 ? status : ['new', 'modified', 'unprocessed'];
            }
          },
          columnDefs: [
@@ -798,10 +503,7 @@
          // $('select#new-request-type').empty();
          // $('select#new-request-type').select2();
        });
-
-
      }
-// >>>>>>> Stashed changes
 	 </script>
 
 @endsection

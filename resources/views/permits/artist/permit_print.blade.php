@@ -427,10 +427,10 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p>{{$artist_permit->Nationality['nationality_en']}}</p>
+                                            <p>{{$artist_permit->country->nationality_en }}</p>
                                         </td>
                                         <td>
-                                            <p>{{$artist_permit->Nationality['nationality_ar']}}
+                                            <p>{{$artist_permit->country->nationality_ar }}
                                             </p>
                                         </td>
                                     </tr>

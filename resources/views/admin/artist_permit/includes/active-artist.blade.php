@@ -21,15 +21,15 @@
 </table>
 @include('admin.artist_permit.includes.active-artist-modal')
 <?php
-$professions = App\Profession::whereHas('artistpermit', function($q){
-	$q->whereHas('permit', function($q){
-		$q->where('permit_status', '!=', 'draft');
-	});
-})->get();
-?>
 
-<?php
-$countries = \App\Country::has('artist')->get();
+$professions = App\ArtistPermit::whereHas('artist', function($q){
+	$q->where('artist_status', 'active');
+})
+->groupBy('profession_id')->get();
+
+$countries = \App\Countries::whereHas('artistpermit.artist', function($q){
+	$q->where('artist_status', 'active');
+})->get();
 ?>
 <div id="active-profession-container">
 	 <section class="form-group form-group-xs row" style="margin-left:1px">
