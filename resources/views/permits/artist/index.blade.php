@@ -7,38 +7,41 @@
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
 
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-5">
+        <section class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
+                    role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#"
+                            data-target="#applied">{{__('words.applied_artist_permit')}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#valid">Valid Artist Permits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#draft">Artist Permit Drafts</a>
+                    </li>
+                    <span class="nav-item"
+                        style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
+                        <a href="{{ url('company/add_new_permit')}}">
+                            <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
+                                Add New
+                            </button>
+                            <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                                <i class="la la-plus"></i>
+                            </button>
+                        </a>
+                    </span>
+                </ul>
+            </div>
+        </section>
 
-        <ul class="nav nav-tabs " role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#"
-                    data-target="#applied">{{__('words.applied_artist_permit')}}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#valid">Valid Artist Permits</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#draft">Artist Permit Drafts</a>
-            </li>
-
-        </ul>
-
-        <span class="nav-item"
-            style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-            <a href="{{ url('company/add_new_permit')}}">
-                <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
-                    Add New
-                </button>
-                <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
-                    <i class="la la-plus"></i>
-                </button>
-            </a>
-        </span>
 
         <div class="tab-content">
             <div class="tab-pane active" id="applied" role="tabpanel">
-                <table class="table table-striped table-borderless" id="applied-artists-table">
-                    <thead class="thead-dark">
+                <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
+                    <thead>
                         <tr>
                             <th>Refer No.</th>
                             <th>From Date</th>
@@ -55,8 +58,8 @@
 
             </div>
             <div class="tab-pane" id="valid" role="tabpanel">
-                <table class="table table-striped table-borderless " id="existing-artists-table">
-                    <thead class="thead-dark">
+                <table class="table table-striped table-borderless table-hover border" id="existing-artists-table">
+                    <thead>
                         <tr>
                             <th>Refer No.</th>
                             <th>Permit No.</th>
@@ -75,8 +78,8 @@
             </div>
 
             <div class="tab-pane" id="draft" role="tabpanel">
-                <table class="table table-striped table-borderless " id="drafts-artists-table">
-                    <thead class="thead-dark">
+                <table class="table table-striped table-borderless table-hover border" id="drafts-artists-table">
+                    <thead>
                         <tr>
                             <th>From Date</th>
                             <th>To Date</th>

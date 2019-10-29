@@ -23,14 +23,14 @@ use App\Transaction;
 use App\EventComment;
 use Session;
 use Storage;
-use Calendar;
+use NumberToWords\NumberToWords;
 
 class EventController extends Controller
 {
 
     public function index()
     {
-        $events = Event::with('type')->where('company_id', Auth::user()->EmpClientId)->where('status', 'active')->get();
+        $events = Event::with('type')->where('created_by', Auth::user()->user_id)->where('status', 'active')->get();
         return view('permits.event.index', ['events' =>  $events]);
     }
 
@@ -47,17 +47,13 @@ class EventController extends Controller
 
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
-
+        $from = $request->from;
         $cid = Auth::user()->EmpClientId ? Auth::user()->EmpClientId : '';
         $userid = Auth::user()->user_id;
 
         $input_Array = array(
             'name_en' => $evd['name'],
             'name_ar' => $evd['name_ar'],
-            'issued_date' => $evd['issued_date'],
-            'expired_date' => $evd['expired_date'],
-            'time_start' => $evd['time_start'],
-            'time_end' => $evd['time_end'],
             'address' => $evd['address'],
             'venue_en' => $evd['venue_en'],
             'venue_ar' => $evd['venue_ar'],
@@ -65,12 +61,26 @@ class EventController extends Controller
             'emirate_id' => $evd['emirate_id'],
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_type_id'],
-            'status' => 'new',
-            'created_by' => $userid,
-            'reference_number' => $this->generateReferenceNumber()
+            'status' => 'new'
         );
 
-        $event = Event::create($input_Array);
+        if ($from == 'new') {
+            $input_Array['issued_date'] = $evd['issued_date'];
+            $input_Array['expired_date'] = $evd['expired_date'];
+            $input_Array['time_start'] = $evd['time_start'];
+            $input_Array['time_end'] = $evd['time_end'];
+            $input_Array['reference_number'] = $this->generateReferenceNumber();
+            $input_Array['created_by'] = $userid;
+            $event = Event::create($input_Array);
+            $event_id = $event->event_id;
+        } else if ($from == 'draft') {
+            $input_Array['issued_date'] = Carbon::parse($evd['issued_date'])->toDateTimeString();
+            $input_Array['expired_date'] = Carbon::parse($evd['expired_date'])->toDateTimeString();
+            $input_Array['time_start'] = Carbon::parse($evd['time_start'])->toDateTimeString();
+            $input_Array['time_end'] = Carbon::parse($evd['time_end'])->toDateTimeString();
+            $event = Event::where('event_id', $evd['event_draft_id'])->update($input_Array);
+            $event_id = $evd['event_draft_id'];
+        }
 
         $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
 
@@ -81,7 +91,7 @@ class EventController extends Controller
         }
         $total = $requirements['requirements']->count();
 
-        $event_id = $event->event_id;
+
 
         if ($dod) {
 
@@ -90,49 +100,50 @@ class EventController extends Controller
                 $l = $requirement_ids[$j];
                 $m = $j + 1;
 
-                $total_docs = count(session($userid . '_doc_file_' . $l));
+                if (session($userid . '_doc_file_' . $l)) {
 
-                if ($total_docs > 0) {
+                    $total_docs = count(session($userid . '_doc_file_' . $l));
 
-                    for ($k = 0; $k < $total_docs; $k++) {
-                        if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
-                            $ext = session($userid . '_ext_' . $l)[$k];
+                    if ($total_docs > 0) {
 
-                            $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+                        for ($k = 0; $k < $total_docs; $k++) {
+                            if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
+                                $ext = session($userid . '_ext_' . $l)[$k];
 
-                            if (Storage::exists($check_path)) {
-                                $file_count = count(Storage::files($check_path));
-                                $next_file_no = $file_count + 1;
-                            } else {
-                                $next_file_no = 1;
+                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+
+                                if (Storage::exists($check_path)) {
+                                    $file_count = count(Storage::files($check_path));
+                                    $next_file_no = $file_count + 1;
+                                } else {
+                                    $next_file_no = 1;
+                                }
+
+                                $date = date('d_m_Y_H_i_s');
+                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
                             }
 
-                            $date = date('d_m_Y_H_i_s');
-                            $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-                            $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-
-                            Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
-                        } else {
-                            $newPathLink = '';
+                            EventRequirement::create([
+                                'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
+                                'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
+                                'created_at' =>  Carbon::now()->toDateTimeString(),
+                                'created_by' =>  Auth::user()->user_id,
+                                'event_type_id' => $evd['event_type_id'],
+                                'requirement_id' => $l,
+                                'event_id' => $event_id,
+                                'path' =>  $newPathLink,
+                            ]);
                         }
-
-                        EventRequirement::create([
-                            'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
-                            'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
-                            'created_at' =>  Carbon::now()->toDateTimeString(),
-                            'created_by' =>  Auth::user()->user_id,
-                            'event_type_id' => $evd['event_type_id'],
-                            'requirement_id' => $l,
-                            'event_id' => $event_id,
-                            'path' =>  $newPathLink,
-                        ]);
+                        $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
                     }
-                    $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
-
-                    Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                 }
             }
         }
+
+        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/');
 
         if ($event) {
             $result = ['success', 'Event Permit Applied Successfully', 'Success'];
@@ -145,14 +156,16 @@ class EventController extends Controller
 
     public function show(Request $request, Event $event)
     {
-        $event = $event->with('requirements')->first();
-        return view('permits.event.show', ['event' => $event, 'tab' => $request->tab]);
+
+        $eventReq = $event->requirements()->get();
+        return view('permits.event.show', ['event' => $event, 'eventReq' => $eventReq,  'tab' => $request->tab]);
     }
 
     public function edit(Event $event)
     {
         $data['event_types'] = EventType::all()->sortBy('name_en');
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
+        $data['staff_comments'] = $event->comment()->where('type', 1)->get();
         $data['event'] = $event;
         return view('permits.event.edit', $data);
     }
@@ -171,7 +184,7 @@ class EventController extends Controller
                 'url' => route('event.show', $event->event_id) . '?tab=calendar',
                 'description' => 'Venue : ' . $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
                 // 'allDay'=> false,
-                // 'className' => eventStatus($event->status)
+                'className' => eventType($event->type->name_en)
             ];
         });
         return response()->json($events);
@@ -319,6 +332,15 @@ class EventController extends Controller
     {
         $data['company_details'] = Company::find(Auth::user()->EmpClientId);
         $data['event_details'] = Event::with('type', 'country')->where('event_id', $id)->first();
+        $from = Event::where('event_id', $id)->first()->issued_date;
+        $to = Event::where('event_id', $id)->first()->expired_date;
+        $from_date_formatted = Carbon::parse($from);
+        $to_date_formatted = Carbon::parse($to);
+        $diff = $from_date_formatted->diffInDays($to_date_formatted);
+        $numberToWords = new NumberToWords();
+        $numberTransformer = $numberToWords->getNumberTransformer('en');
+        $data['diff'] = $diff;
+        $data['days'] = $numberTransformer->toWords($diff);
 
         $pdf = PDF::loadView('permits.event.print', $data, [], [
             'title' => 'Event Permit',
@@ -346,7 +368,7 @@ class EventController extends Controller
 
     function datatable_function($status)
     {
-        $permits = Event::with('type')->where('created_by', Auth::user()->user_id);
+        $permits = Event::with('type')->orderBy('created_at', 'desc')->where('created_by', Auth::user()->user_id);
 
         if ($status == 'applied') {
             $permits->where('status', '!=', 'active')->where('status', '!=', 'draft');
@@ -422,9 +444,7 @@ class EventController extends Controller
     public function generateReferenceNumber()
     {
         $last_permit_d = Event::latest()->first();
-        if (empty($last_permit_d)) {
-            $new_refer_no = sprintf("RNE%04d",  1);
-        } else {
+        if ($last_permit_d) {
             $last_rn = $last_permit_d->reference_number;
             $n = substr($last_rn, 3);
             $f = substr($n, 0, 1);
@@ -434,6 +454,8 @@ class EventController extends Controller
                 $x++;
             }
             $new_refer_no = sprintf("RNE%0" . $x . "d", $n + 1);
+        } else {
+            $new_refer_no = sprintf("RNE%04d",  1);
         }
         return $new_refer_no;
     }
@@ -483,129 +505,22 @@ class EventController extends Controller
             'event_type_id' => $evd['event_type_id'],
             'status' => 'draft',
             'created_by' =>  $userid,
+            'reference_number' => $this->generateReferenceNumber()
         );
 
         $event = Event::create($input_Array);
-
-        $requirements_ar = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
-
-        $requirements = $requirements_ar['requirements'];
-
-        $requirement_ids = [];
-        foreach ($requirements as $req) {
-            array_push($requirement_ids, $req->requirement_id);
-        }
-        $total = $requirements->count();
-
-        $event_id = $event->event_id;
-
-        if ($dod) {
-
-            for ($j = 0; $j < $total; $j++) {
-
-                $l = $requirement_ids[$j];
-                $m = $j + 1;
-
-                $total_docs = count(session($userid . '_doc_file_' . $l));
-
-                if ($total_docs > 0) {
-
-                    for ($k = 0; $k < $total_docs; $k++) {
-                        if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
-                            $ext = session($userid . '_ext_' . $l)[$k];
-
-                            $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
-
-                            if (Storage::exists($check_path)) {
-                                $file_count = count(Storage::files($check_path));
-                                $next_file_no = $file_count + 1;
-                            } else {
-                                $next_file_no = 1;
-                            }
-
-                            $date = date('d_m_Y_H_i_s');
-                            $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-                            $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
-
-                            Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
-                        } else {
-                            $newPathLink = '';
-                        }
-
-                        EventRequirement::create([
-                            'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
-                            'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
-                            'created_at' =>  Carbon::now()->toDateTimeString(),
-                            'created_by' =>  Auth::user()->user_id,
-                            'event_type_id' => $evd['event_type_id'],
-                            'requirement_id' => $l,
-                            'event_id' => $event_id,
-                            'path' =>  $newPathLink,
-                        ]);
-                    }
-                    $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
-
-                    Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
-                }
-            }
-        }
-
-
-        if ($event) {
-            $result = ['success', 'Event Permit Draft Saved Successfully', 'Success'];
-        } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
-        }
-
-        return response()->json(['message' => $result]);
-    }
-
-    public function view_draft(Event $event)
-    {
-        $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
-        $data['event'] = $event;
-        return view('permits.event.draft', $data);
-    }
-
-
-    public function update_draft(Request $request)
-    {
-        $evd = json_decode($request->eventD, true);
-        $dod = json_decode($request->documentD, true);
-        $event_id = $request->evtId;
-
-        // $cid = Auth::user()->EmpClientId ? Auth::user()->EmpClientId : '';
-        $userid = Auth::user()->user_id;
-
-        $input_Array = array(
-            'name_en' => $evd['name'],
-            'name_ar' => $evd['name_ar'],
-            'issued_date' => $evd['issued_date'],
-            'expired_date' => $evd['expired_date'],
-            'time_start' => $evd['time_start'],
-            'time_end' => $evd['time_end'],
-            'address' => $evd['address'],
-            'venue_en' => $evd['venue_en'],
-            'venue_ar' => $evd['venue_ar'],
-            'country_id' => $evd['country_id'],
-            'emirate_id' => $evd['emirate_id'],
-            'area_id' => $evd['area_id'],
-            'event_type_id' => $evd['event_type_id'],
-        );
-
-        $event = Event::where('event_id', $event_id)->update($input_Array);
 
         $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
 
         $requirement_ids = [];
 
-
-        foreach ($requirements->requirements as $req) {
+        foreach ($requirements['requirements'] as $req) {
             array_push($requirement_ids, $req->requirement_id);
         }
 
         $total = $requirements['requirements']->count();
+
+        $event_id = $event->event_id;
 
         if ($dod) {
 
@@ -654,12 +569,149 @@ class EventController extends Controller
                             ]);
                         }
                         $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
-
-                        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/' . $l);
                     }
                 }
             }
         }
+
+        Storage::deleteDirectory('public/' . Auth::user()->user_id . '/temp/');
+
+
+        if ($event) {
+            $result = ['success', 'Event Permit Draft Saved Successfully', 'Success'];
+        } else {
+            $result = ['error', 'Error, Please Try Again', 'Error'];
+        }
+
+        return response()->json(['message' => $result]);
+    }
+
+    public function view_draft(Event $event)
+    {
+        $data['event_types'] = EventType::all()->sortBy('name_en');
+        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
+        $data['event'] = $event;
+        return view('permits.event.draft', $data);
+    }
+
+
+    public function update_draft(Request $request)
+    {
+        $evd = json_decode($request->eventD, true);
+        $dod = json_decode($request->documentD, true);
+        $dnd = json_decode($request->documentN, true);
+        $event_id = $request->evtId;
+
+        // $cid = Auth::user()->EmpClientId ? Auth::user()->EmpClientId : '';
+        $userid = Auth::user()->user_id;
+
+        $input_Array = array(
+            'name_en' => $evd['name'],
+            'name_ar' => $evd['name_ar'],
+            'issued_date' =>  Carbon::parse($evd['issued_date'])->toDateTimeString(),
+            'expired_date' =>  Carbon::parse($evd['expired_date'])->toDateTimeString(),
+            'time_start' => $evd['time_start'],
+            'time_end' => $evd['time_end'],
+            'address' => $evd['address'],
+            'venue_en' => $evd['venue_en'],
+            'venue_ar' => $evd['venue_ar'],
+            'country_id' => $evd['country_id'],
+            'emirate_id' => $evd['emirate_id'],
+            'area_id' => $evd['area_id'],
+            'event_type_id' => $evd['event_type_id'],
+        );
+
+        $event = Event::where('event_id', $event_id)->update($input_Array);
+
+        $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
+
+        $requirement_ids = [];
+
+        foreach ($requirements->requirements as $req) {
+            array_push($requirement_ids, $req->requirement_id);
+        }
+
+        $total = $requirements['requirements']->count();
+
+        if ($dnd) {
+            $eventDocs = EventRequirement::where('event_id', $event_id)->get();
+            $filenames = [];
+            for ($i = 1; $i <= count($dnd); $i++) {
+                $reqId = $dnd[$i]['reqId'];
+                foreach ($dnd[$i]['fileNames'] as $file) {
+                    if ($file) {
+                        array_push($filenames, $reqId . '/' . $file);
+                    }
+                }
+            }
+
+            foreach ($eventDocs as $doc) {
+                $name = explode('/', $doc->path);
+                $namee = $name[3] . '/' . end($name);
+                if (!in_array($namee, $filenames)) {
+                    EventRequirement::where('event_id', $event_id)->where('path', 'like', '%' . $namee)->delete();
+                    Storage::delete('public/' . $doc->path);
+                }
+            }
+        }
+
+
+
+        if ($dod) {
+
+            for ($j = 0; $j < $total; $j++) {
+
+                $l = $requirement_ids[$j];
+                $m = $j + 1;
+
+                if (session($userid . '_doc_file_' . $l)) {
+
+                    $total_docs = count(session($userid . '_doc_file_' . $l));
+
+                    if ($total_docs > 0) {
+
+                        for ($k = 0; $k < $total_docs; $k++) {
+                            if (Storage::exists(session($userid  . '_doc_file_' . $l)[$k])) {
+                                $ext = session($userid . '_ext_' . $l)[$k];
+
+                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+
+                                if (Storage::exists($check_path)) {
+                                    $file_count = count(Storage::files($check_path));
+                                    $next_file_no = $file_count + 1;
+                                } else {
+                                    $next_file_no = 1;
+                                }
+
+                                $date = date('d_m_Y_H_i_s');
+                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/document_' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                Storage::move(session($userid  . '_doc_file_' . $l)[$k], $newPath);
+                            } else {
+                                $newPathLink = '';
+                            }
+
+                            EventRequirement::create([
+                                'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
+                                'expired_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
+                                'created_at' =>  Carbon::now()->toDateTimeString(),
+                                'created_by' =>  Auth::user()->user_id,
+                                'event_type_id' => $evd['event_type_id'],
+                                'requirement_id' => $l,
+                                'event_id' => $event_id,
+                                'path' =>  $newPathLink,
+                            ]);
+                        }
+                        $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
+                    }
+                }
+            }
+        }
+
+        Storage::deleteDirectory('public/' . $userid . '/temp/');
+
+
 
 
         if ($event) {

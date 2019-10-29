@@ -574,3 +574,9 @@ select option:first-child {
 #event-wizard--nav .kt-wizard-v3__nav-item{
     flex: 0 0 20% !important;
 }
+
+#header--desig, #header--company {
+    font-size:12px;
+    padding-left:1rem;
+}
+

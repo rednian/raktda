@@ -7,7 +7,6 @@
 
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
-
     <div class="kt-portlet__body kt-padding-t-5">
         <section class="row">
             <div class="col-md-12">
@@ -21,7 +20,7 @@
                         <a class="nav-link" data-toggle="tab" href="#valid">Valid Event Permits</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#calendar">Permit Calendar</a>
+                        <a class="nav-link" data-toggle="tab" href="#calendar">Event Calendar</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#draft">Event Permit Drafts</a>
@@ -55,7 +54,7 @@
                             <th>To </th>
                             <th>Venue</th>
                             <th>Type</th>
-                            <th>Applied On</th>
+                            <th>status</th>
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -237,7 +236,7 @@
             processing: true,
             serverSide: true,
             searching: true,
-            order:[[6,'desc']],
+            // order:[[6,'desc']],
             ajax:'{{route("company.event.fetch_applied")}}',
 
             columns: [
@@ -247,8 +246,8 @@
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'venue_en', name: 'venue_en' },
                 { data: 'type.name_en', name: 'type.name_en' },
-                { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                // { data: 'permit_status', name: 'permit_status' },
+                // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
+                { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
             ],
@@ -300,14 +299,14 @@
 						return `<span class="kt-font-bold">${data}</span>`;
 					}
                 },
-                {
-                    targets:6,
-                    className:'dt-head-nowrap dt-body-nowrap',
-                    render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
+                // {
+                //     targets:6,
+                //     className:'dt-head-nowrap dt-body-nowrap',
+                //     render: function(data, type, full, meta) {
+                //         return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
-					}
-                },
+				// 	}
+                // },
 
                 {
                     targets:-3,
@@ -450,6 +449,24 @@
 
 					}
                 },
+                {
+                    targets:-1,
+                    width: '10%',
+                    className:'text-center',
+                    render: function(data, type, full, meta) {
+                        return '<span class="kt-font-bold">'+ data+'</span>';
+
+					}
+                },
+                {
+                    targets:-2,
+                    width: '10%',
+                    className:'text-center',
+                    render: function(data, type, full, meta) {
+                        return '<span class="kt-font-bold">'+ data +'</span>';
+
+					}
+                },
             ],
             language: {
                 emptyTable: "No Event Permit Drafts"
@@ -501,7 +518,7 @@
         });
     }
 
-
+    /*
     function calendarEvents(){
       var todayDate = moment().startOf('day');
           var YM = todayDate.format('YYYY-MM');
@@ -529,22 +546,64 @@
                   listDay: { buttonText: 'Day List' },
                   listWeek: { buttonText: 'Week List' }
               },
-              defaultView: 'listWeek',
+              defaultView: 'dayGridMonth',
               // defaultDate: TODAY,
               editable: true,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
-              events: [
-                @foreach($events as $evt)
-                        {
-                            title: '{{$evt->name_en}}',
-                            start: '{{date("Y-m-d", strtotime($evt->issued_date))}}',
-                            end: '{{date("Y-m-d", strtotime($evt->expired_date))}}',
-                            className: 'fc-event-solid-danger fc-event-light',
-                            description: '{{$evt->venue_en}}'
-                        },
-                    @endforeach
-              ],
+              events: '{{ route('company.event.calendar') }}',
+              eventRender: function(info) {
+                  var element = $(info.el);
+                  if (info.event.extendedProps && info.event.extendedProps.description) {
+                      if (element.hasClass('fc-day-grid-event')) {
+                          element.data('content', info.event.extendedProps.description);
+                          element.data('placement', 'top');
+                          KTApp.initPopover(element);
+                      } else if (element.hasClass('fc-time-grid-event')) {
+                          element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                      }
+                  }
+              }
+          });
+          calendar.render();
+     }
+     */
+
+     function calendarEvents(){
+      var todayDate = moment().startOf('day');
+          var YM = todayDate.format('YYYY-MM');
+          var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+          var TODAY = todayDate.format('YYYY-MM-DD');
+          var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+          var calendarEl = document.getElementById('event-calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+              plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+              isRTL: KTUtil.isRTL(),
+              header: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
+              },
+              height: 800,
+              contentHeight: 780,
+              aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
+              nowIndicator: true,
+              // now: TODAY + 'T09:25:00', // just for demo
+              views: {
+                  dayGridMonth: { buttonText: 'Month' },
+                  timeGridWeek: { buttonText: 'Week' },
+                  timeGridDay: { buttonText: 'Day' },
+                  listDay: { buttonText: 'Day List' },
+                  listWeek: { buttonText: 'Week List' }
+              },
+              defaultView: 'dayGridMonth',
+              // defaultDate: TODAY,
+              editable: true,
+              eventLimit: true, // allow "more" link when too many events
+              navLinks: true,
+              events: '{{ route('company.event.calendar') }}',
               eventRender: function(info) {
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {

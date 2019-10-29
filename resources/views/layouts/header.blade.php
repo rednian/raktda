@@ -197,9 +197,10 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
                 <div class="kt-header__topbar-user">
                     @php
-                    // $contact_person = App\Company::findOrFail(Auth::user()->EmpClientId)->contact_person;
-                    $user = App\User::findOrFail(Auth::user()->user_id);
-                    $first_name = explode(' ', $user->NameEn);
+                    $company_name = Auth::user()->company->company_name;
+                    $designation = Auth::user()->company->contact_person_designation;
+                    $name = Auth::user()->NameEn;
+                    $first_name = explode(' ', Auth::user()->NameEn);
                     $first_name = $first_name[0];
                     $first_letter = substr($first_name, 0, 1);
                     @endphp
@@ -218,10 +219,15 @@
                         <span
                             class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
                     </div>
-                    <div class="kt-user-card__name">{{ $first_name }}</div>
-                    <div class="kt-user-card__badge"> <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">1
-                            Notifications</span> </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <div class="kt-user-card__name">{{ $name }}</div>
+                        <div id="header--desig">{{ $designation }}</div>
+                        <div id="header--company">{{ $company_name }}</div>
+                    </div>
+                    {{-- <div class="kt-user-card__badge"> <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">1
+                            Notifications</span> </div> --}}
                 </div>
+
                 <!--end: Head -->
                 <!--begin: Navigation -->
                 <div class="kt-notification">
