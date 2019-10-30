@@ -1,84 +1,87 @@
 @extends('layouts.admin.admin-app')
 @section('content')
-	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
-			<div class="kt-portlet__body kt-padding-t-5" style="position: relative">
-				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
-						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">New Request Permits</a></li>
-						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing Permits</a></li>
-						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Permits</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Permits</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">Active Artists</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">Blocked Artists</a></li>
-				 </ul>
-				 <div class="tab-content">
-						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
-							 @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
-									@include('admin.artist_permit.includes.new_request')
-							 @else
-									@empty()
-										 No New Request Permit as of Today <span class="kt-font-bold">{{ date('d-M-Y h:m a') }}</span>
-									@endempty
-							 @endif
-						</div>
-						<div class="tab-pane fade" id="processing-permit" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
-							 @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request', 'processing'])->count() > 0)
-									@include('admin.artist_permit.includes.processing')
-							 @else
-									@empty()
-										 No on Proccess permit
-									@endempty
-							 @endif
-						</div>
-						<div class="tab-pane fade" id="active-permit" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
-							 @if(\App\Permit::whereIn('permit_status', ['active'])->count() > 0)
-									@include('admin.artist_permit.includes.approved')
-							 @else
-									@empty()
-										 No Active permit
-									@endempty
-							 @endif
-						</div>
-						<div class="tab-pane fade" id="archive-permit" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
-							 @if(\App\Permit::whereIn('permit_status', ['rejected', 'expired'])->count() > 0)
-									@include('admin.artist_permit.includes.archive')
-							 @else
-									@empty()
-										 No Expired or Rejected permit
-									@endempty
-							 @endif
-						</div>
-						<div class="tab-pane fade" id="active-artist" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
-							 @if(\App\Artist::where('artist_status', 'active')->count() > 0)
-									@include('admin.artist_permit.includes.active-artist')
-							 @else
-									@empty()
-										 Active artist is empty
-									@endempty
-							 @endif
-						</div>
-						<div class="tab-pane fade" id="blocked-artist" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
-							 @if(\App\Artist::where('artist_status', 'blocked')->count() > 0)
-									@include('admin.artist_permit.includes.block-artist')
-							 @else
-									@empty()
-										 Blocked artist is empty
-									@endempty
-							 @endif
-						</div>
-				 </div>
-			</div>
-	 </section>
+<section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
+    <div class="kt-portlet__body kt-padding-t-5" style="position: relative">
+        <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
+            role="tablist" id="artist-permit-nav">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
+                    data-target="#new-request">New Request Permits</a></li>
+            <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing Permits</a>
+            </li>
+            <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Permits</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Permits</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">Active Artists</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">Blocked Artists</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane show fade active" id="new-request" role="tabpanel">
+                @include('admin.artist_permit.includes.summary')
+                @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
+                @include('admin.artist_permit.includes.new_request')
+                @else
+                @empty()
+                No New Request Permit as of Today <span class="kt-font-bold">{{ date('d-M-Y h:m a') }}</span>
+                @endempty
+                @endif
+            </div>
+            <div class="tab-pane fade" id="processing-permit" role="tabpanel">
+                @include('admin.artist_permit.includes.summary')
+                @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request',
+                'processing'])->count() > 0)
+                @include('admin.artist_permit.includes.processing')
+                @else
+                @empty()
+                No on Proccess permit
+                @endempty
+                @endif
+            </div>
+            <div class="tab-pane fade" id="active-permit" role="tabpanel">
+                @include('admin.artist_permit.includes.summary')
+                @if(\App\Permit::whereIn('permit_status', ['active'])->count() > 0)
+                @include('admin.artist_permit.includes.approved')
+                @else
+                @empty()
+                No Active permit
+                @endempty
+                @endif
+            </div>
+            <div class="tab-pane fade" id="archive-permit" role="tabpanel">
+                @include('admin.artist_permit.includes.summary')
+                @if(\App\Permit::whereIn('permit_status', ['rejected', 'expired'])->count() > 0)
+                @include('admin.artist_permit.includes.archive')
+                @else
+                @empty()
+                No Expired or Rejected permit
+                @endempty
+                @endif
+            </div>
+            <div class="tab-pane fade" id="active-artist" role="tabpanel">
+                @include('admin.artist_permit.includes.summary')
+                @if(\App\Artist::where('artist_status', 'active')->count() > 0)
+                @include('admin.artist_permit.includes.active-artist')
+                @else
+                @empty()
+                Active artist is empty
+                @endempty
+                @endif
+            </div>
+            <div class="tab-pane fade" id="blocked-artist" role="tabpanel">
+                @include('admin.artist_permit.includes.summary')
+                @if(\App\Artist::where('artist_status', 'blocked')->count() > 0)
+                @include('admin.artist_permit.includes.block-artist')
+                @else
+                @empty()
+                Blocked artist is empty
+                @endempty
+                @endif
+            </div>
+        </div>
+    </div>
+</section>
 @endsection
 @section('script')
-	 <script type="text/javascript">
-
-     var artistPermit = {};
+<script type="text/javascript">
+    var artistPermit = {};
      var active_artist_table;
      var filter = {
        today: null,
@@ -89,7 +92,7 @@
 
      $(document).ready(function () {
         newRequest();
-        
+
         var hash = window.location.hash;
          hash && $('ul.nav a[href="' + hash + '"]').tab('show');
          $('.nav-tabs a').click(function (e) {
@@ -802,6 +805,6 @@
 
      }
 // >>>>>>> Stashed changes
-	 </script>
+</script>
 
 @endsection

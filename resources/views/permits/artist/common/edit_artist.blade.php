@@ -155,7 +155,7 @@
                         <!--end: Form Wizard Step 1-->
 
                         @include('permits.artist.common.edit-artist-details-html', [ 'artist_details' =>
-                        $artist_details]);
+                        $artist_details])
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -247,22 +247,39 @@
 
 
                     <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
                             Previous
                         </div>
                         <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
+                        @php
+                        $backUrl = '';
+                        switch ($from) {
+                        case 'amend':
+                        $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/amend';
+                        break;
+                        case 'renew':
+                        $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/renew';
+                        break;
+                        case 'edit':
+                        $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/edit';
+                        break;
+                        }
+                        @endphp
 
-                        <a href="{{url('company/view_draft_details').'/'.$artist_details->permit_id}}">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                        <a href="{{url($backUrl)}}">
+                            <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                id="back_btn">
                                 Back
                             </div>
                         </a>
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            id="submit_btn">
+                            <i class="la la-check"></i>
                             Update & Submit
                         </div>
 
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
                             Next Step
                         </div>
@@ -293,7 +310,6 @@
 
 
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script>

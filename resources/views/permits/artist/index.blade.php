@@ -25,10 +25,11 @@
                     <span class="nav-item"
                         style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ url('company/add_new_permit')}}">
-                            <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
-                                Add New
+                            <button class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
+                                id="nav--new-permit-btn">
+                                <i class="la la-plus"></i> Add New
                             </button>
-                            <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                            <button class="btn btn-label-yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                                 <i class="la la-plus"></i>
                             </button>
                         </a>
@@ -47,8 +48,7 @@
                             <th>From Date</th>
                             <th>To Date</th>
                             <th>Location</th>
-                            <th>Artists</th>
-                            <th>Applied On</th>
+                            <th>No.of Artists</th>
                             <th>Status</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -67,7 +67,6 @@
                             <th>To Date</th>
                             <th>Location</th>
                             <th>Artists</th>
-                            <th>Applied On</th>
                             <th>Actions</th>
                             <th>Details</th>
                             <th></th>
@@ -84,7 +83,7 @@
                             <th>From Date</th>
                             <th>To Date</th>
                             <th>Location</th>
-                            <th>Applied On</th>
+                            <th>Added On</th>
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -121,7 +120,7 @@
                             <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..."
                                 style="resize:none;" class="form-control" id="cancel_reason"></textarea>
                             <input type="hidden" id="cancel_permit_id" name="permit_id">
-                            <input type="submit" class="btn btn-sm btn--yellow popup-submit-btn" value="Cancel Permit">
+                            <input type="submit" class="btn btn-sm btn-label-maroon popup-submit-btn" value="Cancel">
                         </form>
                     </div>
 
@@ -201,7 +200,7 @@
             serverSide: true,
             searching: true,
             // pageLength: 5,
-            order:[[5,'desc']],
+            // order:[[5,'desc']],
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
             ajax:'{{route("company.fetch_applied_artists")}}',
             columns: [
@@ -210,7 +209,6 @@
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'work_location', name: 'work_location' },
                 { data: 'artist_count', name: 'artist_count' },
-                { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
@@ -220,22 +218,14 @@
                     targets:2,
                     width: '12%',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
+						return `<span >${data}</span>`;
 					}
                 },
                 {
                     targets:3,
                     width: '10%',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:5,
-                    width: '12%',
-                    render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
-
+						return `<span >${data}</span>`;
 					}
                 },
                 {
@@ -243,14 +233,14 @@
                     width: '12%',
                     className: 'text-center',
                     render: function(data, type, full, meta) {
-                        return `<span class="kt-font-bold">${data}</span>`;
+                        return `<span >${data}</span>`;
 					}
                 },
                 {
                     targets:4,
                     className: 'text-center',
                     render: function(data, type, full, meta) {
-                        return `<span class="kt-font-bold">${data}</span>`;
+                        return `<span >${data}</span>`;
 					}
                 },
                 {
@@ -258,7 +248,7 @@
                     width: '10%',
                     className: 'text-center',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold kt-font-transform-c">${data}</span>`;
+						return `<span class="kt-font-transform-c">${data}</span>`;
 					}
                 }
             ],
@@ -280,7 +270,7 @@
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            order:[[6,'desc']],
+            // order:[[6,'desc']],
             ajax:'{{route("company.fetch_existing_artists")}}',
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
@@ -289,57 +279,11 @@
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'work_location', name: 'work_location' },
                 { data: 'artist_count', name: 'artist_count' },
-                { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
                 { data: 'download', name: 'download' },
             ],
             columnDefs: [
-                {
-                    targets:2,
-                    width: '12%',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:3,
-                    width: '12%',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:4,
-                    width: '10%',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:5,
-                    width: '10%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
-                    targets:6,
-                    width: '12%',
-                    render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
-
-					}
-                },
-                {
-                    targets:1,
-                    width: '12%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-                        return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
                 {
                     targets:-1,
                     width: '5%',
@@ -362,7 +306,7 @@
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            order:[[3,'desc']],
+            // order:[[3,'desc']],
             ajax:'{{route("company.fetch_existing_drafts")}}',
             columns: [
                 { data: 'issued_date', name: 'issued_date' },
@@ -377,13 +321,13 @@
                     targets:-3,
                     width: '12%',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
+                        return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
 					}
                 },
             ],
             language: {
-                emptyTable: "No Existing Drafts"
+                emptyTable: "No Drafts Added"
             }
         });
 
@@ -391,8 +335,24 @@
     });
 
     const cancel_permit = (id, refno) => {
-        $('#cancel_permit_id').val(id);
-        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+        var url = "{{route('company.artist.get_status', ':id')}}";
+        url = url.replace(':id', id);
+        $.ajax({
+            url: url,
+            success: function(result){
+               result = result.replace(/\s/g, '');
+                if(result != '') {
+                    if(result == 'new'){
+                        $('#cancel_permit').modal('show');
+                        $('#cancel_permit_id').val(id);
+                        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+                    }else {
+                        alert('Permit is already in processing');
+                    }
+
+                }
+            }
+        });
     }
 
     const show_cancelled = (id) => {
@@ -412,8 +372,8 @@
         rules: {
             cancel_reason: 'required'
         },
-        message: {
-            cancel_reason: 'Please fill the field'
+        messages: {
+            cancel_reason: 'Please Enter the Reason !'
         }
     });
 

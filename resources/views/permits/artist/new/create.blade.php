@@ -13,22 +13,24 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-angle-left"></i>
+                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u"
+                    title="Go Back">
+                    <i class="la la-arrow-left"></i>
                     Back
                 </button>
-                <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
-                    onclick="setCokkie()">
+                <button id="add_artist" class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
+                    onclick="setCokkie()" title="Add Artist">
                     <i class="la la-plus"></i>
                     Add Artist
                 </button>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-angle-left"></i>
+                <button id="back_btn" class="btn btn-label-back btn-elevate btn-sm kt-font-bold kt-font-transform-u"
+                    title="Go Back">
+                    <i class="la la-arrow-left"></i>
                 </button>
-                <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
-                    onclick="setCokkie()">
+                <button id="add_artist" class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
+                    onclick="setCokkie()" title="Add Artist">
                     <i class="la la-plus"></i>
                 </button>
             </div>
@@ -48,8 +50,7 @@
                                 <div class=" row">
                                     <div class="form-group col-lg-3">
                                         <label for="permit_from" class="col-form-label col-form-label-sm">From
-                                            Date <small>( <span class="text-danger">required</span>
-                                                )</small></label>
+                                            Date <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend"><span class="input-group-text"><i
                                                         class="la la-calendar"></i></span></div>
@@ -61,8 +62,7 @@
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="permit_to" class="col-form-label col-form-label-sm">To
-                                            Date <small>( <span class="text-danger">required</span>
-                                                )</small></label>
+                                            Date <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend"><span class="input-group-text"><i
                                                         class="la la-calendar"></i></span></div>
@@ -73,12 +73,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-lg-3">
-                                        <label for="work_loc" class="col-form-label col-form-label-sm">Work
-                                            Location <small>( <span class="text-danger">required</span>
-                                                )</small></label>
-                                        <input type="text" class="form-control form-control-sm"
-                                            placeholder="Work Location" name="work_loc" id="work_loc"
-                                            onkeyup="checkFilled()"
+                                        <label for="work_loc" class="col-form-label col-form-label-sm">
+                                            Location <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Location"
+                                            name="work_loc" id="work_loc" onkeyup="checkFilled()"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
                                     {{-- <div class="form-group col-lg-3">
@@ -107,8 +105,8 @@
         <input type="hidden" id="temp_permit_id" value="{{$permit_id}}">
 
         <div class="table-responsive">
-            <table class="table table-striped table-borderless">
-                <thead class="thead-dark">
+            <table class="table table-striped border table-hover table-borderless">
+                <thead>
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
@@ -131,21 +129,17 @@
                         <td>{{$ad->email}}</td>
                         <td>{{$ad->artist_permit_status}}</td>
                         <td>
-                            <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
-                                class="btn-clean btn-icon btn-icon-sm" title="Edit">
-                                <i class="la la-pencil la-2x"></i>
+                            <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}" title="Edit">
+                                <button class="btn btn-sm btn-secondary btn-elevate">Edit</button>
                             </a>
-                            <a href="#" data-toggle="modal" data-target="#artist_details"
-                                onclick="getArtistDetails({{$ad->id}})" class="btn-clean btn-icon btn-icon-sm"
-                                title="View">
-                                <i class="la la-file la-2x"></i>
+                            <a href="#" data-toggle="modal" onclick="getArtistDetails({{$ad->id}})" title="View">
+                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
-                                data-toggle="modal" data-target="#delartistmodal" class="btn-clean btn-icon btn-icon-sm"
-                                title="Delete">
-                                <i class="la la-trash la-2x"></i>
+                                data-toggle="modal" data-target="#delartistmodal" title="Delete">
+                                <button class="btn btn-sm btn-secondary btn-elevate">Remove</button>
                             </a>
                             @endif
                         </td>
@@ -163,64 +157,27 @@
         <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
 
         <div class="d-flex justify-content-between">
-            <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="draft_btn"
-                <?php if(count($artist_details) < 1){ echo 'disabled'; }?>>
-                Save to Drafts
+            <button
+                class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
+                id="draft_btn" title="Save as Draft">
+                <i class="la la-check"></i>
+                Save As Draft
             </button>
 
-            <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
-                <?php if(count($artist_details) < 1){ echo 'disabled'; }?>>
-                Apply Permit
+            <button
+                class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
+                id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}} title="Submit Permit">
+                <i class="la la-check"></i>
+                Submit Permit
             </button>
         </div>
 
     </div>
 
 
-    <!--begin::Modal-->
-    <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body" id="detail-permit">
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('permits.artist.modals.view_artist')
 
-    <!--end::Modal-->
-
-    <!--begin::Modal-->
-    <div class="modal fade" id="delartistmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Remove Artist</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{route('company.delete_artist_from_temp')}}" method="POST">
-                        @csrf
-                        <p id="warning_text"></p>
-                        <input type="hidden" id="del_temp_id" name="del_temp_id" />
-                        <input type="hidden" name="del_artist_from" value="amend" />
-                        <input type="hidden" name="del_permit_id" id="del_permit_id">
-                        <input type="submit" value="Remove"
-                            class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
+    @include('permits.artist.modals.remove_artist')
 
     <!--begin::Modal-->
     <div class="modal fade" id="back_btn_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -235,7 +192,7 @@
                 <div class="modal-body">
                     Changes you made may not be saved.
                     <input type="submit" value="Dont Save" onclick="go_back_confirm_function()"
-                        class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
+                        class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
                 </div>
             </div>
         </div>
@@ -257,7 +214,6 @@
             $('#add_artist').attr('disabled', true);
             checkFilled();
         });
-
 
         $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
         $('#permit_from').datepicker({
@@ -287,13 +243,20 @@
             var from = $('#permit_from').val();
             var to = $('#permit_to').val();
             var loc = $('#work_loc').val();
+            var artistcount = $('#total_artist_details').val();
             $('#add_artist').attr('disabled', loc == '' ? true : false) ;
             if(from && to && loc) {
                 $('#add_artist').attr('disabled', false);
+                if(artistcount > 0)
+                {
+                    $('#draft_btn').css('display', 'block');
+                    $('#submit_btn').css('display', 'block');
+                }
             }else {
                 $('#add_artist').attr('disabled', true);
+                $('#draft_btn').css('display', 'none');
+                $('#submit_btn').css('display', 'none');
             }
-
         }
 
         function setCokkie(){
@@ -382,6 +345,7 @@
                     $('#detail-permit').empty();
                     if(data)
                     {
+                        $('#artist_details').modal('show');
                         var code = data.person_code ? data.person_code : '';
                         $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+ data.visa_type.visa_type_en + '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
 
@@ -399,6 +363,7 @@
                     type: "POST",
                     data: { temp_permit_id:temp_permit_id },
                     success: function(result){
+                        $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
                         window.location.href="{{route('artist.index')}}#applied";
                     }
             });
@@ -412,6 +377,7 @@
                     type: "POST",
                     data: { temp_permit_id:temp_permit_id },
                     success: function(result){
+                        $('#draft_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
                         window.location.href="{{route('artist.index')}}#draft";
                     }
                 });

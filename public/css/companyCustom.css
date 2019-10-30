@@ -240,9 +240,10 @@
 }
 
 .btn--yellow {
-    background-color: var(--sub-brand-color);
+    /* background-color: var(--sub-brand-color); */
     color: #000;
-    border: 2px solid var(--sub-brand-color);
+    border: 2px solid rgba(255, 191, 1,0.5);
+    background-color: rgba(255, 191, 1,0.5) ;
 }
 
 .btn-outline-maroon {
@@ -580,3 +581,46 @@ select option:first-child {
     padding-left:1rem;
 }
 
+.btn-label-maroon {
+    color: #b45454;
+    background-color: rgba(180, 84, 84, 0.3);
+}
+
+.btn-label-maroon:hover {
+    color: #fff;
+    background-color: #b45454;
+}
+
+.btn-label-back {
+    color: #5d78ff;
+    background-color: rgba(93,120,255,0.3);
+}
+
+.btn-label-back:hover {
+    color: #fff;
+    background-color: #5d78ff;
+}
+
+.btn-label-yellow {
+    color: rgb(255, 191, 1);
+    background-color: rgba(255, 191, 1, 0.3);
+}
+
+.btn-label-yellow:disabled, button[disabled] , button[disabled]:hover {
+    background-color: white;
+    color: initial;
+}
+
+.btn-label-yellow:hover {
+    color: #000;
+    background-color: rgb(255, 191, 1);
+}
+
+.btn-secondary {
+    padding-top: 0.2rem ;
+    padding-bottom: 0.2rem ;
+}
+
+.btn-label-maroon, .btn-label-back, .btn-label-yellow {
+    letter-spacing: 1.5px;
+}

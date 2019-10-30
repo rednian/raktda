@@ -430,8 +430,8 @@
                                     </div>
                                     {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
                                     <div class="table-responsive">
-                                        <table class="table table-borderless table-striped">
-                                            <thead class="thead-dark">
+                                        <table class="table table-borderless table-hover border table-striped">
+                                            <thead>
                                                 <tr class="text-center">
                                                     <th class="text-left">Event Name</th>
                                                     <th class="text-left">Event Permit Type</th>

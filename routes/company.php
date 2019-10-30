@@ -56,7 +56,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('payment_gateway/{permit}',  'Company\ArtistController@payment_gateway')->name('company.payment_gateway');
     Route::post('artistpermits/{permit}/payment',  'Company\ArtistController@payment')->name('company.payment');
     Route::get('happiness_center/{id}',  'Company\ArtistController@happiness_center')->name('company.happiness_center');
-    Route::post('submit_happiness',  'Company\ArtistController@submit_happiness')->name('company.submit_happiness');
+    Route::post('submit_happiness',  'Company\ArtistController@submit_happiness')->name('artist.submit_happiness');
+    Route::get('artist/get_status/{id}', 'Company\ArtistController@get_status')->name('company.artist.get_status');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');

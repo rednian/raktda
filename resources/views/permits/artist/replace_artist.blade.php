@@ -87,12 +87,12 @@
                                                 <table class="table table-borderless">
                                                     <tr>
                                                         <th>Profession</th>
-                                                        <th>Fee</th>
+                                                        <th class="text-right">Fee (AED)</th>
                                                     </tr>
                                                     @foreach($profession as $pt)
                                                     <tr>
                                                         <td>{{$pt->name_en}}</td>
-                                                        <td>{{$pt->amount}}</td>
+                                                        <td class="text-right">{{number_format($pt->amount,2)}}</td>
                                                     </tr>
                                                     @endforeach
                                                 </table>
@@ -753,22 +753,24 @@
                     </div>
                 </div>
                 <div class="kt-form__actions">
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
                         Previous
                     </div>
                     <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
                     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
-                    <a href="{{url('company/amend_permit/'.$permit_details->permit_id)}}">
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                    <a href="{{url('company/artist/permit/'.$permit_details->permit_id .'/amend')}}">
+                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            id="back_btn">
                             Back
                         </div>
                     </a>
-                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
+                    <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
                         style="display:none;">
+                        <i class="la la-check"></i>
                         Submit
                     </div>
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
                         Next Step
                     </div>
@@ -1304,6 +1306,8 @@
                         else
                         {
                             $('#person_code_modal').append('<p class="text-center"><span class="text--maroon kt-font-bold">** Optional field</span><br/>Sorry ! No Artist Found with <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> ( or  is already added ). <br /> Please Add Another Artist ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
+
+                            $('#not_artist_personcode').text(code);
                         }
                     },error:function(){
                         alert("error!!!!");

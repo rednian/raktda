@@ -431,8 +431,8 @@
                                     </div>
                                     {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
                                     <div class="table-responsive">
-                                        <table class="table table-borderless table-striped">
-                                            <thead class="thead-dark">
+                                        <table class="table table-borderless table-hover border table-striped">
+                                            <thead>
                                                 <tr class="text-center">
                                                     <th class="text-left">Event Name</th>
                                                     <th class="text-left">Event Permit Type</th>
@@ -478,27 +478,29 @@
 
 
                     <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
                             Previous
                         </div>
 
 
                         <a href="{{route('event.index')}}#applied">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                            <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                id="back_btn">
                                 Back
                             </div>
                         </a>
 
 
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-submit" id="submit_btn">
+                            <i class="fa fa-check"></i>
                             Pay
                         </div>
 
 
 
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
                             Next Step
                         </div>

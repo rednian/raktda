@@ -13,21 +13,21 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn" class="btn btn-label-back btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-angle-left"></i>
                     Back
                 </button>
-                <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
+                <button id="add_artist" class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()">
                     <i class="la la-plus"></i>
                     Add Artist
                 </button>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn" class="btn btn-label-back btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-angle-left"></i>
                 </button>
-                <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
+                <button id="add_artist" class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()">
                     <i class="la la-plus"></i>
                 </button>
@@ -48,8 +48,7 @@
                                 <div class=" row">
                                     <div class="form-group col-lg-3">
                                         <label for="permit_from" class="col-form-label col-form-label-sm">From
-                                            Date <small>( <span class="text-danger">required</span>
-                                                )</small></label>
+                                            Date <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend"><span class="input-group-text"><i
                                                         class="la la-calendar"></i></span></div>
@@ -61,8 +60,7 @@
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="permit_to" class="col-form-label col-form-label-sm">To
-                                            Date <small>( <span class="text-danger">required</span>
-                                                )</small></label>
+                                            Date <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend"><span class="input-group-text"><i
                                                         class="la la-calendar"></i></span></div>
@@ -74,14 +72,13 @@
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">Work
-                                            Location <small>( <span class="text-danger">required</span>
-                                                )</small></label>
+                                            Location <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm"
                                             placeholder="Work Location" name="work_loc" id="work_loc"
                                             onkeyup="checkFilled()"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
-                                    <div class="form-group col-lg-3">
+                                    {{--  <div class="form-group col-lg-3">
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
@@ -94,7 +91,7 @@
                                                 <span></span>
                                             </label>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </form>
                         </div>
@@ -107,16 +104,16 @@
         <input type="hidden" id="temp_permit_id" value="{{$permit_id}}">
 
         <div class="table-responsive">
-            <table class="table table-striped table-borderless">
-                <thead class="thead-dark">
+            <table class="table table-striped table-hover border table-borderless">
+                <thead>
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Profession</th>
                         <th>Mobile</th>
-                        <th>Email</th>
+                        {{-- <th>Email</th> --}}
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,24 +125,20 @@
                         <td>{{$ad->lastname_en}}</td>
                         <td>{{$ad->profession['name_en']}}</td>
                         <td>{{$ad->mobile_number}}</td>
-                        <td>{{$ad->email}}</td>
+                        {{-- <td>{{$ad->email}}</td> --}}
                         <td>{{$ad->artist_permit_status}}</td>
-                        <td>
-                            <a href="{{url('company/edit_artist_draft/'.$ad->id)}}"
-                                class="btn-clean btn-icon btn-icon-sm" title="Edit">
-                                <i class="la la-pencil la-2x"></i>
+                        <td class="d-flex justify-content-center">
+                            <a href="{{url('company/edit_artist_draft/'.$ad->id)}}" title="Edit">
+                                <button class="btn btn-sm btn-secondary btn-elevate ">Edit</button>
                             </a>
-                            <a href="#" data-toggle="modal" data-target="#artist_details"
-                                onclick="getArtistDetails({{$ad->id}})" class="btn-clean btn-icon btn-icon-sm"
-                                title="View">
-                                <i class="la la-file la-2x"></i>
+                            <a href="#" data-toggle="modal" onclick="getArtistDetails({{$ad->id}})" title="View">
+                                <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
-                                data-toggle="modal" data-target="#delartistmodal" class="btn-clean btn-icon btn-icon-sm"
-                                title="Delete">
-                                <i class="la la-trash la-2x"></i>
+                                data-toggle="modal" data-target="#delartistmodal" title="Remove">
+                                <button class="btn btn-sm btn-secondary btn-elevate ">Remove</button>
                             </a>
                             @endif
                         </td>
@@ -163,13 +156,17 @@
         <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
 
         <div class="d-flex justify-content-between">
-            <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="draft_btn"
-                <?php if(count($artist_details) < 1){ echo 'disabled'; }?>>
+            <button
+                class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
+                id="draft_btn">
+                <i class="la la-check"></i>
                 Update to Drafts
             </button>
 
-            <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
-                <?php if(count($artist_details) < 1){ echo 'disabled'; }?>>
+            <button
+                class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
+                id="submit_btn">
+                <i class="la la-check"></i>
                 Apply Permit
             </button>
         </div>
@@ -177,23 +174,7 @@
     </div>
 
 
-    <!--begin::Modal-->
-    <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body" id="detail-permit">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
+    @include('permits.artist.modals.view_artist')
 
     <!--begin::Modal-->
     <div class="modal fade" id="delartistmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -383,6 +364,7 @@
                     $('#detail-permit').empty();
                 if(data)
                 {
+                    $('#artist_details').modal('show');
                     var code = data.person_code ? data.person_code : '';
                     $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en + '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
 

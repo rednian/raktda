@@ -10,14 +10,15 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{route('artist.index')}}#draft" class="btn btn--maroon btn-elevate btn-sm">
+                <a href="{{route('artist.index')}}#draft"
+                    class="btn btn-label-back kt-font-bold kt-font-transform-u btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{route('artist.index')}}#draft" class="btn btn--maroon btn-elevate btn-sm">
+                <a href="{{route('artist.index')}}#draft" class="btn btn-label-back btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                 </a>
             </div>
@@ -41,7 +42,7 @@
 
         <div class="table-responsive">
             <table class="table table-striped table-borderless  " id="applied-artists-table">
-                <thead class="thead-dark">
+                <thead>
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
@@ -64,10 +65,10 @@
                         <td>
                             {{ucwords($atd->artist_permit_status)}}
                         </td>
-                        <td class="text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
+                        <td class="text-center"> <a href="#" data-toggle="modal"
                                 onclick="getArtistDetails({{$atd->id}})" class="btn-clean btn-icon btn-icon-md"
                                 title="View">
-                                <i class="la la-file la-2x"></i>
+                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a></td>
                     </tr>
                     @endforeach
@@ -125,6 +126,7 @@
                 // console.log(data);
                 $('#detail-permit').empty();
                 if (data) {
+                    $('#artist_details').modal('show');
                     var code = data.person_code ? data.person_code != 0 ? data.person_code : '' : '';
                     $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>First Name</th> <td >' + data.firstname_en + '</td>   <th>Last Name</th> <td>' + data.lastname_en + '</td> </tr> <tr> <th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>   <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td> </tr><th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td><th>Gender</th> <td >' + ( data.gender == 1 ? 'male' : 'female')  + '</td>  </tr> <tr> <th>Email</th> <td>' + data.email + '</td> <th>Profession</th> <td >' + data.profession.name_en + '</td>  </tr> <tr> <th>Passport</th> <td >' + data.passport_number + '</td> <th>Passport Expiry</th> <td >' + moment(data.passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY') + '</td> </tr> <tr> <th>UID Number</th> <td >' + data.uid_number + '</td><th>UID Expiry</th> <td >' +  moment(data.uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY') + '</td>  </tr><tr> <th>DOB</th> <td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr></table>');
 

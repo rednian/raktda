@@ -87,12 +87,12 @@
                                                 <table class="table table-borderless">
                                                     <tr>
                                                         <th>Profession</th>
-                                                        <th>Fee</th>
+                                                        <th class="text-right">Fee(AED)</th>
                                                     </tr>
                                                     @foreach($profession as $pt)
                                                     <tr>
                                                         <td>{{$pt->name_en}}</td>
-                                                        <td>{{$pt->amount}}</td>
+                                                        <td class="text-right">{{number_format($pt->amount,2)}}</td>
                                                     </tr>
                                                     @endforeach
                                                 </table>
@@ -751,29 +751,30 @@
                     </div>
                 </div>
                 <div class="kt-form__actions">
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
                         Previous
                     </div>
                     @php
                     if($from == 'amend'){
-                    $route_back = 'amend_permit/'.$permit_details->permit_id;
+                    $route_back = $permit_details->permit_id.'/amend';
                     } elseif($from == 'edit') {
-                    $route_back = 'edit_permit/'.$permit_details->permit_id;
+                    $route_back = $permit_details->permit_id.'/edit';
                     } elseif($from == 'renew') {
-                    $route_back = 'renew_permit/'.$permit_details->permit_id;
+                    $route_back = $permit_details->permit_id.'/renew';
                     }
                     @endphp
-                    <a href="{{url('company/'.$route_back)}}">
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                    <a href="{{url('company/artist/permit/'.$route_back)}}">
+                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            id="back_btn">
                             Back
                         </div>
                     </a>
-                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
+                    <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
                         style="display:none;">
-                        Add
+                        Add Artist
                     </div>
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
                         Next Step
                     </div>
