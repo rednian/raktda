@@ -36,6 +36,7 @@ Route::middleware(['admin', 'auth'])->group(function(){
 	Route::post('/event/{event}','Admin\EventController@submit')->name('admin.event.submit');
     Route::get('/event/{event}/download','Admin\EventController@download')->name('admin.event.download');
     Route::get('/event/{event}/addition-requirement-datatable','Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
+    Route::get('/event/{event}/requirement-datatable','Admin\EventController@uploadedRequiremet')->name('admin.event.uploadedRequiremet');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist

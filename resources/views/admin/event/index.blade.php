@@ -1,6 +1,14 @@
 @extends('layouts.admin.admin-app')
 @section('style')
 <link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
+<style>
+  .fc-unthemed .fc-event .fc-title, .fc-unthemed .fc-event-dot .fc-title {
+    color: #fff;
+}
+.fc-unthemed .fc-event .fc-time, .fc-unthemed .fc-event-dot .fc-time {
+    color: #fff;
+}
+</style>
 @stop
 @section('content')
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
@@ -12,7 +20,7 @@
                         <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing Events</a></li>
                         <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Events</a></li>
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Events</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#event-calendar">All Events Calendar</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#calendar">All Events Calendar</a></li>
                      </ul>
                       {{-- <input type="text" class="form-control form-control-sm" style="position: absolute; top: 0"> --}}
           </div>
@@ -165,8 +173,42 @@
                     </thead>
                 </table>
             </div>
-            <div class="tab-pane fade" id="event-calendar" role="tabpanel">
-                <section id="event-calendar"></section>
+            <div class="tab-pane fade" id="calendar" role="tabpanel">
+              <section class="row">
+                <div class="col-md-3">
+                   <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
+                      <div class="card">
+                         <div class="card-header" id="heading-address">
+                            <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
+                                 aria-expanded="true" aria-controls="collapse-address">
+                               <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">Event type legend</h6>
+                            </div>
+                         </div>
+                         <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
+                            <div class="card-body" style="padding: 1px;">
+                              <table class="table table-borderless table- ">
+                                <tbody>
+                                  @if (!empty($types))
+                                  @foreach ($types as $type)
+                                    <tr>
+                                      <td>
+                                        <span style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
+                                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 20)): ucfirst($type->name_ar)  }}</td>
+                                        </span>
+                                    </tr>
+                                  @endforeach
+                                  @endif
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                </div>
+                <div class="col-md-9">
+                    <section id="event-calendar"></section>
+                </div>
+              </section>
             </div>
         </div>
     </div>
@@ -226,8 +268,8 @@
                   center: 'title',
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
-              height: 800,
-              contentHeight: 780,
+              height: 'auto',
+              contentHeight: 450,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
@@ -243,7 +285,10 @@
               editable: true,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
-              events: '{{ route('admin.event.calendar') }}',
+              events: {
+                url: '{{ route('admin.event.calendar') }}',
+                textColor : '#ffffff',
+              },
               eventRender: function(info) {
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {

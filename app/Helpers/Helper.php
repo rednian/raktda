@@ -1,4 +1,24 @@
 <?php
+function fileExtension($path){
+    $ext = explode('.', $path);
+    $ext = strtolower(array_pop($ext));
+    $className = null;
+    switch ($ext) {
+        case 'pdf':
+        $className = 'la-file-pdf-o text-danger';
+        break;
+        case 'png':
+        $className = 'la-file-photo-o text-warning';
+        break;
+        case 'jpeg':
+        $className = 'la-file-photo-o text-warning';
+        break;
+        case 'jpg':
+        $className = 'la-file-photo-otext-warning';
+        break;
+    }
+    return '<span style="font-size:x-large" class="la '.$className.'"></span>';
+}
 function language($data){
     $user = Auth::user()->LanguageId;
 
@@ -14,7 +34,7 @@ function eventType($type)
     }
     if ('charity events / without ticket' == strtolower($type) || 'charity events / with ticket' == strtolower($type)) {
         $classname = 'fc-event-solid-info';
-    }
+    }   
     if ('religious  events / without ticket' == strtolower($type) || 'religious  events / with ticket' == strtolower($type)) {
         $classname = 'fc-event-light fc-event-solid-primary';
     }

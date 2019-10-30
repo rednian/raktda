@@ -6,8 +6,10 @@
 	use Auth;
 	use Calendar;
 	use App\Event;
+	use App\EventType;
 	use Carbon\Carbon;
 	use App\Requirement;
+	use NumberToWords\NumberToWords;
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
 	use Yajra\DataTables\Facades\DataTables;
@@ -17,24 +19,23 @@
 		public function index()
 		{
 			$event = Event::whereDate('expired_date', Carbon::now())->update(['status'=>'expired']);
-			return view('admin.event.index', ['page_title' => 'Event Permit']);
+			$types = EventType::all();
+			return view('admin.event.index', ['page_title' => 'Event Permit', 'types'=>$types]);
 		}
 
 		public function calendar(Request $request)
 		{
-
-			$user = Auth::user();
 			$events = Event::whereIn('status',['active', 'expired'])->get();
-			$events = $events->map(function($event) use ($user){
+			$events = $events->map(function($event) use ($request){
 				return [
-					'title'=> $user->LanguageId == 1 ? $event->name_en : $event->name_ar,
-					// 'start'=> Carbon::createFromTimestamp($event->issued_date.$event->time_start),
+					'title'=> $request->user()->LanguageId == 1 ? ucfirst($event->name_en) : $event->name_ar,
 					'start'=> date('Y-m-d', strtotime($event->issued_date)).' '.date('H:m', strtotime($event->time_start)),
 					'end'=> date('Y-m-d', strtotime($event->expired_date)).' '.date('H:m', strtotime( $event->time_end)),
 					'id'=>$event->event_id,
 					'url'=> route('admin.event.show', $event->event_id).'?tab=event-calendar',
-					'description'=> 'Venue : '.$venue = $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
-					'className'=> eventType($event->type->name_en),
+					'description'=> 'Venue : '.$venue = $request->user()->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
+					'backgroundColor'=> $event->type->color,
+					'textColor' => '#fff !important',
 				];
 			});
 			return response()->json($events);	
@@ -69,6 +70,7 @@
 							}
 						}
 					}
+					$event->update(['status'=>$request->status]);
 					$request['role_id'] = $user->roles()->first()->role_id;
 					$request['type'] = 1;
 					if ($request->comment) {$comment = $event->comment()->create($request->all());}
@@ -76,7 +78,6 @@
 						$request['status'] = 'send back for amendments';
 					}
 					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
-					$event->update(['status'=>$request->status]);
 				}
 
 				if ($request->status == 'approved-unpaid') {
@@ -115,7 +116,7 @@
 		public function updateLock(Request $request, Event $event)
 		{
 			if ($request->ajax()) {
-				$event->update(['last_check_by' => Auth::user()->user_id, 'lock' => Carbon::now()]);
+				$event->update(['last_check_by' => $request->user()->user_id, 'lock' => Carbon::now()]);
 			}
 		}
 
@@ -123,6 +124,14 @@
 		{
 			$data['company_details'] = $event->owner->company;
 			$data['event_details'] = $event;
+
+			$from_date_formatted = Carbon::parse($event->issued_date);
+			$to_date_formatted = Carbon::parse($event->expired_date);
+			$diff = $from_date_formatted->diffInDays($to_date_formatted) == 0 ? 1 : $from_date_formatted->diffInDays($to_date_formatted);
+			$numberToWords = new NumberToWords();
+			$numberTransformer = $numberToWords->getNumberTransformer('en');
+			$data['diff'] = $diff;
+			$data['days'] = $numberTransformer->toWords($diff);
 
 			$pdf = PDF::loadView('permits.event.print', $data, [], [
 			    'title' => 'Event Permit',
@@ -154,6 +163,49 @@
 			return view('admin.event.show', ['page_title' => '', 'event'=>$event, 'tab'=>$request->tab]);
 		}
 
+		public function uploadedRequiremet(Request $request, Event $event)
+		{
+
+			$requirements = Requirement::whereHas('eventRequirement', function($q) use ($event){
+				return $q->where('event_id', $event->event_id);
+			})
+			->orderBy('requirement_name')
+			->get();
+
+
+			return DataTables::of($requirements)
+			->editColumn('name', function($requirement) use ($request){
+				return $request->user()->LanguageId == 1 ?  ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
+			})
+			->addColumn('start', function($requirement){
+				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required'; 
+			})
+			->addColumn('end', function($requirement){
+				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required'; 
+			})
+			->addColumn('files', function($requirement) use ($request, $event){
+				$name =  $request->user()->LanguageId == 1 ?  ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
+				$files = $requirement->eventRequirement()->where('event_id', $event->event_id)->get();
+				$html = '<div class="kt-badge kt-badge__pics">';
+				foreach ($files as $index => $file) {
+					$html .= '<a href="'.asset('/storage/'.$file->path).'" data-fancybox="images" data-fancybox data-caption="'.$name.'" class="kt-badge__pic">';
+					$html .= fileExtension($file->path);
+					$html .= '</a>';
+					if($index > 5){
+						$html .= '<a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">';
+						$html .= '+'. $index-5;
+						$html .= '</a>';
+					}
+				}
+				$html .= '</div>';
+
+				
+				return $html;
+			})
+			->rawColumns(['files'])
+			->make(true);
+		}
+
 		public function addRequirementDatatable(Request $request, Event $event)
 		{
 			$requirements = Requirement::whereDoesntHave('type.event', function($q) use ($event){
@@ -164,7 +216,6 @@
 			})
 			->where('requirement_type', 'event')
 			->get();
-			// dd($requirements);
 
 			return DataTables::of($requirements)
 			->addColumn('name', function($requirement) use ($request){
@@ -181,49 +232,28 @@
 		public function applicationDatatable(Request $request, Event $event)
 		{
 			$event = $event->requirements()->get();
-			// dd($event);
-			// $requirements =  Requirement::has('event')->get();	
 			$user = Auth::user();
 			return DataTables::of($event)
 				 ->addColumn('name', function($requirement) use ($user){
 					 $name = $user->LanguageId == 1 ? $requirement->requirement_name : $requirement->requirement_name_ar;
 					 // dd($requirement->event);
-					 return '<a href="'.asset('/storage/'.$requirement->pivot->path).'"  data-fancybox data-fancybox data-caption="'.$name.'">'.$name.'</a>';
+					 return '<a href="'.asset('/storage/'.$requirement->pivot->path).'"  data-fancybox data-caption="'.$name.'">'.$name.'</a>';
 				 })
-				 ->addColumn('issued_date', function($event){
-				 	if($event->dates_required == 1){
-				 		 return date('d-M-Y', strtotime($event->issued_date));
+				 ->addColumn('issued_date', function($requirement){
+				 	if($requirement->dates_required == 1){
+				 		 return date('d-M-Y',strtotime($requirement->pivot->issued_date));
 				 	}
 
 					 return 'Not Required';
 				 })
-				 ->addColumn('expired_date', function($event){
-					if($event->dates_required == 1){
-				 		 return date('d-M-Y', strtotime($event->expired_date));
+				 ->addColumn('expired_date', function($requirement){
+					if($requirement->dates_required == 1){
+				 		  return date('d-M-Y',strtotime($requirement->pivot->expired_date));
 				 	}
 					 return 'Not Required';
 				 })
 				 ->addColumn('files', function($event){
-				 	// <div class="kt-badge kt-badge__pics">
-						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer">
-						// 										<img src="./assets/media/users/100_7.jpg" alt="image">
-						// 									</a>
-						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Alison Brandy">
-						// 										<img src="./assets/media/users/100_3.jpg" alt="image">
-						// 									</a>
-						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Selina Cranson">
-						// 										<img src="./assets/media/users/100_2.jpg" alt="image">
-						// 									</a>
-						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Luke Walls">
-						// 										<img src="./assets/media/users/100_13.jpg" alt="image">
-						// 									</a>
-						// 									<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Micheal York">
-						// 										<img src="./assets/media/users/100_4.jpg" alt="image">
-						// 									</a>
-						// 									<a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
-						// 										+12
-						// 									</a>
-						// 								</div>
+
 				 	return null;
 				 })
 				 ->rawColumns(['name', 'files'])

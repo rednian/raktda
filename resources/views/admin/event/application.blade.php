@@ -701,7 +701,7 @@
 					$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 				}
 			});
-			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
+			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 			 wizard.on("beforeNext", function(wizardObj) {
 			 	if(wizardObj.currentStep == 1){
  						$('input[type=checkbox][data-step=step-1]').each(function () {

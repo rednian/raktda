@@ -1,6 +1,6 @@
 @extends('layouts.admin.admin-app')
 @section('content')
-<div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border">
+<div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
     <div class="kt-portlet__head kt-portlet__head--sm">
         <div class="kt-portlet__head-label">
             <h3 class="kt-portlet__head-title kt-font-dark">{{ ucfirst($event->name_en) }} - DETAILS</h3>
@@ -119,7 +119,7 @@
                 </section>
             </div>
         </section>
-        <div class="accordion accordion-solid accordion-toggle-plus" id="accordion-approver">
+        <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-10" id="accordion-approver">
             <div class="card">
                 <div class="card-header" id="headingOne-approver">
                     <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapse-approver"
@@ -132,22 +132,22 @@
                         <table class="table table-hover table-borderless border table-striped">
                             <thead>
                                 <tr>
-                                    <th>CHECKED BY</th>
+                                    <th class="no-wrap">CHECKED BY</th>
                                     <th>REMARKS</th>
-                                    <th>USER GROUP</th>
-                                    <th>CHECKED DATE</th>
-                                    <th>ACTION TAKEN</th>
+                                    <th class="no-wrap">USER GROUP</th>
+                                    <th class="no-wrap">CHECKED DATE</th>
+                                    <th class="no-wrap">ACTION TAKEN</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @if ($event->approve()->exists())
                                 @foreach ($event->approve()->orderBy('updated_at')->get() as $approve)
                                     <tr>
-                                        <td>{{ ucwords($approve->user->NameEn) }}</td>
+                                        <td class="no-wrap">{{ ucwords($approve->user->NameEn) }}</td>
                                         <td>{{ ($approve->comment->comment) }}</td>
                                         <td>{{ ucwords($approve->role->NameEn) }}</td>
                                         <td>{{ $approve->checked_at ? $approve->checked_at->format('d-M-Y') : null }}</td>
-                                        <td>{{ $approve->status }}</td>
+                                        <td class="no-wrap">{{ $approve->status }}</td>
                                     </tr>
                                 @endforeach
                                 @endif
@@ -157,6 +157,50 @@
                 </div>
             </div>  
         </div>
+        <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-15" id="accordion-document">
+            <div class="card">
+                <div class="card-header" id="headingOne-document">
+                    <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapse-document"
+                        aria-expanded="true" aria-controls="collapse-document">
+                        <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Uploaded Requirements</h6>
+                    </div>
+                </div>
+                <div id="collapse-document" class="collapse show" aria-labelledby="headingOne-document" data-parent="#accordion-document">
+                    <div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
+                        <table class="table table-hover table-borderless border table-striped" id="document-table">
+                            <thead>
+                                <tr>
+                                    <th>DOCUMENT NAME</th>
+                                    <th>ISSUED DATE</th>
+                                    <th>EXPIRED DATE</th>
+                                    <th>FILES</th>
+                                </tr>
+                            </thead>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>  
+        </div>
     </div>
 </div>
+@endsection
+@section('script')
+<script>
+  var document_table = {}; 
+  $(document).ready(function(){
+    document_table = $('#document-table').DataTable({
+      ajax: '{{ route('admin.event.uploadedRequiremet', $event->event_id) }}',
+      columnDefs:[
+      {targets:[1,2,3], className: 'no-wrap'}
+      ],
+      columns:[
+        { data: 'name'},
+        { data: 'start'},
+        { data: 'end'},
+        { data: 'files'},
+      ]
+    });
+  });
+</script>
 @endsection

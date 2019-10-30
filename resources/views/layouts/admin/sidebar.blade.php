@@ -46,12 +46,12 @@
                </li>
 
                <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('permit*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.artist_permit.index') }}#new-request" class="kt-menu__link">
+                   <a href="{{ route('admin.artist_permit.index') }}" class="kt-menu__link">
                        <span class="kt-menu__link-text">Artist Permit</span>
                    </a>
                </li>
                <li class="kt-menu__item {{ Request::is('event*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.event.index') }}#new-request" class="kt-menu__link ">
+                   <a href="{{ route('admin.event.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">Event Permit</span>
                    </a>
                </li>
