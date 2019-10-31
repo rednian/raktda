@@ -2,6 +2,8 @@
 
 @section('title', 'Event Permits - Smart Government Rak')
 
+
+
 @section('content')
 
 
@@ -29,10 +31,11 @@
                         style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ route('event.create')}}">
 
-                            <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
+                            <button class="btn btn-label-yellow kt-font-transform-u btn-sm" id="nav--new-permit-btn">
+                                <i class="la la-plus"></i>
                                 Add New
                             </button>
-                            <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                            <button class="btn btn-label-yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                                 <i class="la la-plus"></i>
                             </button>
                         </a>
@@ -82,8 +85,44 @@
 
 
             <div class="tab-pane fade" id="calendar" role="tabpanel">
-                <div class="kt-portlet__body">
-                    <div id="event-calendar">
+                <div class="row">
+                    <div class="col-md-3">
+                        <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
+                            <div class="card">
+                                <div class="card-header" id="heading-address">
+                                    <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse"
+                                        data-target="#collapse-address" aria-expanded="true"
+                                        aria-controls="collapse-address">
+                                        <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">Event type legend</h6>
+                                    </div>
+                                </div>
+                                <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
+                                    data-parent="#accordion-address">
+                                    <div class="card-body" style="padding: 1px;">
+                                        <table class="table table-borderless table- ">
+                                            <tbody>
+                                                @if (!empty($types))
+                                                @foreach ($types as $type)
+                                                <tr>
+                                                    <td>
+                                                        <span
+                                                            style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
+                                                            {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 20)): ucfirst($type->name_ar)  }}
+                                                    </td>
+                                                    </span>
+                                                </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-md-9">
+                        <section id="event-calendar">
+                        </section>
                     </div>
                 </div>
             </div>
@@ -136,7 +175,7 @@
                     <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..." style="resize:none;"
                         class="form-control" id="cancel_reason"></textarea>
                     <input type="hidden" id="cancel_permit_id" name="permit_id">
-                    <input type="submit" class="btn btn-sm btn--yellow popup-submit-btn" value="Cancel Permit">
+                    <input type="submit" class="btn btn-sm btn-label-maroon popup-submit-btn" value="Cancel Permit">
                 </form>
             </div>
 
@@ -194,6 +233,7 @@
 @endsection
 
 @section('script')
+
 <script>
     $('#kt_tabs_list a').click(function(e) {
             e.preventDefault();
@@ -488,6 +528,15 @@
 
     }
 
+    $('#cancel_permit_form').validate({
+        rules: {
+            cancel_reason: 'required'
+        },
+        messages: {
+            cancel_reason: 'Please Enter the Reason !'
+        }
+    });
+
 
     const show_cancelled = (id) => {
         var url = "{{route('company.event.cancel_reason', ':id')}}";
@@ -559,7 +608,10 @@
               editable: true,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
-              events: '{{ route('company.event.calendar') }}',
+              events: {
+                  url: '{{ route('company.event.calendar') }}',
+                  textColor: '#fff'
+              },
               eventRender: function(info) {
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {

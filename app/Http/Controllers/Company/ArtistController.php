@@ -245,6 +245,8 @@ class ArtistController extends Controller
     public function create($id = null)
     {
         $user_id =  Auth::user()->user_id;
+        $comp_id = Auth::user()->type == 1 ? Auth::user()->EmpClientId : '';
+
         if (!$id) {
             session()->forget([
                 $user_id . '_apn_from_date',
@@ -253,14 +255,14 @@ class ArtistController extends Controller
             ]);
             ArtistTempData::where([
                 ['status', '!=', 5],
-                ['company_id', Auth::user()->EmpClientId],
+                ['company_id', $comp_id],
                 ['created_by', Auth::user()->user_id],
             ])->delete();
         }
         $data_bundle['artist_details'] = ArtistTempData::where([
             ['permit_id', $id],
             ['status', '!=', 5],
-            ['company_id', Auth::user()->EmpClientId],
+            ['company_id', $comp_id],
             ['created_by', Auth::user()->user_id],
         ])->with('profession', 'nationality', 'ArtistTempDocument')->get();
 
@@ -359,7 +361,6 @@ class ArtistController extends Controller
     }
 
 
-
     public function add_artist_temp(Request $request)
     {
         $permitDetails = $request->permitD;
@@ -404,7 +405,7 @@ class ArtistController extends Controller
             'issue_date' => $permitDetails['from'] ? Carbon::parse($permitDetails['from'])->toDateString() : '',
             'expiry_date' => $permitDetails['to'] ? Carbon::parse($permitDetails['to'])->toDateString() : '',
             'work_location' => $permitDetails['location'],
-            'company_id' => Auth::user()->EmpClientId,
+            'company_id' => Auth::user()->type == 1 ? Auth::user()->EmpClientId : '',
             'created_by' => Auth::user()->user_id,
             'created_at' => Carbon::now()->toDateTimeString()
         ]);
@@ -590,7 +591,7 @@ class ArtistController extends Controller
                 'user_id' => $user_id,
                 'created_by' => $user_id,
                 'created_at' => $currentDateTime,
-                'company_id' => Auth::user()->EmpClientId
+                'company_id' => Auth::user()->type == 1 ? Auth::user()->EmpClientId : ''
             ]);
 
             $temp_ids = [];
@@ -1745,7 +1746,7 @@ class ArtistController extends Controller
 
     public function download_permit(Permit $permit)
     {
-        $data['company_details'] = Company::find(Auth::user()->EmpClientId);
+        $data['company_details'] = Auth::user()->type == 1 ? Company::find(Auth::user()->EmpClientId) : [];
         $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'Nationality')->get();
         $data['permit_details'] = $permit;
 
@@ -1781,7 +1782,7 @@ class ArtistController extends Controller
         $transArr = Transaction::create([
             'transaction_type' => 'artist',
             'transaction_date' => Carbon::now(),
-            'company_id' => Auth::user()->EmpClientId,
+            'company_id' => Auth::user()->type == 1 ? Auth::user()->EmpClientId : '',
         ]);
 
         foreach ($permit->artistPermit() as $artist) {

@@ -507,27 +507,28 @@
 
 
                     <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
                             Previous
                         </div>
 
 
                         <a href="{{url('company/event')}}">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                            <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                id="back_btn">
                                 Back
                             </div>
                         </a>
 
 
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-submit" id="submit_btn">
                             Submit
                         </div>
 
 
 
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
                             Next Step
                         </div>
@@ -586,6 +587,7 @@
     var fileUploadFns = [];
     var eventdetails = {};
     var documentDetails = {};
+    var documentsValidator ;
 
     $(document).ready(function(){
         setWizard();
@@ -663,8 +665,11 @@
                                         let exp_datetime = new Date(data['expired_date']);
                                         let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        // const d = data["path"].split("/");
+                                        // let docName = d[d.length - 1];
                                         const d = data["path"].split("/");
-                                        let docName = d[d.length - 1];
+                                        var cc = d.splice(4,5);
+                                        let docName =  cc.length > 1 ? cc.join('/') : cc ;
                                         obj.createProgress(docName, "{{asset('storage')}}"+'/' + data["path"], '');
                                         if (formatted_issue_date != NaN - NaN - NaN) {
                                             $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
@@ -955,7 +960,7 @@
 
         var docRules = {};
         var docMessages = {};
-        var documentsValidator = '';
+
 
 
         function getRequirementsList(id)
@@ -975,8 +980,8 @@
 
                          if(res[i].dates_required)
                          {
-                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
-                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
+                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker mk-disabled" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
+                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker mk-disabled" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
                          }
 
                             docRules['doc_issue_date_' + j] = 'required';

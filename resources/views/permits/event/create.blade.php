@@ -348,7 +348,7 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="area_id"
                                                             class=" col-form-label kt-font-bold text-right">Area
-                                                            <small>( optional )</small></label>
+                                                        </label>
                                                         <select class="  form-control form-control-sm " name="area_id"
                                                             id="area_id">
                                                             <option value="">Select</option>
@@ -399,20 +399,21 @@
 
 
                     <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
                             Previous
                         </div>
 
 
                         <a href="{{route('event.index')}}#applied">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                            <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                id="back_btn">
                                 Back
                             </div>
                         </a>
 
                         <div class="btn-group" role="group" id="submit--btn-group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
+                            <button id="btnGroupDrop1" type="button" class="btn btn-label-yellow btn-sm dropdown-toggle"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Submit
                             </button>
@@ -422,12 +423,12 @@
                                     Submit</button>
                                 <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
                                     id="draft_btn">Save
-                                    to Drafts</button>
+                                    as Draft</button>
                             </div>
                         </div>
 
 
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
                             Next Step
                         </div>
