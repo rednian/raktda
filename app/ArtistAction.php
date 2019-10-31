@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class ArtistAction extends Model
 {
 	protected  $connection = 'mysql';
-	protected $table = 'artist_action';
+	protected $table = 'smartrak_smartgov.artist_action';
 	protected $primaryKey = 'artist_action_id';
-	protected $fillable = ['artist_id', 'employee_id', 'remarks', 'action'];
+	protected $fillable = ['artist_id', 'user_id', 'remarks', 'action'];
 	protected $dates = ['created_at', 'updated_at'];
 
-	public function employee()
+	public function user()
 	{
-		return $this->belongsTo(Employee::class, 'employee_id');
+		return $this->belongsTo(User::class, 'user_id');
 	}
 	public function  artist()
 	{

@@ -6,14 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class PermitComment extends Model
 {
-    protected $table = 'permit_comment';
+    protected $table = 'smartrak_smartgov.permit_comment';
     protected $primaryKey = 'permit_comment_id';
-    protected $fillable = [ 'comment', 'user_id', 'permit_id', 'type'];
+    protected $fillable = [ 'comment', 'user_id', 'permit_id', 'type', 'action', 'role_id'];
     protected  $dates = ['created_at', 'updated_at'];
+
+    public function role()
+    {
+        return $this->belongsTo(Roles::class, 'role_id')->withDefault(['NameEn'=>null, 'NameAr'=>null]);
+    }
+
+    public function artistPermitComment()
+    {
+        return $this->belongsToMany(ArtistPermit::class, 'artist_permit_comment', 'permit_comment_id', 'artist_permit_id');
+    }
 
     public function  user()
     {
-    	return $this->belongsTo(User::class, 'user_id');
+    	return $this->belongsTo(User::class, 'user_id')->withDefault(['NameEn'=>null, 'NameAr'=>null]);
     }
     public function check()
     {

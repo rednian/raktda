@@ -112,9 +112,9 @@
                         <th>Last Name</th>
                         <th>Profession</th>
                         <th>Mobile</th>
-                        <th>Email</th>
+                        {{-- <th>Email</th> --}}
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -126,9 +126,9 @@
                         <td>{{$ad->lastname_en}}</td>
                         <td>{{$ad->profession['name_en']}}</td>
                         <td>{{$ad->mobile_number}}</td>
-                        <td>{{$ad->email}}</td>
+                        {{-- <td>{{$ad->email}}</td> --}}
                         <td>{{$ad->artist_permit_status}}</td>
-                        <td>
+                        <td class="d-flex justify-content-center">
                             <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}" title="Edit">
                                 <button class="btn btn-sm btn-secondary btn-elevate">Edit</button>
                             </a>

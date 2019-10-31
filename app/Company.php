@@ -10,7 +10,7 @@ class Company extends Model
 {
     //use SoftDeletes;
     protected $connection = 'bls';
-    protected $table = 'company';
+    protected $table = 'smartrak_bls.company';
     protected $primaryKey = 'company_id';
     protected $fillable = [
         'company_name', 'company_address', 'country', 'city', 'company_type', 'company_mobile_number',

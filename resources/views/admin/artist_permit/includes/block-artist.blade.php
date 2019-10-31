@@ -1,7 +1,10 @@
 
 <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
 	<?php
-	$countries = \App\Country::has('artist')->get();
+	$countries = \App\Countries::whereHas('artistpermit.artist', function($q){
+		$q->where('artist_status', 'blocked');
+	})->get();
+
 	$professions = App\Profession::whereHas('artistpermit', function($q){
 		$q->whereHas('permit', function($q){
 			$q->where('permit_status', '!=', 'draft');

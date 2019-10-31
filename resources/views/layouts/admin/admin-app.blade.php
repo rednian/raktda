@@ -36,7 +36,7 @@
   <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
   <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
 </head>
-<body style="zoom:90%" class="kt-page--loading-enabled kt-page--loading  kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-aside--enabled kt-aside--fixed" >
+<body class="kt-page--loading-enabled kt-page--loading  kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-aside--enabled kt-aside--fixed" >
 <!-- begin:: Page -->
 <!-- begin::Page loader -->
 <div class="kt-page-loader kt-page-loader--base">

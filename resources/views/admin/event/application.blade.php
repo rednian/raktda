@@ -56,6 +56,7 @@
 				</div>
 				</div>
 				<div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
+
 					 <form id="kt_form" class="kt-form"  method="post" action="{{ route('admin.event.submit', $event->event_id) }}">
 					 	@csrf
 					 	<div data-ktwizard-type="step-content" data-ktwizard-state="current" class="kt-wizard-v3__content">
@@ -63,6 +64,7 @@
 					 			<div class="kt-wizard-v3__form">
 					 				<section class="row kt-margin-t-20 kt-margin-b-20">
 					 					<div class="col">
+					 						@include('admin.event.includes.latest-comment')
 					 						@include('admin.artist_permit.includes.comment')
 					 						@if ($existing_event->count() > 0)
 					 							<div class="alert alert-outline-danger fade show" role="alert">
@@ -90,7 +92,7 @@
 														<div class="card-body">
 															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
-																	<label>Event Name <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">Event Name <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
 																		<input value="{{ ucfirst($event->name_en) }}" name="name_en" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append ">
@@ -104,7 +106,7 @@
 																	</div>
 																</div>
 																<div class="col-md-6">
-																	<label>Event Name (AR) <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">Event Name (AR) <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
 																		<input value="{{ ucfirst($event->name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append">
@@ -121,7 +123,7 @@
 
 															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
-																	 <label>Event Type <span class="text-danger">*</span></label>
+																	 <label class="kt-font-dark">Event Type <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
 																		<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
 																						 class="form-control">
@@ -153,7 +155,7 @@
 																<div class="card-body">
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label>Date Start<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Date Start <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->issued_date }}" name="issued_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -168,7 +170,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Date End<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Date End <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->expired_date }}" name="expired_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -183,7 +185,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Time Start<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Time Start <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->time_start }}" name="time_start" readonly="readonly" type="text" class="form-control">
 																						<div class="input-group-append">
@@ -197,7 +199,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Time Start<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Time End <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->time_end }}" name="time_end" readonly="readonly" type="text" class="form-control">
 																						<div class="input-group-append">
@@ -227,7 +229,7 @@
 																<div class="card-body">
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-6">
-																				 <label>Venue<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Venue<span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->venue_en) }}" name="venue_en" readonly="readonly" type="text"
 																									 class="form-control">
@@ -242,7 +244,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-6">
-																				 <label>Venue (AR)<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Venue (AR) <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
 																									 class="form-control">
@@ -259,7 +261,7 @@
 																	 </div>
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label>Address<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">Address <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->address) }}" name="address" readonly="readonly" type="text"
 																									 class="form-control">
@@ -274,7 +276,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Area</label>
+																				 <label class="kt-font-dark">Area</label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->area->area_en) }}" name="area_en" readonly="readonly" type="text"
 																									 class="form-control">
@@ -289,7 +291,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Emirate</label>
+																				 <label class="kt-font-dark">Emirate</label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->emirate->name_en) }}" name="emirates" readonly="readonly" type="text"
 																									 class="form-control">
@@ -304,7 +306,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label>Country</label>
+																				 <label class="kt-font-dark">Country</label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->country->name_en) }}" name="country" readonly="readonly" type="text"
 																									 class="form-control">
@@ -333,16 +335,18 @@
 								<div class="kt-wizard-v3__form">
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
+												@include('admin.event.includes.latest-comment')
 												 @include('admin.artist_permit.includes.comment')
-												 <table class="table table-striped table-light--warning" id="requirement-table">
-														<thead class="thead-dark">
+												 <table class="table table-striped border borderless table-hover" id="requirement-table">
+													<thead>
 														<tr>
-															 <th>Requirement Name</th>
-															 <th>Issued Date</th>
-															 <th>Expired Date</th>
-															 <th>Action</th>
+															 <th>REQUIREMENT NAME</th>
+															 {{-- <th>FILES</th> --}}
+															 <th>ISSUED DATE</th>
+															 <th>EXPIRED DATE</th>
+															 <th>ACTION</th>
 														</tr>
-														</thead>
+													</thead>
 												 </table>
 											</div>
 									 </section>
@@ -354,35 +358,110 @@
 								<div class="kt-wizard-v3__form">
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
+												@include('admin.event.includes.latest-comment')
 												  @include('admin.artist_permit.includes.comment')
-												 <section class="kt-form kt-form--label-right1">
-														<div class="form-group form-group-sm row">
-															 <label class="col-lg-2 col-form-label">Action <span class="text-danger">*</span></label>
-															 <div class="col-lg-5">
-																	<select name="status" id="" class="form-control custom-select" required>
-																		 <option selected disabled>Select Action</option>
-																		 <option value="approved-unpaid">Approve Application</option>
-																		 <option value="need approval">Need Approval</option>
-																		 <option value="need modification">Send back for Amendments</option>
-																		 <option value="rejected">Reject Application</option>
-																	</select>
-															 </div>
-														</div>
-														<div class="form-group row kt-hide">
-															 <label class="col-lg-2 col-form-label">Approvers <span class="text-danger">*</span></label>
-															 <div class="col-lg-5">
-																	<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
-																		 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
-																		 ->count() > 0)
-																				@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
-																		 ->get() as $role)
-																					 	<option value="{{ $role->role_id }}">{{ ucwords($role->NameEn) }}</option>
-																				@endforeach
-																		 @endif
-															 </select>
-															 </div>
-														</div>
-												 </section>
+												   <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-action">
+												  	<div class="card">
+												  		<div class="card-header" id="heading-action">
+												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-action" aria-expanded="true" aria-controls="collapse-action">
+												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Event action</h6>
+												  			</div>
+												  		 </div>
+												  		 <div id="collapse-action" class="collapse show" aria-labelledby="heading-action" data-parent="#accordion-action">
+												  			<div class="card-body">
+												  				<section class="row">
+												  					<div class="col-md-4">
+												  						<div class="form-group form-group-sm">
+												  							<label for="" class="kt-font-dark">Action <span class="text-danger">*</span></label>
+												  							<select name="status" id="" class="form-control custom-select" required>
+												  								 <option selected disabled>Select Action</option>
+												  								 <option value="approved-unpaid">Approve Application</option>
+												  								 <option value="need approval">Need Approval</option>
+												  								 <option value="need modification">Send back for Amendments</option>
+												  								 <option value="rejected">Reject Application</option>
+												  							</select>												  	
+												  						</div>
+												  						<div class="form-group form-group-sm kt-hide">
+												  							<label for="" class="kt-font-dark">Approvers <span class="text-danger">*</span></label>
+												  							<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
+												  										 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
+												  										 ->count() > 0)
+												  												@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
+												  										 ->get() as $role)
+												  													 	<option value="{{ $role->role_id }}">{{ ucwords($role->NameEn) }}</option>
+												  												@endforeach
+												  										 @endif
+												  							 </select>
+												  						</div>
+												  					</div>
+												  				</section>
+												  			</div>
+												  		</div>
+												  	</div>
+												  </section>
+												   <section class="accordion kt-hide kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-requirements">
+												  	<div class="card">
+												  		<div class="card-header" id="heading-requirements">
+												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
+												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">Additional Requirements</span>
+												  					<small class="text-muted">Select Addtional Requirements from the list or add new requirement.</small>
+												  				</h6>
+												  			</div>
+												  		 </div>
+												  		 <div id="collapse-requirements" class="collapse show" aria-labelledby="heading-requirements" data-parent="#accordion-requirements">
+												  			<div class="card-body">
+												  				<table class="table table-borderless table-hover table-striped  border" id="additional-requirement">
+												  					<thead>
+												  						<tr>
+												  							<th></th>
+												  							<th>REQUIREMENT NAME</th>
+												  						</tr>
+												  					</thead>
+												  				</table>
+												  			</div>
+												  		</div>
+												  	</div>
+												  </section>
+												   @if ($event->approve()->exists())
+												   <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-20" id="accordion-approver">
+												       <div class="card">
+												           <div class="card-header" id="headingOne-approver">
+												               <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapse-approver"
+												                   aria-expanded="true" aria-controls="collapse-approver">
+												                   <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Checked & Approval History</h6>
+												               </div>
+												           </div>
+												           <div id="collapse-approver" class="collapse show" aria-labelledby="headingOne-approver" data-parent="#accordion-approver">
+												               <div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
+												                   <table class="table table-hover table-borderless border table-striped">
+												                       <thead>
+												                           <tr>
+												                               <th>CHECKED BY</th>
+												                               <th>REMARKS</th>
+												                               <th>USER GROUP</th>
+												                               <th>CHECKED DATE</th>
+												                               <th>ACTION TAKEN</th>
+												                           </tr>
+												                       </thead>
+												                       <tbody>
+												                           @if ($event->approve()->exists())
+												                           @foreach ($event->approve()->orderBy('updated_at')->get() as $approve)
+												                               <tr>
+												                                   <td>{{ ucwords($approve->user->NameEn) }}</td>
+												                                   <td>{{ ($approve->comment->comment) }}</td>
+												                                   <td>{{ ucwords($approve->role->NameEn) }}</td>
+												                                   <td>{{ $approve->checked_at ? $approve->checked_at->format('d-M-Y') : null }}</td>
+												                                   <td>{{ $approve->status }}</td>
+												                               </tr>
+												                           @endforeach
+												                           @endif
+												                       </tbody>
+												                   </table>
+												               </div>
+												           </div>
+												       </div>  
+												   </div>
+												   @endif
 											</div>
 									 </section>
 								</div>
@@ -409,6 +488,7 @@
 @section('script')
 	 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
 	 <script>
+	 	var add_requirements_table = {};
 
 	 	// window.addEventListener('beforeunload', (event) => {
 	 	  // Cancel the event as stated by the standard.
@@ -491,7 +571,7 @@
        });
 
        calendar.render();
-       updateLock();
+       // updateLock();
        eventDetails();
        wizard();
        requirementTable();
@@ -510,12 +590,77 @@
        
        approver.select2({
 		 minimumResultsForSearch: 'Infinity',
+		 maximumSelectionLength: 2,
 		 placeholder: 'Select Approver',
 		 autoWidth: true,
 		 width: '100%',
 		 allowClear: true,
 		 tags: true
        });
+
+       $('select#select-additional').select2({
+       	minimumResultsForSearch: 'Infinity',
+       	// maximumSelectionLength: 2,
+       	// placeholder: '',
+       	autoWidth: true,
+       	width: '100%',
+       	allowClear: true,
+       	tags: true
+       });
+     }
+
+     function additionalRequirementTable(){
+     	add_requirements_table = $('table#additional-requirement').DataTable({
+     		  dom: '<"toolbar-add pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
+     		  'pageLength': 20,
+     		ajax:{
+     			url: '{{ route('admin.event.additionalrequirementdatatable', $event->event_id) }}'
+     		},
+     		serverSide: false,
+     		columnDefs:[
+     		{targets: 0, checkboxes: { selectRow: true }, sortable: false, className: 'no-wrap'}
+     		],
+     		language:{
+     			'sEmptyTable': 'Requirement list is empty. <span class="kt-font-bold kt-font-transform-u kt-font-dark">Please add new requirements</span>'
+     		},
+     		select:{ style: 'multi' },
+     		columns: [
+     			{ data: 'requirement_id'},
+     			{ data: 'name'},
+     		]
+     	});
+
+     	var counter = 0;
+
+     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">Add New Requirement</button>');
+     	 $('#btn-add').on( 'click', function () {
+     	 	var html = '<section class="row">';
+     	 		html += '	<div class="col-sm-6">'
+     	 		html += '		<div class="form-group form-group-xs">';
+     	 		html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="write new requirement">';
+     	 		html += '		</div>';
+     	 		html += '	</div>';
+     	 		html += '	<div class="col-sm-6">';
+     	 		html + '		<div class="form-group form-group-xs">';
+     	 		html += '			<div class="kt-checkbox--inline kt-forn-dark">';
+     	 		html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> Issued date & Expired date required?<span></span></label>';
+     	 		html += '			</div>';
+     	 		html += '		</div>';
+     	 		html += '	</div>';
+     	 		html += '</section>';
+     	 	var data = {requirement_id: '', name: html };
+     	 	counter++;
+     	 	add_requirements_table.row.add(data).draw();
+     	    });
+     	 
+     	 
+     	$('form#kt_form').submit(function(e){
+     		var form = this;
+     		   var rows_selected = add_requirements_table.column(0).checkboxes.selected();
+     		   rows_selected.each(function(v){
+     		   	  $(form).append( $('<input>').attr('type', 'hidden').attr('name', 'requirements_id[]').val(v) );
+     		   });
+     	});
      }
      
      function requirementTable(){
@@ -525,10 +670,11 @@
 					  data: function(d){},
 				 },
 				 columnDefs:[
-					 {targets: [3], className: 'no-wrap'}
+					 {targets: [1,2, 3], className: 'no-wrap'}
 				 ],
 				 columns:[
 					 {data: 'name'},
+					 // {data: 'files'},
 					 {data: 'issued_date'},
 					 {data: 'expired_date'},
            {
@@ -555,7 +701,7 @@
 					$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 				}
 			});
-			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
+			 var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
 			 wizard.on("beforeNext", function(wizardObj) {
 			 	if(wizardObj.currentStep == 1){
  						$('input[type=checkbox][data-step=step-1]').each(function () {
@@ -617,6 +763,15 @@
      		}
      		else{
      			$('#select-approver').attr('disabled', true);
+     		}
+     		if($(this).val() == 'need modification'){
+     			$('#accordion-requirements').removeClass('kt-hide');
+     			additionalRequirementTable();
+     		}
+     		else{
+     			$('#accordion-requirements').addClass('kt-hide');
+     			// console.log(add_requirements_table.column(0).checkboxes.deselectAll());
+     			// add_requirements_table.column(0).checkboxes.deselectAll();
      		}
      	});
 
