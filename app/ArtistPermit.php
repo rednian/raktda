@@ -100,7 +100,7 @@ class ArtistPermit extends Model implements Auditable
 
     public function Nationality()
     {
-        return $this->belongsTo(Countries::class, 'country_id', 'country_id');
+        return $this->belongsTo(Country::class, 'country_id', 'country_id');
     }
 
     public function getFullNameAttribute()

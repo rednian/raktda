@@ -60,12 +60,12 @@
             <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                 <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Profession</th>
-                        <th>Mobile</th>
+                        <th>@lang('words.first_name')</th>
+                        <th>@lang('words.last_name')</th>
+                        <th>@lang('words.profession')</th>
+                        <th>@lang('words.mobile_number')</th>
                         {{-- <th>Email</th> --}}
-                        <th>Status</th>
+                        <th>@lang('words.status')</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>

@@ -55,9 +55,9 @@
                             <th>Name</th>
                             <th>From </th>
                             <th>To </th>
-                            <th>Venue</th>
+                            <th>@lang('words.venue')</th>
                             <th>Type</th>
-                            <th>status</th>
+                            <th>@lang('words.status')</th>
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -73,7 +73,7 @@
                             <th>Name</th>
                             <th>From </th>
                             <th>To </th>
-                            <th>Venue</th>
+                            <th>@lang('words.venue')</th>
                             <th>Type</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -133,8 +133,8 @@
                         <tr>
                             <th>From </th>
                             <th>To </th>
-                            <th>Venue</th>
-                            <th>Name</th>
+                            <th>@lang('words.venue')</th>
+                            <th>@lang('words.event_name')</th>
                             <th>Applied On</th>
                             <th>Actions</th>
                             <th>Details</th>

@@ -44,12 +44,12 @@
             <table class="table table-striped table-borderless  " id="applied-artists-table">
                 <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Profession</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Status</th>
+                        <th>@lang('words.first_name')</th>
+                        <th>@lang('words.last_name')</th>
+                        <th>@lang('words.profession')</th>
+                        <th>@lang('words.mobile_number')</th>
+                        {{-- <th>@lang('words.email')</th> --}}
+                        <th>@lang('words.status')</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -61,7 +61,7 @@
                         <td>{{ucwords($atd->lastname_en)}}</td>
                         <td>{{ucwords($atd->profession['name_en'])}}</td>
                         <td>{{$atd->mobile_number}}</td>
-                        <td>{{$atd->email}}</td>
+                        {{-- <td>{{$atd->email}}</td> --}}
                         <td>
                             {{ucwords($atd->artist_permit_status)}}
                         </td>

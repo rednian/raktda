@@ -2,10 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Auth;
 use Closure;
 
-class CompanyMiddleware
+class SetLanguage
 {
     /**
      * Handle an incoming request.
@@ -16,8 +15,8 @@ class CompanyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user() && $request->user()->type != 4) {
-            return $next($request);
+        if (\Auth::user()->LanguageId != 1) {
+            \App::setLocale('ar');
         }
         return $next($request);
     }

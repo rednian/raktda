@@ -1,53 +1,57 @@
 <?php
-Route::get('/', function () { return redirect()->route('login'); })->name('default');
+Route::get('/', function () {
+    return redirect()->route('login');
+})->name('default');
 
-Route::get('/clear-cache', function() {
+Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
 });
 
-Route::get('/shutdown', function(){
+Route::get('/shutdown', function () {
     return Artisan::call('down');
 });
 
-Route::get('/live', function(){
+Route::get('/live', function () {
     return Artisan::call('up');
 });
 
 Auth::routes(['register' => false]);
 Route::post('/update_language', 'Admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
 
-Route::middleware(['admin', 'auth'])->group(function(){
+Route::middleware(['admin', 'auth'])->group(function () {
 
-    Route::get('/dashboard', function(){
+    Route::get('/dashboard', function () {
         return redirect()->route('admin.event.index');
     })->name('admin.dashboard');
 
-    //---------------------------------------------------------------------------------------------------------------
-	// Event Permit
-	//----------------------------------------------------------------------------------------------------------------
-	Route::get('/event','Admin\EventController@index')->name('admin.event.index');
-	Route::get('/event/datatable','Admin\EventController@dataTable')->name('admin.event.datatable');
-    Route::get('/event/calendar','Admin\EventController@calendar')->name('admin.event.calendar');
-	Route::get('/event/{event}/application','Admin\EventController@application')->name('admin.event.application');
-	Route::get('/event/{event}/application/datatable','Admin\EventController@applicationDatatable')->name('admin.event.applicationDatatable');
-	Route::get('/event/{event}','Admin\EventController@show')->name('admin.event.show');
-	Route::get('/event/{event}/lock','Admin\EventController@updateLock')->name('admin.event.lock');
-	Route::post('/event/{event}','Admin\EventController@submit')->name('admin.event.submit');
-    Route::get('/event/{event}/download','Admin\EventController@download')->name('admin.event.download');
-    Route::get('/event/{event}/addition-requirement-datatable','Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
 
-  //---------------------------------------------------------------------------------------------------------------
-  // Artist
-  //---------------------------------------------------------------------------------------------------------------
-	Route::get('/permit/artist', 'Admin\ArtistController@datatable')->name('admin.artist.datatable');
-	Route::get('/permit/artist/{artist}', 'Admin\ArtistController@show')->name('admin.artist.show');
-	Route::post('/permit/artist/{artist}/updatestatus', 'Admin\ArtistController@updatestatus')->name('admin.artist.update_status');
-	Route::get('/permit/artist/{artist}/permithistory', 'Admin\ArtistController@permithistory')->name('admin.artist.permit.history');
-	Route::get('/permit/artist/{artist}/status_history', 'Admin\ArtistController@statusHistory')->name('admin.artist.status_history');
-//
+
+    //---------------------------------------------------------------------------------------------------------------
+    // Event Permit
+    //----------------------------------------------------------------------------------------------------------------
+    Route::get('/event', 'Admin\EventController@index')->name('admin.event.index');
+    Route::get('/event/datatable', 'Admin\EventController@dataTable')->name('admin.event.datatable');
+    Route::get('/event/calendar', 'Admin\EventController@calendar')->name('admin.event.calendar');
+    Route::get('/event/{event}/application', 'Admin\EventController@application')->name('admin.event.application');
+    Route::get('/event/{event}/application/datatable', 'Admin\EventController@applicationDatatable')->name('admin.event.applicationDatatable');
+    Route::get('/event/{event}', 'Admin\EventController@show')->name('admin.event.show');
+    Route::get('/event/{event}/lock', 'Admin\EventController@updateLock')->name('admin.event.lock');
+    Route::post('/event/{event}', 'Admin\EventController@submit')->name('admin.event.submit');
+    Route::get('/event/{event}/download', 'Admin\EventController@download')->name('admin.event.download');
+    Route::get('/event/{event}/addition-requirement-datatable', 'Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
+
+    //---------------------------------------------------------------------------------------------------------------
+    // Artist
+    //---------------------------------------------------------------------------------------------------------------
+    Route::get('/permit/artist', 'Admin\ArtistController@datatable')->name('admin.artist.datatable');
+    Route::get('/permit/artist/{artist}', 'Admin\ArtistController@show')->name('admin.artist.show');
+    Route::post('/permit/artist/{artist}/updatestatus', 'Admin\ArtistController@updatestatus')->name('admin.artist.update_status');
+    Route::get('/permit/artist/{artist}/permithistory', 'Admin\ArtistController@permithistory')->name('admin.artist.permit.history');
+    Route::get('/permit/artist/{artist}/status_history', 'Admin\ArtistController@statusHistory')->name('admin.artist.status_history');
+    //
     Route::get('/permit/artist_permit/{artistpermit}/history', 'Admin\ArtistController@history')->name('admin.artist_permit.history');
-//admin.artist_block
+    //admin.artist_block
 
     Route::post('/artist_block', 'Admin\ArtistController@artist_block')->name('admin.artist_block');
     Route::post('/artist_unblock', 'Admin\ArtistController@artist_unblock')->name('admin.artist_unblock');
@@ -56,13 +60,13 @@ Route::middleware(['admin', 'auth'])->group(function(){
 
 
     //---------------------------------------------------------------------------------------------------------------
-// Artist Permit
-//---------------------------------------------------------------------------------------------------------------
+    // Artist Permit
+    //---------------------------------------------------------------------------------------------------------------
     Route::get('/artist_permit/{permit}/history', 'Admin\ArtistPermitController@permitHistory')
         ->name('admin.artist_permit.history');
 
-    Route::get('/artist_permit/{permit}/application/{artistpermit}/comment/datatable','Admin\ArtistPermitController@applicationCommentDataTable')
-            ->name('admin.artist_permit.comment.datatable');
+    Route::get('/artist_permit/{permit}/application/{artistpermit}/comment/datatable', 'Admin\ArtistPermitController@applicationCommentDataTable')
+        ->name('admin.artist_permit.comment.datatable');
 
     Route::get('/artist_permit/{permit}/download', 'Admin\ArtistPermitController@download')->name('admin.artist_permit.download');
 
@@ -78,7 +82,7 @@ Route::middleware(['admin', 'auth'])->group(function(){
     Route::get('/arist_permit/{permit}/checkactivepermit/{artist}', 'Admin\ArtistPermitController@checkActivePermit')
         ->name('admin.artist_permit.checkactivepermit');
 
-    Route::post('/artist_permit/{permit}/application','Admin\ArtistPermitController@submitApplication')
+    Route::post('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@submitApplication')
         ->name('admin.artist_permit.submit');
 
     Route::post('/artist_permit/{permit}/application/{artistpermit}/checklist', 'Admin\ArtistPermitController@artistChecklist')
@@ -104,7 +108,7 @@ Route::middleware(['admin', 'auth'])->group(function(){
     // Settings
     //---------------------------------------------------------------------------------------------------------------
 
-//	Artist permit
+    //	Artist permit
     Route::get('/settings', 'Admin\SettingController@index')->name('admin.setting.index');
     Route::get('/settings/profession/datatable', 'Admin\ProfessionController@datatable')->name('admin.setting.profession.datatable');
 
@@ -112,11 +116,11 @@ Route::middleware(['admin', 'auth'])->group(function(){
     Route::get('/settings/event/datatable', 'Admin\EventTypeController@datatable')->name('admin.setting.event.datatable');
     Route::get('/settings/event/create', 'Admin\EventTypeController@create')->name('admin.setting.event.create');
 
-	 //Event Requirement
-	 Route::get('/settings/event/requirement/datatable', 'Admin\EventRequirementController@datatable')->name('admin.setting.event.requirement.datatable');
-	 Route::get('/settings/event/requirement/index', 'Admin\RequirementController@index')->name('admin.setting.requirement.index');
-     Route::post('/settings/event/requirement/store', 'Admin\RequirementController@store')->name('admin.setting.requirement.store');
-     Route::get('/settings/event/requirement/isexist', 'Admin\RequirementController@isexist')->name('admin.setting.requirement.isexist');
+    //Event Requirement
+    Route::get('/settings/event/requirement/datatable', 'Admin\EventRequirementController@datatable')->name('admin.setting.event.requirement.datatable');
+    Route::get('/settings/event/requirement/index', 'Admin\RequirementController@index')->name('admin.setting.requirement.index');
+    Route::post('/settings/event/requirement/store', 'Admin\RequirementController@store')->name('admin.setting.requirement.store');
+    Route::get('/settings/event/requirement/isexist', 'Admin\RequirementController@isexist')->name('admin.setting.requirement.isexist');
 
 
     //Permit Duration
@@ -139,5 +143,4 @@ Route::middleware(['admin', 'auth'])->group(function(){
     Route::get('/settings/requirement/{requirement}/update_status', 'Admin\RequirementController@update_status')->name('requirement.update_status');
     Route::get('/settings/requirement/datatable', 'Admin\RequirementController@datatable')->name('requirement.datatable');
     Route::resource('/settings/requirement', 'Admin\RequirementController');
-
 });

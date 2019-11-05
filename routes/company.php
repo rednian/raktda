@@ -1,14 +1,14 @@
 <?php
 
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'set_lang']], function () {
     Route::get('/dashboard', function () {
         return redirect()->route('artist.index');
     })->name('company.dashboard');
 
-    Route::get('{company_name}/dashboard', function () {
-        return redirect()->route('event.index');
-    })->name('company.dashboard');
+    // Route::get('{company_name}/dashboard', function () {
+    //     return redirect()->route('artist.index');
+    // })->name('company.dashboard');
 
     Route::resource('artist', 'Company\ArtistController');
     Route::get('add_new_permit/{id?}', 'Company\ArtistController@create')->name('company.add_new_permit');
@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('happiness_center/{id}',  'Company\ArtistController@happiness_center')->name('company.happiness_center');
     Route::post('submit_happiness',  'Company\ArtistController@submit_happiness')->name('artist.submit_happiness');
     Route::get('artist/get_status/{id}', 'Company\ArtistController@get_status')->name('company.artist.get_status');
+    // Route::get('artist/details/{id}/{from}', 'Company\ArtistController@get_artist_details')->name('artist.details');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');

@@ -53,9 +53,9 @@
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
                 <span>To Date:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                <span>Work Location:</span>&emsp;
+                <span>@lang('words.location'):</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
-                <span>Reference No:</span>&emsp;
+                <span>@lang('words.reference_no'):</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
             </div>
         </div>
@@ -64,12 +64,12 @@
             <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                 <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Profession</th>
-                        <th>Mobile</th>
+                        <th>@lang('words.first_name')</th>
+                        <th>@lang('words.last_name')</th>
+                        <th>@lang('words.profession')</th>
+                        <th>@lang('words.mobile_number')</th>
                         {{-- <th>Email</th> --}}
-                        <th>Status</th>
+                        <th>@lang('words.status')</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>

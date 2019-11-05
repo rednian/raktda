@@ -51,7 +51,7 @@
                     <table class="table table-borderless border table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Artist Name</th>
+                                <th>@lang('words.artist_name')</th>
                                 <th>Artist Permit Type</th>
                                 <th class="text-right">Fee (AED)</th>
                                 <th class="text-right">VAT(5%)</th>

@@ -5,13 +5,12 @@
     <!-- begin:: Aside -->
     <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
         <div class="kt-aside__brand-logo center-block">
-            <a href="{{ route('admin.dashboard') }}">
+            <a href="{{ route('company.dashboard') }}">
                 @if (Auth::user()->LanguageId == 1)
                 <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-en.svg') }}" />
                 @else
                 <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-ar.svg') }}" />
                 @endif
-
             </a>
         </div>
     </div>
@@ -25,27 +24,27 @@
             <ul class="kt-menu__nav ">
                 <li class="kt-menu__item kt-menu__item">
                     <a href="#" class="kt-menu__link">
-                        <span class="kt-menu__link-text">DASHBOARD</span>
+                        <span class="kt-menu__link-text">@lang('words.dashboard')</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">BUSINESS NAME</span>
+                        <span class="kt-menu__link-text">@lang('words.business_name')</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">BUSINESS LICENSE</span>
+                        <span class="kt-menu__link-text">@lang('words.business_license')</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">CLASSIFICATION</span>
+                        <span class="kt-menu__link-text">@lang('words.classification')</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">INSPECTION</span>
+                        <span class="kt-menu__link-text">@lang('words.inspection')</span>
                     </a>
                 </li>
 
@@ -53,29 +52,29 @@
                     class="kt-menu__item {{ (\Request::is('company/artist/*') || \Request::is('company/artist'))  ? 'kt-menu__item--active' : ''}}">
 
                     <a href="{{url('company/artist')}}" class="kt-menu__link">
-                        <span class="kt-menu__link-text">ARTIST PERMIT</span>
+                        <span class="kt-menu__link-text">@lang('words.artist_permit')</span>
                     </a>
                 </li>
                 <li
                     class="kt-menu__item {{ (\Request::is('company/event/*') || \Request::is('company/event')) ? 'kt-menu__item--active' : ''}}">
                     <a href="{{url('company/event')}}" class="kt-menu__link ">
 
-                        <span class="kt-menu__link-text">EVENT PERMIT</span>
+                        <span class="kt-menu__link-text">@lang('words.event_permit')</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">REPORTS</span>
+                        <span class="kt-menu__link-text">@lang('words.reports')</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">USER MANAGEMENT</span>
+                        <span class="kt-menu__link-text">@lang('words.user_management')</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">SETTINGS</span>
+                        <span class="kt-menu__link-text">@lang('words.system_settings')</span>
                     </a>
                 </li>
             </ul>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Company;
 
 use Illuminate\Http\Request;
 use App\EventType;
-use App\Countries;
+use App\Country;
 use App\Emirates;
 use App\Areas;
 use App\Event;

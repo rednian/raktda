@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Storage;
-use App\Countries;
+use App\Country;
 use Carbon\Carbon;
 use App\Artist;
 use App\ArtistPermitDocument;
@@ -138,7 +138,7 @@ class ArtistController extends Controller
     function preLoadData()
     {
         $data['requirements'] = Requirement::where('requirement_type', 'artist')->where('status', 1)->get();
-        $data['countries'] = Countries::orderBy('nationality_en', 'asc')->get();
+        $data['countries'] = Country::orderBy('nationality_en', 'asc')->get();
         $data['visatypes'] = VisaType::orderBy('visa_type_en', 'asc')->get();
         $data['languages'] = Language::orderBy('name_en', 'asc')->get();
         $data['religions'] = Religion::orderBy('name_en', 'asc')->get();

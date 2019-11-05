@@ -6,7 +6,6 @@
 
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
-
     <div class="kt-portlet__body kt-padding-t-5">
         <section class="row">
             <div class="col-md-12">
@@ -14,20 +13,20 @@
                     role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#"
-                            data-target="#applied">{{__('words.applied_artist_permit')}}</a>
+                            data-target="#applied">@lang('words.applied_artist_permit')</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#valid">Valid Artist Permits</a>
+                        <a class="nav-link" data-toggle="tab" href="#valid">@lang('words.valid_artist_permit')</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#draft">Artist Permit Drafts</a>
+                        <a class="nav-link" data-toggle="tab" href="#draft">@lang('words.artist_permit_drafts')</a>
                     </li>
                     <span class="nav-item"
                         style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ url('company/add_new_permit')}}">
                             <button class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
                                 id="nav--new-permit-btn">
-                                <i class="la la-plus"></i> Add New
+                                <i class="la la-plus"></i>@lang('words.add_new')
                             </button>
                             <button class="btn btn-label-yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                                 <i class="la la-plus"></i>
@@ -44,12 +43,12 @@
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                     <thead>
                         <tr>
-                            <th>Refer No.</th>
+                            <th>@lang('words.reference_no')</th>
                             <th>From Date</th>
                             <th>To Date</th>
-                            <th>Location</th>
-                            <th>No.of Artists</th>
-                            <th>Status</th>
+                            <th>@lang('words.location')</th>
+                            <th>@lang('words.noofartist')</th>
+                            <th>@lang('words.status')</th>
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -61,12 +60,12 @@
                 <table class="table table-striped table-borderless table-hover border" id="existing-artists-table">
                     <thead>
                         <tr>
-                            <th>Refer No.</th>
-                            <th>Permit No.</th>
+                            <th>@lang('words.reference_no')</th>
+                            <th>@lang('words.permit_number')</th>
                             <th>From Date</th>
                             <th>To Date</th>
-                            <th>Location</th>
-                            <th>Artists</th>
+                            <th>@lang('words.location')</th>
+                            <th>@lang('words.noofartist')</th>
                             <th>Actions</th>
                             <th>Details</th>
                             <th></th>
@@ -82,7 +81,7 @@
                         <tr>
                             <th>From Date</th>
                             <th>To Date</th>
-                            <th>Location</th>
+                            <th>@lang('words.location')</th>
                             <th>Added On</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -113,7 +112,7 @@
                     <div class="modal-body">
                         <form action="{{route('company.cancel_permit')}}" id="cancel_permit_form" method="post"
                             novalidate>
-                            {{csrf_field()}}
+                            @csrf
                             <label>Are you sure to Cancel this Permit of Ref No. <span class="text--maroon"
                                     id="cancel_permit_number"></span>
                                 ?</label>

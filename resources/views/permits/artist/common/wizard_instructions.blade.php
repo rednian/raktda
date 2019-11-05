@@ -1,6 +1,9 @@
 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
     <div class="kt-form__section kt-form__section--first">
         <div class="kt-wizard-v3__form">
+            @php
+            $language_id = Auth::user()->languageId;
+            @endphp
             <!--begin::Accordion-->
             <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
 
@@ -22,7 +25,7 @@
                                 </tr>
                                 @foreach($requirements as $req)
                                 <tr>
-                                    <td>{{$req->requirement_name}}</td>
+                                    <td>{{$language_id == 1 ? $req->requirement_name : $req->requirement_name_ar}}</td>
                                     <td>{{$req->requirement_description}}</td>
                                 </tr>
                                 @endforeach
@@ -48,7 +51,7 @@
                                 </tr>
                                 @foreach($profession as $pt)
                                 <tr>
-                                    <td>{{$pt->name_en}}</td>
+                                    <td>{{$language_id == 1 ? $pt->name_en : $pt->name_ar}}</td>
                                     <td class="text-right">{{number_format($pt->amount,2)}}</td>
                                 </tr>
                                 @endforeach

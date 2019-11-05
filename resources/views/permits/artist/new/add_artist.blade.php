@@ -3,9 +3,10 @@
 @section('title', 'Add Artist - Smart Government Rak')
 
 @section('content')
-
 <link href="{{ asset('/css/uploadfile.css') }}" rel="stylesheet">
-
+@php
+$language_id = Auth::user()->LanguageId;
+@endphp
 {{-- {{dd(session()->all())}} --}}
 <!-- begin:: Content -->
 {{-- <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"> --}}
@@ -37,7 +38,7 @@
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> Upload Documents
+                                    <span>03</span> @lang('words.upload_documents')
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -56,95 +57,8 @@
                 {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
                 <div class="kt-form w-100 px-5" id="kt_form">
                     <!--begin: Form Wizard Step 1-->
-                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
-                        <div class="kt-form__section kt-form__section--first">
-                            <div class="kt-wizard-v3__form">
-                                <!--begin::Accordion-->
-                                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
 
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title" data-toggle="collapse" data-target="#collapseTwo6"
-                                                aria-expanded="false" aria-controls="collapseTwo6">
-                                                <h6 class="kt-font-transform-u"> Documents Required</h6>
-                                            </div>
-                                        </div>
-                                        <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-
-                                                <table class="table table-borderless">
-                                                    <tr>
-                                                        <th>Document</th>
-                                                        <th>Description</th>
-                                                    </tr>
-                                                    @foreach($requirements as $req)
-                                                    <tr>
-                                                        <td>{{$req->requirement_name}}</td>
-                                                        <td>{{$req->requirement_description}}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </table>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingThree6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseThree6" aria-expanded="false"
-                                                aria-controls="collapseThree6">
-                                                <h6 class="kt-font-transform-u"> Permit Fees Structure</h6>
-                                            </div>
-                                        </div>
-                                        <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                <table class="table table-borderless">
-                                                    <tr>
-                                                        <th>Profession</th>
-                                                        <th class="text-right">Fee (AED)</th>
-                                                    </tr>
-                                                    @foreach($profession as $pt)
-                                                    <tr>
-                                                        <td>{{$pt->name_en}}</td>
-                                                        <td class="text-right">{{number_format($pt->amount,2)}}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </table>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingFour6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseFour6" aria-expanded="false"
-                                                aria-controls="collapseFour6">
-                                                <h6 class="kt-font-transform-u">Rules and Conditions</h6>
-                                            </div>
-                                        </div>
-                                        <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                        <input type="checkbox" id="agree" name="agree"> I Read and understand all
-                                        service rules, And agree to continue submitting it.
-                                        <span></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('permits.artist.common.wizard_instructions')
 
                     @php
                     $user_id = Auth::user()->user_id;
@@ -169,8 +83,8 @@
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u">Personal
-                                                        information</h6>
+                                                    <h6 class="kt-font-transform-u">@lang('words.personal_information')
+                                                    </h6>
                                                 </div>
                                             </div>
                                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -183,35 +97,34 @@
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Person
-                                                                        Code</label>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.person_code')</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                                     <div class="col-lg-5">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="code" id="code"
-                                                                                placeholder="Person Code">
+                                                                                placeholder="@lang('words.person_code')">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-3">
                                                                         <span id="changeArtistLabel"
                                                                             class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                                            onclick="removeSelectedArtist()">Change
+                                                                            onclick="removeSelectedArtist()">@lang('words.change')
                                                                         </span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">First
-                                                                        Name <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.first_name')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="fname_en" id="fname_en"
-                                                                                placeholder="First Name">
+                                                                                placeholder="@lang('words.first_name')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -220,21 +133,21 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Last
-                                                                        Name <span class="text-danger">*</span></label>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.last_name')<span
+                                                                            class="text-danger">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="lname_en" id="lname_en"
-                                                                                placeholder="Last Name">
+                                                                                placeholder="@lang('words.last_name')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="nationality"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Nationality
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.nationality')
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -243,10 +156,11 @@
                                                                                 class="form-control form-control-sm "
                                                                                 name="nationality" id="nationality">
                                                                                 {{--   - class for search in select  --}}
-                                                                                <option value="">Select</option>
+                                                                                <option value="">@lang('words.select')
+                                                                                </option>
                                                                                 @foreach ($countries as $ct)
                                                                                 <option value="{{$ct->country_id}}">
-                                                                                    {{$ct->nationality_en}}
+                                                                                    {{$language_id == 1 ? $ct->nationality_en : $ct->nationality_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -256,8 +170,8 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Birth
-                                                                        Date <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.birth_date')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -273,23 +187,23 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Passport
-                                                                        No<span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.passport_number')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="passport" id="passport"
-                                                                                placeholder="Passport Number">
+                                                                                placeholder="@lang('words.passport_number')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="pp_expiry"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Passport
-                                                                        Expiry <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.passport_expiry')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -304,14 +218,14 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="uid_number"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">UID
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.uid_no')
                                                                         <span class="text-danger">*</span> </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="uid_number" id="uid_number"
-                                                                                placeholder="UID Number">
+                                                                                placeholder="@lang('words.uid_no')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -319,8 +233,8 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">UID
-                                                                        Expire Date <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.uid_expiry')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -333,27 +247,20 @@
                                                                     </div>
                                                                 </div>
 
-
-
-
-
-
-
-
-
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="religion"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Religion
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.religion')
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
                                                                                 class=" form-control form-control-sm "
                                                                                 name="religion" id="religion">
-                                                                                <option value="">Select</option>
+                                                                                <option value="">@lang('words.select')
+                                                                                </option>
                                                                                 @foreach ($religions as $reli)
                                                                                 <option value={{$reli->id}}>
-                                                                                    {{$reli->name_en}}
+                                                                                    {{$language_id == 1 ? $reli->name_en : $reli->name_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -372,7 +279,7 @@
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
                                                                         class="col-4 col-form-label kt-font-bold text-right">
-                                                                        Profession <span
+                                                                        @lang('words.profession') <span
                                                                             class="text-danger">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -380,10 +287,12 @@
                                                                                 class="form-control form-control-sm "
                                                                                 name="profession" id="profession"
                                                                                 placeholder="Profession">
-                                                                                <option value="">Select</option>
+                                                                                <option value="">@lang('words.select')
+                                                                                </option>
                                                                                 @foreach ($profession as $pt)
                                                                                 <option value="{{$pt->profession_id}}">
-                                                                                    {{ucwords($pt->name_en)}}</option>
+                                                                                    {{ucwords($language_id == 1 ? $pt->name_en : $pt->name_ar)}}
+                                                                                </option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
@@ -394,22 +303,22 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">First
-                                                                        Name - Ar <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.first_name_ar')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 dir="rtl" name="fname_ar" id="fname_ar"
-                                                                                placeholder="First Name in Arabic">
+                                                                                placeholder="@lang('words.first_name_ar')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="lname_ar"
-                                                                        class="col-4 col-form-label kt-font-bold text-right ">Last
-                                                                        Name - Ar <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right ">@lang('words.last_name_ar')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -418,13 +327,13 @@
                                                                                 dir="rtl" name="lname_ar" id="lname_ar"
                                                                                 class="form-control form-control-sm text-right "
                                                                                 name="lname_ar" id="lname_ar"
-                                                                                placeholder="Last Name in Arabic">
+                                                                                placeholder="@lang('words.last_name_ar')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="gender"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Gender
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.gender')
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -432,9 +341,14 @@
                                                                             <select
                                                                                 class=" form-control form-control-sm "
                                                                                 name="gender" id="gender">
-                                                                                <option value="">Select</option>
-                                                                                <option value="1">Male</option>
-                                                                                <option value="2">Female</option>
+                                                                                <option value="">@lang('words.select')
+                                                                                </option>
+                                                                                <option value="1">
+                                                                                    {{$language_id == 1 ? 'Male' : 'الذكر'}}
+                                                                                </option>
+                                                                                <option value="2">
+                                                                                    {{ $language_id == 1 ? 'Female' : 'أنثى ' }}
+                                                                                </option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -443,18 +357,19 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_type"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
-                                                                        Type <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.visa_type')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="visa_type" id="visa_type">
-                                                                                <option value="">Select</option>
+                                                                                <option value="">@lang('words.select')
+                                                                                </option>
                                                                                 @foreach ($visatypes as $vt)
-                                                                                <option value={{$vt->id}}>
-                                                                                    {{$vt->visa_type_en}}
+                                                                                <option value="{{$vt->id}}">
+                                                                                    {{ $language_id == 1 ?  $vt->visa_type_en : $vt->visa_type_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -465,26 +380,24 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
-                                                                        Number <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.visa_number')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="visa_number" id="visa_number"
-                                                                                placeholder="Visa Number">
+                                                                                placeholder="@lang('words.visa_number')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
 
-
-
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
-                                                                        Expire Date <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.visa_expiry')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -513,15 +426,15 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="sp_name"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Sponser
-                                                                        Name <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.sponsor_name')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="sp_name" id="sp_name"
-                                                                                placeholder="Sponser Name">
+                                                                                placeholder="@lang('words.sponsor_name')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -533,29 +446,24 @@
 
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="language"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Languages
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.language')
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
-                                                                                class=" form-control form-control-sm "
+                                                                                class=" form-control form-control-sm"
                                                                                 name="language" id="language">
-                                                                                <option value="">Select</option>
+                                                                                <option value="">@lang('words.select')
+                                                                                </option>
                                                                                 @foreach ($languages as $lang)
-                                                                                <option value={{$lang->id}}>
-                                                                                    {{$lang->name_en}}
+                                                                                <option value="{{$lang->id}}">
+                                                                                    {{ $language_id == 1 ?   $lang->name_en : $lang->name_ar }}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-
-
-
-
-
                                                         </div>
 
 
@@ -572,8 +480,7 @@
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseTwo6" aria-expanded="false"
                                                     aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-transform-u">Contact
-                                                        information
+                                                    <h6 class="kt-font-transform-u">@lang('words.contact_information')
                                                     </h6>
                                                 </div>
                                             </div>
@@ -587,15 +494,15 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="mobile"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Mobile
-                                                                        No <span class="text-danger">*</span>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.mobile_number')<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="mobile" id="mobile"
-                                                                                placeholder="Mobile No.">
+                                                                                placeholder="@lang('words.mobile_number')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -603,15 +510,14 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="landline"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Phone
-                                                                        No
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.phone_number')
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="landline" id="landline"
-                                                                                placeholder="Landline No.">
+                                                                                placeholder="@lang('words.phone_number')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -623,29 +529,28 @@
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Email
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.email_address')
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
-                                                                                placeholder="Email" name="email"
-                                                                                id="email" />
+                                                                                placeholder="@lang('words.email_address')"
+                                                                                name="email" id="email" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fax_no"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Fax
-                                                                        No </label>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.fax_number')</label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="fax_no" id="fax_no"
-                                                                                placeholder="Fax No">
+                                                                                placeholder="@lang('words.fax_number')">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -664,8 +569,7 @@
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseTwo7" aria-expanded="false"
                                                     aria-controls="collapseTwo7">
-                                                    <h6 class="kt-font-transform-u">Address
-                                                        information
+                                                    <h6 class="kt-font-transform-u">@lang('words.address_information')
                                                     </h6>
                                                 </div>
                                             </div>
@@ -691,7 +595,7 @@
                                                                 </div>
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Emirate
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.emirate')
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -699,10 +603,11 @@
                                                                                 class=" form-control form-control-sm "
                                                                                 name="city" id="city"
                                                                                 onChange="getAreas(this.value)">
-                                                                                <option value="">Select</option>
+                                                                                <option value="">@lang('words.select')
+                                                                                </option>
                                                                                 @foreach ($emirates as $em)
-                                                                                <option value={{$em->id}}>
-                                                                                    {{$em->name_en}}
+                                                                                <option value="{{$em->id}}">
+                                                                                    {{ $language_id == 1 ? $em->name_en : $em->name_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -718,33 +623,31 @@
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">PO
-                                                                        Box </label>
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.po_box')</label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
-                                                                                name="po_box" id="po_box"
-                                                                                placeholder="PO box">
-
-
+                                                                                name="po_box" id="po_box" placeholder="@lang('words.po_box')
+                                                                                ">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Area
+                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.area')
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
                                                                                 class="  form-control form-control-sm "
                                                                                 name="area" id="area">
-                                                                                <option value="">Select</option>
+                                                                                <option value="">@lang('words.select')
+                                                                                </option>
                                                                                 @foreach ($areas as $ar)
-                                                                                <option value={{$ar->id}}>
-                                                                                    {{$ar->area_en}}
+                                                                                <option value="{{$ar->id}}">
+                                                                                    {{ $language_id == 1 ? $ar->area_en : $ar->area_ar }}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -809,7 +712,7 @@
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
                                                 <label
-                                                    class="kt-font-bold text--maroon">{{$req->requirement_name}}</label>
+                                                    class="kt-font-bold text--maroon">{{$language_id == 1 ? $req->requirement_name : $req->requirement_name_ar  }}</label>
                                                 <p for="" class="reqName    ">
                                                     {{$req->requirement_description}}</p>
                                             </div>

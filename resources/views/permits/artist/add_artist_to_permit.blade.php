@@ -29,7 +29,7 @@
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> Upload Docs
+                                    <span>03</span> @lang('words.upload_documents')
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -43,89 +43,7 @@
                 {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
                 <div class="kt-form w-100 px-5" id="kt_form">
                     <!--begin: Form Wizard Step 1-->
-                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
-                        <div class="kt-form__section kt-form__section--first">
-                            <div class="kt-wizard-v3__form">
-                                <!--begin::Accordion-->
-                                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title" data-toggle="collapse" data-target="#collapseTwo6"
-                                                aria-expanded="false" aria-controls="collapseTwo6">
-                                                <h6 class="kt-font-transform-u"> Documents Required</h6>
-                                            </div>
-                                        </div>
-                                        <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                <table class="table table-borderless">
-                                                    <tr>
-                                                        <th>Document</th>
-                                                        <th>Description</th>
-                                                    </tr>
-                                                    @foreach($requirements as $req)
-                                                    <tr>
-                                                        <td>{{$req->requirement_name}}</td>
-                                                        <td>{{$req->requirement_description}}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingThree6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseThree6" aria-expanded="false"
-                                                aria-controls="collapseThree6">
-                                                <h6 class="kt-font-transform-u"> Permit Fees Structure</h6>
-                                            </div>
-                                        </div>
-                                        <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                <table class="table table-borderless">
-                                                    <tr>
-                                                        <th>Profession</th>
-                                                        <th class="text-right">Fee(AED)</th>
-                                                    </tr>
-                                                    @foreach($profession as $pt)
-                                                    <tr>
-                                                        <td>{{$pt->name_en}}</td>
-                                                        <td class="text-right">{{number_format($pt->amount,2)}}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingFour6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseFour6" aria-expanded="false"
-                                                aria-controls="collapseFour6">
-                                                <h6 class="kt-font-transform-u">Rules and Conditions</h6>
-                                            </div>
-                                        </div>
-                                        <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                        <input type="checkbox" id="agree" name="agree"> I Read and understand all
-                                        service rules, And agree to continue submitting it.
-                                        <span></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('permits.artist.common.wizard_instructions')
                     <!--end: Form Wizard Step 1-->
                     <input type="hidden" id="permit_from" value="{{$permit_details->issued_date}}">
                     <input type="hidden" id="permit_to" value="{{$permit_details->expired_date}}">
@@ -216,7 +134,7 @@
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($countries as $ct)
                                                                                 <option value="{{$ct->country_id}}">
-                                                                                    {{$ct->nationality_en}}
+                                                                                    {{$language_id == 1 ? $ct->nationality_en : $ct->nationality_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -307,7 +225,7 @@
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($religions as $reli)
                                                                                 <option value={{$reli->id}}>
-                                                                                    {{$reli->name_en}}
+                                                                                    {{$language_id == 1 ? $reli->name_en : $reli->name_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -333,7 +251,8 @@
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($profession as $pt)
                                                                                 <option value="{{$pt->profession_id}}">
-                                                                                    {{ucwords($pt->name_en)}}</option>
+                                                                                    {{ucwords($language_id == 1 ? $pt->name_en : $pt->name_ar)}}
+                                                                                </option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
@@ -378,8 +297,12 @@
                                                                                 class=" form-control form-control-sm "
                                                                                 name="gender" id="gender">
                                                                                 <option value="">Select</option>
-                                                                                <option value="1">Male</option>
-                                                                                <option value="2">Female</option>
+                                                                                <option value="1">
+                                                                                    {{$language_id == 1 ? 'Male' : 'الذكر'}}
+                                                                                </option>
+                                                                                <option value="2">
+                                                                                    {{$language_id == 1 ? 'Female' : 'أنثى'}}
+                                                                                </option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -397,7 +320,7 @@
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($visatypes as $vt)
                                                                                 <option value={{$vt->id}}>
-                                                                                    {{$vt->visa_type_en}}
+                                                                                    {{$language_id == 1 ? $vt->visa_type_en : $vt->visa_type_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -472,7 +395,7 @@
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($languages as $lang)
                                                                                 <option value={{$lang->id}}>
-                                                                                    {{$lang->name_en}}
+                                                                                    {{$language_id == 1 ? $lang->name_en $lang->name_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -614,7 +537,7 @@
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($emirates as $em)
                                                                                 <option value={{$em->id}}>
-                                                                                    {{$em->name_en}}
+                                                                                    {{$language_id == 1 ? $em->name_en : $em->name_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -650,7 +573,7 @@
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($areas as $ar)
                                                                                 <option value={{$ar->id}}>
-                                                                                    {{$ar->area_en}}
+                                                                                    {{$language_id == 1 ? $ar->area_en : $ar->area_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
