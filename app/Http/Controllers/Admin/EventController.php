@@ -278,8 +278,9 @@
 			->when($request->status, function($q) use ($request){
 				$q->whereIn('status', $request->status);
 			})
-			->where('status', '!=', 'draft')
-			->orderBy('updated_at', 'desc');
+			->whereNotIn('status', ['draft', 'cancelled'])
+			->orderBy('updated_at', 'desc')
+			->get();
 
 				return DataTables::of($events)
 					 ->addColumn('establishment_name', function($event){
@@ -311,7 +312,7 @@
 					 })
 					 ->addColumn('action', function($event){
 					 	if($event->status == 'rejected'){ return null; }
-					 	return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-light"><i class="la la-download"></i> download</a>';
+					 	return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i> DOWNLOAD</a>';
 					 })
 					 ->rawColumns(['status', 'action'])
 //				 ->setTotalRecords($totalRecords)s

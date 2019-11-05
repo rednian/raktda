@@ -99,7 +99,8 @@ mix.scripts([
     'public/assets/vendors/general/jquery.repeater/src/lib.js',
     'public/assets/vendors/general/jquery.repeater/src/jquery.input.js',
     'public/assets/vendors/general/jquery.repeater/src/repeater.js',
-    'public/assets/vendors/general/dompurify/dist/purify.js'
+    'public/assets/vendors/general/dompurify/dist/purify.js',
+   
 ], 'public/js/plugins.js');
 
 mix.scripts([
@@ -119,6 +120,7 @@ mix.scripts([
     'public/assets/vendors/custom/datatables/datatables.bundle.min.js',
     'public/assets/vendors/custom/jquery-datatables-checkboxes/dataTables.checkboxes.min.js',
     'public/assets/vendors/custom/fancybox-master/dist/jquery.fancybox.js',
+    'public/assets/vendors/custom/dataTables/dataTables.colVis.js',
     'public/assets/vendors/custom/bootbox/bootbox.all.min.js',
 ], 'public/js/custom-pages.js');
 

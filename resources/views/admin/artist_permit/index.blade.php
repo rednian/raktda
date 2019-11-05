@@ -18,7 +18,7 @@
 									@include('admin.artist_permit.includes.new_request')
 							 @else
 									@empty()
-										 No New Request Permit as of Today <span class="kt-font-bold">{{ date('d-M-Y h:m a') }}</span>
+										 No New Request Permit
 									@endempty
 							 @endif
 						</div>
@@ -79,7 +79,7 @@
 @section('script')
 	 <script type="text/javascript">
 
-     var artistPermit = {};
+     window.artistPermit = {};
      var active_artist_table;
      var filter = {
        today: null,
@@ -91,6 +91,7 @@
        var hash = window.location.hash;
 
      $(document).ready(function () {
+
         newRequest();
          hash && $('ul.nav a[href="' + hash + '"]').tab('show');
          $('.nav-tabs a').click(function (e) {
@@ -244,7 +245,6 @@
             ],
             createdRow: function (row, data, index) {
                $('#active-artist-modal').on('shown.bs.modal', function () {
-                  // console.log(123);
                });
 
                $(row).click(function () {
@@ -348,6 +348,9 @@
 
       function processingTable() {
          $('table#artist-permit-processing').DataTable({
+          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             ajax: {
                url: '{{ route('admin.artist_permit.datatable') }}',
                data: function (d) {
@@ -374,6 +377,8 @@
             }
          });
       }
+
+   
 
      function rejectedTable() {
        $('table#artist-permit-rejected').DataTable({
@@ -403,8 +408,11 @@
          }
        });
      }
+        
+    var new_selected_date = [];
 
      function newRequest() {
+
        var start = moment().subtract(29, 'days');
        var end = moment();
 
@@ -415,6 +423,7 @@
          cancelClass: 'btn-secondary btn-sm btn-elevate',
          startDate: start,
          endDate: end,
+         maxDate: new Date,
          ranges: {
            'Today': [moment(), moment()],
            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -425,39 +434,29 @@
          }
        }, function (start, end, label) {
          $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+       }).on('apply.daterangepicker', function(e, d){
+        new_selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+        artistPermit.draw();
        });
 
-       $('input[type=checkbox][data-type=new_request][name=today]').click(function () {
-         filter.today = $(this).is(':checked') ? $(this).val() : null;
+       $('#new-btn-reset').click(function(){
+          $('input[name=today]').removeAttr('checked');
        });
 
-       $('input[type=checkbox][data-type=new_request][name=issued_date]').click(function () {
-         filter.action_needed = $(this).is(':checked') ? $(this).val() : null;
-       });
+   
 
-       var new_request_form = $('form#new-request-frm');
-       new_request_form.submit(function (e) {
-         e.preventDefault();
-         artistPermit.ajax.reload(null, false);
-       });
-
-       new_request_form.find('button[type=reset]').click(function () {
-         filter.today = null;
-         filter.action_needed = null;
-         new_request_form[0].reset();
-         artistPermit.ajax.reload(null, false);
-       });
 
        artistPermit = $('table#artist-permit').DataTable({
-         // "dom": '<"top"i>rt<"bottom"flp><"clear">'
-         // dom: 'trip',
-         ajax: {
-           url: '{{ route('admin.artist_permit.datatable') }}',
-           data: function (d) {
-            var status = $('select#new-permit-status').val();
-
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ajax: {
+          url: '{{ route('admin.artist_permit.datatable') }}',
+          data: function (d) {
+             var status = $('select#new-permit-status').val();
              d.request_type = $('select#new-request-type').val();
-             d.status = status.length > 0 ? status : ['new', 'modified', 'unprocessed'];
+             d.status = status != null ? [status] : ['new', 'modified'];
+             d.date = $('#new-applied-date').val()  ? new_selected_date : null; 
            }
          },
          columnDefs: [
@@ -467,8 +466,8 @@
          columns: [
            {data: 'reference_number'},
            {data: 'company_name'},
-           {data: 'applied_date'},
            {data: 'artist_number'},
+           {data: 'applied_date'},
            {data: 'request_type'},
            {data: 'permit_status'}
          ],
@@ -478,31 +477,23 @@
            });
          },
        });
-       $('select#new-request-type').select2({
-         minimumResultsForSearch: Infinity,
-         placeholder: 'Request Type',
-         autoWidth: true,
-         width: '28%',
-         // closeOnSelect: false,
-         allowClear: true,
-         tags: true
+
+       
+       artistPermit.page.len($('#new-length-change').val());
+       $('#new-length-change').change(function(){
+         artistPermit.page.len( $(this).val() ).draw();
        });
 
-       $('select#new-permit-status').select2({
-         minimumResultsForSearch: Infinity,
-         placeholder: 'Permit Status',
-         autoWidth: true,
-         width: '28%',
-         // closeOnSelect: false,
-         allowClear: true,
-         tags: true
+
+       var search = $.fn.dataTable.util.throttle(function(v){
+        artistPermit.search(v).draw();
+       }, 500);
+
+       $('input#search-new-request').keyup(function(){
+          search($(this).val());
        });
 
-       $('#new-btn-clear').click(function () {
-         $('select#new-request-type').select2('val', '');
-         // $('select#new-request-type').empty();
-         // $('select#new-request-type').select2();
-       });
+
      }
 	 </script>
 
