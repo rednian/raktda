@@ -67,11 +67,8 @@
 										@include('admin.artist_permit.includes.personal-info-tab')
 										@include('admin.artist_permit.includes.address-info-tab')
 										@include('admin.artist_permit.includes.address1-info-tab')
-						
-										</div>
-									</section>
-
-
+									</div>
+								</section>
 								</div>
 							</div>
 						</div>
@@ -190,7 +187,6 @@
 @endsection
 @section('script')
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
-{{--	 <script src="{{ asset('/assets/js/wizard-3.js') }}"></script>--}}
 	<script type="text/javascript">
 		new Vue({
 			el: '#app-wizard',
@@ -246,14 +242,6 @@
 							$(this).parents('label').removeClass('kt-checkbox--danger').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
 						}
 					});
-
-					// var step2 =document.getElementsByClassName('step-2');
-					// for (var i = 0; i < step2.length; ++i){
-					// 	if(!step2[i].checked){
-					// 		wizardObj.stop();
-					//
-					// 	}
-					// }
 
 				}
 

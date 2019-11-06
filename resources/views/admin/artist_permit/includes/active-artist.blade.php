@@ -6,7 +6,57 @@
 			to take action.
 	 </div>
 </div>
-<table class="table  table-hover  table-borderless table-striped border" id="active-artist">
+<section class="form-row">
+	<div class="col-1">
+		<div>
+			<select name="length_change" id="artist-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
+			    <option value='10'>10</option>
+			    <option value='25'>25</option>
+			    <option value='50'>50</option>
+			    <option value='75'>75</option>
+			    <option value='100'>100</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-8">
+		<section class="form-row">
+			<div class="col-4">
+				<button type="button" id="btn-active-action" class="btn btn-warning btn-sm kt-font-transform-u">Take Action</button>
+			</div>
+			<div class="col-3">
+				<select name="" id="artist-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="ArtistPermit.new.table.draw()" >
+					<option selected disabled >PROFESSION</option>
+					@if ($professions->count() > 0)
+						@foreach ($professions as $profession)
+							<option value="{{ $profession->profession_id }}">{{ ucwords($profession->name_en) }}</option>
+						@endforeach
+					@endif
+				</select>
+			</div>
+			<div class="col-3">
+				<select  name="" id="artist-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="ArtistPermit.new.table.draw()">
+					<option disabled selected>ARTIST STATUS</option>
+					<option value="active">Active</option>
+					<option value="blocked">Blocked</option>
+				</select>
+			</div>
+			<div class="col-1">
+				<button type="button" class="btn btn-sm btn-secondary" id="artist-btn-reset">RESET</button>
+			</div>
+		</section>
+	</div>
+	<div class="col-md-3">
+		<div class="form-group form-group-sm">
+			<div class="kt-input-icon kt-input-icon--right">
+				<input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-artist-request">
+				<span class="kt-input-icon__icon kt-input-icon__icon--right">
+					<span><i class="la la-search"></i></span>
+				</span>
+			</div>
+		</div>
+	</div>
+</section>
+<table class="table table-hover table-borderless table-striped border" id="active-artist">
 	 <thead>
 	 <tr>
 			<th></th>
@@ -31,7 +81,7 @@ $countries = \App\Countries::whereHas('artistpermit.artist', function($q){
 	$q->where('artist_status', 'active');
 })->get();
 ?>
-<div id="active-profession-container">
+{{-- <div id="active-profession-container">
 	 <section class="form-group form-group-xs row" style="margin-left:1px">
 			<div class="col-sm-12">
 				 <select class="form-control select2 form-control-sm" name="profession_id" onchange="$('table#active-artist').DataTable().draw()">
@@ -44,8 +94,8 @@ $countries = \App\Countries::whereHas('artistpermit.artist', function($q){
 				 </select>
 			</div>
 	 </section>
-</div>
-<div id="active-nationality-container">
+</div> --}}
+{{-- <div id="active-nationality-container">
 	 <div class="form-group form-group-xs row" style="margin-left: 1px">
 			<div class="col-sm-12">
 				 <select class="form-control select2 form-control-sm" name="country_id" onchange="$('table#active-artist').DataTable().draw()">
@@ -59,4 +109,4 @@ $countries = \App\Countries::whereHas('artistpermit.artist', function($q){
 			</div>
 
 	 </div>
-</div>
+</div> --}}

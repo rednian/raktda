@@ -23,19 +23,20 @@
 									<div class="card-body">
 										 <div class="kt-widget kt-widget--user-profile-3">
 												<div class="kt-widget__top">
-													 @if($artist_permit->thumbnail)
-															<div class="kt-widget__media">
-															</div>
+													 @if(!$artist_permit->thumbnail)
+														<div class="kt-widget__media">
+														</div>
 													 @else
-															<div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-bolder kt-font-light">
-																 {{ profile($artist_permit->artist->firstname_en, $artist_permit->artist->lastname_en) }}
-															</div>
+														
 													 @endif
+													 	<div class="kt-widget__pic kt-widget__pic--danger kt-font-success kt-font-bold kt-font-light" style="font-size: xx-large">
+																 {{ profile($artist_permit->firstname_en, $artist_permit->lastname_en) }}
+															</div>
 													 @include('admin.artist.include.artist-block-modal')
 													 <div class="kt-widget__content">
 															<div class="kt-widget__head">
 																 <div class="kt-widget__user">
-																		<span class="kt-widget__username">{{ ucwords($artist_permit->artist->fullname) }}</span>
+																		<span class="kt-widget__username">{{ ucwords($artist_permit->fullname) }}</span>
 																		@if($artist_permit->artist->artist_status == 'active')
 																			 <span
 																					 class="kt-badge kt-badge--bolder kt-badge kt-badge--inline kt-badge--lg kt-badge--unified-success">{{ ucwords($artist_permit->artist->artist_status) }}</span>
@@ -50,6 +51,7 @@
 																			 </a>
 																			 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-fit dropdown-menu-right">
 																					<ul class="kt-nav">
+
 																						 @if($artist_permit->artist->artist_status == 'active')
 																								<li class="kt-nav__item">
 																									 <a data-toggle="modal" href="#kt_modal_1" class="kt-nav__link" data-toggle="status-change" data-status="2">
@@ -70,6 +72,12 @@
 																		</div>
 																 </div>
 															</div>
+                                                            <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
+                                                                <label>
+                                                                    <input {{ $artist_permit->artist->artist_status == 'active'? 'checked': null }} id="artist-status" type="checkbox"  name="">
+                                                                    <span></span>
+                                                                </label>
+                                                            </span>
 															<div class="kt-widget__subhead">
 																 <a href="#">Current Company: <span
 																				class="kt-font-dark kt-font-bolder">{{ $artist_permit->permit()->latest()->first()->company->company_name }}</span></a>
@@ -177,11 +185,9 @@
 												</div>
 										 </div>
 									</div>
-							 </div>
+						 </div>
 						</div>
 				 </section>
-
-
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
 						<li class="nav-item">
 							 <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_1" role="tab" aria-selected="true">{{ __('PERMIT HISTORY') }}</a>
@@ -236,7 +242,13 @@
 @endsection
 @section('script')
 	 <script>
+        var is_checked = false;
       $(document).ready(function () {
+        $('input#artist-status').change(function(){ $('#kt_modal_1').modal('show'); });
+        $('#kt_modal_1').on('hidden.bs.modal', function () {
+            $('input#artist-status').attr();
+        })
+
           $('#clickme').click(function(reload) {
 
              //     window.location.hash = '#kt_tabs_1_5';
