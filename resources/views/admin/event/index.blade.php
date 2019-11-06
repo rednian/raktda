@@ -16,11 +16,11 @@
         <section class="row">
           <div class="col-md-12">
                      <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
-                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">New Event Requests</a></li>
-                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing Events</a></li>
-                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Events</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Events</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#calendar">All Events Calendar</a></li>
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Event Requests') }}</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">{{ __('Processing Events') }}</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Active Events') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('Archive Events') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#calendar">{{ __('All Events Calendar') }}</a></li>
                      </ul>
                       {{-- <input type="text" class="form-control form-control-sm" style="position: absolute; top: 0"> --}}
           </div>
@@ -29,7 +29,7 @@
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
                @include('admin.artist_permit.includes.summary')
 							 <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
-									<label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
+									<label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span class="fa fa-filter kt-margin-r-5"></span> {{ __('Filter By:') }}</label>
 									<select onchange="newEventTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15" id="new-permit-status">
 										 <option value="new">New</option>
 										 <option value="amend">Amend</option>
@@ -41,7 +41,7 @@
 										 <option value="2">Individual</option>
 									</select>
 									<label for="inlineFormInputName2"></label>
-									<input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="Start date of permit" autocomplete="off">
+									<input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15" placeholder="{{ __('Start date of permit') }}" autocomplete="off">
                   <label for=""></label>
                   
                   <div class="form-group row form-group-xs" style="margin-left: 5.5%">
@@ -52,14 +52,14 @@
                 <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
-                            <th>APPLIED DATE</th>
-                            <th>APPLICANT TYPE</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('APPLIED DATE') }}</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
                             {{-- <th>PERMIT START</th> --}}
-                            <th>STATUS</th>
+                            <th>{{ __('STATUS') }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -68,7 +68,7 @@
                 @include('admin.artist_permit.includes.summary')
                 <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
                     <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span
-                            class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
+                            class="fa fa-filter kt-margin-r-5"></span> {{ __('Filter By:') }}</label>
                     <select onchange="eventProcessingTable.draw();" multiple="multiple"
                         class=" mb-2 mr-sm-2 kt-margin-l-15" id="processing-permit-status">
                         <option value="approved-unpaid">Approved-unpaid</option>
@@ -83,20 +83,20 @@
                     </select>
                     <label for="inlineFormInputName2"></label>
                     <input type="text" id="processing-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-5"
-                        placeholder="Start date of permit" autocomplete="off">
+                        placeholder="{{ __('Start date of permit') }}" autocomplete="off">
                 </section>
                 <table class="table table-head-noborder table-borderless table-striped border"
                     id="new-event-processing">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
-                            <th>APPLIED DATE</th>
-                            <th>APPLICANT TYPE</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('APPLIED DATE') }}</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
                             {{-- <th>PERMIT START</th> --}}
-                            <th>STATUS</th>
+                            <th>{{ __('STATUS') }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -106,7 +106,7 @@
 
                 <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
                     <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span
-                            class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
+                            class="fa fa-filter kt-margin-r-5"></span> {{ __('Filter By:') }}</label>
                     {{-- <select onchange="eventProcessingTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15" id="active-permit-status">
                      <option value="new">New</option>
                      <option value="amend">Amend</option>
@@ -120,19 +120,19 @@
                     </select>
                     <label for="inlineFormInputName2"></label>
                     <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15"
-                        placeholder="Start date of permit" autocomplete="off">
+                        placeholder="{{ __('Start date of permit') }}" autocomplete="off">
                 </section>
 
                 <table class="table table-head-noborder table-borderless border table-striped" id="new-event-active">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
-                            <th>PERMIT START</th>
-                            <th>APPLICANT TYPE</th>
-                            <th>ACTION</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('PERMIT START') }}</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('ACTION') }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -156,19 +156,19 @@
                     </select>
                     <label for="inlineFormInputName2"></label>
                     <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15"
-                        placeholder="Start date of permit" autocomplete="off">
+                        placeholder="{{ __('Start date of permit') }}" autocomplete="off">
                 </section>
                 <table class="table table-head-noborder table-borderless border" id="new-event-archive">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
                             {{-- <th>APPLIED DATE</th> --}}
-                            <th>APPLICANT TYPE</th>
-                            <th>PERMIT STATUS</th>
-                            <th>ACTION</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('ACTION') }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -246,11 +246,12 @@
           $('html,body').scrollTop(scrollmem);
         });
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var current_tab = $(e.target).text();
+        var current_tab = $(e.target).attr('href');
         console.log(current_tab);
-        if('Processing Events' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-processing')){ processing(); }
-        if('Active Events' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-active')){ active(); }
-        if('Archive Events' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-archive')){ archive(); }
+
+        if('#processing-permit' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-processing')){ processing(); }
+        if('#active-permit' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-active')){ active(); }
+        if('#archive-permit' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-archive')){ archive(); }
       });
      });
      function calendar(){
@@ -309,7 +310,7 @@
      function archive() {
       $('select#archive-permit-status').select2({
         minimumResultsForSearch: Infinity,
-        placeholder: 'Event Status',
+        placeholder: '{{ __('Event Status') }}',
         autoWidth: true,
         width: '24%',
         // closeOnSelect: false,
@@ -318,7 +319,7 @@
       });
       $('select#archive-applicant-type').select2({
         minimumResultsForSearch: Infinity,
-        placeholder: 'Applicant Type',
+        placeholder: '{{ __('Application Type') }}',
         autoWidth: true,
         width: '37%',
         // closeOnSelect: false,
@@ -359,7 +360,7 @@
      function active() {
       $('select#active-applicant-type').select2({
         minimumResultsForSearch: Infinity,
-        placeholder: 'Applicant Type',
+        placeholder: '{{ __('Application Type') }}',
         autoWidth: true,
         width: '37%',
         // closeOnSelect: false,
@@ -401,7 +402,7 @@
      function processing() {
       $('select#processing-permit-status').select2({
         minimumResultsForSearch: Infinity,
-        placeholder: 'Event Status',
+        placeholder: '{{ __('Event Status') }}',
         autoWidth: true,
         width: '21%',
         // closeOnSelect: false,
@@ -410,7 +411,7 @@
       });
       $('select#processing-applicant-type').select2({
         minimumResultsForSearch: Infinity,
-        placeholder: 'Applicant Type',
+        placeholder: '{{ __('Application Type') }}',
         autoWidth: true,
         width: '37%',
         // closeOnSelect: false,
@@ -479,7 +480,7 @@
        });
        $('select#new-permit-status').select2({
          minimumResultsForSearch: Infinity,
-         placeholder: 'Event Status',
+         placeholder: '{{ __('Event Status') }}',
          autoWidth: true,
          width: '21%',
          // closeOnSelect: false,
@@ -488,7 +489,7 @@
        });
        $('select#new-applicant-type').select2({
          minimumResultsForSearch: Infinity,
-         placeholder: 'Applicant Type',
+         placeholder: '{{ __('Application Type') }}',
          autoWidth: true,
          width: '37%',
          // closeOnSelect: false,

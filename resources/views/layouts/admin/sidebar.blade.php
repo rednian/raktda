@@ -21,53 +21,53 @@
            <ul class="kt-menu__nav ">
                <li class="kt-menu__item {{ Request::is('dashboard*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.dashboard') }}" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">Dashboard</span>
+                       <span class="kt-menu__link-text">{{ __('Dashboard') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
-                       <span class="kt-menu__link-text ">Business Name</span>
+                       <span class="kt-menu__link-text ">{{ __('Business Name') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">Business License</span>
+                       <span class="kt-menu__link-text">{{ __('Business License') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">Classification</span>
+                       <span class="kt-menu__link-text">{{ __('Classification') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">Inspection</span>
+                       <span class="kt-menu__link-text">{{ __('Inspection') }}</span>
                    </a>
                </li>
 
                <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('permit*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.artist_permit.index') }}" class="kt-menu__link">
-                       <span class="kt-menu__link-text">Artist Permit</span>
+                       <span class="kt-menu__link-text">{{ __('Artist Permit') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item {{ Request::is('event*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.event.index') }}" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">Event Permit</span>
+                       <span class="kt-menu__link-text">{{ __('Event Permit') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">Reports</span>
+                       <span class="kt-menu__link-text">{{ __('Reports') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">User Management</span>
+                       <span class="kt-menu__link-text">{{ __('User Management') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item {{ Request::is('settings*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.setting.index') }}" class="kt-menu__link ">
-                       <span class="kt-menu__link-text kt-font-transform-u">System Settings</span>
+                       <span class="kt-menu__link-text kt-font-transform-u">{{ __('System Settings') }}</span>
                    </a>
                </li>
            </ul>

@@ -36,19 +36,19 @@
 					<div class="kt-wizard-v3__nav-items">
 						<a href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="current" class="kt-wizard-v3__nav-item">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span>Event Information</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span>{{ __('EVENT INFORMATION') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
 						<a href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending" class="kt-wizard-v3__nav-item">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>2</span>Uploaded Requirements</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>2</span>{{ __('UPLOADED DOCUMENTS') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
 						 <a href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending" class="kt-wizard-v3__nav-item">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span>Event Approvers</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span> {{ __('EVENT APPROVER') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						 </a>
@@ -85,14 +85,14 @@
 												<div class="card">
 													<div class="card-header" id="heading-detail">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-detail" aria-expanded="true" aria-controls="collapse-detail">
-															<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Event Details</h6>
+															<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('EVENT DETAILS') }}</h6>
 														</div>
 													 </div>
 													 <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
 														<div class="card-body">
 															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
-																	<label class="kt-font-dark">Event Name <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">{{ __('Event Name') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
 																		<input value="{{ ucfirst($event->name_en) }}" name="name_en" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append ">
@@ -106,7 +106,7 @@
 																	</div>
 																</div>
 																<div class="col-md-6">
-																	<label class="kt-font-dark">Event Name (AR) <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">{{ __('Event Name (AR)') }} <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
 																		<input value="{{ ucfirst($event->name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append">
@@ -123,7 +123,7 @@
 
 															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
-																	 <label class="kt-font-dark">Event Type <span class="text-danger">*</span></label>
+																	 <label class="kt-font-dark">{{ __('Event Type') }} <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
 																		<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
 																						 class="form-control">
@@ -148,14 +148,14 @@
 																<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-date"
 																		 aria-expanded="true"
 																		 aria-controls="collapse-date">
-																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Date Details</h6>
+																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('DATE DETAILS') }}</h6>
 																</div>
 														 </div>
 														 <div id="collapse-date" class="collapse show" aria-labelledby="heading-date" data-parent="#accordion-date">
 																<div class="card-body">
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Date Start <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('Date Start') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->issued_date }}" name="issued_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -170,7 +170,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Date End <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('Date End') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->expired_date }}" name="expired_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -185,7 +185,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Time Start <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('Time Start') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->time_start }}" name="time_start" readonly="readonly" type="text" class="form-control">
 																						<div class="input-group-append">
@@ -199,7 +199,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Time End <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('Time End') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->time_end }}" name="time_end" readonly="readonly" type="text" class="form-control">
 																						<div class="input-group-append">
@@ -222,14 +222,14 @@
 														 <div class="card-header" id="heading-address">
 																<div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
 																		 aria-expanded="true" aria-controls="collapse-address">
-																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Location Details</h6>
+																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('LOCATION DETAILS') }}</h6>
 																</div>
 														 </div>
 														 <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
 																<div class="card-body">
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-6">
-																				 <label class="kt-font-dark">Venue<span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('Venue') }}<span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->venue_en) }}" name="venue_en" readonly="readonly" type="text"
 																									 class="form-control">
@@ -244,7 +244,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-6">
-																				 <label class="kt-font-dark">Venue (AR) <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('Venue (AR)') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
 																									 class="form-control">
@@ -261,7 +261,7 @@
 																	 </div>
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Address <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('Address') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->address) }}" name="address" readonly="readonly" type="text"
 																									 class="form-control">
@@ -276,7 +276,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Area</label>
+																				 <label class="kt-font-dark">{{ __('Area') }}</label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->area->area_en) }}" name="area_en" readonly="readonly" type="text"
 																									 class="form-control">
@@ -291,7 +291,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Emirate</label>
+																				 <label class="kt-font-dark">{{ __('Emirate') }}</label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->emirate->name_en) }}" name="emirates" readonly="readonly" type="text"
 																									 class="form-control">
@@ -306,7 +306,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">Country</label>
+																				 <label class="kt-font-dark">{{ __('Country') }}</label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ ucfirst($event->country->name_en) }}" name="country" readonly="readonly" type="text"
 																									 class="form-control">
@@ -340,11 +340,11 @@
 												 <table class="table table-striped border borderless table-hover" id="requirement-table">
 													<thead>
 														<tr>
-															 <th>REQUIREMENT NAME</th>
+															 <th>{{ __('REQUIREMENT NAME') }}</th>
 															 {{-- <th>FILES</th> --}}
-															 <th>ISSUED DATE</th>
-															 <th>EXPIRED DATE</th>
-															 <th>ACTION</th>
+															 <th>{{ __('ISSUED DATE') }}</th>
+															 <th>{{ __('EXPIRED DATE') }}</th>
+															 <th>{{ __('ACTION') }}</th>
 														</tr>
 													</thead>
 												 </table>

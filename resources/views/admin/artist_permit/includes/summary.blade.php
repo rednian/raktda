@@ -4,8 +4,8 @@
 			<div class="kt-widget24 kt-widget24--solid">
 				<div class="kt-widget24__details">
 					<div class="kt-widget24__info">
-						<a href="#" class="kt-widget24__title" title="Click to edit">Tasks Pool</a>
-						<span class="kt-widget24__desc">Today</span>
+						<a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Tasks Pool') }}</a>
+						<span class="kt-widget24__desc">{{ __('Today') }}</span>
 					</div>
 					<span class="kt-widget24__stats kt-font-default">340</span>
 				</div>
@@ -20,8 +20,8 @@
 			<div class="kt-widget24 kt-widget24--solid">
 				<div class="kt-widget24__details">
 					<div class="kt-widget24__info">
-						<a href="#" class="kt-widget24__title" title="Click to edit">Staff Pool</a>
-						<span class="kt-widget24__desc">Today</span>
+						<a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Staff Pool') }}</a>
+						<span class="kt-widget24__desc">{{ __('Today') }}</span>
 					</div>
 					<span class="kt-widget24__stats kt-font-default">10</span>
 				</div>
@@ -36,8 +36,8 @@
 			<div class="kt-widget24 kt-widget24--solid">
 				<div class="kt-widget24__details">
 					<div class="kt-widget24__info">
-						<a href="#" class="kt-widget24__title" title="Click to edit">Client Pool</a>
-						<span class="kt-widget24__desc">Today</span>
+						<a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Client Pool') }}</a>
+						<span class="kt-widget24__desc">{{ __('Today') }}</span>
 					</div>
 					<span class="kt-widget24__stats kt-font-default">50</span>
 				</div>

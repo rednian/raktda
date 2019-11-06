@@ -25,6 +25,8 @@ function language($data){
     return $user  == 1 ? $data['en'] : $data['ar']; 
 }
 
+
+
 function eventType($type)
 {
 
@@ -196,4 +198,14 @@ function badgeName($name)
     $classes = ['info', 'success', 'danger', 'warning', 'primary', 'dark'];
     $class = $classes[array_rand($classes)];
     return '<div class="kt-badge kt-badge--md kt-badge--' . $class . '">' . $pro . '</div>';
+}
+
+function translateAr($word){
+    $trans = App\ArabicTranslation::where('english', 'like', $word);
+    if($trans->exists()){
+        if(Auth::user()->LanguageId != 1){
+            return $trans->first()->arabic;
+        }
+    }
+    return $word;
 }

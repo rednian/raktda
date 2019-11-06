@@ -15,7 +15,7 @@
 	})
 	->get();
 	?>
-	 <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
+	 <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span class="fa fa-filter kt-margin-r-5"></span> {{ __('Filter By:') }}</label>
 	 <select onchange="artistPermit.draw();" class="select2 mb-2 mr-sm-2 kt-margin-l-15">
 	 	<option>-All Profession-</option>
 	 	@if(!empty($professions))
@@ -38,12 +38,12 @@
 	 <thead>
 	 <tr>
 			<th></th>
-			<th>PERSON CODE</th>
-			<th>ARTIST NAME</th>
-			<th>PROFESSION</th>
-			<th>NATIONALITY</th>
-			<th>MOBILE NUMBER</th>
-			<th>ACTIVE PERMIT</th>
+			<th>{{ __('PERSON CODE') }}</th>
+			<th>{{ __('ARTIST NAME') }}</th>
+			<th>{{ __('PROFESSION') }}</th>
+			<th>{{ __('NATIONALITY') }}</th>
+			<th>{{ __('MOBILE NUMBER') }}}</th>
+			<th>{{ __('ACTIVE PERMIT') }}</th>
 	 </tr>
 	 </thead>
 </table>
