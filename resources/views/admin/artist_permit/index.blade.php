@@ -3,12 +3,12 @@
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
 			<div class="kt-portlet__body kt-padding-t-5" style="position: relative">
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
-						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">New Request Permits</a></li>
-						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing Permits</a></li>
-						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Permits</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Permits</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">Active Artists</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">Blocked Artists</a></li>
+						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Request Permits') }}</a></li>
+						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">{{ __('Processing Permits') }}</a></li>
+						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Active Permits') }}</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('Archive Permits') }}</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">{{ __('Active Artists') }}</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">{{ __('Blocked Artists') }}</a></li>
 				 </ul>
       
 				 <div class="tab-content">
@@ -102,12 +102,13 @@
            });
 
        $('.nav-tabs a').on('shown.bs.tab', function (event) {
-         var current_tab = $(event.target).text();
-         if (current_tab == 'Processing Permits' && !$.fn.dataTable.isDataTable('table#artist-permit-processing')) { processingTable(); }
-         if (current_tab == 'Active Permits' && !$.fn.dataTable.isDataTable('table#artist-permit-approved')) { approvedTable(); }
-         if (current_tab == 'Archive Permits' && !$.fn.dataTable.isDataTable('table#artist-permit-rejected')) { rejectedTable(); }
-         if (current_tab == 'Active Artists' && !$.fn.dataTable.isDataTable('table#active-artist')) { activeArtistTable(); }
-         if (current_tab == 'Blocked Artists' && !$.fn.dataTable.isDataTable('table#block-artist')) { blockArtistTable(); }
+         var current_tab = $(event.target).attr('href');
+
+         if (current_tab == '#processing-permit' && !$.fn.dataTable.isDataTable('table#artist-permit-processing')) { processingTable(); }
+         if (current_tab == '#active-permit' && !$.fn.dataTable.isDataTable('table#artist-permit-approved')) { approvedTable(); }
+         if (current_tab == '#archive-permit' && !$.fn.dataTable.isDataTable('table#artist-permit-rejected')) { rejectedTable(); }
+         if (current_tab == '#active-artist' && !$.fn.dataTable.isDataTable('table#active-artist')) { activeArtistTable(); }
+         if (current_tab == '#blocked-artist' && !$.fn.dataTable.isDataTable('table#block-artist')) { blockArtistTable(); }
        });
 
      });

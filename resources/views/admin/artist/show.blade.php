@@ -16,7 +16,7 @@
 						<div class="card">
 							 <div class="card-header" id="heading-personal">
 									<div class="card-title collapsed" data-toggle="collapse" data-target="#collapse-personal" aria-expanded="false" aria-controls="collapse-personal">
-										 <h6 class="kt-font-dark kt-font-transform-u">Personal Information</h6>
+										 <h6 class="kt-font-dark kt-font-transform-u">{{ __('PERSONAL INFORMATION') }}</h6>
 									</div>
 							 </div>
 							 <div id="collapse-personal" class="collapse show" aria-labelledby="heading-personal" data-parent="#accordion-personal" style="">
@@ -131,22 +131,22 @@
 										 <div class="card-header" id="heading-personal">
 												<div class="card-title collapsed" data-toggle="collapse" data-target="#collapse-contact" aria-expanded="false"
 														 aria-controls="collapse-contact">
-													 <h6 class="kt-font-dark kt-font-transform-u">Contact Information</h6>
+													 <h6 class="kt-font-dark kt-font-transform-u">{{ __('CONTACT INFORMATION') }}</h6>
 												</div>
 										 </div>
 										 <div id="collapse-contact" class="collapse show" aria-labelledby="heading-contact" data-parent="#accordion-contact" style="">
 												<div class="card-body" style="padding: 1px 1.25rem;">
 													 <table class="table table-borderless table-sm">
 															<tr>
-																 <td width="25%">Email</td>
+																 <td width="25%">{{ __('Email') }}</td>
 																 <td>: <span class="kt-font-bold">{{ $artist_permit->email }}</span></td>
 															</tr>
 															<tr>
-																 <td>Mobile number</td>
+																 <td>{{ __('Mobile Number') }}</td>
 																 <td>: <span class="kt-font-bold">{{ $artist_permit->mobile_number}}</span></td>
 															</tr>
 															<tr>
-																 <td>Phone Number</td>
+																 <td>{{ __('Phone Number') }}</td>
 																 <td>: <span class="kt-font-bold">{{ $artist_permit->phone_number}}</span></td>
 															</tr>
 													 </table>
@@ -161,7 +161,7 @@
 										 <div class="card-header" id="heading-personal">
 												<div class="card-title collapsed" data-toggle="collapse" data-target="#collapse-address" aria-expanded="false"
 														 aria-controls="collapse-address">
-													 <h6 class="kt-font-dark kt-font-transform-u">Address Information</h6>
+													 <h6 class="kt-font-dark kt-font-transform-u">{{ __('ADDRESS INFORMATION') }}</h6>
 												</div>
 										 </div>
 										 <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address" style="">
@@ -169,15 +169,15 @@
                                                     <table class="table table-borderless table-sm">
 															<tbody>
 															<tr>
-																 <td width="15%">Address</td>
+																 <td width="15%">{{ __('Address') }}</td>
 																 <td>: <span class="kt-font-bold ">{{ ucwords($artist_permit->address_en) }}</span></td>
 															</tr>
 															<tr>
-																 <td>Area</td>
+																 <td>{{ __('Area') }}</td>
 																 <td>: <span class="kt-font-bold">{{ ucwords($artist_permit->area->area_en) }}</span></td>
 															</tr>
 															<tr>
-																 <td>Emirate</td>
+																 <td>{{ __('Emirate') }}</td>
 																 <td>: <span class="kt-font-bold">{{ ucwords($artist_permit->emirate->name_en)}}</span></td>
 															</tr>
 															</tbody>
@@ -190,11 +190,10 @@
 				 </section>
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
 						<li class="nav-item">
-							 <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_1" role="tab" aria-selected="true">Permit History 
-                            </a>
+							 <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_1" role="tab" aria-selected="true">{{ __('PERMIT HISTORY') }}</a>
 						</li>
 						<li class="nav-item">
-							 <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_2" role="tab" aria-selected="false">Status History</a>
+							 <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_2" role="tab" aria-selected="false">{{ __('STATUS HISTORY') }}</a>
 						</li>
 				 </ul>
 				 <div class="tab-content">
@@ -203,12 +202,12 @@
 									<table class="table table-striped table-borderless table-hover border" id="artist-permit-history">
 										 <thead>
 										 <tr>
-												<th>REFERENCE NO.</th>
-												<th>ESTABLISHMENT NAME</th>
-												<th>PERMIT NO.</th>
-												<th>ISSUED DATE</th>
-												<th>EXPIRED DATE</th>
-												<th>PERMIT STATUS</th>
+												<th>{{ __('REFERENCE NO.') }}</th>
+												<th>{{ __('ESTABLISHMENT NAME') }}</th>
+												<th>{{ __('PERMIT NO.') }}</th>
+												<th>{{ __('ISSUED DATE') }}</th>
+												<th>{{ __('EXPIRED DATE') }}</th>
+												<th>{{ __('PERMIT STATUS') }}</th>
 										 </tr>
 										 </thead>
 									</table>
@@ -223,10 +222,10 @@
 									<table class="table table-striped table-borderless table-hover border table-hover" id="status-history">
 										 <thead>
 										 <tr>
-											<th>UNBLOCKED/BLOCKED BY</th>
-											<th>REMARKS</th>
-											<th>ACTION DATE</th>
-											<th>ACTION TAKEN</th>
+											<th>{{ __('UNBLOCKED/BLOCKED BY') }}</th>
+											<th>{{ __('REMARKS') }}</th>
+											<th>{{ __('ACTION DATE') }}</th>
+											<th>{{ __('ACTION TAKEN') }}</th>
 										 </tr>
 										 </thead>
 									</table>

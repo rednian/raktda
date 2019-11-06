@@ -59,13 +59,13 @@
 <table class="table table-hover table-borderless table-striped border" id="active-artist">
 	 <thead>
 	 <tr>
-		<th></th>
-		<th>PERSON CODE</th>
-		<th>ARTIST NAME</th>
-		<th>PROFESSION</th>
-		<th>NATIONALITY</th>
-		<th>MOBILE NUMBER</th>
-		<th>ACTIVE PERMIT</th>
+			<th></th>
+			<th>{{ __('PERSON CODE') }}</th>
+			<th>{{ __('ARTIST NAME') }}</th>
+			<th>{{ __('PROFESSION') }}</th>
+			<th>{{ __('NATIONALITY') }}</th>
+			<th>{{ __('MOBILE NUMBER') }}</th>
+			<th>{{ __('ACTIVE PERMIT') }}</th>
 	 </tr>
 	 </thead>
 </table>

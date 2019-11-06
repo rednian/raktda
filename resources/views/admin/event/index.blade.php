@@ -15,19 +15,22 @@
 			<div class="kt-portlet__body kt-padding-t-5">
         <section class="row">
           <div class="col-md-12">
-             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
-                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">New Event Requests</a></li>
-                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing Events</a></li>
-                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Events</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Events</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#calendar">All Events Calendar</a></li>
-             </ul>
+
+                     <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Event Requests') }}</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">{{ __('Processing Events') }}</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Active Events') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('Archive Events') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#calendar">{{ __('All Events Calendar') }}</a></li>
+                     </ul>
+
                       {{-- <input type="text" class="form-control form-control-sm" style="position: absolute; top: 0"> --}}
           </div>
         </section>
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
                @include('admin.artist_permit.includes.summary')
+
                <section class="form-row">
                 <div class="col-1">
                   <div>
@@ -86,14 +89,14 @@
                 <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
-                            <th>APPLIED DATE</th>
-                            <th>APPLICANT TYPE</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('APPLIED DATE') }}</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
                             {{-- <th>PERMIT START</th> --}}
-                            <th>STATUS</th>
+                            <th>{{ __('STATUS') }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -160,14 +163,14 @@
                     id="new-event-processing">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
-                            <th>APPLIED DATE</th>
-                            <th>APPLICANT TYPE</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('APPLIED DATE') }}</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
                             {{-- <th>PERMIT START</th> --}}
-                            <th>STATUS</th>
+                            <th>{{ __('STATUS') }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -232,13 +235,13 @@
                 <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
-                            <th>PERMIT START</th>
-                            <th>APPLICANT TYPE</th>
-                            <th>ACTION</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('PERMIT START') }}</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('ACTION') }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -303,14 +306,14 @@
                 <table class="table table-head-noborder table-hover table-sm table-striped table-borderless border" id="new-event-archive">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
                             {{-- <th>APPLIED DATE</th> --}}
-                            <th>APPLICANT TYPE</th>
-                            <th>PERMIT STATUS</th>
-                            <th>ACTION</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('ACTION') }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -386,10 +389,12 @@
           $('html,body').scrollTop(scrollmem);
         });
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var current_tab = $(e.target).text();
-        if('Processing Events' == current_tab ){ processing(); }
-        if('Active Events' == current_tab  ){ active(); }
-        if('Archive Events' == current_tab ){ archive(); }
+        var current_tab = $(e.target).attr('href');
+        console.log(current_tab);
+
+        if('#processing-permit' == current_tab ){ processing(); }
+        if('#active-permit' == current_tab ){ active(); }
+        if('#archive-permit' == current_tab){ archive(); }
       });
      });
 
@@ -566,7 +571,6 @@
      }
 
      function processing() {
-
       var start = moment().subtract(29, 'days');
       var end = moment();
       var new_selected_date = null;
@@ -711,7 +715,6 @@
        
        var search = $.fn.dataTable.util.throttle(function(v){ newEventTable.search(v).draw(); });
        $('input#search-new-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
-
      }
 </script>
 @endsection
