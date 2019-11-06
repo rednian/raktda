@@ -642,7 +642,7 @@
      function newEvent() {
       var start = moment().subtract(29, 'days');
       var end = moment();
-      var new_selected_date = null;
+      var selected_date = null;
 
       $('input#new-applied-date').daterangepicker({
         autoUpdateInput: false,
@@ -663,7 +663,7 @@
       }, function (start, end, label) {
         $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
       }).on('apply.daterangepicker', function(e, d){
-       new_selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+       selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
        newEventTable.draw();
       });
 
@@ -678,7 +678,7 @@
             var status = $('select#new-permit-status').val();            
              d.status = status != null ? [status] : ['new', 'amended'];
              d.type = $('select#new-applicant-type').val();
-
+             d.date = $('#new-applied-date').val()  ? selected_date : null; 
            }
          },
 

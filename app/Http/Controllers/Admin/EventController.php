@@ -263,54 +263,38 @@
 
 		public function dataTable(Request $request)
 		{
-			// dd($request->all());
 			if ($request->ajax()) {
-
-
 				$user = Auth::user();
-//			$start = $request->start;
-//			$length = $request->length;
-			$events = Event::when($request->type, function($q) use ($request){
-				$q->whereHas('owner', function($q) use ($request){
-					$q->where('type', $request->type);
-				});
-			})
-			->when($request->status, function($q) use ($request){
-				$q->whereIn('status', $request->status);
-			})
-			->whereNotIn('status', ['draft', 'cancelled'])
-			->orderBy('updated_at', 'desc')
-			->get();
+
+				$events = Event::when($request->type, function($q) use ($request){
+					$q->whereHas('owner', function($q) use ($request){
+						$q->where('type', $request->type);
+					});
+				})
+				->when($request->status, function($q) use ($request){
+					$q->whereIn('status', $request->status);
+				})
+				->whereNotIn('status', ['draft', 'cancelled'])
+				->orderBy('updated_at', 'desc')
+				->get();
 
 				return DataTables::of($events)
-					 ->addColumn('establishment_name', function($event){
-						 return $event->owner->type != 2 ? $event->owner->company->company_name : null;
-					 })
-					 ->addColumn('owner', function($event) use ($user){
-						 if ($user->LanguageId == 1) {
-							 return ucwords($event->owner->NameEn);
-						 }
-						 return $event->owner->NameAr;
-					 })
-					 ->addColumn('event_name', function($event) use ($user){
-						 if ($user->LanguageId == 1) {
-							 return ucwords($event->name_en);
-						 }
-						 return $event->name_ar;
-					 })
-					 ->addColumn('type', function($event){
-						 return ucwords(userType($event->owner->type));
-					 })
-					 ->editColumn('created_at', function($event){
-						 return $event->created_at->format('d-M-Y');
-					 })
-					 ->addColumn('start', function($event){
-						 return $event->issued_date.'  '.$event->time_start;
-					 })
-					 ->editColumn('status', function($event){
-						 return permitStatus($event->status);
-					 })
-					 ->addColumn('action', function($event){
+				->addColumn('establishment_name', function($event){
+					return $event->owner->type != 2 ? $event->owner->company->company_name : null;
+				})
+				->addColumn('owner', function($event) use ($user){
+					if ($user->LanguageId == 1) {
+						return ucwords($event->owner->NameEn);
+					}
+					return $event->owner->NameAr;
+				})
+				->addColumn('event_name', function($event) use ($user){
+					if ($user->LanguageId == 1) {return ucwords($event->name_en);} return $event->name_ar; })
+				->addColumn('type', function($event){ return ucwords(userType($event->owner->type)); })
+				->editColumn('created_at', function($event){ return $event->created_at->format('d-M-Y'); })
+				->addColumn('start', function($event){ return $event->issued_date.'  '.$event->time_start; })
+				->editColumn('status', function($event){ return permitStatus($event->status); })
+				->addColumn('action', function($event){
 					 	if($event->status == 'rejected'){ return null; }
 					 	return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i> DOWNLOAD</a>';
 					 })

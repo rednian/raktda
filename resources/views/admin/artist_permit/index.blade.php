@@ -211,7 +211,9 @@
       function activeArtistTable() {
 
          active_artist_table = $('table#active-artist').DataTable({
-            dom: '<"toolbar-active pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
+          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             ajax: {
                url: '{{ route('admin.artist.datatable') }}',
                data: function (d) {
