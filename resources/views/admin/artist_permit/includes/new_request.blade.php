@@ -12,11 +12,11 @@
 		</div>
 	</div>
 	<div class="col-8">
-		<section class="form-row">
+		<form class="form-row">
 			<div class="col-4">
 				  <div class="input-group input-group-sm">
 				  		<div class="kt-input-icon kt-input-icon--right">
-				  			<input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="new-applied-date" >
+				  			<input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="new-applied-date" >
 				  			<span class="kt-input-icon__icon kt-input-icon__icon--right">
 				  				<span><i class="la la-calendar"></i></span>
 				  			</span>
@@ -41,7 +41,7 @@
 			<div class="col-1">
 				<button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">RESET</button>
 			</div>
-		</section>
+		</form>
 	</div>
 	<div class="col-md-3">
 		<div class="form-group form-group-sm">

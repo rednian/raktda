@@ -77,75 +77,63 @@
 	 </section>
 @endsection
 @section('script')
-	 <script type="text/javascript">
+<script type="text/javascript">
+  window.artistPermit = {};
+  var processingPermit = {};
+  var activePermit = {};
+  var archivePermit = {};
+  var active_artist_table = {};
 
-     window.artistPermit = {};
-     var active_artist_table;
-     var filter = {
-       today: null,
-       action_needed: null,
-       getAction: function () { return this.action_needed; },
-       getToday: function () { return this.today; }
-     };
+  var hash = window.location.hash;
 
-       var hash = window.location.hash;
+  $(document).ready(function () {
+    newRequest();
 
-     $(document).ready(function () {
+    hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+    
+    $('.nav-tabs a').click(function (e) {
+      $(this).tab('show');
+      var scrollmem = $('body').scrollTop();
+      window.location.hash = this.hash;
+      $('html,body').scrollTop(scrollmem);
+    });
 
-        newRequest();
-         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-         $('.nav-tabs a').click(function (e) {
-             $(this).tab('show');
-             var scrollmem = $('body').scrollTop();
-             window.location.hash = this.hash;
-             $('html,body').scrollTop(scrollmem);
-           });
+    $('.nav-tabs a').on('shown.bs.tab', function (event) {
+      var current_tab = $(event.target).attr('href');
+      if (current_tab == '#processing-permit') { processingTable(); }
+      if (current_tab == '#active-permit' ) { approvedTable(); }
+      if (current_tab == '#archive-permit') { rejectedTable(); }
+      if (current_tab == '#active-artist' ) { activeArtistTable(); }
+      if (current_tab == '#blocked-artist') { blockArtistTable(); }
+    });
+  });
 
-       $('.nav-tabs a').on('shown.bs.tab', function (event) {
-         var current_tab = $(event.target).attr('href');
+  function blockArtistTable() {
+    $('button#unblock-artist-button').click(function () {
 
-         if (current_tab == '#processing-permit' && !$.fn.dataTable.isDataTable('table#artist-permit-processing')) { processingTable(); }
-         if (current_tab == '#active-permit' && !$.fn.dataTable.isDataTable('table#artist-permit-approved')) { approvedTable(); }
-         if (current_tab == '#archive-permit' && !$.fn.dataTable.isDataTable('table#artist-permit-rejected')) { rejectedTable(); }
-         if (current_tab == '#active-artist' && !$.fn.dataTable.isDataTable('table#active-artist')) { activeArtistTable(); }
-         if (current_tab == '#blocked-artist' && !$.fn.dataTable.isDataTable('table#block-artist')) { blockArtistTable(); }
-       });
+      var rows_selected = block_artist_table.column(0).checkboxes.selected();
+      artist_id=[]
+      $.each(rows_selected, function(index, rowId) { artist_id.push(rowId); })
+      if(artist_id.length>0){
+        $.ajax({
+          type: 'post',
+          url: " {{route('admin.checked_list')}}",
+          data: {id:artist_id},
+          success: function (data) {
+            var html=$('#unblock_checked_list').html('<tr><th>Sn</th><th>Name</th><th>Person Code</th></tr>');
+            $.each(data, function(key,val) {
+              var value=key+1;
+              $(html).append( '<tr><td>'+value+'</td><td>' +val.firstname_en + ' '+  val.lastname_en + '</td><td>'+val.person_code+'</td></tr>' );
+            });
+          }
+        });
+      }
 
-     });
-
-      function blockArtistTable() {
-
-          $('button#unblock-artist-button').click(function () {
-
-                  var rows_selected = block_artist_table.column(0).checkboxes.selected();
-
-              artist_id=[]
-              $.each(rows_selected, function(index, rowId) {
-                  artist_id.push(rowId);
-              })
-              if(artist_id.length>0){
-                  $.ajax({
-                      type: 'post',
-                      url: " {{route('admin.checked_list')}}",
-                      data: {id:artist_id},
-                      success: function (data) {
-                          var html=$('#unblock_checked_list').html('<tr><th>Sn</th><th>Name</th><th>Person Code</th></tr>')
-                          $.each(data, function(key,val) {
-                              var value=key+1;
-                              $(html).append( '<tr><td>'+value+'</td><td>' +val.firstname_en + ' '+  val.lastname_en + '</td><td>'+val.person_code+'</td></tr>' );
-                          });
-                      }
-                  });
-
-              }
-
-                  if (rows_selected.length > 0) {
-                      $('#block_artist_number').html(rows_selected.length+'  Artist Seleted').css({'color':'green'})
-
-                      $('#block-artist-alert').addClass('d-none');
-                      $('#block-artist-modal').modal('show');
-
-                      $('#unblock_artist').click('submit', function(e) {
+      if (rows_selected.length > 0) {
+        $('#block_artist_number').html(rows_selected.length+'  Artist Seleted').css({'color':'green'})
+        $('#block-artist-alert').addClass('d-none');
+        $('#block-artist-modal').modal('show');
+        $('#unblock_artist').click('submit', function(e) {
                           e.preventDefault();
                           artist_id=[]
                           $.each(rows_selected, function(index, rowId) {
@@ -176,6 +164,9 @@
 
 
         block_artist_table=  $('table#block-artist').DataTable({
+          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             ajax: {
                url: '{{ route('admin.artist.datatable') }}',
                data: function (d) {
@@ -320,7 +311,33 @@
 
 
       function approvedTable() {
+        $('input#new-applied-date').daterangepicker({
+          autoUpdateInput: false,
+          buttonClasses: 'btn',
+          applyClass: 'btn-warning btn-sm btn-elevate',
+          cancelClass: 'btn-secondary btn-sm btn-elevate',
+          startDate: start,
+          endDate: end,
+          maxDate: new Date,
+          ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          }
+        }, function (start, end, label) {
+          $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        }).on('apply.daterangepicker', function(e, d){
+         new_selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+         artistPermit.draw();
+        });
+
          $('table#artist-permit-approved').DataTable({
+          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             ajax: {
                url: '{{ route('admin.artist_permit.datatable')}}',
                data: function (d) {
@@ -328,7 +345,7 @@
                }
             },
             columnDefs: [
-               {targets: '_all', className: 'no-wrap'},
+               {targets: [0, 6], className: 'no-wrap'},
                {targets: 5, sortable: false},
             ],
             columns: [
@@ -384,11 +401,46 @@
    
 
      function rejectedTable() {
-       $('table#artist-permit-rejected').DataTable({
+      
+      var start = moment().subtract(29, 'days');
+      var end = moment();
+      var selected_date = [];
+
+      $('input#archive-applied-date').daterangepicker({
+        autoUpdateInput: false,
+        buttonClasses: 'btn',
+        applyClass: 'btn-warning btn-sm btn-elevate',
+        cancelClass: 'btn-secondary btn-sm btn-elevate',
+        startDate: start,
+        endDate: end,
+        maxDate: new Date,
+        ranges: {
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+      }, function (start, end, label) {
+        $('input#archive-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+      }).on('apply.daterangepicker', function(e, d){
+       selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+       artistPermit.draw();
+      });
+
+       archivePermit = $('table#artist-permit-rejected').DataTable({
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
          ajax: {
            url: '{{ route('admin.artist_permit.datatable') }}',
            data: function (d) {
-             d.status = ['rejected', 'expired', 'cancelled'];
+
+            var status = $('select#archive-permit-status').val();
+            d.request_type = $('select#archive-request-type').val();
+            d.status = status != null ? [status] : ['rejected', 'expired', 'unprocessed'];
+            d.date = $('#archive-applied-date').val()  ? selected_date : null;
            }
          },
          columnDefs: [
@@ -410,14 +462,24 @@
            });
          }
        });
+       //clear fillte button
+       $('#archive-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); archivePermit.draw();});
+
+       archivePermit.page.len($('#archive-length-change').val());
+       $('#archive-length-change').change(function(){ archivePermit.page.len( $(this).val() ).draw(); });
+
+       var search = $.fn.dataTable.util.throttle(function(v){ v.search(v).draw(); }, 500);
+       $('input#search-archive-request').keyup(function(){ search($(this).val()); });
+
      }
         
-    var new_selected_date = [];
+  
 
      function newRequest() {
 
        var start = moment().subtract(29, 'days');
        var end = moment();
+       var selected_date = [];
 
        $('input#new-applied-date').daterangepicker({
          autoUpdateInput: false,
@@ -438,15 +500,9 @@
        }, function (start, end, label) {
          $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
        }).on('apply.daterangepicker', function(e, d){
-        new_selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+        selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
         artistPermit.draw();
        });
-
-       $('#new-btn-reset').click(function(){
-          $('input[name=today]').removeAttr('checked');
-       });
-
-   
 
 
        artistPermit = $('table#artist-permit').DataTable({
@@ -459,12 +515,11 @@
              var status = $('select#new-permit-status').val();
              d.request_type = $('select#new-request-type').val();
              d.status = status != null ? [status] : ['new', 'modified'];
-             d.date = $('#new-applied-date').val()  ? new_selected_date : null; 
+             d.date = $('#new-applied-date').val()  ? selected_date : null; 
            }
          },
          columnDefs: [
            {targets: [0, 2, 4, 5], className: 'no-wrap'},
-           // {targets: 5, sortable: false}
          ],
          columns: [
            {data: 'reference_number'},
@@ -481,20 +536,14 @@
          },
        });
 
-       
+       //clear fillte button
+       $('#new-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); artistPermit.draw();});
+
        artistPermit.page.len($('#new-length-change').val());
-       $('#new-length-change').change(function(){
-         artistPermit.page.len( $(this).val() ).draw();
-       });
+       $('#new-length-change').change(function(){ artistPermit.page.len( $(this).val() ).draw(); });
 
-
-       var search = $.fn.dataTable.util.throttle(function(v){
-        artistPermit.search(v).draw();
-       }, 500);
-
-       $('input#search-new-request').keyup(function(){
-          search($(this).val());
-       });
+       var search = $.fn.dataTable.util.throttle(function(v){ artistPermit.search(v).draw(); }, 500);
+       $('input#search-new-request').keyup(function(){ search($(this).val()); });
 
 
      }
