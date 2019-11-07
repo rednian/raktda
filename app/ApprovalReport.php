@@ -12,10 +12,6 @@ class ApprovalReport extends Model
     protected $dates = ['created_at', 'updated_at'];
 
 
-    public function scopeInspection($q)
-    {
-    
-    }
 
 
     public function approval()

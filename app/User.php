@@ -37,7 +37,17 @@ class User extends Authenticatable implements Auditable
         'password', 'remember_token',
     ];
 
-    protected $casts = ['email_verified_at' => 'datetime',];
+    protected $casts = ['email_verified_at' => 'datetime'];
+
+    public function approver()
+    {
+        return $this->hasMany(Approvers::class, 'user_id');
+    }
+
+    public function leave()
+    {
+        return $this->hasMany(EmployeeLeave::class, 'user_id');
+    }
 
     public  function company()
     {
@@ -51,6 +61,6 @@ class User extends Authenticatable implements Auditable
 
     public function roles()
     {
-        return $this->belongsToMany(Roles::class, 'roleuser', 'role_id', 'user_id');
+        return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id');
     }
 }
