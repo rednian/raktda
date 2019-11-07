@@ -8,10 +8,10 @@ class Country extends Model
 {
     protected $table = 'country';
     protected $primaryKey = 'country_id';
-    protected $fillable = ['name_en', 'name_ar', 'nationality_en', 'nationality_ar'];
+    protected $fillable = ['country_code', 'name_en', 'name_ar', 'nationality_en', 'nationality_ar'];
 
-    public function artist()
+    public function artistpermit()
     {
-    	return $this->hasMany(Artist::class, 'country_id');
+    	return $this->hasMany(ArtistPermit::class, 'country_id');
     }
 }

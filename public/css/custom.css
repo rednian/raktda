@@ -87,7 +87,7 @@
 }
 
 .kt-badge {
-  border-radius: 0;
+  /*border-radius: 0;*/
 }
 
 /*button*/
@@ -129,6 +129,10 @@
 /*text*/
 .text-danger {
   color: var(---danger) !important;
+}
+
+.kt-user-card .kt-user-card__avatar .kt-badge, .kt-user-card .kt-user-card__avatar img {
+  /*border-radius: 0px; */
 }
 
 /*tabs*/

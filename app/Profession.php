@@ -17,4 +17,11 @@ class Profession extends Model
     {
         return $this->hasMany(ArtistPermit::class, 'profession_id');
     }
+
+    public function createdBy(){
+    	return $this->belongsTo(User::class, 'created_by', 'user_id')->withDefault([
+	        'NameEn' => 'Not Available',
+	        'NameAr' => 'Not Available'
+	    ]);
+    }
 }
