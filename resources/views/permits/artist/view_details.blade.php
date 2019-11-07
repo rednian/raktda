@@ -14,15 +14,16 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn--maroon btn-elevate btn-sm">
-                    <i class="la la-angle-left"></i>
+                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u
+">
+                    <i class="la la-arrow-left"></i>
                     Back
                 </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn--maroon btn-elevate btn-sm">
-                    <i class="la la-angle-left"></i>
+                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn-label-back btn-sm">
+                    <i class="la la-arrow-left"></i>
                 </a>
             </div>
         </div>
@@ -35,24 +36,24 @@
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
                 <span>To Date:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                <span>Work Location:</span>&emsp;
+                <span>@lang('words.location'):</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
-                <span>Reference No:</span>&emsp;
+                <span>@lang('words.reference_no'):</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
 
             </div>
         </div>
 
         <div class="table-responsive">
-            <table class="table table-striped table-borderless  " id="applied-artists-table">
-                <thead class="thead-dark">
+            <table class="table table-striped table-hover border table-borderless  " id="applied-artists-table">
+                <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Profession</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Status</th>
+                        <th>@lang('words.first_name')</th>
+                        <th>@lang('words.last_name')</th>
+                        <th>@lang('words.profession')</th>
+                        <th>@lang('words.mobile_number')</th>
+                        {{-- <th>@lang('words.email')</th> --}}
+                        <th>@lang('words.status')</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -64,14 +65,13 @@
                         <td>{{$artistPermit->lastname_en}}</td>
                         <td>{{$artistPermit->profession['name_en']}}</td>
                         <td>{{$artistPermit->mobile_number}}</td>
-                        <td>{{$artistPermit->email}}</td>
+                        {{-- <td>{{$artistPermit->email}}</td> --}}
                         <td>
                             {{ucwords($artistPermit->artist_permit_status)}}
                         </td>
-                        <td class="text-center"> <a href="#" data-toggle="modal" data-target="#artist_details"
-                                onclick="getArtistDetails({{$artistPermit->artist_permit_id}})"
-                                class="btn-clean btn-icon btn-icon-md" title="View">
-                                <i class="la la-file la-2x"></i>
+                        <td class="text-center"> <a href="#" data-toggle="modal"
+                                onclick="getArtistDetails({{$artistPermit->artist_permit_id}})" title="View">
+                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a></td>
                     </tr>
                     @endforeach
@@ -83,24 +83,7 @@
 
 
 
-    <!--begin::Modal-->
-    <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body" id="detail-permit">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
-
+    @include('permits.artist.modals.view_artist')
 
 
 
@@ -128,6 +111,7 @@
                 $('#detail-permit').empty();
                if(data)
                {
+                   $('#artist_details').modal('show');
                 var code = data.artist.person_code ? data.artist.person_code : '';
                 $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td >' + code + '</td><th>Profession</th> <td>' + ( data.profession  ?  data.profession.name_en : '' )+ '</td></tr><tr><th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td> </tr><tr><th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td> </tr> <tr> <th> Nationality </th> <td >' + data.nationality.nationality_en + '</td> <th>Email</th> <td>' + data.email + '</td>  </tr> <tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Exp</th> <td >' +moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr></table>');
 

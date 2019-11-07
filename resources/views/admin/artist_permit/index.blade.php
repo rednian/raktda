@@ -78,6 +78,7 @@
 @endsection
 @section('script')
 <script type="text/javascript">
+
   window.artistPermit = {};
   var processingPermit = {};
   var activePermit = {};
@@ -547,6 +548,5 @@
 
 
      }
-	 </script>
-
+</script>
 @endsection

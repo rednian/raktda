@@ -11,8 +11,8 @@
 </style>
 @stop
 @section('content')
-	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
-			<div class="kt-portlet__body kt-padding-t-5">
+<section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
+    <div class="kt-portlet__body kt-padding-t-5">
         <section class="row">
           <div class="col-md-12">
 
@@ -30,7 +30,6 @@
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
                @include('admin.artist_permit.includes.summary')
-
                <section class="form-row">
                 <div class="col-1">
                   <div>

@@ -10,9 +10,6 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--lg">
                 <div class="kt-portlet__head-label">
-                    <span class="kt-portlet__head-icon">
-                        <i class="kt-font-brand la la-smile-o la-2x"></i>
-                    </span>
                     <h3 class="kt-portlet__head-title">
                         Happiness Meter
                     </h3>
@@ -29,25 +26,26 @@
                         <div class="kt-wizard-v3__review">
                             <div class="kt-form__section kt-form__section--first">
                                 <div class="d-flex justify-content-around happiness--center">
-                                    <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id)">
+                                    <input type="hidden" id="sel_value">
+                                    <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 1)">
                                         <!--<a href="/company/artist_permits"> -->
                                         <!-- <img src="./assets/img/happiness.svg" alt="" id="happy_btn"> -->
                                         <?php echo file_get_contents('./img/happiness.svg'); ?>
                                         <!--</a> -->
                                     </div>
-                                    <div id="notbad" style="cursor:pointer" onclick="makeSelected(this.id)">
+                                    <div id="notbad" style="cursor:pointer" onclick="makeSelected(this.id,2)">
                                         <!--<a href="/company/artist_permits"> -->
                                         <!-- <img src="./assets/img/notbad.svg" alt="" id="notbad_btn"> -->
                                         <?php echo file_get_contents('./img/notbad.svg'); ?>
                                         <!--</a> -->
                                     </div>
-                                    <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id)">
+                                    <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id,3)">
                                         <!--<a href="/company/artist_permits"> -->
                                         <!-- <img src="./assets/img/sad.svg" alt="" id="sad_btn"> -->
                                         <?php echo file_get_contents('./img/sad.svg'); ?>
                                         <!--</a> -->
                                     </div>
-                                    <input type="hidden" id="artist_permit_id" value={{$id}}>
+                                    <input type="hidden" id="permit_id" value={{$id}}>
                                 </div>
 
                             </div>
@@ -56,6 +54,13 @@
                 </div>
 
                 <!--end: Form Wizard Step 5-->
+
+                <div class="d-flex justify-content-end">
+                    <div class="btn btn-label-maroon btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
+                        <i class="la la-check"></i>
+                        Submit
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -68,22 +73,34 @@
 
 
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script>
-    $('#happy_btn').click(function(){
-        rating = 'happy';
-        sendRating();
-    })
-    $('#notbad_btn').click(function(){
-        rating = 'notbad';
-        sendRating();
-    })
-    $('#sad_btn').click( function(){
-        rating = 'sad';
-        sendRating();
-    })
+    $('#submit_btn').click((e) => {
 
-    function makeSelected(id) {
+                var value =  $('#sel_value').val();
+
+                if(value)
+                {
+                    $.ajax({
+                        url: "{{route('artist.submit_happiness')}}",
+                        type: "POST",
+                        data: {
+                            permit_id:$('#permit_id').val(),
+                            happiness: value,
+                        },
+                        success: function (result) {
+                            if(result.message[0]){
+                                window.location.href = "{{route('artist.index')}}#valid";
+                            }
+                        }
+                    });
+                } else {
+                    alert('Please Select Your Experience');
+                }
+
+
+        });
+
+    function makeSelected(id, value) {
 			// console.log(id);
 			if (id == 'happy') {
 				$('#happy svg path').attr('fill', '#80262b');
@@ -98,7 +115,8 @@
 				$('#happy svg path').attr('fill', '#EA9400');
 				$('#notbad svg path').attr('fill', '#EA9400');
 			}
-			Swal.fire({
+            $('#sel_value').val(value);
+			/*Swal.fire({
 				title: 'Great!',
 				text: "Thank you for the feedback!",
 				type: 'warning',
@@ -110,7 +128,7 @@
 				if (result.value) {
 					window.location.href = "{{route('artist.index')}}#valid";
 				}
-			})
+			})*/
 		}
 
 

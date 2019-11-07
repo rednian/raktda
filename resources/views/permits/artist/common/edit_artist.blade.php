@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
-
 <!-- begin:: Content -->
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="kt-portlet">
@@ -32,7 +31,7 @@
                             <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
-                                        <span>03</span> Upload Documents
+                                        <span>03</span> @lang('words.upload_documents')
                                     </div>
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
@@ -43,6 +42,9 @@
 
                     <!--end: Form Wizard Nav -->
                 </div>
+                @php
+                $language_id = Auth::user()->LanguageId;
+                @endphp
 
                 <input type="hidden" id="artist_permit_id" value="{{$artist_details->artist_permit_id }}">
                 <input type="hidden" id="temp_artist_id" value="{{$artist_details->artist_id }}">
@@ -50,104 +52,16 @@
                 <input type="hidden" id="issue_date" value="{{$artist_details->issue_date}}">
                 <input type="hidden" id="expiry_date" value="{{$artist_details->expiry_date}}">
 
+                <input type="hidden" id="language_id" value="{{$language_id}}">
+
                 <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
 
                     <!--begin: Form Wizard Form-->
                     {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
                     <div class="kt-form w-100 px-5" id="kt_form">
                         <!--begin: Form Wizard Step 1-->
-                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content"
-                            data-ktwizard-state="current">
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v3__form">
-                                    <!--begin::Accordion-->
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
 
-                                        <div class="card">
-                                            <div class="card-header" id="headingTwo6">
-                                                <div class="card-title" data-toggle="collapse"
-                                                    data-target="#collapseTwo6" aria-expanded="false"
-                                                    aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-transform-u"> Documents Required</h6>
-                                                </div>
-                                            </div>
-                                            <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
-                                                data-parent="#accordionExample6">
-                                                <div class="card-body">
-
-                                                    <table class="table table-borderless">
-                                                        <tr>
-                                                            <th>Document</th>
-                                                            <th>Description</th>
-                                                        </tr>
-                                                        @foreach($requirements as $req)
-                                                        <tr>
-                                                            <td>{{$req->requirement_name}}</td>
-                                                            <td>{{$req->requirement_description}}</td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </table>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header" id="headingThree6">
-                                                <div class="card-title collapsed" data-toggle="collapse"
-                                                    data-target="#collapseThree6" aria-expanded="false"
-                                                    aria-controls="collapseThree6">
-                                                    <h6 class="kt-font-transform-u"> Permit Fees Structure</h6>
-                                                </div>
-                                            </div>
-                                            <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
-                                                data-parent="#accordionExample6">
-                                                <div class="card-body">
-                                                    <table class="table table-borderless">
-                                                        <tr>
-                                                            <th>Profession</th>
-                                                            <th>Fee</th>
-                                                        </tr>
-                                                        @foreach($profession as $pt)
-                                                        <tr>
-                                                            <td>{{$pt->name_en}}</td>
-                                                            <td>{{$pt->amount}}</td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </table>
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header" id="headingFour6">
-                                                <div class="card-title collapsed" data-toggle="collapse"
-                                                    data-target="#collapseFour6" aria-expanded="false"
-                                                    aria-controls="collapseFour6">
-                                                    <h6 class="kt-font-transform-u">Rules and Conditions</h6>
-                                                </div>
-                                            </div>
-                                            <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
-                                                data-parent="#accordionExample6">
-                                                <div class="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                    terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                                    skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                    Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                            <input type="checkbox" id="agree" name="agree" checked> I Read and
-                                            understand all
-                                            service rules, And agree to continue submitting it.
-                                            <span></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @include('permits.artist.common.wizard_instructions')
 
                         <input type="hidden" id="fromPage" value={{$from}}>
                         <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
@@ -155,7 +69,7 @@
                         <!--end: Form Wizard Step 1-->
 
                         @include('permits.artist.common.edit-artist-details-html', [ 'artist_details' =>
-                        $artist_details]);
+                        $artist_details])
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -191,7 +105,7 @@
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-12">
                                                     <label
-                                                        class="kt-font-bold text--maroon">{{$req->requirement_name}}</label>
+                                                        class="kt-font-bold text--maroon">{{$language_id == 1 ?$req->requirement_name : $req->requirement_name_ar}}</label>
                                                     <p for="" class="reqName    ">
                                                         {{$req->requirement_description}}</p>
                                                 </div>
@@ -210,8 +124,7 @@
                                                 @if($req->dates_required == 1)
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
-                                                        title="Issue Date">Issue
-                                                        Date</label>
+                                                        title="Issue Date">@lang('words.issue_date')</label>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="doc_issue_date_{{$i}}" data-date-end-date="0d"
                                                         id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" <?php
@@ -221,8 +134,7 @@
                                                 </div>
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
-                                                        title="Expiry Date">Expiry
-                                                        Date</label>
+                                                        title="Expiry Date">@lang('words.expired_date')</label>
                                                     <input type="text"
                                                         class="form-control form-control-sm date-picker {{($req->validity != null || $req->validity != 0) ? 'mk-disabled' : ''}}"
                                                         name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
@@ -247,22 +159,39 @@
 
 
                     <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
                             Previous
                         </div>
                         <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
+                        @php
+                        $backUrl = '';
+                        switch ($from) {
+                        case 'amend':
+                        $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/amend';
+                        break;
+                        case 'renew':
+                        $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/renew';
+                        break;
+                        case 'edit':
+                        $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/edit';
+                        break;
+                        }
+                        @endphp
 
-                        <a href="{{url('company/view_draft_details').'/'.$artist_details->permit_id}}">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                        <a href="{{url($backUrl)}}">
+                            <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                                id="back_btn">
                                 Back
                             </div>
                         </a>
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                            Update
+                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            id="submit_btn">
+                            <i class="la la-check"></i>
+                            Update & Submit
                         </div>
 
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
                             Next Step
                         </div>
@@ -293,7 +222,6 @@
 
 
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script>
@@ -316,7 +244,7 @@
         wizard.goTo(2);
         $('#back_btn').css('display', 'none');
 
-        $('#city').val() ? getAreas($('#city').val(), $('#sel_area').val()) : '';
+        $('#city').val() ? getAreas($('#city').val(), $('#sel_area').val(), $('#language_id').val()) : '';
 
     });
 
@@ -736,6 +664,8 @@
                                 toUrl = toUrl.replace(':from', 'edit');
                             } else if(fromPage == 'renew') {
                                 toUrl = toUrl.replace(':from', 'renew');
+                            } else if(fromPage == 'draft') {
+                                toUrl = toUrl.replace(':from', 'draft');
                             }
                             toUrl = toUrl.replace(':id', permit_id);
                             window.location.href= toUrl ;
@@ -799,7 +729,7 @@
     $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
 
 
-    const getAreas = (city_id, sel_id) => {
+    const getAreas = (city_id, sel_id, language_id) => {
         $.ajax({
                 url:"{{url('company/fetch_areas')}}"+'/'+city_id,
                 success: function(result){
@@ -808,7 +738,12 @@
                     $('#area').append('<option value=" ">Select</option>');
                     for(let i = 0; i< result.length;i++)
                     {
-                        $('#area').append('<option value="'+result[i].id+'" >'+result[i].area_en+'</option>');
+                        if(language_id == "1"){
+                            $('#area').append('<option value="'+result[i].id+'" >'+result[i].area_en+'</option>');
+                        }
+                        else if(language_id == "2"){
+                            $('#area').append('<option value="'+result[i].id+'" >'+result[i].area_ar+'</option>');
+                        }
                     }
                     if(sel_id){
                         $('#area').val(sel_id);

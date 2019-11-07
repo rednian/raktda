@@ -3,14 +3,12 @@
             <div class="kt-wizard-v3__form">
                 <form id="artist_details" novalidate>
                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
-
                         <div class="card">
                             <div class="card-header" id="headingOne6">
                                 <div class="card-title collapsed" data-toggle="collapse"
                                     data-target="#collapseOne6" aria-expanded="true"
                                     aria-controls="collapseOne6">
-                                    <h6 class="kt-font-transform-u">Personal
-                                        information</h6>
+                                    <h6 class="kt-font-transform-u">@lang('words.personal_information')</h6>
                                 </div>
                             </div>
                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -25,37 +23,35 @@
                                             <section class="kt-form--label-right">
                                                 <div class="form-group form-group-sm row">
                                                     <label for="artist_number"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Person
-                                                        Code</label>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.person_code')</label>
                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                     <div class="col-lg-5">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm"
                                                                 name="code" id="code"
-                                                                placeholder="Person Code"
+                                                                placeholder="@lang('words.person_code')"
                                                                 value="{{$artist_details->person_code != 0 ? $artist_details->person_code : ''}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <span id="changeArtistLabel"
                                                             class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                            onclick="removeSelectedArtist()">Change
+                                                            onclick="removeSelectedArtist()">@lang('words.change')
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group form-group-sm row">
                                                     <label for="fname_en"
-                                                        class="col-4 col-form-label kt-font-bold text-right">First
-                                                        Name <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right"> @lang('words.first_name') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="fname_en" id="fname_en"
-                                                                placeholder="First Name"
-                                                                value="{{$artist_details->firstname_en  }}">
+                                                                placeholder="@lang('words.first_name')"
+                                                                value="{{$artist_details->firstname_en}}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -64,22 +60,21 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="fname_en"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Last
-                                                        Name <span class="text-danger">*</span></label>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.last_name')<span class="text-danger">*</span></label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="lname_en" id="lname_en"
-                                                                placeholder="Last Name"
-                                                                value="{{$artist_details->lastname_en  }}">
+                                                                placeholder="@lang('words.last_name')"
+                                                                value="{{$artist_details->lastname_en}}">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="nationality"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Nationality
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.nationality')
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
@@ -88,12 +83,12 @@
                                                                 class="form-control form-control-sm "
                                                                 name="nationality" id="nationality">
                                                                 {{--   - class for search in select  --}}
-                                                                <option value="">Select</option>
+                                                                <option value="">@lang('words.select')</option>
                                                                 @foreach ($countries as $ct)
                                                                 <option value="{{$ct->country_id}}" <?php
                                                                     if($ct->country_id == $artist_details->nationality)
                                                                     { echo 'selected ' ;}?>>
-                                                                    {{$ct->nationality_en}}
+                                                                    {{$language_id == 1 ? $ct->nationality_en : $ct->nationality_ar}}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
@@ -103,8 +98,7 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="dob"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Birth
-                                                        Date <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.birth_date') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
@@ -121,15 +115,14 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="profession"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Passport
-                                                        No<span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.passport_number') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="passport" id="passport"
-                                                                placeholder="Passport Number"
+                                                                placeholder="@lang('words.passport_number')"
                                                                 value="{{$artist_details->passport_number}}">
                                                         </div>
                                                     </div>
@@ -137,8 +130,7 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="pp_expiry"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Passport
-                                                        Expiry <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.passport_expiry')<span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
@@ -154,14 +146,14 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="uid_number"
-                                                        class="col-4 col-form-label kt-font-bold text-right">UID
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.uid_no')
                                                         <span class="text-danger">*</span> </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="uid_number" id="uid_number"
-                                                                placeholder="UID Number"
+                                                                placeholder="@lang('words.uid_no')"
                                                                 value="{{$artist_details->uid_number}}">
                                                         </div>
                                                     </div>
@@ -170,8 +162,7 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="dob"
-                                                        class="col-4 col-form-label kt-font-bold text-right">UID
-                                                        Expire Date <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.uid_expiry') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
@@ -188,21 +179,19 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="religion"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Religion
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.religion')
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <select
                                                                 class=" form-control form-control-sm "
                                                                 name="religion" id="religion">
-                                                                <option value="">Select</option>
+                                                                <option value="">@lang('words.select')</option>
                                                                 @foreach ($religions as $reli)
-                                                                <option value={{$reli->id}} <?php
-                                                                    if($reli->id == $artist_details->religion){
-                                                                        echo 'selected';
-                                                                    }
-                                                                    ?>>
-                                                                    {{$reli->name_en}}
+                                                                <option value={{$reli->id}} {{$reli->id == $artist_details->religion ? 
+                                                                         'selected': ''}}
+                                                                    >
+                                                                    {{$language_id == 1 ? $reli->name_en : $reli->name_ar}}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
@@ -220,20 +209,19 @@
                                                 <input type="hidden" id="artist_permit_num">
                                                 <div class="form-group form-group-sm row">
                                                     <label for="profession"
-                                                        class="col-4 col-form-label kt-font-bold text-right">
-                                                        Profession <span
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.profession') <span
                                                             class="text-danger">*</span></label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <select
                                                                 class="form-control form-control-sm "
                                                                 name="profession" id="profession"
-                                                                placeholder="Profession">
+                                                                placeholder="@lang('words.profession')">
                                                                 <option value="">Select</option>
                                                                 @foreach ($profession as $pt)
                                                                 <option value="{{$pt->profession_id}}"
                                                                     <?php if($pt->profession_id == $artist_details->profession_id){ echo 'selected' ;}?>>
-                                                                    {{ucwords($pt->name_en)}}</option>
+                                                                    {{ucwords($language_id == 1 ? $pt->name_en : $pt->name_ar)}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -244,37 +232,35 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="fname_ar"
-                                                        class="col-4 col-form-label kt-font-bold text-right">First
-                                                        Name - Ar <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.first_name_ar') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm text-right "
                                                                 name="fname_ar" id="fname_ar"
-                                                                placeholder="First Name in Arabic"
+                                                                placeholder="@lang('words.first_name_ar') "
                                                                 value="{{$artist_details->firstname_ar}}">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group form-group-sm row">
                                                     <label for="lname_ar"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Last
-                                                        Name - Ar <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.last_name_ar') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm text-right "
                                                                 name="lname_ar" id="lname_ar"
-                                                                placeholder="Last Name in Arabic"
+                                                                placeholder="@lang('words.last_name_ar')"
                                                                 value="{{$artist_details->lastname_ar}}">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group form-group-sm row">
                                                     <label for="gender"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Gender
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.gender') 
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
@@ -282,13 +268,13 @@
                                                             <select
                                                                 class=" form-control form-control-sm "
                                                                 name="gender" id="gender">
-                                                                <option value="">Select</option>
+                                                                <option value="">@lang('words.select')</option>
                                                                 <option value="1"
-                                                                    <?php if($artist_details->gender == 1) { echo 'selected' ; } ?>>
-                                                                    Male</option>
+                                                                    {{ $artist_details->gender == 1 ? 'selected' : '' }}>
+                                                                    {{$language_id == 1 ? 'Male' : 'الذكر'}}</option>
                                                                 <option value="2"
-                                                                    <?php if($artist_details->gender == 2) { echo 'selected' ; } ?>>
-                                                                    Female</option>
+                                                                    {{ $artist_details->gender == 2 ? 'selected' : '' }}>
+                                                                    {{$language_id == 1 ? 'Female' : 'أنثى'}}</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -300,22 +286,19 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="visa_type"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
-                                                        Type <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.visa_type') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <select type="text"
                                                                 class="form-control form-control-sm"
                                                                 name="visa_type" id="visa_type">
-                                                                <option value="">Select</option>
+                                                                <option value="">@lang('words.select')</option>
                                                                 @foreach ($visatypes as $vt)
-                                                                <option value={{$vt->id}} <?php
-                                                                    if($vt->id == $artist_details->visa_type){
-                                                                        echo 'selected' ;
-                                                                    }
-                                                                    ?>>
-                                                                    {{$vt->visa_type_en}}
+                                                                <option value={{$vt->id}} 
+                                                                {{$vt->id == $artist_details->visa_type ?  'selected' : '' }}
+                                                                    >
+                                                                    {{$language_id == 1 ? $vt->visa_type_en : $vt->visa_type_ar}}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
@@ -326,15 +309,14 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="visa_number"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
-                                                        Number <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.visa_number') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="visa_number" id="visa_number"
-                                                                placeholder="Visa Number"
+                                                                placeholder="@lang('words.visa_number')"
                                                                 value="{{$artist_details->visa_number}}">
                                                         </div>
                                                     </div>
@@ -345,8 +327,7 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="visa_number"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
-                                                        Expire Date <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.visa_expiry') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
@@ -377,15 +358,14 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="sp_name"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Sponser
-                                                        Name <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.sponsor_name') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="sp_name" id="sp_name"
-                                                                placeholder="Sponser Name"
+                                                                placeholder="@lang('words.sponsor_name')"
                                                                 value="{{$artist_details->sponsor_name_en}}">
                                                         </div>
                                                     </div>
@@ -398,21 +378,17 @@
 
                                                 <div class=" form-group form-group-sm row">
                                                     <label for="language"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Languages
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.language')
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <select
                                                                 class=" form-control form-control-sm "
                                                                 name="language" id="language">
-                                                                <option value="">Select</option>
+                                                                <option value="">@lang('words.select')</option>
                                                                 @foreach ($languages as $lang)
-                                                                <option value={{$lang->id}} <?php
-                                                                    if($lang->id == $artist_details->language){
-                                                                        echo 'selected';
-                                                                    }
-                                                                    ?>>
-                                                                    {{$lang->name_en}}
+                                                                <option value={{$lang->id}} {{$lang->id == $artist_details->language ? 'selected' : ''}}>
+                                                                    {{$language_id == 1 ? $lang->name_en : $lang->name_ar}}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
@@ -441,8 +417,7 @@
                                 <div class="card-title collapsed" data-toggle="collapse"
                                     data-target="#collapseTwo6" aria-expanded="false"
                                     aria-controls="collapseTwo6">
-                                    <h6 class="kt-font-transform-u">Contact
-                                        information
+                                    <h6 class="kt-font-transform-u">@lang('words.contact_information')
                                     </h6>
                                 </div>
                             </div>
@@ -456,15 +431,14 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="mobile"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Mobile
-                                                        No <span class="text-danger">*</span>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.mobile_number') <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="mobile" id="mobile"
-                                                                placeholder="Mobile No."
+                                                                placeholder="@lang('words.mobile_number')"
                                                                 value="{{$artist_details->mobile_number}}">
                                                         </div>
                                                     </div>
@@ -473,15 +447,14 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="landline"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Phone
-                                                        No
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.phone_number')
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="landline" id="landline"
-                                                                placeholder="Landline No."
+                                                                placeholder="@lang('words.phone_number')"
                                                                 value="{{$artist_details->phone_number}}">
                                                         </div>
                                                     </div>
@@ -494,14 +467,14 @@
                                             <section class="kt-form--label-right">
                                                 <div class="form-group form-group-sm row">
                                                     <label for="email"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Email
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.email_address')
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
-                                                                placeholder="Email" name="email"
+                                                                placeholder="@lang('words.email_address')" name="email"
                                                                 id="email"
                                                                 value="{{$artist_details->email}}" />
                                                         </div>
@@ -510,14 +483,13 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="fax_no"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Fax
-                                                        No </label>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.fax_number') </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="fax_no" id="fax_no"
-                                                                placeholder="Fax No"
+                                                                placeholder="@lang('words.fax_number')"
                                                                 value="{{$artist_details->fax_number}}">
                                                         </div>
                                                     </div>
@@ -537,8 +509,7 @@
                                 <div class="card-title collapsed" data-toggle="collapse"
                                     data-target="#collapseTwo7" aria-expanded="false"
                                     aria-controls="collapseTwo7">
-                                    <h6 class="kt-font-transform-u">Address
-                                        information
+                                    <h6 class="kt-font-transform-u">@lang('words.address_information')
                                     </h6>
                                 </div>
                             </div>
@@ -566,19 +537,19 @@
 
                                                 <div class=" form-group form-group-sm row">
                                                     <label for="address"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Emirate
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.emirate')
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <select
                                                                 class=" form-control form-control-sm "
                                                                 name="city" id="city"
-                                                                onChange="getAreas(this.value)">
-                                                                <option value="">Select</option>
+                                                                onChange="getAreas(this.value, {{$artist_details->area}}, {{$language_id}})">
+                                                                <option value="">@lang('words.select')</option>
                                                                 @foreach ($emirates as $em)
-                                                                <option value={{$em->id}}
-                                                                    <?php if($em->id == $artist_details->city){ echo 'selected' ;} ?>>
-                                                                    {{$em->name_en}}
+                                                                <option value="{{$em->id}}"
+                                                                    {{$em->id == $artist_details->city ? 'selected' : '' }}>
+                                                                    {{$language_id == 1 ? $em->name_en : $em->name_ar}}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
@@ -593,14 +564,13 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="email"
-                                                        class="col-4 col-form-label kt-font-bold text-right">PO
-                                                        Box </label>
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.po_box') </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <input type="text"
                                                                 class="form-control form-control-sm "
                                                                 name="po_box" id="po_box"
-                                                                placeholder="PO box"
+                                                                placeholder="@lang('words.po_box')"
                                                                 value="{{$artist_details->po_box}}">
                                                         </div>
                                                     </div>
@@ -609,17 +579,17 @@
 
                                                 <div class="form-group form-group-sm row">
                                                     <label for="address"
-                                                        class="col-4 col-form-label kt-font-bold text-right">Area
+                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.area')
                                                     </label>
                                                     <div class="col-lg-8">
                                                         <div class="input-group input-group-sm">
                                                             <select
                                                                 class="  form-control form-control-sm "
                                                                 name="area" id="area">
-                                                                <option value="">Select</option>
+                                                                <option value="">@lang('words.select')</option>
                                                                 @foreach ($areas as $ar)
-                                                                <option value={{$ar->id}}>
-                                                                    {{$ar->area_en}}
+                                                                <option value="{{$ar->id}}" {{$ar->id == $artist_details->area ? 'selected' : '' }}>
+                                                                    {{$language_id == 1 ? $ar->area_en : $ar->area_ar}}
                                                                 </option>
                                                                 @endforeach
                                                             </select>

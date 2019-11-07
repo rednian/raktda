@@ -6,9 +6,9 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
         return redirect()->route('artist.index');
     })->name('company.dashboard');
 
-    Route::get('{company_name}/dashboard', function () {
-        return redirect()->route('event.index');
-    })->name('company.dashboard');
+    // Route::get('{company_name}/dashboard', function () {
+    //     return redirect()->route('artist.index');
+    // })->name('company.dashboard');
 
     Route::resource('artist', 'Company\ArtistController');
     Route::get('add_new_permit/{id?}', 'Company\ArtistController@create')->name('company.add_new_permit');
@@ -56,7 +56,9 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     Route::get('payment_gateway/{permit}',  'Company\ArtistController@payment_gateway')->name('company.payment_gateway');
     Route::post('artistpermits/{permit}/payment',  'Company\ArtistController@payment')->name('company.payment');
     Route::get('happiness_center/{id}',  'Company\ArtistController@happiness_center')->name('company.happiness_center');
-    Route::post('submit_happiness',  'Company\ArtistController@submit_happiness')->name('company.submit_happiness');
+    Route::post('submit_happiness',  'Company\ArtistController@submit_happiness')->name('artist.submit_happiness');
+    Route::get('artist/get_status/{id}', 'Company\ArtistController@get_status')->name('company.artist.get_status');
+    // Route::get('artist/details/{id}/{from}', 'Company\ArtistController@get_artist_details')->name('artist.details');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
@@ -73,6 +75,7 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     Route::get('fetch_event_drafts',  'Company\EventController@fetch_draft')->name('company.event.fetch_draft');
     Route::get('event/fetch_requirements/{id}', 'Company\EventController@fetch_requirements')->name('company.event.get_requirements');
     Route::get('event/get_additional_requirements/{id}', 'Company\EventController@fetch_additional_requirements')->name('company.event.get_additional_requirements');
+    Route::get('event/get_status/{id}', 'Company\EventController@get_status')->name('company.event.get_status');
     Route::post('event/get_uploaded_docs', 'Company\EventController@get_uploaded_docs')->name('company.event.get_uploaded_docs');
     Route::post('event/make_payment', 'Company\EventController@make_payment')->name('company.event.make_payment');
     Route::get('company/event/calendar', 'Company\EventController@calendarFn')->name('company.event.calendar');

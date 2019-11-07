@@ -2,6 +2,8 @@
 
 @section('title', 'Event Permits - Smart Government Rak')
 
+
+
 @section('content')
 
 
@@ -29,10 +31,11 @@
                         style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ route('event.create')}}">
 
-                            <button class="btn btn--yellow btn-sm btn-wide" id="nav--new-permit-btn">
+                            <button class="btn btn-label-yellow kt-font-transform-u btn-sm" id="nav--new-permit-btn">
+                                <i class="la la-plus"></i>
                                 Add New
                             </button>
-                            <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                            <button class="btn btn-label-yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                                 <i class="la la-plus"></i>
                             </button>
                         </a>
@@ -52,9 +55,9 @@
                             <th>Name</th>
                             <th>From </th>
                             <th>To </th>
-                            <th>Venue</th>
+                            <th>@lang('words.venue')</th>
                             <th>Type</th>
-                            <th>status</th>
+                            <th>@lang('words.status')</th>
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -70,7 +73,7 @@
                             <th>Name</th>
                             <th>From </th>
                             <th>To </th>
-                            <th>Venue</th>
+                            <th>@lang('words.venue')</th>
                             <th>Type</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -82,8 +85,44 @@
 
 
             <div class="tab-pane fade" id="calendar" role="tabpanel">
-                <div class="kt-portlet__body">
-                    <div id="event-calendar">
+                <div class="row">
+                    <div class="col-md-3">
+                        <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
+                            <div class="card">
+                                <div class="card-header" id="heading-address">
+                                    <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse"
+                                        data-target="#collapse-address" aria-expanded="true"
+                                        aria-controls="collapse-address">
+                                        <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">Event type legend</h6>
+                                    </div>
+                                </div>
+                                <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
+                                    data-parent="#accordion-address">
+                                    <div class="card-body" style="padding: 1px;">
+                                        <table class="table table-borderless table- ">
+                                            <tbody>
+                                                @if (!empty($types))
+                                                @foreach ($types as $type)
+                                                <tr>
+                                                    <td>
+                                                        <span
+                                                            style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
+                                                            {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 20)): ucfirst($type->name_ar)  }}
+                                                    </td>
+                                                    </span>
+                                                </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-md-9">
+                        <section id="event-calendar">
+                        </section>
                     </div>
                 </div>
             </div>
@@ -94,8 +133,8 @@
                         <tr>
                             <th>From </th>
                             <th>To </th>
-                            <th>Venue</th>
-                            <th>Name</th>
+                            <th>@lang('words.venue')</th>
+                            <th>@lang('words.event_name')</th>
                             <th>Applied On</th>
                             <th>Actions</th>
                             <th>Details</th>
@@ -136,7 +175,7 @@
                     <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..." style="resize:none;"
                         class="form-control" id="cancel_reason"></textarea>
                     <input type="hidden" id="cancel_permit_id" name="permit_id">
-                    <input type="submit" class="btn btn-sm btn--yellow popup-submit-btn" value="Cancel Permit">
+                    <input type="submit" class="btn btn-sm btn-label-maroon popup-submit-btn" value="Cancel Permit">
                 </form>
             </div>
 
@@ -188,14 +227,13 @@
 
 <!--end::Modal-->
 
-<input type="hidden" id="valid_events" value="{{json_encode($events)}}">
-
 
 </div>
 
 @endsection
 
 @section('script')
+
 <script>
     $('#kt_tabs_list a').click(function(e) {
             e.preventDefault();
@@ -210,7 +248,6 @@
         // var hash = window.location.hash;
         // $('#kt_tabs_list a[href="' + hash + '"]').tab('show');
 
-        var events = JSON.parse($('#valid_events').val());
 
         $(document).ready(function(){
 
@@ -253,19 +290,11 @@
             ],
             columnDefs: [
                 {
-                    targets:0,
-
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
-					}
-                },
-                {
                     targets:1,
 
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.name_ar}</span>`;
+						return `<span >${data}<br/>${full.name_ar}</span>`;
 					}
                 },
                 {
@@ -273,7 +302,7 @@
 
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.time_start}</span>`;
+						return `<span >${data}<br/>${full.time_start}</span>`;
 					}
                 },
                 {
@@ -281,14 +310,14 @@
 
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.time_end}</span>`;
+						return `<span >${data}<br/>${full.time_end}</span>`;
 					}
                 },
                 {
                     targets:4,
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.venue_ar}</span>`;
+						return `<span >${data}<br/>${full.venue_ar}</span>`;
 					}
                 },
                 {
@@ -296,14 +325,14 @@
                     width: '15%',
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
+						return `<span >${data}</span>`;
 					}
                 },
                 // {
                 //     targets:6,
                 //     className:'dt-head-nowrap dt-body-nowrap',
                 //     render: function(data, type, full, meta) {
-                //         return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
+                //         return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
 				// 	}
                 // },
@@ -313,7 +342,7 @@
                     width: '10%',
                     className: 'text-center',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold kt-font-transform-c">${data}</span>`;
+						return `<span class="kt-font-transform-c">${data}</span>`;
 					}
                 }
             ],
@@ -347,14 +376,14 @@
                     targets:1,
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.name_ar}</span>`;
+						return `<span >${data}<br/>${full.name_ar}</span>`;
 					}
                 },
                 {
                     targets:2,
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.time_start}</span>`;
+						return `<span >${data}<br/>${full.time_start}</span>`;
 					}
                 },
                 {
@@ -362,14 +391,14 @@
                     width:'18%',
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.time_end}</span>`;
+						return `<span >${data}<br/>${full.time_end}</span>`;
 					}
                 },
                 {
                     targets:4,
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}<br/>${full.venue_ar}</span>`;
+						return `<span >${data}<br/>${full.venue_ar}</span>`;
 					}
                 },
                 {
@@ -377,7 +406,7 @@
                     width: '12%',
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-bold">${data}</span>`;
+						return `<span >${data}</span>`;
 					}
                 },
 
@@ -409,7 +438,7 @@
                     targets:-3,
                     width: '12%',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ moment(data).format('DD-MMM-YYYY') +'</span>';
+                        return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
 					}
                 },
@@ -418,7 +447,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.time_start+'</span>';
+                        return '<span >'+ data +' <br/> '+full.time_start+'</span>';
 
 					}
                 },
@@ -427,7 +456,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.time_end+'</span>';
+                        return '<span >'+ data +' <br/> '+full.time_end+'</span>';
 
 					}
                 },
@@ -436,7 +465,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.venue_ar+'</span>';
+                        return '<span >'+ data +' <br/> '+full.venue_ar+'</span>';
 
 					}
                 },
@@ -445,7 +474,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +' <br/> '+full.name_ar+'</span>';
+                        return '<span >'+ data +' <br/> '+full.name_ar+'</span>';
 
 					}
                 },
@@ -454,7 +483,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data+'</span>';
+                        return '<span >'+ data+'</span>';
 
 					}
                 },
@@ -463,7 +492,7 @@
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span class="kt-font-bold">'+ data +'</span>';
+                        return '<span >'+ data +'</span>';
 
 					}
                 },
@@ -478,9 +507,36 @@
     });
 
     const cancel_permit = (id, refno) => {
-        $('#cancel_permit_id').val(id);
-        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+        var url = "{{route('company.event.get_status', ':id')}}";
+        url = url.replace(':id', id);
+        $.ajax({
+            url: url,
+            success: function(result){
+               result = result.replace(/\s/g, '');
+                if(result != '') {
+                    if(result == 'new'){
+                        $('#cancel_permit').modal('show');
+                        $('#cancel_permit_id').val(id);
+                        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+                    }else {
+                            alert('Permit is already in processing');
+                    }
+
+                }
+            }
+        });
+
     }
+
+    $('#cancel_permit_form').validate({
+        rules: {
+            cancel_reason: 'required'
+        },
+        messages: {
+            cancel_reason: 'Please Enter the Reason !'
+        }
+    });
+
 
     const show_cancelled = (id) => {
         var url = "{{route('company.event.cancel_reason', ':id')}}";
@@ -518,58 +574,7 @@
         });
     }
 
-    /*
-    function calendarEvents(){
-      var todayDate = moment().startOf('day');
-          var YM = todayDate.format('YYYY-MM');
-          var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
-          var TODAY = todayDate.format('YYYY-MM-DD');
-          var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
-          var calendarEl = document.getElementById('event-calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-              plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-              isRTL: KTUtil.isRTL(),
-              header: {
-                  left: 'prev,next today',
-                  center: 'title',
-                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
-              },
-              height: 800,
-              contentHeight: 780,
-              aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
-              nowIndicator: true,
-              // now: TODAY + 'T09:25:00', // just for demo
-              views: {
-                  dayGridMonth: { buttonText: 'Month' },
-                  timeGridWeek: { buttonText: 'Week' },
-                  timeGridDay: { buttonText: 'Day' },
-                  listDay: { buttonText: 'Day List' },
-                  listWeek: { buttonText: 'Week List' }
-              },
-              defaultView: 'dayGridMonth',
-              // defaultDate: TODAY,
-              editable: true,
-              eventLimit: true, // allow "more" link when too many events
-              navLinks: true,
-              events: '{{ route('company.event.calendar') }}',
-              eventRender: function(info) {
-                  var element = $(info.el);
-                  if (info.event.extendedProps && info.event.extendedProps.description) {
-                      if (element.hasClass('fc-day-grid-event')) {
-                          element.data('content', info.event.extendedProps.description);
-                          element.data('placement', 'top');
-                          KTApp.initPopover(element);
-                      } else if (element.hasClass('fc-time-grid-event')) {
-                          element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
-                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      }
-                  }
-              }
-          });
-          calendar.render();
-     }
-     */
+
 
      function calendarEvents(){
       var todayDate = moment().startOf('day');
@@ -586,8 +591,8 @@
                   center: 'title',
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
-              height: 800,
-              contentHeight: 780,
+              height: 'auto',
+              contentHeight: 450,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
@@ -603,7 +608,10 @@
               editable: true,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
-              events: '{{ route('company.event.calendar') }}',
+              events: {
+                  url: '{{ route('company.event.calendar') }}',
+                  textColor: '#fff'
+              },
               eventRender: function(info) {
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {
