@@ -15,16 +15,16 @@
 				 <div class="accordion accordion-solid accordion-toggle-plus kt-margin-b-5" id="accordion-personal">
 						<div class="card">
 							 <div class="card-header" id="heading-personal">
-									<div class="card-title collapsed" data-toggle="collapse" data-target="#collapse-personal" aria-expanded="false" aria-controls="collapse-personal">
+									<div class="card-title collapsed kt-padding-t-15 kt-padding-b-10" data-toggle="collapse" data-target="#collapse-personal" aria-expanded="false" aria-controls="collapse-personal">
 										 <h6 class="kt-font-dark kt-font-transform-u">{{ __('PERSONAL INFORMATION') }}</h6>
 									</div>
-							 </div>
+							 </div>  
 							 <div id="collapse-personal" class="collapse show" aria-labelledby="heading-personal" data-parent="#accordion-personal" style="">
 									<div class="card-body">
 										 <div class="kt-widget kt-widget--user-profile-3">
 												<div class="kt-widget__top">
 													 @if(!$artist_permit->thumbnail)
-														<div class="kt-widget__media">
+														<div class="kt-widget__media">    
 														</div>
 													 @else
 														
@@ -36,48 +36,16 @@
 													 <div class="kt-widget__content">
 															<div class="kt-widget__head">
 																 <div class="kt-widget__user">
-																		<span class="kt-widget__username">{{ ucwords($artist_permit->fullname) }}</span>
-																		@if($artist_permit->artist->artist_status == 'active')
-																			 <span
-																					 class="kt-badge kt-badge--bolder kt-badge kt-badge--inline kt-badge--lg kt-badge--unified-success">{{ ucwords($artist_permit->artist->artist_status) }}</span>
-																		@else
-																			 <span
-																					 class="kt-badge kt-badge--bolder kt-badge kt-badge--inline kt-badge--lg kt-badge--unified-danger">{{ ucwords($artist_permit->artist->artist_status) }}</span>
-																		@endif
-
-																		<div class="dropdown dropdown-inline kt-margin-l-5" data-toggle="kt-tooltip-" title="Change label" data-placement="right">
-																			 <a href="#" class="btn btn-clean btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-																					<i class="fa fa-caret-down"></i>
-																			 </a>
-																			 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-fit dropdown-menu-right">
-																					<ul class="kt-nav">
-
-																						 @if($artist_permit->artist->artist_status == 'active')
-																								<li class="kt-nav__item">
-																									 <a data-toggle="modal" href="#kt_modal_1" class="kt-nav__link" data-toggle="status-change" data-status="2">
-																					<span class="kt-nav__link-text"><span
-																								 class="kt-badge kt-badge--unified-danger kt-badge--inline kt-badge--lg kt-badge--bold">Block Artist</span></span>
-																									 </a>
-																								</li>
-																						 @else
-																								<li class="kt-nav__item">
-																									 <a data-toggle="modal" href="#kt_modal_1" class="kt-nav__link" data-toggle="status-change" data-status="2">
-																					<span class="kt-nav__link-text"><span
-																								 class="kt-badge kt-badge--unified-success kt-badge--inline kt-badge--lg kt-badge--bold">Unblock Artist</span></span>
-																									 </a>
-																								</li>
-																						 @endif
-																					</ul>
-																			 </div>
-																		</div>
+																		<span class="kt-widget__username kt-padding-b-10 kt-margin-r-5">{{ ucwords($artist_permit->fullname) }}</span>
+                                                                        <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
+                                                                            <label>
+                                                                                <input {{ $artist_permit->artist->artist_status == 'active'? 'checked': null }} id="artist-status" type="checkbox"  name="">
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </span>
 																 </div>
 															</div>
-                                                            <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
-                                                                <label>
-                                                                    <input {{ $artist_permit->artist->artist_status == 'active'? 'checked': null }} id="artist-status" type="checkbox"  name="">
-                                                                    <span></span>
-                                                                </label>
-                                                            </span>
+                                                            
 															<div class="kt-widget__subhead">
 																 <a href="#">Current Company: <span
 																				class="kt-font-dark kt-font-bolder">{{ $artist_permit->permit()->latest()->first()->company->company_name }}</span></a>
@@ -129,7 +97,7 @@
 							 <div class="accordion accordion-solid accordion-toggle-plus kt-margin-b-5" id="accordion-contact">
 									<div class="card">
 										 <div class="card-header" id="heading-personal">
-												<div class="card-title collapsed" data-toggle="collapse" data-target="#collapse-contact" aria-expanded="false"
+												<div class="card-title collapsed kt-padding-t-15 kt-padding-b-10" data-toggle="collapse" data-target="#collapse-contact" aria-expanded="false"
 														 aria-controls="collapse-contact">
 													 <h6 class="kt-font-dark kt-font-transform-u">{{ __('CONTACT INFORMATION') }}</h6>
 												</div>
@@ -159,7 +127,7 @@
 							 <div class="accordion accordion-solid accordion-toggle-plus " id="accordion-address">
 									<div class="card">
 										 <div class="card-header" id="heading-personal">
-												<div class="card-title collapsed" data-toggle="collapse" data-target="#collapse-address" aria-expanded="false"
+												<div class="card-title collapsed kt-padding-t-15 kt-padding-b-10" data-toggle="collapse" data-target="#collapse-address" aria-expanded="false"
 														 aria-controls="collapse-address">
 													 <h6 class="kt-font-dark kt-font-transform-u">{{ __('ADDRESS INFORMATION') }}</h6>
 												</div>

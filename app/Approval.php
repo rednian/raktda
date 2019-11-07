@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Approval extends Model
 {
-    protected $table = 'approval';
+    protected $table = 'smartrak_smartgov.approval';
     protected $primaryKey = 'approval_id';
     protected $fillable = ['type', 'inspection_id', 'schedule_date', 'created_by', 'updated_by', 'deleted_by'];
     protected $dates = ['created_at', 'updated_at'];
