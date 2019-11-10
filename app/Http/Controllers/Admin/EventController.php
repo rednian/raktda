@@ -4,11 +4,13 @@
 	use DB;
 	use PDF;
 	use Auth;
+	use App\User;
 	use Calendar;
 	use App\Event;
 	use App\EventType;
 	use Carbon\Carbon;
 	use App\Requirement;
+	use App\GeneralSetting;
 	use NumberToWords\NumberToWords;
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
@@ -93,6 +95,27 @@
 					$request['type']  = 0; 
 					$comment = $event->comment()->create($request->all());
 					$comment->approve()->create(array_merge ($request->all(), ['event_id'=>$comment->event_id ]));
+
+
+					// $users = User::whereHas('roles', function($q){
+					// 	$q->where('roles.role_id', 4);
+					// })
+					// ->whereDoesntHave('leave', function($q) use ($event){
+					// 	$q->whereDate('start_date', '>=', Carbon::now()->format('Y-m-d'))
+					// 	->whereDate('end_date', '<=', date('Y-m-d', strtotime($event->issued_date)));
+					// })
+					// // ->whereDoesntHave('approver', function($q){
+					// // 	$q->count();//
+					// // })
+					// ->whereType(4)
+					// // ->toSql();
+
+
+
+					// dd($users);
+
+
+					// $event->approval()->create();
 
 					foreach ($request->approver as $role_id) {
 						$request['role_id'] = $role_id;

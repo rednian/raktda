@@ -101,11 +101,12 @@
 						$q->where('country_id', $request->country_id);
 					});
 				})
-				->orderby('updated_at', 'desc');
+				->orderby('updated_at', 'desc')
+				->get();
 
 
-				$totalRecords = $artist->count();
-				$artist = $artist->offset($start)->limit($limit);
+				// $totalRecords = $artist->count();
+				// $artist = $artist->offset($start)->limit($limit);
 
 				return DataTables::of($artist)
 					 ->addColumn('name', function($artist){
@@ -129,9 +130,12 @@
 					 ->addColumn('active_permit', function($artist){
 						 return $artist->permit()->where('permit_status', 'active')->whereDate('expired_date', '>=', Carbon::now())->count();
 					 })
+					 ->addColumn('artist_status', function($artist){
+					 	return artistStatus($artist->artist_status);
+					 })
 
-					 ->rawColumns(['name', 'nationality'])
-					 ->setTotalRecords($totalRecords)
+					 ->rawColumns(['name', 'nationality', 'artist_status'])
+					 // ->setTotalRecords($totalRecords)
 					 ->make(true);
 
 			}

@@ -11,8 +11,8 @@
 </style>
 @stop
 @section('content')
-	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
-			<div class="kt-portlet__body kt-padding-t-5">
+<section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
+    <div class="kt-portlet__body kt-padding-t-5">
         <section class="row">
           <div class="col-md-12">
 
@@ -30,7 +30,6 @@
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
                @include('admin.artist_permit.includes.summary')
-
                <section class="form-row">
                 <div class="col-1">
                   <div>
@@ -331,14 +330,14 @@
                          </div>
                          <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
                             <div class="card-body" style="padding: 1px;">
-                              <table class="table table-borderless table- ">
+                              <table class="table table-borderless ">
                                 <tbody>
                                   @if (!empty($types))
                                   @foreach ($types as $type)
                                     <tr>
                                       <td>
                                         <span style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
-                                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 20)): ucfirst($type->name_ar)  }}</td>
+                                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)): ucfirst($type->name_ar)  }}</td>
                                         </span>
                                     </tr>
                                   @endforeach

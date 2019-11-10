@@ -20,7 +20,7 @@ class ArtistTempData extends Model
 
     public function Nationality()
     {
-        return $this->belongsTo(Countries::class, 'nationality',  'country_id');
+        return $this->belongsTo(Country::class, 'nationality',  'country_id');
     }
 
     public function Profession()
@@ -50,6 +50,6 @@ class ArtistTempData extends Model
 
     public function visaType()
     {
-        return $this->belongsTo(VisaType::class, 'visa_type_id', 'id');
+        return $this->belongsTo(VisaType::class, 'visa_type', 'id');
     }
 }

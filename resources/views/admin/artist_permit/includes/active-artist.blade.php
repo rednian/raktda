@@ -9,7 +9,7 @@
 <section class="form-row">
 	<div class="col-1">
 		<div>
-			<select name="length_change" id="artist-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
+			<select name="length_change" id="artist-length-change" class="form-control-sm form-control custom-select custom-select-sm">
 			    <option value='10'>10</option>
 			    <option value='25'>25</option>
 			    <option value='50'>50</option>
@@ -19,12 +19,12 @@
 		</div>
 	</div>
 	<div class="col-8">
-		<section class="form-row">
-			<div class="col-4">
+		<form class="form-row">
+			{{-- <div class="col-4">
 				<button type="button" id="btn-active-action" class="btn btn-warning btn-sm kt-font-transform-u">Take Action</button>
-			</div>
+			</div> --}}
 			<div class="col-3">
-				<select name="" id="artist-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="ArtistPermit.new.table.draw()" >
+				<select name="profession_id" id="artist-profession" class="form-control-sm form-control custom-select custom-select-sm " onchange="active_artist_table.draw()" >
 					<option selected disabled >PROFESSION</option>
 					@if ($professions->count() > 0)
 						@foreach ($professions as $profession)
@@ -34,7 +34,7 @@
 				</select>
 			</div>
 			<div class="col-3">
-				<select  name="" id="artist-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="ArtistPermit.new.table.draw()">
+				<select  name="" id="artist-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="active_artist_table.draw()">
 					<option disabled selected>ARTIST STATUS</option>
 					<option value="active">Active</option>
 					<option value="blocked">Blocked</option>
@@ -43,7 +43,7 @@
 			<div class="col-1">
 				<button type="button" class="btn btn-sm btn-secondary" id="artist-btn-reset">RESET</button>
 			</div>
-		</section>
+		</form>
 	</div>
 	<div class="col-md-3">
 		<div class="form-group form-group-sm">
@@ -59,13 +59,14 @@
 <table class="table table-hover table-borderless table-striped border" id="active-artist">
 	 <thead>
 	 <tr>
-			<th></th>
+			{{-- <th></th> --}}
 			<th>{{ __('PERSON CODE') }}</th>
 			<th>{{ __('ARTIST NAME') }}</th>
 			<th>{{ __('PROFESSION') }}</th>
 			<th>{{ __('NATIONALITY') }}</th>
 			<th>{{ __('MOBILE NUMBER') }}</th>
 			<th>{{ __('ACTIVE PERMIT') }}</th>
+			<th>ARTIST STATUS</th>
 	 </tr>
 	 </thead>
 </table>

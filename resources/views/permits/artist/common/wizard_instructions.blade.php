@@ -1,0 +1,91 @@
+<div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
+    <div class="kt-form__section kt-form__section--first">
+        <div class="kt-wizard-v3__form">
+            @php
+            $language_id = Auth::user()->languageId;
+            @endphp
+            <!--begin::Accordion-->
+            <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
+
+                <div class="card">
+                    <div class="card-header" id="headingTwo6">
+                        <div class="card-title" data-toggle="collapse" data-target="#collapseTwo6" aria-expanded="false"
+                            aria-controls="collapseTwo6">
+                            <h6 class="kt-font-transform-u"> Documents Required</h6>
+                        </div>
+                    </div>
+                    <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
+                        data-parent="#accordionExample6">
+                        <div class="card-body">
+
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>Document</th>
+                                    <th>Description</th>
+                                </tr>
+                                @foreach($requirements as $req)
+                                <tr>
+                                    <td>{{$language_id == 1 ? $req->requirement_name : $req->requirement_name_ar}}</td>
+                                    <td>{{$req->requirement_description}}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree6">
+                        <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseThree6"
+                            aria-expanded="false" aria-controls="collapseThree6">
+                            <h6 class="kt-font-transform-u"> Permit Fees Structure</h6>
+                        </div>
+                    </div>
+                    <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
+                        data-parent="#accordionExample6">
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>Profession</th>
+                                    <th class="text-right">Fee (AED)</th>
+                                </tr>
+                                @foreach($profession as $pt)
+                                <tr>
+                                    <td>{{$language_id == 1 ? $pt->name_en : $pt->name_ar}}</td>
+                                    <td class="text-right">{{number_format($pt->amount,2)}}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingFour6">
+                        <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseFour6"
+                            aria-expanded="false" aria-controls="collapseFour6">
+                            <h6 class="kt-font-transform-u">Rules and Conditions</h6>
+                        </div>
+                    </div>
+                    <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
+                        data-parent="#accordionExample6">
+                        <div class="card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                            terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+                            skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                            Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+
+                        </div>
+                    </div>
+                </div>
+                <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
+                    <input type="checkbox" id="agree" name="agree" checked> I Read and
+                    understand all
+                    service rules, And agree to continue submitting it.
+                    <span></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

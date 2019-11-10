@@ -16,10 +16,16 @@
 
                 <div class="kt-portlet__head-toolbar">
                     <div class="my-auto float-right">
-                        <a href="{{url('company/make_payment').'/'.$permit_details->permit_id}}"
-                            class="btn btn--maroon btn-elevate btn-sm">
-                            <i class="la la-angle-left"></i>
+                        <a href="{{url('company/make_payment').'/'.$permit_details->permit_id}}" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u
+                            ">
+                            <i class="la la-arrow-left"></i>
                             Back
+                        </a>
+                    </div>
+                    <div class="my-auto float-right permit--action-bar--mobile">
+                        <a href="{{url('company/make_payment').'/'.$permit_details->permit_id}}"
+                            class="btn btn-label-back btn-elevate btn-sm">
+                            <i class="la la-arrow-left"></i>
                         </a>
                     </div>
                 </div>
@@ -34,7 +40,7 @@
                         <span>To Date:</span>&emsp;
                         <span
                             class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                        <span>Work Location:</span>&emsp;
+                        <span> Location:</span>&emsp;
                         <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
                         <span>Reference No:</span>&emsp;
                         <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
@@ -42,10 +48,10 @@
                 </div>
                 {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
                 <div class="table-responsive">
-                    <table class="table table-borderless table-striped">
-                        <thead class="thead-dark">
-                            <tr class="text-center">
-                                <th>Artist Name</th>
+                    <table class="table table-borderless border table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>@lang('words.artist_name')</th>
                                 <th>Artist Permit Type</th>
                                 <th class="text-right">Fee (AED)</th>
                                 <th class="text-right">VAT(5%)</th>
@@ -62,9 +68,9 @@
                             @foreach($permit_details->artistPermit as $ap)
                             @if($ap->artist_permit_status == 'approved')
                             <tr>
-                                <td class="text-center">{{$ap->artist['firstname_en'] .' '.$ap->artist['lastname_en'] }}
+                                <td>{{$ap['firstname_en'] .' '.$ap['lastname_en'] }}
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     {{$ap->profession['name_en']}}
                                 </td>
                                 <td class="text-right">
@@ -88,7 +94,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="2" class="kt-font-bold text-center">
+                                <td colspan="2" class="kt-font-bold">
                                     Total
                                 </td>
                                 <td class="kt-font-bold text-right">
@@ -110,7 +116,7 @@
                 <form action="{{route('company.payment', $permit_details->permit_id)}}" method="POST">
                     @csrf
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
+                        <button class="btn btn-sm btn-wide btn-label-maroon kt-font-bold kt-font-transform-u"
                             id="pay_btn">PAY</button>
                     </div>
 
