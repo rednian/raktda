@@ -10,40 +10,40 @@
 	 <section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 			<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 				 <div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">System Settings</h3>
+						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('System Settings') }}</h3>
 				 </div>
 			</div>
 			<div class="kt-portlet__body kt-padding-t-0">
 				 <ul id="main-tab" class="nav nav-tabs  nav-tabs-line nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
 						<li class="nav-item">
-							 <a class="nav-link active" data-toggle="tab" href="#profession" role="tab">Profession</a>
+							 <a class="nav-link active" data-toggle="tab" href="#profession" role="tab">{{ __('Profession') }}</a>
 						</li>
 						<li class="nav-item">
-							 <a class="nav-link" data-toggle="tab" href="#requirements" role="tab">Requirements</a>
+							 <a class="nav-link" data-toggle="tab" href="#requirements" role="tab">{{ __('Requirements') }}</a>
 						</li>
 						<li class="nav-item">
-							 <a class="nav-link" data-toggle="tab" href="#event_types" role="tab">Event Types</a>
+							 <a class="nav-link" data-toggle="tab" href="#event_types" role="tab">{{ __('Event Types') }}</a>
 						</li>
-						{{-- <li class="nav-item">
-							 <a class="nav-link" data-toggle="tab" href="#event_requirements" role="tab">Event Requirements</a>
-						</li> --}}
+						<li class="nav-item">
+							 <a class="nav-link" data-toggle="tab" href="#general_settings" role="tab">{{ __('General Settings') }}</a>
+						</li>
 				 </ul>
 				 <div class="tab-content">
 						<div class="tab-pane active" id="profession" role="tabpanel">
 							<section class="row">
 								 <div class="col-12">
-										<a href="{{ route('settings.profession.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">New Profession</a>
+										<a href="{{ route('settings.profession.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Profession') }}</a>
 								 </div>
 							</section>
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblProfession">
 								 <thead>
 								 <tr>
-										<th>PROFESSION NAME</th>
-										<th>ALLOW MULTIPLE PERMIT</th>
-										<th>PROFESSION FEE</th>
-										<th>ADDED BY</th>
-										<th>ADDED ON</th>
-										<th>ACTIONS</th>
+										<th>{{ __('PROFESSION NAME') }}</th>
+										<th>{{ __('ALLOW MULTIPLE PERMIT') }}</th>
+										<th>{{ __('PROFESSION FEE') }}</th>
+										<th>{{ __('ADDED BY') }}</th>
+										<th>{{ __('ADDED ON') }}</th>
+										<th>{{ __('ACTIONS') }}</th>
 								 </tr>
 								 </thead>
 							</table>
@@ -51,19 +51,19 @@
 						<div class="tab-pane" id="requirements" role="tabpanel">
 							<section class="row">
 								 <div class="col-12">
-										<a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">New Requirement</a>
+										<a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a>
 								 </div>
 							</section>
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblRequirement">
 								 <thead>
 								 <tr>
-										<th>REQUIREMENT</th>
-										<th>DESCRIPTION</th>
-										<th>VALIDITY (months)</th>
-										<th>PERMIT TERM</th>
-										<th>DATE REQUIRED</th>
-										<th>STATUS</th>
-										<th>ACTIONS</th>
+										<th>{{ __('REQUIREMENT') }}</th>
+										<th>{{ __('DESCRIPTION') }}</th>
+										<th>{{ __('VALIDITY (months)') }}</th>
+										<th>{{ __('PERMIT TERM') }}</th>
+										<th>{{ __('DATE REQUIRED') }}</th>
+										<th>{{ __('STATUS') }}</th>
+										<th>{{ __('ACTIONS') }}</th>
 								 </tr>
 								 </thead>
 							</table>
@@ -71,23 +71,140 @@
 						<div class="tab-pane" id="event_types" role="tabpanel">
 							 <section class="row">
 								 <div class="col-12">
-										<a href="{{ route('event_type.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">New Event Type</a>
+										<a href="{{ route('event_type.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Event Type') }}</a>
 								 </div>
 							</section>
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblEventTypes">
 								 <thead>
 								 <tr>
-										<th>EVENT TYPE</th>
-										<th>DESCRIPTION</th>
-										<th>EVENT TYPE FEE</th>
-										<th>ACTIONS</th>
+										<th>{{ __('EVENT TYPE') }}</th>
+										<th>{{ __('DESCRIPTION') }}</th>
+										<th>{{ __('EVENT TYPE FEE') }}</th>
+										<th>{{ __('ACTIONS') }}</th>
 								 </tr>
 								 </thead>
 							</table>
 						</div>
-						{{-- <div class="tab-pane" id="event_requirements" role="tabpanel">
-							 
-						</div> --}}
+						<div class="tab-pane" id="general_settings" role="tabpanel">
+							<form method="POST" id="formSettings" action="{{ route('admin.setting.general_settings.save') }}">
+							@csrf
+							 <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder" style="padding:0px">
+								 <div class="kt-portlet__head-label">
+										<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('GENERAL SETTINGS') }}</h3>
+								 </div>
+								 <div class="kt-portlet__head-toolbar">
+										<button type="button" id="btnSaveSettings" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">
+											 <i class="la la-check"></i>
+											 {{ __('Save Setting Changes') }}
+										</button>
+								 </div>
+							</div>
+							 <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus kt-margin-t-0" id="inspection-settings">
+								<div class="card">
+									<div class="card-header" id="inspection-settings-heading">
+										<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#inspection-settings-details" aria-expanded="true" aria-controls="inspection-settings-details">
+											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Inspection') }}</h6>
+										</div>
+									 </div>
+									 <div id="inspection-settings-details" class="collapse show" aria-labelledby="inspection-settings-heading" data-parent="#inspection-settings">
+										<div class="card-body">
+											
+											<section class="row kt-margin-t-10">
+								                <div class="col-sm-6">
+								                    <div class="form-group form-group-sm">
+								                        <label for="example-search-input" class="kt-font-dark">
+								                        	{{ __('Number of inspections per day (per inspector)') }}
+								                            <span class="text-danger">*</span>
+								                        </label>
+								                        <input min="7" value="{{ $general_settings->inspection_per_day }}" type="text" name="inspection_per_day" required class="form-control form-control-sm">
+								                    </div>
+								                </div>
+								            </section>
+
+										</div>
+									 </div>
+								</div>
+							 </section>
+
+							 <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus kt-margin-t-0" id="event-settings">
+								<div class="card">
+									<div class="card-header" id="event-settings-heading">
+										<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#event-settings-details" aria-expanded="true" aria-controls="event-settings-details">
+											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Event') }}</h6>
+										</div>
+									 </div>
+									 <div id="event-settings-details" class="collapse show" aria-labelledby="event-settings-heading" data-parent="#event-settings">
+										<div class="card-body">
+											
+											<section class="row kt-margin-t-10">
+								                <div class="col-sm-6">
+								                    <div class="form-group form-group-sm">
+								                        <label for="example-search-input" class="kt-font-dark">
+								                        	{{ __('Event starts after the date of application (No. of days)') }}
+								                            <span class="text-danger">*</span>
+								                        </label>
+								                        <input min="7" value="{{ $general_settings->event_start_after }}" type="text" name="event_start_after" required class="form-control form-control-sm">
+								                    </div>
+								                </div>
+								            </section>
+
+										</div>
+									 </div>
+								</div>
+							 </section>
+
+							 <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus kt-margin-t-0" id="artist-settings">
+								<div class="card">
+									<div class="card-header" id="artist-settings-heading">
+										<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#artist-settings-details" aria-expanded="true" aria-controls="artist-settings-details">
+											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Artist Permit') }}</h6>
+										</div>
+									 </div>
+									 <div id="artist-settings-details" class="collapse show" aria-labelledby="artist-settings-heading" data-parent="#artist-settings">
+										<div class="card-body">
+											
+											<section class="row kt-margin-t-10">
+								                <div class="col-sm-6">
+								                    <div class="form-group form-group-sm">
+								                        <label for="example-search-input" class="kt-font-dark">
+								                        	{{ __('Artist Permit Grace Period for Ammendments (No. of days)') }}
+								                            <span class="text-danger">*</span>
+								                        </label>
+								                        <input min="1" value="{{ $general_settings->artist_permit_grace_period_amendment }}" type="text" name="artist_permit_grace_period_amendment" required class="form-control form-control-sm">
+								                    </div>
+								                </div>
+								            </section>
+
+								            <section class="row kt-margin-t-10">
+								                <div class="col-sm-6">
+								                    <div class="form-group form-group-sm">
+								                        <label for="example-search-input" class="kt-font-dark">
+								                        	{{ __('Artist Permit Grace Period for Renewal (No. of days)') }}
+								                            <span class="text-danger">*</span>
+								                        </label>
+								                        <input min="1" value="{{ $general_settings->artist_permit_grace_period_renew }}" type="text" name="artist_permit_grace_period_renew" required class="form-control form-control-sm">
+								                    </div>
+								                </div>
+								            </section>
+
+								            <section class="row kt-margin-t-10">
+								                <div class="col-sm-6">
+								                    <div class="form-group form-group-sm">
+								                        <label for="example-search-input" class="kt-font-dark">
+								                        	{{ __('Artist Permit starts after the date of application (No. of days)') }}
+								                            <span class="text-danger">*</span>
+								                        </label>
+								                        <input min="7"	value="{{ $general_settings->artist_start_after }} " type="text" name="artist_start_after" required class="form-control form-control-sm">
+								                    </div>
+								                </div>
+								            </section>
+
+										</div>
+									 </div>
+								</div>
+							</section>
+							</form>
+						</div>
 				 </div>
 			</div>
 	 </section>
@@ -129,44 +246,45 @@
         //ON SHOWING THE TAB
 	    $('#main-tab.nav.nav-tabs a').on('shown.bs.tab', function (event) {
 
-	        var current_tab = $(event.target).text();
-	        if(current_tab == 'Profession'){
+	        var current_tab = $(event.target).attr('href');
+	        if(current_tab == '#profession'){
 	        	loadProfessions();
 	        }
-
-	        if(current_tab == 'Requirements'){
+	        if(current_tab == '#requirements'){
 	        	loadRequirements()
 	        }
-
-	        if(current_tab == 'Event Types'){
+	        if(current_tab == '#event_types'){
 	        	loadEventType();
-	        }
-
-	        if(current_tab == 'Event Requirements'){
-
 	        }
 	    });
 
 	    //ON CLOSING THE TAB
 	    $('#main-tab.nav.nav-tabs a[data-toggle="tab"]').on('hidden.bs.tab', function (e) {
 			
-			var prevTab = $(e.target).text();
-			if(prevTab == 'Profession'){
+			var prevTab = $(e.target).attr('href');
+			if(prevTab == '#profession'){
 				tblProfession.destroy();
 	        }
 
-	        if(prevTab == 'Requirements'){
+	        if(prevTab == '#requirements'){
 	        	tblRequirement.destroy();
 	        }
 
-	        if(prevTab == 'Event Types'){
+	        if(prevTab == '#event_types'){
 	        	tblEventTypes.destroy();
 	        }
-
-	        if(prevTab == 'Event Requirements'){
-
-	        }
 		});
+
+		//FORM SETTINGS
+		$('form#formSettings').validate();
+		$(document).on('click', '#btnSaveSettings', function(){
+			bootbox.confirm('Are you sure you want to save all changes?', function(result){
+				if(result){
+					$('form#formSettings').trigger('submit');
+				}
+			});
+		});
+
     });
 
     function loadProfessions(){

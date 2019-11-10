@@ -16,10 +16,6 @@ Route::get('/live', function () {
     return Artisan::call('up');
 });
 
-Route::get('test', function(){
-    dd(translateAr('Dashboard'));
-});
-
 Auth::routes(['register' => false]);
 Route::post('/update_language', 'Admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
 
@@ -128,45 +124,11 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     //---------------------------------------------------------------------------------------------------------------
     // Settings
     //---------------------------------------------------------------------------------------------------------------
-//	Artist permit
-  //   Route::get('/settings', 'Admin\SettingController@index')->name('admin.setting.index');
-  //   Route::get('/settings/profession/datatable', 'Admin\ProfessionController@datatable')->name('admin.setting.profession.datatable');
-
-  //   //Event Type
-  //   Route::get('/settings/event/datatable', 'Admin\EventTypeController@datatable')->name('admin.setting.event.datatable');
-  //   Route::get('/settings/event/create', 'Admin\EventTypeController@create')->name('admin.setting.event.create');
-
-	 // //Event Requirement
-	 // Route::get('/settings/event/requirement/datatable', 'Admin\EventRequirementController@datatable')->name('admin.setting.event.requirement.datatable');
-	 // Route::get('/settings/event/requirement/index', 'Admin\RequirementController@index')->name('admin.setting.requirement.index');
-  //    Route::post('/settings/event/requirement/store', 'Admin\RequirementController@store')->name('admin.setting.requirement.store');
-  //    Route::get('/settings/event/requirement/isexist', 'Admin\RequirementController@isexist')->name('admin.setting.requirement.isexist');
-
-
-  //   //Permit Duration
-  //   Route::resource('/settings/permit_duration', 'PermitDurationController');
-
-
-  //   //Permit Type
-  //   Route::get('settings/permit_type/{permit_type}/update_status', 'Admin\PermitTypeController@update_status')->name('permit_type.update_status');
-  //   Route::get('settings/permit_type/isexist', 'Admin\PermitTypeController@isexist')->name('permit_type.isexist');
-  //   Route::get('/settings/permit_type/datatable', 'Admin\PermitTypeController@datatable')->name('permit_type.datatable');
-  //   Route::resource('settings/permit_type', 'Admin\PermitTypeController');
-
-  //   //Approver
-  //   Route::resource('/settings/procedure', 'Admin\ProcedureController');
-
-  //   //Audit
-  //   Route::get('/settings/audit/datatable', 'Admin\AuditController@index')->name('audit.datatable');
-
-  //   //Requirement
-  //   Route::get('/settings/requirement/{requirement}/update_status', 'Admin\RequirementController@update_status')->name('requirement.update_status');
-  //   Route::get('/settings/requirement/datatable', 'Admin\RequirementController@datatable')->name('requirement.datatable');
-  //   Route::resource('/settings/requirement', 'Admin\RequirementController');
 
     Route::prefix('settings')->group(function () {
 
         Route::get('/', 'Admin\SettingController@index')->name('admin.setting.index');
+        Route::post('general_settings/save', 'Admin\SettingController@saveGeneralSettings')->name('admin.setting.general_settings.save');
 
         //PROFESSION SETTINGS
         Route::get('profession/isexist', 'Admin\ProfessionController@isexist')->name('settings.profession.isexist');

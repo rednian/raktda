@@ -68,6 +68,6 @@
 			</th>
 			<th>{{ __('REQUEST TYPE') }}</th>
 			<th>{{ __('ACTION') }}</th>
-	 </tr>
-	 </thead>
+	 	</tr>
+	</thead>
 </table>
