@@ -51,6 +51,6 @@ class User extends Authenticatable implements Auditable
 
     public function roles()
     {
-        return $this->belongsToMany(Roles::class, 'roleuser', 'role_id', 'user_id');
+        return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id');
     }
 }

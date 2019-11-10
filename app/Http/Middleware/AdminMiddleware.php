@@ -12,10 +12,15 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
         if (Auth::check() && $request->user()->type != 4) {
+            
             $company = Company::find(Auth::user()->EmpClientId);
             $company_name = explode(' ', $company->company_name);
 
             return redirect()->route('company.dashboard', str_replace(' ', '_', strtolower($company->company_name)));
+        }
+
+        if(Auth::check() && $request->user()->type == 4 && $request->user()->roles()->where('roles.role_id', 4)->exists()){
+        	return redirect()->route('inspector.dashboard');
         }
 
         return $next($request);

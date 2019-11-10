@@ -41,6 +41,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapCompanyRoutes();
 
+        $this->mapInspectorRoutes();
+
         //
     }
 
@@ -66,6 +68,13 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/company.php'));
     }
 
+    protected function mapInspectorRoutes()
+    {
+        Route::prefix('inspector')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/inspector.php'));
+    }
     /**
      * Define the "api" routes for the application.
      *
