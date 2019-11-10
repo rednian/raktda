@@ -18,6 +18,11 @@ class Permit extends Model
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
 
+    public function approval()
+    {
+        return $this->hasMany(Approval::class, 'inspection_id', 'permit_id')->whereType('artist');
+    }
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'created_by', 'user_id');

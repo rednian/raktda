@@ -330,14 +330,14 @@
                          </div>
                          <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
                             <div class="card-body" style="padding: 1px;">
-                              <table class="table table-borderless table- ">
+                              <table class="table table-borderless ">
                                 <tbody>
                                   @if (!empty($types))
                                   @foreach ($types as $type)
                                     <tr>
                                       <td>
                                         <span style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
-                                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 20)): ucfirst($type->name_ar)  }}</td>
+                                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)): ucfirst($type->name_ar)  }}</td>
                                         </span>
                                     </tr>
                                   @endforeach

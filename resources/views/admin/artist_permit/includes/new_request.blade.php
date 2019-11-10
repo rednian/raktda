@@ -24,7 +24,7 @@
 				</div>
 			</div>
 			<div class="col-3">
-				<select name="" id="new-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="ArtistPermit.new.table.draw()" >
+				<select name="" id="new-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="artistPermit.draw()" >
 					<option selected disabled >REQUEST TYPE</option>
 					<option value="new">New Application</option>
 					<option value="amend">Amend Application</option>
@@ -32,7 +32,7 @@
 				</select>
 			</div>
 			<div class="col-3">
-				<select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="ArtistPermit.new.table.draw()">
+				<select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="artistPermit.draw()">
 					<option disabled selected>PERMIT STATUS</option>
 					<option value="new">New</option>
 					<option value="modified">Amend</option>

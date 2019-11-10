@@ -6,6 +6,7 @@ use Auth;
 use DataTables;
 use Carbon\Carbon;
 use CountryState;
+use App\User;
 use App\Artist;
 use App\Permit;
 use App\Roles;
@@ -71,6 +72,7 @@ class ArtistPermitController extends Controller
       try {
         DB::beginTransaction();
 
+
            $user_time = $request->session()->get('user');
            $user = Auth::user();
            $request['user_id'] = $user->user_id;
@@ -90,7 +92,22 @@ class ArtistPermitController extends Controller
                $permit->comment()->create($request->all());
               break;
               case 'need approval':
+
+   
+
+              // $approval = $permit->approval()->create(['type'=>'artist', 'inspection_id'=>$permit->permit_id, ]);
+              // $approval->approver()->create(['user_id'=>$user->user_id]);
+
+              
+              //get the inspector's not onleave on this date
+                // $user = User::availableInspector($permit->issued_date)->get();
+                // dd($user);
+              //get the lowest inpector
+              //get the highest inspector
+              //get 
+  
                $request['type'] = 1;
+
                $permit->comment()->create($request->all());
                if($request->role){
                 foreach ($request->role as $role_id) {
