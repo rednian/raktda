@@ -14,23 +14,23 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u
+                <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                 ">
                     <i class="la la-arrow-left"></i>
                     Back
                 </button>
                 <a href="{{url('/company/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
                 </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold">
+                <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold">
                     <i class="la la-arrow-left"></i>
                 </button>
                 <a href="{{url('/company/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u ">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u ">
                     <i class="la la-plus"></i>
                 </a>
             </div>
@@ -110,7 +110,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-end">
-            <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                 <i class="la la-check"></i>
                 Submit
             </div>
@@ -120,7 +120,7 @@
 
     @include('permits.artist.modals.view_artist')
 
-    @include('permits.artist.modals.remove_artist')
+    @include('permits.artist.modals.remove_artist', ['from' => 'amend'])
 
     <!--begin::Modal-->
     <div class="modal fade" id="back_btn_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

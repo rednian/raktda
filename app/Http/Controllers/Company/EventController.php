@@ -388,7 +388,6 @@ class EventController extends Controller
 
     public function download($id)
     {
-        $data['company_details'] = Auth::user()->type == 1 ? Company::find(Auth::user()->EmpClientId) : [];
         $data['event_details'] = Event::with('type', 'country')->where('event_id', $id)->first();
         $from = Event::where('event_id', $id)->first()->issued_date;
         $to = Event::where('event_id', $id)->first()->expired_date;

@@ -159,7 +159,7 @@
 
 
                     <div class="kt-form__actions">
-                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
                             Previous
                         </div>
@@ -176,22 +176,23 @@
                         case 'edit':
                         $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/edit';
                         break;
+                        case 'new':
+                        $backUrl = 'company/add_new_permit/1';
+                        break;
                         }
                         @endphp
 
                         <a href="{{url($backUrl)}}">
-                            <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                id="back_btn">
+                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
                         </a>
-                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            id="submit_btn">
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                             <i class="la la-check"></i>
                             Update & Submit
                         </div>
 
-                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
                             Next Step
                         </div>

@@ -2,7 +2,7 @@
     <div class="kt-form__section kt-form__section--first">
         <div class="kt-wizard-v3__form">
             @php
-            $language_id = Auth::user()->languageId;
+            $language_id = Auth::user()->LanguageId;
             @endphp
             <!--begin::Accordion-->
             <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">

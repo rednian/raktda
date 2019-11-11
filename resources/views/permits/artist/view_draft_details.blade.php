@@ -11,14 +11,14 @@
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
                 <a href="{{route('artist.index')}}#draft"
-                    class="btn btn-label-back kt-font-bold kt-font-transform-u btn-elevate btn-sm">
+                    class="btn btn--maroon kt-font-bold kt-font-transform-u btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{route('artist.index')}}#draft" class="btn btn-label-back btn-elevate btn-sm">
+                <a href="{{route('artist.index')}}#draft" class="btn btn--maroon btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                 </a>
             </div>

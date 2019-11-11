@@ -132,7 +132,7 @@
                                         </div>
                                     </div>
                                     <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                        <input type="checkbox" id="agree" name="agree" checked> I Read
+                                        <input type="checkbox" id="agree" name="agree" checked disabled> I Read
                                         and understand all
                                         service rules, And agree to continue submitting it.
                                         <span></span>
@@ -443,11 +443,10 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="text-left">
-                                                        {{$event->name_en}} <br />
-                                                        {{$event->name_ar }}
+                                                        {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
                                                     </td>
                                                     <td class="text-left">
-                                                        {{$event->type['name_en']}}
+                                                        {{getLangId() == 1 ? $event->type['name_en'] : $event->type['name_ar']}}
                                                     </td>
                                                     <td class="text-right">
                                                         {{number_format($event->type['amount'],2)}}
@@ -507,28 +506,27 @@
 
 
                     <div class="kt-form__actions">
-                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
                             Previous
                         </div>
 
 
                         <a href="{{url('company/event')}}">
-                            <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                id="back_btn">
+                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
                         </a>
 
 
-                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-submit" id="submit_btn">
                             Submit
                         </div>
 
 
 
-                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
                             Next Step
                         </div>

@@ -14,7 +14,7 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u
+                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
 ">
                     <i class="la la-arrow-left"></i>
                     Back
@@ -22,7 +22,7 @@
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn-label-back btn-sm">
+                <a href="{{route('artist.index')}}#{{$tab}}" class="btn btn--maroon btn-sm">
                     <i class="la la-arrow-left"></i>
                 </a>
             </div>
@@ -69,8 +69,14 @@
                         <td>
                             {{ucwords($artistPermit->artist_permit_status)}}
                         </td>
-                        <td class="text-center"> <a href="#" data-toggle="modal"
+                        {{-- <td class="text-center"> <a href="#" data-toggle="modal"
                                 onclick="getArtistDetails({{$artistPermit->artist_permit_id}})" title="View">
+                        <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                        </a></td> --}}
+
+                        <td class="text-center"> <a
+                                href="{{route('artist_details.view' , [ 'id' => $artistPermit->artist_permit_id , 'from' => 'details'])}}"
+                                title="View">
                                 <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a></td>
                     </tr>

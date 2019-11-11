@@ -31,11 +31,11 @@
                         style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ route('event.create')}}">
 
-                            <button class="btn btn-label-yellow kt-font-transform-u btn-sm" id="nav--new-permit-btn">
+                            <button class="btn btn--yellow kt-font-transform-u btn-sm" id="nav--new-permit-btn">
                                 <i class="la la-plus"></i>
                                 Add New
                             </button>
-                            <button class="btn btn-label-yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                            <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                                 <i class="la la-plus"></i>
                             </button>
                         </a>
@@ -175,7 +175,7 @@
                     <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..." style="resize:none;"
                         class="form-control" id="cancel_reason"></textarea>
                     <input type="hidden" id="cancel_permit_id" name="permit_id">
-                    <input type="submit" class="btn btn-sm btn-label-maroon popup-submit-btn" value="Cancel Permit">
+                    <input type="submit" class="btn btn-sm btn--yellow popup-submit-btn" value="Cancel Permit">
                 </form>
             </div>
 

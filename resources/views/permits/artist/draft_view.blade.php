@@ -13,21 +13,21 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn-label-back btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-angle-left"></i>
                     Back
                 </button>
-                <button id="add_artist" class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
+                <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()">
                     <i class="la la-plus"></i>
                     Add Artist
                 </button>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn-label-back btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-angle-left"></i>
                 </button>
-                <button id="add_artist" class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
+                <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()">
                     <i class="la la-plus"></i>
                 </button>
@@ -157,14 +157,14 @@
 
         <div class="d-flex justify-content-between">
             <button
-                class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
+                class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
                 id="draft_btn">
                 <i class="la la-check"></i>
                 Update to Drafts
             </button>
 
             <button
-                class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
+                class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
                 id="submit_btn">
                 <i class="la la-check"></i>
                 Apply Permit

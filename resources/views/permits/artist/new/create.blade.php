@@ -13,23 +13,22 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u"
-                    title="Go Back">
+                <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u" title="Go Back">
                     <i class="la la-arrow-left"></i>
                     Back
                 </button>
-                <button id="add_artist" class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
+                <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()" title="Add Artist">
                     <i class="la la-plus"></i>
                     Add Artist
                 </button>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn-label-back btn-elevate btn-sm kt-font-bold kt-font-transform-u"
+                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u"
                     title="Go Back">
                     <i class="la la-arrow-left"></i>
                 </button>
-                <button id="add_artist" class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
+                <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()" title="Add Artist">
                     <i class="la la-plus"></i>
                 </button>
@@ -57,7 +56,7 @@
                                             <input type="text" class="form-control form-control-sm" name="permit_from"
                                                 id="permit_from" data-date-start-date="+0d" placeholder="DD-MM-YYYY"
                                                 onchange="checkFilled()"
-                                                value="{{ count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->issue_date)) : ( session($user_id.'_apn_from_date') ? session($user_id.'_apn_from_date') : '') }}" />
+                                                value="{{ count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->issue_date)) :  ( session($user_id.'_apn_from_date') ? session($user_id.'_apn_from_date') : '') }}" />
                                         </div>
                                     </div>
                                     <div class="form-group col-lg-3">
@@ -77,7 +76,7 @@
                                             Location <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" placeholder="Location"
                                             name="work_loc" id="work_loc" onkeyup="checkFilled()"
-                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
+                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
                                     {{-- <div class="form-group col-lg-3">
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
@@ -132,7 +131,8 @@
                             <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}" title="Edit">
                                 <button class="btn btn-sm btn-secondary btn-elevate">Edit</button>
                             </a>
-                            <a href="#" data-toggle="modal" onclick="getArtistDetails({{$ad->id}})" title="View">
+                            <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'new'])}}"
+                                title="View">
                                 <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a>
                             @if(count($artist_details) > 1)
@@ -158,14 +158,14 @@
 
         <div class="d-flex justify-content-between">
             <button
-                class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
+                class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
                 id="draft_btn" title="Save as Draft">
                 <i class="la la-check"></i>
                 Save As Draft
             </button>
 
             <button
-                class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
+                class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
                 id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}} title="Submit Permit">
                 <i class="la la-check"></i>
                 Submit Permit
@@ -177,7 +177,7 @@
 
     @include('permits.artist.modals.view_artist')
 
-    @include('permits.artist.modals.remove_artist')
+    @include('permits.artist.modals.remove_artist', ['from' => 'new'])
 
     <!--begin::Modal-->
     <div class="modal fade" id="back_btn_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -192,7 +192,7 @@
                 <div class="modal-body">
                     Changes you made may not be saved.
                     <input type="submit" value="Dont Save" onclick="go_back_confirm_function()"
-                        class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
+                        class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
                 </div>
             </div>
         </div>

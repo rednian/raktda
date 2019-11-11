@@ -11,19 +11,19 @@
             </h3>
         </div>
 
-        {{-- {{$artist_details->permit_id}} --}}
-        @php
-        if($from == 'details'){
-        $backUrl = url('company/get_permit_details').'/'.$artist_details->permit_id .'?tab=applied' ;
-        }
-        @endphp
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{$backUrl}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
-                    Back
-                </a>
+                @if($from == 'new')
+                <a href="{{url('company/add_new_permit/1')}}"
+                    class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                    @else
+                    <a href="{{url('company/artist/permit').'/'.$artist_details->permit_id.'/'.$from}}"
+                        class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                        @endif
+                        <i class="la la-arrow-left"></i>
+                        Back
+                    </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
@@ -39,15 +39,13 @@
     <div class="kt-portlet__body">
         <div class="kt-widget kt-widget--user-profile-3">
             <div class="kt-widget__top">
-
+                <div class="kt-widget__media">
+                    <img src="{{url('storage').'/'.$artist_details->thumbnail}}" alt="image">
+                </div>
                 @if($artist_details->thumbnail == '')
                 <div
                     class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden-">
                     {{$artist_details->firstname_en[0]}}
-                </div>
-                @else
-                <div class="kt-widget__media">
-                    <img src="{{url('storage').'/'.$artist_details->thumbnail}}" alt="image">
                 </div>
                 @endif
                 <div class="kt-widget__content">
@@ -129,8 +127,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
-</div>
-
-@endsection
+    @endsection

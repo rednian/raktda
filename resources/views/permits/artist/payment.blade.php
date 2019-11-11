@@ -16,17 +16,16 @@
                 </div>
 
                 <div class="kt-portlet__head-toolbar">
-                    <div class="my-auto float-right">
+                    <div class="my-auto float-right permit--action-bar">
                         <a href="{{route('artist.index')}}#applied"
-                            class="btn btn-label-back kt-font-bold kt-font-transform-u btn-sm">
+                            class="btn btn--maroon kt-font-bold kt-font-transform-u btn-sm">
                             <i class="la la-arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
-                        <a href="{{route('artist.index')}}#applied" class="btn btn-label-back btn-elevate btn-sm">
+                        <a href="{{route('artist.index')}}#applied" class="btn btn--maroon btn-elevate btn-sm">
                             <i class="la la-arrow-left"></i>
-
                         </a>
                     </div>
                 </div>
@@ -93,7 +92,7 @@
 
                 <div class="d-flex justify-content-end">
                     <a href="{{url('company/payment_gateway/'.$permit_details->permit_id)}}">
-                        <button class="btn btn-label-maroon btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm"
+                        <button class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm"
                             {{in_array('approved',$statuses) ? '' : 'disabled'}}>
                             <i class="la la-check"></i>
                             Make Payment

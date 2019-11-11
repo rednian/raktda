@@ -11,7 +11,7 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     // })->name('company.dashboard');
 
     Route::resource('artist', 'Company\ArtistController');
-    Route::get('add_new_permit/{id?}', 'Company\ArtistController@create')->name('company.add_new_permit');
+    Route::get('add_new_permit/{id}', 'Company\ArtistController@create')->name('company.add_new_permit');
     // Route::post('apply_artist_permit',  'Company\ArtistController@store')->name('company.apply_artist_permit');
     Route::post('add_artist_temp',  'Company\ArtistController@add_artist_temp')->name('company.add_artist_temp');
     Route::get('fetch_applied_artists', 'Company\ArtistController@fetch_applied')->name('company.fetch_applied_artists');
@@ -58,7 +58,9 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     Route::get('happiness_center/{id}',  'Company\ArtistController@happiness_center')->name('company.happiness_center');
     Route::post('submit_happiness',  'Company\ArtistController@submit_happiness')->name('artist.submit_happiness');
     Route::get('artist/get_status/{id}', 'Company\ArtistController@get_status')->name('company.artist.get_status');
-    // Route::get('artist/details/{id}/{from}', 'Company\ArtistController@get_artist_details')->name('artist.details');
+    Route::get('artist/details/{id}/{from}', 'Company\ArtistController@get_artist_details')->name('artist_details.view');
+    Route::get('artistt/details/{id}/{from}', 'Company\ArtistController@get_temp_artist_details')->name('temp_artist_details.view');
+
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');

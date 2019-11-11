@@ -156,18 +156,18 @@
         </thead>
         <tbody>
             <tr>
-                <td>RAKIA56RZ03125353</td>
+                <td>{{$event_details->owner->company->company_trade_license}}</td>
                 <td class="subhead">رقم الرخصة <br />License Number</td>
-                <td>الحمرا مارينا <br />{{$company_details->company_name}}</td>
+                <td>الحمرا مارينا <br />{{$event_details->owner->company->company_name}}</td>
                 <td class="subhead">اسم المؤسسة <br />Name of Establishment</td>
             </tr>
             <tr>
-                <td colspan="3">25/03/2019</td>
+                <td colspan="3">{{date('d-M-Y',strtotime($event_details->owner->company->license_expiry_date))}}</td>
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3">بيني جونسون كورين <br />
-                    {{$company_details->contact_person}}</td>
+                <td colspan="3"> {{$event_details->owner->NameAr}}<br />
+                    {{$event_details->owner->NameEn}}</td>
                 <td class="subhead">صاحب الترخيص <br />License owner</td>
             </tr>
         </tbody>
