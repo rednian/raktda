@@ -1,182 +1,358 @@
 @extends('layouts.admin.admin-app')
 @section('style')
 <link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
+<style>
+  .fc-unthemed .fc-event .fc-title, .fc-unthemed .fc-event-dot .fc-title {
+    color: #fff;
+}
+.fc-unthemed .fc-event .fc-time, .fc-unthemed .fc-event-dot .fc-time {
+    color: #fff;
+}
+</style>
 @stop
 @section('content')
 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
     <div class="kt-portlet__body kt-padding-t-5">
         <section class="row">
-            <div class="col-md-12">
-                <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
-                    role="tablist" id="artist-permit-nav">
-                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-                            data-target="#new-request">New Event Requests</a></li>
-                    <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">Processing
-                            Events</a></li>
-                    <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">Active Events</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">Archive Events</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#event-calendar">All Events
-                            Calendar</a></li>
-                </ul>
-                {{-- <input type="text" class="form-control form-control-sm" style="position: absolute; top: 0"> --}}
-            </div>
+          <div class="col-md-12">
+
+                     <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Event Requests') }}</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">{{ __('Processing Events') }}</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Active Events') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('Archive Events') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#calendar">{{ __('All Events Calendar') }}</a></li>
+                     </ul>
+
+                      {{-- <input type="text" class="form-control form-control-sm" style="position: absolute; top: 0"> --}}
+          </div>
         </section>
-        <div class="tab-content">
-            <div class="tab-pane show fade active" id="new-request" role="tabpanel">
-                @include('admin.artist_permit.includes.summary')
-                <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
-                    <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span
-                            class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
-                    <select onchange="newEventTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15"
-                        id="new-permit-status">
-                        <option value="new">New</option>
-                        <option value="amend">Amend</option>
+				 <div class="tab-content">
+						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
+               @include('admin.artist_permit.includes.summary')
+               <section class="form-row">
+                <div class="col-1">
+                  <div>
+                    <select name="length_change" id="new-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
+                        <option value='10'>10</option>
+                        <option value='25'>25</option>
+                        <option value='50'>50</option>
+                        <option value='75'>75</option>
+                        <option value='100'>100</option>
                     </select>
-                    <label for="inlineFormInputName2" class="kt-margin-5"></label>
-                    <select onchange="newEventTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15"
-                        id="new-applicant-type">
+                  </div>
+                </div>
+                <div class="col-8">
+                  <form class="form-row">
+                    <div class="col-4">
+                        <div class="input-group input-group-sm">
+                            <div class="kt-input-icon kt-input-icon--right">
+                              <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="new-applied-date" >
+                              <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                <span><i class="la la-calendar"></i></span>
+                              </span>
+                            </div>
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <select name="" id="new-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()" >
+                        <option selected disabled >APPLICANT TYPE</option>
                         <option value="1">Private</option>
                         <option value="3">Government</option>
                         <option value="2">Individual</option>
-                    </select>
-                    <label for="inlineFormInputName2"></label>
-                    <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15"
-                        placeholder="Start date of permit" autocomplete="off">
-                    <label for=""></label>
-
-                    <div class="form-group row form-group-xs" style="margin-left: 5.5%">
-                        <div class="col-md-12 kt-padding-l-20">
-                        </div>
-                </section>
-
+                      </select>
+                    </div>
+                    <div class="col-3">
+                      <select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
+                        <option disabled selected>STATUS</option>
+                        <option value="new">New</option>
+                        <option value="amended">Amended</option>
+                      </select>
+                    </div>
+                    <div class="col-1">
+                      <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">RESET</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group form-group-sm">
+                    <div class="kt-input-icon kt-input-icon--right">
+                      <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-new-request">
+                      <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                        <span><i class="la la-search"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+               </section>
                 <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
-                            <th>APPLIED DATE</th>
-                            <th>APPLICANT TYPE</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('APPLIED DATE') }}</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
                             {{-- <th>PERMIT START</th> --}}
-                            <th>STATUS</th>
+                            <th>{{ __('STATUS') }}</th>
                         </tr>
                     </thead>
                 </table>
             </div>
             <div class="tab-pane fade" id="processing-permit" role="tabpanel">
                 @include('admin.artist_permit.includes.summary')
-                <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
-                    <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span
-                            class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
-                    <select onchange="eventProcessingTable.draw();" multiple="multiple"
-                        class=" mb-2 mr-sm-2 kt-margin-l-15" id="processing-permit-status">
-                        <option value="approved-unpaid">Approved-unpaid</option>
-                        <option value="processing">Processing</option>
-                    </select>
-                    <label for="inlineFormInputName2" class="kt-margin-5"></label>
-                    <select onchange="eventProcessingTable.draw();" multiple="multiple"
-                        class=" mb-2 mr-sm-2 kt-margin-l-15" id="processing-applicant-type">
-                        <option value="1">Private</option>
-                        <option value="3">Government</option>
-                        <option value="2">Individual</option>
-                    </select>
-                    <label for="inlineFormInputName2"></label>
-                    <input type="text" id="processing-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-5"
-                        placeholder="Start date of permit" autocomplete="off">
+                <section class="form-row">
+                 <div class="col-1">
+                   <div>
+                     <select name="length_change" id="processing-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
+                         <option value='10'>10</option>
+                         <option value='25'>25</option>
+                         <option value='50'>50</option>
+                         <option value='75'>75</option>
+                         <option value='100'>100</option>
+                     </select>
+                   </div>
+                 </div>
+                 <div class="col-8">
+                   <form class="form-row">
+                     <div class="col-4">
+                         <div class="input-group input-group-sm">
+                             <div class="kt-input-icon kt-input-icon--right">
+                               <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="processing-applied-date" >
+                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                 <span><i class="la la-calendar"></i></span>
+                               </span>
+                             </div>
+                       </div>
+                     </div>
+                     <div class="col-3">
+                       <select name="" id="processing-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventProcessingTable.draw()" >
+                         <option selected disabled >APPLICANT TYPE</option>
+                         <option value="1">Private</option>
+                         <option value="3">Government</option>
+                         <option value="2">Individual</option>
+                       </select>
+                     </div>
+                     <div class="col-3">
+                       <select  name="" id="processing-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventProcessingTable.draw()">
+                         <option disabled selected>STATUS</option>
+                         <option value="processing">processing</option>
+                         <option value="approved-unpaid">Approved-unpaid</option>
+                         <option value="need-approval">Need Approval</option>
+                       </select>
+                     </div>
+                     <div class="col-1">
+                       <button type="button" class="btn btn-sm btn-secondary" id="processing-btn-reset">RESET</button>
+                     </div>
+                   </form>
+                 </div>
+                 <div class="col-md-3">
+                   <div class="form-group form-group-sm">
+                     <div class="kt-input-icon kt-input-icon--right">
+                       <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-processing-request">
+                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                         <span><i class="la la-search"></i></span>
+                       </span>
+                     </div>
+                   </div>
+                 </div>
                 </section>
                 <table class="table table-head-noborder table-borderless table-striped border"
                     id="new-event-processing">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
-                            <th>APPLIED DATE</th>
-                            <th>APPLICANT TYPE</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('APPLIED DATE') }}</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
                             {{-- <th>PERMIT START</th> --}}
-                            <th>STATUS</th>
+                            <th>{{ __('STATUS') }}</th>
                         </tr>
                     </thead>
                 </table>
             </div>
             <div class="tab-pane fade" id="active-permit" role="tabpanel">
                 @include('admin.artist_permit.includes.summary')
-
-                <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
-                    <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span
-                            class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
-                    {{-- <select onchange="eventProcessingTable.draw();" multiple="multiple" class=" mb-2 mr-sm-2 kt-margin-l-15" id="active-permit-status">
-                     <option value="new">New</option>
-                     <option value="amend">Amend</option>
-                  </select> --}}
-                    <label for="inlineFormInputName2" class="kt-margin-5"></label>
-                    <select onchange="eventProcessingTable.draw();" multiple="multiple"
-                        class=" mb-2 mr-sm-2 kt-margin-l-15" id="active-applicant-type">
-                        <option value="1">Private</option>
-                        <option value="3">Government</option>
-                        <option value="2">Individual</option>
-                    </select>
-                    <label for="inlineFormInputName2"></label>
-                    <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15"
-                        placeholder="Start date of permit" autocomplete="off">
+                <section class="form-row">
+                 <div class="col-1">
+                   <div>
+                     <select name="length_change" id="active-length-change" class="form-control-sm form-control custom-select custom-select-sm">
+                         <option value='10'>10</option>
+                         <option value='25'>25</option>
+                         <option value='50'>50</option>
+                         <option value='75'>75</option>
+                         <option value='100'>100</option>
+                     </select>
+                   </div>
+                 </div>
+                 <div class="col-8">
+                   <form class="form-row">
+                     <div class="col-4">
+                         <div class="input-group input-group-sm">
+                             <div class="kt-input-icon kt-input-icon--right">
+                               <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="PERMIT DURATION DATE" id="active-applied-date" >
+                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                 <span><i class="la la-calendar"></i></span>
+                               </span>
+                             </div>
+                       </div>
+                     </div>
+                     <div class="col-3">
+                       <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventActiveTable.draw()" >
+                         <option selected disabled >APPLICANT TYPE</option>
+                         <option value="1">Private</option>
+                         <option value="3">Government</option>
+                         <option value="2">Individual</option>
+                       </select>
+                     </div>
+                     {{-- <div class="col-3">
+                       <select  name="" id="active-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventActiveTable.draw()">
+                         <option disabled selected>STATUS</option>
+                         <option value="active">active</option>
+                         <option value="amended">Amended</option>
+                       </select>
+                     </div> --}}
+                     <div class="col-4">
+                       <button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">RESET</button>
+                     </div>
+                   </form>
+                 </div>
+                 <div class="col-md-3">
+                   <div class="form-group form-group-sm">
+                     <div class="kt-input-icon kt-input-icon--right">
+                       <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-active-request">
+                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                         <span><i class="la la-search"></i></span>
+                       </span>
+                     </div>
+                   </div>
+                 </div>
                 </section>
-
-                <table class="table table-head-noborder table-borderless border table-striped" id="new-event-active">
+                <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
-                            <th>PERMIT START</th>
-                            <th>APPLICANT TYPE</th>
-                            <th>ACTION</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('PERMIT START') }}</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('ACTION') }}</th>
                         </tr>
                     </thead>
                 </table>
             </div>
             <div class="tab-pane fade" id="archive-permit" role="tabpanel">
                 @include('admin.artist_permit.includes.summary')
-                <section class="form-inline kt-padding-5 kt-margin-b-5" style="background:#f5f5f5">
-                    <label for="inlineFormInputName2" class="kt-margin-5 kt-font-dark"><span
-                            class="fa fa-filter kt-margin-r-5"></span> Filter By :</label>
-                    <select onchange="eventArchiveTable.draw();" multiple="multiple"
-                        class=" mb-2 mr-sm-2 kt-margin-l-15" id="archive-permit-status">
-                        <option value="expired">Expired</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
-                    <label for="inlineFormInputName2" class="kt-margin-5"></label>
-                    <select onchange="eventArchiveTable.draw();" multiple="multiple"
-                        class=" mb-2 mr-sm-2 kt-margin-l-15" id="archive-applicant-type">
-                        <option value="1">Private</option>
-                        <option value="3">Government</option>
-                        <option value="2">Individual</option>
-                    </select>
-                    <label for="inlineFormInputName2"></label>
-                    <input type="text" id="new-applied-date" class="form-control mb-2 mr-sm-2 kt-margin-l-15"
-                        placeholder="Start date of permit" autocomplete="off">
+                <section class="form-row">
+                 <div class="col-1">
+                   <div>
+                     <select name="length_change" id="archive-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
+                         <option value='10'>10</option>
+                         <option value='25'>25</option>
+                         <option value='50'>50</option>
+                         <option value='75'>75</option>
+                         <option value='100'>100</option>
+                     </select>
+                   </div>
+                 </div>
+                 <div class="col-8">
+                   <form class="form-row">
+                     {{-- <div class="col-4">
+                         <div class="input-group input-group-sm">
+                             <div class="kt-input-icon kt-input-icon--right">
+                               <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="archive-applied-date" >
+                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                 <span><i class="la la-calendar"></i></span>
+                               </span>
+                             </div>
+                       </div>
+                     </div> --}}
+                     <div class="col-3">
+                       <select name="" id="archive-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventArchiveTable.draw()" >
+                         <option selected disabled >APPLICANT TYPE</option>
+                         <option value="1">Private</option>
+                         <option value="3">Government</option>
+                         <option value="2">Individual</option>
+                       </select>
+                     </div>
+                     <div class="col-3">
+                       <select  name="" id="archive-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventArchiveTable.draw()">
+                         <option disabled selected>STATUS</option>
+                         <option value="expired">Expired</option>
+                         <option value="rejected">Rejected</option>
+                       </select>
+                     </div>
+                     <div class="col-1">
+                       <button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">RESET</button>
+                     </div>
+                   </form>
+                 </div>
+                 <div class="col-md-3">
+                   <div class="form-group form-group-sm">
+                     <div class="kt-input-icon kt-input-icon--right">
+                       <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-archive-request">
+                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                         <span><i class="la la-search"></i></span>
+                       </span>
+                     </div>
+                   </div>
+                 </div>
                 </section>
-                <table class="table table-head-noborder table-borderless border" id="new-event-archive">
+                <table class="table table-head-noborder table-hover table-sm table-striped table-borderless border" id="new-event-archive">
                     <thead>
                         <tr>
-                            <th>REFERENCE NO.</th>
-                            <th>ESTABLISHMENT</th>
-                            <th>PERMIT OWNER</th>
-                            <th>EVENT NAME</th>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PERMIT OWNER') }}</th>
+                            <th>{{ __('EVENT NAME') }}</th>
                             {{-- <th>APPLIED DATE</th> --}}
-                            <th>APPLICANT TYPE</th>
-                            <th>PERMIT STATUS</th>
-                            <th>ACTION</th>
+                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('ACTION') }}</th>
                         </tr>
                     </thead>
                 </table>
             </div>
-            <div class="tab-pane fade" id="event-calendar" role="tabpanel">
-                <section id="event-calendar"></section>
+            <div class="tab-pane fade" id="calendar" role="tabpanel">
+              <section class="row">
+                <div class="col-md-3">
+                   <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
+                      <div class="card">
+                         <div class="card-header" id="heading-address">
+                            <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
+                                 aria-expanded="true" aria-controls="collapse-address">
+                               <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">Event type legend</h6>
+                            </div>
+                         </div>
+                         <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
+                            <div class="card-body" style="padding: 1px;">
+                              <table class="table table-borderless ">
+                                <tbody>
+                                  @if (!empty($types))
+                                  @foreach ($types as $type)
+                                    <tr>
+                                      <td>
+                                        <span style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
+                                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)): ucfirst($type->name_ar)  }}</td>
+                                        </span>
+                                    </tr>
+                                  @endforeach
+                                  @endif
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                </div>
+                <div class="col-md-9">
+                    <section id="event-calendar"></section>
+                </div>
+              </section>
             </div>
         </div>
     </div>
@@ -187,7 +363,6 @@
 
 <script type="text/javascript">
     var newEventTable = {};
-     var artistPermit = {};
      var eventProcessingTable= {};
      var eventArchiveTable = {};
      var eventActiveTable = {};
@@ -202,7 +377,6 @@
        }
      };
      $(document).ready(function () {
-       $('[data-switch=true]').bootstrapSwitch();
        newEvent();
        calendar();
        var hash = window.location.hash;
@@ -214,13 +388,15 @@
           $('html,body').scrollTop(scrollmem);
         });
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var current_tab = $(e.target).text();
+        var current_tab = $(e.target).attr('href');
         console.log(current_tab);
-        if('Processing Events' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-processing')){ processing(); }
-        if('Active Events' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-active')){ active(); }
-        if('Archive Events' == current_tab  && !$.fn.dataTable.isDataTable('table#new-event-archive')){ archive(); }
+
+        if('#processing-permit' == current_tab ){ processing(); }
+        if('#active-permit' == current_tab ){ active(); }
+        if('#archive-permit' == current_tab){ archive(); }
       });
      });
+
      function calendar(){
       var todayDate = moment().startOf('day');
           var YM = todayDate.format('YYYY-MM');
@@ -236,8 +412,8 @@
                   center: 'title',
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
-              height: 800,
-              contentHeight: 780,
+              height: 'auto',
+              contentHeight: 450,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
@@ -253,7 +429,10 @@
               editable: true,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
-              events: '{{ route('admin.event.calendar') }}',
+              events: {
+                url: '{{ route('admin.event.calendar') }}',
+                textColor : '#ffffff',
+              },
               eventRender: function(info) {
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {
@@ -271,37 +450,22 @@
           });
           calendar.render();
      }
+
      function archive() {
-      $('select#archive-permit-status').select2({
-        minimumResultsForSearch: Infinity,
-        placeholder: 'Event Status',
-        autoWidth: true,
-        width: '24%',
-        // closeOnSelect: false,
-        allowClear: true,
-        tags: true
-      });
-      $('select#archive-applicant-type').select2({
-        minimumResultsForSearch: Infinity,
-        placeholder: 'Applicant Type',
-        autoWidth: true,
-        width: '37%',
-        // closeOnSelect: false,
-        allowClear: true,
-        tags: true
-      });
      eventArchiveTable = $('table#new-event-archive').DataTable({
+      dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         ajax: {
           url: '{{ route('admin.event.datatable') }}',
           data: function (d) {
-          var status = $('select#processing-permit-status').val();
-          var type = $('select#processing-applicant-type').val();
-          d.status = status.length > 0 ? status : ['expired', 'rejected'];
-          d.type =  type.length > 0 ? type : null;
+            d.type = $('select#archive-applicant-type').val();
+            var status = $('select#archive-permit-status').val();      
+            d.status = status != null ? [status] : ['expired', 'rejected'];
           }
         },
         columnDefs: [
-          {targets: '_all', className: 'no-wrap'}
+          {targets: [0,4,5,6], className: 'no-wrap'}
         ],
         columns: [
           {data: 'reference_number'},
@@ -320,30 +484,61 @@
           });
         }
       });
+
+     //clear fillte button
+     $('#archive-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); eventArchiveTable.draw();});
+     //custom pagelength
+     eventArchiveTable.page.len($('#archive-length-change').val());
+     $('#archive-length-change').change(function(){ eventArchiveTable.page.len( $(this).val() ).draw(); });
+     //custom search
+     var search = $.fn.dataTable.util.throttle(function(v){ eventArchiveTable.search(v).draw(); });
+     $('input#search-archive-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
+
      }
+
      function active() {
-      $('select#active-applicant-type').select2({
-        minimumResultsForSearch: Infinity,
-        placeholder: 'Applicant Type',
-        autoWidth: true,
-        width: '37%',
-        // closeOnSelect: false,
-        allowClear: true,
-        tags: true
+      var start = moment().subtract(29, 'days');
+      var end = moment();
+      var new_selected_date = null;
+
+      $('input#active-applied-date').daterangepicker({
+        autoUpdateInput: false,
+        buttonClasses: 'btn',
+        applyClass: 'btn-warning btn-sm btn-elevate',
+        cancelClass: 'btn-secondary btn-sm btn-elevate',
+        startDate: start,
+        endDate: end,
+        maxDate: new Date,
+        ranges: {
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+      }, function (start, end, label) {
+        $('input#active-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+      }).on('apply.daterangepicker', function(e, d){
+       new_selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+       eventActiveTable.draw();
       });
+
+
       eventActiveTable = $('table#new-event-active').DataTable({
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         ajax: {
           url: '{{ route('admin.event.datatable') }}',
           data: function (d) {
-            var status = $('select#processing-permit-status').val();
-            var type = $('select#processing-applicant-type').val();
-            // d.status = status.length > 0 ? status : ['approved-unpaid', 'unprocessed'];
+            d.type = $('select#active-applicant-type').val();
             d.status = ['active'];
-            d.type =  type.length > 0 ? type : null;
           }
         },
         columnDefs: [
-          {targets: '_all', className: 'no-wrap'}
+          // {targets: '_all', className: 'no-wrap'},
+          {targets: [5,6], className: 'no-wrap'}
         ],
         columns: [
           {data: 'reference_number'},
@@ -362,34 +557,57 @@
           });
         }
       });
+      
+      //clear fillte button
+      $('#active-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); eventActiveTable.draw();});
+      //custom pagelength
+      eventActiveTable.page.len($('#active-length-change').val());
+      $('#active-length-change').change(function(){ eventActiveTable.page.len( $(this).val() ).draw(); });
+      //custom search
+      var search = $.fn.dataTable.util.throttle(function(v){ eventActiveTable.search(v).draw(); });
+      $('input#search-active-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
+
      }
+
      function processing() {
-      $('select#processing-permit-status').select2({
-        minimumResultsForSearch: Infinity,
-        placeholder: 'Event Status',
-        autoWidth: true,
-        width: '21%',
-        // closeOnSelect: false,
-        allowClear: true,
-        tags: true
+      var start = moment().subtract(29, 'days');
+      var end = moment();
+      var new_selected_date = null;
+      
+      $('input#processing-applied-date').daterangepicker({
+        autoUpdateInput: false,
+        buttonClasses: 'btn',
+        applyClass: 'btn-warning btn-sm btn-elevate',
+        cancelClass: 'btn-secondary btn-sm btn-elevate',
+        startDate: start,
+        endDate: end,
+        maxDate: new Date,
+        ranges: {
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+      }, function (start, end, label) {
+        $('input#processing-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+      }).on('apply.daterangepicker', function(e, d){
+        new_selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+        eventProcessingTable.draw();
       });
-      $('select#processing-applicant-type').select2({
-        minimumResultsForSearch: Infinity,
-        placeholder: 'Applicant Type',
-        autoWidth: true,
-        width: '37%',
-        // closeOnSelect: false,
-        allowClear: true,
-        tags: true
-      });
+
+
       eventProcessingTable = $('table#new-event-processing').DataTable({
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         ajax: {
           url: '{{ route('admin.event.datatable') }}',
           data: function (d) {
-            var status = $('select#processing-permit-status').val();
-            var type = $('select#processing-applicant-type').val();
-            d.status = status.length > 0 ? status : ['approved-unpaid', 'processing', 'need approval', 'need modification'];
-            d.type =  type.length > 0 ? type : null;
+            var status = $('select#processing-permit-status').val();            
+             d.status = status != null ? [status] : ['approved-unpaid', 'processing', 'need approval', 'need modification'];
+             d.type = $('select#processing-applicant-type').val();
           }
         },
         columnDefs: [
@@ -411,18 +629,62 @@
           });
         }
       });
+
+      //clear fillte button
+       $('#processing-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); eventProcessingTable.draw();});
+      //custom pagelength
+      eventProcessingTable.page.len($('#processing-length-change').val());
+      $('#processing-length-change').change(function(){ eventProcessingTable.page.len( $(this).val() ).draw(); });
+      //custom search
+      
+      var search = $.fn.dataTable.util.throttle(function(v){ eventProcessingTable.search(v).draw(); });
+      $('input#search-processing-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
      }
+
+
      function newEvent() {
+      var start = moment().subtract(29, 'days');
+      var end = moment();
+      var selected_date = null;
+
+      $('input#new-applied-date').daterangepicker({
+        autoUpdateInput: false,
+        buttonClasses: 'btn',
+        applyClass: 'btn-warning btn-sm btn-elevate',
+        cancelClass: 'btn-secondary btn-sm btn-elevate',
+        startDate: start,
+        endDate: end,
+        maxDate: new Date,
+        ranges: {
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+      }, function (start, end, label) {
+        $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+      }).on('apply.daterangepicker', function(e, d){
+       selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+       newEventTable.draw();
+      });
+
        newEventTable = $('table#new-event-request').DataTable({
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
          ajax: {
            url: '{{ route('admin.event.datatable') }}',
            data: function (d) {
-            var status = $('select#new-permit-status').val();
-            var type = $('select#new-applicant-type').val();
-             d.status = status.length > 0 ? status : ['new', 'amended'];
-             d.type =  type.length > 0 ? type : null;
+
+            var status = $('select#new-permit-status').val();            
+             d.status = status != null ? [status] : ['new', 'amended'];
+             d.type = $('select#new-applicant-type').val();
+             d.date = $('#new-applied-date').val()  ? selected_date : null; 
            }
          },
+
          columnDefs: [
            {targets: '_all', className: 'no-wrap'}
          ],
@@ -442,24 +704,16 @@
            });
          }
        });
-       $('select#new-permit-status').select2({
-         minimumResultsForSearch: Infinity,
-         placeholder: 'Event Status',
-         autoWidth: true,
-         width: '21%',
-         // closeOnSelect: false,
-         allowClear: true,
-         tags: true
-       });
-       $('select#new-applicant-type').select2({
-         minimumResultsForSearch: Infinity,
-         placeholder: 'Applicant Type',
-         autoWidth: true,
-         width: '37%',
-         // closeOnSelect: false,
-         allowClear: true,
-         tags: true
-       });
+
+       //clear fillte button
+        $('#new-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); newEventTable.draw();});
+       //custom pagelength
+       newEventTable.page.len($('#new-length-change').val());
+       $('#new-length-change').change(function(){ newEventTable.page.len( $(this).val() ).draw(); });
+       //custom search
+       
+       var search = $.fn.dataTable.util.throttle(function(v){ newEventTable.search(v).draw(); });
+       $('input#search-new-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
      }
 </script>
 @endsection

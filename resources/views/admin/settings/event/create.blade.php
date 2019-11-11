@@ -1,234 +1,246 @@
+
 @extends('layouts.admin.admin-app')
 @section('style')
+	 <style>
+			/*.dataTables_length{*/
+			/*	 display:inline;*/
+			/*}*/
+	 </style>
 @stop
 @section('content')
-	 <section id="kt_page_portlet" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
-			<div class="kt-portlet__head kt-portlet__head--sm">
-				 <div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title ">Create Event Type</h3>
-				 </div>
-				 <div class="kt-portlet__head-toolbar">
-						<a href="{{ URL::previous()  }}" class="btn btn-clean btn-sm btn-elevate kt-margin-r-4 kt-font-transform-u">
-							 <i class="la la-arrow-left"></i>
-							 back
-						</a>
-						<div class="btn-group">
-													<button type="button" class="btn btn-brand btn-sm">
-														<i class="la la-check"></i>
-														<span class="kt-hidden-mobile">Save</span>
-													</button>
-													<button type="button" class="btn btn-sm btn-brand dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
-																	aria-expanded="false">
-													</button>
-													<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" >
-														<ul class="kt-nav">
-															<li class="kt-nav__item">
-																<a href="#" class="kt-nav__link">
-																	<i class="kt-nav__link-icon flaticon2-reload"></i>
-																	<span class="kt-nav__link-text">Save &amp; continue</span>
-																</a>
-															</li>
-															<li class="kt-nav__item">
-																<a href="#" class="kt-nav__link">
-																	<i class="kt-nav__link-icon flaticon2-power"></i>
-																	<span class="kt-nav__link-text">Save &amp; exit</span>
-																</a>
-															</li>
-															<li class="kt-nav__item">
-																<a href="#" class="kt-nav__link">
-																	<i class="kt-nav__link-icon flaticon2-edit-interface-symbol-of-pencil-tool"></i>
-																	<span class="kt-nav__link-text">Save &amp; edit</span>
-																</a>
-															</li>
-															<li class="kt-nav__item">
-																<a href="#" class="kt-nav__link">
-																	<i class="kt-nav__link-icon flaticon2-add-1"></i>
-																	<span class="kt-nav__link-text">Save &amp; add new</span>
-																</a>
-															</li>
-														</ul>
-													</div>
-												</div>
-				 </div>
-			</div>
-			<div class="kt-portlet__body">
-				 <form action="" class="kt-form kt-form--fit">
-						<section class="row">
-							 <div class="col-lg-5 col-xs-12">
-									<div class="form-group form-group-sm">
-										 <label>Event Type <span class="kt-font-danger">*</span></label>
-										 <input type="email" class="form-control form-control-sm" required>
-									</div>
-							 </div>
-							 <div class="col-lg-5 col-xs-12">
-									<div class="form-group form-group-sm">
-										 <label>Event Type <span class="kt-font-sm text-muted">(Arabic)</span> <span class="kt-font-danger">*</span></label>
-										 <input type="email" class="form-control form-control-sm" required>
-									</div>
-							 </div>
-						</section>
-						<section class="row">
-							 <div class="col-lg-10">
-									<section class="form-group form-group-sm">
-										 <label>Event Type Fee <span class="kt-font-danger">*</span></label>
-										 <input type="text" class="form-control form-control-sm" autocomplete="off" required>
-									</section>
-							 </div>
-						</section>
-						<section class="row">
-							 <div class="col-lg-5 col-xs-12">
-									<div class="form-group form-group-sm">
-										 <label>Event Type Description </label>
-										 <textarea name="description_en" class="form-control form-control-sm" autocomplete="off" rows="4"></textarea>
-									</div>
-							 </div>
-							 <div class="col-lg-5 col-xs-12">
-									<div class="form-group form-group-sm">
-										 <label>Event Type Description <span class="kt-font-sm text-muted">(Arabic)</span></label>
-										 <textarea name="description_ar" class="form-control form-control-sm" autocomplete="off" rows="4"></textarea>
-									</div>
-							 </div>
-						</section>
-						<section class="row">
-							 <div class="col-xs-12 col-lg-10">
-									<label>Event Type Requirement <span class="kt-font-danger">*</span></label>
-									<div class="input-group input-group-sm">
-										 <select name="requirement_id" class="form-control form-control-sm custom-select custom-select-sm"></select>
-										 <div class="input-group-append ">
-												<button id="btn-new-requirement" type="button" class="btn btn-secondary" data-target="#kt_modal_4" data-toggle="modal">
-													 <i class="la la-plus kt-font-success kt-font-boldest"></i>
-												</button>
-										 </div>
-									</div>
-							 
-							 </div>
-						</section>
-				 </form>
-			</div>
-	 </section>
-	 
-	 <div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg" role="document">
-				 <form name="frm-requirement" class="kt-form kt-form--fit" method="post" action="{{ route('admin.setting.requirement.store') }}">
-				 	@csrf
-						<div class="modal-content">
-							 <div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Create New Requirement</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									</button>
-							 </div>
-							 <div class="modal-body">
-									<section class="row">
-										 <div class="col-lg-5 col-xs-12">
-												<div class="form-group form-group-xs">
-													 <label>Requirement Name <span class="kt-font-danger">*</span></label>
-													 <input type="hidden" value="event" name="requirement_type">
-													  <textarea name="requirement_name" class="form-control form-control-sm"  rows="3" required autocomplete="off"></textarea>
-												</div>
-										 </div>
-										 <div class="col-lg-5 col-xs-12">
-												<div class="form-group form-group-sm">
-													 <label>Requirement Name <span class="kt-font-sm text-muted">(Arabic)</span> <span class="kt-font-danger">*</span></label>
-													 <textarea name="requirement_name_ar" class="form-control form-control-sm"  rows="3" required autocomplete="off"></textarea>
-												</div>
-										 </div>
-									</section>
-									<section class="row">
-										 <div class="col-lg-5 col-xs-12">
-												<div class="form-group form-group-xs">
-													 <label>Description </label>
-													 <textarea name="requirement_description" class="form-control form-control-sm" autocomplete="off" rows="5"></textarea>
-												</div>
-										 </div>
-										 <div class="col-lg-5 col-xs-12">
-												<div class="form-group form-group-xs">
-													 <label>Description <span class="kt-font-sm text-muted">(Arabic)</span></label>
-													 <textarea name="requirement_description_ar" class="form-control form-control-sm" autocomplete="off" rows="5"></textarea>
-												</div>
-										 </div>
-									</section>
-							 </div>
-							 <div class="modal-footer" style="justify-content: flex-start;">
-							 	<button type="submit" class="btn  btn-sm btn-label-danger btn-elevate kt-font-transform-u">
-							 		<span class="la la-plus kt-font-bolder"></span> Save Requirement
-								</button>
-								<button type="reset" class="btn btn-secondary  btn-sm" data-dismiss="modal">Cancel</button>
-							 </div>
+	<section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
+		<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
+			 <div class="kt-portlet__head-label">
+					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Add New Event Type</h3>
+			 </div>
+			 <div class="kt-portlet__head-toolbar">
+					<a href="{{ url('settings#event_types') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
+						 <i class="la la-arrow-left"></i>
+						 Back to Settings
+					</a>
+					<div class="btn-group">
+						<button type="button" data-submittype="continue" class="btn btn-sm btn-warning btn-submit">
+							<i class="la la-check"></i>
+							<span class="kt-hidden-mobile">Save</span>
+						</button>
+						<button type="button" class="btn btn-sm btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						</button>
+						<div class="dropdown-menu dropdown-menu-right">
+							<ul class="kt-nav">
+								<li class="kt-nav__item">
+									<a href="#" data-submittype="continue" class="kt-nav__link btn-submit">
+										<i class="kt-nav__link-icon flaticon2-reload"></i>
+										<span class="kt-nav__link-text">Save & continue</span>
+									</a>
+								</li>{{-- 
+								<li class="kt-nav__item">
+									<a href="#" class="kt-nav__link">
+										<i class="kt-nav__link-icon flaticon2-power"></i>
+										<span class="kt-nav__link-text">Save & exit</span>
+									</a>
+								</li>
+								<li class="kt-nav__item">
+									<a href="#" class="kt-nav__link">
+										<i class="kt-nav__link-icon flaticon2-edit-interface-symbol-of-pencil-tool"></i>
+										<span class="kt-nav__link-text">Save & edit</span>
+									</a>
+								</li> --}}
+								<li class="kt-nav__item">
+									<a href="#" data-submittype="new" class="kt-nav__link btn-submit">
+										<i class="kt-nav__link-icon flaticon2-add-1"></i>
+										<span class="kt-nav__link-text">Save & add new</span>
+									</a>
+								</li>
+							</ul>
 						</div>
-				 </form>
-			</div>
-	 </div>
+					</div>
+			 </div>
+		</div>
+		<div class="kt-portlet__body kt-padding-t-0">
+			<form method="POST" id="formAddEventType" action="{{ route('event_type.store') }}">
+			@csrf
+			<section class="row kt-margin-t-50">
+                <div class="col-sm-6">
+                    <div class="form-group form-group-sm">
+                        <label for="example-search-input" class="kt-font-dark">Event Type
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input value="" type="text" name="name_en" required class="form-control form-control-sm">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group form-group-sm">
+                        <label for="example-search-input" class="kt-font-dark">Event Type (AR)
+                        	<span class="text-danger">*</span>
+                        </label>
+                        <input value="" type="text" name="name_ar" required class="form-control form-control-sm">
+                    </div>
+                </div>
+            </section>
+            <section class="row kt-margin-t-10">
+                <div class="col-sm-6">
+                    <div class="form-group form-group-sm">
+                        <label for="example-search-input" class="kt-font-dark">Description
+                            <span class="text-danger">*</span>
+                        </label>
+                        <textarea name="description_en" class="form-control form-control-sm" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group form-group-sm">
+                        <label for="example-search-input" class="kt-font-dark">Description (AR)
+                        	<span class="text-danger">*</span>
+                        </label>
+                        <textarea name="description_ar" class="form-control form-control-sm" rows="3"></textarea>
+                    </div>
+                </div>
+            </section>
+            <section class="row kt-margin-t-10">
+                <div class="col-sm-6">
+                    <div class="form-group form-group-sm">
+                        <label for="example-search-input" class="kt-font-dark">Amount
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input value="" type="text" name="amount" required class="form-control form-control-sm">
+                    </div>
+                </div>
+            </section>
+            <div class="requirements"></div>
+            <input type="hidden" name="submit_type">
+        	</form>
+			
+			<section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus kt-margin-t-20" id="accordion-detail">
+				<div class="card">
+					<div class="card-header" id="heading-detail">
+						<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-detail" aria-expanded="true" aria-controls="collapse-detail">
+							<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Select Requirements</h6>
+						</div>
+					 </div>
+					 <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
+						<div class="card-body">
+
+							<div id="action-alert-unselected" class="alert d-none alert-outline-danger fade show" role="alert">
+									<div class="alert-icon"><i class="flaticon-warning"></i></div>
+									<div class="alert-text">Please check atleast one requirement before taking action!</div>
+									<div class="alert-close"></div>
+							</div>
+
+							<table class="table table-borderless table-striped table-hover border" id="tblRequirement">
+								 <thead>
+									 <tr>
+									 	<th></th>
+										<th>REQUIREMENT</th>
+										<th>DESCRIPTION</th>
+										<th>DATE REQUIRED</th>
+										<th>VALIDITY (months)</th>
+									 </tr>
+								 </thead>
+							</table>
+						</div>
+					 </div>
+				</div>
+			 </section>
+		</div>
+	</section>
 @stop
 @section('script')
-	 <script>
-     $(document).ready(function () {
-       addNewRequirement();
-       requirement();
-     });
-     function requirement(){
-        $('select[name=requirement_id]').html('');
-        $('select[name=requirement_id]').append('<option disabled selected>-Select Requirement-</option>');
-        $.ajax({
-        	url: '{{ route('admin.setting.requirement.index') }}',
-        	dataType: 'json'
-        }).done(function (response) {
-        	$.each(response, function (i, v) {$('select[name=requirement_id]').append('<option value="'+v.requirement_id+'">'+v.name+'</option>');});
-        });
-    }
+	<script>
+	
+	var tblRequirement;
 
-     function addNewRequirement() {
-     	var validated_form = $('form[name=frm-requirement]').validate({
+    $(document).ready(function () {
+    	loadRequirements();
+		$(document).on('change','input[type=checkbox]', function(){
+			if($(this).is(':checked')){
+				$(this).parents('.input-group').find('input[type=text]').addClass('is-valid').removeClass('is-invalid');
+				$(this).parents('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
+			}
+			else{
+				$(this).parents('.input-group').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
+				$(this).parents('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
+			}
+		});
+
+		//SUBMIT FORM
+		var validated_form = $('form#formAddEventType').validate({
      		rules:{
-     			requirement_name:{
+     			name_en:{
      				required: true,
-     				minlength: 5,
-     				maxlength: 255,
-						remote: '{{ route('admin.setting.requirement.isexist') }}'
+					remote: {
+		                url: '{{ route('event_type.isexist') }}',
+		            }
      			},
-     			requirement_name_ar:{
+     			name_ar:{
      				required: true,
-     				minlength: 5,
-     				maxlength: 255,
-						remote: '{{ route('admin.setting.requirement.isexist') }}'
+					remote: {
+		                url: '{{ route('event_type.isexist') }}',
+		            }
      			},
-     			requirement_description:{
-     				minlength: 1,
-     				maxlength: 255
-     			},
-     			requirement_description_ar:{
-     				minlength: 1,
-     				maxlength: 255
+     			amount:{
+     				required: true,
      			}
-     		},
-				// invalidHandler: function(event, validator){
-     		//   event.preventDefault();
-     		//   console.log(validator.invalid);
-				// 	// $(validator.submitButton).attr('disabled', true);
-     		//   // validator.submitButton.addClass('kt-spinner kt-spinner--sm kt-spinner-danger');
-				// },
-				// submitHandler: function(form){
-     		//   console.log(form);
-     		//   form.ajaxSubmit({
-				//
-				// 	});
-				// }
+     		}
      	});
-     	
-     	$('form[name=frm-requirement]').submit(function(e) {
-     		e.preventDefault();
-     		$.ajax({
-     			url: $(this).attr('action'),
-     			data: $(this).serialize(),
-     			type: $(this).attr('method'),
-     			dataType: 'json'
-     		}).done(function(response){
-     		  if(response){
-     		    validated_form.resetForm();
-     		    $.each(response, function (i, v) {$('select[name=requirement_id]').append('<option selected value="'+v.requirement_id+'">'+v.requirement_name+'</option>')
-					;});
-					}
-     		});
+
+     	$('.btn-submit').click(function(){
+
+     		var type = $(this).data('submittype');
+     		$('#formAddEventType input[name=submit_type]').val(type);
+     		$('#formAddEventType .requirements').html('');
+
+     		//GET SELECTED ROWS AND APPEND TO FORM ON SUBMIT FORM
+     		var rows_selected = tblRequirement.column(0).checkboxes.selected();
+
+     		if(rows_selected.length == 0){
+     			$('#action-alert-unselected').removeClass('d-none');
+     			return false;
+     		}
+     		
+            $.each(rows_selected, function(index, requirement_id){
+                $('#formAddEventType .requirements').append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'requirement_id[]')
+                        .val(requirement_id)
+                );
+            });
+
+     		$('#formAddEventType').trigger('submit');
      	});
-     }
-	 </script>
+    });
+
+    function loadRequirements(){
+    	tblRequirement = $('table#tblRequirement').DataTable({
+           processing: true,
+           serverSide: true,
+           ajax: {
+               url: '{{ route('requirements.datatable') }}',
+               data: { type: 'event'},
+               global: false,
+           },
+           order: [[1, 'asc']],
+           columnDefs: [
+           		{
+                    targets:0,
+                    orderable: false,
+                    checkboxes: {
+                        selectRow: true
+                    },
+                    className: 'no-wrap', sortable: false
+                },
+                {targets:  [2], className: 'no-wrap', sortable: false},
+           ],
+           select: {
+             	style: 'multi'
+         	},
+           columns: [
+           	   { data: 'requirement_id', name: 'requirement_id'},
+               { data: 'requirement_name', name: 'requirement_name'},
+               { data: 'requirement_description', name: 'requirement_description'},
+               { data: 'dates_required', name: 'dates_required'},
+               { data: 'validity', name: 'validity'},
+           ]
+       });
+    }
+	</script>
 @stop

@@ -3,7 +3,7 @@
 			<div class="modal-content">
 				 	<?php $artist = $artist_permit->artist; ?>
 				 <form  method="post" action="{{ route('admin.artist.update_status', $artist->artist_id) }}" id="frm-update-status">
-						<div class="modal-header">ckgjbfkgjb
+						<div class="modal-header">
 							 <h5 class="modal-title" id="exampleModalLabel">@if($artist->artist_status == 'active') <span class="text-danger kt-font-transform-u"><span
 												 class="fa fa-user-slash"></span> Block</span>  @else
 										 <span class="text-success"><span class="fa fa-user-check"></span>Unblocked  </span> @endif {{ ucwords($artist_permit->artist->fullname) }}

@@ -5,9 +5,7 @@
         <div class="kt-notes__item kt-padding-b-5">
                     <?php $name = $approve->user->NameEn; $name = explode(' ', $name); $fname = substr($name[0], 0, 1);  $lastname = substr($name[1], 0, 1) ?>
             <div class="kt-notes__media" data-toggle="kt-tooltip" data-skin="dark" data-placement="top" data-original-title="{{ ucwords($approve->user->NameEn) }}">
-                <h3 class="kt-notes__user kt-font-boldest">
-                    {{ strtoupper($fname) }}{{ strtoupper($lastname) }}
-                </h3>
+                <h3 class="kt-notes__user kt-font-boldest"> {{ strtoupper($fname.$lastname) }}</h3>
             </div>
             <div class="kt-notes__content">
                 <div class="kt-notes__section">

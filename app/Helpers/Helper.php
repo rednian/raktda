@@ -1,10 +1,33 @@
 <?php
+function fileExtension($path)
+{
+    $ext = explode('.', $path);
+    $ext = strtolower(array_pop($ext));
+    $className = null;
+    switch ($ext) {
+        case 'pdf':
+            $className = 'la-file-pdf-o text-danger';
+            break;
+        case 'png':
+            $className = 'la-file-photo-o text-warning';
+            break;
+        case 'jpeg':
+            $className = 'la-file-photo-o text-warning';
+            break;
+        case 'jpg':
+            $className = 'la-file-photo-otext-warning';
+            break;
+    }
+    return '<span style="font-size:x-large" class="la ' . $className . '"></span>';
+}
 function language($data)
 {
     $user = Auth::user()->LanguageId;
 
     return $user  == 1 ? $data['en'] : $data['ar'];
 }
+
+
 
 function eventType($type)
 {
@@ -187,4 +210,15 @@ function getSettings()
 function getLangId()
 {
     return \Auth::user()->LanguageId;
+}
+
+function translateAr($word)
+{
+    $trans = App\ArabicTranslation::where('english', 'like', $word);
+    if ($trans->exists()) {
+        if (Auth::user()->LanguageId != 1) {
+            return $trans->first()->arabic;
+        }
+    }
+    return $word;
 }

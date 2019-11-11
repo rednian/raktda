@@ -6,10 +6,13 @@ use Auth;
 use DataTables;
 use Carbon\Carbon;
 use CountryState;
+use App\User;
 use App\Artist;
 use App\Permit;
 use App\Roles;
+use App\Country;
 use App\ArtistPermit;
+use App\Profession;
 use App\ApproverProcedure;
 use App\ArtistPermitComment;
 use Illuminate\Http\Request;
@@ -19,9 +22,18 @@ class ArtistPermitController extends Controller
 {
     public function index()
     {
+      $permit = Permit::whereNotIn('permit_status', ['expired', 'active', 'rejected', 'draft', 'cancelled', 'unprocessed'])
+            ->whereDate('issued_date', '<=', Carbon::now()->format('Y-m-d'))
+            ->update(['permit_status'=> 'unprocessed']);
+      
+      $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<=',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
+      // dd($permit);
+      
 	    return view('admin.artist_permit.index', [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
+            'professions'=>Profession::has('artistpermit')->get(),
+            'countries'=> Country::has('artistpermit')->get()
         ]);
     }
 
@@ -60,6 +72,7 @@ class ArtistPermitController extends Controller
       try {
         DB::beginTransaction();
 
+
            $user_time = $request->session()->get('user');
            $user = Auth::user();
            $request['user_id'] = $user->user_id;
@@ -79,7 +92,22 @@ class ArtistPermitController extends Controller
                $permit->comment()->create($request->all());
               break;
               case 'need approval':
+
+   
+
+              // $approval = $permit->approval()->create(['type'=>'artist', 'inspection_id'=>$permit->permit_id, ]);
+              // $approval->approver()->create(['user_id'=>$user->user_id]);
+
+              
+              //get the inspector's not onleave on this date
+                // $user = User::availableInspector($permit->issued_date)->get();
+                // dd($user);
+              //get the lowest inpector
+              //get the highest inspector
+              //get 
+  
                $request['type'] = 1;
+
                $permit->comment()->create($request->all());
                if($request->role){
                 foreach ($request->role as $role_id) {
@@ -390,35 +418,29 @@ class ArtistPermitController extends Controller
      	$limit = $request->length;
      	$start = $request->start;
 
+      $permit = Permit::has('artist')
+      ->when($request->request_type, function ($q) use ($request){
+        $q->where('request_type', $request->request_type);
+      })
+      ->when($request->status, function($q) use ($request){
+        $q->whereIn('permit_status', $request->status);
+      })
+      ->when($request->date, function ($q) use ($request){
+        $date = $request->date;
+         $q->whereDate('created_at', '>=', Carbon::parse($date['start'])->startOfDay()->toDateTimeString())
+        ->whereDate('created_at', '<=', Carbon::parse($date['end'])->endOfDay()->toDateTimeString());
+      })
+      ->orderBy('updated_at', 'DESC')->get();
 
-         $permit = Permit::has('artist')
-         ->when($request->today, function($q) use ($request){
-          $q->where('created_at', 'like', $request->today.'%');
-        })
-         ->when($request->issued_date,function ($q) use ($request){
-          $q->whereDate('issued_date', '<=', $request->issued_date);
-        })
-         ->when($request->request_type, function ($q) use ($request){
-          $q->whereIn('request_type', $request->request_type);
-        })
-         ->when($request->status, function($q) use ($request){
-          $q->whereIn('permit_status', $request->status);
-        })
-         ->when($request->permit_start, function ($q) use ($request){
-          $date = explode('-', $request->permit_start);
-          $q->whereBetween('issued_date', [ date('Y-m-d', strtotime($date[0])), date('Y-m-d', strtotime($date[1]))]);
-        })
-         ->orderBy('updated_at', 'DESC');
-
-         $totalRecords = $permit->count();
-         $permit = $permit->offset($start)->limit($limit);
+         // $totalRecords = $permit->count();
+         // $permit = $permit->offset($start)->limit($limit);
          return Datatables::of($permit)
 	         ->addColumn('artist_number', function($permit){
 		         $total = $permit->artistpermit()->count();
 		         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
 	         	return 'Checked '.$check.' of '.$total;
 	         })
-	         ->addColumn('permit_status', function($permit){
+	         ->editColumn('permit_status', function($permit){
 	         	return permitStatus($permit->permit_status);
 	         })
 	         ->editColumn('reference_number', function($permit){
@@ -455,10 +477,10 @@ class ArtistPermitController extends Controller
 	         	return ucwords($permit->request_type).' Application';
 	         })
            ->addColumn('action', function($permit){
-            return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-light"><i class="la la-download"></i> download</a>';
+            return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i> Download</a>';
            })
 	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action'])
-	          ->setTotalRecords($totalRecords)
+	          // ->setTotalRecords($totalRecords)
 	         ->make(true);
      }
     }
