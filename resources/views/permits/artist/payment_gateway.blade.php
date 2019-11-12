@@ -16,7 +16,7 @@
 
                 <div class="kt-portlet__head-toolbar">
                     <div class="my-auto float-right">
-                        <a href="{{url('company/make_payment').'/'.$permit_details->permit_id}}" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u
+                        <a href="{{url('company/make_payment').'/'.$permit_details->permit_id}}" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                             ">
                             <i class="la la-arrow-left"></i>
                             Back
@@ -24,7 +24,7 @@
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
                         <a href="{{url('company/make_payment').'/'.$permit_details->permit_id}}"
-                            class="btn btn-label-back btn-elevate btn-sm">
+                            class="btn btn--maroon btn-elevate btn-sm">
                             <i class="la la-arrow-left"></i>
                         </a>
                     </div>
@@ -116,7 +116,7 @@
                 <form action="{{route('company.payment', $permit_details->permit_id)}}" method="POST">
                     @csrf
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-sm btn-wide btn-label-maroon kt-font-bold kt-font-transform-u"
+                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
                             id="pay_btn">PAY</button>
                     </div>
 

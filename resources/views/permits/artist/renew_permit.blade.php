@@ -11,45 +11,50 @@
         </div>
         <div class="kt-portlet__head-toolbar ">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                     Back
                 </button>
                 <a href="{{url('company/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
                 </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn-label-back btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
 
                 </button>
                 <a href="{{url('company/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                 </a>
             </div>
         </div>
     </div>
 
+
     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
     <div class="kt-portlet__body pt-0">
         <div class="kt-widget5__info py-4">
             <div class="pb-2">
+                <span>Permit Number:</span>&emsp;
+                <span class="kt-font-info">{{$permit_details->permit_number}}</span>
                 <span>From Date:</span>&emsp;
+
                 <span
-                    class="kt-font-info">{{date('d-M-Y',strtotime('+1 day', strtotime($permit_details->expired_date)))}}</span>&emsp;&emsp;
-                <input type="hidden" id="issued_date" value="{{$permit_details->expired_date}}">
-                @php
+                    class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->issue_date))}}</span>&emsp;&emsp;
+                <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
+                {{-- @php
                 $to_date = date('d-M-Y', strtotime('+31 days', strtotime($permit_details->expired_date)));
                 $db_to_date = date('Y-m-d', strtotime('+31 days', strtotime($permit_details->expired_date)));
-                @endphp
+                @endphp --}}
                 <span>To Date:</span>&emsp;
-                <span class="kt-font-info">{{$to_date}}</span>&emsp;&emsp;
-                <input type="hidden" id="expired_date" value="{{$db_to_date}}">
+                <span
+                    class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->expiry_date))}}</span>&emsp;&emsp;
+                <input type="hidden" id="expired_date" value="{{$artist_details[0]->expiry_date}}">
                 <span>Work Location:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
                 <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
@@ -112,7 +117,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                 <i class="la la-check"></i>
                 Submit
             </div>
@@ -121,26 +126,9 @@
 
 
 
-    <!--begin::Modal-->
+    @include('permits.artist.modals.view_artist')
 
-    <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body" id="detail-permit">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
-
-    @include('permits.artist.modals.remove')
+    @include('permits.artist.modals.remove_artist' , ['from' => 'renew'])
 
     <!--begin::Modal-->
     <div class="modal fade" id="back_btn_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -183,9 +171,9 @@
         });
     })
 
-    function stopNavigate(event) {
-        $(window).off('beforeunload');
-    }
+    // function stopNavigate(event) {
+    //     $(window).off('beforeunload');
+    // }
 
 
     function windowBeforeUnload() {
@@ -217,7 +205,7 @@
             }
 
         }
-        return 'Are you sure you want to leave?';
+        // return 'Are you sure you want to leave?';
     }
 
 

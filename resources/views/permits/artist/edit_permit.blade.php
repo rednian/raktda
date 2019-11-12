@@ -16,13 +16,13 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                     Back
                 </button>
                 @if($permit_details->permit_status != 'modification request')
                 <a href="{{url('company/add_artist_to_permit/edit/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
                 </a>
@@ -30,12 +30,12 @@
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn-label-back btn-sm">
+                <button id="back_btn" class="btn btn--maroon-back btn-sm">
                     <i class="la la-arrow-left"></i>
                 </button>
                 @if($permit_details->permit_status != 'modification request')
                 <a href="{{url('company/add_artist_to_permit/edit/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold ">
+                    class="btn btn--yellow btn-sm kt-font-bold ">
                     <i class="la la-plus"></i>
                 </a>
                 @endif
@@ -80,7 +80,6 @@
                     <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                     @foreach ($artist_details as $artist_detail)
                     <tr>
-
                         <td>{{$artist_detail->firstname_en}}</td>
                         <td>{{$artist_detail->lastname_en}}</td>
                         <td>{{$artist_detail->profession['name_en']}}</td>
@@ -95,7 +94,7 @@
                                 title="Edit">
                                 <button class="btn btn-sm btn-secondary btn-elevate">Edit</button>
                             </a>
-                            <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
+                            <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                 title="View">
                                 <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a>
@@ -121,7 +120,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <div class="btn btn-label-maroon btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
+            <div class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
                 <i class="la la-check"></i>
                 Submit
             </div>
@@ -143,7 +142,7 @@
             <div class="modal-body">
                 Changes you made may not be saved.
                 <input type="submit" value="Dont Save" onclick="go_back_confirm_function()"
-                    class="btn btn-label-maroon btn-sm kt-font-bold kt-font-transform-u float-right">
+                    class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u float-right">
             </div>
         </div>
     </div>
@@ -154,7 +153,7 @@
 
 @include('permits.artist.modals.view_artist')
 
-@include('permits.artist.modals.remove_artist')
+@include('permits.artist.modals.remove_artist', ['from' => 'edit'])
 
 
 <!--begin::Modal-->

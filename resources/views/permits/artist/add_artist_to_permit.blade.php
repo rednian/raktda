@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
 <link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
+@php
+$language_id = \Auth::user()->LanguageId;
+@endphp
 <!-- begin:: Content -->
 <div class="kt-portlet">
     <div class="kt-portlet__body kt-portlet__body--fit">
@@ -395,7 +398,7 @@
                                                                                 <option value="">Select</option>
                                                                                 @foreach ($languages as $lang)
                                                                                 <option value={{$lang->id}}>
-                                                                                    {{$language_id == 1 ? $lang->name_en $lang->name_ar}}
+                                                                                    {{$language_id == 1 ? $lang->name_en : $lang->name_ar}}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
@@ -674,7 +677,7 @@
                     </div>
                 </div>
                 <div class="kt-form__actions">
-                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
                         Previous
                     </div>
@@ -688,16 +691,15 @@
                     }
                     @endphp
                     <a href="{{url('company/artist/permit/'.$route_back)}}">
-                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            id="back_btn">
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                             Back
                         </div>
                     </a>
-                    <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
+                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
                         style="display:none;">
                         Add Artist
                     </div>
-                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
                         Next Step
                     </div>

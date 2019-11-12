@@ -23,12 +23,12 @@
                     </li>
                     <span class="nav-item"
                         style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                        <a href="{{ url('company/add_new_permit')}}">
-                            <button class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
+                        <a href="{{ url('company/add_new_permit/1')}}">
+                            <button class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                                 id="nav--new-permit-btn">
                                 <i class="la la-plus"></i>@lang('words.add_new')
                             </button>
-                            <button class="btn btn-label-yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                            <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                                 <i class="la la-plus"></i>
                             </button>
                         </a>
@@ -198,6 +198,7 @@
             processing: false,
             serverSide: true,
             searching: true,
+            ordering: false,
             // pageLength: 5,
             // order:[[5,'desc']],
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
@@ -211,45 +212,6 @@
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
-            ],
-            columnDefs: [
-                {
-                    targets:2,
-                    width: '12%',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}</span>`;
-					}
-                },
-                {
-                    targets:3,
-                    width: '10%',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}</span>`;
-					}
-                },
-                {
-                    targets:1,
-                    width: '12%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-                        return `<span >${data}</span>`;
-					}
-                },
-                {
-                    targets:4,
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-                        return `<span >${data}</span>`;
-					}
-                },
-                {
-                    targets:-3,
-                    width: '10%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-transform-c">${data}</span>`;
-					}
-                }
             ],
             language: {
                 emptyTable: "No Applied Artist Permits"
@@ -266,6 +228,7 @@
             processing: false,
             serverSide: true,
             searching: true,
+            ordering: false,
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
@@ -302,6 +265,7 @@
             processing: false,
             serverSide: true,
             searching: true,
+            ordering: false,
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],

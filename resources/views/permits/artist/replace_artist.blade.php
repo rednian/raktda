@@ -677,24 +677,23 @@ $language_id = Auth::user()->LanguageId;
                     </div>
                 </div>
                 <div class="kt-form__actions">
-                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
                         Previous
                     </div>
                     <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
                     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
                     <a href="{{url('company/artist/permit/'.$permit_details->permit_id .'/amend')}}">
-                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            id="back_btn">
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                             Back
                         </div>
                     </a>
-                    <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
+                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
                         style="display:none;">
                         <i class="la la-check"></i>
                         Submit
                     </div>
-                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
                         Next Step
                     </div>

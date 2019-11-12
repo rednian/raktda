@@ -97,7 +97,7 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.person_code')</label>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-right text-md-left">@lang('words.person_code')</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                                     <div class="col-lg-5">
                                                                         <div class="input-group input-group-sm">
@@ -765,7 +765,7 @@ $language_id = Auth::user()->LanguageId;
 
 
                 <div class="kt-form__actions">
-                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
                         Previous
                     </div>
@@ -773,8 +773,7 @@ $language_id = Auth::user()->LanguageId;
                     <input type="hidden" id="permit_id" value="{{$permit_id}}">
 
                     <a href="{{url('company/add_new_permit/'.$permit_id)}}">
-                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            id="back_btn">
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                             Back
                         </div>
                     </a>
@@ -782,14 +781,14 @@ $language_id = Auth::user()->LanguageId;
                     class="btn red mt-ladda-btn ladda-button mt-progress-demo" --}}
 
 
-                    <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-submit" id="submit_btn">Add
-                        Artist</a>
+                        Artist
                     </div>
 
 
 
-                    <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
                         Next Step
                     </div>

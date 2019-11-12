@@ -13,7 +13,7 @@
                     @csrf
                     <p id="warning_text"></p>
                     <input type="hidden" id="del_temp_id" name="del_temp_id" />
-                    <input type="hidden" name="del_artist_from" value="renew" />
+                    <input type="hidden" name="del_artist_from" value="{{$from}}" />
                     <input type="hidden" name="del_permit_id" id="del_permit_id">
                     <input type="submit" value="Remove"
                         class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">

@@ -45,7 +45,7 @@
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
                         </a>
-                        <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step">
+                        <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step" id="mk_payment">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
                                     <span>04</span> Payment
@@ -167,9 +167,8 @@
                                                         <div class="col-md-4 form-group form-group-sm ">
                                                             <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Event Type <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
+                                                                Event Type <span class="text-danger">*</span>
+                                                            </label>
                                                             <select class="form-control form-control-sm"
                                                                 name="event_type_id" id="event_type_id"
                                                                 placeholder="Type"
@@ -187,8 +186,7 @@
                                                         <div class="col-md-4 form-group form-group-sm">
                                                             <label for="name_en"
                                                                 class=" col-form-label kt-font-bold text-right">Event
-                                                                Name <small>( <span class="text-danger">required
-                                                                    </span>)</small></label>
+                                                                Name <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="name_en" id="name_en" placeholder="Event Name">
                                                         </div>
@@ -196,8 +194,7 @@
                                                         <div class=" col-md-4 form-group form-group-sm">
                                                             <label for="name_ar"
                                                                 class=" col-form-label kt-font-bold text-right">Event
-                                                                Name - Ar<small>( <span class="text-danger">required
-                                                                    </span>)</small></label>
+                                                                Name - Ar<span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm "
                                                                 name="name_ar" dir="rtl" id="name_ar"
                                                                 placeholder="Event Name - Ar">
@@ -206,8 +203,7 @@
                                                         <div class="col-md-4 form-group form-group-sm ">
                                                             <label for="issued_date"
                                                                 class=" col-form-label kt-font-bold text-right">From
-                                                                Date <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
+                                                                Date <span class="text-danger">*</span></label>
                                                             <div class="input-group date">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">
@@ -216,7 +212,7 @@
                                                                 </div>
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="issued_date" id="issued_date"
-                                                                    placeholder="From Date" data-date-start-date="+0d">
+                                                                    placeholder="From Date">
 
                                                             </div>
                                                         </div>
@@ -224,8 +220,7 @@
 
                                                         <div class="col-md-4 form-group form-group-sm">
                                                             <label class="col-form-label">From
-                                                                Time <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
+                                                                Time <span class="text-danger">*</span></label>
                                                             <div class="input-group timepicker">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">
@@ -243,8 +238,7 @@
                                                         <div class="col-md-4 form-group form-group-sm ">
                                                             <label for="venue_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Venue <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
+                                                                Venue <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="venue_en" id="venue_en" placeholder="Venue">
 
@@ -254,8 +248,7 @@
                                                         <div class="col-md-4 form-group form-group-sm ">
                                                             <label for="expired_date"
                                                                 class=" col-form-label kt-font-bold text-right">To
-                                                                Date <small>( <span class="text-danger">required</span>
-                                                                    )</small></label>
+                                                                Date <span class="text-danger">*</span></label>
                                                             <div class="input-group date">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">
@@ -270,9 +263,8 @@
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-sm">
-                                                            <label class="col-form-label">To Time <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
+                                                            <label class="col-form-label">To Time <span
+                                                                    class="text-danger">*</span></label>
 
                                                             <div class="input-group timepicker">
                                                                 <div class="input-group-prepend">
@@ -293,9 +285,7 @@
                                                         <div class="col-md-4 form-group form-group-sm ">
                                                             <label for="venue_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Venue - Ar <small>( <span
-                                                                        class="text-danger">required</span>
-                                                                    )</small></label>
+                                                                Venue - Ar <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="venue_ar" dir="rtl" id="venue_ar"
                                                                 placeholder="Venue - Ar">
@@ -327,8 +317,7 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="address"
                                                             class=" col-form-label kt-font-bold text-right">Address
-                                                            <small>( <span class="text-danger">required</span>
-                                                                )</small></label>
+                                                            <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm "
                                                             name="address" id="address" placeholder="Address">
                                                     </div>
@@ -382,8 +371,7 @@
                         </div>
                     </div>
 
-
-
+                    <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
 
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
@@ -399,21 +387,20 @@
 
 
                     <div class="kt-form__actions">
-                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
                             Previous
                         </div>
 
 
                         <a href="{{route('event.index')}}#applied">
-                            <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                id="back_btn">
+                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
                         </a>
 
                         <div class="btn-group" role="group" id="submit--btn-group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn-label-yellow btn-sm dropdown-toggle"
+                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Submit
                             </button>
@@ -428,7 +415,7 @@
                         </div>
 
 
-                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
                             Next Step
                         </div>
@@ -637,6 +624,7 @@
             if ($('#agree').is(':checked')) {
                 $('#back_btn').css('display', 'none');
                 $('#prev_btn').css('display', 'block');
+                $('#agree_cb > span').removeClass('compulsory');
                 wizard.goNext();
                 result = true;
             }
@@ -748,11 +736,13 @@
             $('#submit--btn-group').css('display', 'none');
         });
 
+        let start_days_count = $('#settings_event_start_date').val();
 
         $('#issued_date').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
+            startDate: '+'+start_days_count+'d',
             orientation: "bottom left"
         });
         $('#expired_date').datepicker({
