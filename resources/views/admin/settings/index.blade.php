@@ -19,7 +19,10 @@
 							 <a class="nav-link active" data-toggle="tab" href="#profession" role="tab">{{ __('Profession') }}</a>
 						</li>
 						<li class="nav-item">
-							 <a class="nav-link" data-toggle="tab" href="#requirements" role="tab">{{ __('Requirements') }}</a>
+							 <a class="nav-link" data-toggle="tab" href="#artist_requirements" role="tab">{{ __('Artist Requirements') }}</a>
+						</li>
+						<li class="nav-item">
+							 <a class="nav-link" data-toggle="tab" href="#event_requirements" role="tab">{{ __('Event Requirements') }}</a>
 						</li>
 						<li class="nav-item">
 							 <a class="nav-link" data-toggle="tab" href="#event_types" role="tab">{{ __('Event Types') }}</a>
@@ -48,13 +51,36 @@
 								 </thead>
 							</table>
 						</div>
-						<div class="tab-pane" id="requirements" role="tabpanel">
+						<div class="tab-pane" id="artist_requirements" role="tabpanel">
 							<section class="row">
 								 <div class="col-12">
-										<a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a>
+										{{-- <a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a> --}}
+										<a href="{{ URL::signedRoute('requirements.create', ['t' => 'artist']) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a>
+										
 								 </div>
 							</section>
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblRequirement">
+								 <thead>
+								 <tr>
+										<th>{{ __('REQUIREMENT') }}</th>
+										<th>{{ __('DESCRIPTION') }}</th>
+										<th>{{ __('VALIDITY (months)') }}</th>
+										<th>{{ __('PERMIT TERM') }}</th>
+										<th>{{ __('DATE REQUIRED') }}</th>
+										<th>{{ __('STATUS') }}</th>
+										<th>{{ __('ACTIONS') }}</th>
+								 </tr>
+								 </thead>
+							</table>
+						</div>
+						<div class="tab-pane" id="event_requirements" role="tabpanel">
+							<section class="row">
+								 <div class="col-12">
+										{{-- <a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a> --}}
+										<a href="{{ URL::signedRoute('requirements.create', ['t' => 'event']) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a>
+								 </div>
+							</section>
+							<table class="table table-borderless table-striped table-hover border table-sm" id="tblEventRequirement">
 								 <thead>
 								 <tr>
 										<th>{{ __('REQUIREMENT') }}</th>
@@ -215,7 +241,7 @@
 	var tblProfession;
 	var tblRequirement;
 	var tblEventTypes;
-	var tvlEventRequirement;
+	var tblEventRequirement;
 
     $(document).ready(function () {
 
@@ -227,8 +253,11 @@
         	if(hash == '#profession'){
         		loadProfessions();
         	}
-        	if(hash == '#requirements'){
+        	if(hash == '#artist_requirements'){
         		loadRequirements();
+        	}
+        	if(hash == '#event_requirements'){
+        		loadEventRequirements();
         	}
         	if(hash == '#event_types'){
         		loadEventType();
@@ -250,8 +279,11 @@
 	        if(current_tab == '#profession'){
 	        	loadProfessions();
 	        }
-	        if(current_tab == '#requirements'){
+	        if(current_tab == '#artist_requirements'){
 	        	loadRequirements()
+	        }
+	        if(current_tab == '#event_requirements'){
+	        	loadEventRequirements()
 	        }
 	        if(current_tab == '#event_types'){
 	        	loadEventType();
@@ -266,8 +298,12 @@
 				tblProfession.destroy();
 	        }
 
-	        if(prevTab == '#requirements'){
+	        if(prevTab == '#artist_requirements'){
 	        	tblRequirement.destroy();
+	        }
+
+	        if(prevTab == '#event_requirements'){
+	        	tblEventRequirement.destroy();
 	        }
 
 	        if(prevTab == '#event_types'){
@@ -338,6 +374,54 @@
            serverSide: true,
            ajax: {
                url: '{{ route('requirements.datatable') }}',
+               data: { type: 'artist' },
+               global: false,
+           },
+           columnDefs: [
+                {targets:  [1,6], className: 'no-wrap', sortable: false},
+           ],
+           columns: [
+               { data: 'requirement_name', name: 'requirement_name'},
+               { data: 'requirement_description', name: 'requirement_description'},
+               { data: 'validity', name: 'validity'},
+               { data: 'term', name: 'term'},
+               { data: 'dates_required', name: 'dates_required'},
+               { data: 'status', name: 'status'},
+               { data: 'actions', name: 'actions' }
+           ],
+           fnCreatedRow: function(row, data, index){
+
+	            $('button.btn-delete', row).click(function(){
+	            	var url = $(this).data('url');
+	                bootbox.confirm('Are you sure you want delete the <span class="text-success"> ' + data.requirement_name + '</span>?', function(result){
+	                    if(result){
+	                        $.ajax({
+		                        url: url,
+		                        data: {_method: 'delete'},
+		                        type: 'post',
+		                        dataType: 'json'
+	                        }).done(function(response){
+	                          	tblRequirement.ajax.reload(null, false);
+	                      	});
+	                    }
+	                });
+	            });
+
+	            $('button.btn-edit', row).click(function(){
+	            	location.href = $(this).data('url');
+	            });
+           }
+
+       });
+    }
+
+    function loadEventRequirements(){
+    	tblEventRequirement = $('table#tblEventRequirement').DataTable({
+           processing: true,
+           serverSide: true,
+           ajax: {
+               url: '{{ route('requirements.datatable') }}',
+               data: { type: 'event' },
                global: false,
            },
            columnDefs: [

@@ -3,6 +3,11 @@ Route::get('/', function () {
     return redirect()->route('login');
 })->name('default');
 
+Route::get('/test', function(){
+    $permit = App\Approval::find(2)->permit;
+    dd($permit);
+});
+
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
