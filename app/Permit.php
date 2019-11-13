@@ -81,4 +81,6 @@ class Permit extends Model
             ->where('permit.permit_status', $status)
             ->groupBy('artist_permit.permit_id');
     }
+
+    
 }

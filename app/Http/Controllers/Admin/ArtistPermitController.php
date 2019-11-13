@@ -459,7 +459,12 @@ class ArtistPermitController extends Controller
          $q->whereDate('created_at', '>=', Carbon::parse($date['start'])->startOfDay()->toDateTimeString())
         ->whereDate('created_at', '<=', Carbon::parse($date['end'])->endOfDay()->toDateTimeString());
       })
-      ->orderBy('permit_id', 'desc')->get();
+      ->when($request->approval, function($q) use($request){
+        $q->whereHas('approval.approver', function($q1) use($request){
+          $q1->where('user_id', $request->user()->user_id);
+        });
+      })
+      ->orderBy('updated_at', 'DESC')->get();
 
          return Datatables::of($permit)
 	         ->addColumn('artist_number', function($permit){
@@ -506,9 +511,9 @@ class ArtistPermitController extends Controller
            ->addColumn('action', function($permit){
             return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i> Download</a>';
            })
-         //  ->orderColumn('reference_number', function($q, $order){
-            //$q->orderBy('permit_id', $order);
-          // })
+           ->addColumn('inspection_url', function($permit){
+            return route('tasks.artist_permit.details', $permit->permit_id);
+           })
 	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action'])
 	          // ->setTotalRecords($totalRecords)
 	         ->make(true);
