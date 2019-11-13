@@ -43,7 +43,7 @@
                     <!--end: Form Wizard Nav -->
                 </div>
                 @php
-                $language_id = Auth::user()->LanguageId;
+                $language_id = getLangId();
                 @endphp
 
                 <input type="hidden" id="artist_permit_id" value="{{$artist_details->artist_permit_id }}">
@@ -69,20 +69,21 @@
                         <!--end: Form Wizard Step 1-->
 
                         @include('permits.artist.common.edit-artist-details-html', [ 'artist_details' =>
-                        $artist_details])
+                        $artist_details, 'from' => $from])
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first ">
                                 <div class="kt-wizard-v3__form">
-                                    <form id="documents_required" method="post">
+                                    <form id="documents_required" method="post" autocomplete="off">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
                                         <input type="hidden" id="requirements_count" value={{count($requirements)}}>
                                         <div class="kt-form__section kt-form__section--first">
 
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-12">
-                                                    <label class="kt-font-bold text--maroon"> Artist Photo</label>
+                                                    <label class="kt-font-bold text--maroon"> Artist Photo <span
+                                                            class="text-danger">*</span></label>
                                                     <p for="" class="reqName " title="Artist Photo">
                                                         Use Passport size picture with white background</p>
                                                 </div>
@@ -100,13 +101,16 @@
                                             $expired_date = strtotime($artist_details->expiry_date);
                                             $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
                                             @endphp
+                                            <input type="hidden" id="permitNoOfDays" value="{{$diff}}" />
                                             @foreach ($requirements as $req)
-                                            @if($req->term == 'long' && $diff > 30 || $req->term == 'short' )
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-12">
                                                     <label
-                                                        class="kt-font-bold text--maroon">{{$language_id == 1 ?$req->requirement_name : $req->requirement_name_ar}}</label>
-                                                    <p for="" class="reqName    ">
+                                                        class="kt-font-bold text--maroon">{{$language_id == 1 ?$req->requirement_name : $req->requirement_name_ar}}
+                                                        <span
+                                                            class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-secondary' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span>
+                                                    </label>
+                                                    <p for="" class="reqName">
                                                         {{$req->requirement_description}}</p>
                                                 </div>
                                                 <input type="hidden" value="{{$req->requirement_id}}"
@@ -121,22 +125,22 @@
                                                 </div>
                                                 <input type="hidden" id="datesRequiredCheck_{{$i}}"
                                                     value="{{$req->dates_required}}">
+                                                <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
                                                 @if($req->dates_required == 1)
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
                                                         title="Issue Date">@lang('words.issue_date')</label>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                        id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" <?php
-                                                        if($req->validity != null || $req->validity != 0) {
-                                                    ?> onchange="set_document_expiry({{$req->validity}}, {{$i}})"
-                                                        <?php } ?> />
+                                                        id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
+                                                        onchange="setExpiryMindate('{{$i}}')" />
+                                                    <input type="hidden" id="doc_validity_{{$i}}"
+                                                        value="{{$req->validity}}">
                                                 </div>
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
                                                         title="Expiry Date">@lang('words.expired_date')</label>
-                                                    <input type="text"
-                                                        class="form-control form-control-sm date-picker {{($req->validity != null || $req->validity != 0) ? 'mk-disabled' : ''}}"
+                                                    <input type="text" class="form-control form-control-sm date-picker"
                                                         name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                         id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
                                                 </div>
@@ -147,7 +151,7 @@
                                             @php
                                             $i++;
                                             @endphp
-                                            @endif
+
                                             @endforeach
 
                                     </form>
@@ -177,7 +181,7 @@
                         $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/edit';
                         break;
                         case 'new':
-                        $backUrl = 'company/add_new_permit/1';
+                        $backUrl = 'company/artist/new/1';
                         break;
                         }
                         @endphp
@@ -411,7 +415,7 @@
                     dateNL: true
                 },
                 visa_type: 'required',
-                visa_number: 'required',
+                // visa_number: 'required',
                 visa_expiry: {
                     required: true,
                     dateNL: true
@@ -441,7 +445,7 @@
                 passport: '',
                 pp_expiry: '',
                 visa_type: '',
-                visa_number: '',
+                // visa_number: '',
                 visa_expiry: '',
                 sp_name: '',
                 gender: '',
@@ -460,13 +464,19 @@
 
         var docRules = {};
         var docMessages = {};
+        var term;
 
         for(var i = 1; i < $('#requirements_count').val(); i++)
         {
-            docRules['doc_issue_date_'+i] = 'required';
-            docRules['doc_exp_date_'+i] = 'required';
-            docMessages['doc_issue_date_'+i] = 'This field is required';
-            docMessages['doc_exp_date_'+i] = 'This field is required';
+            var noofdays = $('#permitNoOfDays').val();
+            term = $('#permitTerm_'+i).val();
+            if((term == 'long' && noofdays > 30) || term == 'short')
+            {
+                docRules['doc_issue_date_'+i] = 'required';
+                docRules['doc_exp_date_'+i] = 'required';
+                docMessages['doc_issue_date_'+i] = 'This field is required';
+                docMessages['doc_exp_date_'+i] = 'This field is required';
+            }
         }
 
         var documentsValidator = $('#documents_required').validate({
@@ -580,21 +590,27 @@
         var hasFile = true;
         var hasFileArray = [];
         documentDetails = {};
+        var noofdays = $('#permitNoOfDays').val();
+        var term ;
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
-            if ($('#ajax-file-upload_' + i).length) {
-                if($('#ajax-file-upload_'+i).contents().length == 0) {
-                    hasFileArray[i] = false;
-                    $("#ajax-upload_"+i).css('border', '2px dotted red');
+            term = $('#permitTerm_'+i).val();
+            if((term == 'long' && noofdays > 30) || term == 'short')
+            {
+                if ($('#ajax-file-upload_' + i).length) {
+                    if($('#ajax-file-upload_'+i).contents().length == 0) {
+                        hasFileArray[i] = false;
+                        $("#ajax-upload_"+i).css('border', '2px dotted red');
+                    }
+                    else{
+                        hasFileArray[i] = true;
+                        $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
+                    }
                 }
-                else{
-                    hasFileArray[i] = true;
-                    $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
-                }
-                documentDetails[i] = {
-                    issue_date :   $('#doc_issue_date_'+i).val(),
-                    exp_date : $('#doc_exp_date_'+i).val()
-                }
+            }
+            documentDetails[i] = {
+                issue_date :   $('#doc_issue_date_'+i).val(),
+                exp_date : $('#doc_exp_date_'+i).val()
             }
         }
         if($('#pic-file-upload').contents().length == 0) {
@@ -617,11 +633,11 @@
 
     $('#submit_btn').click((e) => {
 
-        $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-
         var hasFile = docValidation();
 
         if(documentsValidator.form() && hasFile){
+
+            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
         // var artist_permit_id = $('#artist_permit_id').val();
         var permit_id = $('#permit_id').val();
         var temp_id = $('#temp_id').val();
@@ -649,13 +665,16 @@
                     from: fromPage
                 },
                 success: function(result){
+
                     // console.log(result)
                     if(result.message[0] == 'success')
                     {
+                        $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+
                         localStorage.clear(); let toUrl = '';
                         if(fromPage == 'new')
                         {
-                            toUrl = "{{url('company/add_new_permit')}}";
+                            toUrl = "{{url('company/artist/new')}}";
                             window.location.href= toUrl +'/'+ permit_id;
                         } else {
                             toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => ':from'])}}";;

@@ -666,3 +666,68 @@ select option:first-child {
     [data-ktwizard-type="action-prev"] {
     margin-right: 0;
 }
+
+.kt-header-mobile {
+    background-color: #fff;
+}
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+    color: #777777 !important;
+}
+
+.datepicker tbody tr > td.day,
+.datepicker tbody tr > td.day.new,
+.datepicker tbody tr > td.day.old {
+    color: #000;
+}
+
+/* artist details css */
+
+.artist--view-head {
+    display: flex;
+    flex-direction: row;
+    justify-items: flex-start;
+    align-items: center;
+    height: 100%;
+}
+
+.artist--view-head-image {
+    width: 200px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.artist--view-head-image img,
+.artist--view-head-image span {
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.artist--view-head-details {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 15px;
+    width: 100%;
+}
+
+.artist--view-head-details span {
+    padding-bottom: 15px;
+}
+
+.artist--view-head-details span i {
+    padding-right: 15px;
+}
+
+@media (max-width: 400px) {
+    .artist--view-head {
+        flex-direction: column;
+        justify-items: center;
+    }
+    .artist--view-head-image {
+        margin-right: 0px;
+    }
+}

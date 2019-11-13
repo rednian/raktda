@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Event Permit Details')
+@section('title', 'Artist Details')
 
 @section('content')
 
@@ -14,7 +14,9 @@
         {{-- {{$artist_details->permit_id}} --}}
         @php
         if($from == 'details'){
-        $backUrl = url('company/get_permit_details').'/'.$artist_details->permit_id .'?tab=applied' ;
+        $backUrl = url('company/artist/get_permit_details').'/'.$artist_details->permit_id .'?tab=applied' ;
+        } else if($from == 'payment') {
+        $backUrl = url('company/artist/make_payment/').'/'.$artist_details->permit_id ;
         }
         @endphp
 
@@ -27,8 +29,7 @@
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{url('company/get_permit_details?tab=applied')}}"
-                    class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <a href="{{$backUrl}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                 </a>
             </div>
@@ -37,97 +38,136 @@
 
 
     <div class="kt-portlet__body">
-        <div class="kt-widget kt-widget--user-profile-3">
-            <div class="kt-widget__top">
-
-                @if($artist_details->thumbnail == '')
-                <div
-                    class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden-">
-                    {{$artist_details->firstname_en[0]}}
-                </div>
-                @else
-                <div class="kt-widget__media">
+        <div class="kt-container">
+            <div class="artist--view-head">
+                <div class="artist--view-head-image">
+                    @if($artist_details->thumbnail == '')
+                    <span
+                        class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden-">
+                        {{ucwords($artist_details->firstname_en[0])}}{{ucwords($artist_details->lastname_en[0])}}
+                    </span>
+                    @else
                     <img src="{{url('storage').'/'.$artist_details->thumbnail}}" alt="image">
+                    @endif
                 </div>
-                @endif
-                <div class="kt-widget__content">
-                    <div class="kt-widget__head">
-                        <a href="#" class="kt-widget__username">
-                            {{$artist_details->firstname_en.' '.$artist_details->lastname_en}} &emsp;
-                            {{$artist_details->firstname_ar.' '.$artist_details->lastname_ar}}
-                        </a>
-                    </div>
-                    <div class="kt-widget__subhead">
-                        <a href="#"><i class="flaticon2-new-email"></i>{{$artist_details->email}}</a>
-                        <a href="#"><i class="flaticon2-phone"></i>{{$artist_details->mobile_number}}</a>
-                        <a href="#"><i
-                                class="flaticon2-placeholder"></i>{{$artist_details->Nationality['nationality_en']}}</a>
-                    </div>
-                    <div class="kt-widget__info mt-5">
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Birth Date:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{date('d-M-Y', strtotime($artist_details->birthdate))}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Gender:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{$artist_details->gender == '1' ? 'Male' : 'Female'}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Passport No:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{$artist_details->passport_number}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Passport Expiry:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{date('d-M-Y', strtotime($artist_details->passport_expire_date))}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Phone Number:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{$artist_details->phone_number}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Visa Number:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{$artist_details->visa_number}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Visa Expiry:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{date('d-M-Y', strtotime($artist_details->visa_expire_date))}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>UID No:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{$artist_details->uid_number}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Sponser Name:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{$artist_details->sponsor_name_en}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Sponser Name - Ar:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{$artist_details->sponsor_name_ar}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Address:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{$artist_details->address_en}}</p>
-                        </div>
-                        <div class="col-md-6 col-sm-12 row">
-                            <label class="col col-md-6 text-md-right"><strong>Address - Ar:</strong></label>
-                            <p class="col col-md-6 text-left">
-                                {{$artist_details->address_ar}}</p>
-                        </div>
-
-                    </div>
+                <div class="artist--view-head-details">
+                    <span href="#"><i
+                            class="flaticon2-user"></i>{{getLangId() == 1 ? ucwords($artist_details->firstname_en).' '.ucwords($artist_details->lastname_en) : ucwords($artist_details->firstname_ar).' '.ucwords($artist_details->lastname_ar)}}</span>
+                    <span href="#"><i class="flaticon2-new-email"></i>{{$artist_details->email}}</span>
+                    <span href="#"><i class="flaticon2-phone"></i>{{$artist_details->mobile_number}}</span>
+                    <span href="#"><i
+                            class="flaticon2-placeholder"></i>{{$artist_details->Nationality['nationality_en']}}</span>
                 </div>
             </div>
+            <div class="mt-5 col-md-12">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Birth Date:</strong></label>
+                        <p class="col col-md-6">
+                            {{date('d-M-Y', strtotime($artist_details->birthdate))}}</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Gender:</strong></label>
+                        <p class="col col-md-6">
+                            {{$artist_details->gender == '1' ? 'Male' : 'Female'}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Passport No:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{$artist_details->passport_number}}</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Passport Expiry:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{date('d-M-Y', strtotime($artist_details->passport_expire_date))}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Phone Number:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{$artist_details->phone_number ? $artist_details->phone_number : 'Not Given'}}</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Visa Type:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{$artist_details->visaType->visa_type_en}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Visa Number:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{$artist_details->visa_number}}</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Visa Expiry:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{date('d-M-Y', strtotime($artist_details->visa_expire_date))}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>UID No:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{$artist_details->uid_number}}</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>UID Expiry:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{date('d-M-Y', strtotime($artist_details->uid_expire_date))}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Sponser Name:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{$artist_details->sponsor_name_en}}</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>Address:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{$artist_details->address_en}}</p>
+                    </div>
+                </div>
+
+
+            </div>
+
+            @if(count($artist_details->artistPermitDocument) > 0)
+            <div class="artist--documents pt-5">
+                <table class="table table-hover table-borderless border table-striped">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="text-left">Document Name</th>
+                            <th>Issue Date</th>
+                            <th>Expiry Date</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($artist_details->artistPermitDocument as $req)
+                        <tr>
+                            <td style="width:50%;">{{$req->requirement->requirement_name}}</td>
+                            <td class="text-center">
+                                {{$req->issued_date != '0000-00-00' ? date('d-m-Y', strtotime($req->issued_date)) : ''}}
+                            </td>
+                            <td class="text-center">
+                                {{$req->expired_date != '0000-00-00' ? date('d-m-Y', strtotime($req->expired_date)) : ''}}
+                            </td>
+                            <td class="text-center">
+                                <a href="{{asset('storage')}}{{'/'.$req->path}}" target="blank" ">
+                                            <button class=" btn btn-sm btn-secondary">View
+                                    </button></a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @endif
         </div>
     </div>
 

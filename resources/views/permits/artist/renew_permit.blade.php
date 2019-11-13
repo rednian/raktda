@@ -6,8 +6,11 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Renew Artist Permit
-            </h3>
+            <h3 class="kt-portlet__head-title">Renew Artist Permit</h3>
+            <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+                <strong>{{$permit_details->permit_number}}
+                </strong>
+            </span>
         </div>
         <div class="kt-portlet__head-toolbar ">
             <div class="my-auto float-right permit--action-bar">
@@ -22,7 +25,7 @@
                 </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn_sm" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
 
                 </button>
@@ -40,10 +43,7 @@
     <div class="kt-portlet__body pt-0">
         <div class="kt-widget5__info py-4">
             <div class="pb-2">
-                <span>Permit Number:</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->permit_number}}</span>
                 <span>From Date:</span>&emsp;
-
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->issue_date))}}</span>&emsp;&emsp;
                 <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
@@ -94,9 +94,13 @@
                                 title="Edit">
                                 <button class="btn btn-sm btn-secondary btn-elevate ">Edit</button>
                             </a>
-                            <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
+                            {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
+                            title="View">
+                            <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
+                            </a> --}}
+                            <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
                                 title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
+                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
@@ -130,26 +134,7 @@
 
     @include('permits.artist.modals.remove_artist' , ['from' => 'renew'])
 
-    <!--begin::Modal-->
-    <div class="modal fade" id="back_btn_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Leave Page Warning !</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Changes you made may not be saved.
-                    <input type="submit" value="Dont Save" onclick="go_back_confirm_function()"
-                        class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
+    @include('permits.artist.modals.leave_page')
 
 
 </div>
@@ -219,6 +204,16 @@
         }
     });
 
+    $('#back_btn_sm').click(function(){
+        $total_artists = $('#total_artist_details').val();
+
+        if($total_artists > 0) {
+            $('#back_btn_modal').modal('show');
+        } else {
+            window.location.href = "{{route('artist.index')}}#valid";
+        }
+    });
+
     function go_back_confirm_function(){
         var temp_permit_id =  $('#permit_id').val();
         $.ajax({
@@ -259,7 +254,10 @@
             type: 'POST',
             url: '{{route("artist.store")}}',
             data: {
-                temp_permit_id:temp_permit_id
+                temp_permit_id:temp_permit_id,
+                from: $('#issued_date').val() ,
+                to: $('#expired_date').val(),
+                loc: $('#work_location').val(),
             },
             success: function(data) {
                 // console.log(data);

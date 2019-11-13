@@ -68,7 +68,7 @@
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first ">
                                 <div class="kt-wizard-v3__form">
-                                    <form id="documents_required" method="post">
+                                    <form id="documents_required" method="post" autocomplete="off">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
                                         <input type="hidden" id="requirements_count" value={{count($requirements)}}>
                                         <div class="kt-form__section kt-form__section--first">
@@ -93,12 +93,14 @@
                                             $expired_date = strtotime(session($user_id.'_apn_to_date'));
                                             $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
                                             @endphp
+                                            <input type="hidden" id="permitNoOfDays" value="{{$diff}}" />
                                             @foreach ($requirements as $req)
-                                            @if($req->term == 'long' && $diff > 30 || $req->term == 'short' )
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-12">
                                                     <label
-                                                        class="kt-font-bold text--maroon">{{$req->requirement_name}}</label>
+                                                        class="kt-font-bold text--maroon">{{getLangId() == 1 ?$req->requirement_name : $req->requirement_name_ar}}
+                                                        <span
+                                                            class="text-danger">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '*' : ''}}</span></label>
                                                     <p for="" class="reqName    ">
                                                         {{$req->requirement_description}}</p>
                                                 </div>
@@ -114,6 +116,7 @@
                                                 </div>
                                                 <input type="hidden" id="datesRequiredCheck_{{$i}}"
                                                     value="{{$req->dates_required}}">
+                                                <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
                                                 @if($req->dates_required == 1)
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
@@ -121,7 +124,10 @@
                                                         Date</label>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                        id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                                        id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
+                                                        onchange="setExpiryMindate('{{$i}}')" />
+                                                    <input type="hidden" id="doc_validity_{{$i}}"
+                                                        value="{{$req->validity}}">
                                                 </div>
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
@@ -133,12 +139,9 @@
                                                 </div>
                                                 @endif
                                             </div>
-
-
                                             @php
                                             $i++;
                                             @endphp
-                                            @endif
                                             @endforeach
 
                                     </form>
@@ -156,7 +159,7 @@
                         </div>
                         <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
 
-                        <a href="{{url('company/view_draft_details').'/'.$artist_details->permit_id}}">
+                        <a href="{{url('company/artist/view_draft_details').'/'.$artist_details->permit_id}}">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
@@ -387,7 +390,7 @@
                     dateNL: true
                 },
                 visa_type: 'required',
-                visa_number: 'required',
+                // visa_number: 'required',
                 visa_expiry: {
                     required: true,
                     dateNL: true
@@ -417,7 +420,7 @@
                 passport: '',
                 pp_expiry: '',
                 visa_type: '',
-                visa_number: '',
+                // visa_number: '',
                 visa_expiry: '',
                 sp_name: '',
                 gender: '',
@@ -437,13 +440,18 @@
 
         var docRules = {};
         var docMessages = {};
-
+        var term ;
         for(var i = 1; i < $('#requirements_count').val(); i++)
         {
-            docRules['doc_issue_date_'+i] = 'required';
-            docRules['doc_exp_date_'+i] = 'required';
-            docMessages['doc_issue_date_'+i] = 'This field is required';
-            docMessages['doc_exp_date_'+i] = 'This field is required';
+            var noofdays = $('#permitNoOfDays').val();
+            term = $('#permitTerm_'+i).val();
+            if((term == 'long' && noofdays > 30) || term == 'short')
+            {
+                docRules['doc_issue_date_'+i] = 'required';
+                docRules['doc_exp_date_'+i] = 'required';
+                docMessages['doc_issue_date_'+i] = 'This field is required';
+                docMessages['doc_exp_date_'+i] = 'This field is required';
+            }
         }
 
         var documentsValidator = $('#documents_required').validate({
@@ -563,21 +571,27 @@
         var hasFile = true;
         var hasFileArray = [];
         documentDetails = {};
+        var noofdays = $('#permitNoOfDays').val();
+        var term ;
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
-            if ($('#ajax-file-upload_' + i).length) {
-                if($('#ajax-file-upload_'+i).contents().length == 0) {
-                    hasFileArray[i] = false;
-                    $("#ajax-upload_"+i).css('border', '2px dotted red');
+            term = $('#permitTerm_'+i).val();
+            if((term == 'long' && noofdays > 30) || term == 'short')
+            {
+                if ($('#ajax-file-upload_' + i).length) {
+                    if($('#ajax-file-upload_'+i).contents().length == 0) {
+                        hasFileArray[i] = false;
+                        $("#ajax-upload_"+i).css('border', '2px dotted red');
+                    }
+                    else{
+                        hasFileArray[i] = true;
+                        $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
+                    }
                 }
-                else{
-                    hasFileArray[i] = true;
-                    $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
-                }
-                documentDetails[i] = {
-                    issue_date :   $('#doc_issue_date_'+i).val(),
-                    exp_date : $('#doc_exp_date_'+i).val()
-                }
+            }
+            documentDetails[i] = {
+                issue_date :   $('#doc_issue_date_'+i).val(),
+                exp_date : $('#doc_exp_date_'+i).val()
             }
         }
         if($('#pic-file-upload').contents().length == 0) {
@@ -603,6 +617,8 @@
         var hasFile = docValidation();
 
         if(documentsValidator.form() && hasFile){
+
+            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
         // var artist_permit_id = $('#artist_permit_id').val();
         var permit_id = $('#permit_id').val();
         var temp_id = $('#temp_id').val();
@@ -631,7 +647,7 @@
                     if(result.message[0] == 'success')
                     {
                         localStorage.clear();
-                        window.location.href="{{url('company/view_draft_details')}}"+'/'+ permit_id;
+                        window.location.href="{{url('company/artist/view_draft_details')}}"+'/'+ permit_id;
                     }
                 }
             });

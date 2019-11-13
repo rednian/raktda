@@ -24,11 +24,11 @@
                 </button>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u"
+                <button id="back_btn_sm" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u"
                     title="Go Back">
                     <i class="la la-arrow-left"></i>
                 </button>
-                <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
+                <button id="add_artist_sm" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()" title="Add Artist">
                     <i class="la la-plus"></i>
                 </button>
@@ -45,32 +45,49 @@
                 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                     <div class="kt-form__section kt-form__section--first">
                         <div class="kt-wizard-v3__form">
-                            <form id="permit_details" method="POST">
+                            <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
                                     <div class="form-group col-lg-3">
-                                        <label for="permit_from" class="col-form-label col-form-label-sm">From
+                                        <label for="permit_from" class="col-form-label col-form-label-sm ">From
                                             Date <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend"><span class="input-group-text"><i
-                                                        class="la la-calendar"></i></span></div>
-                                            <input type="text" class="form-control form-control-sm" name="permit_from"
-                                                id="permit_from" data-date-start-date="+0d" placeholder="DD-MM-YYYY"
-                                                onchange="checkFilled()"
-                                                value="{{ count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->issue_date)) :  ( session($user_id.'_apn_from_date') ? session($user_id.'_apn_from_date') : '') }}" />
+                                        <div class="input-group input-group-sm">
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text"
+                                                    class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
+                                                    name="permit_from" id="permit_from" placeholder="DD-MM-YYYY"
+                                                    onchange="checkFilled()"
+                                                    value="{{ count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->issue_date)) :  ( session($user_id.'_apn_from_date') ? session($user_id.'_apn_from_date') : '') }}" />
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                    <span>
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <input type="hidden" id="artiststartafter"
+                                        value="{{getSettings()->artist_start_after}}" />
                                     <div class="form-group col-lg-3">
                                         <label for="permit_to" class="col-form-label col-form-label-sm">To
                                             Date <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend"><span class="input-group-text"><i
-                                                        class="la la-calendar"></i></span></div>
-                                            <input type="text" class="form-control form-control-sm" name="permit_to"
-                                                id="permit_to" data-date-start-date="+1d" placeholder="DD-MM-YYYY"
-                                                onchange="checkFilled()"
-                                                value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}" />
+                                        <div class="input-group input-group-sm">
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text"
+                                                    class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
+                                                    name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
+                                                    onchange="checkFilled()"
+                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}"
+                                                    {{count($artist_details) > 0 ? 'mk-disabled' : ''}} />
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                    <span>
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
+
+
                                     <div class="form-group col-lg-3">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             Location <span class="text-danger">*</span></label>
@@ -78,7 +95,7 @@
                                             name="work_loc" id="work_loc" onkeyup="checkFilled()"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
-                                    {{-- <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-3">
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
@@ -91,7 +108,7 @@
                                                 <span></span>
                                             </label>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -179,27 +196,7 @@
 
     @include('permits.artist.modals.remove_artist', ['from' => 'new'])
 
-    <!--begin::Modal-->
-    <div class="modal fade" id="back_btn_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Leave Page Warning !</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Changes you made may not be saved.
-                    <input type="submit" value="Dont Save" onclick="go_back_confirm_function()"
-                        class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
-
+    @include('permits.artist.modals.leave_page')
 
     @endsection
 
@@ -213,6 +210,14 @@
         $(document).ready(function(){
             $('#add_artist').attr('disabled', true);
             checkFilled();
+            var artiststartafter = $('#artiststartafter').val();
+            var today = moment().toDate();
+            var startDate = moment(today).add(artiststartafter, 'days').toDate();
+            $('#permit_from').datepicker('setStartDate', startDate);
+            var minDate = moment($('#permit_from').val(), 'DD-MM-YYYY').toDate();
+            var maxDate = moment(minDate).add(3, 'M').toDate();
+            $('#permit_to').datepicker('setStartDate', minDate);
+            $('#permit_to').datepicker('setEndDate', maxDate);
         });
 
         $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
@@ -232,7 +237,9 @@
         $('#permit_from').on('changeDate', function (selected) {
             $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
+            var maxDate = moment(minDate).add(3, 'M').toDate();
             $('#permit_to').datepicker('setStartDate', minDate);
+            $('#permit_to').datepicker('setEndDate', maxDate);
         });
         $('#permit_to').on('changeDate', function (ev) {
             $('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');
@@ -243,10 +250,13 @@
             var from = $('#permit_from').val();
             var to = $('#permit_to').val();
             var loc = $('#work_loc').val();
+            var diff = $('#noofdays').val();
             var artistcount = $('#total_artist_details').val();
             $('#add_artist').attr('disabled', loc == '' ? true : false) ;
+            $('#add_artist_sm').attr('disabled', loc == '' ? true : false) ;
             if(from && to && loc) {
                 $('#add_artist').attr('disabled', false);
+                $('#add_artist_sm').attr('disabled', false);
                 if(artistcount > 0)
                 {
                     $('#draft_btn').css('display', 'block');
@@ -254,6 +264,7 @@
                 }
             }else {
                 $('#add_artist').attr('disabled', true);
+                $('#add_artist_sm').attr('disabled', true);
                 $('#draft_btn').css('display', 'none');
                 $('#submit_btn').css('display', 'none');
             }
@@ -270,12 +281,22 @@
                     data: { from: from , to:to, loc:loc },
                     async: true,
                     success: function(result){
-                        window.location.href="{{url('company/add_new_artist')}}"+ '/'+permit_id;
+                        window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id;
                     }
             });
         }
 
         $('#back_btn').click(function(){
+            $total_artists = $('#total_artist_details').val();
+
+            if($total_artists > 0) {
+                $('#back_btn_modal').modal('show');
+            } else {
+                window.location.href = "{{route('artist.index')}}#applied";
+            }
+        });
+
+        $('#back_btn_sm').click(function(){
             $total_artists = $('#total_artist_details').val();
 
             if($total_artists > 0) {
@@ -361,7 +382,12 @@
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",
-                    data: { temp_permit_id:temp_permit_id },
+                    data: {
+                        temp_permit_id:temp_permit_id ,
+                        from: $('#permit_from').val() ,
+                        to: $('#permit_to').val(),
+                        loc: $('#work_loc').val(),
+                    },
                     success: function(result){
                         $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
                         window.location.href="{{route('artist.index')}}#applied";
@@ -375,7 +401,12 @@
             $.ajax({
                     url:"{{route('artist.add_draft')}}",
                     type: "POST",
-                    data: { temp_permit_id:temp_permit_id },
+                    data: {
+                        temp_permit_id:temp_permit_id,
+                        from: $('#permit_from').val() ,
+                        to: $('#permit_to').val(),
+                        loc: $('#work_loc').val(),
+                    },
                     success: function(result){
                         $('#draft_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
                         window.location.href="{{route('artist.index')}}#draft";

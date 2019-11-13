@@ -16,14 +16,14 @@
 
                 <div class="kt-portlet__head-toolbar">
                     <div class="my-auto float-right">
-                        <a href="{{url('company/make_payment').'/'.$permit_details->permit_id}}" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
+                        <a href="{{url('company/artist/make_payment').'/'.$permit_details->permit_id}}" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                             ">
                             <i class="la la-arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
-                        <a href="{{url('company/make_payment').'/'.$permit_details->permit_id}}"
+                        <a href="{{url('company/artist/make_payment').'/'.$permit_details->permit_id}}"
                             class="btn btn--maroon btn-elevate btn-sm">
                             <i class="la la-arrow-left"></i>
                         </a>

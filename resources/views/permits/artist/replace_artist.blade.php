@@ -52,7 +52,7 @@ $language_id = Auth::user()->LanguageId;
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
-                                <form id="artist_details" novalidate>
+                                <form id="artist_details" novalidate autocomplete="off">
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
@@ -74,7 +74,7 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.person_code')</label>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.person_code')</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                                     <div class="col-lg-5">
                                                                         <div class="input-group input-group-sm">
@@ -93,7 +93,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.first_name')<span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.first_name')<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -107,7 +107,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.last_name')<span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.last_name')<span
                                                                             class="text-danger">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -120,7 +120,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="nationality"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.nationality')
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.nationality')
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -142,7 +142,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.birth_date')<span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.birth_date')<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -157,7 +157,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.passport_number')span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.passport_number')span
                                                                         class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -171,7 +171,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="pp_expiry"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.passport_expiry')<span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.passport_expiry')<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -186,7 +186,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="uid_number"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.uid_number')
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.uid_number')
                                                                         <span class="text-danger">*</span> </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -199,7 +199,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.uid_expiry')<span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.uid_expiry')<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -214,7 +214,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="religion"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.religion')
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.religion')
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -239,7 +239,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 <input type="hidden" id="artist_permit_num">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
                                                                         @lang('words.profession') <span
                                                                             class="text-danger">*</span></label>
                                                                     <div class="col-lg-8">
@@ -267,13 +267,13 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.first_name_ar')<span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.first_name_ar')<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
-                                                                            <input type="text"
-                                                                                class="form-control form-control-sm text-right "
+                                                                            <input type="text" dir="rtl"
+                                                                                class="form-control form-control-sm"
                                                                                 name="fname_ar" id="fname_ar"
                                                                                 placeholder="@lang('words.first_name_ar')">
                                                                         </div>
@@ -281,13 +281,13 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="lname_ar"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.last_name_ar')<span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.last_name_ar')<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
-                                                                            <input type="text"
-                                                                                class="form-control form-control-sm text-right "
+                                                                            <input type="text" dir="rtl"
+                                                                                class="form-control form-control-sm "
                                                                                 name="lname_ar" id="lname_ar"
                                                                                 placeholder="@lang('words.last_name_ar')">
                                                                         </div>
@@ -295,7 +295,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="gender"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.gender')
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.gender')
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -317,7 +317,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_type"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Visa
                                                                         Type <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -337,8 +337,8 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
-                                                                        Number <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Visa
+                                                                        Number
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -350,8 +350,8 @@ $language_id = Auth::user()->LanguageId;
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
-                                                                    <label for="visa_number"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Visa
+                                                                    <label for="visa_expiry"
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Visa
                                                                         Expire Date <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -366,7 +366,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="id_no"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Identification
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Identification
                                                                         No </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -379,7 +379,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="sp_name"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Sponser
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Sponser
                                                                         Name <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -393,7 +393,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="language"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Languages
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Languages
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -436,7 +436,7 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="mobile"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.mobile_number')<span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.mobile_number')<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -450,7 +450,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="landline"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.phone_number')
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.phone_number')
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -467,7 +467,7 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.email_address')
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.email_address')
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -481,7 +481,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fax_no"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.fax_number')</label>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.fax_number')</label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
@@ -517,7 +517,7 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">Address
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Address
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -531,7 +531,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.emirate')
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.emirate')
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -556,7 +556,7 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.po_box')</label>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.po_box')</label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
@@ -568,7 +568,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-4 col-form-label kt-font-bold text-right">@lang('words.area')
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">@lang('words.area')
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -601,7 +601,7 @@ $language_id = Auth::user()->LanguageId;
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
-                                <form id="documents_required" method="post">
+                                <form id="documents_required" method="post" autocomplete="off">
                                     <input type="hidden" id="artist_number_doc" value={{1}}>
                                     <input type="hidden" id="requirements_count" value={{count($requirements)}}>
                                     <div class="kt-form__section kt-form__section--first">
@@ -625,12 +625,14 @@ $language_id = Auth::user()->LanguageId;
                                         $expired_date = strtotime($artist_details->expiry_date);
                                         $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
                                         @endphp
+                                        <input type="hidden" id="permitNoOfDays" value="{{$diff}}" />
                                         @foreach ($requirements as $req)
-                                        @if($req->term == 'long' && $diff > 30 || $req->term == 'short' )
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
                                                 <label
-                                                    class="kt-font-bold text--maroon">{{$language_id == 1 ? $req->requirement_name : $req->requirement_name_ar}}</label>
+                                                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? $req->requirement_name : $req->requirement_name_ar  }}
+                                                    <span
+                                                        class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-secondary' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span></label>
                                                 <p for="" class="reqName    ">
                                                     {{$req->requirement_description}}</p>
                                             </div>
@@ -644,23 +646,23 @@ $language_id = Auth::user()->LanguageId;
                                             </div>
                                             <input type="hidden" id="datesRequiredCheck_{{$i}}"
                                                 value="{{$req->dates_required}}">
+                                            <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
                                             @if($req->dates_required == 1)
                                             <div class="col-lg-2 col-sm-12">
                                                 <label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue
                                                     Date</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                    id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" <?php
-                                                    if($req->validity != null || $req->validity != 0) {
-                                                ?> onchange="set_document_expiry({{$req->validity}}, {{$i}})"
-                                                    <?php } ?> />
+                                                    id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
+                                                    onchange="setExpiryMindate('{{$i}}')" />
+                                                <input type="hidden" id="doc_validity_{{$i}}"
+                                                    value="{{$req->validity}}">
                                             </div>
                                             <div class="col-lg-2 col-sm-12">
                                                 <label for="" class="text--maroon kt-font-bold"
                                                     title="Expiry Date">Expiry
                                                     Date</label>
-                                                <input type="text"
-                                                    class="form-control form-control-sm date-picker {{($req->validity != null || $req->validity != 0) ? 'mk-disabled' : ''}}"
+                                                <input type="text" class="form-control form-control-sm date-picker "
                                                     name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                     id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
                                             </div>
@@ -669,7 +671,6 @@ $language_id = Auth::user()->LanguageId;
                                         @php
                                         $i++;
                                         @endphp
-                                        @endif
                                         @endforeach
                                 </form>
                             </div>
@@ -714,7 +715,7 @@ $language_id = Auth::user()->LanguageId;
 <!--begin::Modal-->
 <div class="modal fade" id="artist_exists" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
     aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel1">Person Code Search</h5>
@@ -730,7 +731,7 @@ $language_id = Auth::user()->LanguageId;
 <!--begin::Modal-->
 <div class="modal fade" id="alert_profession" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Message !</h5>
@@ -931,7 +932,7 @@ $language_id = Auth::user()->LanguageId;
                     dateNL: true
                 },
                 visa_type: 'required',
-                visa_number: 'required',
+                // visa_number: 'required',
                 visa_expiry: {
                     required: true,
                     dateNL: true
@@ -961,7 +962,7 @@ $language_id = Auth::user()->LanguageId;
                 passport: '',
                 pp_expiry: '',
                 visa_type: '',
-                visa_number: '',
+                // visa_number: '',
                 visa_expiry: '',
                 sp_name: '',
                 gender: '',
@@ -978,13 +979,18 @@ $language_id = Auth::user()->LanguageId;
             },
         });
         var docRules = {};
-        var docMessages = {};
+        var docMessages = {};var term ;
         for(var i = 1; i < $('#requirements_count').val(); i++)
         {
-            docRules['doc_issue_date_'+i] = 'required';
-            docRules['doc_exp_date_'+i] = 'required';
-            docMessages['doc_issue_date_'+i] = 'This field is required';
-            docMessages['doc_exp_date_'+i] = 'This field is required';
+            var noofdays = $('#permitNoOfDays').val();
+            term = $('#permitTerm_'+i).val();
+            if((term == 'long' && noofdays > 30) || term == 'short')
+            {
+                docRules['doc_issue_date_'+i] = 'required';
+                docRules['doc_exp_date_'+i] = 'required';
+                docMessages['doc_issue_date_'+i] = 'This field is required';
+                docMessages['doc_exp_date_'+i] = 'This field is required';
+            }
         }
         var documentsValidator = $('#documents_required').validate({
             rules: docRules,
@@ -1100,21 +1106,27 @@ $language_id = Auth::user()->LanguageId;
             var hasFile = true;
             var hasFileArray = [];
             documentDetails = {};
+            var noofdays = $('#permitNoOfDays').val();
+            var term ;
             for(var i = 1; i <= $('#requirements_count').val(); i++)
             {
-                if ($('#ajax-file-upload_' + i).length) {
-                    if($('#ajax-file-upload_'+i).contents().length == 0) {
-                        hasFileArray[i] = false;
-                        $("#ajax-upload_"+i).css('border', '2px dotted red');
+                term = $('#permitTerm_'+i).val();
+                if((term == 'long' && noofdays > 30) || term == 'short')
+                {
+                    if ($('#ajax-file-upload_' + i).length) {
+                        if($('#ajax-file-upload_'+i).contents().length == 0) {
+                            hasFileArray[i] = false;
+                            $("#ajax-upload_"+i).css('border', '2px dotted red');
+                        }
+                        else{
+                            hasFileArray[i] = true;
+                            $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
+                        }
                     }
-                    else{
-                        hasFileArray[i] = true;
-                        $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
-                    }
-                    documentDetails[i] = {
-                        issue_date :   $('#doc_issue_date_'+i).val(),
-                        exp_date : $('#doc_exp_date_'+i).val()
-                    }
+                }
+                documentDetails[i] = {
+                    issue_date :   $('#doc_issue_date_'+i).val(),
+                    exp_date : $('#doc_exp_date_'+i).val()
                 }
             }
             if($('#pic-file-upload').contents().length == 0) {
@@ -1287,23 +1299,27 @@ $language_id = Auth::user()->LanguageId;
             $('#lname_ar').val(apd.lastname_ar);$('#lname_ar').addClass('mk-disabled');
             $('#nationality').val(apd.country_id);
             var ppExp = moment(apd.passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            $('#pp_expiry').val(ppExp);
+            $('#pp_expiry').val(ppExp).datepicker('update');
             var visaExp = moment(apd.visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            $('#visa_expiry').val(visaExp);
+            $('#visa_expiry').val(visaExp).datepicker('update');
             var uidExp = moment(apd.uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            $('#uid_expiry').val(uidExp);
+            $('#uid_expiry').val(uidExp).datepicker('update');
             $('#permit_type').val(apd.permit_type_id),
             $('#profession').val(apd.profession),
             $('#passport').val(apd.passport_number),
             $('#visa_type').val(apd.visa_type),
             $('#visa_number').val(apd.visa_number),
             $('#sp_name').val(apd.sponsor_name_en),
-            $('#id_no').val(apd.emirates_id),
-            $('#language').val(apd.language),
-            $('#religion').val(apd.religion),
-            $('#gender').val(apd.gender),
-            $('#city').val(apd.city);
-            getAreas(apd.city);
+            $('#id_no').val(apd.identification_number);
+            if(apd.language_id){
+                $('#language').val(apd.language_id);
+            }
+            if(apd.religion_id){
+                $('#religion').val(apd.religion_id);
+            }
+            $('#gender').val(apd.gender);
+            $('#city').val(apd.emirate_id);
+            getAreas(apd.emirate_id);
             $('#address').val(apd.address_en),
             $('#uid_number').val(apd.uid_number),
             $('#dob').val(dob),
@@ -1313,14 +1329,15 @@ $language_id = Auth::user()->LanguageId;
             $('#mobile').val(apd.mobile_number),
             $('#email').val(apd.email);
             $('#artist_permit_id').val(apd.artist_permit_id);
-            $('#area').val(apd.area);
+            $('#area').val(apd.area_id);
             PicUploadFunction();
             uploadFunction();
         }
         $('#submit_btn').click((e) => {
-            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+
             var hasFile = docValidation();
             if(documentsValidator.form() && hasFile){
+                $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var artist_permit_id = $('#artist_permit_id').val();
             var permit_id = $('#permit_id').val();
             var ad = localStorage.getItem('artistDetails');
