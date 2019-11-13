@@ -11,7 +11,7 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     // })->name('company.dashboard');
 
     Route::resource('artist', 'Company\ArtistController');
-    Route::get('add_new_permit/{id}', 'Company\ArtistController@create')->name('company.add_new_permit');
+    Route::get('artist/new/{id}', 'Company\ArtistController@create')->name('company.add_new_permit');
     // Route::post('apply_artist_permit',  'Company\ArtistController@store')->name('company.apply_artist_permit');
     Route::post('add_artist_temp',  'Company\ArtistController@add_artist_temp')->name('company.add_artist_temp');
     Route::get('fetch_applied_artists', 'Company\ArtistController@fetch_applied')->name('company.fetch_applied_artists');
@@ -35,32 +35,32 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     // Route::post('uploadfile',  'Company\ArtistController@uploadDocuments')->name('company.upload_file');
     Route::post('delete_artist_from_temp',  'Company\ArtistController@delete_artist_from_temp')->name('company.delete_artist_from_temp');
     Route::post('clear_the_temp_data',  'Company\ArtistController@clear_the_temp_data')->name('company.clear_the_temp_data');
-    Route::get('view_draft_details/{id}',  'Company\ArtistController@view_draft_details')->name('company.view_draft_details');
+    Route::get('artist/view_draft_details/{id}',  'Company\ArtistController@view_draft_details')->name('company.view_draft_details');
     Route::post('uploadDocument',  'Company\ArtistController@uploadDocument')->name('company.uploadDocument');
     Route::post('uploadPhoto',  'Company\ArtistController@uploadPhoto')->name('company.uploadPhoto');
-    Route::get('get_permit_details/{id}',  'Company\ArtistController@get_permit_details')->name('company.get_permit_details');
+    Route::get('artist/get_permit_details/{id}',  'Company\ArtistController@get_permit_details')->name('company.get_permit_details');
     Route::get('update_is_edit/{id}',  'Company\ArtistController@update_is_edit')->name('company.update_is_edit');
     Route::get('download_permit/{permit}',  'Company\ArtistController@download_permit')->name('company.download_permit');
-    Route::get('add_new_artist/{id?}',  'Company\ArtistController@add_new_artist')->name('company.add_new_artist');
+    Route::get('artist/add_new/{id?}/{from?}',  'Company\ArtistController@add_new_artist')->name('company.add_new_artist');
     Route::post('storePermitDetails',  'Company\ArtistController@storePermitDetails')->name('company.storePermitDetails');
     Route::get('get_temp_photo_temp_id/{id}',  'Company\ArtistController@get_temp_photo_temp_id')->name('company.get_temp_photo_temp_id');
     Route::post('get_temp_files_by_temp_id',  'Company\ArtistController@get_temp_files_by_temp_id')->name('company.get_temp_files_by_temp_id');
     Route::get('get_uploaded_artist_photo/{id}',  'Company\ArtistController@get_uploaded_artist_photo')->name('company.get_uploaded_artist_photo');
     Route::post('artist/add_draft',  'Company\ArtistController@add_draft')->name('artist.add_draft');
-    Route::get('get_draft_details/{id}',  'Company\ArtistController@get_draft_details')->name('company.get_draft_details');
+    Route::get('artist/get_draft_details/{id}',  'Company\ArtistController@get_draft_details')->name('company.get_draft_details');
     Route::get('artist/edit/{id}/{from}',  'Company\ArtistController@edit_artist')->name('artist.edit_artist');
     Route::get('edit_artist_draft/{id}',  'Company\ArtistController@edit_artist_draft')->name('company.edit_artist_draft');
     Route::get('update_checklist/{id}',  'Company\ArtistController@update_checklist')->name('company.update_checklist');
     Route::get('artist/permit/{id}/{status}',  'Company\ArtistController@permit')->name('artist.permit');
-    Route::get('make_payment/{id?}',  'Company\ArtistController@make_payment')->name('company.make_payment');
-    Route::get('payment_gateway/{permit}',  'Company\ArtistController@payment_gateway')->name('company.payment_gateway');
-    Route::post('artistpermits/{permit}/payment',  'Company\ArtistController@payment')->name('company.payment');
-    Route::get('happiness_center/{id}',  'Company\ArtistController@happiness_center')->name('company.happiness_center');
+    Route::get('artist/make_payment/{id?}',  'Company\ArtistController@make_payment')->name('company.make_payment');
+    Route::get('artist/payment_gateway/{permit}',  'Company\ArtistController@payment_gateway')->name('company.payment_gateway');
+    Route::post('artist/payment/{permit}/payment',  'Company\ArtistController@payment')->name('company.payment');
+    Route::get('artist/happiness_center/{id}',  'Company\ArtistController@happiness_center')->name('company.happiness_center');
     Route::post('submit_happiness',  'Company\ArtistController@submit_happiness')->name('artist.submit_happiness');
     Route::get('artist/get_status/{id}', 'Company\ArtistController@get_status')->name('company.artist.get_status');
     Route::get('artist/details/{id}/{from}', 'Company\ArtistController@get_artist_details')->name('artist_details.view');
-    Route::get('artistt/details/{id}/{from}', 'Company\ArtistController@get_temp_artist_details')->name('temp_artist_details.view');
-
+    Route::get('artist/temp/details/{id}/{from}', 'Company\ArtistController@get_temp_artist_details')->name('temp_artist_details.view');
+    Route::get('artist/fetch_artist_comment/{id}', 'Company\ArtistController@fetch_artist_comment')->name('artist.fetch_artist_comment');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');

@@ -67,16 +67,7 @@
                         <span class="kt-menu__link-text">@lang('words.reports')</span>
                     </a>
                 </li>
-                <li class="kt-menu__item">
-                    <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">@lang('words.user_management')</span>
-                    </a>
-                </li>
-                <li class="kt-menu__item">
-                    <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">@lang('words.system_settings')</span>
-                    </a>
-                </li>
+
             </ul>
         </div>
     </div>

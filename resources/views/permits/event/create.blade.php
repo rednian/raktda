@@ -204,16 +204,19 @@
                                                             <label for="issued_date"
                                                                 class=" col-form-label kt-font-bold text-right">From
                                                                 Date <span class="text-danger">*</span></label>
-                                                            <div class="input-group date">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-calendar-check-o"></i>
+                                                            <div class="input-group input-group-sm date">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="issued_date" id="issued_date"
+                                                                        placeholder="From Date" />
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-calendar"></i>
+                                                                        </span>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" class="form-control form-control-sm"
-                                                                    name="issued_date" id="issued_date"
-                                                                    placeholder="From Date">
-
                                                             </div>
                                                         </div>
 
@@ -221,16 +224,18 @@
                                                         <div class="col-md-4 form-group form-group-sm">
                                                             <label class="col-form-label">From
                                                                 Time <span class="text-danger">*</span></label>
-                                                            <div class="input-group timepicker">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-clock-o"></i>
+                                                            <div class="input-group input-group-sm timepicker">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input class="form-control form-control-sm"
+                                                                        value="{{date('h:i a', strtotime('10:00 AM'))}}"
+                                                                        name="time_start" id="time_start" type="text" />
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-clock-o"></i>
+                                                                        </span>
                                                                     </span>
                                                                 </div>
-                                                                <input class="form-control form-control-sm"
-                                                                    value="{{date('h:i a', strtotime('10:00 AM'))}}"
-                                                                    name="time_start" id="time_start" type="text" />
-
                                                             </div>
 
                                                         </div>
@@ -249,16 +254,19 @@
                                                             <label for="expired_date"
                                                                 class=" col-form-label kt-font-bold text-right">To
                                                                 Date <span class="text-danger">*</span></label>
-                                                            <div class="input-group date">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-calendar-check-o"></i>
+                                                            <div class="input-group input-group-sm date">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="expired_date" id="expired_date"
+                                                                        placeholder="To Date">
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-calendar"></i>
+                                                                        </span>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" class="form-control form-control-sm"
-                                                                    name="expired_date" id="expired_date"
-                                                                    placeholder="To Date">
-
                                                             </div>
                                                         </div>
 
@@ -266,16 +274,18 @@
                                                             <label class="col-form-label">To Time <span
                                                                     class="text-danger">*</span></label>
 
-                                                            <div class="input-group timepicker">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-clock-o"></i>
+                                                            <div class="input-group input-group-sm timepicker">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input class="form-control form-control-sm"
+                                                                        value="{{date('h:i a', strtotime('5:00 PM'))}}"
+                                                                        name="time_end" id="time_end" type="text" />
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-clock-o"></i>
+                                                                        </span>
                                                                     </span>
                                                                 </div>
-                                                                <input class="form-control form-control-sm"
-                                                                    value="{{date('h:i a', strtotime('5:00 PM'))}}"
-                                                                    name="time_end" id="time_end" type="text" />
-
                                                             </div>
 
                                                         </div>
@@ -292,144 +302,176 @@
                                                         </div>
 
 
+                                                        {{--
+                                                        <div class="col-md-4  form-group form-group-sm ">
+                                                            <label class=" col-form-label kt-font-bold text-right">
+                                                                Do you have any Food truck ?</label>
+                                                            <div class="kt-radio-inline">
+                                                                <label class="kt-radio kt-radio--solid">
+                                                                    <input type="radio" name="isTruck" value="1"
+                                                                        onclick="checkTruck(1)"> Yes
+                                                                    <span></span>
+                                                                </label>
+                                                                <label class="kt-radio kt-radio--solid">
+                                                                    <input type="radio" name="isTruck" value="0" checked
+                                                                        onclick="checkTruck(0)"> No
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseTwo6" aria-expanded="false"
-                                                aria-controls="collapseTwo6">
-                                                <h6 class="kt-font-transform-u">Contact
-                                                    information
-                                                </h6>
-                                            </div>
-                                        </div>
-
-                                        <div class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample6" id="collapseTwo6">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="address"
-                                                            class=" col-form-label kt-font-bold text-right">Address
-                                                            <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm "
-                                                            name="address" id="address" placeholder="Address">
-                                                    </div>
-
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="emirate_id"
-                                                            class=" col-form-label kt-font-bold text-right">Emirate
-                                                        </label>
-                                                        <select class="form-control form-control-sm" name="emirate_id"
-                                                            id="emirate_id">
-                                                            <option value="5">Ras Al Khaimah</option>
-                                                        </select>
-
-                                                    </div>
-
-
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="area_id"
-                                                            class=" col-form-label kt-font-bold text-right">Area
-                                                        </label>
-                                                        <select class="  form-control form-control-sm " name="area_id"
-                                                            id="area_id">
-                                                            <option value="">Select</option>
-                                                            @foreach($areas as $ar)
-                                                            <option value="{{$ar->id}}">
-                                                                {{$ar->area_en}}</option>
-                                                            @endforeach
+                                                        <div class="col-md-4 form-group form-group-sm "
+                                                            id="how_many_div">
+                                                            <label for="venue_ar"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                How Many ?<span class="text-danger">*</span></label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="no_of_trucks" id="no_of_trucks">
+                                                                <option value=" ">Select</option>
+                                                                @for($i = 1;$i < 15; $i++) <option value="{{$i}}">{{$i}}
+                                                        </option>
+                                                        @endfor
                                                         </select>
                                                     </div>
 
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="country_id"
-                                                            class=" col-form-label kt-font-bold text-right">Country
-                                                        </label>
-                                                        <select class="form-control form-control-sm " name="country_id"
-                                                            id="country_id">
-                                                            <option value="{{232}}">
-                                                                United Arab Emirates
-                                                            </option>
-                                                        </select>
-                                                    </div>
-
+                                                    --}}
 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-
                             </div>
+
+
+
+                            <div class="card">
+                                <div class="card-header" id="headingTwo6">
+                                    <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
+                                        aria-expanded="false" aria-controls="collapseTwo6">
+                                        <h6 class="kt-font-transform-u">Contact
+                                            information
+                                        </h6>
+                                    </div>
+                                </div>
+
+                                <div class="collapse show" aria-labelledby="headingTwo6"
+                                    data-parent="#accordionExample6" id="collapseTwo6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 form-group form-group-sm ">
+                                                <label for="address"
+                                                    class=" col-form-label kt-font-bold text-right">Address
+                                                    <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm " name="address"
+                                                    id="address" placeholder="Address">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-sm ">
+                                                <label for="emirate_id"
+                                                    class=" col-form-label kt-font-bold text-right">Emirate
+                                                </label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    value="Ras Al Khaimah" readonly>
+                                                <input type="hidden" name="emirate_id" id="emirate_id" value="5" />
+                                                </select>
+
+                                            </div>
+
+
+                                            <div class="col-md-4 form-group form-group-sm ">
+                                                <label for="area_id"
+                                                    class=" col-form-label kt-font-bold text-right">Area
+                                                </label>
+                                                <select class="  form-control form-control-sm " name="area_id"
+                                                    id="area_id">
+                                                    <option value="">Select</option>
+                                                    @foreach($areas as $ar)
+                                                    <option value="{{$ar->id}}">
+                                                        {{$ar->area_en}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-sm ">
+                                                <label for="country_id"
+                                                    class=" col-form-label kt-font-bold text-right">Country
+                                                </label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    value="United Arab Emirates" readonly>
+                                                <input type="hidden" name="country_id" id="country_id" value="232" />
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
+
+                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                    <div class="kt-form__section kt-form__section--first ">
+                        <div class="kt-wizard-v3__form">
+                            <form id="documents_required" method="post">
+
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="kt-form__actions">
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-prev" id="prev_btn">
+                        Previous
+                    </div>
+
+
+                    <a href="{{route('event.index')}}#applied">
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                            Back
+                        </div>
+                    </a>
+
+                    <div class="btn-group" role="group" id="submit--btn-group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Submit
+                        </button>
+                        <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
+                            <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
+                                value="finished" id="submit_btn">Finish &
+                                Submit</button>
+                            <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
+                                id="draft_btn">Save
+                                as Draft</button>
                         </div>
                     </div>
 
-                    <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
 
-                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                        <div class="kt-form__section kt-form__section--first ">
-                            <div class="kt-wizard-v3__form">
-                                <form id="documents_required" method="post">
-
-
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-prev" id="prev_btn">
-                            Previous
-                        </div>
-
-
-                        <a href="{{route('event.index')}}#applied">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                Back
-                            </div>
-                        </a>
-
-                        <div class="btn-group" role="group" id="submit--btn-group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Submit
-                            </button>
-                            <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
-                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
-                                    value="finished" id="submit_btn">Finish &
-                                    Submit</button>
-                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
-                                    id="draft_btn">Save
-                                    as Draft</button>
-                            </div>
-                        </div>
-
-
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-next" id="next_btn">
-                            Next Step
-                        </div>
-
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-next" id="next_btn">
+                        Next Step
                     </div>
 
                 </div>
 
-
-
-
             </div>
+
+
+
+
         </div>
     </div>
+</div>
 </div>
 </div>
 </div>
@@ -488,6 +530,7 @@
         setWizard();
         localStorage.clear();
         uploadFunction();
+        $('#how_many_div').css('display', 'none');
         $('#submit--btn-group').css('display', 'none');
     });
 

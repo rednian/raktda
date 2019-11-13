@@ -75,11 +75,17 @@
                                     class="kt-font-bold">
                                     {{ucwords($artistPermit->artist_permit_status)}}
                                 </td>
-                                <td class=" text-center"> <a href="#" data-toggle="modal"
+                                <td class=" text-center">
+                                    {{-- <a href="#" data-toggle="modal"
                                         onclick="getArtistDetails({{$artistPermit->artist_id}},{{$artistPermit->artist_permit_id}})"
+                                    title="View">
+                                    <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
+                                    </a> --}}
+                                    <a href="{{route('artist_details.view' , [ 'id' => $artistPermit->artist_permit_id , 'from' => 'payment'])}}"
                                         title="View">
-                                        <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
-                                    </a></td>
+                                        <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                    </a>
+                                </td>
                             </tr>
                             @php
                             array_push($statuses, $artistPermit->artist_permit_status);
@@ -91,7 +97,7 @@
 
 
                 <div class="d-flex justify-content-end">
-                    <a href="{{url('company/payment_gateway/'.$permit_details->permit_id)}}">
+                    <a href="{{url('company/artist/payment_gateway/'.$permit_details->permit_id)}}">
                         <button class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm"
                             {{in_array('approved',$statuses) ? '' : 'disabled'}}>
                             <i class="la la-check"></i>

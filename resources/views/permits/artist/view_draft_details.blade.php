@@ -41,7 +41,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-striped table-borderless  " id="applied-artists-table">
+            <table class="table table-striped table-borderless border" id="applied-artists-table">
                 <thead>
                     <tr>
                         <th>@lang('words.first_name')</th>
@@ -65,11 +65,17 @@
                         <td>
                             {{ucwords($atd->artist_permit_status)}}
                         </td>
-                        <td class="text-center"> <a href="#" data-toggle="modal"
+                        {{-- <td class="text-center"> <a href="#" data-toggle="modal"
                                 onclick="getArtistDetails({{$atd->id}})" class="btn-clean btn-icon btn-icon-md"
+                        title="View">
+                        <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                        </a></td> --}}
+                        <td>
+                            <a href="{{route('temp_artist_details.view' , [ 'id' => $atd->id , 'from' => 'view-draft'])}}"
                                 title="View">
                                 <button class="btn btn-sm btn-secondary btn-elevate">View</button>
-                            </a></td>
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

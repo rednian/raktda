@@ -157,7 +157,7 @@
 <!--begin::Modal-->
 <div class="modal fade" id="cancel_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
 
@@ -175,7 +175,7 @@
                     <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..." style="resize:none;"
                         class="form-control" id="cancel_reason"></textarea>
                     <input type="hidden" id="cancel_permit_id" name="permit_id">
-                    <input type="submit" class="btn btn-sm btn--yellow popup-submit-btn" value="Cancel Permit">
+                    <input type="submit" class="btn btn-sm btn--maroon popup-submit-btn" value="Cancel">
                 </form>
             </div>
 
@@ -189,7 +189,7 @@
 
 <div class="modal fade" id="cancelled_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
 
@@ -211,7 +211,7 @@
 <!--begin::Modal-->
 <div class="modal fade" id="rejected_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Rejected Reason</h5>
