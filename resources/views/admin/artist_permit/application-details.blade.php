@@ -106,14 +106,8 @@
 													 <th>AGE</th>
 													 <th>PROFESSION</th>
 													 <th>NATIONALITY</th>
-													 <th>
-															ACTION STATUS
-															<span data-content="Click the artist name to view the artist information and permit history."
-																		data-original-title="" data-container="body" data-toggle="kt-popover"
-																		data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-															</span>
-													 </th>
-													 <th></th>
+													 <th>STATUS</th>
+													 <th>ACTION</th>
 												</tr>
 												</thead>
 										 </table>
@@ -169,6 +163,7 @@
 		?>
 			@include('admin.artist_permit.includes.submit-action', ['permit' => $permit])
 			@include('admin.artist_permit.includes.comment-modal', ['permit' => $permit])
+      @include('admin.artist_permit.includes.document')
 			@include('admin.artist_permit.includes.check-existing permit')
 			{{--@if($type == 'new')--}}
 			<div id="action-container">
@@ -275,7 +270,7 @@
                      {data: 'artist_status'},
                      {
                         render: function (type, data, full, meta) {
-                           return '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">View Comment</button>';
+                           return '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">Document</button><button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment</button>';
                         }
                      }
                   ],
@@ -283,6 +278,12 @@
                      $('td input[type=checkbox]', row).click(function (e) {
                         e.stopPropagation();
                      });
+                     $('.btn-document', row).click(function(e){
+                      e.stopPropagation();
+                        documents(data);
+                        $('#document-modal').modal('show');
+                     });
+
                      $('.btn-comment-modal', row).click(function (e) {
                         e.stopPropagation();
                         viewComment(data);
@@ -344,6 +345,24 @@
                      $('#-chk-manager').attr('disabled', true).removeAttr('checked', true);
                   }
                });
+            }
+
+            function documents(data){
+                $('#document-modal').on('shown.bs.modal', function(){
+                    $('table#table-document').DataTable({
+                        ajax:{ 
+                            url: '{{ url('/artist_permit') }}/'+'{{ $permit->permit_id }}'+'/application/'+data.artist_permit_id+'/documentDatatable',
+                        },
+                        columnDefs:[
+                        {targets: [1, 2], className: 'no-wrap'}
+                        ],
+                        columns:[
+                        {data: 'document_name'},
+                        {data: 'issued_date'},
+                        {data: 'expired_date'},
+                        ]
+                    });
+                });
             }
 
             function viewComment(data) {

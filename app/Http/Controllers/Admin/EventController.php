@@ -22,7 +22,18 @@
 		{
 			$event = Event::whereDate('expired_date', Carbon::now())->update(['status'=>'expired']);
 			$types = EventType::all();
-			return view('admin.event.index', ['page_title' => 'Event Permit', 'types'=>$types]);
+			$new_request = '';
+			$pending_request = '';
+			$active_request = '';
+			return view('admin.event.index', [
+				'page_title' => 'Event Permit', 
+				'types'=>$types, 
+				'new_request'=>Event::where('status', 'new')->count(),
+				'pending_request'=>Event::where('status', 'amended')->count(),
+				'active_request'=>Event::whereIn('status', ['amended', 'approved-unpaid', 'active', 'expired', 'rejected', 'need-approval'])->whereHas('comment',function($q){
+					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()]);
+				})->count(),
+			]);
 		}
 
 		public function calendar(Request $request)

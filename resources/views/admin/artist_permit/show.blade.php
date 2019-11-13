@@ -47,12 +47,11 @@
                             </div>
                             <div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
                              <div class="card-body">
-                                <table class=" border table-striped table table-borderless table-hover">
+                                <table class=" border table-striped table table-borderless table-hover table-sm">
                                      <thead>
                                          <tr>
                                             <th>CHECKED BY</th>
                                             <th>REMARKS</th>
-                                            <th>USER GROUP</th>
                                             <th>CHECKED DATE</th>
                                             <th>ACTION TAKEN</th>
                                          </tr>
@@ -60,9 +59,21 @@
                                      <tbody>
                                         @foreach($permit->comment()->doesntHave('artistPermitComment')->orderBy('created_at', 'desc')->get() as $comment)
                                             <tr>
-                                                <td>{{ ucwords($comment->user->NameEn) }}</td>
+                                                <td>
+                                                    <div class="kt-user-card-v2">
+                                                        <div class="kt-user-card-v2__pic">
+                                                            @php
+                                                            $name = explode(' ', $comment->user->NameEn);
+                                                            @endphp
+                                                            <div class="kt-badge kt-badge--xl kt-badge--success"><span>{{ strtoupper(substr($name[0], 0, 1)) }}</span></div>
+                                                        </div>
+                                                        <div class="kt-user-card-v2__details">
+                                                            <span class="kt-user-card-v2__name">{{ ucwords($comment->user->NameEn) }}</span>
+                                                            <a href="#" class="kt-user-card-v2__email kt-link">{{ ucfirst($comment->role->NameEn) }}</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>{{ ucfirst($comment->comment) }}</td>
-                                                <td>{{ ucfirst($comment->role->NameEn) }}</td>
                                                 <td>{{ $comment->created_at->format('d-M-Y') }}</td>
                                                 <td>{{ ucfirst($comment->action) }}</td>
                                             </tr>
@@ -106,14 +117,8 @@
 													 <th>AGE</th>
 													 <th>PROFESSION</th>
 													 <th>NATIONALITY</th>
-													 <th>
-														ACTION STATUS
-														<span data-content="Click the artist name to view the artist information and permit history."
-																	data-original-title="" data-container="body" data-toggle="kt-popover"
-																	data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-														</span>
-													 </th>
-													 <th></th>
+													 <th>STATUS</th>
+													 <th>ACTION</th>
 												</tr>
 												</thead>
 										 </table>
@@ -132,15 +137,18 @@
     		 <div id="accordion-permit-history-collapse-one" class="collapse show" aria-labelledby="accordion-permit-history-heading-one"
     					data-parent="#accordion-permit-history">
     				<div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
-    		<?php
-    		$permit_history = \App\Permit::whereNotIn('permit_status', ['cancelled', 'unprocessed', 'draft'])
-    			 ->whereDate('created_at', '<', $permit->created_at)
-    				->whereNotNull('permit_number')
-    				->where('permit_number', $permit->number)
-    				->get();
-    		?>
+                        @php
+                        $permit_number = $permit->permit_number;
+                        if($permit->request_type == 'renew'){ $permit_number = explode('-', $permit_number); }
+
+                          $permit_history = \App\Permit::whereNotIn('permit_status', ['cancelled', 'unprocessed', 'draft'])
+                                ->whereNotNull('permit_number')
+                                ->where('permit_number', 'like', $permit_number[0].'%')
+                                ->get(); 
+                        @endphp
+   
     					 @if($permit_history->count() > 0)
-    							<table class="table table-striped table-borderless table-hover border" id="table-permit-history">
+    							<table class="table table-striped table-borderless table-sm table-hover border" id="table-permit-history">
     								 <thead>
     								 <tr>
     										<th>APPLIED DATE</th>
@@ -168,6 +176,7 @@
 		$check = $permit->artistpermit;
 		?>
     @include('admin.artist_permit.includes.comment-modal', ['permit' => $permit])
+    @include('admin.artist_permit.includes.document')
     @include('admin.artist_permit.includes.check-existing permit')
 @endsection
 @section('script')
@@ -191,7 +200,7 @@
              {data: 'applied_date'},
              {data: 'issued_date'},
              {data: 'expired_date'},
-             {data: 'expired_date'},
+             {data: 'artist_number'},
              {
                 render: function (row, type, full, meta) {
                    return full.request_type + ' Application';
@@ -230,7 +239,7 @@
              {data: 'artist_status'},
              {
                 render: function (type, data, full, meta) {
-                   return '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">View Comment</button>';
+                   return '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">Document</button><button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment</button>';
                 }
              }
           ],
@@ -238,6 +247,12 @@
              $('td input[type=checkbox]', row).click(function (e) {
                 e.stopPropagation();
              });
+
+             $('.btn-document', row).click(function(){
+                documents(data);
+                $('#document-modal').modal('show');
+             });
+
              $('.btn-comment-modal', row).click(function (e) {
                 e.stopPropagation();
                 viewComment(data);
@@ -250,6 +265,21 @@
              $('#artist-total').html(json.recordsTotal);
           }
        });
+    }
+
+    function documents(data){
+        $('#document-modal').on('shown.bs.modal', function(){
+            $('table#table-document').DataTable({
+                ajax:{ 
+                    url: '{{ url('/artist_permit') }}/'+'{{ $permit->permit_id }}'+'/application/'+data.artist_permit_id+'/documentDatatable',
+                },
+                columns:[
+                {data: 'document_name'},
+                {data: 'issued_date'},
+                {data: 'expired_date'},
+                ]
+            });
+        });
     }
 
     function viewComment(data) {

@@ -1,19 +1,124 @@
 @extends('layouts.admin.admin-app')
+@section('style')
+<style>
+  .widget-toolbar{ cursor: pointer; }
+</style>
+{{-- <style>
+  .twitter-typeahead {
+    display: inline !important;
+}
+
+.typeahead-content {
+    box-shadow: 0 1px 2px rgba(0,0,0,.26);
+    background-color: #fff;
+    cursor: pointer;
+    margin-top: -15px;
+    min-width: 100px;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    white-space: nowrap;
+    z-index: 1001;
+    will-change: width,height;
+}
+
+.typeahead-highlight {
+    font-weight: 900;
+}
+
+.typeahead-suggestion {
+    padding: 5px 0px 10px 10px;
+}
+
+.typeahead-suggestion:hover {
+    background-color: #42A5F5;
+    color: #FFF;
+}
+
+.typeahead-notfound {
+    cursor:not-allowed;
+    padding: 5px 0px 10px 10px;
+}
+</style> --}}
+@endsection
 @section('content')
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
-			<div class="kt-portlet__body kt-padding-t-5" style="position: relative">
-				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
+			<div class="kt-portlet__body">
+        <section class="row kt-padding-b-20">
+          <div class="col-4">
+            <div class="kt-section kt-section--space-sm widget-toolbar">
+              <div class="kt-widget24 kt-widget24--solid">
+                <div class="kt-widget24__details">
+                  <div class="kt-widget24__info">
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('New Request') }}</span>
+                    <small class="kt-widget24__desc">{{ __('All') }}</small>
+                  </div>
+                  <span class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
+                </div>
+                <!-- <div class="progress progress--sm">
+                  <div class="progress-bar kt-bg-default" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="kt-section kt-section--space-sm widget-toolbar">
+              <div class="kt-widget24 kt-widget24--solid">
+                <div class="kt-widget24__details">
+                  <div class="kt-widget24__info">
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('Pending Request') }}</span>
+                    <small class="kt-widget24__desc">{{ __('All Customer Request') }}</small>
+                  </div>
+                  <span class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
+                </div>
+                <!-- <div class="progress progress--sm">
+                  <div class="progress-bar kt-bg-brand" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="kt-section kt-section--space-sm">
+              <div class="kt-widget24 kt-widget24--solid">
+                <div class="kt-widget24__details">
+                  <div class="kt-widget24__info">
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('Action Taken') }}</span>
+                    <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
+                  </div>
+                  <span class="kt-widget24__stats kt-font-default">{{ $active_permit }}</span>
+                </div>
+                <!-- <div class="progress progress--sm">
+                  <div class="progress-bar kt-bg-brand" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </section>
+				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
 						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Request Permits') }}</a></li>
-						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">{{ __('Processing Permits') }}</a></li>
-						<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Active Permits') }}</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Request Permits') }}</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#processing-permit">{{ __('Processing Permits') }}</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit">{{ __('Active Permits') }}</a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('Archive Permits') }}</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">Artist List</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">{{ __('Artist List') }}</a></li>
 						{{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">{{ __('Blocked Artists') }}</a></li> --}}
 				 </ul>
-      
+          <div class="form-row d-none" style="position: absolute; right: -80px; top: 23px; width: 30%">
+            <div class="col-12">
+                <div class="input-group input-group-sm">
+                    <div class="kt-input-icon kt-input-icon--right" id="search-application">
+                      <input name="value" autocomplete="off" type="text" class="form-control form-control-sm typeahead" aria-label="Text input with checkbox" placeholder="Search application or artist ...">
+                      <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                        <span><i class="la la-search"></i></span>
+                      </span>
+                    </div>
+              </div>
+            </div>
+          </div>
+        
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
 									@include('admin.artist_permit.includes.new_request')
 							{{--  @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
 							 @else
@@ -22,8 +127,18 @@
 									@endempty
 							 @endif --}}
 						</div>
+            <div class="tab-pane show fade" id="pending-request" role="tabpanel">
+               {{-- @include('admin.artist_permit.includes.summary') --}}
+                  @include('admin.artist_permit.includes.pending-permit')
+              {{--  @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
+               @else
+                  @empty()
+                     No New Request Permit
+                  @endempty
+               @endif --}}
+            </div>
 						<div class="tab-pane fade" id="processing-permit" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
+							 {{-- @include('admin.artist_permit.includes.summary') --}}
 									@include('admin.artist_permit.includes.processing')
 							{{--  @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request', 'processing', 'need approval'])->count() > 0)
 							 @else
@@ -33,7 +148,7 @@
 							 @endif --}}
 						</div>
 						<div class="tab-pane fade" id="active-permit" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
+							 {{-- @include('admin.artist_permit.includes.summary') --}}
 									@include('admin.artist_permit.includes.approved')
 							{{--  @if(\App\Permit::whereIn('permit_status', ['active'])->count() > 0)
 							 @else
@@ -80,6 +195,7 @@
 <script type="text/javascript">
 
   var artistPermit = {};
+  var pendingPermit = {};
   var processingPermit = {};
   var activePermit = {};
   var archivePermit = {};
@@ -88,6 +204,72 @@
   var hash = window.location.hash;
 
   $(document).ready(function () {
+    $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){
+       $('.nav-tabs a[href="#new-request"]').tab('show');
+    });
+    $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){
+     $('.nav-tabs a[href="#pending-request"]').tab('show');
+    });
+    //   $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){
+    //  $('.nav-tabs a[href="#new-request"]').tab('show');
+    // });
+    // Instantiate the Bloodhound suggestion engine
+    var result = new Bloodhound({
+      datumTokenizer: function(datum) {
+        return Bloodhound.tokenizers.whitespace(datum.value);
+      },
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      remote: {
+        wildcard: '%QUERY',
+        url: '{{ route('admin.artist_permit.search') }}?q=%QUERY',
+        transform: function(response) {
+          console.log(response);
+          // Map the remote source JSON array to a JavaScript object array
+          return $.map(response.reference_number, function(data) {
+            return {
+              value: data.result
+            };
+          });
+        }
+      }
+    });
+
+    // Instantiate the Typeahead UI
+    $('.typeahead').typeahead(null, {
+      hint: true,
+      highlight: true,
+      minLength: 1,
+      display: 'value',
+      source: result,
+     templates: {
+        empty: [
+          '<div class="empty-message">',
+            'unable to find any Best Picture winners that match the current query',
+          '</div>'
+        ].join('\n'),
+        suggestion: Handlebars.compile('<div><strong>@{{value}}</strong> – @{{year}}</div>')
+      }
+    });
+
+
+    // var bestPictures = new Bloodhound({
+    //   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    //   queryTokenizer: Bloodhound.tokenizers.whitespace,
+    //   // prefetch: '../data/films/post_1960.json',
+    //   remote: {
+    //     url: '{{ route('admin.artist_permit.search') }}',
+    //     // wildcard: '%QUERY'
+    //   }
+    // });
+
+    // $('#search-application .typeahead').typeahead(null, {
+    //   name: 'best-pictures',
+    //   display: 'value',
+    //   source: bestPictures
+    // });
+
+
+
     newRequest();
 
     hash && $('ul.nav a[href="' + hash + '"]').tab('show');
@@ -101,6 +283,7 @@
 
     $('.nav-tabs a').on('shown.bs.tab', function (event) {
       var current_tab = $(event.target).attr('href');
+      if (current_tab == '#pending-request' ) { pendingRequest(); }
       if (current_tab == '#processing-permit') { processingTable(); }
       if (current_tab == '#active-permit' ) { approvedTable(); }
       if (current_tab == '#archive-permit') { rejectedTable(); }
@@ -488,7 +671,7 @@
         $('input#archive-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
       }).on('apply.daterangepicker', function(e, d){
        selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
-       artistPermit.draw();
+       archivePermit.draw();
       });
 
        archivePermit = $('table#artist-permit-rejected').DataTable({
@@ -535,9 +718,78 @@
        $('input#search-archive-request').keyup(function(){ search($(this).val()); });
 
      }
-        
-  
 
+     function pendingRequest() {
+
+       var start = moment().subtract(29, 'days');
+       var end = moment();
+       var selected_date = [];
+
+       $('input#pending-applied-date').daterangepicker({
+         autoUpdateInput: false,
+         buttonClasses: 'btn',
+         applyClass: 'btn-warning btn-sm btn-elevate',
+         cancelClass: 'btn-secondary btn-sm btn-elevate',
+         startDate: start,
+         endDate: end,
+         maxDate: new Date,
+         ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+         }
+       }, function (start, end, label) {
+         $('input#pending-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+       }).on('apply.daterangepicker', function(e, d){
+        selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+        pendingPermit.draw();
+       });
+
+
+       pendingPermit = $('table#pending-permit').DataTable({
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ajax: {
+          url: '{{ route('admin.artist_permit.datatable') }}',
+          data: function (d) {
+             // var status = $('select#pending-permit-status').val();
+             d.request_type = $('select#pending-request-type').val();
+             d.status =  ['modified'];
+             d.date = $('#pending-applied-date').val()  ? selected_date : null; 
+           }
+         },
+         columnDefs: [
+           {targets: [0, 2, 4, 5], className: 'no-wrap'},
+         ],
+         columns: [
+           {data: 'reference_number'},
+           {data: 'company_name'},
+           {data: 'artist_number'},
+           {data: 'applied_date'},
+           {data: 'request_type'},
+           {data: 'permit_status'}
+         ],
+         createdRow: function (row, data, index) {
+           $(row).click(function () {
+             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
+           });
+         },
+       });
+
+       //clear fillte button
+       $('#pending-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); pendingPermit.draw();});
+
+       pendingPermit.page.len($('#pending-length-change').val());
+       $('#pending-length-change').change(function(){ pendingPermit.page.len( $(this).val() ).draw(); });
+
+       var search = $.fn.dataTable.util.throttle(function(v){ pendingPermit.search(v).draw(); }, 500);
+       $('input#search-pending-request').keyup(function(){ search($(this).val()); });
+     }
+        
      function newRequest() {
 
        var start = moment().subtract(29, 'days');
@@ -575,12 +827,13 @@
         ajax: {
           url: '{{ route('admin.artist_permit.datatable') }}',
           data: function (d) {
-             var status = $('select#new-permit-status').val();
+             // var status = $('select#new-permit-status').val();
              d.request_type = $('select#new-request-type').val();
-             d.status = status != null ? [status] : ['new', 'modified'];
+             d.status = ['new'];
              d.date = $('#new-applied-date').val()  ? selected_date : null; 
            }
          },
+         // order: [[ 3, "desc" ]],
          columnDefs: [
            {targets: [0, 2, 4, 5], className: 'no-wrap'},
          ],
@@ -607,8 +860,6 @@
 
        var search = $.fn.dataTable.util.throttle(function(v){ artistPermit.search(v).draw(); }, 500);
        $('input#search-new-request').keyup(function(){ search($(this).val()); });
-
-
      }
 </script>
 @endsection

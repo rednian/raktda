@@ -18,6 +18,16 @@ class Permit extends Model
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
 
+    public function scopeHistory($q, $permit_number)
+    {
+        if($this->request_type == 'renew'){ $permit_number = explode('-', $permit_number);
+            return $q->whereNotIn('permit_status', ['cancelled', 'unprocessed', 'draft'])
+                ->whereNotNull('permit_number')
+                ->where('permit_number', 'like','%'.$permit_number[0].'%');
+         }
+         return false;
+    }
+
     public function approval()
     {
         return $this->hasMany(Approval::class, 'inspection_id', 'permit_id')->whereType('artist');

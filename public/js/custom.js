@@ -75,26 +75,22 @@ $(document).ready(function(){
             }
         });
 
-        $(document).bind("ajaxSend", function(){
-            // $.LoadingOverlay("show", {
-            //     image: "{{ asset('images/loading.gif') }}",
-            //     size: 10
-            // });
-        }).bind("ajaxSuccess", function(event, request, settings, data){
-            // $.LoadingOverlay("hide");
+        $(document).bind('ajaxSuccess', function(event, request, settings, data){
             if(data.hasOwnProperty('message')){
-                $.notify({
-                    title: data.message[2],
-                    message: data.message[1],
-                },{
-                    type: data.message[0],
-                    animate: {
+                $.notify(
+                    { title: data.message[2], message: data.message[1] },
+                    { type: data.message[0], 
+                        animate: {
                         enter: 'animated zoomIn',
                         exit: 'animated zoomOut'
                     },
                 });
             }
-        }).bind("ajaxError", function(event, request, settings, data){
+
+        }).bind('ajaxSend', function(){
+            
+
+        }).bind('ajaxError', function(data){
             $.notify({
                 title: 'Somethings went wrong!',
                 message: data,
@@ -105,13 +101,9 @@ $(document).ready(function(){
                     exit: 'animated zoomOut'
                 },
             });
-            // $.LoadingOverlay("hide");
-            // new PNotify({
-            //     title: 'Error',
-            //     text: data,
-            //     type: 'error'
-            // });
         });
+
+
 
 window.global = {
     profile: function(name){

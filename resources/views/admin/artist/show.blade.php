@@ -47,8 +47,11 @@
 															</div>
                                                             
 															<div class="kt-widget__subhead">
-																 <a href="#">Current Company: <span
-																				class="kt-font-dark kt-font-bolder">{{ $artist_permit->permit()->latest()->first()->company->company_name }}</span></a>
+																 <span>Current Company: 
+                                                                    <span class="kt-font-dark kt-font-bolder">
+                                                                        {{ $artist_permit->permit()->latest()->first()->company->company_name }}
+                                                                    </span>
+                                                                </span>
 																 {{--										 <a href="#"><i class="flaticon2-calendar-3"></i>PR Manager </a>--}}
 																 {{--										 <a href="#"><i class="flaticon2-placeholder"></i>Melbourne</a>--}}
 															</div>

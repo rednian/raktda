@@ -1179,7 +1179,7 @@ class ArtistController extends Controller
 
     public function permit($id, $status)
     {
-
+    
         $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession')->where('permit_id', $id)->first();
 
         Permit::where('permit_id', $id)->update(["lock" => Carbon::now()->toDateTimeString()]);

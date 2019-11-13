@@ -21,7 +21,7 @@ class ArtistPermit extends Model implements Auditable
 
     public function profession()
     {
-        return $this->belongsTo(Profession::class, 'profession_id');
+        return $this->belongsTo(Profession::class, 'profession_id')->withDefault(['name_en'=>null, 'name_ar'=>null]);
     }
 
     public function check()
@@ -100,7 +100,7 @@ class ArtistPermit extends Model implements Auditable
 
     public function Nationality()
     {
-        return $this->belongsTo(Country::class, 'country_id', 'country_id');
+        return $this->belongsTo(Country::class, 'country_id', 'country_id')->withDefault([]);
     }
 
     public function getFullNameAttribute()
