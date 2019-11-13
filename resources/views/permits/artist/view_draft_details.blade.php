@@ -11,14 +11,14 @@
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
                 <a href="{{route('artist.index')}}#draft"
-                    class="btn btn-label-back kt-font-bold kt-font-transform-u btn-elevate btn-sm">
+                    class="btn btn--maroon kt-font-bold kt-font-transform-u btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                     Back
                 </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{route('artist.index')}}#draft" class="btn btn-label-back btn-elevate btn-sm">
+                <a href="{{route('artist.index')}}#draft" class="btn btn--maroon btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
                 </a>
             </div>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-striped table-borderless  " id="applied-artists-table">
+            <table class="table table-striped table-borderless border" id="applied-artists-table">
                 <thead>
                     <tr>
                         <th>@lang('words.first_name')</th>
@@ -65,11 +65,17 @@
                         <td>
                             {{ucwords($atd->artist_permit_status)}}
                         </td>
-                        <td class="text-center"> <a href="#" data-toggle="modal"
+                        {{-- <td class="text-center"> <a href="#" data-toggle="modal"
                                 onclick="getArtistDetails({{$atd->id}})" class="btn-clean btn-icon btn-icon-md"
+                        title="View">
+                        <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                        </a></td> --}}
+                        <td>
+                            <a href="{{route('temp_artist_details.view' , [ 'id' => $atd->id , 'from' => 'view-draft'])}}"
                                 title="View">
                                 <button class="btn btn-sm btn-secondary btn-elevate">View</button>
-                            </a></td>
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

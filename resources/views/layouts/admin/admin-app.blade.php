@@ -26,9 +26,15 @@
   <link href="{{ asset('/assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
   
   @if (Auth::user()->LanguageId == 1)
+  <style type="text/css">
+    #kt_aside{ box-shadow: 4px 0 5px -2px #888; }
+  </style>
     <link href="{{ asset('/css/mandatory.css') }}" rel="stylesheet" type="text/css" />
   @else
     <link href="{{ asset('/css/mandatory-arabic.css') }}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+      #kt_aside{ box-shadow: 4px 0 5px 4px #888 !important; }
+    </style>
   @endif
   <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />
   @yield('style')

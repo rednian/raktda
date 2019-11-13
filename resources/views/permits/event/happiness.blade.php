@@ -132,7 +132,7 @@
                                         </div>
                                     </div>
                                     <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                        <input type="checkbox" id="agree" name="agree" checked> I Read
+                                        <input type="checkbox" id="agree" name="agree" checked disabled> I Read
                                         and understand all
                                         service rules, And agree to continue submitting it.
                                         <span></span>
@@ -209,17 +209,20 @@
                                                                 class=" col-form-label kt-font-bold text-right">From
                                                                 Date <small>( <span class="text-danger">required</span>
                                                                     )</small></label>
-                                                            <div class="input-group date">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-calendar-check-o"></i>
+                                                            <div class="input-group input-group-sm date">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm "
+                                                                        name="issued_date" id="issued_date"
+                                                                        placeholder="From Date" readonly
+                                                                        value="{{date('d-m-Y',strtotime($event->issued_date))}}">
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-calendar"></i>
+                                                                        </span>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="issued_date" id="issued_date"
-                                                                    placeholder="From Date" readonly
-                                                                    value="{{date('d-m-Y',strtotime($event->issued_date))}}">
-
                                                             </div>
                                                         </div>
 
@@ -228,17 +231,18 @@
                                                             <label class="col-form-label">From
                                                                 Time <small>( <span class="text-danger">required</span>
                                                                     )</small></label>
-                                                            <div class="input-group timepicker">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-clock-o"></i>
+                                                            <div class="input-group input-group-sm timepicker">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input class="form-control form-control-sm"
+                                                                        name="time_start" id="time_start" type="text"
+                                                                        value="{{$event->time_start}}" readonly />
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-clock-o"></i>
+                                                                        </span>
                                                                     </span>
                                                                 </div>
-                                                                <input class="form-control form-control-sm"
-                                                                    name="time_start" id="time_start" readonly
-                                                                    type="text" readonly
-                                                                    value="{{$event->time_start}}" />
-
                                                             </div>
 
                                                         </div>
@@ -260,17 +264,20 @@
                                                                 class=" col-form-label kt-font-bold text-right">To
                                                                 Date <small>( <span class="text-danger">required</span>
                                                                     )</small></label>
-                                                            <div class="input-group date">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-calendar-check-o"></i>
+                                                            <div class="input-group input-group-sm date">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm "
+                                                                        name="expired_date" id="expired_date"
+                                                                        placeholder="To Date" readonly
+                                                                        value={{date('d-m-Y',strtotime($event->expired_date))}}>
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-calendar"></i>
+                                                                        </span>
                                                                     </span>
                                                                 </div>
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="expired_date" id="expired_date"
-                                                                    placeholder="To Date" readonly
-                                                                    value={{date('d-m-Y',strtotime($event->expired_date))}}>
-
                                                             </div>
                                                         </div>
 
@@ -279,16 +286,18 @@
                                                                         class="text-danger">required</span>
                                                                     )</small></label>
 
-                                                            <div class="input-group timepicker">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="la la-clock-o"></i>
+                                                            <div class="input-group input-group-sm timepicker">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input class="form-control form-control-sm "
+                                                                        name="time_end" id="time_end" type="text"
+                                                                        value={{$event->time_end}} readonly />
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-clock-o"></i>
+                                                                        </span>
                                                                     </span>
                                                                 </div>
-                                                                <input class="form-control form-control-sm "
-                                                                    name="time_end" id="time_end" type="text"
-                                                                    value={{$event->time_end}} readonly />
-
                                                             </div>
 
                                                         </div>
@@ -305,6 +314,40 @@
                                                                 name="venue_ar" id="venue_ar" placeholder="Venue"
                                                                 value={{$event->venue_ar}} readonly>
                                                         </div>
+
+                                                         {{--
+                                                        <div class="col-md-4  form-group form-group-sm ">
+                                                            <label class=" col-form-label kt-font-bold text-right">
+                                                                Do you have any Food truck ?</label>
+                                                            <div class="kt-radio-inline">
+                                                                <label class="kt-radio kt-radio--solid">
+                                                                    <input type="radio" name="isTruck" value="1"
+                                                                        onclick="checkTruck(1)"> Yes
+                                                                    <span></span>
+                                                                </label>
+                                                                <label class="kt-radio kt-radio--solid">
+                                                                    <input type="radio" name="isTruck" value="0" checked
+                                                                        onclick="checkTruck(0)"> No
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-sm "
+                                                            id="how_many_div">
+                                                            <label for="venue_ar"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                How Many ?<span class="text-danger">*</span></label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="no_of_trucks" id="no_of_trucks">
+                                                                <option value=" ">Select</option>
+                                                                @for($i = 1;$i < 15; $i++) <option value="{{$i}}">{{$i}}
+                                                                    </option>
+                                                                    @endfor
+                                                            </select>
+                                                        </div>
+
+                                                        --}}
 
 
 
@@ -347,10 +390,11 @@
                                                         <label for="emirate_id"
                                                             class=" col-form-label kt-font-bold text-right">Emirate
                                                         </label>
-                                                        <select class="form-control form-control-sm" name="emirate_id"
-                                                            id="emirate_id">
-                                                            <option value="5">Ras Al Khaimah</option>
-                                                        </select>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            value="Ras Al Khaimah" readonly>
+                                                        <input type="hidden" name="emirate_id" id="emirate_id"
+                                                            value="5" />
+
 
                                                     </div>
 
@@ -374,12 +418,10 @@
                                                         <label for="country_id"
                                                             class=" col-form-label kt-font-bold text-right">Country
                                                         </label>
-                                                        <select class="form-control form-control-sm " name="country_id"
-                                                            id="country_id">
-                                                            <option value="232">
-                                                                United Arab Emirates
-                                                            </option>
-                                                        </select>
+                                                        <input type="text" class="form-control form-control-sm "
+                                                            value="United Arab Emirates" readonly>
+                                                        <input type="hidden" name="country_id" id="country_id"
+                                                            value="232">
                                                     </div>
 
 
@@ -443,11 +485,10 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="text-left">
-                                                        {{$event->name_en}} <br />
-                                                        {{$event->name_ar }}
+                                                        {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
                                                     </td>
                                                     <td class="text-left">
-                                                        {{$event->type['name_en']}}
+                                                        {{getLangId() == 1 ? $event->type['name_en'] : $event->type['name_ar']}}
                                                     </td>
                                                     <td class="text-right">
                                                         {{number_format($event->type['amount'],2)}}
@@ -507,28 +548,27 @@
 
 
                     <div class="kt-form__actions">
-                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
                             Previous
                         </div>
 
 
                         <a href="{{url('company/event')}}">
-                            <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                id="back_btn">
+                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 Back
                             </div>
                         </a>
 
 
-                        <div class="btn btn-label-yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-submit" id="submit_btn">
                             Submit
                         </div>
 
 
 
-                        <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
                             Next Step
                         </div>

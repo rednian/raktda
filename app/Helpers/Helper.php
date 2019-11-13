@@ -1,28 +1,30 @@
 <?php
-function fileExtension($path){
+function fileExtension($path)
+{
     $ext = explode('.', $path);
     $ext = strtolower(array_pop($ext));
     $className = null;
     switch ($ext) {
         case 'pdf':
-        $className = 'la-file-pdf-o text-danger';
-        break;
+            $className = 'la-file-pdf-o text-danger';
+            break;
         case 'png':
-        $className = 'la-file-photo-o text-warning';
-        break;
+            $className = 'la-file-photo-o text-warning';
+            break;
         case 'jpeg':
-        $className = 'la-file-photo-o text-warning';
-        break;
+            $className = 'la-file-photo-o text-warning';
+            break;
         case 'jpg':
-        $className = 'la-file-photo-otext-warning';
-        break;
+            $className = 'la-file-photo-otext-warning';
+            break;
     }
-    return '<span style="font-size:x-large" class="la '.$className.'"></span>';
+    return '<span style="font-size:x-large" class="la ' . $className . '"></span>';
 }
-function language($data){
+function language($data)
+{
     $user = Auth::user()->LanguageId;
 
-    return $user  == 1 ? $data['en'] : $data['ar']; 
+    return $user  == 1 ? $data['en'] : $data['ar'];
 }
 
 
@@ -36,7 +38,7 @@ function eventType($type)
     }
     if ('charity events / without ticket' == strtolower($type) || 'charity events / with ticket' == strtolower($type)) {
         $classname = 'fc-event-solid-info';
-    }   
+    }
     if ('religious  events / without ticket' == strtolower($type) || 'religious  events / with ticket' == strtolower($type)) {
         $classname = 'fc-event-light fc-event-solid-primary';
     }
@@ -47,8 +49,8 @@ function eventType($type)
         $classname = 'fc-event-solid-success';
     }
 
-    if('painting event' == strtolower($type)){
-           $classname = 'fc-event-solid-dark';
+    if ('painting event' == strtolower($type)) {
+        $classname = 'fc-event-solid-dark';
     }
     return $classname;
 }
@@ -200,10 +202,21 @@ function badgeName($name)
     return '<div class="kt-badge kt-badge--md kt-badge--' . $class . '">' . $pro . '</div>';
 }
 
-function translateAr($word){
+function getSettings()
+{
+    return \App\GeneralSetting::first();
+}
+
+function getLangId()
+{
+    return \Auth::user()->LanguageId;
+}
+
+function translateAr($word)
+{
     $trans = App\ArabicTranslation::where('english', 'like', $word);
-    if($trans->exists()){
-        if(Auth::user()->LanguageId != 1){
+    if ($trans->exists()) {
+        if (Auth::user()->LanguageId != 1) {
             return $trans->first()->arabic;
         }
     }

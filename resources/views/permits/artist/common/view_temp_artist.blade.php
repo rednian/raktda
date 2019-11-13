@@ -10,26 +10,34 @@
             <h3 class="kt-portlet__head-title">Artist Details
             </h3>
         </div>
-
-        {{-- {{$artist_details->permit_id}} --}}
         @php
-        if($from == 'details'){
-        $backUrl = url('company/artist/get_permit_details').'/'.$artist_details->permit_id .'?tab=applied' ;
-        } else if($from == 'payment') {
-        $backUrl = url('company/artist/make_payment/').'/'.$artist_details->permit_id ;
+        if($from == 'new')
+        {
+        $routeBack = url('company/artist/new/1');
+        }
+        else if($from == 'draft')
+        {
+        $routeBack = url('company/artist/view_draft_details/'.$artist_details->permit_id);
+        }
+        else if($from == 'view-draft')
+        {
+        $routeBack = url('company/artist/get_draft_details/'.$artist_details->permit_id);
+        }
+        else {
+        $routeBack = url('company/artist/permit/'.$artist_details->permit_id.'/'.$from);
         }
         @endphp
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{$backUrl}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <a href="{{$routeBack}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                     Back
                 </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{$backUrl}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <a href="{{$routeBack}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                 </a>
             </div>
@@ -132,11 +140,8 @@
                             {{$artist_details->address_en}}</p>
                     </div>
                 </div>
-
-
             </div>
-
-            @if(count($artist_details->artistPermitDocument) > 0)
+            @if(count($artist_details->ArtistTempDocument) > 0)
             <div class="artist--documents pt-5">
                 <table class="table table-hover table-borderless border table-striped">
                     <thead class="text-center">
@@ -148,7 +153,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($artist_details->artistPermitDocument as $req)
+                        @foreach($artist_details->ArtistTempDocument as $req)
                         <tr>
                             <td style="width:50%;">{{$req->requirement->requirement_name}}</td>
                             <td class="text-center">
@@ -159,7 +164,7 @@
                             </td>
                             <td class="text-center">
                                 <a href="{{asset('storage')}}{{'/'.$req->path}}" target="blank" ">
-                                            <button class=" btn btn-sm btn-secondary">View
+                                                                <button class=" btn btn-sm btn-secondary">View
                                     </button></a>
                             </td>
                         </tr>

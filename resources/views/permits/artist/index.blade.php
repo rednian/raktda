@@ -23,12 +23,12 @@
                     </li>
                     <span class="nav-item"
                         style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                        <a href="{{ url('company/add_new_permit')}}">
-                            <button class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u"
+                        <a href="{{ url('company/artist/new/1')}}">
+                            <button class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                                 id="nav--new-permit-btn">
                                 <i class="la la-plus"></i>@lang('words.add_new')
                             </button>
-                            <button class="btn btn-label-yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
+                            <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                                 <i class="la la-plus"></i>
                             </button>
                         </a>
@@ -101,7 +101,7 @@
         <!--begin::Modal-->
         <div class="modal fade" id="cancel_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
+            <div class="modal-dialog " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Cancel Permit</h5>
@@ -119,7 +119,7 @@
                             <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..."
                                 style="resize:none;" class="form-control" id="cancel_reason"></textarea>
                             <input type="hidden" id="cancel_permit_id" name="permit_id">
-                            <input type="submit" class="btn btn-sm btn-label-maroon popup-submit-btn" value="Cancel">
+                            <input type="submit" class="btn btn-sm btn--maroon popup-submit-btn" value="Cancel">
                         </form>
                     </div>
 
@@ -132,7 +132,7 @@
         <!--begin::Modal-->
         <div class="modal fade" id="cancelled_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
+            <div class="modal-dialog " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
@@ -151,7 +151,7 @@
         <!--begin::Modal-->
         <div class="modal fade" id="rejected_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
+            <div class="modal-dialog " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Rejected Reason</h5>
@@ -198,6 +198,7 @@
             processing: false,
             serverSide: true,
             searching: true,
+            ordering: false,
             // pageLength: 5,
             // order:[[5,'desc']],
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
@@ -211,45 +212,6 @@
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
-            ],
-            columnDefs: [
-                {
-                    targets:2,
-                    width: '12%',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}</span>`;
-					}
-                },
-                {
-                    targets:3,
-                    width: '10%',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}</span>`;
-					}
-                },
-                {
-                    targets:1,
-                    width: '12%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-                        return `<span >${data}</span>`;
-					}
-                },
-                {
-                    targets:4,
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-                        return `<span >${data}</span>`;
-					}
-                },
-                {
-                    targets:-3,
-                    width: '10%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-transform-c">${data}</span>`;
-					}
-                }
             ],
             language: {
                 emptyTable: "No Applied Artist Permits"
@@ -266,6 +228,7 @@
             processing: false,
             serverSide: true,
             searching: true,
+            ordering: false,
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
@@ -302,6 +265,7 @@
             processing: false,
             serverSide: true,
             searching: true,
+            ordering: false,
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],

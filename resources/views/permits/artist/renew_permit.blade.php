@@ -6,33 +6,37 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Renew Artist Permit
-            </h3>
+            <h3 class="kt-portlet__head-title">Renew Artist Permit</h3>
+            <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+                <strong>{{$permit_details->permit_number}}
+                </strong>
+            </span>
         </div>
         <div class="kt-portlet__head-toolbar ">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                     Back
                 </button>
                 <a href="{{url('company/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
                 </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn-label-back btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn_sm" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
 
                 </button>
                 <a href="{{url('company/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                 </a>
             </div>
         </div>
     </div>
+
 
     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
@@ -41,15 +45,16 @@
             <div class="pb-2">
                 <span>From Date:</span>&emsp;
                 <span
-                    class="kt-font-info">{{date('d-M-Y',strtotime('+1 day', strtotime($permit_details->expired_date)))}}</span>&emsp;&emsp;
-                <input type="hidden" id="issued_date" value="{{$permit_details->expired_date}}">
-                @php
+                    class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->issue_date))}}</span>&emsp;&emsp;
+                <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
+                {{-- @php
                 $to_date = date('d-M-Y', strtotime('+31 days', strtotime($permit_details->expired_date)));
                 $db_to_date = date('Y-m-d', strtotime('+31 days', strtotime($permit_details->expired_date)));
-                @endphp
+                @endphp --}}
                 <span>To Date:</span>&emsp;
-                <span class="kt-font-info">{{$to_date}}</span>&emsp;&emsp;
-                <input type="hidden" id="expired_date" value="{{$db_to_date}}">
+                <span
+                    class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->expiry_date))}}</span>&emsp;&emsp;
+                <input type="hidden" id="expired_date" value="{{$artist_details[0]->expiry_date}}">
                 <span>Work Location:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
                 <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
@@ -89,9 +94,13 @@
                                 title="Edit">
                                 <button class="btn btn-sm btn-secondary btn-elevate ">Edit</button>
                             </a>
-                            <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
+                            {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
+                            title="View">
+                            <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
+                            </a> --}}
+                            <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
                                 title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
+                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
@@ -112,7 +121,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                 <i class="la la-check"></i>
                 Submit
             </div>
@@ -121,47 +130,11 @@
 
 
 
-    <!--begin::Modal-->
+    @include('permits.artist.modals.view_artist')
 
-    <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body" id="detail-permit">
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('permits.artist.modals.remove_artist' , ['from' => 'renew'])
 
-    <!--end::Modal-->
-
-    @include('permits.artist.modals.remove')
-
-    <!--begin::Modal-->
-    <div class="modal fade" id="back_btn_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Leave Page Warning !</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Changes you made may not be saved.
-                    <input type="submit" value="Dont Save" onclick="go_back_confirm_function()"
-                        class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
+    @include('permits.artist.modals.leave_page')
 
 
 </div>
@@ -183,9 +156,9 @@
         });
     })
 
-    function stopNavigate(event) {
-        $(window).off('beforeunload');
-    }
+    // function stopNavigate(event) {
+    //     $(window).off('beforeunload');
+    // }
 
 
     function windowBeforeUnload() {
@@ -217,11 +190,21 @@
             }
 
         }
-        return 'Are you sure you want to leave?';
+        // return 'Are you sure you want to leave?';
     }
 
 
     $('#back_btn').click(function(){
+        $total_artists = $('#total_artist_details').val();
+
+        if($total_artists > 0) {
+            $('#back_btn_modal').modal('show');
+        } else {
+            window.location.href = "{{route('artist.index')}}#valid";
+        }
+    });
+
+    $('#back_btn_sm').click(function(){
         $total_artists = $('#total_artist_details').val();
 
         if($total_artists > 0) {
@@ -271,7 +254,10 @@
             type: 'POST',
             url: '{{route("artist.store")}}',
             data: {
-                temp_permit_id:temp_permit_id
+                temp_permit_id:temp_permit_id,
+                from: $('#issued_date').val() ,
+                to: $('#expired_date').val(),
+                loc: $('#work_location').val(),
             },
             success: function(data) {
                 // console.log(data);

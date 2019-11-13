@@ -84,6 +84,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     //---------------------------------------------------------------------------------------------------------------
     // Artist Permit
     //---------------------------------------------------------------------------------------------------------------
+    
+    Route::get('/artist_permit/search', 'Admin\ArtistPermitController@search')->name('admin.artist_permit.search');
+    
     Route::get('/artist_permit/{permit}/history', 'Admin\ArtistPermitController@permitHistory')
         ->name('admin.artist_permit.history');
 

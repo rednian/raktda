@@ -56,7 +56,7 @@
                 <!--end: Form Wizard Step 5-->
 
                 <div class="d-flex justify-content-end">
-                    <div class="btn btn-label-maroon btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
+                    <div class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
                         <i class="la la-check"></i>
                         Submit
                     </div>

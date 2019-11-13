@@ -31,13 +31,13 @@
 					<option value="renew">Renew Application</option>
 				</select>
 			</div>
-			<div class="col-3">
+			{{-- <div class="col-3">
 				<select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="artistPermit.draw()">
 					<option disabled selected>PERMIT STATUS</option>
 					<option value="new">New</option>
 					<option value="modified">Amend</option>
 				</select>
-			</div>
+			</div> --}}
 			<div class="col-1">
 				<button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">RESET</button>
 			</div>

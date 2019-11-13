@@ -33,7 +33,7 @@
 .kt-aside,
 .kt-aside-menu,
 .kt-aside__brand {
-    background-color: var(---gray-light) !important;
+    background-color: var(--gray-light) !important;
 }
 
 .kt-aside__brand .kt-aside__brand-logo img {
@@ -277,10 +277,10 @@
 }
 
 .btn--yellow {
-    /* background-color: var(--sub-brand-color); */
+    background-color: var(--sub-brand-color);
     color: #000;
-    border: 2px solid rgba(255, 191, 1, 0.5);
-    background-color: rgba(255, 191, 1, 0.5);
+    border: 2px solid var(--sub-brand-color);
+    /* background-color: rgba(255, 191, 1, 0.5); */
 }
 
 .btn-outline-maroon {
@@ -562,12 +562,33 @@
     }
 }
 
+@media (max-width: 1024px) {
+    .kt-aside-menu .kt-menu__nav {
+        padding-top: 36px;
+    }
+    #kt_aside_close_btn {
+        margin-top: 20px;
+        margin-left: -15px;
+        background: var(--main-brand-color);
+    }
+}
+
+@media (max-width: 576px) {
+    .kt-wizard-v3 .kt-wizard-v3__wrapper .kt-form .kt-form__actions {
+        justify-content: space-between;
+    }
+    .kt-wizard-v3 .kt-wizard-v3__wrapper .kt-form .kt-form__actions .btn {
+        margin: 0;
+    }
+}
+
 input[type="text"]:disabled {
     cursor: not-allowed;
 }
 
 input:focus,
-select:focus {
+select:focus,
+input:not[type="submit"] {
     border-color: var(--sub-brand-color) !important;
 }
 
@@ -625,78 +646,9 @@ select option:first-child {
     padding-right: 1rem;
 }
 
-.btn-label-maroon {
-    color: #b45454;
-    background-color: rgba(180, 84, 84, 0.3);
-}
-
-.btn-label-maroon:hover {
-    color: #fff;
-    background-color: #b45454;
-}
-
-.btn-label-back {
-    background-color: #5d78ff;
-    color: #fff;
-    /* background-color: rgba(93, 120, 255, 0.3); */
-}
-
-.btn-label-back:hover {
-    color: #fff;
-    /* background-color: #5d78ff; */
-}
-
-.btn-label-yellow {
-    color: rgb(255, 191, 1);
-    background-color: rgba(255, 191, 1, 0.3);
-}
-
-/* .btn-label-yellow:disabled,
-button[disabled],
-button[disabled]:hover {
-    background-color: white;
-    color: initial;
-} */
-
-.btn-label-yellow:hover {
-    color: #000;
-    background-color: rgb(255, 191, 1);
-}
-
 .btn-secondary {
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
-}
-
-.btn-label-maroon,
-.btn-label-back,
-.btn-label-yellow {
-    letter-spacing: 1.5px;
-}
-
-.btn-label-maroon {
-    background-color: var(--main-brand-color);
-    border: 2px solid var(--main-brand-color);
-    color: #fff;
-}
-
-.btn-label-yellow {
-    background-color: var(--sub-brand-color);
-    color: #000;
-    border: 2px solid var(--sub-brand-color);
-    /* background-color: rgba(255, 191, 1, 0.5); */
-}
-
-.btn-label-maroon:hover {
-    background-color: #a63a3f;
-    border: 2px solid #a63a3f;
-    color: #fff;
-}
-
-.btn-label-yellow:hover {
-    background-color: var(--sub-brand-color);
-    color: #000;
-    border: 2px solid var(--sub-brand-color);
 }
 
 .kt-wizard-v3
@@ -713,4 +665,69 @@ button[disabled]:hover {
     .kt-form__actions
     [data-ktwizard-type="action-prev"] {
     margin-right: 0;
+}
+
+.kt-header-mobile {
+    background-color: #fff;
+}
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+    color: #777777 !important;
+}
+
+.datepicker tbody tr > td.day,
+.datepicker tbody tr > td.day.new,
+.datepicker tbody tr > td.day.old {
+    color: #000;
+}
+
+/* artist details css */
+
+.artist--view-head {
+    display: flex;
+    flex-direction: row;
+    justify-items: flex-start;
+    align-items: center;
+    height: 100%;
+}
+
+.artist--view-head-image {
+    width: 200px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.artist--view-head-image img,
+.artist--view-head-image span {
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.artist--view-head-details {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 15px;
+    width: 100%;
+}
+
+.artist--view-head-details span {
+    padding-bottom: 15px;
+}
+
+.artist--view-head-details span i {
+    padding-right: 15px;
+}
+
+@media (max-width: 400px) {
+    .artist--view-head {
+        flex-direction: column;
+        justify-items: center;
+    }
+    .artist--view-head-image {
+        margin-right: 0px;
+    }
 }

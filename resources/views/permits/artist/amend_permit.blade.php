@@ -14,23 +14,23 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u
+                <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                 ">
                     <i class="la la-arrow-left"></i>
                     Back
                 </button>
                 <a href="{{url('/company/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
                 </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold">
+                <button id="back_btn_sm" class="btn btn--maroon btn-sm kt-font-bold">
                     <i class="la la-arrow-left"></i>
                 </button>
                 <a href="{{url('/company/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u ">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u ">
                     <i class="la la-plus"></i>
                 </a>
             </div>
@@ -87,9 +87,13 @@
                                 title="Replace">
                                 <button class="btn btn-sm btn-secondary btn-elevate ">Replace</button>
                             </a>
-                            <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
+                            {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
+                            title="View">
+                            <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
+                            </a> --}}
+                            <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
                                 title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
+                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
@@ -110,7 +114,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-end">
-            <div class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                 <i class="la la-check"></i>
                 Submit
             </div>
@@ -120,28 +124,11 @@
 
     @include('permits.artist.modals.view_artist')
 
-    @include('permits.artist.modals.remove_artist')
+    @include('permits.artist.modals.remove_artist', ['from' => 'amend'])
 
-    <!--begin::Modal-->
-    <div class="modal fade" id="back_btn_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Leave Page Warning !</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Changes you made may not be saved.
-                    <input type="submit" value="Dont Save" onclick="go_back_confirm_function()"
-                        class="btn btn-label-maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!--end::Modal-->
+    @include('permits.artist.modals.leave_page')
+
 
 
 
@@ -204,6 +191,16 @@
     }
 
     $('#back_btn').click(function(){
+        $total_artists = $('#total_artist_details').val();
+
+        if($total_artists > 0) {
+            $('#back_btn_modal').modal('show');
+        } else {
+            window.location.href = "{{route('artist.index')}}#valid";
+        }
+    });
+
+    $('#back_btn_sm').click(function(){
         $total_artists = $('#total_artist_details').val();
 
         if($total_artists > 0) {

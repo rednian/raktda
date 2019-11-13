@@ -4,7 +4,7 @@
 
 @section('content')
 
-@component('permits.components.comments', ['staff_comments' => $staff_comments])
+@include('permits.components.comments', ['staff_comments' => $staff_comments])
 
 <div class="kt-portlet kt-portlet--mobile" style="z-index:1;">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
@@ -16,13 +16,13 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <button id="back_btn" class="btn btn-label-back btn-sm kt-font-bold kt-font-transform-u">
+                <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                     Back
                 </button>
                 @if($permit_details->permit_status != 'modification request')
                 <a href="{{url('company/add_artist_to_permit/edit/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold kt-font-transform-u">
+                    class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
                 </a>
@@ -30,12 +30,12 @@
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
-                <button id="back_btn" class="btn btn-label-back btn-sm">
+                <button id="back_btn_sm" class="btn btn--maroon btn-sm">
                     <i class="la la-arrow-left"></i>
                 </button>
                 @if($permit_details->permit_status != 'modification request')
                 <a href="{{url('company/add_artist_to_permit/edit/'.$permit_details->permit_id)}}"
-                    class="btn btn-label-yellow btn-sm kt-font-bold ">
+                    class="btn btn--yellow btn-sm kt-font-bold ">
                     <i class="la la-plus"></i>
                 </a>
                 @endif
@@ -80,7 +80,6 @@
                     <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                     @foreach ($artist_details as $artist_detail)
                     <tr>
-
                         <td>{{$artist_detail->firstname_en}}</td>
                         <td>{{$artist_detail->lastname_en}}</td>
                         <td>{{$artist_detail->profession['name_en']}}</td>
@@ -95,7 +94,7 @@
                                 title="Edit">
                                 <button class="btn btn-sm btn-secondary btn-elevate">Edit</button>
                             </a>
-                            <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
+                            <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                 title="View">
                                 <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a>
@@ -106,7 +105,11 @@
                                 <button class="btn btn-sm btn-secondary btn-elevate">Remove</button>
                             </a>
                             @endif
-
+                            @if(count($staff_comments) > 0)
+                            <a href="#" onclick="getArtistComments({{$artist_detail->artist_permit_id}})">
+                                <i class="la la-comment la-2x pl-4"></i>
+                            </a>
+                            @endif
                         </td>
                         <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
                         @php
@@ -121,7 +124,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <div class="btn btn-label-maroon btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
+            <div class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
                 <i class="la la-check"></i>
                 Submit
             </div>
@@ -130,52 +133,28 @@
 </div>
 
 
-<!--begin::Modal-->
-<div class="modal fade" id="back_btn_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Leave Page Warning !</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <div class="modal-body">
-                Changes you made may not be saved.
-                <input type="submit" value="Dont Save" onclick="go_back_confirm_function()"
-                    class="btn btn-label-maroon btn-sm kt-font-bold kt-font-transform-u float-right">
-            </div>
-        </div>
-    </div>
-</div>
 
-<!--end::Modal-->
-
+@include('permits.artist.modals.leave_page')
 
 @include('permits.artist.modals.view_artist')
 
-@include('permits.artist.modals.remove_artist')
+@include('permits.artist.modals.remove_artist', ['from' => 'edit'])
 
 
-<!--begin::Modal-->
-<div class="modal fade" id="error_list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="artist_permit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Fields to be corrected !</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Comments on Artist</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <div class="modal-body" id="field-list">
+            <div class="modal-body" id="artistpermitcomment">
             </div>
         </div>
     </div>
 </div>
-
-<!--end::Modal-->
-
-
 
 
 </div>
@@ -240,13 +219,21 @@
 
     $('#back_btn').click(function(){
         $total_artists = $('#total_artist_details').val();
-
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {
             window.location.href = "{{route('artist.index')}}#applied";
         }
     });
+
+    $('#back_btn_sm').click(function(){
+        $total_artists = $('#total_artist_details').val();
+        if($total_artists > 0) {
+            $('#back_btn_modal').modal('show');
+        } else {
+            window.location.href = "{{route('artist.index')}}#applied";
+        }
+    })
 
     function go_back_confirm_function(){
         var temp_permit_id =  $('#permit_id').val();
@@ -307,6 +294,22 @@
         $('#del_fname').val(fname);
         $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
         $('#warning_text').css('color', '#580000')
+    }
+
+    function getArtistComments(id){
+        let url = '{{route("artist.fetch_artist_comment", ":id")}}';
+        url = url.replace(':id', id);
+        $.ajax({
+            url: url ,
+            success: function(result) {
+                let comm = result.comments;
+                $('#artistpermitcomment').empty();
+                $('#artist_permit_modal').modal('show');
+                for(const com of comm){
+                    $('#artistpermitcomment').append(com.comment);
+                }
+            }
+        });
     }
 
 
