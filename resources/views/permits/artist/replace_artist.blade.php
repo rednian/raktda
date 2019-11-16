@@ -236,7 +236,7 @@ $language_id = Auth::user()->LanguageId;
                                                         </div>
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
-                                                                <input type="hidden" id="artist_permit_num">
+                                                                {{-- <input type="hidden" id="artist_permit_id"> --}}
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
@@ -632,7 +632,7 @@ $language_id = Auth::user()->LanguageId;
                                                 <label
                                                     class="kt-font-bold text--maroon">{{getLangId() == 1 ? $req->requirement_name : $req->requirement_name_ar  }}
                                                     <span
-                                                        class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-secondary' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span></label>
+                                                        class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-muted' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span></label>
                                                 <p for="" class="reqName    ">
                                                     {{$req->requirement_description}}</p>
                                             </div>
@@ -763,6 +763,7 @@ $language_id = Auth::user()->LanguageId;
         setWizard();
         uploadFunction();
         PicUploadFunction();
+        getAreas(5);
         $.ajax({
             headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -811,7 +812,7 @@ $language_id = Auth::user()->LanguageId;
                             cache: false,
                             url: "{{route('company.get_files_uploaded')}}",
                             type: 'POST',
-                            data: {artist_permit: $('#artist_permit_num').val(), reqName: $('#req_name_'+i).val()},
+                            data: {artist_permit: $('#artist_permit_id').val(), reqName: $('#req_name_'+i).val()},
                             dataType: "json",
                             success: function(data)
                             {
@@ -884,11 +885,11 @@ $language_id = Auth::user()->LanguageId;
                 {
                     $code = $('#code').val();
                     if($code){
-                        $.ajaxSetup({
-                            headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
-                        });
+                        var url = "{{route('company.get_uploaded_artist_photo', ':code')}}";
+                        url = url.replace(':code', $code);
                         $.ajax({
-                            url: "{{url('company/get_files_uploaded_with_code')}}"+'/'+$code,
+                            url: url,
+                            type: 'GET',
                             success: function(data)
                             {
                                 if(data[0].artist_permit[0].original)
@@ -1215,7 +1216,7 @@ $language_id = Auth::user()->LanguageId;
                             let total_aps = data.artist_permit.length;
                             let j = total_aps - 1 ;
                             if(total_aps > 0) {
-                                $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails()"data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
+                                $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(1)"data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
                                 $('#artistDetailswithcode').val(JSON.stringify(data));
                                 let apd = data.artist_permit[j];
                                 $('#ex_artist_en_name').html((apd.firstname_en != null ?  apd.firstname_en : '') + ' ' + (apd.lastname_en != null ? apd.lastname_en : ''));
@@ -1273,41 +1274,52 @@ $language_id = Auth::user()->LanguageId;
             uploadFunction();
             $('#artist_exists').modal('hide');
         }
-        const setArtistDetails = () => {
+
+       const setArtistDetails = (from) => {
             $('.ajax-file-upload-red').trigger('click');
             let ad = $('#artistDetailswithcode').val();
-            var old_profession = $('#old_profession').val();
             ad = JSON.parse(ad);
-            var artist_permit_count = ad.artist_permit.length;
-            var i = artist_permit_count - 1 ;
-            let apd = ad.artist_permit[i] ;
-            if(old_profession != apd.profession){
-                $('#code').val('');
-                $('#alert_profession').modal('show');
-                return ;
+            let apd ;
+            if(from == 1)
+            {
+                let ap_count = ad.artist_permit.length;
+                let i = ap_count - 1;
+                apd = ad.artist_permit[i];
+                $('#artist_id').val(ad.artist_id);
+                $('#code').val(ad.person_code);
+            }else if(from == 2){
+                apd = ad;
+                $('#artist_id').val(ad.artist.artist_id);
+                $('#code').val(ad.artist.person_code);
             }
-            $('#artist_exists').modal('hide');
+
             $('#is_old_artist').val(2);
+
             var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
+
             $('#changeArtistLabel').removeClass('d-none');
             $('#changeArtistLabel').addClass('ml-2');
-            $('#artist_id').val(ad.artist_id);
-            $('#code').val(ad.person_code);$('#code').addClass('mk-disabled');
-            $('#fname_en').val(apd.firstname_en);$('#fname_en').addClass('mk-disabled');
-            $('#fname_ar').val(apd.firstname_ar);$('#fname_ar').addClass('mk-disabled');
-            $('#lname_en').val(apd.lastname_en);$('#lname_en').addClass('mk-disabled');
-            $('#lname_ar').val(apd.lastname_ar);$('#lname_ar').addClass('mk-disabled');
-            $('#nationality').val(apd.country_id);
+
+            $('#code').addClass('mk-disabled');
+            $('#fname_en').val(apd.firstname_en);
+            $('#fname_en').addClass('mk-disabled');
+            $('#fname_ar').val(apd.firstname_ar);
+            $('#fname_ar').addClass('mk-disabled');
+            $('#lname_en').val(apd.lastname_en);
+            $('#lname_en').addClass('mk-disabled');
+            $('#lname_ar').val(apd.lastname_ar);
+            $('#lname_ar').addClass('mk-disabled');
+            $('#nationality').val(apd.country_id),
+            $('#profession').val(apd.profession_id),
+            $('#permit_type').val(apd.permit_type_id),
+            $('#passport').val(apd.passport_number);
             var ppExp = moment(apd.passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#pp_expiry').val(ppExp).datepicker('update');
             var visaExp = moment(apd.visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#visa_expiry').val(visaExp).datepicker('update');
             var uidExp = moment(apd.uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#uid_expiry').val(uidExp).datepicker('update');
-            $('#permit_type').val(apd.permit_type_id),
-            $('#profession').val(apd.profession),
-            $('#passport').val(apd.passport_number),
-            $('#visa_type').val(apd.visa_type),
+            $('#visa_type').val(apd.visa_type_id),
             $('#visa_number').val(apd.visa_number),
             $('#sp_name').val(apd.sponsor_name_en),
             $('#id_no').val(apd.identification_number);
@@ -1317,12 +1329,14 @@ $language_id = Auth::user()->LanguageId;
             if(apd.religion_id){
                 $('#religion').val(apd.religion_id);
             }
-            $('#gender').val(apd.gender);
-            $('#city').val(apd.emirate_id);
+            $('#gender').val(apd.gender_id);
+            if(apd.emirate_id){
+                $('#city').val(apd.emirate_id);
+            }
             getAreas(apd.emirate_id);
             $('#address').val(apd.address_en),
             $('#uid_number').val(apd.uid_number),
-            $('#dob').val(dob),
+            $('#dob').val(dob).datepicker('update'),
             $('#landline').val(apd.phone_number),
             $('#po_box').val(apd.po_box),
             $('#fax_no').val(apd.fax_number),
@@ -1332,9 +1346,64 @@ $language_id = Auth::user()->LanguageId;
             $('#area').val(apd.area_id);
             PicUploadFunction();
             uploadFunction();
+            detailsValidator.form();
+            $('#artist_exists').modal('hide');
+            // $('#artist_details').validate();
         }
-        $('#submit_btn').click((e) => {
 
+
+
+        function checkforArtist(){
+        let firstname = $('#fname_en').val();
+        let lastname = $('#lname_en').val();
+        let nationality = $('#nationality').val();
+        let dob = $('#dob').val();
+        if(firstname != '' && lastname != '' && nationality != '' && dob != '') {
+            $.ajax({
+                url: "{{route('artist.check_artist_exists')}}",
+                type: 'POST',
+                data: {
+                    fname: firstname,
+                    lname: lastname,
+                    nationality: nationality,
+                    dob: dob
+                },
+                success: function (data) {
+                    if(data){
+                        $('#person_code_modal').empty();
+                        $('#artist_exists').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+                        $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)" data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
+                            $('#artistDetailswithcode').val(JSON.stringify(data));
+                            $('#ex_artist_en_name').html((data.firstname_en != null ?  data.firstname_en : '') + ' ' + (data.lastname_en != null ? data.lastname_en : ''));
+                            $('#ex_artist_ar_name').html((data.firstname_ar != null ?  data.firstname_ar : '') + ' '+ (data.lastname_ar != null ? data.lastname_ar : ''));
+                            $('#ex_artist_mobilenumber').html(data.mobile_number);
+                            $('#ex_artist_email').html(data.email);
+                            $('#ex_artist_personcode').html(data.person_code);
+                            var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
+                            $('#ex_artist_dob').html(dob);
+                            $('#ex_artist_nationality').html(data.nationality.nationality_en);
+                            var gender = data.gender == 1 ? 'Male' : 'Female';
+                            $('#ex_artist_gender').html(gender);
+                            $('#profImg').attr('src', data.thumbnail ? "{{url('storage')}}"+'/'+data.thumbnail : '');
+                            $('#profImg').css({
+                                height: '150px',
+                                width: '135px',
+                                objectFit: 'cover',
+                                padding: '5px',
+                                border: '1px solid rgba(0,0,0,0.4)'
+                            });
+                    }
+                }
+            });
+        }
+    }
+
+
+        $('#submit_btn').click((e) => {
             var hasFile = docValidation();
             if(documentsValidator.form() && hasFile){
                 $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');

@@ -68,6 +68,9 @@ $language_id = Auth::user()->LanguageId;
                     <input type="hidden" id="from_date" value="{{session($user_id.'_apn_from_date')}}">
                     <input type="hidden" id="to_date" value="{{session($user_id.'_apn_to_date')}}">
                     <input type="hidden" id="location" value="{{session($user_id.'_apn_location')}}">
+                    <input type="hidden" id="is_event"
+                        value="{{session($user_id.'_apn_is_event') ? session($user_id.'_apn_is_event') : '' }}">
+                    <input type="hidden" id="event_id" value="{{session($user_id.'_apn_event_id')}}">
                     <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
                     <input type="hidden" id="from" value="{{$from}}">
 
@@ -279,7 +282,7 @@ $language_id = Auth::user()->LanguageId;
                                                         </div>
                                                         <div class="col-6">
                                                             <section class="kt-form--label-right">
-                                                                <input type="hidden" id="artist_permit_num">
+                                                                <input type="hidden" id="artist_permit_id">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
                                                                         class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">
@@ -721,7 +724,7 @@ $language_id = Auth::user()->LanguageId;
                                                 <label
                                                     class="kt-font-bold text--maroon">{{getLangId() == 1 ? $req->requirement_name : $req->requirement_name_ar  }}
                                                     <span
-                                                        class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-secondary' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span>
+                                                        class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-muted' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span>
 
                                                 </label>
                                                 <p for="" class="reqName">
@@ -861,26 +864,18 @@ $language_id = Auth::user()->LanguageId;
 
 @endsection
 
-
 @section('script')
 <script src="{{ asset('js/company/artist.js') }}"></script>
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script>
     $.ajaxSetup({
             headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
-        });
-
-
+    });
 
     var fileUploadFns = [];
     var picUploader;
     var artistDetails = {};
     var documentDetails = {};
-
-    function checkforArtist(){
-
-    }
-
 
     $(document).ready(function () {
         localStorage.clear();
@@ -888,7 +883,7 @@ $language_id = Auth::user()->LanguageId;
         uploadFunction();
         PicUploadFunction();
 
-
+        getAreas(5);
         wizard.on("change", function(wizard) {
             KTUtil.scrollTop();
         });
@@ -901,208 +896,142 @@ $language_id = Auth::user()->LanguageId;
         }
     });
 
-
-
-        const uploadFunction = () => {
-            // console.log($('#artist_number_doc').val());
-            for (var i = 1; i <= $('#requirements_count').val(); i++) {
-                fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
-                    // headers: {
-                    //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    // },
-                    url: "{{route('company.uploadDocument')}}",
-                    method: "POST",
-                    allowedTypes: "jpeg,jpg,png,pdf",
-                    fileName: "doc_file_" + i,
-                    // showDownload: true,
-                    downloadStr: `<i class="la la-download"></i>`,
-                    deleteStr: `<i class="la la-trash"></i>`,
-                    showFileSize: false,
-                    returnType: "json",
-                    showFileCounter: false,
-                    abortStr: '',
-                    multiple: false,
-                    maxFileCount: 1,
-                    showDownload: true,
-                    showDelete: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
-                    formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
-                    onLoad: function (obj) {
-                        $code = $('#code').val();
-                        if ($code) {
-                            $.ajax({
-                                cache: false,
-                                url: "{{route('company.get_files_uploaded')}}",
-                                type: 'POST',
-                                data: {artist_permit: $('#artist_permit_num').val(), reqId: $('#req_id_' + i).val()},
-                                dataType: "json",
-                                success: function (data) {
-                                    if (data) {
-                                        let id = obj[0].id;
-                                        let number = id.split("_");
-                                        let issue_datetime = new Date(data['issued_date']);
-                                        let exp_datetime = new Date(data['expired_date']);
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-
-                                        obj.createProgress(data.requirement['requirement_name'], "{{url('storage')}}"+'/' + data.path, '');
-                                        if (formatted_issue_date != NaN - NaN - NaN) {
-                                            $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
-                                            $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
-                                        }
-                                    }
-                                }
-                            });
-                        }else{
-                            var loadUrl = "{{route('company.resetUploadsSession', ':id')}}";
-                            loadUrl = loadUrl.replace(':id', $('#req_id_' + i).val());
-                            $.ajax({
-                                url: loadUrl,
-                                success: function(data)
-                                {
-                                }
-                            });
-                        }
-
-                    },
-                    onError: function (files, status, errMsg, pd) {
-                        showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
-                        pd.statusbar.hide();
-                    },
-                    downloadCallback: function (files, pd) {
-                        if(files[0]) {
-                            let user_id = $('#user_id').val();
-                            let artistId = $('#artist_id').val();
-                            let this_url = user_id + '/artist/' + artistId +'/'+files;
-                            window.open(
-                            "{{url('storage')}}"+'/' + this_url,
-                            '_blank'
-                            );
-                        } else {
-                                let file_path = files.filepath;
-                                let path = file_path.replace('public/','');
-                                window.open(
-                            "{{url('storage')}}"+'/' + path,
-                            '_blank'
-                            );
-                        }
-                    }
-                });
-                $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
-                $('#fileuploader_' + i + ' + div').attr('id', 'ajax-file-upload_' + i);
-            }
-        };
-
-
-        const PicUploadFunction = () => {
-            picUploader = $('#pic_uploader').uploadFile({
-                url: "{{route('company.uploadPhoto')}}",
+    const uploadFunction = () => {
+        // console.log($('#artist_number_doc').val());
+        for (var i = 1; i <= $('#requirements_count').val(); i++) {
+            fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
+                // headers: {
+                //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                // },
+                url: "{{route('company.uploadDocument')}}",
                 method: "POST",
-                allowedTypes: "jpeg,jpg,png",
-                fileName: "pic_file",
-                multiple: false,
+                allowedTypes: "jpeg,jpg,png,pdf",
+                fileName: "doc_file_" + i,
+                // showDownload: true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                returnType: "json",
                 showFileCounter: false,
                 abortStr: '',
-                previewHeight: '200px',
-                previewWidth: "auto",
-                returnType: "json",
+                multiple: false,
                 maxFileCount: 1,
-                showPreview: true,
+                showDownload: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
                 onLoad: function (obj) {
-                    // console.log(obj);
-                    $code = $('#code').val();
-                    if ($code) {
+                    var code = $('#code').val();
+                    if(code || $('#artist_permit_id').val())
+                    {
                         $.ajax({
-                            url: "get_uploaded_artist_photo/" + $code,
+                            cache: false,
+                            url: "{{route('company.get_files_uploaded')}}",
+                            type: 'POST',
+                            data: {artist_permit: $('#artist_permit_id').val(), reqId: $('#req_id_' + i).val()},
+                            dataType: "json",
                             success: function (data) {
-                                if (data[0].artist_permit[0].original) {
-                                    obj.createProgress('Profile Pic', "{{url('storage')}}"+'/'+ data[0].artist_permit[0].original, '');
+                                if (data) {
+                                    let id = obj[0].id;
+                                    let number = id.split("_");
+                                    let issue_datetime = new Date(data['issued_date']);
+                                    let exp_datetime = new Date(data['expired_date']);
+                                    let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                    let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+
+                                    obj.createProgress(data.requirement['requirement_name'], "{{url('storage')}}"+'/' + data.path, '');
+                                    if (formatted_issue_date != NaN - NaN - NaN) {
+                                        $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                        $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                    }
                                 }
+                            }
+                        });
+                    }else{
+                        var loadUrl = "{{route('company.resetUploadsSession', ':id')}}";
+                        loadUrl = loadUrl.replace(':id', $('#req_id_' + i).val());
+                        $.ajax({
+                            url: loadUrl,
+                            success: function(data)
+                            {
                             }
                         });
                     }
 
                 },
+                onError: function (files, status, errMsg, pd) {
+                    showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
+                    pd.statusbar.hide();
+                },
+                downloadCallback: function (files, pd) {
+                    if(files[0]) {
+                        let user_id = $('#user_id').val();
+                        let artistId = $('#artist_id').val();
+                        let this_url = user_id + '/artist/' + artistId +'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    } else {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }
+                }
             });
-            $('#pic_uploader div').attr('id', 'pic-upload');
-            $('#pic_uploader + div').attr('id', 'pic-file-upload');
-        };
+            $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
+            $('#fileuploader_' + i + ' + div').attr('id', 'ajax-file-upload_' + i);
+        }
+    };
 
 
-        var detailsValidator = $('#artist_details').validate({
-            ignore: [],
-            rules: {
-                fname_en: 'required',
-                fname_ar: 'required',
-                lname_en: 'required',
-                lname_ar: 'required',
-                profession: 'required',
-                permit_type: 'required',
-                dob: {
-                    required: true,
-                    dateNL: true
-                },
-                uid_number: 'required',
-                uid_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                passport: 'required',
-                pp_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                visa_type: 'required',
-                visa_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                sp_name: 'required',
-                gender: 'required',
-                nationality: 'required',
-                address: 'required',
-                mobile: {
-                    // number: true,
-                    required: true
-                },
-                email: {
-                    required: true,
-                    email: true,
-                },
-            },
-            messages: {
-                fname_en: '',
-                fname_ar: '',
-                lname_en: '',
-                lname_ar: '',
-                profession: '',
-                dob: '',
-                uid_number: '',
-                uid_expiry: '',
-                permit_type: '',
-                passport: '',
-                pp_expiry: '',
-                visa_type: '',
-                visa_expiry: '',
-                sp_name: '',
-                gender: '',
-                nationality: '',
-                address: '',
-                mobile: {
-                    // number: 'Please enter number',
-                    required: ''
-                },
-                email: {
-                    required: '',
-                    email: '',
-                },
+    const PicUploadFunction = () => {
+        picUploader = $('#pic_uploader').uploadFile({
+            url: "{{route('company.uploadPhoto')}}",
+            method: "POST",
+            allowedTypes: "jpeg,jpg,png",
+            fileName: "pic_file",
+            multiple: false,
+            downloadStr: `<i class="la la-download"></i>`,
+            deleteStr: `<i class="la la-trash"></i>`,
+            showFileSize: false,
+            showFileCounter: false,
+            abortStr: '',
+            previewHeight: '200px',
+            previewWidth: "auto",
+            returnType: "json",
+            maxFileCount: 1,
+            showPreview: true,
+            showDelete: true,
+            uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+            onLoad: function (obj) {
+                // console.log(obj);
+                $code = $('#code').val();
+                var url = "{{route('company.get_uploaded_artist_photo', ':code')}}";
+                url = url.replace(':code', $code);
+                if ($code) {
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function (data) {
+                            // console.log(data)
+                            if (data[0].artist_permit[0].original) {
+                                obj.createProgress('Profile Pic', "{{url('storage')}}"+'/'+ data[0].artist_permit[0].original, '');
+                            }
+                        }
+                    });
+                }
+
             },
         });
+        $('#pic_uploader div').attr('id', 'pic-upload');
+        $('#pic_uploader + div').attr('id', 'pic-file-upload');
+    };
+
+
 
         var docRules = {};
         var docMessages = {};
@@ -1195,7 +1124,7 @@ $language_id = Auth::user()->LanguageId;
                     $('#next_btn').css('display', 'none'); // hide the next button
                     artistDetails = {
                         id: $('#artist_id').val(),
-                        ap_id: $('#artist_permit_num').val(),
+                        ap_id: $('#artist_permit_id').val(),
                         code: $('#code').val(),
                         fname_en: $('#fname_en').val(),
                         fname_ar: $('#fname_ar').val(),
@@ -1368,7 +1297,56 @@ $language_id = Auth::user()->LanguageId;
             searchCode(e);
         });
 
-        function searchCode(e) {
+        function checkforArtist(){
+        let firstname = $('#fname_en').val();
+        let lastname = $('#lname_en').val();
+        let nationality = $('#nationality').val();
+        let dob = $('#dob').val();
+        if(firstname != '' && lastname != '' && nationality != '' && dob != '') {
+            $.ajax({
+                url: "{{route('artist.check_artist_exists')}}",
+                type: 'POST',
+                data: {
+                    fname: firstname,
+                    lname: lastname,
+                    nationality: nationality,
+                    dob: dob
+                },
+                success: function (data) {
+                    if(data){
+                        $('#person_code_modal').empty();
+                        $('#artist_exists').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+                        $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)" data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
+                            $('#artistDetailswithcode').val(JSON.stringify(data));
+                            $('#ex_artist_en_name').html((data.firstname_en != null ?  data.firstname_en : '') + ' ' + (data.lastname_en != null ? data.lastname_en : ''));
+                            $('#ex_artist_ar_name').html((data.firstname_ar != null ?  data.firstname_ar : '') + ' '+ (data.lastname_ar != null ? data.lastname_ar : ''));
+                            $('#ex_artist_mobilenumber').html(data.mobile_number);
+                            $('#ex_artist_email').html(data.email);
+                            $('#ex_artist_personcode').html(data.person_code);
+                            var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
+                            $('#ex_artist_dob').html(dob);
+                            $('#ex_artist_nationality').html(data.nationality.nationality_en);
+                            var gender = data.gender == 1 ? 'Male' : 'Female';
+                            $('#ex_artist_gender').html(gender);
+                            $('#profImg').attr('src', data.thumbnail ? "{{url('storage')}}"+'/'+data.thumbnail : '');
+                            $('#profImg').css({
+                                height: '150px',
+                                width: '135px',
+                                objectFit: 'cover',
+                                padding: '5px',
+                                border: '1px solid rgba(0,0,0,0.4)'
+                            });
+                    }
+                }
+            });
+        }
+    }
+
+    function searchCode(e) {
             let code = $('#code').val();
             var permit_id = $('#permit_id').val();
             if (code) {
@@ -1393,7 +1371,7 @@ $language_id = Auth::user()->LanguageId;
                         let total_aps = data.artist_permit.length;
                             let j = total_aps - 1 ;
                             if(total_aps > 0) {
-                                $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails()"data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
+                                $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(1)" data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
                                 $('#artistDetailswithcode').val(JSON.stringify(data));
                                 let apd = data.artist_permit[j];
                                 $('#ex_artist_en_name').html((apd.firstname_en != null ?  apd.firstname_en : '') + ' ' + (apd.lastname_en != null ? apd.lastname_en : ''));
@@ -1432,57 +1410,31 @@ $language_id = Auth::user()->LanguageId;
             }
         }
 
-        function removeSelectedArtist(){
-            $('.ajax-file-upload-red').trigger('click');
-            $('#artist_details').trigger('reset');
-
-            $('#documents_required').trigger('reset');
-
-            $('#artist_id').val('');
-
-            $('#fname_en').removeClass('mk-disabled');
-
-            $('#fname_ar').removeClass('mk-disabled');
-
-            $('#lname_en').removeClass('mk-disabled');
-
-            $('#lname_ar').removeClass('mk-disabled');
-
-            $('#artist_permit_id').val('');
-
-            $('#changeArtistLabel').addClass('d-none');
-
-            $('#code').removeClass('mk-disabled');
-
-            $('#code').val('');
-            $('#is_old_artist').val(1);
-
-            PicUploadFunction();
-            uploadFunction();
-            $('#artist_exists').modal('hide');
-        }
-
-        function clearPersonCode() {
-            $('#code').val('');
-            $('#is_old_artist').val(1);
-            $('#artist_exists').modal('hide');
-        }
-
-        const setArtistDetails = () => {
+    const setArtistDetails = (from) => {
             $('.ajax-file-upload-red').trigger('click');
             let ad = $('#artistDetailswithcode').val();
             ad = JSON.parse(ad);
-            let ap_count = ad.artist_permit.length;
-            let i = ap_count - 1;
-            let apd = ad.artist_permit[i];
+            let apd ;
+            if(from == 1)
+            {
+                let ap_count = ad.artist_permit.length;
+                let i = ap_count - 1;
+                apd = ad.artist_permit[i];
+                $('#artist_id').val(ad.artist_id);
+                $('#code').val(ad.person_code);
+            }else if(from == 2){
+                apd = ad;
+                $('#artist_id').val(ad.artist.artist_id);
+                $('#code').val(ad.artist.person_code);
+            }
+
             $('#is_old_artist').val(2);
 
             var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
 
             $('#changeArtistLabel').removeClass('d-none');
             $('#changeArtistLabel').addClass('ml-2');
-            $('#artist_id').val(ad.artist_id);
-            $('#code').val(ad.person_code);
+
             $('#code').addClass('mk-disabled');
             $('#fname_en').val(apd.firstname_en);
             $('#fname_en').addClass('mk-disabled');
@@ -1525,13 +1477,41 @@ $language_id = Auth::user()->LanguageId;
             $('#fax_no').val(apd.fax_number),
             $('#mobile').val(apd.mobile_number),
             $('#email').val(apd.email);
-            $('#artist_permit_num').val(apd.artist_permit_id);
+            $('#artist_permit_id').val(apd.artist_permit_id);
             $('#area').val(apd.area_id);
             PicUploadFunction();
             uploadFunction();
+            detailsValidator.form();
             $('#artist_exists').modal('hide');
             // $('#artist_details').validate();
         }
+
+
+        function removeSelectedArtist(){
+            $('.ajax-file-upload-red').trigger('click');
+            $('#artist_details').trigger('reset');
+            $('#documents_required').trigger('reset');
+            $('#artist_id').val('');
+            $('#fname_en').removeClass('mk-disabled');
+            $('#fname_ar').removeClass('mk-disabled');
+            $('#lname_en').removeClass('mk-disabled');
+            $('#lname_ar').removeClass('mk-disabled');
+            $('#artist_permit_id').val('');
+            $('#changeArtistLabel').addClass('d-none');
+            $('#code').removeClass('mk-disabled');
+            $('#code').val('');
+            $('#is_old_artist').val(1);
+            PicUploadFunction();
+            uploadFunction();
+            $('#artist_exists').modal('hide');
+        }
+
+        function clearPersonCode() {
+            $('#code').val('');
+            $('#is_old_artist').val(1);
+            $('#artist_exists').modal('hide');
+        }
+
 
         $('#submit_btn').click((e) => {
 
@@ -1551,6 +1531,8 @@ $language_id = Auth::user()->LanguageId;
                 var from_date  = $('#from_date').val();
                 var to_date = $('#to_date').val();
                 var location = $('#location').val();
+                var is_event = $('#is_event').val();
+                var event_id = $('#event_id').val();
 
                 var permit_id = $('#permit_id').val();
 
@@ -1559,7 +1541,9 @@ $language_id = Auth::user()->LanguageId;
                 var permitD = {
                     from : from_date,
                     to: to_date,
-                    location: location
+                    location: location,
+                    is_event: is_event,
+                    event_id: event_id
                 }
                 $.ajax({
                     url: "{{route('company.add_artist_temp')}}",

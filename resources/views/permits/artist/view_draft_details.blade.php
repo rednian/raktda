@@ -25,9 +25,8 @@
         </div>
     </div>
 
-
     <div class="kt-portlet__body pt-0">
-        <div class="kt-widget5__info py-4">
+        <div class="kt-widget5__info py-3">
             <div>
                 <span>From Date:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($draft_details[0]->issue_date))}}</span>&emsp;&emsp;
@@ -39,6 +38,12 @@
 
             </div>
         </div>
+        @if($draft_details[0]->event)
+        <div class="pb-3">
+            <span>Connected to Event :</span>&emsp;
+            <span class="kt-font-info">{{$draft_details[0]->event->name_en}}</span>&emsp;&emsp;
+        </div>
+        @endif
 
         <div class="table-responsive">
             <table class="table table-striped table-borderless border" id="applied-artists-table">

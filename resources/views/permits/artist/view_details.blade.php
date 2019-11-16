@@ -30,20 +30,22 @@
     </div>
 
     <div class="kt-portlet__body pt-0">
-        <div class="kt-widget5__info py-4">
-            <div>
-                <span>From Date:</span>&emsp;
-                <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
-                <span>To Date:</span>&emsp;
-                <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                <span>@lang('words.location'):</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
-                <span>@lang('words.reference_no'):</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
-
-            </div>
+        <div class="kt-widget5__info py-3">
+            <span>From Date:</span>&emsp;
+            <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
+            <span>To Date:</span>&emsp;
+            <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
+            <span>@lang('words.location'):</span>&emsp;
+            <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+            <span>@lang('words.reference_no'):</span>&emsp;
+            <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
         </div>
-
+        @if($permit_details->event)
+        <div class="pb-3">
+            <span>Connected to Event :</span>&emsp;
+            <span class="kt-font-info">{{$permit_details->event['name_en']}}</span>&emsp;&emsp;
+        </div>
+        @endif
         <div class="table-responsive">
             <table class="table table-striped table-hover border table-borderless  " id="applied-artists-table">
                 <thead>

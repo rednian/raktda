@@ -61,6 +61,9 @@
                 <div class="artist--view-head-details">
                     <span href="#"><i
                             class="flaticon2-user"></i>{{getLangId() == 1 ? ucwords($artist_details->firstname_en).' '.ucwords($artist_details->lastname_en) : ucwords($artist_details->firstname_ar).' '.ucwords($artist_details->lastname_ar)}}</span>
+                    @if($artist_details->person_code){
+                    <span href="#"><i class="flaticon2-calendar-3"></i>{{$artist_details->person_code}}</span>
+                    @endif
                     <span href="#"><i class="flaticon2-new-email"></i>{{$artist_details->email}}</span>
                     <span href="#"><i class="flaticon2-phone"></i>{{$artist_details->mobile_number}}</span>
                     <span href="#"><i
@@ -108,7 +111,7 @@
                     <div class="col-md-6 col-sm-12 row">
                         <label class="col col-md-6 "><strong>Visa Number:</strong></label>
                         <p class="col col-md-6 text-left">
-                            {{$artist_details->visa_number}}</p>
+                            {{$artist_details->visa_number ? $artist_details->visa_number : 'Not Given'}}</p>
                     </div>
                     <div class="col-md-6 col-sm-12 row">
                         <label class="col col-md-6 "><strong>Visa Expiry:</strong></label>

@@ -14,7 +14,7 @@ class Permit extends Model
     protected $primaryKey = 'permit_id';
     protected $fillable = [
         'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
-        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness'
+        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id'
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
 
@@ -70,5 +70,10 @@ class Permit extends Model
             ->join('artist_permit', 'permit.permit_id', '=', 'artist_permit.permit_id')
             ->where('permit.permit_status', $status)
             ->groupBy('artist_permit.permit_id');
+    }
+
+    public function event()
+    {
+        return $this->belongsTO(Event::class, 'event_id');
     }
 }

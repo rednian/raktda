@@ -20,8 +20,8 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     Route::post('delete_artist', 'Company\ArtistController@delete_artist')->name('company.delete_artist');
     Route::post('update_artist_temp', 'Company\ArtistController@update_artist_temp')->name('company.update_artist_temp');
     Route::post('get_files_uploaded', 'Company\ArtistController@get_files_uploaded')->name('company.get_files_uploaded');
-    Route::get('get_files_uploaded_with_code/{id}', 'Company\ArtistController@get_files_uploaded_with_code')->name('company.get_files_uploaded_with_code');
-    Route::get('add_artist_to_permit/{from}/{id}', 'Company\ArtistController@add_artist_to_permit')->name('company.add_artist_to_permit');
+    Route::get('get_uploaded_artist_photo/{id}',  'Company\ArtistController@get_uploaded_artist_photo')->name('company.get_uploaded_artist_photo');
+    Route::get('artist/add_artist_to_permit/{from}/{id}', 'Company\ArtistController@add_artist_to_permit')->name('company.add_artist_to_permit');
     Route::get('fetch_areas/{id}',   'Company\ArtistController@fetch_areas')->name('company.fetch_areas');
     Route::post('searchCode',   'Company\ArtistController@searchCode')->name('company.searchCode');
     Route::post('download_file',   'Company\ArtistController@download_file')->name('company.download_file');
@@ -45,7 +45,6 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     Route::post('storePermitDetails',  'Company\ArtistController@storePermitDetails')->name('company.storePermitDetails');
     Route::get('get_temp_photo_temp_id/{id}',  'Company\ArtistController@get_temp_photo_temp_id')->name('company.get_temp_photo_temp_id');
     Route::post('get_temp_files_by_temp_id',  'Company\ArtistController@get_temp_files_by_temp_id')->name('company.get_temp_files_by_temp_id');
-    Route::get('get_uploaded_artist_photo/{id}',  'Company\ArtistController@get_uploaded_artist_photo')->name('company.get_uploaded_artist_photo');
     Route::post('artist/add_draft',  'Company\ArtistController@add_draft')->name('artist.add_draft');
     Route::get('artist/get_draft_details/{id}',  'Company\ArtistController@get_draft_details')->name('company.get_draft_details');
     Route::get('artist/edit/{id}/{from}',  'Company\ArtistController@edit_artist')->name('artist.edit_artist');
@@ -61,6 +60,7 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     Route::get('artist/details/{id}/{from}', 'Company\ArtistController@get_artist_details')->name('artist_details.view');
     Route::get('artist/temp/details/{id}/{from}', 'Company\ArtistController@get_temp_artist_details')->name('temp_artist_details.view');
     Route::get('artist/fetch_artist_comment/{id}', 'Company\ArtistController@fetch_artist_comment')->name('artist.fetch_artist_comment');
+    Route::post('artist/check_artist/exists', 'Company\ArtistController@check_artist_exists')->name('artist.check_artist_exists');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
