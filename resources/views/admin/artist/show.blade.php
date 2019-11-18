@@ -23,15 +23,16 @@
 									<div class="card-body">
 										 <div class="kt-widget kt-widget--user-profile-3">
 												<div class="kt-widget__top">
-													 @if(!$artist_permit->thumbnail)
-														<div class="kt-widget__media">    
+													 @if($artist_permit->thumbnail)
+														<div class="kt-widget__media"> 
+                                                            <img class="img img-thumbnail" src="{{ asset('/storage/'.$artist_permit->thumbnail) }}" alt="">   
 														</div>
 													 @else
-														
+    												  <div class="kt-widget__pic kt-widget__pic--danger kt-font-success kt-font-bold kt-font-light" style="font-size: xx-large">
+                                                                 {{ profile($artist_permit->firstname_en, $artist_permit->lastname_en) }}
+                                                            </div>
 													 @endif
-													 	<div class="kt-widget__pic kt-widget__pic--danger kt-font-success kt-font-bold kt-font-light" style="font-size: xx-large">
-																 {{ profile($artist_permit->firstname_en, $artist_permit->lastname_en) }}
-															</div>
+													 	
 													 @include('admin.artist.include.artist-block-modal')
 													 <div class="kt-widget__content">
 															<div class="kt-widget__head">
@@ -179,6 +180,7 @@
 												<th>{{ __('ISSUED DATE') }}</th>
 												<th>{{ __('EXPIRED DATE') }}</th>
 												<th>{{ __('PERMIT STATUS') }}</th>
+                                                <th>{{ __('ACTION') }}</th>
 										 </tr>
 										 </thead>
 									</table>
@@ -210,6 +212,7 @@
 
 			</div>
 	 </section>
+      @include('admin.artist_permit.includes.document')
 @endsection
 @section('script')
 	 <script>
@@ -263,11 +266,10 @@
             ajax: {
                url: '{{ route('admin.artist.permit.history', $artist_permit->artist_id) }}',
                data: function (d) {
-
                }
             },
             columnDefs: [
-               {targets: [0, 5], className: 'no-wrap'}
+               {targets: [0, 5, 6], className: 'no-wrap'}
             ],
             columns: [
                {data: 'reference_number'},
@@ -276,8 +278,43 @@
                {data: 'issued_date'},
                {data: 'expired_date'},
                {data: 'permit_status'},
-            ]
+               {
+                render: function(type, row, full, meta){
+                    return '<button class="btn btn-secondary btn-sm btn-document">Documents</button>';
+                }
+               }
+            ],
+            createdRow: function(row, data, index){
+                
+                $('.btn-document', row).click(function(e){
+                    e.stopPropagation();
+                    documents(data);
+                    $('#document-modal').modal('show');
+
+                });
+
+                $(row).click(function(){
+                    location.href = '{{ url('/artist_permit') }}/'+data.permit_id;
+                });
+            }
          });
       }
+
+      function documents(data){
+        console.log(data)
+          $('#document-modal').on('shown.bs.modal', function(){
+              $('table#table-document').DataTable({
+                  ajax:{ 
+                      url: '{{ url('/artist_permit') }}/'+data.permit_id+'/application/'+'{{ $artist_permit->artist_permit_id }}'+'/documentDatatable',
+                  },
+                  columns:[
+                  {data: 'document_name'},
+                  {data: 'issued_date'},
+                  {data: 'expired_date'},
+                  ]
+              });
+          });
+      }
+
 	 </script>
 @stop

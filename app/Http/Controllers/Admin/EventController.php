@@ -1,6 +1,7 @@
 <?php
 	namespace App\Http\Controllers\Admin;
 
+	use App\Notifications\EventNotification;
 	use DB;
 	use PDF;
 	use Auth;
@@ -20,6 +21,12 @@
 	{
 		public function index()
 		{
+			// $user = new User();
+			// $user->email = 'rednianred@gmail.com';
+			// dd($user);
+			// $user->notify(new EventNotification());
+			// $user->notify(new EventNotification());
+
 			$event = Event::whereDate('expired_date', Carbon::now())->update(['status'=>'expired']);
 			$types = EventType::all();
 			$new_request = '';
@@ -77,6 +84,7 @@
 								$requirement = Requirement::create([
 									'requirement_name'=>$requirement['name'], 
 									'dates_required'=>!empty($requirement['date']) ? 1 : 0 , 
+									'requirement_description'=>$requirement['description'] , 
 									'requirement_type'=>'event'
 								]);
 								$event->additionalRequirements()->attach($requirement->requirement_id);

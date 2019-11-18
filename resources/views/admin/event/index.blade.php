@@ -91,7 +91,7 @@
                     <div class="col-4">
                         <div class="input-group input-group-sm">
                             <div class="kt-input-icon kt-input-icon--right">
-                              <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="new-applied-date" >
+                              <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="new-applied-date" >
                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                 <span><i class="la la-calendar"></i></span>
                               </span>
@@ -121,7 +121,7 @@
                 <div class="col-md-3">
                   <div class="form-group form-group-sm">
                     <div class="kt-input-icon kt-input-icon--right">
-                      <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-new-request">
+                      <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-new-request">
                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
                         <span><i class="la la-search"></i></span>
                       </span>
@@ -162,7 +162,7 @@
                     <div class="col-4">
                         <div class="input-group input-group-sm">
                             <div class="kt-input-icon kt-input-icon--right">
-                              <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="pending-applied-date" >
+                              <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="pending-applied-date" >
                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                 <span><i class="la la-calendar"></i></span>
                               </span>
@@ -192,7 +192,7 @@
                 <div class="col-md-3">
                   <div class="form-group form-group-sm">
                     <div class="kt-input-icon kt-input-icon--right">
-                      <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-pending-request">
+                      <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-pending-request">
                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
                         <span><i class="la la-search"></i></span>
                       </span>
@@ -233,7 +233,7 @@
                      <div class="col-4">
                          <div class="input-group input-group-sm">
                              <div class="kt-input-icon kt-input-icon--right">
-                               <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="processing-applied-date" >
+                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="processing-applied-date" >
                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                  <span><i class="la la-calendar"></i></span>
                                </span>
@@ -264,7 +264,7 @@
                  <div class="col-md-3">
                    <div class="form-group form-group-sm">
                      <div class="kt-input-icon kt-input-icon--right">
-                       <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-processing-request">
+                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-processing-request">
                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
                          <span><i class="la la-search"></i></span>
                        </span>
@@ -306,7 +306,7 @@
                      <div class="col-4">
                          <div class="input-group input-group-sm">
                              <div class="kt-input-icon kt-input-icon--right">
-                               <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="PERMIT DURATION DATE" id="active-applied-date" >
+                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="PERMIT DURATION DATE" id="active-applied-date" >
                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                  <span><i class="la la-calendar"></i></span>
                                </span>
@@ -336,7 +336,7 @@
                  <div class="col-md-3">
                    <div class="form-group form-group-sm">
                      <div class="kt-input-icon kt-input-icon--right">
-                       <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-active-request">
+                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-active-request">
                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
                          <span><i class="la la-search"></i></span>
                        </span>
@@ -406,7 +406,7 @@
                  <div class="col-md-3">
                    <div class="form-group form-group-sm">
                      <div class="kt-input-icon kt-input-icon--right">
-                       <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-archive-request">
+                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-archive-request">
                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
                          <span><i class="la la-search"></i></span>
                        </span>
@@ -506,9 +506,8 @@
         });
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var current_tab = $(e.target).attr('href');
-        console.log(current_tab);
 
-        if('#pending-permit' == current_tab ){ pendingEvent(); }
+        if('#pending-request' == current_tab ){ pendingEvent(); }
         if('#processing-permit' == current_tab ){ processing(); }
         if('#active-permit' == current_tab ){ active(); }
         if('#archive-permit' == current_tab){ archive(); }
@@ -522,6 +521,7 @@
           var TODAY = todayDate.format('YYYY-MM-DD');
           var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
           var calendarEl = document.getElementById('event-calendar');
+
           var calendar = new FullCalendar.Calendar(calendarEl, {
               plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
               isRTL: KTUtil.isRTL(),
@@ -531,6 +531,7 @@
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
               height: 'auto',
+              allDaySlot: true,
               contentHeight: 450,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,

@@ -28,6 +28,11 @@ class Permit extends Model
          return false;
     }
 
+    public function events()
+    {
+         return $this->belongsToMany(Event::class, 'event_artist_permit', 'permit_id', 'event_id');
+    }
+
     public function approval()
     {
         return $this->hasMany(Approval::class, 'inspection_id', 'permit_id')->whereType('artist');

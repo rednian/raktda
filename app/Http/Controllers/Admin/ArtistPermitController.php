@@ -88,8 +88,6 @@ class ArtistPermitController extends Controller
     {
       try {
         DB::beginTransaction();
-
-
            $user_time = $request->session()->get('user');
            $user = Auth::user();
            $request['user_id'] = $user->user_id;
@@ -212,7 +210,7 @@ class ArtistPermitController extends Controller
     public function checkApplication(Request $request,Permit $permit,  ArtistPermit $artistpermit)
     {
       $existing_permit = ArtistPermit::whereHas('permit', function($q) use ($permit){
-        $q->where('permit_status', '!=', 'pending')
+        $q->where('permit_status', '!=', 'unchecked')
           ->where('permit_id', '!=', $permit->permit_id);
       })->where('artist_id', $artistpermit->artist_id)->get();
 
@@ -470,6 +468,7 @@ class ArtistPermitController extends Controller
 	         ->addColumn('artist_number', function($permit){
 		         $total = $permit->artistpermit()->count();
 		         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
+             if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
 	         	return 'Checked '.$check.' of '.$total;
 	         })
 	         ->editColumn('permit_status', function($permit){
@@ -499,6 +498,7 @@ class ArtistPermitController extends Controller
 	         	return false;
 	         })
 	         ->addColumn('company_type', function($permit){
+            return;
 		         $class_name = 'default';
 		         if(strtolower($permit->company->company_type) == 'private'){$class_name = 'success'; }
 		         if(strtolower($permit->company->company_type) == 'government'){$class_name = 'danger'; }
@@ -509,7 +509,7 @@ class ArtistPermitController extends Controller
 	         	return ucwords($permit->request_type).' Application';
 	         })
            ->addColumn('action', function($permit){
-            return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i> Download</a>';
+            return '<button class="btn btn-outline-danger btn-sm kt-margin-r-5">Cancel</button><a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-outline-success">Download</a>';
            })
            ->addColumn('inspection_url', function($permit){
             return route('tasks.artist_permit.details', $permit->permit_id);

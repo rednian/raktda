@@ -13,21 +13,20 @@
 	<div class="kt-portlet__head kt-portlet__head--sm">
 		<div class="kt-portlet__head-label">
 			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ ucwords($event->name_en) }}- application</span></h3>
-		 </div>
-		 <div class="kt-portlet__head-toolbar">
-		 	<a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-maroon btn-elevate kt-margin-r-4 kt-font-transform-u">
-		 		<i class="la la-arrow-left"></i>
-		 		back to event list
+		</div>
+		<div class="kt-portlet__head-toolbar">
+			<a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-outline-secondary kt-margin-r-4 kt-font-transform-u">
+				<i class="la la-arrow-left"></i>back to event list
 			</a>
 			<div class="dropdown dropdown-inline">
 				<button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-elevate btn-icon btn-sm btn-icon-sm">
 					<i class="flaticon-more"></i>
-				 </button>
-				 <div x-placement="bottom-end" class="dropdown-menu dropdown-menu-right">
-				 	<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">Company Information</a>
-				 </div>
+				</button>
+				<div x-placement="bottom-end" class="dropdown-menu dropdown-menu-right">
+					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">Company Information</a>
+				</div>
 			</div>
-		 </div>
+		</div>
 	</div>
 	<div class="kt-portlet__body kt-padding-t-5">
 		<div id="kt_wizard_v3" data-ktwizard-state="first" class="kt-grid kt-wizard-v3 kt-wizard-v3--white">
@@ -56,15 +55,14 @@
 				</div>
 				</div>
 				<div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
-
-					 <form id="kt_form" class="kt-form"  method="post" action="{{ route('admin.event.submit', $event->event_id) }}">
-					 	@csrf
-					 	<div data-ktwizard-type="step-content" data-ktwizard-state="current" class="kt-wizard-v3__content">
-					 		<div class="kt-form__section kt-form__section--first">
-					 			<div class="kt-wizard-v3__form">
-					 				<section class="row kt-margin-t-20 kt-margin-b-20">
-					 					<div class="col">
-					 						@include('admin.event.includes.latest-comment')
+					<form id="kt_form" class="kt-form"  method="post" action="{{ route('admin.event.submit', $event->event_id) }}">
+						@csrf
+						<div data-ktwizard-type="step-content" data-ktwizard-state="current" class="kt-wizard-v3__content">
+							<div class="kt-form__section kt-form__section--first">
+								<div class="kt-wizard-v3__form">
+									<section class="row kt-margin-t-20 kt-margin-b-20">
+										<div class="col">
+											@include('admin.event.includes.latest-comment')
 					 						@include('admin.artist_permit.includes.comment')
 					 						@if ($existing_event->count() > 0)
 					 							<div class="alert alert-outline-danger fade show" role="alert">
@@ -91,6 +89,23 @@
 													 <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
 														<div class="card-body">
 															<div class="row form-group form-group-sm">
+																<div class="col-sm-6">
+																	 <label class="kt-font-dark">{{ __('Event Type') }} <span class="text-danger">*</span></label>
+																	  <div class="input-group input-group-sm">
+																	 	<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
+																	 					 class="form-control">
+																	 	<div class="input-group-append">
+																	 		<span class="input-group-text">
+																	 			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																	 				<input data-step="step-1" type="checkbox">
+																	 				<span></span>
+																	 			</label>
+																	 		 </span>
+																	 	</div>
+																	  </div>
+																</div>
+															</div>
+															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
 																	<label class="kt-font-dark">{{ __('Event Name') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
@@ -104,6 +119,7 @@
 																			</span>
 																		</div>
 																	</div>
+																	{{-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> --}}
 																</div>
 																<div class="col-md-6">
 																	<label class="kt-font-dark">{{ __('Event Name (AR)') }} <span class="text-danger">*</span></label>
@@ -120,12 +136,11 @@
 																	 </div>
 																</div>
 															</div>
-
 															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
-																	 <label class="kt-font-dark">{{ __('Event Type') }} <span class="text-danger">*</span></label>
-																	 <div class="input-group input-group-sm">
-																		<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
+																	 <label class="kt-font-dark">{{ __('Description') }} <span class="text-danger">*</span></label>
+																	 <div class="input-group input-group-lg">
+																		<input value="{{ ucfirst($event->description_en) }}" name="event_type" readonly="readonly" type="text"
 																						 class="form-control">
 																		<div class="input-group-append">
 																			<span class="input-group-text">
@@ -137,7 +152,22 @@
 																		</div>
 																	 </div>
 																</div>
-															 </div>
+																<div class="col-md-6">
+																	 <label class="kt-font-dark">{{ __('Description (AR)') }} <span class="text-danger">*</span></label>
+																	 <div class="input-group input-group-lg">
+																		<input value="{{ ucfirst($event->description_en) }}" name="event_type" readonly="readonly" type="text"
+																						 class="form-control">
+																		<div class="input-group-append">
+																			<span class="input-group-text">
+																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																					<input data-step="step-1" type="checkbox">
+																					<span></span>
+																				</label>
+																			 </span>
+																		</div>
+																	 </div>
+																</div>
+															</div>
 														</div>
 													 </div>
 												</div>
@@ -364,12 +394,38 @@
 												  	<div class="card">
 												  		<div class="card-header" id="heading-action">
 												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-action" aria-expanded="true" aria-controls="collapse-action">
-												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Event action</h6>
+												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Select action</h6>
 												  			</div>
 												  		 </div>
 												  		 <div id="collapse-action" class="collapse show" aria-labelledby="heading-action" data-parent="#accordion-action">
 												  			<div class="card-body">
 												  				<section class="row">
+												  					<div class="col-md-12">
+												  						{{-- <div class="form-group row"> --}}
+  																			{{-- <label class="col-3 col-form-label">Inline Radioes</label> --}}
+  																{{-- 			<div class="col-12">
+  																				<div class="kt-radio-inline">
+  																					<label class="kt-radio kt-radion--bold kt-radio--success">
+  																						<input type="radio" name="radio4"> Approve Application
+  																						<span></span>
+  																					</label>
+  																					<label class="kt-radio kt-radion--bold kt-radio--success">
+  																						<input type="radio" name="radio4"> Send Back for Amendment
+  																						<span></span>
+  																					</label>
+  																					<label class="kt-radio kt-radion--bold kt-radio--success">
+  																						<input type="radio" name="radio4"> Need Approval
+  																						<span></span>
+  																					</label>
+  																					<label class="kt-radio kt-radion--bold kt-radio--success">
+  																						<input type="radio" name="radio4"> Reject Application
+  																						<span></span>
+  																					</label>
+  																				</div>
+  																			</div>
+  																		</div>
+												  					</div> --}}
+
 												  					<div class="col-md-4">
 												  						<div class="form-group form-group-sm">
 												  							<label for="" class="kt-font-dark">Action <span class="text-danger">*</span></label>
@@ -489,20 +545,7 @@
 	 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
 	 <script>
 	 	var add_requirements_table = {};
-
-	 	// window.addEventListener('beforeunload', (event) => {
-	 	  // Cancel the event as stated by the standard.
-	 	  // event.preventDefault();
-	 	  // Chrome requires returnValue to be set.
-	 	  // event.returnValue = '';
-	 	// });
-
-		new Vue({
-			el: '#app-wizard',
-			data: {
-			  comment: null
-			}
-		});
+		new Vue({ el: '#app-wizard', data: { comment: null } });
 
      $(document).ready(function () {
        var todayDate = moment().startOf('day');
@@ -613,10 +656,8 @@
      	add_requirements_table = $('table#additional-requirement').DataTable({
      		  dom: '<"toolbar-add pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
      		  'pageLength': 20,
-     		ajax:{
-     			url: '{{ route('admin.event.additionalrequirementdatatable', $event->event_id) }}'
-     		},
-     		serverSide: false,
+     		ajax:{ url: '{{ route('admin.event.additionalrequirementdatatable', $event->event_id) }}'},
+     		serverSide: false,	
      		columnDefs:[
      		{targets: 0, checkboxes: { selectRow: true }, sortable: false, className: 'no-wrap'}
      		],
@@ -635,12 +676,17 @@
      	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">Add New Requirement</button>');
      	 $('#btn-add').on( 'click', function () {
      	 	var html = '<section class="row">';
-     	 		html += '	<div class="col-sm-6">'
+     	 		html += '	<div class="col-sm-4">'
      	 		html += '		<div class="form-group form-group-xs">';
-     	 		html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="write new requirement">';
+     	 		html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="requirement name">';
      	 		html += '		</div>';
      	 		html += '	</div>';
-     	 		html += '	<div class="col-sm-6">';
+     	 		html += ' <div class="col-sm-4">';
+     	 		html += ' 	<div  class="form-group form-group-xs">';
+     	 		html += '		<input placeholder="description" type="text" name="requirements['+counter+'][description]" class="form-control form-control-sm" >';
+     	 		html += ' 	</div>';
+     	 		html += ' </div>';
+     	 		html += '	<div class="col-sm-4">';
      	 		html + '		<div class="form-group form-group-xs">';
      	 		html += '			<div class="kt-checkbox--inline kt-forn-dark">';
      	 		html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> Issued date & Expired date required?<span></span></label>';
