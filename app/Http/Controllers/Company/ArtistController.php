@@ -1259,6 +1259,7 @@ class ArtistController extends Controller
 
         $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'event')->where('permit_id', $id)->first();
 
+
         Permit::where('permit_id', $id)->update(["lock" => Carbon::now()->toDateTimeString()]);
 
         if ($status != 'event') {

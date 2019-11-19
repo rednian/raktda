@@ -11,12 +11,24 @@ class Approval extends Model
     protected $fillable = ['type', 'inspection_id', 'schedule_date', 'created_by', 'updated_by', 'deleted_by'];
     protected $dates = ['created_at', 'updated_at'];
 
-    public function inspection()
+    public $permit_type;
+
+
+    public function permit()
     {
         if($this->type == 'event'){
             return $this->belongsTo(Event::class, 'inspection_id', 'event_id');
         }
-    }
+
+        if($this->type == 'artist'){
+            return $this->belongsTo(Permit::class, 'inspection_id', 'permit_id');
+        }
+
+        if($this->type == 'classification'){
+            
+        }
+    }   
+
 
     public function report()
     {

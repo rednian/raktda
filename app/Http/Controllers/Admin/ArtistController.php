@@ -67,6 +67,7 @@
 
 		public function show(Request $request, Artist $artist)
 		{
+		
 			$artist_permit = ArtistPermit::whereHas('permit', function($q){
 				$q->whereNotIn('permit_status', ['draft', 'edit']);
 			})

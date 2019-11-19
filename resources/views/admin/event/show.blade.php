@@ -56,6 +56,12 @@
                             <td>Permit Duration : </td>
                              <td class="kt-font-dark">{{ $event->created_at->format('d-M-Y') }}</td>
                         </tr>
+                        @if ($event->no_of_trucks)
+                          <tr>
+                            <td>No. of Food Truck :</td>
+                            <td>{{ $event->no_of_trucks }}</td>
+                          </tr>
+                        @endif
                         <tr>
                             <td>Venue : </td>
                              <td class="kt-font-dark">{{ $event->venue_en }}</td>
@@ -119,69 +125,79 @@
                 </section>
             </div>
         </section>
-        <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-10" id="accordion-approver">
-            <div class="card">
-                <div class="card-header" id="headingOne-approver">
-                    <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapse-approver"
-                        aria-expanded="true" aria-controls="collapse-approver">
-                        <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Checked & Approval History</h6>
-                    </div>
-                </div>
-                <div id="collapse-approver" class="collapse show" aria-labelledby="headingOne-approver" data-parent="#accordion-approver">
-                    <div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
-                        <table class="table table-hover table-borderless border table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="no-wrap">CHECKED BY</th>
-                                    <th>REMARKS</th>
-                                    <th class="no-wrap">USER GROUP</th>
-                                    <th class="no-wrap">CHECKED DATE</th>
-                                    <th class="no-wrap">ACTION TAKEN</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($event->approve()->exists())
-                                @foreach ($event->approve()->orderBy('updated_at')->get() as $approve)
-                                    <tr>
-                                        <td class="no-wrap">{{ ucwords($approve->user->NameEn) }}</td>
-                                        <td>{{ ($approve->comment->comment) }}</td>
-                                        <td>{{ ucwords($approve->role->NameEn) }}</td>
-                                        <td>{{ $approve->checked_at ? $approve->checked_at->format('d-M-Y') : null }}</td>
-                                        <td class="no-wrap">{{ $approve->status }}</td>
-                                    </tr>
-                                @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>  
+        @if ($event->note_en || $event->note_ar)
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Permit Note</th>
+                <th>Permit Note (AR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ ucwords($event->note_en) }}</td>
+                <td>{{ ucwords($event->note_ar) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        @endif
+        <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_2_3_tab_content" role="tab">
+              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>uploaded Requirements
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_2_2_tab_content" role="tab">
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>checked & approval history
+            </a>
+          </li>
+          
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="kt_portlet_base_demo_2_3_tab_content" role="tabpanel">
+            <table class="table table-hover table-borderless border table-striped" id="document-table">
+                <thead>
+                    <tr>
+                        <th>DOCUMENT NAME</th>
+                        <th>ISSUED DATE</th>
+                        <th>EXPIRED DATE</th>
+                        <th>FILES</th>
+                    </tr>
+                </thead>
+                
+            </table>
+          </div>
+          <div class="tab-pane" id="kt_portlet_base_demo_2_2_tab_content" role="tabpanel">
+            <table class="table table-hover table-borderless border table-striped">
+                <thead>
+                    <tr>
+                        <th class="no-wrap">CHECKED BY</th>
+                        <th>REMARKS</th>
+                        <th class="no-wrap">USER GROUP</th>
+                        <th class="no-wrap">CHECKED DATE</th>
+                        <th class="no-wrap">ACTION TAKEN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($event->approve()->exists())
+                    @foreach ($event->approve()->orderBy('updated_at')->get() as $approve)
+                        <tr>
+                            <td class="no-wrap">{{ ucwords($approve->user->NameEn) }}</td>
+                            <td>{{ ($approve->comment->comment) }}</td>
+                            <td>{{ ucwords($approve->role->NameEn) }}</td>
+                            <td>{{ $approve->checked_at ? $approve->checked_at->format('d-M-Y') : null }}</td>
+                            <td class="no-wrap">{{ $approve->status }}</td>
+                        </tr>
+                    @endforeach
+                    @endif
+                </tbody>
+            </table>
+          </div>
+          
         </div>
-        <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-15" id="accordion-document">
-            <div class="card">
-                <div class="card-header" id="headingOne-document">
-                    <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapse-document"
-                        aria-expanded="true" aria-controls="collapse-document">
-                        <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Uploaded Requirements</h6>
-                    </div>
-                </div>
-                <div id="collapse-document" class="collapse show" aria-labelledby="headingOne-document" data-parent="#accordion-document">
-                    <div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
-                        <table class="table table-hover table-borderless border table-striped" id="document-table">
-                            <thead>
-                                <tr>
-                                    <th>DOCUMENT NAME</th>
-                                    <th>ISSUED DATE</th>
-                                    <th>EXPIRED DATE</th>
-                                    <th>FILES</th>
-                                </tr>
-                            </thead>
-                            
-                        </table>
-                    </div>
-                </div>
-            </div>  
-        </div>
+        
+        
     </div>
 </div>
 @endsection

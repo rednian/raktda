@@ -25,23 +25,23 @@
 			 </ul>
 			 <div class="tab-content">
 					<div class="tab-pane active" id="artist_permit" role="tabpanel">
-						<table class="table  table-hover  table-borderless table-striped border" id="artist-permit-approved">
+						<table class="table  table-hover  table-borderless table-striped border" id="tblArtistPermit">
 							<thead>
-								<tr>
-									<th>{{ __('REFERENCE NO.') }}</th>
-									<th>{{ __('PERMIT NUMBER') }}</th>
+								 <tr>
+								 	<th>{{ __('REFERENCE NO.') }}</th>
 									<th>{{ __('ESTABLISHMENT NAME') }}</th>
-									<th>{{ __('APPLIED DATE') }}</th>
-									<th>{{ __('NO. OF ARTIST') }}
-										 <span data-content="The number of artist that already checked"
-										 data-original-title="" data-container="body" data-toggle="kt-popover"
-										 data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
+									<th>
+										{{ __('NO. OF ARTIST') }}
+										<span data-content="The number of artist that already checked"
+											  data-original-title="" data-container="body" data-toggle="kt-popover"
+											  data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
 										</span>
 									</th>
+									<th>{{ __('APPLIED DATE') }}</th>
 									<th>{{ __('REQUEST TYPE') }}</th>
-									<th>{{ __('ACTION') }}</th>
-								</tr>
-							</thead>
+									<th>{{ __('PERMIT STATUS') }}</th>
+								 </tr>
+								 </thead>
 						</table>
 					</div>
 					<div class="tab-pane" id="event_permit" role="tabpanel">
@@ -90,6 +90,38 @@
 @endsection
 @section('script')
 <script type="text/javascript">
-    
+
+var tblArtistPermit;
+$(document).ready(function(){
+
+	tblArtistPermit = $('table#tblArtistPermit').DataTable({
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ajax: {
+          url: '{{ route('tasks.datatable') }}',
+          data: function (d) {
+          	d.approval = true;
+           }
+         },
+         columnDefs: [
+           {targets: [0, 2, 4, 5], className: 'no-wrap'},
+         ],
+         columns: [
+           {data: 'reference_number'},
+           {data: 'company_name'},
+           {data: 'artist_number'},
+           {data: 'applied_date'},
+           {data: 'request_type'},
+           {data: 'permit_status'}
+         ],
+         createdRow: function (row, data, index) {
+           $(row).click(function () {
+             location.href = data.inspection_url;
+           });
+         },
+       });
+});
+
 </script>
 @endsection

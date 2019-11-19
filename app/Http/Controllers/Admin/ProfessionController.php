@@ -99,6 +99,6 @@ class ProfessionController extends Controller
 		}catch(Exception $e){
 			$result = ['error', $e->getMessage(), 'Error'];
 		}
-		return response()->json($result);
+		return response()->json(['message'=>$result]);
 	}
 }

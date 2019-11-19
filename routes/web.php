@@ -3,8 +3,14 @@ Route::get('/', function () {
     return redirect()->route('login');
 })->name('default');
 
+Route::get('/test', function(){
+    $permit = App\Approval::find(2)->permit;
+    dd($permit);
+});
+
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
+    Artisan::call('config:cache');
     return "Cache is cleared";
 });
 
@@ -29,19 +35,21 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
 
 
 
-    //---------------------------------------------------------------------------------------------------------------
-    // Event Permit
-    //----------------------------------------------------------------------------------------------------------------
-    Route::get('/event', 'Admin\EventController@index')->name('admin.event.index');
-    Route::get('/event/datatable', 'Admin\EventController@dataTable')->name('admin.event.datatable');
-    Route::get('/event/calendar', 'Admin\EventController@calendar')->name('admin.event.calendar');
-    Route::get('/event/{event}/application', 'Admin\EventController@application')->name('admin.event.application');
-    Route::get('/event/{event}/application/datatable', 'Admin\EventController@applicationDatatable')->name('admin.event.applicationDatatable');
-    Route::get('/event/{event}', 'Admin\EventController@show')->name('admin.event.show');
-    Route::get('/event/{event}/lock', 'Admin\EventController@updateLock')->name('admin.event.lock');
-    Route::post('/event/{event}', 'Admin\EventController@submit')->name('admin.event.submit');
-    Route::get('/event/{event}/download', 'Admin\EventController@download')->name('admin.event.download');
-    Route::get('/event/{event}/addition-requirement-datatable', 'Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
+    // //---------------------------------------------------------------------------------------------------------------
+    // // Event Permit
+    // //----------------------------------------------------------------------------------------------------------------
+    // Route::get('/event', 'Admin\EventController@index')->name('admin.event.index');
+    // Route::get('/event/datatable', 'Admin\EventController@dataTable')->name('admin.event.datatable');
+    // Route::get('/event/calendar', 'Admin\EventController@calendar')->name('admin.event.calendar');
+    // Route::get('/event/{event}/application', 'Admin\EventController@application')->name('admin.event.application');
+    // Route::get('/event/{event}/show-all', 'Admin\EventController@application')->name('admin.event.showall');
+    // Route::get('/event/{event}/show-website', 'Admin\EventController@application')->name('admin.event.website');
+    // Route::get('/event/{event}/application/datatable', 'Admin\EventController@showAll')->name('admin.event.applicationDatatable');
+    // Route::get('/event/{event}', 'Admin\EventController@show')->name('admin.event.show');
+    // Route::get('/event/{event}/lock', 'Admin\EventController@updateLock')->name('admin.event.lock');
+    // Route::post('/event/{event}', 'Admin\EventController@submit')->name('admin.event.submit');
+    // Route::get('/event/{event}/download', 'Admin\EventController@download')->name('admin.event.download');
+    // Route::get('/event/{event}/addition-requirement-datatable', 'Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
 
   //---------------------------------------------------------------------------------------------------------------
 	// Event Permit
@@ -51,6 +59,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('/event/calendar','Admin\EventController@calendar')->name('admin.event.calendar');
 	Route::get('/event/{event}/application','Admin\EventController@application')->name('admin.event.application');
 	Route::get('/event/{event}/application/datatable','Admin\EventController@applicationDatatable')->name('admin.event.applicationDatatable');
+    Route::post('/event/{event}/cancel','Admin\EventController@cancel')->name('admin.event.cancel');
 	Route::get('/event/{event}','Admin\EventController@show')->name('admin.event.show');
 	Route::get('/event/{event}/lock','Admin\EventController@updateLock')->name('admin.event.lock');
 	Route::post('/event/{event}','Admin\EventController@submit')->name('admin.event.submit');
@@ -79,6 +88,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     //---------------------------------------------------------------------------------------------------------------
     // Artist Permit
     //---------------------------------------------------------------------------------------------------------------
+    
+    Route::get('/artist_permit/search', 'Admin\ArtistPermitController@search')->name('admin.artist_permit.search');
+    
     Route::get('/artist_permit/{permit}/history', 'Admin\ArtistPermitController@permitHistory')
         ->name('admin.artist_permit.history');
 
@@ -129,6 +141,8 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
 
         Route::get('/', 'Admin\SettingController@index')->name('admin.setting.index');
         Route::post('general_settings/save', 'Admin\SettingController@saveGeneralSettings')->name('admin.setting.general_settings.save');
+
+        Route::get('excel', 'Admin\SettingController@excelTojson')->name('admin.settings.excel');
 
         //PROFESSION SETTINGS
         Route::get('profession/isexist', 'Admin\ProfessionController@isexist')->name('settings.profession.isexist');

@@ -11,10 +11,10 @@
 	<section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 		<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 			 <div class="kt-portlet__head-label">
-					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Edit Requirement</h3>
+					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Edit {{ $req->requirement_type == 'artist' ? 'Artist' : 'Event' }} Requirement</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
-					<a href="{{ url('settings#requirements') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
+					<a href="{{ $req->requirement_type == 'artist' ? url('settings#artist_requirements') : url('settings#event_requirements')  }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
 						 Back to Settings
 					</a>
@@ -122,18 +122,19 @@
             </section>
 
             <section class="row kt-margin-t-10">
-                <div class="col-sm-6">
+                {{-- <div class="col-sm-6">
                     <div class="form-group form-group-sm">
                         <label for="example-search-input" class="kt-font-dark"> Required to what permit type?
                             <span class="text-danger">*</span>
                         </label>
-                        <select name="requirement_type" id="" required class="form-control form-control-sm custom-select custom-select-sm">
+                        <select readonly name="requirement_type" id="" required class="form-control form-control-sm custom-select custom-select-sm">
                         	<option value=""></option>
                         	<option {{ $req->requirement_type == 'artist' ? 'selected' : '' }} value="artist">Artist Permit</option>
                         	<option {{ $req->requirement_type == 'event' ? 'selected' : '' }} value="event">Event Permit</option>
                         </select>
                     </div>
-                </div>
+                </div> --}}
+                <input type="hidden" value="{{ $req->requirement_type }}" name="requirement_type">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
                         <label for="example-search-input" class="kt-font-dark"> Permit Term

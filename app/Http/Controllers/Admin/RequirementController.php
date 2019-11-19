@@ -29,9 +29,14 @@ class RequirementController extends Controller
 	// 	return response()->json(['data'=>$requirement]);
 	// }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.settings.requirement.create', ['page_title'=> 'Add New Requirement']);
+
+        if (!$request->hasValidSignature()) {
+            abort(404);
+        }
+
+        return view('admin.settings.requirement.create', ['page_title'=> 'Add New Requirement', 'type' => $request->t ]);
     }
 
 
@@ -126,7 +131,7 @@ class RequirementController extends Controller
             $result = ['success', 'New Requirement has been added', 'Success'];
 
             if($request->submit_type == 'continue'){
-                return redirect('settings#requirements')->with('message', $result);
+                return $request->requirement_type == 'artist' ? redirect('settings#artist_requirements')->with('message', $result) : redirect('settings#event_requirements')->with('message', $result);
             }
 
         }catch(Exception $e){
@@ -163,7 +168,7 @@ class RequirementController extends Controller
             $result = ['success', 'Requirement has been saved successfully', 'Success'];
 
             if($request->submit_type == 'continue'){
-                return redirect('settings#requirements')->with('message', $result);
+                return $request->requirement_type == 'artist' ? redirect('settings#artist_requirements')->with('message', $result) : redirect('settings#event_requirements')->with('message', $result);
             }
         }catch(Exception $e){
             $result = ['error', $e->getMessage(), 'Error'];

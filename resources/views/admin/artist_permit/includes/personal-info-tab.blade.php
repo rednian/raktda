@@ -132,7 +132,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Visa No. <span class="text-danger">*</span></label>
+                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Visa No.</label>
                                     <div class="col-lg-8">
                                         <div class="input-group input-group-sm">
                                             <input value="{{ ucwords($artist_permit->visa_number) }}" readonly type="text" class="form-control form-control-sm">
@@ -155,11 +155,11 @@
                                 <label for="example-search-input" class="col-4 col-form-label kt-font-dark">First Name (AR)<span class="text-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
-                                        <input {{ is($artist_permit, 'firstname') ? 'is-valid': null }} value="{{ ucwords($artist_permit->artist->firstname_ar) }}" readonly type="text" class="form-control form-control-sm">
+                                        <input {{ is($artist_permit, 'firstname') ? 'is-valid': null }} value="{{ ucwords($artist_permit->firstname_ar) }}" readonly type="text" class="form-control form-control-sm">
                                         <div class="input-group-append">
                                            <span class="input-group-text">
                                              <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                               <input data-step="step-1" name="check[firstname]" value="{{ ucwords($artist_permit->artist->firstname_ar) }}" type="checkbox">
+                                               <input data-step="step-1" name="check[firstname]" value="{{ ucwords($artist_permit->firstname_ar) }}" type="checkbox">
                                                <span></span>
                                              </label>
                                            </span>
@@ -171,11 +171,11 @@
                                 <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Last Name (AR)<span class="text-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
-                                        <input value="{{ ucwords($artist_permit->artist->lastname_ar) }}" readonly type="text" class="form-control form-control-sm">
+                                        <input value="{{ ucwords($artist_permit->lastname_ar) }}" readonly type="text" class="form-control form-control-sm">
                                         <div class="input-group-append">
                                            <span class="input-group-text">
                                              <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                               <input data-step="step-1" name="check[lastname]" value="{{ ucwords($artist_permit->artist->lastname_en) }}" type="checkbox">
+                                               <input data-step="step-1" name="check[lastname]" value="{{ ucwords($artist_permit->lastname_en) }}" type="checkbox">
                                                <span></span>
                                              </label>
                                            </span>
@@ -187,11 +187,11 @@
                                 <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Age <span class="text-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
-                                        <input value="{{ $artist_permit->artist->age }}" readonly type="text" class="form-control form-control-sm">
+                                        <input value="{{ $artist_permit->age }}" readonly type="text" class="form-control form-control-sm">
                                         <div class="input-group-append">
                                            <span class="input-group-text">
                                              <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                               <input data-step="step-1" value="{{ $artist_permit->artist->age }}" type="checkbox">
+                                               <input data-step="step-1" value="{{ $artist_permit->age }}" type="checkbox">
                                                    <span></span>
                                              </label>
                                            </span>

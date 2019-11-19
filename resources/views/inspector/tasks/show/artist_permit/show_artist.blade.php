@@ -1,13 +1,12 @@
-@extends('layouts.admin.admin-app')
+@extends('layouts.inspector.layout')
 @section('content')
-
 	 <section class="kt-portlet kt-portlet--head-sm">
 			<div class="kt-portlet__head kt-portlet__head--sm">
 				 <div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST PROFILE') }}</span></h3></div>
+						<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">Artist profile</span></h3></div>
 				 <div class="kt-portlet__head-toolbar">
 						<button id="clickme" class="btn btn-sm btn-maroon btn-elevate  kt-font-transform-u">
-							 <i class="la la-arrow-left"></i>{{ __('BACK') }}
+							 <i class="la la-arrow-left"></i>Back
                         </button>
 				 </div>
 
@@ -24,16 +23,15 @@
 									<div class="card-body">
 										 <div class="kt-widget kt-widget--user-profile-3">
 												<div class="kt-widget__top">
-													 @if($artist_permit->thumbnail)
-														<div class="kt-widget__media"> 
-                                                            <img class="img img-thumbnail" src="{{ asset('/storage/'.$artist_permit->thumbnail) }}" alt="">   
+													 @if(!$artist_permit->thumbnail)
+														<div class="kt-widget__media">    
 														</div>
 													 @else
-    												  <div class="kt-widget__pic kt-widget__pic--danger kt-font-success kt-font-bold kt-font-light" style="font-size: xx-large">
-                                                                 {{ profile($artist_permit->firstname_en, $artist_permit->lastname_en) }}
-                                                            </div>
+														
 													 @endif
-													 	
+													 	<div class="kt-widget__pic kt-widget__pic--danger kt-font-success kt-font-bold kt-font-light" style="font-size: xx-large">
+																 {{ profile($artist_permit->firstname_en, $artist_permit->lastname_en) }}
+															</div>
 													 @include('admin.artist.include.artist-block-modal')
 													 <div class="kt-widget__content">
 															<div class="kt-widget__head">
@@ -49,11 +47,8 @@
 															</div>
                                                             
 															<div class="kt-widget__subhead">
-																 <span>{{ __('Current Company') }} : 
-                                                                    <span class="kt-font-dark kt-font-bolder">
-                                                                        {{ $artist_permit->permit()->latest()->first()->company->company_name }}
-                                                                    </span>
-                                                                </span>
+																 <a href="#">Current Company: <span
+																				class="kt-font-dark kt-font-bolder">{{ $artist_permit->permit()->latest()->first()->company->company_name }}</span></a>
 																 {{--										 <a href="#"><i class="flaticon2-calendar-3"></i>PR Manager </a>--}}
 																 {{--										 <a href="#"><i class="flaticon2-placeholder"></i>Melbourne</a>--}}
 															</div>
@@ -181,13 +176,12 @@
 												<th>{{ __('ISSUED DATE') }}</th>
 												<th>{{ __('EXPIRED DATE') }}</th>
 												<th>{{ __('PERMIT STATUS') }}</th>
-                                                <th>{{ __('ACTION') }}</th>
 										 </tr>
 										 </thead>
 									</table>
 							 @else
 									@empty
-										 
+										 Artist permit is empty
 									@endempty
 							 @endif
 						</div>
@@ -198,14 +192,14 @@
 										 <tr>
 											<th>{{ __('UNBLOCKED/BLOCKED BY') }}</th>
 											<th>{{ __('REMARKS') }}</th>
-											<th>{{ __('DATE') }}</th>
+											<th>{{ __('ACTION DATE') }}</th>
 											<th>{{ __('ACTION TAKEN') }}</th>
 										 </tr>
 										 </thead>
 									</table>
 							 @else
 									@empty
-										
+										 Artist status is empty
 									@endempty
 							 @endif
 						</div>
@@ -213,11 +207,10 @@
 
 			</div>
 	 </section>
-      @include('admin.artist_permit.includes.document')
 @endsection
 @section('script')
-<script>
-    var is_checked = false;
+	 <script>
+        var is_checked = false;
       $(document).ready(function () {
         $('input#artist-status').change(function(){ $('#kt_modal_1').modal('show'); });
         $('#kt_modal_1').on('hidden.bs.modal', function () {
@@ -267,10 +260,11 @@
             ajax: {
                url: '{{ route('admin.artist.permit.history', $artist_permit->artist_id) }}',
                data: function (d) {
+
                }
             },
             columnDefs: [
-               {targets: [0, 5, 6], className: 'no-wrap'}
+               {targets: [0, 5], className: 'no-wrap'}
             ],
             columns: [
                {data: 'reference_number'},
@@ -279,43 +273,8 @@
                {data: 'issued_date'},
                {data: 'expired_date'},
                {data: 'permit_status'},
-               {
-                render: function(type, row, full, meta){
-                    return '<button class="btn btn-secondary btn-sm btn-document">Documents</button>';
-                }
-               }
-            ],
-            createdRow: function(row, data, index){
-                
-                $('.btn-document', row).click(function(e){
-                    e.stopPropagation();
-                    documents(data);
-                    $('#document-modal').modal('show');
-
-                });
-
-                $(row).click(function(){
-                    location.href = '{{ url('/artist_permit') }}/'+data.permit_id;
-                });
-            }
+            ]
          });
       }
-      
-      function documents(data){
-        console.log(data)
-          $('#document-modal').on('shown.bs.modal', function(){
-              $('table#table-document').DataTable({
-                  ajax:{ 
-                      url: '{{ url('/artist_permit') }}/'+data.permit_id+'/application/'+'{{ $artist_permit->artist_permit_id }}'+'/documentDatatable',
-                  },
-                  columns:[
-                  {data: 'document_name'},
-                  {data: 'issued_date'},
-                  {data: 'expired_date'},
-                  ]
-              });
-          });
-      }
-
 	 </script>
 @stop
