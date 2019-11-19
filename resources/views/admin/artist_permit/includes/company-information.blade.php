@@ -2,18 +2,18 @@
 	 <div class="col-6">
 			<section class="kt-section kt-padding-10 border">
 				 <div class="kt-section__desc">
-						<h6 class="kt-font-dark kt-font-bold kt-margin-b-15">Permit Information</h6>
+						<h6 class="kt-font-dark kt-font-bold kt-margin-b-15">{{ __('Permit Information') }}</h6>
 						<table class="table table-borderless table-sm">
 							 <tr>
-									<td>Reference No. :</td>
+									<td>{{ __('Reference Number') }} :</td>
 									<td class="text-danger kt-font-bolder">{{ $permit->reference_number }}</td>
 							 </tr>
 							 <tr>
-									<td>Request Type:</td>
+									<td>{{ __('Request Type') }} :</td>
 									<td>{{ ucfirst($permit->request_type) }} Application</td>
 							 </tr>
 							 <tr>
-									<td>Permit Status :</td>
+									<td>{{ __('Permit Status') }} :</td>
 									<td>
 							<?php
 							$status = $permit->permit_status;
@@ -49,7 +49,7 @@
 									</tr>
 							 @endif
 							 <tr>
-									<td width="35%">Submitted Date:</td>
+									<td width="35%">{{ __('Submitted Date') }} :</td>
 									<td>
                             <span class="kt-font-transform-u">
                               {{ $permit->created_at ? $permit->created_at->format('d-M-Y') : null   }}
@@ -57,7 +57,7 @@
 									</td>
 							 </tr>
 							 <tr>
-									<td>Permit Start :</td>
+									<td>{{ __('Permit Start') }} :</td>
 									<td>
                             <span class="kt-font-transform-u">
                               {{ $permit->issued_date ? $permit->issued_date->format('d-M-Y') : null }}
@@ -65,11 +65,11 @@
 									</td>
 							 </tr>
 							 <tr>
-									<td>Work Location :</td>
+									<td>{{ __('Work Location') }} :</td>
 									<td>{{ ucwords($permit->work_location) }}</td>
 							 </tr>
 							 <tr>
-									<td>Number of Artist :</td>
+									<td>{{ __('Number of Artist') }} :</td>
 									<td>{{ $permit->artistpermit()->count() }}</td>
 							 </tr>
 							 @if ($permit->artist->where('artist_status', 'block')->count() > 0)
@@ -90,45 +90,45 @@
 	 <div class="col-6">
 			<section class="kt-section border kt-padding-10 kt-margin-b-20">
 				 <div class="kt-section__desc">
-						<h6 class="kt-font-dark kt-font-bold kt-margin-b-10">Establishment Information</h6>
+						<h6 class="kt-font-dark kt-font-bold kt-margin-b-10">{{ __('Establishment Information') }}</h6>
 						<table class="table table-borderless table-sm">
 							 <tr>
-									<td width="36%">Establishment Name :</td>
+									<td width="36%">{{ __('Establishment Name') }} :</td>
 									<td class="text-danger kt-font-bolder">{{ ucwords($permit->company->company_name) }}</td>
 							 </tr>
 							 <tr>
-									<td>Trade License Number :</td>
+									<td>{{ __('Trade License Number') }} :</td>
 									<td>{{ $permit->company->company_trade_license }}</td>
 							 </tr>
 							 <tr>
-									<td>Establishment Status :</td>
+									<td>{{ __('Establishment Status') }} :</td>
 									
 									<td>
 										 @if($permit->company->company_status == 'active')
-												<span class="kt-badge kt-badge--success kt-badge--inline">{{ ucfirst($permit->company->company_status) }}</span>
+												<span class="kt-badge kt-badge--success kt-badge--inline">{{ __(ucfirst($permit->company->company_status)) }}</span>
 										 @endif
 										 @if($permit->company->company_status == 'block')
-												<span class="kt-badge kt-badge--danger kt-badge--inline">{{ ucfirst($permit->company->company_status) }}</span>
+												<span class="kt-badge kt-badge--danger kt-badge--inline">{{ __(ucfirst($permit->company->company_status)) }}</span>
 										 @endif
 									</td>
 							 </tr>
 						</table>
-						<h6 class="kt-font-dark kt-font-bold kt-margin-b-10 kt-margin-t-20">Contact information</h6>
+						<h6 class="kt-font-dark kt-font-bold kt-margin-b-10 kt-margin-t-20">{{ __('Contact Information') }}</h6>
 						<table class="table table-borderless table-sm">
 							 <tr>
-									<td width="36%"> Contact Person :</td>
+									<td width="36%">{{ __('Contact Person') }} :</td>
 									<td class=" kt-font-bolder ">{{ ucwords($permit->company->contact_person) }}</td>
 							 </tr>
 							 <tr>
-									<td> Mobile Number :</td>
+									<td>{{ __('Mobile Number') }} :</td>
 									<td>{{ $permit->company->company_mobile_number }}</td>
 							 </tr>
 							 <tr>
-									<td> Phone Number :</td>
+									<td>{{ __('Phone Number') }} :</td>
 									<td>{{ $permit->company->company_phone_number }}</td>
 							 </tr>
 							 <tr>
-									<td>Company Email :</td>
+									<td>{{ __('Company Email') }} :</td>
 									<td>{{ $permit->company->company_email }}</td>
 							 </tr>
 						</table>

@@ -25,30 +25,30 @@
 			</div> --}}
 			<div class="col-3">
 				<select name="profession_id" id="artist-profession" class="form-control-sm form-control custom-select custom-select-sm " onchange="active_artist_table.draw()" >
-					<option selected disabled >PROFESSION</option>
+					<option selected disabled >{{ __('PROFESSION') }}</option>
 					@if ($professions->count() > 0)
 						@foreach ($professions as $profession)
-							<option value="{{ $profession->profession_id }}">{{ ucwords($profession->name_en) }}</option>
+							<option value="{{ $profession->profession_id }}">{{ Auth::user()->LanguageId == 1 ? ucwords($profession->name_en) : $profession->name_ar }}</option>
 						@endforeach
 					@endif
 				</select>
 			</div>
 			<div class="col-3">
 				<select  name="" id="artist-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="active_artist_table.draw()">
-					<option disabled selected>ARTIST STATUS</option>
-					<option value="active">Active</option>
-					<option value="blocked">Blocked</option>
+					<option disabled selected>{{ __('STATUS') }}</option>
+					<option value="active">{{ __('Active Artists') }}</option>
+					<option value="blocked">{{ __('Blocked Artists') }}</option>
 				</select>
 			</div>
-			<div class="col-1">
-				<button type="button" class="btn btn-sm btn-secondary" id="artist-btn-reset">RESET</button>
+			<div class="col-2">
+				<button type="button" class="btn btn-sm btn-secondary" id="artist-btn-reset">{{ __('RESET') }}</button>
 			</div>
 		</form>
 	</div>
 	<div class="col-md-3">
 		<div class="form-group form-group-sm">
 			<div class="kt-input-icon kt-input-icon--right">
-				<input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-artist-request">
+				<input type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-artist-request">
 				<span class="kt-input-icon__icon kt-input-icon__icon--right">
 					<span><i class="la la-search"></i></span>
 				</span>
@@ -66,7 +66,7 @@
 			<th>{{ __('NATIONALITY') }}</th>
 			<th>{{ __('MOBILE NUMBER') }}</th>
 			<th>{{ __('ACTIVE PERMIT') }}</th>
-			<th>ARTIST STATUS</th>
+			<th>{{ __('STATUS') }}</th>
 	 </tr>
 	 </thead>
 </table>
