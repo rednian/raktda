@@ -100,28 +100,28 @@
                     </div>
                     <div class="col-3">
                       <select name="" id="new-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()" >
-                        <option selected disabled >APPLICANT TYPE</option>
-                        <option value="1">Private</option>
-                        <option value="3">Government</option>
-                        <option value="2">Individual</option>
+                        <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
+                        <option value="1">{{ __('Private') }}</option>
+                        <option value="3">{{ __('Government') }}</option>
+                        <option value="2">{{ __('Individual') }}</option>
                       </select>
                     </div>
                     <div class="col-3">
                       <select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
-                        <option disabled selected>STATUS</option>
-                        <option value="new">New</option>
-                        <option value="amended">Amended</option>
+                        <option disabled selected>{{ __('STATUS') }}</option>
+                        <option value="new">{{ __('New') }}</option>
+                        <option value="amended">{{ __('Amended') }}</option>
                       </select>
                     </div>
-                    <div class="col-1">
-                      <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">RESET</button>
+                    <div class="col-2">
+                      <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">{{ __('RESET') }}</button>
                     </div>
                   </form>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group form-group-sm">
                     <div class="kt-input-icon kt-input-icon--right">
-                      <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-new-request">
+                      <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-new-request">
                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
                         <span><i class="la la-search"></i></span>
                       </span>
@@ -162,7 +162,7 @@
                     <div class="col-4">
                         <div class="input-group input-group-sm">
                             <div class="kt-input-icon kt-input-icon--right">
-                              <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="pending-applied-date" >
+                              <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="pending-applied-date" >
                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                 <span><i class="la la-calendar"></i></span>
                               </span>
@@ -171,28 +171,28 @@
                     </div>
                     <div class="col-3">
                       <select name="" id="pending-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()" >
-                        <option selected disabled >APPLICANT TYPE</option>
-                        <option value="1">Private</option>
-                        <option value="3">Government</option>
-                        <option value="2">Individual</option>
+                        <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
+                        <option value="1">{{ __('Private') }}</option>
+                        <option value="3">{{ __('Government') }}</option>
+                        <option value="2">{{ __('Individual') }}</option>
                       </select>
                     </div>
                     <div class="col-3">
                       <select  name="" id="pending-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
-                        <option disabled selected>STATUS</option>
-                        <option value="new">New</option>
-                        <option value="amended">Amended</option>
+                        <option disabled selected>{{ __('STATUS') }}</option>
+                        <option value="new">{{ __('New') }}</option>
+                        <option value="amended">{{ __('Amended') }}</option>
                       </select>
                     </div>
-                    <div class="col-1">
-                      <button type="button" class="btn btn-sm btn-secondary" id="pending-btn-reset">RESET</button>
+                    <div class="col-2">
+                      <button type="button" class="btn btn-sm btn-secondary" id="pending-btn-reset">{{ __('RESET') }}</button>
                     </div>
                   </form>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group form-group-sm">
                     <div class="kt-input-icon kt-input-icon--right">
-                      <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-pending-request">
+                      <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-pending-request">
                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
                         <span><i class="la la-search"></i></span>
                       </span>
@@ -233,7 +233,7 @@
                      <div class="col-4">
                          <div class="input-group input-group-sm">
                              <div class="kt-input-icon kt-input-icon--right">
-                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="processing-applied-date" >
+                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="processing-applied-date" >
                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                  <span><i class="la la-calendar"></i></span>
                                </span>
@@ -242,29 +242,29 @@
                      </div>
                      <div class="col-3">
                        <select name="" id="processing-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventProcessingTable.draw()" >
-                         <option selected disabled >APPLICANT TYPE</option>
-                         <option value="1">Private</option>
-                         <option value="3">Government</option>
-                         <option value="2">Individual</option>
+                         <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
+                         <option value="1">{{ __('Private') }}</option>
+                         <option value="3">{{ __('Government') }}</option>
+                         <option value="2">{{ __('Individual') }}</option>
                        </select>
                      </div>
                      <div class="col-3">
                        <select  name="" id="processing-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventProcessingTable.draw()">
-                         <option disabled selected>STATUS</option>
-                         <option value="processing">processing</option>
-                         <option value="approved-unpaid">Approved-unpaid</option>
-                         <option value="need-approval">Need Approval</option>
+                         <option disabled selected>{{ __('STATUS') }}</option>
+                         <option value="processing">{{ __('Processing') }}</option>
+                         <option value="approved-unpaid">{{ __('Approved-unpaid') }}</option>
+                         <option value="need-approval">{{ __('Need Approval') }}</option>
                        </select>
                      </div>
-                     <div class="col-1">
-                       <button type="button" class="btn btn-sm btn-secondary" id="processing-btn-reset">RESET</button>
+                     <div class="col-2">
+                       <button type="button" class="btn btn-sm btn-secondary" id="processing-btn-reset">{{ __('RESET') }}</button>
                      </div>
                    </form>
                  </div>
                  <div class="col-md-3">
                    <div class="form-group form-group-sm">
                      <div class="kt-input-icon kt-input-icon--right">
-                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-processing-request">
+                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-processing-request">
                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
                          <span><i class="la la-search"></i></span>
                        </span>
@@ -306,7 +306,7 @@
                      <div class="col-4">
                          <div class="input-group input-group-sm">
                              <div class="kt-input-icon kt-input-icon--right">
-                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="PERMIT DURATION DATE" id="active-applied-date" >
+                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('PERMIT DURATION DATE') }}" id="active-applied-date" >
                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                  <span><i class="la la-calendar"></i></span>
                                </span>
@@ -315,10 +315,10 @@
                      </div>
                      <div class="col-3">
                        <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventActiveTable.draw()" >
-                         <option selected disabled >APPLICANT TYPE</option>
-                         <option value="1">Private</option>
-                         <option value="3">Government</option>
-                         <option value="2">Individual</option>
+                         <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
+                         <option value="1">{{ __('Private') }}</option>
+                         <option value="3">{{ __('Government') }}</option>
+                         <option value="2">{{ __('Individual') }}</option>
                        </select>
                      </div>
                      {{-- <div class="col-3">
@@ -329,14 +329,14 @@
                        </select>
                      </div> --}}
                      <div class="col-4">
-                       <button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">RESET</button>
+                       <button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">{{ __('RESET') }}</button>
                      </div>
                    </form>
                  </div>
                  <div class="col-md-3">
                    <div class="form-group form-group-sm">
                      <div class="kt-input-icon kt-input-icon--right">
-                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-active-request">
+                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-active-request">
                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
                          <span><i class="la la-search"></i></span>
                        </span>
@@ -388,28 +388,28 @@
                      </div> --}}
                      <div class="col-3">
                        <select name="" id="archive-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventArchiveTable.draw()" >
-                         <option selected disabled >APPLICANT TYPE</option>
-                         <option value="1">Private</option>
-                         <option value="3">Government</option>
-                         <option value="2">Individual</option>
+                         <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
+                         <option value="1">{{ __('Private') }}</option>
+                         <option value="3">{{ __('Government') }}</option>
+                         <option value="2">{{ __('Individual') }}</option>
                        </select>
                      </div>
                      <div class="col-3">
                        <select  name="" id="archive-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventArchiveTable.draw()">
-                         <option disabled selected>STATUS</option>
-                         <option value="expired">Expired</option>
-                         <option value="rejected">Rejected</option>
+                         <option disabled selected>{{ __('STATUS') }}</option>
+                         <option value="expired">{{ __('Expired') }}</option>
+                         <option value="rejected">{{ __('Rejected') }}</option>
                        </select>
                      </div>
-                     <div class="col-1">
-                       <button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">RESET</button>
+                     <div class="col-3">
+                       <button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">{{ __('RESET') }}</button>
                      </div>
                    </form>
                  </div>
                  <div class="col-md-3">
                    <div class="form-group form-group-sm">
                      <div class="kt-input-icon kt-input-icon--right">
-                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="Search..." id="search-archive-request">
+                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-archive-request">
                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
                          <span><i class="la la-search"></i></span>
                        </span>
@@ -440,7 +440,7 @@
                          <div class="card-header" id="heading-address">
                             <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
                                  aria-expanded="true" aria-controls="collapse-address">
-                               <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">Event type legend</h6>
+                               <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT TYPE LEGEND') }}</h6>
                             </div>
                          </div>
                          <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
@@ -452,7 +452,7 @@
                                     <tr>
                                       <td>
                                         <span style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
-                                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)): ucfirst($type->name_ar)  }}</td>
+                                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)) : ucfirst($type->name_ar)  }}</td>
                                         </span>
                                     </tr>
                                   @endforeach
@@ -566,11 +566,11 @@
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
               views: {
-                  dayGridMonth: { buttonText: 'Month' },
-                  timeGridWeek: { buttonText: 'Week' },
-                  timeGridDay: { buttonText: 'Day' },
-                  listDay: { buttonText: 'Day List' },
-                  listWeek: { buttonText: 'Week List' }
+                  dayGridMonth: { buttonText: '{{ __('Month') }}' },
+                  timeGridWeek: { buttonText: '{{ __('Week') }}' },
+                  timeGridDay: { buttonText: '{{ __('Day') }}' },
+                  listDay: { buttonText: '{{ __('Day List') }}' },
+                  listWeek: { buttonText: '{{ __('Week List') }}' }
               },
               defaultView: 'dayGridMonth',
               // defaultDate: TODAY,
