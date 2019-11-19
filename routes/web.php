@@ -10,6 +10,7 @@ Route::get('/test', function(){
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
+    Artisan::call('config:cache');
     return "Cache is cleared";
 });
 
@@ -139,6 +140,8 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
 
         Route::get('/', 'Admin\SettingController@index')->name('admin.setting.index');
         Route::post('general_settings/save', 'Admin\SettingController@saveGeneralSettings')->name('admin.setting.general_settings.save');
+
+        Route::get('excel', 'Admin\SettingController@excelTojson')->name('admin.settings.excel');
 
         //PROFESSION SETTINGS
         Route::get('profession/isexist', 'Admin\ProfessionController@isexist')->name('settings.profession.isexist');
