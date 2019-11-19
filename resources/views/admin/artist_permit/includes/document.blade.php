@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ARTIST UPLOADED DOCUMENTS</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{ __('ARTIST UPLOADED DOCUMENTS') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -10,15 +10,15 @@
                 <table class="table table-borderless table-striped  table-hover border" id="table-document">
                     <thead>
                     <tr>
-                        <th>DOCUMENT NAME</th>
-                        <th>ISSUED DATE</th>
-                        <th>EXPIRED DATE</th>
+                        <th>{{ __('DOCUMENT NAME') }}</th>
+                        <th>{{ __('ISSUED DATE') }}</th>
+                        <th>{{ __('EXPIRED DATE') }}</th>
                     </tr>
                     </thead>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-elevate btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary btn-elevate btn-sm" data-dismiss="modal">{{ __('Close') }}</button>
             </div>
         </div>
     </div>

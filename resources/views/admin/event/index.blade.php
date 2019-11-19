@@ -91,7 +91,7 @@
                     <div class="col-4">
                         <div class="input-group input-group-sm">
                             <div class="kt-input-icon kt-input-icon--right">
-                              <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="new-applied-date" >
+                              <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="new-applied-date" >
                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                 <span><i class="la la-calendar"></i></span>
                               </span>

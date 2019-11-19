@@ -3,18 +3,18 @@
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border">
     <div class="kt-portlet__head kt-portlet__head--sm">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Artist Permit Details</h3>
+            <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('ARTIST PERMIT DETAILS') }}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
             <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate kt-font-transform-u">
-                <i class="la la-arrow-left"></i>Back to permit list
+                <i class="la la-arrow-left"></i>{{ __('BACK TO PERMIT LIST') }}
             </a>
             <div class="dropdown dropdown-inline">
                 <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="flaticon-more"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                    <a class="dropdown-item kt-font-trasnform-u" href="#">Company Details</a>
+                    <a class="dropdown-item kt-font-trasnform-u" href="#">{{ __('Company Details') }}</a>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header" id="headingOne5">
                     <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapseOne5" aria-expanded="true" aria-controls="collapseOne5">
-                        <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Basic Information</h6>
+                        <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">{{ __('BASIC INFORMATION') }}</h6>
                     </div>
                 </div>
                 <div id="collapseOne5" class="collapse show" aria-labelledby="headingOne5" data-parent="#accordionExample5">
@@ -35,16 +35,16 @@
             </div>
             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_1_tab_content" role="tab" aria-selected="true">ARTIST LIST</a>
+                    <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_1_tab_content" role="tab" aria-selected="true">{{ __('ARTIST LIST') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_2_tab_content" role="tab" aria-selected="false">
-                        CHECKED & APPROVAL HISTORY
+                       {{ __('CHECKED & APPROVAL HISTORY') }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content" role="tab" aria-selected="false">
-                                    PERMIT HISTORY
+                                    {{ __('PERMIT HISTORY') }}
                                 </a>
                             </li>
                         </ul>
@@ -53,13 +53,13 @@
                                 <table class="table table-hover border table-borderless table-striped table-sm" id="artist-table">
                                        <thead>
                                        <tr>
-                                            <th>PERSON CODE</th>
-                                            <th>ARTIST NAME</th>
-                                            <th>AGE</th>
-                                            <th>PROFESSION</th>
-                                            <th>NATIONALITY</th>
-                                            <th>STATUS</th>
-                                            <th>ACTION</th>
+                                            <th>{{ __('PERSON CODE') }}</th>
+                                            <th>{{ __('ARTIST NAME') }}</th>
+                                            <th>{{ __('AGE') }}</th>
+                                            <th>{{ __('PROFESSION') }}</th>
+                                            <th>{{ __('NATIONALITY') }}</th>
+                                            <th>{{ __('STATUS') }}</th>
+                                            <th>{{ __('ACTION') }}</th>
                                        </tr>
                                        </thead>
                                 </table>
@@ -71,7 +71,7 @@
                                     <div class="card-header" id="headingThree5">
                                          <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse"
                                                     data-target="#collapseThree5" aria-expanded="true" aria-controls="collapseThree5">
-                                                <h6 class="kt-font-dark kt-font-transform-u">checked & Approval History</h6>
+                                                <h6 class="kt-font-dark kt-font-transform-u">{{ __('Checked & Approval History') }}</h6>
                                          </div>
                                     </div>
                                     <div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
@@ -79,10 +79,10 @@
                                         <table class=" border table-striped table table-borderless table-hover table-sm">
                                              <thead>
                                                  <tr>
-                                                    <th>CHECKED BY</th>
-                                                    <th>REMARKS</th>
-                                                    <th>CHECKED DATE</th>
-                                                    <th>ACTION TAKEN</th>
+                                                    <th>{{ __('CHECKED BY') }}</th>
+                                                    <th>{{ __('REMARKS') }}</th>
+                                                    <th>{{ __('CHECKED DATE') }}</th>
+                                                    <th>{{ __('ACTION TAKEN') }}</th>
                                                  </tr>
                                              </thead>
                                              <tbody>
@@ -118,13 +118,13 @@
                                <table class="table table-striped table-borderless table-sm table-hover border" id="table-permit-history">
                                  <thead>
                                  <tr>
-                                        <th>APPLIED DATE</th>
-                                        <th>ISSUED DATE</th>
-                                        <th>EXPIRED DATE</th>
-                                        <th>ARSTIST</th>
-                                        <th>REQUEST TYPE</th>
-                                        <th>PERMIT STATUS</th>
-                                        <th>ACTION</th>
+                                        <th>{{ __('APPLIED DATE') }}</th>
+                                        <th>{{ __('ISSUED DATE') }}</th>
+                                        <th>{{ __('EXPIRED DATE') }}</th>
+                                        <th>{{ __('NO. OF ARTIST') }}</th>
+                                        <th>{{ __('REQUEST TYPE') }}</th>
+                                        <th>{{ __('PERMIT STATUS') }}</th>
+                                        <th>{{ __('ACTION') }}</th>
                                  </tr>
                                  </thead>
                                </table>
