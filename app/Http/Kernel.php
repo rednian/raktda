@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'company' => \App\Http\Middleware\CompanyMiddleware::class,
         'set_lang' => \App\Http\Middleware\SetLanguage::class,
+        'set_lang_front' => \App\Http\Middleware\SetLanguageFrontend::class,
         'inspector' => \App\Http\Middleware\InspectorMiddleware::class,
     ];
 

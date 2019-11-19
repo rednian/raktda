@@ -13,14 +13,6 @@
     $("#doc_exp_date_" + id).val(expiryMonth.format("DD-MM-YYYY"));
 }*/
 
-function checkTruck(id) {
-    if (id == 1) {
-        $("#how_many_div").css("display", "block");
-    } else {
-        $("#how_many_div").css("display", "none");
-    }
-}
-
 function setExpiryMindate(i) {
     var i = parseInt(i);
     if ($("#doc_issue_date_" + i).length) {
@@ -47,73 +39,3 @@ function setWizard() {
         KTUtil.scrollTop();
     });
 }
-
-var detailsValidator = $("#artist_details").validate({
-    ignore: [],
-    rules: {
-        fname_en: "required",
-        fname_ar: "required",
-        lname_en: "required",
-        lname_ar: "required",
-        profession: "required",
-        permit_type: "required",
-        dob: {
-            required: true,
-            dateNL: true
-        },
-        uid_number: "required",
-        uid_expiry: {
-            required: true,
-            dateNL: true
-        },
-        passport: "required",
-        pp_expiry: {
-            required: true,
-            dateNL: true
-        },
-        visa_type: "required",
-        visa_expiry: {
-            required: true,
-            dateNL: true
-        },
-        sp_name: "required",
-        gender: "required",
-        nationality: "required",
-        address: "required",
-        mobile: {
-            // number: true,
-            required: true
-        },
-        email: {
-            required: true,
-            email: true
-        }
-    },
-    messages: {
-        fname_en: "",
-        fname_ar: "",
-        lname_en: "",
-        lname_ar: "",
-        profession: "",
-        dob: "",
-        uid_number: "",
-        uid_expiry: "",
-        permit_type: "",
-        passport: "",
-        pp_expiry: "",
-        visa_type: "",
-        visa_expiry: "",
-        sp_name: "",
-        gender: "",
-        nationality: "",
-        address: "",
-        mobile: {
-            // number: 'Please enter number',
-            required: ""
-        },
-        email: {
-            required: "",
-            email: ""
-        }
-    }
-});

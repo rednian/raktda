@@ -101,7 +101,8 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="fname_en" id="fname_en"
-                                                                                placeholder="@lang('words.first_name')">
+                                                                                placeholder="@lang('words.first_name')"
+                                                                                onchange="checkforArtist()">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -114,7 +115,8 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="lname_en" id="lname_en"
-                                                                                placeholder="@lang('words.last_name')">
+                                                                                placeholder="@lang('words.last_name')"
+                                                                                onchange="checkforArtist()">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -127,7 +129,8 @@ $language_id = Auth::user()->LanguageId;
                                                                         <div class="input-group input-group-sm">
                                                                             <select
                                                                                 class="form-control form-control-sm "
-                                                                                name="nationality" id="nationality">
+                                                                                name="nationality" id="nationality"
+                                                                                onchange="checkforArtist()">
                                                                                 {{--   - class for search in select  --}}
                                                                                 <option value="">@lang('words.select')
                                                                                 </option>
@@ -151,7 +154,7 @@ $language_id = Auth::user()->LanguageId;
                                                                                 class="form-control form-control-sm "
                                                                                 placeholder="DD-MM-YYYY"
                                                                                 data-date-end-date="0d" name="dob"
-                                                                                id="dob" />
+                                                                                id="dob" onchange="checkforArtist()" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -909,76 +912,78 @@ $language_id = Auth::user()->LanguageId;
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
     }
 
-    var detailsValidator =  $('#artist_details').validate({
-            ignore: [],
-            rules: {
-                fname_en: 'required',
-                fname_ar: 'required',
-                lname_en: 'required',
-                lname_ar: 'required',
-                permit_type: 'requried',
-                profession: 'required',
-                dob: {
-                    required: true,
-                    dateNL: true
-                },
-                uid_number: 'required',
-                uid_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                passport: 'required',
-                pp_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                visa_type: 'required',
-                // visa_number: 'required',
-                visa_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                gender: 'required',
-                sp_name: 'required',
-                nationality: 'required',
-                address: 'required',
-                mobile: {
-                    required : true
-                } ,
-                email: {
-                    required: true,
-                    email: true,
-                },
-            },
-            messages: {
-                fname_en: '',
-                fname_ar: '',
-                lname_en: '',
-                lname_ar: '',
-                profession: '',
-                dob: '',
-                uid_number: '',
-                uid_expiry: '',
-                permit_type: '',
-                passport: '',
-                pp_expiry: '',
-                visa_type: '',
-                // visa_number: '',
-                visa_expiry: '',
-                sp_name: '',
-                gender: '',
-                nationality: '',
-                address: '',
-                mobile: {
-                    // number: 'Please enter number',
-                    required: ''
-                },
-                email: {
-                    required: '',
-                    email: '',
-                },
-            },
-        });
+    var detailsValidator = $("#artist_details").validate({
+    ignore: [],
+    rules: {
+        fname_en: "required",
+        fname_ar: "required",
+        lname_en: "required",
+        lname_ar: "required",
+        profession: "required",
+        permit_type: "required",
+        dob: {
+            required: true,
+            dateNL: true
+        },
+        uid_number: "required",
+        uid_expiry: {
+            required: true,
+            dateNL: true
+        },
+        passport: "required",
+        pp_expiry: {
+            required: true,
+            dateNL: true
+        },
+        visa_type: "required",
+        visa_expiry: {
+            required: true,
+            dateNL: true
+        },
+        sp_name: "required",
+        gender: "required",
+        nationality: "required",
+        address: "required",
+        mobile: {
+            // number: true,
+            required: true
+        },
+        email: {
+            required: true,
+            email: true
+        }
+    },
+    messages: {
+        fname_en: "",
+        fname_ar: "",
+        lname_en: "",
+        lname_ar: "",
+        profession: "",
+        dob: "",
+        uid_number: "",
+        uid_expiry: "",
+        permit_type: "",
+        passport: "",
+        pp_expiry: "",
+        visa_type: "",
+        visa_expiry: "",
+        sp_name: "",
+        gender: "",
+        nationality: "",
+        address: "",
+        mobile: {
+            // number: 'Please enter number',
+            required: ""
+        },
+        email: {
+            required: "",
+            email: ""
+        }
+    }
+});
+
+
+
         var docRules = {};
         var docMessages = {};var term ;
         for(var i = 1; i < $('#requirements_count').val(); i++)
@@ -1368,8 +1373,9 @@ $language_id = Auth::user()->LanguageId;
                     nationality: nationality,
                     dob: dob
                 },
-                success: function (data) {
-                    if(data){
+                success: function (result) {
+                    if (result.isArtist) {
+                        var data = result.data;
                         $('#person_code_modal').empty();
                         $('#artist_exists').modal({
                             backdrop: 'static',

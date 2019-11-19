@@ -16,7 +16,7 @@ $language_id = \Auth::user()->LanguageId;
                             data-ktwizard-state="current" id="check_inst">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>01</span> Check Instructions
+                                    <span>01</span>{{__('Instructions')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -24,7 +24,7 @@ $language_id = \Auth::user()->LanguageId;
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>02</span> Artist Details
+                                    <span>02</span> {{__('Artist Details')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -32,7 +32,7 @@ $language_id = \Auth::user()->LanguageId;
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> @lang('words.upload_documents')
+                                    <span>03</span> {{__('Upload Documents')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -64,8 +64,7 @@ $language_id = \Auth::user()->LanguageId;
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u">Personal
-                                                        information</h6>
+                                                    <h6 class="kt-font-transform-u">{{__('Personal Information')}}</h6>
                                                 </div>
                                             </div>
                                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -78,21 +77,20 @@ $language_id = \Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Person
-                                                                        Code</label>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Person Code')}}</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                                     <div class="col-lg-5">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="code" id="code"
-                                                                                placeholder="Person Code">
+                                                                                placeholder="{{__('Person Code')}}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-3">
                                                                         <span id="changeArtistLabel"
                                                                             class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                                            onclick="removeSelectedArtist()">Change
+                                                                            onclick="removeSelectedArtist()">{{__('change')}}
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -885,77 +883,78 @@ $language_id = \Auth::user()->LanguageId;
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
     }
-    var detailsValidator =  $('#artist_details').validate({
-            ignore: [],
-            rules: {
-                fname_en: 'required',
-                fname_ar: 'required',
-                lname_en: 'required',
-                lname_ar: 'required',
-                profession: 'required',
-                permit_type: 'required',
-                dob: {
-                    required: true,
-                    dateNL: true
-                },
-                uid_number: 'required',
-                uid_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                passport: 'required',
-                pp_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                visa_type: 'required',
-                // visa_number: 'required',
-                visa_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                sp_name: 'required',
-                nationality: 'required',
-                address: 'required',
-                gender: 'required',
-                mobile: {
-                    // number: true,
-                    required : true
-                } ,
-                email: {
-                    required: true,
-                    email: true,
-                },
-            },
-            messages: {
-                fname_en: '',
-                fname_ar: '',
-                lname_en: '',
-                lname_ar: '',
-                profession: '',
-                dob: '',
-                uid_number: '',
-                uid_expiry: '',
-                permit_type: '',
-                passport: '',
-                pp_expiry: '',
-                visa_type: '',
-                // visa_number: '',
-                visa_expiry: '',
-                sp_name: '',
-                gender: '',
-                nationality: '',
-                address: '',
-                mobile: {
-                    // number: 'Please enter number',
-                    required: ''
-                },
-                email: {
-                    required: '',
-                    email: '',
-                },
-            },
-        });
+
+    var detailsValidator = $("#artist_details").validate({
+    ignore: [],
+    rules: {
+        fname_en: "required",
+        fname_ar: "required",
+        lname_en: "required",
+        lname_ar: "required",
+        profession: "required",
+        permit_type: "required",
+        dob: {
+            required: true,
+            dateNL: true
+        },
+        uid_number: "required",
+        uid_expiry: {
+            required: true,
+            dateNL: true
+        },
+        passport: "required",
+        pp_expiry: {
+            required: true,
+            dateNL: true
+        },
+        visa_type: "required",
+        visa_expiry: {
+            required: true,
+            dateNL: true
+        },
+        sp_name: "required",
+        gender: "required",
+        nationality: "required",
+        address: "required",
+        mobile: {
+            // number: true,
+            required: true
+        },
+        email: {
+            required: true,
+            email: true
+        }
+    },
+    messages: {
+        fname_en: "",
+        fname_ar: "",
+        lname_en: "",
+        lname_ar: "",
+        profession: "",
+        dob: "",
+        uid_number: "",
+        uid_expiry: "",
+        permit_type: "",
+        passport: "",
+        pp_expiry: "",
+        visa_type: "",
+        visa_expiry: "",
+        sp_name: "",
+        gender: "",
+        nationality: "",
+        address: "",
+        mobile: {
+            // number: 'Please enter number',
+            required: ""
+        },
+        email: {
+            required: "",
+            email: ""
+        }
+    }
+});
+
+
         var docRules = {};
         var docMessages = {};
         var term;
@@ -1361,8 +1360,9 @@ $language_id = \Auth::user()->LanguageId;
                         nationality: nationality,
                         dob: dob
                     },
-                    success: function(data) {
-                        if (data) {
+                    success: function(result) {
+                        if (result.isArtist) {
+                            var data = result.data;
                             $("#person_code_modal").empty();
                             $("#artist_exists").modal({
                                 backdrop: "static",

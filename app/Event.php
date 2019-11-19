@@ -16,8 +16,13 @@ class Event extends Model
     protected $casts = ['is_displayable' => 'boolean'];
     protected $fillable = [
         'name_en', 'name_ar', 'reference_number', 'issued_date', 'expired_date', 'time_start', 'time_end', 'permit_number', 'venue_en', 'venue_ar',
-        'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock', 'created_by'
+        'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_displayable', 'last_check_by', 'lock', 'created_by', 'description_ar', 'description_en', 'logo_thumbnail', 'logo_original', 'no_of_trucks', 'street'
     ];
+
+    public function permit()
+    {
+        return $this->belongsToMany(Permit::class, 'event_artist_permit', 'event_id', 'permit_id');
+    }
 
     public function approval()
     {
@@ -69,17 +74,17 @@ class Event extends Model
 
     public function area()
     {
-        return $this->belongsTo(Areas::class, 'area_id', 'id')->withDefault(['name_en'=> null, 'name_ar'=>null]);
+        return $this->belongsTo(Areas::class, 'area_id', 'id')->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function emirate()
     {
-        return $this->belongsTo(Emirates::class, 'emirate_id', 'id')->withDefault(['name_en'=> null, 'name_ar'=>null]);
+        return $this->belongsTo(Emirates::class, 'emirate_id', 'id')->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function country()
     {
-        return $this->belongsTo(Country::class, 'country_id')->withDefault(['name_en'=> null, 'name_ar'=>null]);
+        return $this->belongsTo(Country::class, 'country_id')->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function type()

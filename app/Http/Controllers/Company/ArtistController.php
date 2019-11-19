@@ -37,6 +37,7 @@ class ArtistController extends Controller
 
     public function index()
     {
+        Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
         return view('permits.artist.index');
     }
 
@@ -165,11 +166,16 @@ class ArtistController extends Controller
             'birthdate' => Carbon::parse($request->dob)->toDateString()
         ])->with('artist', 'artistPermitDocument', 'Nationality', 'visaType');
 
+
         if ($query->exists()) {
-            return $query->latest()->first();
+            $data = $query->latest()->first();
+            $isArtist = true;
         } else {
-            return false;
+            $data = [];
+            $isArtist = false;
         }
+
+        return response()->json(['isArtist' => $isArtist, 'data' => $data]);
     }
 
     // to add artist to permit
@@ -333,7 +339,9 @@ class ArtistController extends Controller
             ])->delete();
         }*/
 
-        $data_bundle['events'] = \App\Event::where('created_by', Auth::user()->user_id)->whereDate('issued_date', '>=', date('Y-m-d'))->orderBy('name_en', 'asc')->get();
+        $events = \App\Event::where('created_by', Auth::user()->user_id);
+
+        $data_bundle['events'] = $events->whereDate('issued_date', '>=', Carbon::now())->orderBy('name_en', 'asc')->get();
 
         $data_bundle['artist_details'] = ArtistTempData::where([
             ['permit_id', $id],
@@ -692,7 +700,7 @@ class ArtistController extends Controller
             ]);
 
             if (isset($request->event_id)) {
-                $permit->event_id = $request->event_id;
+                $permit->event()->attach($request->event_id);
             }
 
             $temp_ids = [];
@@ -1023,7 +1031,7 @@ class ArtistController extends Controller
 
     public function get_artist_details($id, $from)
     {
-        $data['artist_details'] = ArtistPermit::with('artist', 'artistPermitDocument', 'profession', 'Nationality', 'visaType', 'area', 'language', 'religion', 'emirate', 'artistPermitDocument.requirement')->where('artist_permit_id', $id)->first();
+        $data['artist_details'] = ArtistPermit::with('artist', 'artistPermitDocument', 'profession', 'Nationality', 'visaType', 'area', 'language', 'religion', 'emirate', 'artistPermitDocument.requirement', 'permit.event')->where('artist_permit_id', $id)->first();
         $data['from'] = $from;
         return view('permits.artist.view_artist', $data);
     }
@@ -1249,11 +1257,15 @@ class ArtistController extends Controller
     public function permit($id, $status)
     {
 
-        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession')->where('permit_id', $id)->first();
+        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'event')->where('permit_id', $id)->first();
 
         Permit::where('permit_id', $id)->update(["lock" => Carbon::now()->toDateTimeString()]);
 
-        $edit = $permit_details->is_edit;
+        if ($status != 'event') {
+            $edit = $permit_details->is_edit;
+        } else {
+            $edit = 1;
+        }
 
         if ($status == 'edit') {
             if ($permit_details->permit_status != 'new' && $permit_details->permit_status != 'modification request') {
@@ -1311,6 +1323,7 @@ class ArtistController extends Controller
                     'company_id' => $permit_details->company_id,
                     'created_by' => $permit_details->created_by,
                     'process' => $status,
+                    'event_id' => $permit_details->event ? $permit_details->event[0]->event_id : ''
                 ]);
 
                 if ($status == 'renew') {
@@ -1371,6 +1384,9 @@ class ArtistController extends Controller
         $data_bundle['staff_comments'] = PermitComment::doesntHave('artistPermitComment')->where('permit_id', $id)->get();
         // dd($data_bundle['staff_comments']);
         $routeTo = '';
+        if ($status == 'event') {
+            return redirect()->route('event.add_artist', $id);
+        }
         if ($status == 'edit') {
             $routeTo = 'permits.artist.edit_permit';
         } else if ($status == 'amend') {
@@ -1390,8 +1406,10 @@ class ArtistController extends Controller
     public function edit_artist($id, $from)
     {
         $permit_id = ArtistTempData::where('id', $id)->value('permit_id');
+        $artist_permit_id = ArtistTempData::where('id', $id)->value('artist_permit_id');
         $data_bundle = $this->preLoadData();
         $data_bundle['artist_details'] = ArtistTempData::with('Nationality', 'Profession')->where('id', $id)->first();
+        $data_bundle['staff_comments'] = $artist_permit_id ? ArtistPermit::with('comments')->where('artist_permit_id', $artist_permit_id)->latest()->first() : '';
         $data_bundle['permit_details'] = ArtistPermit::with('artist', 'permit', 'artistPermitDocument', 'profession')->where('permit_id', $permit_id)->first();
         $data_bundle['from'] = $from;
         $url = '';
@@ -1454,7 +1472,6 @@ class ArtistController extends Controller
 
     public function view_draft_details($id)
     {
-
         $user_id = Auth::user()->user_id;
         $data['artist_details'] = ArtistTempData::with('profession', 'nationality', 'ArtistTempDocument', 'event')->where([
             ['status', 5],

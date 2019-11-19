@@ -1,7 +1,7 @@
 <?php
 
 
-Route::group(['middleware' => ['auth', 'set_lang']], function () {
+Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::get('/dashboard', function () {
         return redirect()->route('artist.index');
     })->name('company.dashboard');
@@ -85,6 +85,12 @@ Route::group(['middleware' => ['auth', 'set_lang']], function () {
     Route::post('event/submit_happiness', 'Company\EventController@submit_happiness')->name('event.submit_happiness');
     Route::post('uploadEventDocument', 'Company\EventController@uploadDocument')->name('event.uploadDocument');
     Route::post('event/deleteUploadedfile', 'Company\EventController@deleteUploadFile')->name('event.deleteUploadedfile');
+    Route::get('event/amend/{event}', 'Company\EventController@amend')->name('event.amend');
+    Route::post('event/amend', 'Company\EventController@applyAmend')->name('event.applyAmend');
+    Route::post('event/uploadLogo', 'Company\EventController@uploadLogo')->name('event.uploadLogo');
+    Route::get('event/get_uploaded_logo/{id}', 'Company\EventController@get_uploaded_logo')->name('event.get_uploaded_logo');
+    Route::post('event/uploadTruck', 'Company\EventController@uploadTruck')->name('event.uploadTruck');
+    Route::get('event/add_artist/{id?}', 'Company\EventController@add_artist')->name('event.add_artist');
 
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 });

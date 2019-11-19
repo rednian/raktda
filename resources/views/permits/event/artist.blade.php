@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Add New Artist Permit
+            <h3 class="kt-portlet__head-title">Add Artist to Event Permit
             </h3>
         </div>
 
@@ -15,12 +15,12 @@
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u" title="Go Back">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    Back
                 </button>
                 <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()" title="Add Artist">
                     <i class="la la-plus"></i>
-                    {{__('Add Artist')}}
+                    Add Artist
                 </button>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
@@ -48,16 +48,13 @@
                             <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
                                     <div class="form-group col-lg-2">
-                                        <label for="permit_from"
-                                            class="col-form-label col-form-label-sm ">{{__('From Date')}} <span
-                                                class="text-danger">*</span></label>
+                                        <label for="permit_from" class="col-form-label col-form-label-sm ">From
+                                            Date <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <div class="kt-input-icon kt-input-icon--right">
-                                                <input type="text"
-                                                    class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
+                                                <input type="text" class="form-control form-control-sm mk-disabled"
                                                     name="permit_from" id="permit_from" placeholder="DD-MM-YYYY"
-                                                    onchange="checkFilled()"
-                                                    value="{{ count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->issue_date)) :  ( session($user_id.'_apn_from_date') ? session($user_id.'_apn_from_date') : '') }}" />
+                                                    value="{{date('d-m-Y', strtotime($event->issued_date))}}" />
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
                                                         <i class="la la-calendar"></i>
@@ -66,20 +63,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="hidden" id="artiststartafter"
-                                        value="{{getSettings()->artist_start_after}}" />
+
                                     <div class="form-group col-lg-2">
-                                        <label for="permit_to"
-                                            class="col-form-label col-form-label-sm">{{__('To Date')}}<span
-                                                class="text-danger">*</span></label>
+                                        <label for="permit_to" class="col-form-label col-form-label-sm">To
+                                            Date <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <div class="kt-input-icon kt-input-icon--right">
-                                                <input type="text"
-                                                    class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
+                                                <input type="text" class="form-control form-control-sm mk-disabled"
                                                     name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
-                                                    onchange="checkFilled()"
-                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}"
-                                                    {{count($artist_details) > 0 ? 'mk-disabled' : ''}} />
+                                                    value="{{date('d-m-Y', strtotime($event->expired_date))}}" />
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
                                                         <i class="la la-calendar"></i>
@@ -92,45 +84,35 @@
 
                                     <div class="form-group col-lg-3">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Location')}} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="Location"
-                                            name="work_loc" id="work_loc" onkeyup="checkFilled()"
-                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
+                                            Location <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm mk-disabled"
+                                            placeholder="Location" name="work_loc" id="work_loc"
+                                            value="{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}" />
                                     </div>
                                     <div class="form-group col-lg-2">
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio kt-radio--solid">
-                                                <input type="radio" name="isEvent" onClick="changeIsEvent(1)"
-                                                    {{session($user_id.'_apn_is_event') && session($user_id.'_apn_is_event') == 1 ? 'checked' : ''}}
-                                                    value="1">
+                                                <input type="radio" name="isEvent" checked value="1">
                                                 Yes
                                                 <span></span>
                                             </label>
                                             <label class="kt-radio kt-radio--solid">
-                                                <input type="radio" name="isEvent" onClick="changeIsEvent(0)"
-                                                    {{session($user_id.'_apn_is_event') ? session($user_id.'_apn_is_event') == 0 ? 'checked' : '' : 'checked'}}
-                                                    value="0"> No
+                                                <input type="radio" name="isEvent" value="0" disabled> No
                                                 <span></span>
                                             </label>
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-3" id="events_div"
-                                        style="display:{{ session($user_id.'_apn_is_event') == 0 ? 'none': 'block'}}">
+                                    <div class="form-group col-lg-3">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
                                             Events <span class="text-danger">*</span></label>
-                                        <select type="text" class="form-control form-control-sm" name="event_id"
-                                            id="event_id" onchange="checkFilled()">
+                                        <select type="text" class="form-control form-control-sm mk-disabled"
+                                            name="event_id" id="event_id">
                                             <option value=" ">Select</option>
-                                            @if(count($events) > 0)
-                                            @foreach($events as $event)
-                                            <option value="{{$event->event_id}}"
-                                                {{session($user_id.'_apn_event_id') == $event->event_id ? 'selected' : ''}}>
+                                            <option value="{{$event->event_id}}" selected>
                                                 {{getLangId() == 1 ? $event->name_en : $event->name_ar}}</option>
-                                            @endforeach
-                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -148,13 +130,13 @@
             <table class="table table-striped border table-hover table-borderless">
                 <thead>
                     <tr>
-                        <th> {{__('First Name')}}</th>
-                        <th> {{__('Last Name')}}</th>
-                        <th> {{__('Profession')}}</th>
-                        <th> {{__('Mobile Number')}}</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Profession</th>
+                        <th>Mobile</th>
                         {{-- <th>Email</th> --}}
-                        <th> {{__('Status')}}</th>
-                        <th class="text-center"> {{__('Action')}}</th>
+                        <th>Status</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -169,10 +151,11 @@
                         {{-- <td>{{$ad->email}}</td> --}}
                         <td>{{$ad->artist_permit_status}}</td>
                         <td class="d-flex justify-content-center">
-                            <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}" title="Edit">
+                            <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'event'])}}"
+                                title="Edit">
                                 <button class="btn btn-sm btn-secondary btn-elevate">Edit</button>
                             </a>
-                            <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'new'])}}"
+                            <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'event'])}}"
                                 title="View">
                                 <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                             </a>
@@ -197,17 +180,9 @@
 
         <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
 
-        <div class="d-flex justify-content-between">
-            <button
-                class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
-                id="draft_btn" title="Save as Draft">
-                <i class="la la-check"></i>
-                Save As Draft
-            </button>
-
-            <button
-                class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
-                id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}} title="Submit Permit">
+        <div class="d-flex flex-row-reverse">
+            <button class=" btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u
+            {{ count($artist_details) == 0 ? 'd-none' : ''}}" id="submit_btn" title="Submit Permit">
                 <i class="la la-check"></i>
                 Submit Permit
             </button>
@@ -231,93 +206,32 @@
             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
         });
 
-        function changeIsEvent(id){
-            if(id==1){
-                $('#events_div').css('display', 'block');
-            }else {
-                $('#events_div').css('display', 'none');
-            }
-            checkFilled();
-        }
 
         $(document).ready(function(){
-            $('#add_artist').attr('disabled', true);
-            checkFilled();
-            var artiststartafter = $('#artiststartafter').val();
-            var today = moment().toDate();
-            var startDate = moment(today).add(artiststartafter, 'days').toDate();
-            $('#permit_from').datepicker('setStartDate', startDate);
-            var minDate = moment($('#permit_from').val(), 'DD-MM-YYYY').toDate();
-            var maxDate = moment(minDate).add(3, 'M').toDate();
-            $('#permit_to').datepicker('setStartDate', minDate);
-            $('#permit_to').datepicker('setEndDate', maxDate);
-            // $('#events_div').css('display', 'none');
-        });
 
-        $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
-        $('#permit_from').datepicker({
-            format: 'dd-mm-yyyy',
-            autoclose: true,
-            todayHighlight: true,
-            orientation: "bottom left"
-        });
-        $('#permit_to').datepicker({
-            format: 'dd-mm-yyyy',
-            autoclose: true,
-            todayHighlight: true,
-            orientation: "bottom left"
-        });
 
-        $('#permit_from').on('changeDate', function (selected) {
-            $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
-            var minDate = new Date(selected.date.valueOf());
-            var maxDate = moment(minDate).add(3, 'M').toDate();
-            $('#permit_to').datepicker('setStartDate', minDate);
-            $('#permit_to').datepicker('setEndDate', maxDate);
-        });
-        $('#permit_to').on('changeDate', function (ev) {
-            $('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');
         });
 
 
-        function checkFilled(){
-            var from = $('#permit_from').val();
-            var to = $('#permit_to').val();
-            var loc = $('#work_loc').val();
-            var diff = $('#noofdays').val();
-            var isEvent = $("input:radio[name='isEvent']:checked").val();
-            var eventId = $('#event_id').val();
-            var artistcount = $('#total_artist_details').val();
-            $('#add_artist').attr('disabled', loc == '' ? true : false) ;
-            $('#add_artist_sm').attr('disabled', loc == '' ? true : false) ;
-            if(from && to && loc) {
-                if(isEvent == 0 || (isEvent == 1 && eventId != ' '))
-                {
-                    $('#add_artist').attr('disabled', false);
-                    $('#add_artist_sm').attr('disabled', false);
-                    if(artistcount > 0)
-                    {
-                        $('#draft_btn').css('display', 'block');
-                        $('#submit_btn').css('display', 'block');
-                    }
-                }
-                else {
-                    disabledThese();
-                }
-            }
-            else
-            {
-                disabledThese();
-            }
-        }
+        // $('#permit_from').on('changeDate', function (selected) {
+        //     $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
+        //     var minDate = new Date(selected.date.valueOf());
+        //     var maxDate = moment(minDate).add(3, 'M').toDate();
+        //     $('#permit_to').datepicker('setStartDate', minDate);
+        //     $('#permit_to').datepicker('setEndDate', maxDate);
+        // });
+        // $('#permit_to').on('changeDate', function (ev) {
+        //     $('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');
+        // });
 
-        function disabledThese()
-        {
-            $('#add_artist').attr('disabled', true);
-            $('#add_artist_sm').attr('disabled', true);
-            $('#draft_btn').css('display', 'none');
-            $('#submit_btn').css('display', 'none');
-        }
+
+        // function disabledThese()
+        // {
+        //     $('#add_artist').attr('disabled', true);
+        //     $('#add_artist_sm').attr('disabled', true);
+        //     $('#draft_btn').css('display', 'none');
+        //     $('#submit_btn').css('display', 'none');
+        // }
 
         function setCokkie(){
             var from = $('#permit_from').val();
@@ -332,7 +246,7 @@
                     data: { from: from , to:to, loc:loc, eventId:eventId, isEvent: isEvent },
                     async: true,
                     success: function(result){
-                        window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id;
+                        window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id + '/event';
                     }
             });
         }
@@ -343,7 +257,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{route('artist.index')}}#applied";
+                window.location.href = "{{route('event.index')}}#applied";
             }
         });
 
@@ -353,7 +267,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{route('artist.index')}}#applied";
+                window.location.href = "{{route('event.index')}}#applied";
             }
         });
 
@@ -365,7 +279,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#applied";
+                        window.location.href="{{route('event.index')}}#applied";
                     }
             });
         }
@@ -408,25 +322,6 @@
         //         });
         // })
 
-        function getArtistDetails(id) {
-            $.ajax({
-                type: 'POST',
-                url: '{{route("company.fetch_artist_temp_data")}}',
-                data: {artist_temp_id:id},
-                success: function(data) {
-                    $('#detail-permit').empty();
-                    if(data)
-                    {
-                        $('#artist_details').modal('show');
-                        var code = data.person_code ? data.person_code : '';
-                        $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+ data.visa_type.visa_type_en + '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
-
-                    }
-                }
-            });
-        }
-
-
         $('#submit_btn').click((e) => {
             $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
@@ -445,26 +340,6 @@
                         window.location.href="{{route('artist.index')}}#applied";
                     }
             });
-        });
-
-        $('#draft_btn').click((e) => {
-            $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-            var temp_permit_id = $('#temp_permit_id').val();
-            $.ajax({
-                    url:"{{route('artist.add_draft')}}",
-                    type: "POST",
-                    data: {
-                        temp_permit_id:temp_permit_id,
-                        from: $('#permit_from').val() ,
-                        to: $('#permit_to').val(),
-                        loc: $('#work_loc').val(),
-                        event_id: $('#event_id').val()
-                    },
-                    success: function(result){
-                        $('#draft_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                        window.location.href="{{route('artist.index')}}#draft";
-                    }
-                });
         });
 
 

@@ -22,7 +22,7 @@ $language_id = Auth::user()->LanguageId;
                             data-ktwizard-state="current" id="check_inst">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>01</span> Check Instructions
+                                    <span>01</span> {{__('Instructions')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -30,7 +30,7 @@ $language_id = Auth::user()->LanguageId;
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>02</span> Artist Details
+                                    <span>02</span> {{__('Artist Details')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -87,7 +87,7 @@ $language_id = Auth::user()->LanguageId;
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u">@lang('words.personal_information')
+                                                    <h6 class="kt-font-transform-u">{{__('Personal Information')}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -101,14 +101,14 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="artist_number"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.person_code')</label>
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Person Code')}}</label>
                                                                     <input type="hidden" id="artist_number" value={{1}}>
                                                                     <div class="col-lg-5">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="code" id="code"
-                                                                                placeholder="@lang('words.person_code')">
+                                                                                placeholder="{{__('Person code')}}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-3">
@@ -120,7 +120,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.first_name')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -128,7 +128,7 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="fname_en" id="fname_en"
-                                                                                placeholder="@lang('words.first_name')"
+                                                                                placeholder="{{__('First Name')}}"
                                                                                 onchange="checkforArtist()">
                                                                         </div>
                                                                     </div>
@@ -138,14 +138,14 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.last_name')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Last Name')}}<span
                                                                             class="text-danger">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="lname_en" id="lname_en"
-                                                                                placeholder="@lang('words.last_name')"
+                                                                                placeholder="{{__('Last Name')}}"
                                                                                 onchange="checkforArtist()">
                                                                         </div>
                                                                     </div>
@@ -153,7 +153,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="nationality"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.nationality')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Nationality')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -163,7 +163,7 @@ $language_id = Auth::user()->LanguageId;
                                                                                 name="nationality" id="nationality"
                                                                                 onchange="checkforArtist()">
                                                                                 {{--   - class for search in select  --}}
-                                                                                <option value="">@lang('words.select')
+                                                                                <option value="">{{__('Select')}}
                                                                                 </option>
                                                                                 @foreach ($countries as $ct)
                                                                                 <option value="{{$ct->country_id}}">
@@ -177,7 +177,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.birth_date')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Birth Date')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -194,7 +194,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.passport_number')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Passport No')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -202,14 +202,14 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="passport" id="passport"
-                                                                                placeholder="@lang('words.passport_number')">
+                                                                                placeholder="{{__('Passport No')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="pp_expiry"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.passport_expiry')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Passport Expiry')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -225,14 +225,14 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="uid_number"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.uid_no')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('UID No')}}
                                                                         <span class="text-danger">*</span> </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="uid_number" id="uid_number"
-                                                                                placeholder="@lang('words.uid_no')">
+                                                                                placeholder="{{__('UID No')}})">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -240,7 +240,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.uid_expiry')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('UID Expiry')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -256,7 +256,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="religion"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.religion')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Religion')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -286,7 +286,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
                                                                         class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">
-                                                                        @lang('words.profession') <span
+                                                                        {{__('Profession')}} <span
                                                                             class="text-danger">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -310,7 +310,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.first_name_ar')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name - Ar')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -324,7 +324,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="lname_ar"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right ">@lang('words.last_name_ar')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right ">{{__('Last Name - Ar')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -340,7 +340,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="gender"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.gender')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Gender')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -364,7 +364,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_type"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.visa_type')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Visa Type')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -372,7 +372,7 @@ $language_id = Auth::user()->LanguageId;
                                                                             <select type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="visa_type" id="visa_type">
-                                                                                <option value="">@lang('words.select')
+                                                                                <option value="">{{__('Select')}}
                                                                                 </option>
                                                                                 @foreach ($visatypes as $vt)
                                                                                 <option value="{{$vt->id}}">
@@ -387,14 +387,14 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.visa_number')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Visa Number')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="visa_number" id="visa_number"
-                                                                                placeholder="@lang('words.visa_number')">
+                                                                                placeholder="{{__('Visa Number')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -402,7 +402,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_expiry"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.visa_expiry')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Visa Expiry')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -432,7 +432,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="sp_name"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.sponsor_name')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Sponser Name')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -440,7 +440,7 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="sp_name" id="sp_name"
-                                                                                placeholder="@lang('words.sponsor_name')">
+                                                                                placeholder="{{__('Sponser Name')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -452,14 +452,14 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="language"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.language')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Language')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
                                                                                 class=" form-control form-control-sm"
                                                                                 name="language" id="language">
-                                                                                <option value=" ">@lang('words.select')
+                                                                                <option value=" ">{{__('Select')}}
                                                                                 </option>
                                                                                 @foreach ($languages as $lang)
                                                                                 <option value="{{$lang->id}}">
@@ -486,7 +486,7 @@ $language_id = Auth::user()->LanguageId;
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseTwo6" aria-expanded="false"
                                                     aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-transform-u">@lang('words.contact_information')
+                                                    <h6 class="kt-font-transform-u">{{__('Contact Information')}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -500,7 +500,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="mobile"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.mobile_number')<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Mobile Number')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -508,7 +508,7 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="mobile" id="mobile"
-                                                                                placeholder="@lang('words.mobile_number')">
+                                                                                placeholder="{{__('Mobile Number')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -516,14 +516,14 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="landline"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.phone_number')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Phone Number')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="landline" id="landline"
-                                                                                placeholder="@lang('words.phone_number')">
+                                                                                placeholder="{{__('Phone Number')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -535,14 +535,14 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.email_address')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Address')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
-                                                                                placeholder="@lang('words.email_address')"
+                                                                                placeholder="{{__('Address')}}"
                                                                                 name="email" id="email" />
                                                                         </div>
                                                                     </div>
@@ -550,13 +550,13 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fax_no"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.fax_number')</label>
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Fax No')}}</label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="fax_no" id="fax_no"
-                                                                                placeholder="@lang('words.fax_number')">
+                                                                                placeholder="{{__('Fax No')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -575,7 +575,7 @@ $language_id = Auth::user()->LanguageId;
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseTwo7" aria-expanded="false"
                                                     aria-controls="collapseTwo7">
-                                                    <h6 class="kt-font-transform-u">@lang('words.address_information')
+                                                    <h6 class="kt-font-transform-u">{{__('Address Information')}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -587,7 +587,7 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">Address
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Address')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -595,13 +595,13 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="address" id="address"
-                                                                                placeholder="Address">
+                                                                                placeholder="{{__('Address')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.emirate')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Emirate')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -609,7 +609,7 @@ $language_id = Auth::user()->LanguageId;
                                                                                 class=" form-control form-control-sm "
                                                                                 name="city" id="city"
                                                                                 onChange="getAreas(this.value)">
-                                                                                <option value=" ">@lang('words.select')
+                                                                                <option value=" ">{{__('Select')}}
                                                                                 </option>
                                                                                 @foreach ($emirates as $em)
                                                                                 <option value="{{$em->id}}"
@@ -630,27 +630,27 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.po_box')</label>
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('PO Box')}}</label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
-                                                                                name="po_box" id="po_box" placeholder="@lang('words.po_box')
-                                                                                ">
+                                                                                name="po_box" id="po_box"
+                                                                                placeholder="{{__('PO Box')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">@lang('words.area')
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Area')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
                                                                                 class="  form-control form-control-sm "
                                                                                 name="area" id="area">
-                                                                                <option value="">@lang('words.select')
+                                                                                <option value="">{{__('Select')}}
                                                                                 </option>
                                                                                 @foreach ($areas as $ar)
                                                                                 <option value="{{$ar->id}}">
@@ -695,7 +695,7 @@ $language_id = Auth::user()->LanguageId;
 
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
-                                                <label class="kt-font-bold text--maroon"> Artist Photo <span
+                                                <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}} <span
                                                         class="text-danger">( required
                                                         )</span></label>
                                                 <p for="" class="reqName " title="Artist Photo">
@@ -744,8 +744,8 @@ $language_id = Auth::user()->LanguageId;
                                             <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
                                             @if($req->dates_required == 1)
                                             <div class="col-lg-2 col-sm-12">
-                                                <label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue
-                                                    Date</label>
+                                                <label for="" class="text--maroon kt-font-bold"
+                                                    title="Issue Date">{{__('Issue Date')}}</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_issue_date_{{$i}}" data-date-end-date="0d"
                                                     id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
@@ -755,8 +755,7 @@ $language_id = Auth::user()->LanguageId;
                                             </div>
                                             <div class="col-lg-2 col-sm-12">
                                                 <label for="" class="text--maroon kt-font-bold"
-                                                    title="Expiry Date">Expiry
-                                                    Date</label>
+                                                    title="Expiry Date">>{{__('Expiry Date')}}</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_exp_date_{{$i}}" id="doc_exp_date_{{$i}}"
                                                     placeholder="DD-MM-YYYY" />
@@ -779,7 +778,7 @@ $language_id = Auth::user()->LanguageId;
                 <div class="kt-form__actions">
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
-                        Previous
+                        {{__('Previous')}}
                     </div>
 
                     <input type="hidden" id="permit_id" value="{{$permit_id}}">
@@ -788,6 +787,8 @@ $language_id = Auth::user()->LanguageId;
                     if($from == 'draft')
                     {
                     $routeBack = url('company/artist/view_draft_details/'.$permit_id);
+                    } else if($from = 'event'){
+                    $routeBack = url('company/event/add_artist/'.$permit_id);
                     }else {
                     $routeBack = url('company/artist/new/'.$permit_id);
                     }
@@ -795,7 +796,7 @@ $language_id = Auth::user()->LanguageId;
 
                     <a href="{{$routeBack}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                            Back
+                            {{__('Back')}}
                         </div>
                     </a>
                     {{--
@@ -803,15 +804,15 @@ $language_id = Auth::user()->LanguageId;
 
 
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                        data-ktwizard-type="action-submit" id="submit_btn">Add
-                        Artist
+                        data-ktwizard-type="action-submit" id="submit_btn">
+                        {{__('Add Artist')}}
                     </div>
 
 
 
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
-                        Next Step
+                        {{__('Next')}}
                     </div>
 
                 </div>
@@ -1031,6 +1032,76 @@ $language_id = Auth::user()->LanguageId;
         $('#pic_uploader + div').attr('id', 'pic-file-upload');
     };
 
+    var detailsValidator = $("#artist_details").validate({
+    ignore: [],
+    rules: {
+        fname_en: "required",
+        fname_ar: "required",
+        lname_en: "required",
+        lname_ar: "required",
+        profession: "required",
+        permit_type: "required",
+        dob: {
+            required: true,
+            dateNL: true
+        },
+        uid_number: "required",
+        uid_expiry: {
+            required: true,
+            dateNL: true
+        },
+        passport: "required",
+        pp_expiry: {
+            required: true,
+            dateNL: true
+        },
+        visa_type: "required",
+        visa_expiry: {
+            required: true,
+            dateNL: true
+        },
+        sp_name: "required",
+        gender: "required",
+        nationality: "required",
+        address: "required",
+        mobile: {
+            // number: true,
+            required: true
+        },
+        email: {
+            required: true,
+            email: true
+        }
+    },
+    messages: {
+        fname_en: "",
+        fname_ar: "",
+        lname_en: "",
+        lname_ar: "",
+        profession: "",
+        dob: "",
+        uid_number: "",
+        uid_expiry: "",
+        permit_type: "",
+        passport: "",
+        pp_expiry: "",
+        visa_type: "",
+        visa_expiry: "",
+        sp_name: "",
+        gender: "",
+        nationality: "",
+        address: "",
+        mobile: {
+            // number: 'Please enter number',
+            required: ""
+        },
+        email: {
+            required: "",
+            email: ""
+        }
+    }
+});
+
 
 
         var docRules = {};
@@ -1055,7 +1126,6 @@ $language_id = Auth::user()->LanguageId;
         });
 
         $("#check_inst").on("click", function () {
-            console.log(stopNext(detailsValidator));
             setThis('none', 'block', 'block', 'none');
         });
 
@@ -1312,8 +1382,9 @@ $language_id = Auth::user()->LanguageId;
                     nationality: nationality,
                     dob: dob
                 },
-                success: function (data) {
-                    if(data){
+                success: function (result) {
+                    if(result.isArtist){
+                        var data = result.data;
                         $('#person_code_modal').empty();
                         $('#artist_exists').modal({
                             backdrop: 'static',
@@ -1561,6 +1632,8 @@ $language_id = Auth::user()->LanguageId;
                             if(from == 'draft')
                             {
                                 window.location.href = "{{url('company/artist/view_draft_details')}}"+'/'+ permit_id;
+                            }else if(from == 'event'){
+                                window.location.href = "{{url('company/event/add_artist')}}"+'/'+ permit_id;
                             }else {
                                 window.location.href = "{{url('company/artist/new')}}"+'/'+ permit_id;
                             }

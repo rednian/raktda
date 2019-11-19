@@ -5,7 +5,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Artist Permit Draft Details</h3>
+            <h3 class="kt-portlet__head-title">{{__('Artist Permit Details')}}</h3>
         </div>
 
         <div class="kt-portlet__head-toolbar">
@@ -13,7 +13,7 @@
                 <a href="{{route('artist.index')}}#draft"
                     class="btn btn--maroon kt-font-bold kt-font-transform-u btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
-                    Back
+                    {{__('Back')}}
                 </a>
             </div>
 
@@ -24,16 +24,15 @@
             </div>
         </div>
     </div>
-
     <div class="kt-portlet__body pt-0">
         <div class="kt-widget5__info py-3">
             <div>
-                <span>From Date:</span>&emsp;
+                <span>{{__('From Date')}}:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($draft_details[0]->issue_date))}}</span>&emsp;&emsp;
-                <span>To Date:</span>&emsp;
+                <span>{{__('To Date')}}:</span>&emsp;
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($draft_details[0]->expiry_date))}}</span>&emsp;&emsp;
-                <span>Work Location:</span>&emsp;
+                <span>{{__('Location')}}:</span>&emsp;
                 <span class="kt-font-info">{{$draft_details[0]->work_location}}</span>&emsp;&emsp;
 
             </div>
@@ -49,16 +48,14 @@
             <table class="table table-striped table-borderless border" id="applied-artists-table">
                 <thead>
                     <tr>
-                        <th>@lang('words.first_name')</th>
-                        <th>@lang('words.last_name')</th>
-                        <th>@lang('words.profession')</th>
-                        <th>@lang('words.mobile_number')</th>
-                        {{-- <th>@lang('words.email')</th> --}}
-                        <th>@lang('words.status')</th>
-                        <th>Actions</th>
+                        <th>{{__('First Name')}}</th>
+                        <th>{{__('Last Name')}}</th>
+                        <th>{{__('Profession')}}</th>
+                        <th>{{__('Mobile Number')}}</th>
+                        <th>{{__('Status')}}</th>
+                        <th>{{__('Action')}}</th>
                     </tr>
                 </thead>
-                {{-- {{dd($permit_details)}} --}}
                 <tbody>
                     @foreach ($draft_details as $atd)
                     <tr>
@@ -66,7 +63,6 @@
                         <td>{{ucwords($atd->lastname_en)}}</td>
                         <td>{{ucwords($atd->profession['name_en'])}}</td>
                         <td>{{$atd->mobile_number}}</td>
-                        {{-- <td>{{$atd->email}}</td> --}}
                         <td>
                             {{ucwords($atd->artist_permit_status)}}
                         </td>
@@ -97,7 +93,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{__('Artist Details')}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>

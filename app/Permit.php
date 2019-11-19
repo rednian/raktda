@@ -18,6 +18,12 @@ class Permit extends Model
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
 
+
+    public function event()
+    {
+        return $this->belongsToMany(Event::class, 'event_artist_permit', 'permit_id', 'event_id');
+    }
+
     public function approval()
     {
         return $this->hasMany(Approval::class, 'inspection_id', 'permit_id')->whereType('artist');
@@ -70,10 +76,5 @@ class Permit extends Model
             ->join('artist_permit', 'permit.permit_id', '=', 'artist_permit.permit_id')
             ->where('permit.permit_status', $status)
             ->groupBy('artist_permit.permit_id');
-    }
-
-    public function event()
-    {
-        return $this->belongsTO(Event::class, 'event_id');
     }
 }

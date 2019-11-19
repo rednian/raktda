@@ -2,45 +2,48 @@
 @section('content')
 <section class="row">
     <div class="col">
-       <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
-          <div class="kt-portlet__head kt-portlet__head--sm">
-              <div class="kt-portlet__head-label">
-                  <h4 class="kt-portlet__head-title">Artist List</h4>
-              </div>
-              <div class="kt-portlet__head-toolbar">
-                   <i class="la la-arrow-left"></i>
-                   <button class="kt-hidden-mobile" onclick="goBack()">Back</button>
-                 <div class="dropdown dropdown-inline">
-                     <button type="button" class="btn btn-clean btn-icon btn-sm btn-icon-md" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         <i class="flaticon-more"></i>
-                     </button>
-                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                         <a class="dropdown-item" href="{{ route('admin.artist_permit.index') }}">Artist Permit List</a>
-                         <a class="dropdown-item" href="{{ route('admin.artist_permit.request') }}">Artist Permit Request List</a>
-                     </div>
-                 </div>
-              </div>
-          </div>
-          <div class="kt-portlet__body">
-              <table class="table table-hover" id="artist-table">
-                  <thead>
-                      <tr>
-                          <th>Artist Name</th>
-                          <th>Nationality</th>
-                          <th>Email</th>
-                          <th>Artist Status</th>
-                          <th>Actions</th>
-                      </tr>
-                  </thead>
-              </table>
-          </div>
-       </section>
+        <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
+            <div class="kt-portlet__head kt-portlet__head--sm">
+                <div class="kt-portlet__head-label">
+                    <h4 class="kt-portlet__head-title">Artist List</h4>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <i class="la la-arrow-left"></i>
+                    <button class="kt-hidden-mobile" onclick="goBack()">Back</button>
+                    <div class="dropdown dropdown-inline">
+                        <button type="button" class="btn btn-clean btn-icon btn-sm btn-icon-md" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="flaticon-more"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
+                            <a class="dropdown-item" href="{{ route('admin.artist_permit.index') }}">Artist Permit
+                                List</a>
+                            <a class="dropdown-item" href="{{ route('admin.artist_permit.request') }}">Artist Permit
+                                Request List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+                <table class="table table-hover" id="artist-table">
+                    <thead>
+                        <tr>
+                            <th>Artist Name</th>
+                            <th>Nationality</th>
+                            <th>Email</th>
+                            <th>Artist Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </section>
     </div>
 </section>
 @endsection
 @section('script')
 <script type="text/javascript">
-var artistTable = {};
+    var artistTable = {};
   $(document).ready(function(){
       function goBack() {
           window.history.back();
