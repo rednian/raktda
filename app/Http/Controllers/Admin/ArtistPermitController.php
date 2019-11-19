@@ -174,7 +174,7 @@ class ArtistPermitController extends Controller
          // dd($request->all());         
          $artistpermit->update(['artist_permit_status'=>$request->artist_permit_status]);
 
-         //delete the last checklist and replace with recent
+         //delete the last checklist and replace with recentb
 	      $artistpermit->check()->where('artist_permit_id', $artistpermit->artist_permit_id)->delete();
          $artist_permit_check = $artistpermit->check()->create(['status'=>0]);
 
@@ -278,7 +278,9 @@ class ArtistPermitController extends Controller
       })
       ->rawColumns(['action', 'document_name'])
       ->make(true);
+
       $data = $artist_permit_document->getData(true);
+      
       $data['data'][] = [
           'document_name' => '<a href="'.asset('/storage/'.$artistpermit->thumbnail).'" data-fancybox data-caption="'.ucwords($artistpermit->artist->fullname).' - Photo">Artist Photo</a>',
           'issued_date'=> 'Not Required',

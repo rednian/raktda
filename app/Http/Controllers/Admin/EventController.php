@@ -44,6 +44,13 @@
 			]);
 		}
 
+		public function cancel(Request $request, Event $event)
+		{
+			if ($event) {
+				// $event->
+			}
+		}
+
 		public function showAll(Request $request, Event $event)
 		{
 
@@ -112,7 +119,7 @@
 					$request['role_id'] = $user->roles()->first()->role_id;
 					$request['type'] = $type = 1; 
 					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
-					$event->update(['status'=>$request->status]);
+					$event->update(['status'=>$request->status, 'note_en'=>$request->note_en, 'note_ar'=>$request->note_ar]);
 				}
 
 				if($request->status == 'need approval'){
@@ -121,26 +128,6 @@
 					$comment = $event->comment()->create($request->all());
 					$comment->approve()->create(array_merge ($request->all(), ['event_id'=>$comment->event_id ]));
 
-
-					// $users = User::whereHas('roles', function($q){
-					// 	$q->where('roles.role_id', 4);
-					// })
-					// ->whereDoesntHave('leave', function($q) use ($event){
-					// 	$q->whereDate('start_date', '>=', Carbon::now()->format('Y-m-d'))
-					// 	->whereDate('end_date', '<=', date('Y-m-d', strtotime($event->issued_date)));
-					// })
-					// // ->whereDoesntHave('approver', function($q){
-					// // 	$q->count();//
-					// // })
-					// ->whereType(4)
-					// // ->toSql();
-
-
-
-					// dd($users);
-
-
-					// $event->approval()->create();
 
 					foreach ($request->approver as $role_id) {
 						$request['role_id'] = $role_id;
@@ -280,12 +267,11 @@
 
 		public function applicationDatatable(Request $request, Event $event)
 		{
-			$event = $event->requirements()->get();
+			$events = $event->requirements()->get();
 			$user = Auth::user();
-			return DataTables::of($event)
+			$events =  DataTables::of($events)
 				 ->addColumn('name', function($requirement) use ($user){
 					 $name = $user->LanguageId == 1 ? $requirement->requirement_name : $requirement->requirement_name_ar;
-					 // dd($requirement->event);
 					 return '<a href="'.asset('/storage/'.$requirement->pivot->path).'"  data-fancybox data-caption="'.$name.'">'.$name.'</a>';
 				 })
 				 ->addColumn('issued_date', function($requirement){
@@ -307,7 +293,16 @@
 				 })
 				 ->rawColumns(['name', 'files'])
 				 ->make(true);
-//		}
+
+				$data = $events->getData(true);
+
+				$data['data'][] = [
+				    'name' => '<a href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">Event Logo</a>',
+				    'issued_date'=> 'Not Required',
+				    'expired_date'=> 'Not Required',
+				];
+
+				 return response()->json($data);
 		}
 
 		public function dataTable(Request $request)
@@ -373,8 +368,28 @@
 				->addColumn('start', function($event){ return $event->issued_date.'  '.$event->time_start; })
 				->editColumn('status', function($event){ return permitStatus($event->status); })
 				->addColumn('action', function($event){
-					 	if($event->status == 'rejected'){ return null; }
-					 	return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i></a>';
+					$html  = '<div class="dropdown dropdown-inline">';
+					$html  .= '	<button type="button" class="btn btn-secondary btn-elevate-hover btn-icon btn-sm btn-icon-md btn-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+					$html  .= '<i class="flaticon-more-1"></i>';
+					$html  .= '	</button>';
+					$html  .= '		<div class="dropdown-menu dropdown-menu-right">';
+					$html  .= '	<a class="dropdown-item" href="'.route('admin.event.show', $event->event_id).'"><i class="la la-calendar-check-o"></i>Event Details</a>';
+					$html  .= '				<a class="dropdown-item" href="'.route('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
+					$html  .= '				<div class="dropdown-divider"></div>';
+					$html  .= '					<a data-toggle="modal" class="dropdown-item" href="#cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
+					$html  .= '					</div>';
+					$html  .= '					</div>';
+
+					return $html;
+					
+																			
+																				
+																		
+																		
+																			
+	
+					 	// if($event->status == 'rejected'){ return null; }
+					 	// return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i></a>';
 					 })
 					 ->rawColumns(['status', 'action', 'show', 'website'])
 //				 ->setTotalRecords($totalRecords)s

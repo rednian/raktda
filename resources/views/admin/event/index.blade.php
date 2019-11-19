@@ -472,6 +472,32 @@
         </div>
     </div>
 </section>
+{{-- cancel modal --}}
+<div class="modal fade" id="cancel-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <form name="cancel_form">
+          @csrf
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Cancel Event <span id="event-title"></span> <small>This will cancel the event & notify the client</small></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">  
+              <div class="form-group">
+                <label for="message-text" class="form-control-label">Cancel Reason<span class="text-danger">*</span></label>
+                <textarea minlength="255" required rows="4" class="form-control" id="message-text"></textarea>
+              </div>
+         
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm kt-font-transform-u" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-warning btn-sm kt-font-transform-u">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 @endsection
 @section('script')
@@ -583,7 +609,7 @@
           data: function (d) {
             d.type = $('select#archive-applicant-type').val();
             var status = $('select#archive-permit-status').val();      
-            d.status = status != null ? [status] : ['expired', 'rejected'];
+            d.status = status != null ? [status] : ['expired', 'rejected', 'cancelled'];
           }
         },
         columnDefs: [
@@ -682,6 +708,16 @@
           {data: 'action'},
         ],
         createdRow: function (row, data, index) {
+
+          $('#cancel-modal').on('shown.bs.modal', function () {
+            $('#cancel-modal').find('textarea').trigger('focus');
+            $.ajax({
+              url: '{{ url('/event') }}/'+data.event_id+'/cancel',
+
+            });
+          });
+
+    
           $('display-all', row).change(function(e){
             var event = $(this);
             e.stopPropagation();
@@ -701,7 +737,7 @@
 
           $('.btn-download', row).click(function(e){e.stopPropagation();});
           $(row).click(function () {
-            location.href = '{{ url('/event') }}/' + data.event_id+'?tab=active-permit';
+            // location.href = '{{ url('/event') }}/' + data.event_id+'?tab=active-permit';
           });
         }
       });

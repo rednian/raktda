@@ -23,6 +23,15 @@
 				 </div>
 			</div>
 			<div class="kt-portlet__body kt-padding-t-5">
+        @if ($permit->events()->count() > 0)
+        <a href="{{ route('admin.event.show', $permit->events->first()->event_id) }}">
+          <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
+            <div class="alert-text">This permit is connected to <span class="text-success kt-font-bold kt-font-transform-u">{{ $permit->events()->first()->name_en }}</span> event with reference number <span class="kt-font-danger">{{ $permit->events->first()->reference_number }}</span>
+              {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
+            </div>
+          </div>
+          </a>
+        @endif
 				 <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
 						<div class="card">
 							 <div class="card-header" id="headingOne5">

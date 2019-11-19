@@ -62,6 +62,15 @@
 								<div class="kt-wizard-v3__form">
 									<section class="row kt-margin-t-20 kt-margin-b-20">
 										<div class="col">
+											@if ($event->permits()->count() > 0)
+											<a href="{{ route('admin.artist_permit.show', $event->permits->first()->permit_id) }}">
+											  <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
+											    <div class="alert-text">This event has an artist with reference number <span class="kt-font-danger">{{ $event->permits->first()->reference_number }}</span>
+											      {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
+											    </div>
+											  </div>
+											  </a>
+											@endif
 											@include('admin.event.includes.latest-comment')
 					 						@include('admin.artist_permit.includes.comment')
 					 						@if ($existing_event->count() > 0)
@@ -93,6 +102,21 @@
 																	 <label class="kt-font-dark">{{ __('Event Type') }} <span class="text-danger">*</span></label>
 																	  <div class="input-group input-group-sm">
 																	 	<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
+																	 					 class="form-control">
+																	 	<div class="input-group-append">
+																	 		<span class="input-group-text">
+																	 			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																	 				<input data-step="step-1" type="checkbox">
+																	 				<span></span>
+																	 			</label>
+																	 		 </span>
+																	 	</div>
+																	  </div>
+																</div>
+																<div class="col-sm-6">
+																	 <label class="kt-font-dark">{{ __('Number of food Trucks') }}</label>
+																	  <div class="input-group input-group-sm">
+																	 	<input value="{{ ucfirst($event->no_of_trucks) }}" name="no_of_trucks" readonly="readonly" type="text"
 																	 					 class="form-control">
 																	 	<div class="input-group-append">
 																	 		<span class="input-group-text">
@@ -139,9 +163,8 @@
 															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
 																	 <label class="kt-font-dark">{{ __('Description') }} <span class="text-danger">*</span></label>
-																	 <div class="input-group input-group-lg">
-																		<input value="{{ ucfirst($event->description_en) }}" name="event_type" readonly="readonly" type="text"
-																						 class="form-control">
+																	 <div class="input-group input-group-sm">
+																	 	<textarea name="description_en" rowspan="3" class="form-control" readonly>{{ ucfirst($event->description_en) }}</textarea>
 																		<div class="input-group-append">
 																			<span class="input-group-text">
 																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -154,9 +177,8 @@
 																</div>
 																<div class="col-md-6">
 																	 <label class="kt-font-dark">{{ __('Description (AR)') }} <span class="text-danger">*</span></label>
-																	 <div class="input-group input-group-lg">
-																		<input value="{{ ucfirst($event->description_en) }}" name="event_type" readonly="readonly" type="text"
-																						 class="form-control">
+																	 <div class="input-group input-group-sm">
+																	 	<textarea name="description_ar" rowspan="3" class="form-control" readonly>{{ ucfirst($event->description_ar) }}</textarea>
 																		<div class="input-group-append">
 																			<span class="input-group-text">
 																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -365,6 +387,15 @@
 								<div class="kt-wizard-v3__form">
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
+												@if ($event->permits()->count() > 0)
+												<a href="{{ route('admin.artist_permit.show', $event->permits->first()->permit_id) }}">
+												  <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
+												    <div class="alert-text">This event has an artist with reference number <span class="kt-font-danger">{{ $event->permits->first()->reference_number }}</span>
+												      {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
+												    </div>
+												  </div>
+												  </a>
+												@endif
 												@include('admin.event.includes.latest-comment')
 												 @include('admin.artist_permit.includes.comment')
 												 <table class="table table-striped border borderless table-hover" id="requirement-table">
@@ -388,6 +419,15 @@
 								<div class="kt-wizard-v3__form">
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
+												@if ($event->permits()->count() > 0)
+												<a href="{{ route('admin.artist_permit.show', $event->permits->first()->permit_id) }}">
+												  <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
+												    <div class="alert-text">This event has an artist with reference number <span class="kt-font-danger">{{ $event->permits->first()->reference_number }}</span>
+												      {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
+												    </div>
+												  </div>
+												  </a>
+												@endif
 												@include('admin.event.includes.latest-comment')
 												  @include('admin.artist_permit.includes.comment')
 												   <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-action">
@@ -448,6 +488,20 @@
 												  												@endforeach
 												  										 @endif
 												  							 </select>
+												  						</div>
+												  					</div>
+												  				</section>
+												  				<section class="row d-none" id="printed-note">
+												  					<div class="col-sm-6">
+												  						<div class="form-group-sm">
+												  							<label>Note</label>
+												  							<textarea disabled name="note_en" rowspan="3" class="form-control form-control-sm" placeholder="Please write a short note that will appear in the printed permit"></textarea>
+												  						</div>
+												  					</div>
+												  					<div class="col-sm-6">
+												  						<div class="form-group-sm">
+												  							<label>Note (AR)</label>
+												  							<textarea disabled placeholder="Please write an arabic note" name="note_ar" rowspan="3" class="form-control form-control-sm"></textarea>
 												  						</div>
 												  					</div>
 												  				</section>
@@ -627,8 +681,9 @@
        
        //show or hide the approver selection
        $('select[name=status]').change(function () {
-		 if($(this).val() == 'need approval') { approver.parents('.form-group').removeClass('kt-hide'); }
-		 else{ approver.parents('.form-group').addClass('kt-hide'); }
+		 if($(this).val() == 'need approval') { approver.parents('.form-group').removeClass('kt-hide'); $('#printed-note').addClass('d-none').find('textarea').attr('disabled', true); }
+		 else if($(this).val() == 'approved-unpaid'){ $('#printed-note').removeClass('d-none').find('textarea').removeAttr('disabled', true); }
+		 else{ approver.parents('.form-group').addClass('kt-hide');  $('#printed-note').addClass('d-none').find('textarea').attr('disabled', true); }
        });
        
        approver.select2({
