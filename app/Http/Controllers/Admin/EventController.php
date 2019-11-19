@@ -47,7 +47,14 @@
 		public function cancel(Request $request, Event $event)
 		{
 			if ($event) {
-				// $event->
+				// dd($request->all());
+			try {
+				$event->update(['cancel_reason'=>$request->cancel_reason, 'cancelled_by'=> $request->user()->user_id, 'status'=>'cancelled']);
+				$result = ['success', ucfirst($event->name_en).' has been cancelled Successfully ', 'Success'];
+			} catch (Exception $e) {
+				$result = ['error', $e->getMessage(), 'Error'];
+			}
+			  return response()->json(['message' => $result]);
 			}
 		}
 
@@ -318,7 +325,7 @@
 				->when($request->status, function($q) use ($request){
 					$q->whereIn('status', $request->status);
 				})
-				->whereNotIn('status', ['draft', 'cancelled'])
+				->whereNotIn('status', ['draft'])
 				->orderBy('updated_at', 'desc')
 				->get();
 
@@ -376,7 +383,7 @@
 					$html  .= '	<a class="dropdown-item" href="'.route('admin.event.show', $event->event_id).'"><i class="la la-calendar-check-o"></i>Event Details</a>';
 					$html  .= '				<a class="dropdown-item" href="'.route('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
 					$html  .= '				<div class="dropdown-divider"></div>';
-					$html  .= '					<a data-toggle="modal" class="dropdown-item" href="#cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
+					$html  .= '					<a href="#" class="dropdown-item cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
 					$html  .= '					</div>';
 					$html  .= '					</div>';
 

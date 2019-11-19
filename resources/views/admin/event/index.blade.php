@@ -486,7 +486,7 @@
           <div class="modal-body">  
               <div class="form-group">
                 <label for="message-text" class="form-control-label">Cancel Reason<span class="text-danger">*</span></label>
-                <textarea minlength="255" required rows="4" class="form-control" id="message-text"></textarea>
+                <textarea name="cancel_reason" maxlength="255" required rows="4" class="form-control" id="message-text"></textarea>
               </div>
          
           </div>
@@ -708,12 +708,24 @@
           {data: 'action'},
         ],
         createdRow: function (row, data, index) {
-
           $('#cancel-modal').on('shown.bs.modal', function () {
             $('#cancel-modal').find('textarea').trigger('focus');
-            $.ajax({
-              url: '{{ url('/event') }}/'+data.event_id+'/cancel',
+          });
 
+          $('.cancel-modal', row).click(function(){
+            $('#cancel-modal').modal('show');
+            $('form[name=cancel_form]').submit(function(e){
+              e.stopPropagation();
+              e.preventDefault();
+              $.ajax({
+                url: '{{ url('/event') }}/'+data.event_id+'/cancel',
+                type: 'post',
+                data: $(this).serialize(),
+              }).done(function(response){
+                eventActiveTable.ajax.reload(null, false);
+                $('form[name=cancel_form]')[0].reset();
+                 $('#cancel-modal').modal('hide');
+              });
             });
           });
 
