@@ -16,7 +16,7 @@
             <div class="col-4">
                   <div class="input-group input-group-sm">
                         <div class="kt-input-icon kt-input-icon--right">
-                            <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="pending-applied-date" >
+                            <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="pending-applied-date" >
                             <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                 <span><i class="la la-calendar"></i></span>
                             </span>
@@ -25,10 +25,10 @@
             </div>
             <div class="col-3">
                 <select name="" id="pending-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="pendingPermit.draw()" >
-                    <option selected disabled >REQUEST TYPE</option>
-                    <option value="new">New Application</option>
-                    <option value="amend">Amend Application</option>
-                    <option value="renew">Renew Application</option>
+                    <option selected disabled >{{ __('REQUEST TYPE') }}</option>
+                    <option value="new">{{ __('New Application') }}</option>
+                    <option value="amend">{{ __('Amend Application') }}</option>
+                    <option value="renew">{{ __('Renew Application') }}</option>
                 </select>
             </div>
             {{-- <div class="col-3">
@@ -38,15 +38,15 @@
                     <option value="modified">Amend</option>
                 </select>
             </div> --}}
-            <div class="col-1">
-                <button type="button" class="btn btn-sm btn-secondary" id="pending-btn-reset">RESET</button>
+            <div class="col-5">
+                <button type="button" class="btn btn-sm btn-secondary" id="pending-btn-reset">{{ __('RESET') }}</button>
             </div>
         </form>
     </div>
     <div class="col-md-3">
         <div class="form-group form-group-sm">
             <div class="kt-input-icon kt-input-icon--right">
-                <input type="search" class="form-control form-control-sm" placeholder="Search..." id="search-pending-request">
+                <input type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-pending-request">
                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                     <span><i class="la la-search"></i></span>
                 </span>

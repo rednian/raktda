@@ -511,7 +511,7 @@ class ArtistPermitController extends Controller
 	         	return ucwords($permit->request_type).' Application';
 	         })
            ->addColumn('action', function($permit){
-            return '<button class="btn btn-outline-danger btn-sm kt-margin-r-5">Cancel</button><a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-outline-success">Download</a>';
+            return '<button class="btn btn-outline-danger btn-sm kt-margin-r-5">' . __('Cancel') . '</button><a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-outline-success">' . __('Download') . '</a>';
            })
            ->addColumn('inspection_url', function($permit){
             return route('tasks.artist_permit.details', $permit->permit_id);

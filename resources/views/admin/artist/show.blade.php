@@ -3,10 +3,10 @@
 	 <section class="kt-portlet kt-portlet--head-sm">
 			<div class="kt-portlet__head kt-portlet__head--sm">
 				 <div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">Artist profile</span></h3></div>
+						<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST PROFILE') }}</span></h3></div>
 				 <div class="kt-portlet__head-toolbar">
 						<button id="clickme" class="btn btn-sm btn-maroon btn-elevate  kt-font-transform-u">
-							 <i class="la la-arrow-left"></i>Back
+							 <i class="la la-arrow-left"></i>{{ __('BACK') }}
                         </button>
 				 </div>
 
@@ -48,7 +48,7 @@
 															</div>
                                                             
 															<div class="kt-widget__subhead">
-																 <span>Current Company: 
+																 <span>{{ __('Current Company') }} : 
                                                                     <span class="kt-font-dark kt-font-bolder">
                                                                         {{ $artist_permit->permit()->latest()->first()->company->company_name }}
                                                                     </span>
@@ -186,7 +186,7 @@
 									</table>
 							 @else
 									@empty
-										 Artist permit is empty
+										 
 									@endempty
 							 @endif
 						</div>
@@ -197,14 +197,14 @@
 										 <tr>
 											<th>{{ __('UNBLOCKED/BLOCKED BY') }}</th>
 											<th>{{ __('REMARKS') }}</th>
-											<th>{{ __('ACTION DATE') }}</th>
+											<th>{{ __('DATE') }}</th>
 											<th>{{ __('ACTION TAKEN') }}</th>
 										 </tr>
 										 </thead>
 									</table>
 							 @else
 									@empty
-										 Artist status is empty
+										
 									@endempty
 							 @endif
 						</div>
