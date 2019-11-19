@@ -1,5 +1,8 @@
 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
     <div class="kt-form__section kt-form__section--first">
+        @component('permits.components.artist_permit_comments', ['staff_comments' =>
+        $staff_comments])
+        @endcomponent
         <div class="kt-wizard-v3__form">
             {{-- @if($from == 'edit')
             @include('permits.components.artist_comments')

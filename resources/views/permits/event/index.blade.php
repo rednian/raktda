@@ -52,7 +52,7 @@
                     <thead>
                         <tr>
                             <th>Refer No.</th>
-                            <th>Name</th>
+                            <th>{{__('Event Name')}}</th>
                             <th>From </th>
                             <th>To </th>
                             <th>@lang('words.venue')</th>
@@ -77,6 +77,7 @@
                             <th>Type</th>
                             <th>Actions</th>
                             <th>Details</th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -99,7 +100,7 @@
                                 <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
                                     data-parent="#accordion-address">
                                     <div class="card-body" style="padding: 1px;">
-                                        <table class="table table-borderless table- ">
+                                        <table class="table table-borderless">
                                             <tbody>
                                                 @if (!empty($types))
                                                 @foreach ($types as $type)
@@ -107,7 +108,7 @@
                                                     <td>
                                                         <span
                                                             style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
-                                                            {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 20)): ucfirst($type->name_ar)  }}
+                                                            {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)): ucfirst($type->name_ar)  }}
                                                     </td>
                                                     </span>
                                                 </tr>
@@ -235,7 +236,12 @@
 @section('script')
 
 <script>
-    $('#kt_tabs_list a').click(function(e) {
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#kt_tabs_list a').click(function(e) {
             e.preventDefault();
             $(this).tab('show');
         });
@@ -262,12 +268,6 @@
 
             calendarEvents();
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
         var table1 = $('#applied-events-table').DataTable({
             responsive: true,
             processing: true,
@@ -275,7 +275,6 @@
             searching: true,
             // order:[[6,'desc']],
             ajax:'{{route("company.event.fetch_applied")}}',
-
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
                 { data: 'name_en', name: 'name_en' },
@@ -283,7 +282,6 @@
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'venue_en', name: 'venue_en' },
                 { data: 'type.name_en', name: 'type.name_en' },
-                // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
@@ -360,6 +358,9 @@
             searching: true,
             deferRender: true,
             ajax:'{{route("company.event.fetch_valid")}}',
+            beforeSend: function (request) {
+                request.setRequestHeader("token", token);
+            },
             columns: [
                 { data: 'permit_number', name: 'permit_number' },
                 { data: 'name_en', name: 'name_en' },
@@ -370,6 +371,7 @@
                 // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
+                { data: 'download', name: 'download' },
             ],
             columnDefs: [
                 {
@@ -424,6 +426,9 @@
             deferRender: true,
             order:[[4,'desc']],
             ajax:   '{{route("company.event.fetch_draft")}}',
+            beforeSend: function (request) {
+                request.setRequestHeader("token", token);
+            },
             columns: [
                 { data: 'issued_date', name: 'issued_date' },
                 { data: 'expired_date', name: 'expired_date' },
@@ -514,7 +519,7 @@
             success: function(result){
                result = result.replace(/\s/g, '');
                 if(result != '') {
-                    if(result == 'new'){
+                    if(result == 'new' || result == 'active'){
                         $('#cancel_permit').modal('show');
                         $('#cancel_permit_id').val(id);
                         $('#cancel_permit_number').html('<strong>'+refno+'</strong>');

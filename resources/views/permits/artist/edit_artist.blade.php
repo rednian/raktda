@@ -366,76 +366,77 @@
 
 
 
-    var detailsValidator =  $('#artist_details').validate({
+    var detailsValidator = $("#artist_details").validate({
             ignore: [],
             rules: {
-                fname_en: 'required',
-                fname_ar: 'required',
-                lname_en: 'required',
-                lname_ar: 'required',
-                profession: 'required',
-                permit_type: 'required',
+                fname_en: "required",
+                fname_ar: "required",
+                lname_en: "required",
+                lname_ar: "required",
+                profession: "required",
+                permit_type: "required",
                 dob: {
                     required: true,
                     dateNL: true
                 },
-                uid_number: 'required',
+                uid_number: "required",
                 uid_expiry: {
                     required: true,
                     dateNL: true
                 },
-                passport: 'required',
-                pp_expiry:{
+                passport: "required",
+                pp_expiry: {
                     required: true,
                     dateNL: true
                 },
-                visa_type: 'required',
-                // visa_number: 'required',
+                visa_type: "required",
                 visa_expiry: {
                     required: true,
                     dateNL: true
                 },
-                sp_name: 'required',
-                nationality: 'required',
-                address: 'required',
+                sp_name: "required",
+                gender: "required",
+                nationality: "required",
+                address: "required",
                 mobile: {
                     // number: true,
-                    required : true
-                } ,
+                    required: true
+                },
                 email: {
                     required: true,
-                    email: true,
-                },
+                    email: true
+                }
             },
             messages: {
-                fname_en: '',
-                fname_ar: '',
-                lname_en: '',
-                lname_ar: '',
-                profession: '',
-                dob: '',
-                uid_number: '',
-                uid_expiry: '',
-                permit_type: '',
-                passport: '',
-                pp_expiry: '',
-                visa_type: '',
-                // visa_number: '',
-                visa_expiry: '',
-                sp_name: '',
-                gender: '',
-                nationality: '',
-                address: '',
+                fname_en: "",
+                fname_ar: "",
+                lname_en: "",
+                lname_ar: "",
+                profession: "",
+                dob: "",
+                uid_number: "",
+                uid_expiry: "",
+                permit_type: "",
+                passport: "",
+                pp_expiry: "",
+                visa_type: "",
+                visa_expiry: "",
+                sp_name: "",
+                gender: "",
+                nationality: "",
+                address: "",
                 mobile: {
                     // number: 'Please enter number',
-                    required: ''
+                    required: ""
                 },
                 email: {
-                    required: '',
-                    email: '',
-                },
-            },
+                    required: "",
+                    email: ""
+                }
+            }
         });
+
+
 
 
         var docRules = {};
