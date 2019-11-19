@@ -21,13 +21,14 @@
 	{
 		public function index()
 		{
+
 			// $user = new User();
 			// $user->email = 'rednianred@gmail.com';
 			// dd($user);
 			// $user->notify(new EventNotification());
 			// $user->notify(new EventNotification());
 
-			$event = Event::whereDate('expired_date', Carbon::now())->update(['status'=>'expired']);
+			$event = Event::whereDate('expired_date', '<', Carbon::now())->update(['status'=>'expired']);
 			$types = EventType::all();
 			$new_request = '';
 			$pending_request = '';
@@ -41,6 +42,11 @@
 					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()]);
 				})->count(),
 			]);
+		}
+
+		public function showAll(Request $request, Event $event)
+		{
+
 		}
 
 		public function calendar(Request $request)
@@ -202,6 +208,7 @@
 
 		public function show(Request $request, Event $event)
 		{
+			// dd($event->permits);
 			return view('admin.event.show', ['page_title' => '', 'event'=>$event, 'tab'=>$request->tab]);
 		}
 
@@ -330,7 +337,36 @@
 					}
 					return $event->owner->NameAr;
 				})
-				->addColumn('event_name', function($event) use ($user){
+				->addColumn('website', function($event){
+					$display = $event->is_display_web ? 'checked="checked"' : null; 
+					// return '<div class="custom-control   custom-checkbox">
+					//     <input type="checkbox" class="custom-control-input " id="switch1">
+					//     <label class="custom-control-label website" for="switch1">Toggle me</label>
+					//   </div>';
+
+
+
+					$html =  '<span class="kt-switch website  kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
+					$html .=  '	<label>';
+					$html .=  '	<input class="website" type="checkbox" '.$display.' name="">';
+					$html .=  '		<span></span>';
+					$html .=  '	</label>';
+					$html .=  '</span>';
+					return $html;
+				})
+				->addColumn('show', function($event){
+					$display = $event->is_display_all ? 'checked="checked"' : null; 
+
+					$html =  '<span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
+					$html .=  '	<label >';
+					$html .=  '	<input data-name="'.$event->name_en.'" data-event="'.$event->event_id.'" class="display-all" type="checkbox" '.$display.' name="" >';
+					$html .=  '		<span ></span>';
+					$html .=  '	</label>';
+					$html .=  '</span>';
+					return $html;
+
+				})
+				->addColumn('event_name', function($event) use ($user){	
 					if ($user->LanguageId == 1) {return ucwords($event->name_en);} return $event->name_ar; })
 				->addColumn('type', function($event){ return ucwords(userType($event->owner->type)); })
 				->editColumn('created_at', function($event){ return $event->created_at->format('d-M-Y'); })
@@ -338,9 +374,9 @@
 				->editColumn('status', function($event){ return permitStatus($event->status); })
 				->addColumn('action', function($event){
 					 	if($event->status == 'rejected'){ return null; }
-					 	return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i> DOWNLOAD</a>';
+					 	return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i></a>';
 					 })
-					 ->rawColumns(['status', 'action'])
+					 ->rawColumns(['status', 'action', 'show', 'website'])
 //				 ->setTotalRecords($totalRecords)s
 					 ->make(true);
 			}

@@ -347,12 +347,15 @@
                 <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
                     <thead>
                         <tr>
+                            <!-- <th></th> -->
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('PERMIT OWNER') }}</th>
                             <th>{{ __('EVENT NAME') }}</th>
-                            <th>{{ __('PERMIT START') }}</th>
+                            <!-- <th>{{ __('PERMIT START') }}</th> -->
                             <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('SHOW TO ALL') }}</th>
+                            <th>{{ __('WEBSITE') }}</th>
                             <th>{{ __('ACTION') }}</th>
                         </tr>
                     </thead>
@@ -627,7 +630,7 @@
         cancelClass: 'btn-secondary btn-sm btn-elevate',
         startDate: start,
         endDate: end,
-        maxDate: new Date,
+        // maxDate: new Date,
         ranges: {
           'Today': [moment(), moment()],
           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -656,26 +659,54 @@
           }
         },
         columnDefs: [
-          // {targets: '_all', className: 'no-wrap'},
+        //   {
+        //     targets: [0], className: 'no-wrap', 
+        //     checkboxes:{
+        //       'selectRow': true
+        //   }
+        // },
           {targets: [5,6], className: 'no-wrap'}
         ],
+        // select: { 'style': 'multi' },
         columns: [
+          // {data: 'event_id'},
           {data: 'reference_number'},
           // {data: 'permit_number'},
           {data: 'establishment_name'},
           {data: 'owner'},
           {data: 'event_name'},
-          {data: 'start'},
+          // {data: 'start'},
           {data: 'type'},
+          {data: 'show'},
+          {data: 'website'},
           {data: 'action'},
         ],
         createdRow: function (row, data, index) {
+          $('display-all', row).change(function(e){
+            var event = $(this);
+            e.stopPropagation();
+            bootbox.confirm('Are you sure you want to show the <span class="text-success">'+event.attr('name')+'</span> event to all the client\'s calendar?', function(result){
+              if(result){
+                // $.ajax({
+                //   url: '{{ url('/event') }}/'+data.event_id+'/show-all',
+                // });
+              }
+            });
+          });
+
+          $('td .website', row).change(function(e){
+            e.stopPropagation();
+            alert();
+          });
+
           $('.btn-download', row).click(function(e){e.stopPropagation();});
           $(row).click(function () {
             location.href = '{{ url('/event') }}/' + data.event_id+'?tab=active-permit';
           });
         }
       });
+
+    
       
       //clear fillte button
       $('#active-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); eventActiveTable.draw();});
