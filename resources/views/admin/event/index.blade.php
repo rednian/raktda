@@ -303,7 +303,7 @@
                  </div>
                  <div class="col-8">
                    <form class="form-row">
-                     <div class="col-4">
+                     {{-- <div class="col-4">
                          <div class="input-group input-group-sm">
                              <div class="kt-input-icon kt-input-icon--right">
                                <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="PERMIT DURATION DATE" id="active-applied-date" >
@@ -312,7 +312,7 @@
                                </span>
                              </div>
                        </div>
-                     </div>
+                     </div> --}}
                      <div class="col-3">
                        <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventActiveTable.draw()" >
                          <option selected disabled >APPLICANT TYPE</option>
@@ -626,6 +626,9 @@
           {data: 'action'},
         ],
         createdRow: function (row, data, index) {
+          $('button', row).click(function(e){
+            e.stopPropagation();
+          });
           $('.btn-download', row).click(function(e) { e.stopPropagation(); });
           $(row).click(function () {
             location.href = '{{ url('/event') }}/' + data.event_id+'?tab=archive-permit';
@@ -685,15 +688,8 @@
           }
         },
         columnDefs: [
-        //   {
-        //     targets: [0], className: 'no-wrap', 
-        //     checkboxes:{
-        //       'selectRow': true
-        //   }
-        // },
           {targets: [5,6], className: 'no-wrap'}
         ],
-        // select: { 'style': 'multi' },
         columns: [
           // {data: 'event_id'},
           {data: 'reference_number'},
@@ -708,6 +704,7 @@
           {data: 'action'},
         ],
         createdRow: function (row, data, index) {
+          console.log(row);
           $('#cancel-modal').on('shown.bs.modal', function () {
             $('#cancel-modal').find('textarea').trigger('focus');
           });
@@ -729,22 +726,31 @@
             });
           });
 
-    
-          $('display-all', row).change(function(e){
-            var event = $(this);
-            e.stopPropagation();
-            bootbox.confirm('Are you sure you want to show the <span class="text-success">'+event.attr('name')+'</span> event to all the client\'s calendar?', function(result){
+          $('.website', row).change(function(){
+            var val = $(this).is(':checked') ? 1 : null;
+            bootbox.confirm('Are you sure you want to show the <span class="text-success kt-font-transform-u">'+data.name_en+'</span> event to  the website calendar?', function(result){
               if(result){
-                // $.ajax({
-                //   url: '{{ url('/event') }}/'+data.event_id+'/show-all',
-                // });
+                $.ajax({
+                  url: '{{ url('/event') }}/'+data.event_id+'/show-web',
+                  data: {is_display_web: val }
+                }).done(function(response){
+                });
               }
             });
           });
 
-          $('td .website', row).change(function(e){
-            e.stopPropagation();
-            alert();
+
+          $('.display-all', row).change(function(e){
+            var val = $(this).is(':checked') ? 1 : null;
+            bootbox.confirm('Are you sure you want to show the <span class="text-success kt-font-transform-u">'+data.name_en+'</span> event to all the client\'s calendar?', function(result){
+              if(result){
+                $.ajax({
+                  url: '{{ url('/event') }}/'+data.event_id+'/show-all',
+                  data: {is_display_all: val }
+                }).done(function(response){
+                });
+              }
+            });
           });
 
           $('.btn-download', row).click(function(e){e.stopPropagation();});

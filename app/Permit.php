@@ -28,9 +28,9 @@ class Permit extends Model
          return false;
     }
 
-    public function events()
+    public function event()
     {
-         return $this->belongsToMany(Event::class, 'event_artist_permit', 'permit_id', 'event_id');
+         return $this->belongsTo(Event::class,'event_id');
     }
 
     public function approval()

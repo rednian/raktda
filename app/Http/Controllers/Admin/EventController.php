@@ -58,9 +58,28 @@
 			}
 		}
 
+		public function showWeb(Request $request, Event $event)
+		{
+			try {
+				$event->update(['is_display_web'=>$request->is_display_web]);
+				$result = ['success', ucfirst($event->name_en).' has will display in the website calendar ', 'Success'];
+			} catch (Exception $e) {
+				$result = ['error', $e->getMessage(), 'Error'];
+			}
+			 return response()->json(['message' => $result]);
+		}
+
+
+
 		public function showAll(Request $request, Event $event)
 		{
-
+			try {
+				$event->update(['is_display_all'=>$request->is_display_all]);
+				$result = ['success', ucfirst($event->name_en).' has will display in the client\'s calendar ', 'Success'];
+			} catch (Exception $e) {
+				$result = ['error', $e->getMessage(), 'Error'];
+			}
+			 return response()->json(['message' => $result]);
 		}
 
 		public function calendar(Request $request)
@@ -341,14 +360,8 @@
 				})
 				->addColumn('website', function($event){
 					$display = $event->is_display_web ? 'checked="checked"' : null; 
-					// return '<div class="custom-control   custom-checkbox">
-					//     <input type="checkbox" class="custom-control-input " id="switch1">
-					//     <label class="custom-control-label website" for="switch1">Toggle me</label>
-					//   </div>';
 
-
-
-					$html =  '<span class="kt-switch website  kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
+					$html =  '<span class="kt-switch  kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
 					$html .=  '	<label>';
 					$html .=  '	<input class="website" type="checkbox" '.$display.' name="">';
 					$html .=  '		<span></span>';
@@ -361,7 +374,7 @@
 
 					$html =  '<span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
 					$html .=  '	<label >';
-					$html .=  '	<input data-name="'.$event->name_en.'" data-event="'.$event->event_id.'" class="display-all" type="checkbox" '.$display.' name="" >';
+					$html .=  '	<input class="display-all" type="checkbox" '.$display.' name="" >';
 					$html .=  '		<span ></span>';
 					$html .=  '	</label>';
 					$html .=  '</span>';
@@ -379,24 +392,19 @@
 					$html  .= '	<button type="button" class="btn btn-secondary btn-elevate-hover btn-icon btn-sm btn-icon-md btn-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 					$html  .= '<i class="flaticon-more-1"></i>';
 					$html  .= '	</button>';
-					$html  .= '		<div class="dropdown-menu dropdown-menu-right">';
-					$html  .= '	<a class="dropdown-item" href="'.route('admin.event.show', $event->event_id).'"><i class="la la-calendar-check-o"></i>Event Details</a>';
-					$html  .= '				<a class="dropdown-item" href="'.route('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
-					$html  .= '				<div class="dropdown-divider"></div>';
-					$html  .= '					<a href="#" class="dropdown-item cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
-					$html  .= '					</div>';
+					if ($event->status != 'cancelled' || $event->status != 'rejected') {
+						$html  .= '		<div class="dropdown-menu dropdown-menu-right">';
+						$html  .= '	<a class="dropdown-item" href="'.route('admin.event.show', $event->event_id).'"><i class="la la-calendar-check-o"></i>Event Details</a>';
+						$html  .= '				<a class="dropdown-item" target="_blank" href="'.route('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
+						$html  .= '				<div class="dropdown-divider"></div>';
+						$html  .= '					<a href="javascript:void(0)" class="dropdown-item cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
+						$html  .= '					</div>';
+					}
+	
 					$html  .= '					</div>';
 
 					return $html;
 					
-																			
-																				
-																		
-																		
-																			
-	
-					 	// if($event->status == 'rejected'){ return null; }
-					 	// return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i></a>';
 					 })
 					 ->rawColumns(['status', 'action', 'show', 'website'])
 //				 ->setTotalRecords($totalRecords)s

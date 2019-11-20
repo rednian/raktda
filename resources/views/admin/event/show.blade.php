@@ -24,15 +24,82 @@
          </div>
     </div>
     <div class="kt-portlet__body kt-padding-t-5">
-        <section class="row kt-margin-b-5">
-            <div class="col-md-6">
+      @if ($event->permit)
+      <a href="{{ route('admin.artist_permit.show', $event->permit->permit_id) }}">
+        <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
+          <div class="alert-text">This event has an artist with reference number <span class="kt-font-danger">{{ $event->permit->reference_number }}</span>
+          </div>
+        </div>
+        </a>
+      @endif
+      <div class="kt-widget kt-widget--project-1">
+          <div class="kt-widget__head">
+            <div class="kt-widget__label">
+              <div class="kt-widget__media">
+                <span class="kt-userpic kt-userpic--lg kt-userpic--circle">
+                  <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}" alt="image">
+                </span>
+              </div>
+              <div class="kt-widget__info">
+                <span class="kt-widget__title">
+                 {{ Auth::user()->LanguageId == 1 ? ucwords($event->name_en) : ucwords($event->name_ar) }}
+                </span>
+                <span class="kt-widget__desc">
+                  <small> {{ Auth::user()->LanguageId == 1 ? ucwords($event->type->name_en) : $event->type->name_ar }}</small>
+                  <br>{!! permitStatus($event->status) !!}
+                </span>
+              </div>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+              <a href="#" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown">
+                <i class="flaticon-more-1"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right">
+                <ul class="kt-nav">
+                  <li class="kt-nav__item">
+                    <a href="#" class="kt-nav__link">
+                      <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                      <span class="kt-nav__link-text">Reports</span>
+                    </a>
+                  </li>
+                  <li class="kt-nav__item">
+                    <a href="#" class="kt-nav__link">
+                      <i class="kt-nav__link-icon flaticon2-send"></i>
+                      <span class="kt-nav__link-text">Messages</span>
+                    </a>
+                  </li>
+                  <li class="kt-nav__item">
+                    <a href="#" class="kt-nav__link">
+                      <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+                      <span class="kt-nav__link-text">Charts</span>
+                    </a>
+                  </li>
+                  <li class="kt-nav__item">
+                    <a href="#" class="kt-nav__link">
+                      <i class="kt-nav__link-icon flaticon2-avatar"></i>
+                      <span class="kt-nav__link-text">Members</span>
+                    </a>
+                  </li>
+                  <li class="kt-nav__item">
+                    <a href="#" class="kt-nav__link">
+                      <i class="kt-nav__link-icon flaticon2-settings"></i>
+                      <span class="kt-nav__link-text">Settings</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="kt-widget__body kt-padding-l-5 kt-padding-r-5">
+            <span class="kt-widget__text kt-margin-t-15">
+              {{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : ucfirst($event->description_ar)  }}
+            </span>
+            <section class="row kt-margin-t-15">
+              <div class="col-md-6 col-xs-6 col-xs-12 col-lg-6">
                 <section class="border kt-padding-5">
                     <h6 class="kt-font-dark">Event Information</h6>
                     <table class="table table-sm table-hover table-borderless">
-                        <tr>
-                            <td width="27%">Permit Status : </td>
-                            <td class="kt-font-dark">{!! permitStatus($event->status) !!}</td>
-                        </tr>
+                        
                         <tr>
                             <td>Reference No. </td>
                             <td class="kt-font-dark">{{ $event->reference_number }}</td>
@@ -43,10 +110,7 @@
                              <td class="kt-font-dark">{{ $event->permit_number }}</td>
                         </tr>
                         @endif
-                        <tr>
-                            <td>Event Name: </td>
-                            <td class="kt-font-dark">{{  ucfirst($event->name_en) }}</td>
-                        </tr>
+                        
                         
                         <tr>
                             <td>Applied Date: </td>
@@ -70,10 +134,16 @@
                             <td>Address : </td>
                              <td class="kt-font-dark">{{ $event->address.' '.$event->area->area_en.' '.$event->emirate->name_en.' '.$event->country->name_en }}</td>
                         </tr>
+                        @if ($event->status == 'cancelled')
+                        <tr>
+                            <td>Cancel Reason:</td>
+                             <td class="kt-font-dark">{{ ucwords($event->cancel_reason) }}</td>
+                        </tr>
+                        @endif
                     </table>
                 </section>
-            </div>
-            <div class="col-md-6">
+              </div>
+              <div class="col-md-6 col-xs-6 col-xs-12 col-lg-6">
                 <section class="border kt-padding-5">
                     <h6 class="kt-font-dark">Permit Owner Information</h6>
                     <table class="table table-sm table-hover table-borderless">
@@ -123,8 +193,65 @@
                      @endif
                      
                 </section>
+              </div>
+            </section>
+            
+            
+            <div class="kt-widget__content">
+              <div class="kt-widget__details">
+                <span class="kt-widget__subtitle">FOOD TRUCKS</span>
+                <span class="kt-widget__value">{{ $event->no_of_trucks ? $event->no_of_trucks : 0 }}</span>
+              </div>
+              <div class="kt-widget__details">
+                <span class="kt-widget__subtitle">ARTIST ON EVENT</span>
+                @if ($event->permit()->count() > 0)
+                  <div class="kt-badge kt-badge__pics">
+                    @foreach ($event->permit->artistpermit as $index => $artist)
+                      @if (++$index <= 5)
+                        <a href="" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="dark" data-placement="top" title="" data-original-title="{{ ucwords($artist->fullname) }}">
+                          <img src="{{ asset('/storage/'.$artist->thumbnail) }}" alt="image" class="img-thumbnail">
+                        </a>
+                        @else
+                        <a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
+                          +{{  ++$index - 5 }}
+                        </a>
+                      @endif
+                    @endforeach
+                  </div>
+                  @else
+                   <span class="kt-widget__value">0</span>
+                @endif
+                
+              </div>
+            </div>
+          </div>
+          {{-- <div class="kt-widget__footer">
+            <div class="kt-widget__wrapper">
+              <div class="kt-widget__section">
+                <div class="kt-widget__blog">
+                  <i class="flaticon2-list-1"></i>
+                  <a href="#" class="kt-widget__value kt-font-brand">72 Tasks</a>
+                </div>
+                <div class="kt-widget__blog">
+                  <i class="flaticon2-talk"></i>
+                  <a href="#" class="kt-widget__value kt-font-brand">648 Comments</a>
+                </div>
+              </div>
+              <div class="kt-widget__section">
+                <button type="button" class="btn btn-brand btn-sm btn-upper btn-bold">details</button>
+              </div>
+            </div>
+          </div> --}}
+        </div>
+        <section class="row kt-margin-b-5">
+            <div class="col-md-6">
+                
+            </div>
+            <div class="col-md-6">
+                
             </div>
         </section>
+      
         @if ($event->note_en || $event->note_ar)
           <table class="table">
             <thead>
