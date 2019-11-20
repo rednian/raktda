@@ -59,7 +59,7 @@ return [
     'po_box' => 'PO Box',
     'document_name' => 'Document Name',
     'submit' => 'Submit',
-    'upload_documents' => 'Upload Documents',
+    'upload_documents' => 'Upload Docs',
     'sign_out' => 'Sign Out',
     'change' => 'Change',
     'select' => 'Select',

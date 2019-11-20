@@ -14,56 +14,8 @@
         <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
             <div class="kt-grid__item">
 
-                <!--begin: Form Wizard Nav -->
-                <div class="kt-wizard-v3__nav">
-                    <div class="kt-wizard-v3__nav-items" id="event-wizard--nav">
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                            data-ktwizard-state="current" id="check_inst">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>01</span> Instructions
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="event_det">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>02</span> Event Details
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> Upload Docs
+                @include('permits.event.common.nav')
 
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>04</span> Payment
-
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </div>
-                        <div class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>05</span> Happiness
-
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
             </div>
 
             <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
@@ -75,72 +27,8 @@
                 {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
                 <div class="kt-form w-100 px-5" id="kt_form">
                     <!--begin: Form Wizard Step 1-->
-                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
-                        <div class="kt-form__section kt-form__section--first">
-                            <!--begin::Accordion-->
-                            <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
 
-
-                                <div class="card">
-                                    <div class="card-header" id="headingThree6">
-                                        <div class="card-title collapsed" data-toggle="collapse"
-                                            data-target="#collapseThree6" aria-expanded="false"
-                                            aria-controls="collapseThree6">
-                                            <h6 class="kt-font-transform-u"> Permit Fees Structure</h6>
-                                        </div>
-                                    </div>
-                                    <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
-                                        data-parent="#accordionExample6">
-                                        <div class="card-body">
-
-
-                                            <table class="table table-borderless">
-                                                <tr>
-                                                    <th>Event Permit Type</th>
-                                                    <th class="text-right">Fee (AED)</th>
-                                                </tr>
-                                                @foreach($event_types as $pt)
-                                                <tr>
-                                                    <td>{{$pt->name_en}}</td>
-                                                    <td class="text-right">{{number_format($pt->amount,2)}}</td>
-                                                </tr>
-                                                @endforeach
-                                            </table>
-
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header" id="headingFour6">
-                                        <div class="card-title collapsed" data-toggle="collapse"
-                                            data-target="#collapseFour6" aria-expanded="false"
-                                            aria-controls="collapseFour6">
-                                            <h6 class="kt-font-transform-u">Rules and Conditions</h6>
-                                        </div>
-                                    </div>
-                                    <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
-                                        data-parent="#accordionExample6">
-                                        <div class="card-body">
-                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                            terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                                            skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                            Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                    <input type="checkbox" id="agree" name="agree" checked disabled> I Read
-                                    and understand all
-                                    service rules, And agree to continue submitting it.
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
+                    @include('permits.event.common.instructions', ['event_types' => $event_types])
 
 
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -167,8 +55,8 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="event_type_id"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            Event Type <small>( <span
-                                                                    class="text-danger">required</span>
+                                                            {{__('Event Type')}} <small>( <span
+                                                                    class="text-danger">*</span>
                                                                 )</small></label>
                                                         <select class="form-control form-control-sm "
                                                             name="event_type_id" id="event_type_id" placeholder="Type"
@@ -186,8 +74,8 @@
 
                                                     <div class="col-md-4 form-group form-group-sm">
                                                         <label for="name_en"
-                                                            class=" col-form-label kt-font-bold text-right">Event
-                                                            Name <small>( <span class="text-danger">required
+                                                            class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
+                                                            <small>( <span class="text-danger">*
                                                                 </span>)</small></label>
                                                         <input type="text" class="form-control form-control-sm "
                                                             name="name_en" id="name_en" placeholder="Event Name"
@@ -197,7 +85,7 @@
                                                     <div class=" col-md-4 form-group form-group-sm">
                                                         <label for="name_ar"
                                                             class=" col-form-label kt-font-bold text-right">Event
-                                                            Name - Ar<small>( <span class="text-danger">required
+                                                            Name - Ar<small>( <span class="text-danger">*
                                                                 </span>)</small></label>
                                                         <input type="text" class="form-control form-control-sm "
                                                             name="name_ar" id="name_ar" dir="rtl"
@@ -206,8 +94,8 @@
 
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="issued_date"
-                                                            class=" col-form-label kt-font-bold text-right">From
-                                                            Date <small>( <span class="text-danger">required</span>
+                                                            class=" col-form-label kt-font-bold text-right">{{__('From Date')}}
+                                                            <small>( <span class="text-danger">*</span>
                                                                 )</small></label>
                                                         <div class="input-group input-group-sm date">
                                                             <div class="kt-input-icon kt-input-icon--right">
@@ -227,8 +115,8 @@
 
 
                                                     <div class="col-md-4 form-group form-group-sm">
-                                                        <label class="col-form-label">From
-                                                            Time <small>( <span class="text-danger">required</span>
+                                                        <label class="col-form-label">{{__('From Time')}}<small>( <span
+                                                                    class="text-danger">*</span>
                                                                 )</small></label>
                                                         <div class="input-group input-group-sm timepicker">
                                                             <div class="kt-input-icon kt-input-icon--right">
@@ -248,7 +136,7 @@
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="venue_en"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            Venue <small>( <span class="text-danger">required</span>
+                                                            {{__('Venue')}} <small>( <span class="text-danger">*</span>
                                                                 )</small></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="venue_en" id="venue_en" placeholder="Venue"
@@ -259,8 +147,8 @@
 
                                                     <div class="col-md-4 form-group form-group-sm ">
                                                         <label for="expired_date"
-                                                            class=" col-form-label kt-font-bold text-right">To
-                                                            Date <small>( <span class="text-danger">required</span>
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            {{__('To Date')}}<small>( <span class="text-danger">*</span>
                                                                 )</small></label>
                                                         <div class="input-group input-group-sm date">
                                                             <div class="kt-input-icon kt-input-icon--right">
@@ -279,8 +167,8 @@
                                                     </div>
 
                                                     <div class="col-md-4 form-group form-group-sm">
-                                                        <label class="col-form-label">To Time <small>( <span
-                                                                    class="text-danger">required</span>
+                                                        <label class="col-form-label">{{__('To TIme')}}<small>( <span
+                                                                    class="text-danger">*</span>
                                                                 )</small></label>
 
                                                         <div class="input-group input-group-sm timepicker">
@@ -326,7 +214,8 @@
                                                     <div class="col-md-4 form-group form-group-sm">
                                                         <label for="description_en"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            Description <span class="text-danger">*</span></label>
+                                                            {{__('Description')}}<span
+                                                                class="text-danger">*</span></label>
                                                         <textarea type="text" class="form-control form-control-sm"
                                                             name="description_en" id="description_en"
                                                             placeholder="Description" rows="1"
@@ -379,10 +268,6 @@
                                                                 @endfor
                                                         </select>
                                                     </div>
-
-
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -394,8 +279,7 @@
                                         <div class="card-title collapsed" data-toggle="collapse"
                                             data-target="#collapseTwo6" aria-expanded="false"
                                             aria-controls="collapseTwo6">
-                                            <h6 class="kt-font-transform-u">Contact
-                                                information
+                                            <h6 class="kt-font-transform-u">{{__('Contact Information')}}
                                             </h6>
                                         </div>
                                     </div>
@@ -403,23 +287,20 @@
                                     <div class="collapse show" aria-labelledby="headingTwo6"
                                         data-parent="#accordionExample6">
                                         <div class="card-body">
-
                                             <div class="row">
-
-
                                                 <div class="col-md-4 form-group form-group-sm ">
                                                     <label for="address"
-                                                        class=" col-form-label kt-font-bold text-right">Address
-                                                        <small>( <span class="text-danger">required</span>
+                                                        class=" col-form-label kt-font-bold text-right">{{__('Address')}}
+                                                        <small>( <span class="text-danger">*</span>
                                                             )</small></label>
                                                     <input type="text" class="form-control form-control-sm "
-                                                        name="address" id="address" placeholder="Address"
+                                                        name="address" id="address" placeholder="{{__('Address')}}"
                                                         value="{{$event->address}}">
                                                 </div>
 
                                                 <div class="col-md-4 form-group form-group-sm ">
                                                     <label for="emirate_id"
-                                                        class=" col-form-label kt-font-bold text-right">Emirate
+                                                        class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
                                                     </label>
                                                     <input type="text" class="form-control form-control-sm"
                                                         value="Ras Al Khaimah" readonly>
@@ -430,11 +311,11 @@
 
                                                 <div class="col-md-4 form-group form-group-sm ">
                                                     <label for="area_id"
-                                                        class=" col-form-label kt-font-bold text-right">Area
+                                                        class=" col-form-label kt-font-bold text-right">{{__('Area')}}
                                                     </label>
                                                     <select class="  form-control form-control-sm " name="area_id"
                                                         id="area_id">
-                                                        <option value="">Select</option>
+                                                        <option value="">{{__('Select')}}</option>
                                                         @foreach($areas as $ar)
                                                         <option value="{{$ar->id}}"
                                                             {{$ar->id == $event->area_id ? 'selected' : ''}}>
@@ -480,26 +361,26 @@
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
-                            Previous
+                            {{__('Previous')}}
                         </div>
 
 
                         <a href="{{route('event.index')}}#applied">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                Back
+                                {{__('Back')}}
                             </div>
                         </a>
 
 
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                            Update & Submit
+                            {{__('Submit')}}
                         </div>
 
 
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
-                            Next Step
+                            {{__('Next')}}
                         </div>
 
                     </div>

@@ -20,7 +20,7 @@
                         <a href="{{route('artist.index')}}#applied"
                             class="btn btn--maroon kt-font-bold kt-font-transform-u btn-sm">
                             <i class="la la-arrow-left"></i>
-                            Back
+                            {{__('Back')}}
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
@@ -34,15 +34,15 @@
             <div class="kt-portlet__body">
                 <div class="kt-widget5__info pb-4">
                     <div class="pb-2">
-                        <span>From Date:</span>&emsp;
+                        <span>{{__('From Date')}}:</span>&emsp;
                         <span
                             class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
-                        <span>To Date:</span>&emsp;
+                        <span>{{__('To Date')}}:</span>&emsp;
                         <span
                             class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                        <span>Location:</span>&emsp;
+                        <span>{{__('Location')}}:</span>&emsp;
                         <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
-                        <span>Reference No:</span>&emsp;
+                        <span>{{__('Reference No')}}:</span>&emsp;
                         <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                                 <th>@lang('words.mobile_number')</th>
                                 {{-- <th>Email</th> --}}
                                 <th>@lang('words.status')</th>
-                                <th class="text-center">Actions</th>
+                                <th class="text-center">{{__('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>

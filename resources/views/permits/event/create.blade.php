@@ -17,55 +17,8 @@
             <div class="kt-grid__item">
 
                 <!--begin: Form Wizard Nav -->
-                <div class="kt-wizard-v3__nav">
-                    <div class="kt-wizard-v3__nav-items" id="event-wizard--nav">
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                            data-ktwizard-state="current" id="check_inst">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>01</span> Instructions
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="event_det">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>02</span> Event Details
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> Upload Docs
 
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step" id="mk_payment">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>04</span> Payment
-
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </div>
-                        <div class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>05</span> Happiness
-
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                @include('permits.event.common.nav')
 
                 <!--end: Form Wizard Nav -->
             </div>
@@ -82,25 +35,21 @@
                             <div class="kt-wizard-v3__form">
                                 <!--begin::Accordion-->
                                 <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-
-
                                     <div class="card">
                                         <div class="card-header" id="headingThree6">
                                             <div class="card-title collapsed" data-toggle="collapse"
                                                 data-target="#collapseThree6" aria-expanded="false"
                                                 aria-controls="collapseThree6">
-                                                <h6 class="kt-font-transform-u"> Permit Fees Structure</h6>
+                                                <h6 class="kt-font-transform-u"> {{__('Permit Fee')}}</h6>
                                             </div>
                                         </div>
                                         <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
                                             data-parent="#accordionExample6">
                                             <div class="card-body">
-
-
                                                 <table class="table table-borderless">
                                                     <tr>
-                                                        <th>Event Permit Type</th>
-                                                        <th class="text-right">Fee (AED)</th>
+                                                        <th>{{__('Event Type')}}</th>
+                                                        <th class="text-right">{{__('Fee')}} / {{__('Day')}} (AED)</th>
                                                     </tr>
                                                     @foreach($event_types as $pt)
                                                     <tr>
@@ -134,9 +83,8 @@
                                         </div>
                                     </div>
                                     <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                        <input type="checkbox" id="agree" name="agree"> I Read
-                                        and understand all
-                                        service rules, And agree to continue submitting it.
+                                        <input type="checkbox" id="agree" name="agree">
+                                        {{__('I Read and understand all service rules and agree to continue submitting it.')}}
                                         <span></span>
                                     </label>
                                 </div>
@@ -152,11 +100,10 @@
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
-                                                <div class="card-title collapsed" data-toggle="collapse"
+                                                <div class="card-title show" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u">Event
-                                                        information</h6>
+                                                    <h6 class="kt-font-transform-u kt-font-dark">Event Details</h6>
                                                 </div>
                                             </div>
                                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -164,16 +111,16 @@
                                                 <div class="card-body">
                                                     <div class="row">
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
+                                                        <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Event Type <span class="text-danger">*</span>
+                                                                {{__('Event Type')}} <span class="text-danger">*</span>
                                                             </label>
                                                             <select class="form-control form-control-sm"
                                                                 name="event_type_id" id="event_type_id"
                                                                 placeholder="Type"
                                                                 onchange="getRequirementsList(this.value)">
-                                                                <option value="">Select</option>
+                                                                <option value="">{{__('Select')}}</option>
                                                                 @foreach ($event_types as $pt)
                                                                 <option value="{{$pt->event_type_id}}">
                                                                     {{ucwords($pt->name_en)}}</option>
@@ -183,33 +130,116 @@
                                                         </div>
 
 
-                                                        <div class="col-md-4 form-group form-group-sm">
+                                                        <div class="col-md-4 form-group form-group-xs">
                                                             <label for="name_en"
-                                                                class=" col-form-label kt-font-bold text-right">Event
-                                                                Name <span class="text-danger">*</span></label>
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}<span
+                                                                    class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                name="name_en" id="name_en" placeholder="Event Name">
+                                                                name="name_en" id="name_en"
+                                                                placeholder="{{__('Event Name')}}">
                                                         </div>
 
-                                                        <div class=" col-md-4 form-group form-group-sm">
+                                                        <div class=" col-md-4 form-group form-group-xs">
                                                             <label for="name_ar"
-                                                                class=" col-form-label kt-font-bold text-right">Event
-                                                                Name - Ar<span class="text-danger">*</span></label>
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Event Name - Ar')}}<span
+                                                                    class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm "
                                                                 name="name_ar" dir="rtl" id="name_ar"
-                                                                placeholder="Event Name - Ar">
+                                                                placeholder="{{__('Event Name - Ar')}}">
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
+
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="description_en"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Description')}}<span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea type="text" class="form-control form-control-sm"
+                                                                name="description_en" id="description_en"
+                                                                placeholder="{{__('Description')}}" rows="1"
+                                                                style="resize:none"></textarea>
+                                                        </div>
+
+                                                        <div class=" col-md-4 form-group form-group-xs ">
+                                                            <label for=" description_ar"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                Description - Ar <span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea class="form-control form-control-sm"
+                                                                name="description_ar" dir="rtl" id="description_ar"
+                                                                placeholder="Description - Ar" rows="1"
+                                                                style="resize:none"></textarea>
+                                                        </div>
+
+
+
+                                                        <div class="col-md-4  form-group form-group-xs ">
+                                                            <label class=" col-form-label kt-font-bold text-right">
+                                                                Do you have any Food truck ?</label>
+                                                            <div class="kt-radio-inline">
+                                                                <label class="kt-radio kt-radio--solid">
+                                                                    <input type="radio" name="isTruck" value="1"
+                                                                        onclick="checkTruck(1)"> Yes
+                                                                    <span></span>
+                                                                </label>
+                                                                <label class="kt-radio kt-radio--solid">
+                                                                    <input type="radio" name="isTruck" value="0" checked
+                                                                        onclick="checkTruck(0)"> No
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs "
+                                                            id="how_many_div">
+                                                            <label for="no_of_trucks"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                How Many ?<span class="text-danger">*</span></label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="no_of_trucks" id="no_of_trucks">
+                                                                <option value=" ">Select</option>
+                                                                @for($i = 1;$i < 15; $i++) <option value="{{$i}}">{{$i}}
+                                                                    </option>
+                                                                    @endfor
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="card kt-margin-t-5">
+                                            <div class="card-header" id="headingTwo6">
+                                                <div class="card-title show" data-toggle="collapse"
+                                                    data-target="#collapseTwo6" aria-expanded="false"
+                                                    aria-controls="collapseTwo6">
+                                                    <h6 class="kt-font-transform-u kt-font-dark">Date Details
+                                                    </h6>
+                                                </div>
+                                            </div>
+
+                                            <div class="collapse show" aria-labelledby="headingTwo6"
+                                                data-parent="#accordionExample6" id="collapseTwo6">
+                                                <div class="card-body">
+                                                    <div class="row">
+
+                                                        <div class="col-md-3 form-group form-group-xs ">
                                                             <label for="issued_date"
-                                                                class=" col-form-label kt-font-bold text-right">From
-                                                                Date <span class="text-danger">*</span></label>
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('From Date')}}<span
+                                                                    class="text-danger">*</span></label>
                                                             <div class="input-group input-group-sm date">
                                                                 <div class="kt-input-icon kt-input-icon--right">
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
                                                                         name="issued_date" id="issued_date"
-                                                                        placeholder="From Date" />
+                                                                        placeholder="{{__('From Date')}}" />
                                                                     <span
                                                                         class="kt-input-icon__icon kt-input-icon__icon--right">
                                                                         <span>
@@ -221,9 +251,9 @@
                                                         </div>
 
 
-                                                        <div class="col-md-4 form-group form-group-sm">
-                                                            <label class="col-form-label">From
-                                                                Time <span class="text-danger">*</span></label>
+                                                        <div class="col-md-3 form-group form-group-xs">
+                                                            <label class="col-form-label">{{__('From Time')}}<span
+                                                                    class="text-danger">*</span></label>
                                                             <div class="input-group input-group-sm timepicker">
                                                                 <div class="kt-input-icon kt-input-icon--right">
                                                                     <input class="form-control form-control-sm"
@@ -240,26 +270,18 @@
 
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="venue_en"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                Venue <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="venue_en" id="venue_en" placeholder="Venue">
-
-                                                        </div>
 
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
+                                                        <div class="col-md-3 form-group form-group-xs ">
                                                             <label for="expired_date"
-                                                                class=" col-form-label kt-font-bold text-right">To
-                                                                Date <span class="text-danger">*</span></label>
+                                                                class=" col-form-label kt-font-bold text-right">{{__('To Date')}}<span
+                                                                    class="text-danger">*</span></label>
                                                             <div class="input-group input-group-sm date">
                                                                 <div class="kt-input-icon kt-input-icon--right">
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
                                                                         name="expired_date" id="expired_date"
-                                                                        placeholder="To Date">
+                                                                        placeholder="{{__('To Date')}}">
                                                                     <span
                                                                         class="kt-input-icon__icon kt-input-icon__icon--right">
                                                                         <span>
@@ -270,8 +292,8 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm">
-                                                            <label class="col-form-label">To Time <span
+                                                        <div class="col-md-3 form-group form-group-xs">
+                                                            <label class="col-form-label">{{__('To Time')}}<span
                                                                     class="text-danger">*</span></label>
 
                                                             <div class="input-group input-group-sm timepicker">
@@ -292,141 +314,164 @@
 
 
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="venue_ar"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                Venue - Ar <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="venue_ar" dir="rtl" id="venue_ar"
-                                                                placeholder="Venue - Ar">
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="street"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                Street<span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="street" id="street" placeholder="Street">
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="description_en"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                Description <span class="text-danger">*</span></label>
-                                                            <textarea type="text" class="form-control form-control-sm"
-                                                                name="description_en" id="description_en"
-                                                                placeholder="Description" rows="1"
-                                                                style="resize:none"></textarea>
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="description_ar"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                Description - Ar <span
-                                                                    class="text-danger">*</span></label>
-                                                            <textarea class="form-control form-control-sm"
-                                                                name="description_ar" dir="rtl" id="description_ar"
-                                                                placeholder="Description - Ar" rows="1"
-                                                                style="resize:none"></textarea>
-                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
 
-                                                        <div class="col-md-4  form-group form-group-sm ">
-                                                            <label class=" col-form-label kt-font-bold text-right">
-                                                                Do you have any Food truck ?</label>
-                                                            <div class="kt-radio-inline">
-                                                                <label class="kt-radio kt-radio--solid">
-                                                                    <input type="radio" name="isTruck" value="1"
-                                                                        onclick="checkTruck(1)"> Yes
-                                                                    <span></span>
+                                            <div class="card kt-margin-t-5">
+                                                <div class="card-header" id="headingTwo6">
+                                                    <div class="card-title show" data-toggle="collapse"
+                                                        data-target="#collapseTwo5" aria-expanded="false"
+                                                        aria-controls="collapseTwo6">
+                                                        <h6 class="kt-font-transform-u kt-font-dark">Location Details
+                                                        </h6>
+                                                    </div>
+                                                </div>
+
+                                                <div class="collapse show" aria-labelledby="headingTwo6"
+                                                    data-parent="#accordionExample6" id="collapseTwo5">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6 form-group form-group-xs ">
+                                                                <label for="venue_en"
+                                                                    class=" col-form-label kt-font-bold text-right">
+                                                                    {{__('Venue')}} <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    name="venue_en" id="venue_en"
+                                                                    placeholder="{{__('Venue')}}">
+
+                                                            </div>
+
+                                                            <div class="col-md-6 form-group form-group-xs ">
+                                                                <label for="venue_ar"
+                                                                    class=" col-form-label kt-font-bold text-right">
+                                                                    Venue - Ar <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    name="venue_ar" dir="rtl" id="venue_ar"
+                                                                    placeholder="Venue - Ar">
+                                                            </div>
+
+
+
+
+                                                            <div class="col-md-4 form-group form-group-xs ">
+                                                                <label for="emirate_id"
+                                                                    class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
                                                                 </label>
-                                                                <label class="kt-radio kt-radio--solid">
-                                                                    <input type="radio" name="isTruck" value="0" checked
-                                                                        onclick="checkTruck(0)"> No
-                                                                    <span></span>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    value="Rasal Khaimah" readonly>
+                                                                <input type="hidden" name="emirate_id" id="emirate_id"
+                                                                    value="5">
+                                                            </div>
+
+
+                                                            <div class="col-md-4 form-group form-group-xs ">
+                                                                <label for="area_id"
+                                                                    class=" col-form-label kt-font-bold text-right">{{__('Area')}}
                                                                 </label>
+                                                                <input type="text" name="area_id" id="area_id"
+                                                                    class="form-control form-control-sm">
+                                                                <select class="  form-control form-control-sm "
+                                                                    name="area_id" id="area_id">
+                                                                    <option value="">Select</option>
+                                                                    @foreach($areas as $ar)
+                                                                    <option value="{{$ar->id}}">
+                                                                        {{$ar->area_en}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-md-4 form-group form-group-xs ">
+                                                                <label for="country_id"
+                                                                    class=" col-form-label kt-font-bold text-right">{{__('Country')}}
+                                                                </label>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    value="United Arab Emirates" readonly>
+                                                                <input type="hidden" name="country_id" id="country_id"
+                                                                    value="232">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card kt-margin-t-5">
+                                                    <div class="card-header" id="headingTwo6">
+                                                        <div class="card-title show" data-toggle="collapse"
+                                                            data-target="#collapseTwo4" aria-expanded="false"
+                                                            aria-controls="collapseTwo6">
+                                                            <h6 class="kt-font-transform-u kt-font-dark">Map
+                                                                Details
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="collapse show" aria-labelledby="headingTwo6"
+                                                        data-parent="#accordionExample6" id="collapseTwo4">
+                                                        <div class="card-body">
+                                                            <div class="row">
+
+                                                                <div
+                                                                    class="col-md-8 col-sm-12 form-group form-group-xs ">
+                                                                    <label for="address"
+                                                                        class=" col-form-label kt-font-bold text-right">Address
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm map-input"
+                                                                        name="address" id="address-input"
+                                                                        placeholder="Address" value="">
+                                                                </div>
+
+                                                                <div class="col-md-4 form-group form-group-xs ">
+                                                                    <label for="street"
+                                                                        class=" col-form-label kt-font-bold text-right">
+                                                                        Street<span class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="street" id="street" placeholder="Street">
+                                                                </div>
+
+                                                                <div class="col-md-6 form-group form-group-xs ">
+                                                                    <label for="longitude"
+                                                                        class=" col-form-label kt-font-bold text-right">
+                                                                        Longitude <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="longitude" id="longitude"
+                                                                        placeholder="Longitude">
+                                                                </div>
+
+                                                                <div class="col-md-6 form-group form-group-xs ">
+                                                                    <label for="latitude"
+                                                                        class=" col-form-label kt-font-bold text-right">
+                                                                        Latitude <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="latitude" id="latitude"
+                                                                        placeholder="Latitude">
+                                                                </div>
                                                             </div>
                                                         </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm "
-                                                            id="how_many_div">
-                                                            <label for="no_of_trucks"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                How Many ?<span class="text-danger">*</span></label>
-                                                            <select class="form-control form-control-sm"
-                                                                name="no_of_trucks" id="no_of_trucks">
-                                                                <option value=" ">Select</option>
-                                                                @for($i = 1;$i < 15; $i++) <option value="{{$i}}">{{$i}}
-                                                                    </option>
-                                                                    @endfor
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseTwo6" aria-expanded="false"
-                                                aria-controls="collapseTwo6">
-                                                <h6 class="kt-font-transform-u">Contact
-                                                    information
-                                                </h6>
-                                            </div>
-                                        </div>
-
-                                        <div class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample6" id="collapseTwo6">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="address"
-                                                            class=" col-form-label kt-font-bold text-right">Address
-                                                            <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm "
-                                                            name="address" id="address" placeholder="Address">
-                                                    </div>
-
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="emirate_id"
-                                                            class=" col-form-label kt-font-bold text-right">Emirate
-                                                        </label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            value="Ras Al Khaimah" readonly>
-                                                        <input type="hidden" name="emirate_id" id="emirate_id"
-                                                            value="5" />
-                                                        </select>
-
-                                                    </div>
-
-
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="area_id"
-                                                            class=" col-form-label kt-font-bold text-right">Area
-                                                        </label>
-                                                        <select class="  form-control form-control-sm " name="area_id"
-                                                            id="area_id">
-                                                            <option value="">Select</option>
-                                                            @foreach($areas as $ar)
-                                                            <option value="{{$ar->id}}">
-                                                                {{$ar->area_en}}</option>
-                                                            @endforeach
-                                                        </select>
                                                     </div>
 
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>
                                 </form>
+
+                                <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
+                                    <div style="width: 100%; height: 100%" id="map"></div>
+                                </div>
 
                             </div>
                         </div>
@@ -456,20 +501,20 @@
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
-                            Previous
+                            {{__('Previous')}}
                         </div>
 
 
                         <a href="{{route('event.index')}}#applied">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                Back
+                                {{__('Back')}}
                             </div>
                         </a>
 
                         <div class="btn-group" role="group" id="submit--btn-group">
                             <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Submit
+                                {{__('Submit')}}
                             </button>
                             <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
                                 <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
@@ -486,7 +531,7 @@
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
-                            Next Step
+                            {{__('Next')}}
                         </div>
                     </div>
                 </div>
@@ -528,12 +573,15 @@
 <!--end::Modal-->
 
 @endsection
-@section('script')
 
 @section('script')
 
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
+<script src="{{asset('js/company/map.js')}}"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}&libraries=places&callback=initialize"
+    async defer></script>
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -556,7 +604,7 @@
         picUploadFunction();
 
         // getRequirementsList(5);
-        // wizard.goTo(3);
+        wizard.goTo(2);
 
         $('#add_document_btn').css('display', 'none');
         $('#how_many_div').css('display', 'none');
@@ -675,8 +723,11 @@
                 street: 'required',
                 description_en: 'required',
                 description_ar: 'required',
+                area_id: 'required',
                 time_start: 'required',
                 venue_en: 'required',
+                longitude: 'required',
+                latitude: 'required',
                 expired_date: {
                     required: true,
                     dateNL: true
@@ -692,8 +743,11 @@
                 issued_date: '',
                 time_start: '',
                 street: '',
+                area_id: '',
                 description_en: '',
                 description_ar: '',
+                longitude: '',
+                latitude: '',
                 venue_en: '',
                 expired_date: '',
                 time_end: '',
@@ -771,6 +825,8 @@
                     venue_ar: $('#venue_ar').val(),
                     address: $('#address').val(),
                     emirate_id: $('#emirate_id').val(),
+                    longitude: $('#longitude').val(),
+                    latitude: $('#latitude').val(),
                     area_id: $('#area_id').val(),
                     country_id: $('#country_id').val(),
                     street: $('#street').val(),
@@ -1006,7 +1062,7 @@
                          $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'<span class="text-danger"> ( required ) </span></label><p for="" class="reqName">'+( res[i].requirement_description ? res[i].requirement_description : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
                          if(res[i].dates_required == "1")
                          {
-                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
+                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">{{__("Issue Date")}}</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
                             $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+30d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />');
                          }
                             docRules['doc_issue_date_' + j] = 'required';

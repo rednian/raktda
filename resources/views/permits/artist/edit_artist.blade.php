@@ -15,7 +15,7 @@
                                 data-ktwizard-state="current" id="check_inst">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
-                                        <span>01</span> Check Instructions
+                                        <span>01</span> {{__('Instructions')}}
                                     </div>
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
@@ -23,7 +23,7 @@
                             <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
-                                        <span>02</span> Artist Details
+                                        <span>02</span> {{__('Artist Details')}}
                                     </div>
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
@@ -31,7 +31,7 @@
                             <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
-                                        <span>03</span> Upload Documents
+                                        <span>03</span> {{__('Upload Docs')}}
                                     </div>
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
@@ -120,8 +120,7 @@
                                                 @if($req->dates_required == 1)
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
-                                                        title="Issue Date">Issue
-                                                        Date</label>
+                                                        title="Issue Date">{{__('Issue Date')}}</label>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="doc_issue_date_{{$i}}" data-date-end-date="0d"
                                                         id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
@@ -131,8 +130,7 @@
                                                 </div>
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
-                                                        title="Expiry Date">Expiry
-                                                        Date</label>
+                                                        title="Expiry Date">{{__('Expiry Date')}}</label>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                         id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />

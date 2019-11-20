@@ -32,6 +32,7 @@ class EventController extends Controller
     public function index()
     {
         Event::whereDate('expired_date', '<', Carbon::now())->update(['status' => 'expired']);
+        \App\Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
         $eventtypes = EventType::orderBy('name_en', 'asc')->get();
         return view('permits.event.index', ['types' => $eventtypes]);
     }
@@ -216,8 +217,8 @@ class EventController extends Controller
 
     public function show(Request $request, Event $event)
     {
-        if (count($event->permit) > 0) {
-            $permit_id = $event->permit->first()->permit_id;
+        if ($event->permit) {
+            $permit_id = $event->permit->permit_id;
             $artist = \App\Permit::where('permit_id', $permit_id)->with('artistPermit')->first();
         } else {
             $artist = [];
@@ -281,8 +282,15 @@ class EventController extends Controller
             'emirate_id' => $evd['emirate_id'],
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_type_id'],
-            'status' => 'amended'
         );
+
+        $old_status = Event::where('event_id', 12)->first()->status;
+
+        if ($old_status == 'new') {
+            $input_Array['status'] = 'new';
+        } else {
+            $input_Array['status'] = 'amended';
+        }
 
         $event = Event::where('event_id', $event_id)->update($input_Array);
 

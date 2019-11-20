@@ -15,25 +15,24 @@
                 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
                     role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#applied" data-target="#applied">Applied
-                            Event Permits </a>
+                        <a class="nav-link active" data-toggle="tab" href="#applied"
+                            data-target="#applied">{{__('Applied Event Permits')}} </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#valid">Valid Event Permits</a>
+                        <a class="nav-link" data-toggle="tab" href="#valid">{{__('Valid Event Permits')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#calendar">Event Calendar</a>
+                        <a class="nav-link" data-toggle="tab" href="#calendar">{{__('Event Calendar')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#draft">Event Permit Drafts</a>
+                        <a class="nav-link" data-toggle="tab" href="#draft">{{__('Event Permit Drafts')}}</a>
                     </li>
                     <span class="nav-item"
                         style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ route('event.create')}}">
-
                             <button class="btn btn--yellow kt-font-transform-u btn-sm" id="nav--new-permit-btn">
                                 <i class="la la-plus"></i>
-                                Add New
+                                {{__('Add New')}}
                             </button>
                             <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                                 <i class="la la-plus"></i>
@@ -51,15 +50,15 @@
                 <table class="table table-striped table-hover table-borderless border" id="applied-events-table">
                     <thead>
                         <tr>
-                            <th>Refer No.</th>
+                            <th>{{__('Ref NO.')}}</th>
                             <th>{{__('Event Name')}}</th>
-                            <th>From </th>
-                            <th>To </th>
-                            <th>@lang('words.venue')</th>
-                            <th>Type</th>
-                            <th>@lang('words.status')</th>
-                            <th>Actions</th>
-                            <th>Details</th>
+                            <th>{{__('From')}} </th>
+                            <th>{{__('To')}} </th>
+                            <th>{{__('Venue')}}</th>
+                            <th>{{__('Event Type')}}</th>
+                            <th>{{__('Status')}}</th>
+                            <th>{{__('Action')}}</th>
+                            <th>{{__('Details')}}</th>
                         </tr>
                     </thead>
                 </table>
@@ -69,14 +68,14 @@
                 <table class="table table-striped table-borderless border" id="existing-events-table">
                     <thead>
                         <tr>
-                            <th>Permit No.</th>
-                            <th>Name</th>
-                            <th>From </th>
-                            <th>To </th>
-                            <th>@lang('words.venue')</th>
-                            <th>Type</th>
-                            <th>Actions</th>
-                            <th>Details</th>
+                            <th>{{__('Permit No')}}</th>
+                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('From')}} </th>
+                            <th>{{__('To')}} </th>
+                            <th>{{__('Venue')}}</th>
+                            <th>{{__('Event Type')}}</th>
+                            <th>{{__('Action')}}</th>
+                            <th>{{__('Details')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -132,13 +131,13 @@
                 <table class="table table-striped table-borderless border" id="drafts-events-table">
                     <thead>
                         <tr>
-                            <th>From </th>
-                            <th>To </th>
-                            <th>@lang('words.venue')</th>
-                            <th>@lang('words.event_name')</th>
-                            <th>Applied On</th>
-                            <th>Actions</th>
-                            <th>Details</th>
+                            <th>{{__('From')}} </th>
+                            <th>{{__('To')}} </th>
+                            <th>{{__('Venue')}}</th>
+                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('Applied Date')}}</th>
+                            <th>{{__('Action')}}</th>
+                            <th>{{__('Details')}}</th>
                         </tr>
                     </thead>
 

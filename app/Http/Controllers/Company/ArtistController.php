@@ -37,6 +37,7 @@ class ArtistController extends Controller
 
     public function index()
     {
+        Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
         Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
         return view('permits.artist.index');
     }
@@ -700,7 +701,7 @@ class ArtistController extends Controller
             ]);
 
             if (isset($request->event_id)) {
-                $permit->event()->attach($request->event_id);
+                $permit->event_id = $request->event_id;
             }
 
             $temp_ids = [];
@@ -1090,6 +1091,9 @@ class ArtistController extends Controller
                 break;
             case 'new':
                 $route_back = 'company/artist/new/1';
+                break;
+            case 'event':
+                $route_back = 'company/event/add_artist/' . $permit_id;
                 break;
             default:
                 break;

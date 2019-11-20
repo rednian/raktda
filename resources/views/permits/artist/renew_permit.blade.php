@@ -6,7 +6,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Renew Artist Permit</h3>
+            <h3 class="kt-portlet__head-title">{{__('Renew Artist Permit')}}</h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$permit_details->permit_number}}
                 </strong>
@@ -16,18 +16,17 @@
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
-                    Back
+                    {{__('Back')}}
                 </button>
                 <a href="{{url('company/artist/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
-                    Add Artist
+                    {{__('Add Artist')}}
                 </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
                 <button id="back_btn_sm" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
-
                 </button>
                 <a href="{{url('company/artist/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
@@ -43,7 +42,7 @@
     <div class="kt-portlet__body pt-0">
         <div class="kt-widget5__info py-4">
             <div class="pb-2">
-                <span>From Date:</span>&emsp;
+                <span>{{__('From Date')}}:</span>&emsp;
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->issue_date))}}</span>&emsp;&emsp;
                 <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
@@ -51,11 +50,11 @@
                 $to_date = date('d-M-Y', strtotime('+31 days', strtotime($permit_details->expired_date)));
                 $db_to_date = date('Y-m-d', strtotime('+31 days', strtotime($permit_details->expired_date)));
                 @endphp --}}
-                <span>To Date:</span>&emsp;
+                <span>{{__('To Date')}}:</span>&emsp;
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->expiry_date))}}</span>&emsp;&emsp;
                 <input type="hidden" id="expired_date" value="{{$artist_details[0]->expiry_date}}">
-                <span>Work Location:</span>&emsp;
+                <span>{{__('Location')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
                 <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
             </div>
@@ -65,13 +64,13 @@
             <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                 <thead>
                     <tr>
-                        <th>@lang('words.first_name')</th>
-                        <th>@lang('words.last_name')</th>
-                        <th>@lang('words.profession')</th>
-                        <th>@lang('words.mobile_number')</th>
+                        <th>{{__('First Name')}}</th>
+                        <th>{{__('Last Name')}}</th>
+                        <th>{{__('Profession')}}</th>
+                        <th>{{__('Mobile Number')}}</th>
                         {{-- <th>Email</th> --}}
-                        <th>@lang('words.status')</th>
-                        <th class="text-center">Actions</th>
+                        <th>{{__('Status')}}</th>
+                        <th class="text-center">{{__('Action')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -123,7 +122,7 @@
         <div class="d-flex justify-content-end">
             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                 <i class="la la-check"></i>
-                Submit
+                {{__('Submit')}}
             </div>
         </div>
     </div>

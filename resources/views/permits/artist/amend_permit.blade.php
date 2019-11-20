@@ -6,7 +6,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Amend Artist Permit
+            <h3 class="kt-portlet__head-title">{{__('Amend Artist Permit')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$permit_details['permit_number']}}</strong></span>
@@ -17,12 +17,12 @@
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                 ">
                     <i class="la la-arrow-left"></i>
-                    Back
+                    {{__('Back')}}
                 </button>
                 <a href="{{url('/company/artist/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
-                    Add Artist
+                    {{__('Add Artist')}}
                 </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
@@ -43,13 +43,13 @@
     <div class="kt-portlet__body">
         <div class="kt-widget5__info py-4">
             <div class="pb-2">
-                <span>From Date:</span>&emsp;
+                <span>{{__('From Artist')}}:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
-                <span>To Date:</span>&emsp;
+                <span>{{__('From Artist')}}:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                <span>@lang('words.location'):</span>&emsp;
+                <span>{{__('Location')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
-                <span>@lang('words.reference_no'):</span>&emsp;
+                <span>{{__('Reference No')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
             </div>
         </div>
@@ -64,13 +64,12 @@
             <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                 <thead>
                     <tr>
-                        <th>@lang('words.first_name')</th>
-                        <th>@lang('words.last_name')</th>
-                        <th>@lang('words.profession')</th>
-                        <th>@lang('words.mobile_number')</th>
-                        {{-- <th>Email</th> --}}
-                        <th>@lang('words.status')</th>
-                        <th class="text-center">Actions</th>
+                        <th>{{__('First Name')}}</th>
+                        <th>{{__('Last Name')}}</th>
+                        <th>{{__('Profession')}}</th>
+                        <th>{{__('Mobile Number')}}</th>
+                        <th>{{__('Status')}}</th>
+                        <th class="text-center">{{__('Action')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -122,22 +121,16 @@
         <div class="d-flex justify-content-end">
             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                 <i class="la la-check"></i>
-                Submit
+                {{__('Submit')}}
             </div>
         </div>
     </div>
-
 
     @include('permits.artist.modals.view_artist')
 
     @include('permits.artist.modals.remove_artist', ['from' => 'amend'])
 
-
     @include('permits.artist.modals.leave_page')
-
-
-
-
 
 </div>
 

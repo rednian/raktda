@@ -21,17 +21,18 @@ class Permit extends Model
 
     public function scopeHistory($q, $permit_number)
     {
-        if($this->request_type == 'renew'){ $permit_number = explode('-', $permit_number);
+        if ($this->request_type == 'renew') {
+            $permit_number = explode('-', $permit_number);
             return $q->whereNotIn('permit_status', ['cancelled', 'unprocessed', 'draft'])
                 ->whereNotNull('permit_number')
-                ->where('permit_number', 'like','%'.$permit_number[0].'%');
-         }
-         return false;
+                ->where('permit_number', 'like', '%' . $permit_number[0] . '%');
+        }
+        return false;
     }
 
-    public function events()
+    public function event()
     {
-         return $this->belongsToMany(Event::class, 'event_artist_permit', 'permit_id', 'event_id');
+        return $this->belongsTo(Event::class, 'event_id');
     }
 
     public function approval()
@@ -87,6 +88,4 @@ class Permit extends Model
             ->where('permit.permit_status', $status)
             ->groupBy('artist_permit.permit_id');
     }
-
-    
 }

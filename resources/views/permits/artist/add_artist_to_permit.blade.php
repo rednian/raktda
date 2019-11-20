@@ -32,7 +32,7 @@ $language_id = \Auth::user()->LanguageId;
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> {{__('Upload Documents')}}
+                                    <span>03</span> {{__('Upload Docs')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -96,36 +96,36 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">First
-                                                                        Name <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="fname_en" id="fname_en"
-                                                                                placeholder="First Name"
+                                                                                placeholder="{{__('First Name')}}"
                                                                                 onchange="checkforArtist()">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_en"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Last
-                                                                        Name <span class="text-danger">*</span></label>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name')}}<span
+                                                                            class="text-danger">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="lname_en" id="lname_en"
-                                                                                placeholder="Last Name"
+                                                                                placeholder="{{__('Last Name')}}"
                                                                                 onchange="checkforArtist()">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="nationality"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Nationality
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Nationality')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -135,7 +135,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                                 name="nationality" id="nationality"
                                                                                 onchange="checkforArtist()">
                                                                                 {{--   - class for search in select  --}}
-                                                                                <option value="">Select</option>
+                                                                                <option value="">{{__('Select')}}
+                                                                                </option>
                                                                                 @foreach ($countries as $ct)
                                                                                 <option value="{{$ct->country_id}}">
                                                                                     {{$language_id == 1 ? $ct->nationality_en : $ct->nationality_ar}}
@@ -147,8 +148,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Birth
-                                                                        Date <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Birth Date')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -162,22 +163,24 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Passport
-                                                                        No<span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
+                                                                        {{__('Passport No')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="passport" id="passport"
-                                                                                placeholder="Passport Number">
+                                                                                placeholder="{{__('Passport No')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="pp_expiry"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Passport
-                                                                        Expiry <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
+                                                                        {{__('Passport Expiry')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -191,21 +194,23 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="uid_number"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">UID
-                                                                        <span class="text-danger">*</span> </label>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID No')}}
+                                                                        <span class="text-danger">
+                                                                            *</span>
+                                                                    </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="uid_number" id="uid_number"
-                                                                                placeholder="UID Number">
+                                                                                placeholder="{{__('UID No')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">UID
-                                                                        Expire Date <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -219,14 +224,16 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="religion"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Religion
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
+                                                                        {{__('Religion')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
                                                                                 class=" form-control form-control-sm "
                                                                                 name="religion" id="religion">
-                                                                                <option value=" ">Select</option>
+                                                                                <option value=" ">{{__('Select')}}
+                                                                                </option>
                                                                                 @foreach ($religions as $reli)
                                                                                 <option value={{$reli->id}}>
                                                                                     {{$language_id == 1 ? $reli->name_en : $reli->name_ar}}
@@ -244,7 +251,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
-                                                                        Profession <span
+                                                                        {{__('Profession')}} <span
                                                                             class="text-danger">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -252,7 +259,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                                 class="form-control form-control-sm "
                                                                                 name="profession" id="profession"
                                                                                 placeholder="Profession">
-                                                                                <option value="">Select</option>
+                                                                                <option value="">{{__('Select')}}
+                                                                                </option>
                                                                                 @foreach ($profession as $pt)
                                                                                 <option value="{{$pt->profession_id}}">
                                                                                     {{ucwords($language_id == 1 ? $pt->name_en : $pt->name_ar)}}
@@ -264,35 +272,35 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">First
-                                                                        Name - Ar <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name - Ar')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text" dir="rtl"
                                                                                 class="form-control form-control-sm "
                                                                                 name="fname_ar" id="fname_ar"
-                                                                                placeholder="First Name in Arabic">
+                                                                                placeholder="{{__('First Name - Ar')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="lname_ar"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Last
-                                                                        Name - Ar <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name - Ar')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text" dir="rtl"
                                                                                 class="form-control form-control-sm "
                                                                                 name="lname_ar" id="lname_ar"
-                                                                                placeholder="Last Name in Arabic">
+                                                                                placeholder="{{__('Last Name - Ar')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="gender"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Gender
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Gender')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -300,7 +308,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                             <select
                                                                                 class=" form-control form-control-sm "
                                                                                 name="gender" id="gender">
-                                                                                <option value="">Select</option>
+                                                                                <option value="">{{__('Select')}}
+                                                                                </option>
                                                                                 <option value="1">
                                                                                     {{$language_id == 1 ? 'Male' : 'الذكر'}}
                                                                                 </option>
@@ -313,15 +322,16 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_type"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Visa
-                                                                        Type <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Visa Type')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="visa_type" id="visa_type">
-                                                                                <option value="">Select</option>
+                                                                                <option value="">{{__('Select')}}
+                                                                                </option>
                                                                                 @foreach ($visatypes as $vt)
                                                                                 <option value={{$vt->id}}>
                                                                                     {{$language_id == 1 ? $vt->visa_type_en : $vt->visa_type_ar}}
@@ -333,22 +343,23 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Visa
-                                                                        Number
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
+                                                                        {{__('Visa Number')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="visa_number" id="visa_number"
-                                                                                placeholder="Visa Number">
+                                                                                placeholder="{{__('Visa Number')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_expiry"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Visa
-                                                                        Expire Date <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
+                                                                        {{__('Visa Expiry')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -389,14 +400,15 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="language"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Languages
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Language')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
                                                                                 class=" form-control form-control-sm "
                                                                                 name="language" id="language">
-                                                                                <option value=" ">Select</option>
+                                                                                <option value=" ">{{__('Select')}}
+                                                                                </option>
                                                                                 @foreach ($languages as $lang)
                                                                                 <option value={{$lang->id}}>
                                                                                     {{$language_id == 1 ? $lang->name_en : $lang->name_ar}}
@@ -419,8 +431,7 @@ $language_id = \Auth::user()->LanguageId;
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseTwo6" aria-expanded="false"
                                                     aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-transform-u">Contact
-                                                        information
+                                                    <h6 class="kt-font-transform-u">{{__('Contact Information')}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -432,29 +443,30 @@ $language_id = \Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="mobile"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Mobile
-                                                                        No <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
+                                                                        {{__('Mobile No')}}<span
+                                                                            class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="mobile" id="mobile"
-                                                                                placeholder="Mobile No.">
+                                                                                placeholder="{{__('Mobile No')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="landline"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Phone
-                                                                        No
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
+                                                                        {{__('Phone Number')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="landline" id="landline"
-                                                                                placeholder="Landline No.">
+                                                                                placeholder="{{__('Phone Number')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -464,22 +476,22 @@ $language_id = \Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Email
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Email')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
-                                                                                placeholder="Email" name="email"
-                                                                                id="email" />
+                                                                                placeholder="{{__('Email')}}"
+                                                                                name="email" id="email" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fax_no"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Fax
-                                                                        No </label>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
+                                                                        {{__('Fax No')}}</label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
@@ -503,8 +515,7 @@ $language_id = \Auth::user()->LanguageId;
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseTwo7" aria-expanded="false"
                                                     aria-controls="collapseTwo7">
-                                                    <h6 class="kt-font-transform-u">Address
-                                                        information
+                                                    <h6 class="kt-font-transform-u">{{__('Address Information')}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -516,7 +527,7 @@ $language_id = \Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Address
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Address')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -524,13 +535,13 @@ $language_id = \Auth::user()->LanguageId;
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="address" id="address"
-                                                                                placeholder="Address">
+                                                                                placeholder="{{__('Address')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Emirate
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Emirate')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -538,7 +549,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                                 class=" form-control form-control-sm "
                                                                                 name="city" id="city"
                                                                                 onChange="getAreas(this.value)">
-                                                                                <option value=" ">Select</option>
+                                                                                <option value=" ">{{__('Select')}}
+                                                                                </option>
                                                                                 @foreach ($emirates as $em)
                                                                                 <option value={{$em->id}}
                                                                                     {{$em->id == '5' ? 'selected' : ''}}>
@@ -555,27 +567,28 @@ $language_id = \Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">PO
-                                                                        Box </label>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
+                                                                        {{__('PO Box')}}</label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
                                                                                 name="po_box" id="po_box"
-                                                                                placeholder="PO box">
+                                                                                placeholder="{{__('PO Box')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="address"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Area
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Area')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <select
                                                                                 class="  form-control form-control-sm "
                                                                                 name="area" id="area">
-                                                                                <option value=" ">Select</option>
+                                                                                <option value=" ">{{__('Select')}}
+                                                                                </option>
                                                                                 @foreach ($areas as $ar)
                                                                                 <option value={{$ar->id}}>
                                                                                     {{$language_id == 1 ? $ar->area_en : $ar->area_ar}}

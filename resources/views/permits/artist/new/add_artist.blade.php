@@ -535,14 +535,14 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Address')}}
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Email')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
-                                                                                placeholder="{{__('Address')}}"
+                                                                                placeholder="{{__('Email')}}"
                                                                                 name="email" id="email" />
                                                                         </div>
                                                                     </div>
@@ -755,7 +755,7 @@ $language_id = Auth::user()->LanguageId;
                                             </div>
                                             <div class="col-lg-2 col-sm-12">
                                                 <label for="" class="text--maroon kt-font-bold"
-                                                    title="Expiry Date">>{{__('Expiry Date')}}</label>
+                                                    title="Expiry Date">{{__('Expiry Date')}}</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_exp_date_{{$i}}" id="doc_exp_date_{{$i}}"
                                                     placeholder="DD-MM-YYYY" />
@@ -787,7 +787,7 @@ $language_id = Auth::user()->LanguageId;
                     if($from == 'draft')
                     {
                     $routeBack = url('company/artist/view_draft_details/'.$permit_id);
-                    } else if($from = 'event'){
+                    } else if($from == 'event'){
                     $routeBack = url('company/event/add_artist/'.$permit_id);
                     }else {
                     $routeBack = url('company/artist/new/'.$permit_id);
