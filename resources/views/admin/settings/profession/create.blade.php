@@ -11,17 +11,17 @@
 	<section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 		<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 			 <div class="kt-portlet__head-label">
-					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Add New Profession</h3>
+					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('ADD NEW PROFESSION') }}</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ url('settings#profession') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
-						 Back to Settings
+						 {{ __('BACK TO SETTINGS') }}
 					</a>
 					<div class="btn-group">
 						<button type="button" data-submittype="continue" class="btn btn-sm btn-warning btn-submit">
 							<i class="la la-check"></i>
-							<span class="kt-hidden-mobile">Save</span>
+							<span class="kt-hidden-mobile">{{ __('Save') }}</span>
 						</button>
 						<button type="button" class="btn btn-sm btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						</button>
@@ -30,7 +30,7 @@
 								<li class="kt-nav__item">
 									<a href="#" data-submittype="continue" class="kt-nav__link btn-submit">
 										<i class="kt-nav__link-icon flaticon2-reload"></i>
-										<span class="kt-nav__link-text">Save & continue</span>
+										<span class="kt-nav__link-text">{{ __('Save & Continue') }}</span>
 									</a>
 								</li>{{-- 
 								<li class="kt-nav__item">
@@ -48,7 +48,7 @@
 								<li class="kt-nav__item">
 									<a href="#" data-submittype="new" class="kt-nav__link btn-submit">
 										<i class="kt-nav__link-icon flaticon2-add-1"></i>
-										<span class="kt-nav__link-text">Save & add new</span>
+										<span class="kt-nav__link-text">{{ __('Save & add new') }}</span>
 									</a>
 								</li>
 							</ul>
@@ -62,7 +62,7 @@
 			<section class="row kt-margin-t-50">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Profession
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Profession') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input value="" type="text" name="name_en" required class="form-control form-control-sm">
@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Profession (AR)
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Profession (AR)') }}
                         	<span class="text-danger">*</span>
                         </label>
                         <input value="" type="text" name="name_ar" required class="form-control form-control-sm">
@@ -80,7 +80,7 @@
             <section class="row kt-margin-t-10">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Amount
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Amount') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input value="" type="text" name="amount" required class="form-control form-control-sm">
@@ -91,7 +91,7 @@
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
                         <label class="kt-checkbox kt-checkbox--default kt-font-dark">
-							<input name="is_multiple" value="1" type="checkbox"> Allows multiple permit
+							<input name="is_multiple" value="1" type="checkbox"> {{ __('Allows multiple permit') }}
 							<span></span>
 						</label>
                     </div>

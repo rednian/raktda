@@ -11,17 +11,17 @@
 	<section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 		<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 			 <div class="kt-portlet__head-label">
-					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Add New Event Type</h3>
+					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('ADD NEW EVENT TYPE') }}</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ url('settings#event_types') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
-						 Back to Settings
+						 {{ __('BACK TO SETTINGS') }}
 					</a>
 					<div class="btn-group">
 						<button type="button" data-submittype="continue" class="btn btn-sm btn-warning btn-submit">
 							<i class="la la-check"></i>
-							<span class="kt-hidden-mobile">Save</span>
+							<span class="kt-hidden-mobile">{{ __('Save') }}</span>
 						</button>
 						<button type="button" class="btn btn-sm btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						</button>
@@ -30,7 +30,7 @@
 								<li class="kt-nav__item">
 									<a href="#" data-submittype="continue" class="kt-nav__link btn-submit">
 										<i class="kt-nav__link-icon flaticon2-reload"></i>
-										<span class="kt-nav__link-text">Save & continue</span>
+										<span class="kt-nav__link-text">{{ __('Save & Continue') }}</span>
 									</a>
 								</li>{{-- 
 								<li class="kt-nav__item">
@@ -48,7 +48,7 @@
 								<li class="kt-nav__item">
 									<a href="#" data-submittype="new" class="kt-nav__link btn-submit">
 										<i class="kt-nav__link-icon flaticon2-add-1"></i>
-										<span class="kt-nav__link-text">Save & add new</span>
+										<span class="kt-nav__link-text">{{ __('Save & add new') }}</span>
 									</a>
 								</li>
 							</ul>
@@ -62,7 +62,7 @@
 			<section class="row kt-margin-t-50">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Event Type
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Event Type') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input value="" type="text" name="name_en" required class="form-control form-control-sm">
@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Event Type (AR)
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Event Type (AR)') }}
                         	<span class="text-danger">*</span>
                         </label>
                         <input value="" type="text" name="name_ar" required class="form-control form-control-sm">
@@ -80,7 +80,7 @@
             <section class="row kt-margin-t-10">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Description
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Description') }}
                             <span class="text-danger">*</span>
                         </label>
                         <textarea name="description_en" class="form-control form-control-sm" rows="3"></textarea>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Description (AR)
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Description (AR)') }}
                         	<span class="text-danger">*</span>
                         </label>
                         <textarea name="description_ar" class="form-control form-control-sm" rows="3"></textarea>
@@ -98,7 +98,7 @@
             <section class="row kt-margin-t-10">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Amount
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Amount') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input value="" type="text" name="amount" required class="form-control form-control-sm">
@@ -113,7 +113,7 @@
 				<div class="card">
 					<div class="card-header" id="heading-detail">
 						<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-detail" aria-expanded="true" aria-controls="collapse-detail">
-							<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Select Requirements</h6>
+							<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('SELECT REQUIREMENTS') }}</h6>
 						</div>
 					 </div>
 					 <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
@@ -121,7 +121,7 @@
 
 							<div id="action-alert-unselected" class="alert d-none alert-outline-danger fade show" role="alert">
 									<div class="alert-icon"><i class="flaticon-warning"></i></div>
-									<div class="alert-text">Please check atleast one requirement before taking action!</div>
+									<div class="alert-text">{{ __('Please check atleast one requirement before taking action!') }}</div>
 									<div class="alert-close"></div>
 							</div>
 
@@ -129,10 +129,10 @@
 								 <thead>
 									 <tr>
 									 	<th></th>
-										<th>REQUIREMENT</th>
-										<th>DESCRIPTION</th>
-										<th>DATE REQUIRED</th>
-										<th>VALIDITY (months)</th>
+										<th>{{ __('REQUIREMENT') }}</th>
+										<th>{{ __('DESCRIPTION') }}</th>
+										<th>{{ __('DATE REQUIRED') }}</th>
+										<th>{{ __('VALIDITY (months)') }}</th>
 									 </tr>
 								 </thead>
 							</table>
