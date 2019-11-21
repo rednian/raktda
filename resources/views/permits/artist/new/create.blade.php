@@ -101,15 +101,17 @@
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
-                                            <label class="kt-radio kt-radio--solid">
+                                            <label class="kt-radio kt-radio--solid ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(1)"
                                                     {{session($user_id.'_apn_is_event') && session($user_id.'_apn_is_event') == 1 ? 'checked' : ''}}
                                                     value="1">
                                                 Yes
+                                                <input type="hidden" name="isEvent" value="1">
                                                 <span></span>
                                             </label>
-                                            <label class="kt-radio kt-radio--solid">
+                                            <label class="kt-radio kt-radio--solid ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(0)"
+                                                    {{count($artist_details) > 0 ? 'disabled' : ''}}
                                                     {{session($user_id.'_apn_is_event') ? session($user_id.'_apn_is_event') == 0 ? 'checked' : '' : 'checked'}}
                                                     value="0"> No
                                                 <span></span>
@@ -117,12 +119,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-3" id="events_div"
+                                    <div class="form-group col-lg-3 " id="events_div"
                                         style="display:{{ session($user_id.'_apn_is_event') == 0 ? 'none': 'block'}}">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
                                             Events <span class="text-danger">*</span></label>
-                                        <select type="text" class="form-control form-control-sm" name="event_id"
-                                            id="event_id" onchange="checkFilled()">
+                                        <select type="text"
+                                            class="form-control form-control-sm {{count($artist_details) > 0 ? 'mk-disabled' : ''}}"
+                                            name="event_id" id="event_id" onchange="checkFilled()">
                                             <option value=" ">Select</option>
                                             @if(count($events) > 0)
                                             @foreach($events as $event)
@@ -287,6 +290,13 @@
             var diff = $('#noofdays').val();
             var isEvent = $("input:radio[name='isEvent']:checked").val();
             var eventId = $('#event_id').val();
+            if(isEvent == 1 && eventId != ' '){
+                fetchEventDetails();
+            }else if(isEvent == 0){
+                $('#event_id').val(' ');
+                eventId = ' ';
+                clearEventDetails();
+            }
             var artistcount = $('#total_artist_details').val();
             $('#add_artist').attr('disabled', loc == '' ? true : false) ;
             $('#add_artist_sm').attr('disabled', loc == '' ? true : false) ;
@@ -299,6 +309,11 @@
                     {
                         $('#draft_btn').css('display', 'block');
                         $('#submit_btn').css('display', 'block');
+                    }
+                    if(eventId != ' '){
+                        fetchEventDetails();
+                    }else {
+                        clearEventDetails();
                     }
                 }
                 else {
@@ -317,6 +332,32 @@
             $('#add_artist_sm').attr('disabled', true);
             $('#draft_btn').css('display', 'none');
             $('#submit_btn').css('display', 'none');
+        }
+
+        function fetchEventDetails()
+        {
+            var eventId = $('#event_id').val();
+            $.ajax({
+                    url:"{{route('artist.fetch_event_details')}}",
+                    type: "POST",
+                    data: { event_id: eventId },
+                    async: true,
+                    success: function(result){
+                        $('#permit_from').val(moment(result.issued_date,"DD-MMM-YYYY").utc().format('DD-MM-YYYY')); $('#permit_from').addClass('mk-disabled');
+                        $('#permit_to').val(moment(result.expired_date,"DD-MMM-YYYY").utc().format('DD-MM-YYYY'));$('#permit_to').addClass('mk-disabled');
+                        $('#work_loc').val(result.venue_en);$('#work_loc').addClass('mk-disabled');
+                        $('#add_artist').attr('disabled', false);
+                        $('#add_artist_sm').attr('disabled', false);
+                    }
+            });
+        }
+
+        function clearEventDetails()
+        {
+            $('#permit_from').val('');$('#permit_from').removeClass('mk-disabled');
+            $('#permit_to').val('');  $('#permit_to').removeClass('mk-disabled');
+            $('#work_loc').val('');   $('#work_loc').removeClass('mk-disabled');
+            disabledThese();
         }
 
         function setCokkie(){

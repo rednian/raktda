@@ -1328,7 +1328,7 @@ class ArtistController extends Controller
                     'company_id' => $permit_details->company_id,
                     'created_by' => $permit_details->created_by,
                     'process' => $status,
-                    'event_id' => $permit_details->event ? $permit_details->event[0]->event_id : ''
+                    'event_id' => $permit_details->event ? $permit_details->event->event_id : ''
                 ]);
 
                 if ($status == 'renew') {
@@ -1771,6 +1771,12 @@ class ArtistController extends Controller
     {
         Permit::where('permit_id', $id)->update(['is_edit' => 0, "lock" => null]);
         return true;
+    }
+
+    public function fetch_event_details(Request $request)
+    {
+        $event_id = $request->event_id;
+        return \App\Event::where('event_id', $event_id)->latest()->first();
     }
 
 

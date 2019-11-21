@@ -30,13 +30,14 @@ function initialize() {
         //     ) || 55.9804;
 
         const latitude =
-            parseFloat(document.getElementById("latitude").value) || 25.6741;
+            parseFloat(document.getElementById("latitude").value) || 25.8006251;
         const longitude =
-            parseFloat(document.getElementById("longitude").value) || 55.9804;
+            parseFloat(document.getElementById("longitude").value) ||
+            55.9734596;
 
         const map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: latitude, lng: longitude },
-            zoom: 10
+            zoom: 15
         });
 
         const marker = new google.maps.Marker({
@@ -74,9 +75,20 @@ function initialize() {
                     status
                 ) {
                     if (status === google.maps.GeocoderStatus.OK) {
+                        const street =
+                            results[0].address_components[0].short_name +
+                            ", " +
+                            results[0].address_components[1].short_name;
+                        const full_address = results[0].formatted_address;
                         const lat = results[0].geometry.location.lat();
                         const lng = results[0].geometry.location.lng();
-                        setLocationCoordinates(autocomplete.key, lat, lng);
+                        setLocationCoordinates(
+                            autocomplete.key,
+                            lat,
+                            lng,
+                            street,
+                            full_address
+                        );
                     }
                 });
 
@@ -90,9 +102,10 @@ function initialize() {
 
                 if (place.geometry.viewport) {
                     map.fitBounds(place.geometry.viewport);
+                    map.setZoom(15);
                 } else {
                     map.setCenter(place.geometry.location);
-                    map.setZoom(17);
+                    map.setZoom(15);
                 }
                 marker.setPosition(place.geometry.location);
                 marker.setVisible(true);
@@ -101,11 +114,13 @@ function initialize() {
     }
 }
 
-function setLocationCoordinates(key, lat, lng) {
+function setLocationCoordinates(key, lat, lng, street, full_address) {
     // const latitudeField = document.getElementById(key + "-" + "latitude");
     // const longitudeField = document.getElementById(key + "-" + "longitude");
     // latitudeField.value = lat;
     // longitudeField.value = lng;
     $("#latitude").val(lat);
-    $("#longitued").val(lng);
+    $("#longitude").val(lng);
+    $("#street").val(street);
+    $("#full_address").val(full_address);
 }

@@ -42,6 +42,7 @@ class EventController extends Controller
     {
         $data['event_types'] = EventType::all()->sortBy('name_en');
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
+        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
         return view('permits.event.create', $data);
     }
 
@@ -68,7 +69,10 @@ class EventController extends Controller
             'street' => $evd['street'],
             'description_en' => $evd['description_en'],
             'description_ar' => $evd['description_ar'],
-            'no_of_trucks' => $evd['no_of_trucks']
+            'no_of_trucks' => $evd['no_of_trucks'],
+            'longitude' => $evd['longitude'],
+            'latitude' => $evd['latitude'],
+            'full_address' => $evd['full_address']
         );
 
         if ($from == 'new') {
@@ -203,6 +207,74 @@ class EventController extends Controller
             Event::where('event_id', $event_id)->update(['logo_original' => $newPathLink, 'logo_thumbnail' => $newThumbPathLink]);
         }
 
+        $tdd = json_decode($request->tdd, true);
+
+        $truckCount = $evd['no_of_trucks'];
+        $truckReqQuery = Requirement::where('requirement_type', 'truck')->get();
+        $truckReqCount = $truckReqQuery->count();
+        $truckReqIdNames = [];
+        $truckReqIds = [];
+        foreach ($truckReqQuery as $trk) {
+            array_push($truckReqIdNames, $trk->requirement_name);
+            array_push($truckReqIds, $trk->requirement_id);
+        }
+
+        // dump('i outside=' . $i); 
+
+        for ($i = 1; $i <= $truckCount; $i++) {
+
+            for ($j = 1; $j <= $truckReqCount; $j++) {
+
+                if (session($userid . '_truck_file_' . $i . '_' . $j)) {
+
+
+                    $total_truck_docs = count(session($userid . '_truck_file_' . $i . '_' . $j));
+
+
+                    if ($total_truck_docs > 0) {
+
+                        for ($k = 0; $k < $total_truck_docs; $k++) {
+
+                            if (Storage::exists(session($userid . '_truck_file_' . $i . '_' . $j)[$k])) {
+
+                                $ext = session($userid . '_truck_ext_' . $i . '_' . $j)[$k];
+
+                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/truck/' . $i . '/' . $j;
+
+                                $file_count = count(Storage::files($check_path));
+
+                                if ($file_count == 0) {
+                                    $next_file_no = 1;
+                                } else {
+                                    $next_file_no = $file_count + 1;
+                                }
+
+                                $truckRequirement = preg_replace('/\s+/', '_', str_replace('/', '', $truckReqIdNames[$j - 1]));
+
+                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $i . '/' . $j . '/' . $truckRequirement . '_' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                $newPathLink = $userid . '/event/' . $event_id . '/' . $i . '/' . $j . '/' . $truckRequirement . '_' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                Storage::move(session($userid  . '_truck_file_' . $i . '_' . $j)[$k], $newPath);
+
+                                EventRequirement::create([
+                                    'issued_date' => !empty($tdd) ? $tdd[$i] != null ? Carbon::parse($tdd[$i][$j]['issue_date'])->toDateTimeString() : '' : '',
+                                    'expired_date' => !empty($tdd) ? $tdd[$i] != null ? Carbon::parse($tdd[$i][$j]['exp_date'])->toDateTimeString() : '' : '',
+                                    'created_at' =>  Carbon::now()->toDateTimeString(),
+                                    'created_by' =>  Auth::user()->user_id,
+                                    'event_type_id' => $evd['event_type_id'],
+                                    'requirement_id' => $truckReqIds[$j - 1],
+                                    'type' => 'truck',
+                                    'event_id' => $event_id,
+                                    'path' =>  $newPathLink,
+                                ]);
+                            }
+                        }
+                        $request->session()->forget([$userid . '_truck_file_' . $i . '_' . $j, $userid . '_truck_ext_' . $i . '_' . $j]);
+                    }
+                }
+            }
+        }
 
         Storage::deleteDirectory('public/' . Auth::user()->user_id . '/event/temp/');
 
@@ -282,6 +354,9 @@ class EventController extends Controller
             'emirate_id' => $evd['emirate_id'],
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_type_id'],
+            'longitude' => $evd['longitude'],
+            'latitude' => $evd['latitude'],
+            'full_address' => $evd['full_address']
         );
 
         $old_status = Event::where('event_id', 12)->first()->status;
@@ -579,6 +654,11 @@ class EventController extends Controller
         return redirect(route('event.index'));
     }
 
+    public function fetch_truck_req($id)
+    {
+        return Requirement::where('requirement_type', 'truck')->get();
+    }
+
     public function generateReferenceNumber()
     {
         $last_permit_d = Event::latest()->first();
@@ -641,6 +721,9 @@ class EventController extends Controller
             'description_en' => $evd['description_en'],
             'description_ar' => $evd['description_ar'],
             'no_of_trucks' => $evd['no_of_trucks'],
+            'longitude' => $evd['longitude'],
+            'latitude' => $evd['latitude'],
+            'full_address' => $evd['full_address'],
             'country_id' => 232,
             'emirate_id' => $evd['emirate_id'],
             'area_id' => $evd['area_id'],
@@ -652,6 +735,8 @@ class EventController extends Controller
 
         $event = Event::create($input_Array);
 
+        $event_id = $event->event_id;
+
         $requirements = EventType::with('requirements')->where('event_type_id', $evd['event_type_id'])->first();
 
         $requirement_ids = [];
@@ -661,8 +746,6 @@ class EventController extends Controller
         }
 
         $total = $requirements['requirements']->count();
-
-        $event_id = $event->event_id;
 
         $date = date('d_m_Y_H_i_s');
 
@@ -1037,6 +1120,27 @@ class EventController extends Controller
         return response()->json(['filepath' => $path, 'ext' => $ext, 'id' => $reqId]);
     }
 
+    public function uploadTruck(Request $request)
+    {
+        $user_id = Auth::user()->user_id;
+        $id = $request->id;
+        $subid = $request->subid;
+
+        $date = date('d_m_Y_H_i_s');
+        $reqId = $request->reqId;
+        $ext = $request->files->get('truck_file_' . $id . '_' . $subid)->getClientOriginalExtension();
+        $path  = Storage::putFileAs('public/' . $user_id . '/event/temp/truck/' . $id . '/' . $subid, $request->files->get('truck_file_' . $id . '_' . $subid), 'truck_document_' . $request->id . '_' . $date . '.' . $ext);
+        if (!Session::exists($user_id . '_truck_file_' . $id . '_' . $subid)) {
+            session()->put($user_id . '_truck_file_' . $id . '_' . $subid, []);
+            session()->put($user_id . '_truck_ext_' . $id . '_' . $subid, []);
+        }
+        session()->push($user_id . '_truck_file_' . $id . '_' . $subid, $path);
+        session()->push($user_id . '_truck_ext_' . $id . '_' . $subid, $ext);
+
+        return response()->json(['filepath' => $path, 'ext' => $ext]);
+        // return json_encode($file);
+    }
+
     public function uploadLogo(Request $request)
     {
         $user_id = Auth::user()->user_id;
@@ -1058,19 +1162,7 @@ class EventController extends Controller
         return json_encode($file);
     }
 
-    public function uploadTruck(Request $request)
-    {
-        $user_id = Auth::user()->user_id;
-        $id = $request->id;
-        $file = $request->file('truck_file_' . $id);
-        $ext = $file->getClientOriginalExtension();
-        $fileName = $request->file('truck_file_' . $id)->getClientOriginalName();
-        $original =  $user_id . '/event/temp';
-        $path  = Storage::putFileAs('public/' . $original, $request->files->get('truck_file_' . $id), $fileName);
-        session([$user_id . '_truck_file_' . $id => $path, $user_id . '_truck_ext_' . $id => $ext]);
 
-        return json_encode($file);
-    }
 
     public function get_uploaded_logo($id)
     {
@@ -1094,6 +1186,27 @@ class EventController extends Controller
         $path  = Storage::delete($filepath);
         session()->put(Auth::user()->user_id . '_event_doc_file_' . $reqId, $files);
         session()->put(Auth::user()->user_id . '_event_ext_' . $reqId, $exts);
+        return $filepath;
+    }
+
+    public function deleteTruckUploadedfile(Request $request)
+    {
+        $filepath = $request->path;
+        $ext = $request->ext;
+        $id = $request->id;
+        $subid = $request->subid;
+
+        $files = session()->pull(Auth::user()->user_id . '_truck_file_' . $id . '_' . $subid, []);
+        $exts = session()->pull(Auth::user()->user_id . '_truck_ext_' . $id . '_' . $subid, []);
+        if (($key = array_search($filepath, $files)) !== false) {
+            unset($files[$key]);
+        }
+        if (($key = array_search($ext, $exts)) !== false) {
+            unset($exts[$key]);
+        }
+        $path  = Storage::delete($filepath);
+        session()->put(Auth::user()->user_id . '_truck_file_' .  $id . '_' . $subid, $files);
+        session()->put(Auth::user()->user_id . '_truck_ext_' . $id . '_' . $subid, $exts);
         return $filepath;
     }
 

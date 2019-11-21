@@ -33,19 +33,17 @@
 
                     @include('permits.event.common.instructions', ['event_types' => $event_types])
 
-
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
-                                <form id="eventdetails" novalidate>
+                                <form id="eventdetails" action="" novalidate autocomplete="off">
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
-                                                <div class="card-title collapsed" data-toggle="collapse"
+                                                <div class="card-title show" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u">Event
-                                                        information</h6>
+                                                    <h6 class="kt-font-transform-u kt-font-dark">Event Details</h6>
                                                 </div>
                                             </div>
                                             <input type="hidden" id="event_id" value="{{$event->event_id}}">
@@ -54,16 +52,16 @@
                                                 <div class="card-body">
                                                     <div class="row">
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
+                                                        <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Event Type <small>( <span class="text-danger">*</span>
-                                                                    )</small></label>
-                                                            <select class="form-control form-control-sm "
+                                                                {{__('Event Type')}} <span class="text-danger">*</span>
+                                                            </label>
+                                                            <select class="form-control form-control-sm"
                                                                 name="event_type_id" id="event_type_id"
                                                                 placeholder="Type"
                                                                 onchange="getRequirementsList(this.value)">
-                                                                <option value="">Select</option>
+                                                                <option value="">{{__('Select')}}</option>
                                                                 @foreach ($event_types as $pt)
                                                                 <option value="{{$pt->event_type_id}}"
                                                                     {{$event->event_type_id == $pt->event_type_id ? 'selected' : ''}}>
@@ -74,158 +72,42 @@
                                                         </div>
 
 
-                                                        <div class="col-md-4 form-group form-group-sm">
+                                                        <div class="col-md-4 form-group form-group-xs">
                                                             <label for="name_en"
-                                                                class=" col-form-label kt-font-bold text-right">Event
-                                                                Name <small>( <span class="text-danger">*
-                                                                    </span>)</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="name_en" id="name_en" placeholder="Event Name"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}<span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="name_en" id="name_en"
+                                                                placeholder="{{__('Event Name')}}"
                                                                 value="{{$event->name_en}}">
                                                         </div>
 
-                                                        <div class=" col-md-4 form-group form-group-sm">
+                                                        <div class=" col-md-4 form-group form-group-xs">
                                                             <label for="name_ar"
-                                                                class=" col-form-label kt-font-bold text-right">Event
-                                                                Name - Ar<small>( <span class="text-danger">*
-                                                                    </span>)</small></label>
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Event Name - Ar')}}<span
+                                                                    class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm "
-                                                                name="name_ar" id="name_ar" dir="rtl"
-                                                                placeholder="Event Name" value="{{$event->name_ar}}">
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="issued_date"
-                                                                class=" col-form-label kt-font-bold text-right">From
-                                                                Date <small>( <span class="text-danger">*</span>
-                                                                    )</small></label>
-                                                            <div class="input-group input-group-sm date">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm "
-                                                                        name="issued_date" id="issued_date"
-                                                                        placeholder="From Date"
-                                                                        value="{{date('d-m-Y',strtotime($event->issued_date))}}">
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-calendar"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-sm">
-                                                            <label class="col-form-label">From
-                                                                Time <small>( <span class="text-danger">*</span>
-                                                                    )</small></label>
-                                                            <div class="input-group input-group-sm timepicker">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input class="form-control form-control-sm"
-                                                                        name="time_start" id="time_start" type="text"
-                                                                        value="{{$event->time_start}}" />
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-clock-o"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="venue_en"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                Venue <small>( <span class="text-danger">*</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="venue_en" id="venue_en" placeholder="Venue"
-                                                                value="{{$event->venue_en}}">
-
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="expired_date"
-                                                                class=" col-form-label kt-font-bold text-right">To
-                                                                Date <small>( <span class="text-danger">*</span>
-                                                                    )</small></label>
-                                                            <div class="input-group input-group-sm date">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm "
-                                                                        name="expired_date" id="expired_date"
-                                                                        placeholder="To Date"
-                                                                        value="{{date('d-m-Y',strtotime($event->expired_date))}}">
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-calendar"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-sm">
-                                                            <label class="col-form-label">To Time <small>( <span
-                                                                        class="text-danger">*</span>
-                                                                    )</small></label>
-
-                                                            <div class="input-group input-group-sm timepicker">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input class="form-control form-control-sm "
-                                                                        name="time_end" id="time_end" type="text"
-                                                                        value="{{$event->time_end}}" />
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-clock-o"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
+                                                                name="name_ar" dir="rtl" id="name_ar"
+                                                                placeholder="{{__('Event Name - Ar')}}"
+                                                                value="{{$event->name_ar}}">
                                                         </div>
 
 
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="venue_ar"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                Venue - Ar <small>( <span class="text-danger">*</span>
-                                                                    )</small></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="venue_ar" id="venue_ar" dir="rtl"
-                                                                placeholder="Venue - Ar" value="{{$event->venue_ar}}">
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="street"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                Street<span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="street" id="street" placeholder="Street"
-                                                                value="{{$event->street}}">
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-sm">
+                                                        <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="description_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Description <span class="text-danger">*</span></label>
+                                                                {{__('Description')}}<span
+                                                                    class="text-danger">*</span></label>
                                                             <textarea type="text" class="form-control form-control-sm"
                                                                 name="description_en" id="description_en"
-                                                                placeholder="Description" rows="1"
+                                                                placeholder="{{__('Description')}}" rows="1"
                                                                 style="resize:none">{{$event->description_en}}</textarea>
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="description_ar"
+                                                        <div class=" col-md-4 form-group form-group-xs ">
+                                                            <label for=" description_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 Description - Ar <span
                                                                     class="text-danger">*</span></label>
@@ -237,7 +119,7 @@
 
 
 
-                                                        <div class="col-md-4  form-group form-group-sm ">
+                                                        <div class="col-md-4  form-group form-group-xs ">
                                                             <label class=" col-form-label kt-font-bold text-right">
                                                                 Do you have any Food truck ?</label>
                                                             <div class="kt-radio-inline">
@@ -249,15 +131,16 @@
                                                                     <span></span>
                                                                 </label>
                                                                 <label class="kt-radio kt-radio--solid">
-                                                                    <input type="radio" name="isTruck" value="0"
-                                                                        {{$event->no_of_trucks == 0 ? 'checked' : ''}}
-                                                                        onclick="checkTruck(0)"> No
+                                                                    <input type="radio" name="isTruck" value="0" checked
+                                                                        onclick="checkTruck(0)"
+                                                                        {{$event->no_of_trucks == 0 ? 'checked' : ''}}>
+                                                                    No
                                                                     <span></span>
                                                                 </label>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm "
+                                                        <div class="col-md-4 form-group form-group-xs "
                                                             id="how_many_div">
                                                             <label for="no_of_trucks"
                                                                 class=" col-form-label kt-font-bold text-right">
@@ -273,90 +156,285 @@
                                                             </select>
                                                         </div>
 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="card kt-margin-t-5">
+                                            <div class="card-header" id="headingTwo6">
+                                                <div class="card-title show" data-toggle="collapse"
+                                                    data-target="#collapseTwo6" aria-expanded="false"
+                                                    aria-controls="collapseTwo6">
+                                                    <h6 class="kt-font-transform-u kt-font-dark">Date Details
+                                                    </h6>
+                                                </div>
+                                            </div>
+
+                                            <div class="collapse show" aria-labelledby="headingTwo6"
+                                                data-parent="#accordionExample6" id="collapseTwo6">
+                                                <div class="card-body">
+                                                    <div class="row">
+
+                                                        <div class="col-md-3 form-group form-group-xs ">
+                                                            <label for="issued_date"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('From Date')}}<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="input-group input-group-sm date">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="issued_date" id="issued_date"
+                                                                        placeholder="{{__('From Date')}}"
+                                                                        value="{{date('d-m-Y',strtotime($event->issued_date))}}" />
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-calendar"></i>
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-3 form-group form-group-xs">
+                                                            <label class="col-form-label">{{__('From Time')}}<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="input-group input-group-sm timepicker">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input class="form-control form-control-sm"
+                                                                        value="{{$event->time_start}}" name="time_start"
+                                                                        id="time_start" type="text" />
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-clock-o"></i>
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+
+                                                        <div class="col-md-3 form-group form-group-xs ">
+                                                            <label for="expired_date"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('To Date')}}<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="input-group input-group-sm date">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="expired_date" id="expired_date"
+                                                                        placeholder="{{__('To Date')}}"
+                                                                        value="{{date('d-m-Y',strtotime($event->expired_date))}}">
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-calendar"></i>
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3 form-group form-group-xs">
+                                                            <label class="col-form-label">{{__('To Time')}}<span
+                                                                    class="text-danger">*</span></label>
+
+                                                            <div class="input-group input-group-sm timepicker">
+                                                                <div class="kt-input-icon kt-input-icon--right">
+                                                                    <input class="form-control form-control-sm"
+                                                                        value="{{$event->time_end}}" name="time_end"
+                                                                        id="time_end" type="text" />
+                                                                    <span
+                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                        <span>
+                                                                            <i class="la la-clock-o"></i>
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
 
 
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseTwo6" aria-expanded="false"
-                                                aria-controls="collapseTwo6">
-                                                <h6 class="kt-font-transform-u">Contact
-                                                    information
-                                                </h6>
-                                            </div>
-                                        </div>
-                                        {{--id="collapseTwo6"--}}
-                                        <div class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample6">
-                                            <div class="card-body">
-
-                                                <div class="row">
 
 
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="address"
-                                                            class=" col-form-label kt-font-bold text-right">Address
-                                                            <small>( <span class="text-danger">*</span>
-                                                                )</small></label>
-                                                        <input type="text" class="form-control form-control-sm "
-                                                            name="address" id="address" placeholder="Address"
-                                                            value="{{$event->address}}">
+
+                                            <div class="card kt-margin-t-5">
+                                                <div class="card-header" id="headingTwo6">
+                                                    <div class="card-title show" data-toggle="collapse"
+                                                        data-target="#collapseTwo5" aria-expanded="false"
+                                                        aria-controls="collapseTwo6">
+                                                        <h6 class="kt-font-transform-u kt-font-dark">Location Details
+                                                        </h6>
+                                                    </div>
+                                                </div>
+
+                                                <div class="collapse show" aria-labelledby="headingTwo6"
+                                                    data-parent="#accordionExample6" id="collapseTwo5">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6 form-group form-group-xs ">
+                                                                <label for="venue_en"
+                                                                    class=" col-form-label kt-font-bold text-right">
+                                                                    {{__('Venue')}} <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    name="venue_en" id="venue_en"
+                                                                    placeholder="{{__('Venue')}}"
+                                                                    value="{{$event->venue_en}}">
+
+                                                            </div>
+
+                                                            <div class="col-md-6 form-group form-group-xs ">
+                                                                <label for="venue_ar"
+                                                                    class=" col-form-label kt-font-bold text-right">
+                                                                    Venue - Ar <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    name="venue_ar" dir="rtl" id="venue_ar"
+                                                                    placeholder="Venue - Ar"
+                                                                    value="{{$event->venue_ar}}">
+                                                            </div>
+
+
+
+
+                                                            <div class="col-md-4 form-group form-group-xs ">
+                                                                <label for="emirate_id"
+                                                                    class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
+                                                                </label>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    value="Rasal Khaimah" readonly>
+                                                                <input type="hidden" name="emirate_id" id="emirate_id"
+                                                                    value="5">
+                                                            </div>
+
+
+                                                            <div class="col-md-4 form-group form-group-xs ">
+                                                                <label for="area_id"
+                                                                    class=" col-form-label kt-font-bold text-right">{{__('Area')}}
+                                                                </label>
+                                                                <select class="  form-control form-control-sm "
+                                                                    name="area_id" id="area_id">
+                                                                    <option value="">{{__('Select')}}</option>
+                                                                    @foreach($areas as $ar)
+                                                                    <option value="{{$ar->id}}"
+                                                                        {{$ar->id == $event->area_id ? 'selected' : ''}}>
+                                                                        {{$ar->area_en}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-md-4 form-group form-group-xs ">
+                                                                <label for="country_id"
+                                                                    class=" col-form-label kt-font-bold text-right">{{__('Country')}}
+                                                                </label>
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    value="United Arab Emirates" readonly>
+                                                                <input type="hidden" name="country_id" id="country_id"
+                                                                    value="232">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card kt-margin-t-5">
+                                                    <div class="card-header" id="headingTwo6">
+                                                        <div class="card-title show" data-toggle="collapse"
+                                                            data-target="#collapseTwo4" aria-expanded="false"
+                                                            aria-controls="collapseTwo6">
+                                                            <h6 class="kt-font-transform-u kt-font-dark">Map
+                                                                Details
+                                                            </h6>
+                                                        </div>
                                                     </div>
 
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="emirate_id"
-                                                            class=" col-form-label kt-font-bold text-right">Emirate
-                                                        </label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            value="{{getLangId() == 1 ? "Ras Al Khaimah" : "ورأس الخيمة"}}"
-                                                            readonly>
-                                                        <input type="hidden" name="emirate_id" id="emirate_id"
-                                                            value="5">
+                                                    <div class="collapse show" aria-labelledby="headingTwo6"
+                                                        data-parent="#accordionExample6" id="collapseTwo4">
+                                                        <div class="card-body">
+                                                            <div class="row">
 
+                                                                <div
+                                                                    class="col-md-8 col-sm-12 form-group form-group-xs ">
+                                                                    <label for="address"
+                                                                        class=" col-form-label kt-font-bold text-right">Address
+                                                                        <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm map-input"
+                                                                        name="address" id="address-input"
+                                                                        placeholder="Address"
+                                                                        value="{{$event->address}}">
+                                                                </div>
+
+                                                                <div class="col-md-4 form-group form-group-xs ">
+                                                                    <label for="street"
+                                                                        class=" col-form-label kt-font-bold text-right">
+                                                                        Street<span class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="street" id="street" placeholder="Street"
+                                                                        value="{{$event->street}}">
+                                                                </div>
+
+                                                                <div class="col-md-6 form-group form-group-xs ">
+                                                                    <label for="longitude"
+                                                                        class=" col-form-label kt-font-bold text-right">
+                                                                        Longitude <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="longitude" id="longitude"
+                                                                        placeholder="Longitude"
+                                                                        value="{{$event->longitude}}">
+                                                                </div>
+
+                                                                <div class="col-md-6 form-group form-group-xs ">
+                                                                    <label for="latitude"
+                                                                        class=" col-form-label kt-font-bold text-right">
+                                                                        Latitude <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        name="latitude" id="latitude"
+                                                                        placeholder="Latitude"
+                                                                        value="{{$event->latitude}}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-
-
-                                                    <div class="col-md-4 form-group form-group-sm ">
-                                                        <label for="area_id"
-                                                            class=" col-form-label kt-font-bold text-right">Area
-                                                        </label>
-                                                        <select class="  form-control form-control-sm " name="area_id"
-                                                            id="area_id">
-                                                            <option value="">Select</option>
-                                                            @foreach($areas as $ar)
-                                                            <option value="{{$ar->id}}"
-                                                                {{$ar->id == $event->area_id ? 'selected' : ''}}>
-                                                                {{$ar->area_en}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-                                                    {{-- <div class="col-md-4 form-group form-group-sm ">
-                                                            <label for="country_id"
-                                                                class=" col-form-label kt-font-bold text-right">Country
-                                                            </label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                value="United Arab Emirates" readonly>
-                                                            <input type="hidden" name="country_id" id="country_id"
-                                                                value="232" />
-                                                        </div> --}}
-
 
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
+                                <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
+                                    <div style="width: 100%; height: 100%" id="map"></div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
+
+
 
 
 
@@ -452,7 +530,10 @@
 @section('script')
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script src="{{asset('js/company/artist.js')}}"></script>
-
+<script src="{{asset('js/company/map.js')}}"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}&libraries=places&callback=initialize"
+    async defer></script>
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -472,14 +553,19 @@
         getRequirementsList(event_type_id);
         uploadFunction();
         picUploadFunction();
+        checkTruck(0);
         $('#submit--btn-group').css('display', 'none');
     });
 
     function checkTruck(id) {
         if (id == 1) {
             $("#how_many_div").css("display", "block");
+            $("#no_of_trucks").attr("required", true);
+            $('#add_document_btn').css('display', "block");
         } else {
             $("#how_many_div").css("display", "none");
+            $("#no_of_trucks").attr("required", false);
+            $('#add_document_btn').css('display', "none");
         }
     }
 
@@ -624,6 +710,9 @@
                 description_ar: 'required',
                 time_start: 'required',
                 venue_en: 'required',
+                area_id: 'required',
+                longitude: 'required',
+                latitude: 'required',
                 expired_date: {
                     required: true,
                     dateNL: true
@@ -645,6 +734,9 @@
                 description_ar: '',
                 time_start: '',
                 venue_en: '',
+                area_id: '',
+                longitude: '',
+                latitude: '',
                 expired_date: {
                     required: "",
                     dateNL: ""
@@ -731,15 +823,15 @@
                     expired_date: $('#expired_date').val(),
                     time_end: $('#time_end').val(),
                     venue_ar: $('#venue_ar').val(),
-                    address: $('#address').val(),
+                    address: $('#address-input').val(),
                     emirate_id: $('#emirate_id').val(),
+                    longitude: $('#longitude').val(),
+                    latitude: $('#latitude').val(),
                     area_id: $('#area_id').val(),
-                    // country_id: $('#country_id').val(),
-                    event_draft_id: $('#event_id').val(),
+                    country_id: $('#country_id').val(),
                     street: $('#street').val(),
                     description_en: $('#description_en').val(),
                     description_ar: $('#description_ar').val(),
-                    // is_truck: $("input:radio[name='isTruck']:checked").val(),
                     no_of_trucks: noOfTrucks
                 };
 

@@ -455,6 +455,7 @@
 
 .ajax-file-upload-progress {
     border: none !important;
+    display: none !important;
 }
 
 /* .ajax-file-upload-filename {
@@ -466,6 +467,7 @@
     border: none !important;
     margin: 0 !important;
     padding: 0 !important;
+    display: flex !important;
 }
 
 /* .form-group label {
@@ -474,6 +476,10 @@
 
 .rtl {
     direction: rtl;
+}
+
+.text-underline {
+    text-decoration: underline;
 }
 
 .horizontal-tb {

@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::get('artist/temp/details/{id}/{from}', 'Company\ArtistController@get_temp_artist_details')->name('temp_artist_details.view');
     Route::get('artist/fetch_artist_comment/{id}', 'Company\ArtistController@fetch_artist_comment')->name('artist.fetch_artist_comment');
     Route::post('artist/check_artist/exists', 'Company\ArtistController@check_artist_exists')->name('artist.check_artist_exists');
+    Route::post('artist/fetch_event_details', 'Company\ArtistController@fetch_event_details')->name('artist.fetch_event_details');
+
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
@@ -85,12 +87,15 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::post('event/submit_happiness', 'Company\EventController@submit_happiness')->name('event.submit_happiness');
     Route::post('uploadEventDocument', 'Company\EventController@uploadDocument')->name('event.uploadDocument');
     Route::post('event/deleteUploadedfile', 'Company\EventController@deleteUploadFile')->name('event.deleteUploadedfile');
+    Route::post('event/deleteTruckUploadedfile', 'Company\EventController@deleteTruckUploadedfile')->name('event.deleteTruckUploadedfile');
     Route::get('event/amend/{event}', 'Company\EventController@amend')->name('event.amend');
     Route::post('event/amend', 'Company\EventController@applyAmend')->name('event.applyAmend');
     Route::post('event/uploadLogo', 'Company\EventController@uploadLogo')->name('event.uploadLogo');
     Route::get('event/get_uploaded_logo/{id}', 'Company\EventController@get_uploaded_logo')->name('event.get_uploaded_logo');
     Route::post('event/uploadTruck', 'Company\EventController@uploadTruck')->name('event.uploadTruck');
     Route::get('event/add_artist/{id?}', 'Company\EventController@add_artist')->name('event.add_artist');
+    Route::get('event/fetch_truck_req/{id}', 'Company\EventController@fetch_truck_req')->name('event.fetch_truck_req');
+
 
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 });

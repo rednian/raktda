@@ -40,11 +40,11 @@
             <span>@lang('words.reference_no'):</span>&emsp;
             <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
         </div>
-        @if(count($permit_details->event) > 0)
+        @if($permit_details->event)
         <div class="pb-3">
             <span>Connected to Event :</span>&emsp;
             <span
-                class="kt-font-info">{{getLangId() == 1 ? $permit_details->event[0]->name_en : $permit_details->event[0]->name_ar}}</span>&emsp;&emsp;
+                class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>&emsp;&emsp;
         </div>
         @endif
         <div class="table-responsive">
