@@ -485,54 +485,54 @@
                                 <form id="documents_required" method="post">
 
                                 </form>
-                                <form id="added_documents" method="post">
+                                {{-- <form id="added_documents" method="post">
                                     <h5 class="text-dark kt-font-bold text-underline kt-margin-b-15">Food Truck Required
                                         documents</h5>
                                     @php
                                     $i = 1 ;
                                     @endphp
                                     <input type="hidden" id="truck_document_count" value="{{count($truck_req)}}">
-                                    @foreach($truck_req as $truck_requ)
-                                    <div class="row">
-                                        <div class="col-lg-4 col-sm-12">
-                                            <label
-                                                class="kt-font-bold text--maroon">{{getLangId()== 1 ?  $truck_requ->requirement_name :  $truck_requ->requirement_name_ar }}</label>
-                                            <p for="" class="reqName">
-                                                {{getLangId() == 1 ?  $truck_requ->requirement_description : $truck_requ->requirement_description_ar}}
-                                            </p>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12">
-                                            <label style="visibility:hidden">hidden</label>
-                                            <div id="upload_foodtruck_1_{{$i}}">Upload</div>
-                                        </div>
-                                        @if($truck_requ->dates_required)
-                                        <div class="col-lg-2 col-sm-12">
-                                            <label for="" class="text--maroon kt-font-bold" title="Issue Date">
-                                                {{__('Issue Date')}}</label>
-                                            <input type="text" class="form-control form-control-sm date-picker"
-                                                name="truck_doc_issue_date_1_{{$i}}" data-date-end-date="0d"
-                                                id="truck_doc_issue_date_1_{{$i}}" placeholder="DD-MM-YYYY" />
-                                        </div>
-                                        <div class="col-lg-2 col-sm-12">
-                                            <label for="" class="text--maroon kt-font-bold" title="Expiry Date">
-                                                {{__('Expiry Date')}}</label>
-                                            <input type="text" class="form-control form-control-sm date-picker"
-                                                name="truck_doc_issue_date_1_{{$i}}" data-date-start-date="+30d"
-                                                id="truck_doc_issue_date_1_{{$i}}" placeholder="DD-MM-YYYY" />
-                                        </div>
-                                        @endif
+                                @foreach($truck_req as $truck_requ)
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-12">
+                                        <label
+                                            class="kt-font-bold text--maroon">{{getLangId()== 1 ?  $truck_requ->requirement_name :  $truck_requ->requirement_name_ar }}</label>
+                                        <p for="" class="reqName">
+                                            {{getLangId() == 1 ?  $truck_requ->requirement_description : $truck_requ->requirement_description_ar}}
+                                        </p>
                                     </div>
-                                    @php
-                                    $i++;
-                                    @endphp
-                                    @endforeach
+                                    <div class="col-lg-4 col-sm-12">
+                                        <label style="visibility:hidden">hidden</label>
+                                        <div id="upload_foodtruck_1_{{$i}}">Upload</div>
+                                    </div>
+                                    @if($truck_requ->dates_required)
+                                    <div class="col-lg-2 col-sm-12">
+                                        <label for="" class="text--maroon kt-font-bold" title="Issue Date">
+                                            {{__('Issue Date')}}</label>
+                                        <input type="text" class="form-control form-control-sm date-picker"
+                                            name="truck_doc_issue_date_1_{{$i}}" data-date-end-date="0d"
+                                            id="truck_doc_issue_date_1_{{$i}}" placeholder="DD-MM-YYYY" />
+                                    </div>
+                                    <div class="col-lg-2 col-sm-12">
+                                        <label for="" class="text--maroon kt-font-bold" title="Expiry Date">
+                                            {{__('Expiry Date')}}</label>
+                                        <input type="text" class="form-control form-control-sm date-picker"
+                                            name="truck_doc_issue_date_1_{{$i}}" data-date-start-date="+30d"
+                                            id="truck_doc_issue_date_1_{{$i}}" placeholder="DD-MM-YYYY" />
+                                    </div>
+                                    @endif
+                                </div>
+                                @php
+                                $i++;
+                                @endphp
+                                @endforeach
                                 </form>
                                 <div class="text-right" id="add_document_btn">
                                     <span class="btn btn-sm btn-dark my-4" onclick="addUploadRow()"><i
                                             class="fa fa-plus"></i> Add Document of Food Truck <span
                                             id="food_truck_doc_num"></span>
                                     </span>
-                                </div>
+                                </div>--}}
                             </div>
                         </div>
                     </div>
@@ -630,7 +630,7 @@
     var fileUploadFns = [];
     var eventdetails = {};
     var documentDetails = {};
-    var truckdocumentDetails = {};
+    // var truckdocumentDetails = {};
     var docRules = {};
     var docMessages = {};
     var documentsValidator ;
@@ -657,6 +657,7 @@
         if (id == 1) {
             $("#how_many_div").css("display", "block");
             $('#no_of_trucks').trigger("change");
+            truckDocUpload();
         } else {
             $("#how_many_div").css("display", "none");
             $("#no_of_trucks").attr("required", false);
@@ -775,7 +776,7 @@
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
         };
-
+        
 
         var eventValidator = $('#eventdetails').validate({
             ignore: [],
@@ -962,8 +963,8 @@
                 hasPicture = true;
                 $("#pic-upload").css('border', '2px dotted #A5A5C7');
             }
-            /*
-            var hasTruckFileArray = [];
+            
+           /* var hasTruckFileArray = [];
             var per_truck_doc = $('#truck_document_count').val();
             var no_of_trucks = $('#no_of_trucks').val();
             if(no_of_trucks > 0)
@@ -972,14 +973,15 @@
                 {
                     for(var j = 1; j <= per_truck_doc; j++)
                     {
+                        console.log(truckdocumentDetails);
                         truckdocumentDetails[k] ={};
                         hasTruckFileArray[k] = {};
                         if ($('#truck-file-upload_' +k+'_'+j).length) {
                             if ($('#truck-file-upload_'+k+'_'+j).contents().length == 0) {
-                                hasTruckFileArray[k][j] = false;
+                                hasTruckFileArray[k] = false;
                                 $("#upload_foodtruck_" +k+'_'+j).css('border', '2px dotted red');
                             } else {
-                                hasTruckFileArray[k][j] = true;
+                                hasTruckFileArray[k] = true;
                                 $("#upload_foodtruck_" +k+'_'+j).css('border', '2px dotted #A5A5C7');
                             }
                         }
@@ -990,8 +992,10 @@
                     }
                 }
             }
-            || hasTruckFileArray.includes(false)
+
+            || hasTruckFileArray.includes(false
             */
+            
 
             if (hasFileArray.includes(false) || hasPicture == false ) {
                 hasFile = false;
@@ -1001,7 +1005,7 @@
 
             localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
             localStorage.setItem('documentNames', JSON.stringify(documentNames));
-            localStorage.setItem('truckdocumentDetails', JSON.stringify(truckdocumentDetails));
+            // localStorage.setItem('truckdocumentDetails', JSON.stringify(truckdocumentDetails));
             return hasFile;
 
         }
@@ -1087,7 +1091,7 @@
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
                     var dn = localStorage.getItem('documentNames');
-                    var tdd = localStorage.getItem('truckdocumentDetails');
+                    // var tdd = localStorage.getItem('truckdocumentDetails');
 
                         $.ajax({
                             url: "{{route('event.store')}}",
@@ -1096,7 +1100,7 @@
                                 eventD: ed,
                                 documentD: dd,
                                 documentN: dn,
-                                tdd:tdd,
+                                // tdd:tdd,
                                 from: 'new'
                             },
                             success: function (result) {
@@ -1115,6 +1119,8 @@
                                 }
                             }
                         });
+                }else {
+                    alert('Please Upload the required food truck documents');
                 }
         }
 
@@ -1138,7 +1144,7 @@
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
-                    var tdd = localStorage.getItem('truckdocumentDetails');
+                    // var tdd = localStorage.getItem('truckdocumentDetails');
 
                     $.ajax({
                         url: "{{route('company.event.add_draft')}}",
@@ -1146,7 +1152,7 @@
                         data: {
                             eventD: ed,
                             documentD: dd,
-                            tdd: tdd
+                            // tdd: tdd
                         },
                         success: function (result) {
                             if(result.message[0]){

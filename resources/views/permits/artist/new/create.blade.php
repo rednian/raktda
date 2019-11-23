@@ -290,13 +290,13 @@
             var diff = $('#noofdays').val();
             var isEvent = $("input:radio[name='isEvent']:checked").val();
             var eventId = $('#event_id').val();
-            if(isEvent == 1 && eventId != ' '){
-                fetchEventDetails();
-            }else if(isEvent == 0){
-                $('#event_id').val(' ');
-                eventId = ' ';
-                clearEventDetails();
-            }
+            // if(isEvent == 1 && eventId != ' '){
+            //     fetchEventDetails();
+            // }else if(isEvent == 0){
+            //     $('#event_id').val(' ');
+            //     eventId = ' ';
+            //     clearEventDetails();
+            // }
             var artistcount = $('#total_artist_details').val();
             $('#add_artist').attr('disabled', loc == '' ? true : false) ;
             $('#add_artist_sm').attr('disabled', loc == '' ? true : false) ;
@@ -310,11 +310,11 @@
                         $('#draft_btn').css('display', 'block');
                         $('#submit_btn').css('display', 'block');
                     }
-                    if(eventId != ' '){
-                        fetchEventDetails();
-                    }else {
-                        clearEventDetails();
-                    }
+                    // if(eventId != ' '){
+                    //     fetchEventDetails();
+                    // }else {
+                    //     clearEventDetails();
+                    // }
                 }
                 else {
                     disabledThese();

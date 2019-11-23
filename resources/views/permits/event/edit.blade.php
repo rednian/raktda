@@ -382,6 +382,9 @@
                                                                     value="{{$event->street}}">
                                                             </div>
 
+                                                            <input type="hidden" id="full_address" name="full_address"
+                                                                value="{{$event->full_address}}">
+
                                                             <div class="col-md-6 form-group form-group-xs ">
                                                                 <label for="longitude"
                                                                     class=" col-form-label kt-font-bold text-right">
@@ -434,8 +437,6 @@
                             </form>
                         </div>
                     </div>
-
-
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
@@ -517,7 +518,11 @@
     var fileUploadFns = [];
     var eventdetails = {};
     var documentDetails = {};
+    var truckdocumentDetails = {};
     var addidocumentDetails = {};
+    var truckDocUploader = [];
+    var picUploader ;
+
 
     $(document).ready(function(){
         setWizard();
@@ -560,10 +565,6 @@
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                     formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
                     onLoad: function (obj) {
-
-                        $.ajaxSetup({
-                            headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
-                        });
                         $.ajax({
                             cache: false,
                             url: "{{route('company.event.get_uploaded_docs')}}",
@@ -806,6 +807,7 @@
                     street: $('#street').val(),
                     description_en: $('#description_en').val(),
                     description_ar: $('#description_ar').val(),
+                    full_address: $('#full_address').val(),
                     no_of_trucks: noOfTrucks
             };
             localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
@@ -953,7 +955,7 @@
                     $('#documents_required').empty();
                      var res = result.requirements;
                      $('#requirements_count').val(res.length);
-                     $('#documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo <span class="text-danger">( required )</span></label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
+                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo <span class="text-danger">( required )</span></label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
                          $('#documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+' <span class="text-danger">( required )</span></label><p for="" class="reqName">'+(res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
@@ -1068,9 +1070,7 @@
         });
 
 
-
-
-
+        
 </script>
 
 @endsection

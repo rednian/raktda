@@ -63,7 +63,6 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::post('artist/check_artist/exists', 'Company\ArtistController@check_artist_exists')->name('artist.check_artist_exists');
     Route::post('artist/fetch_event_details', 'Company\ArtistController@fetch_event_details')->name('artist.fetch_event_details');
 
-
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
     Route::get('event/payment/{event}', 'Company\EventController@payment')->name('company.event.payment');
@@ -95,7 +94,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::post('event/uploadTruck', 'Company\EventController@uploadTruck')->name('event.uploadTruck');
     Route::get('event/add_artist/{id?}', 'Company\EventController@add_artist')->name('event.add_artist');
     Route::get('event/fetch_truck_req/{id}', 'Company\EventController@fetch_truck_req')->name('event.fetch_truck_req');
-
+    Route::get('artist/getTruckUploads', 'Company\EventController@getTruckUploads')->name('event.getTruckUploads');
 
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 });
