@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class SetLanguage
+class SetLanguageFrontend
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class SetLanguage
     public function handle($request, Closure $next)
     {
         if ($request->user()->LanguageId != 1) {
-            \App::setLocale('ar');
+            \App::setLocale('arFront');
         }
         return $next($request);
     }

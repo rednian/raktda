@@ -11,6 +11,7 @@
 	use App\EventType;
 	use Carbon\Carbon;
 	use App\Requirement;
+	use App\EventRequirement;
 	use App\GeneralSetting;
 	use NumberToWords\NumberToWords;
 	use Illuminate\Http\Request;
@@ -104,7 +105,8 @@
 		public function submit(Request $request, Event $event)
 		{
 			try {
-				DB::beginTransaction();
+				DB::beginTransaction(); 	dd($request->all());
+			
 			
 				$user = Auth::user();
 				$request['user_id'] = $user->user_id;
@@ -112,7 +114,7 @@
 				$event->check()->where('event_id', $event->event_id)->delete();
 				$event->check()->create($request->all());
 
-				if($request->status == 'rejected'  || $request->status == 'need modification'){
+				if($request->status == 'rejected'  || $request->status == 'need modification'){ 
 					if($request->status == 'need modification'){
 						if($request->requirements_id){
 							$requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
@@ -140,7 +142,7 @@
 					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
 				}
 
-				if ($request->status == 'approved-unpaid') {
+				if ($request->status == 'approved-unpaid') { 
 					$comment = $event->comment()->create($request->all()); 
 					$request['role_id'] = $user->roles()->first()->role_id;
 					$request['type'] = $type = 1; 
@@ -148,7 +150,7 @@
 					$event->update(['status'=>$request->status, 'note_en'=>$request->note_en, 'note_ar'=>$request->note_ar]);
 				}
 
-				if($request->status == 'need approval'){
+				if($request->status == 'need approval'){ 
 					$request['role_id'] = $user->roles()->first()->role_id;
 					$request['type']  = 0; 
 					$comment = $event->comment()->create($request->all());
@@ -245,6 +247,9 @@
 			->addColumn('end', function($requirement){
 				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required'; 
 			})
+			->addColumn('type', function($requirement){
+				return strtoupper($requirement->eventRequirement()->first()->type);
+			})
 			->addColumn('files', function($requirement) use ($request, $event){
 				$name =  $request->user()->LanguageId == 1 ?  ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
 				$files = $requirement->eventRequirement()->where('event_id', $event->event_id)->get();
@@ -293,42 +298,93 @@
 
 		public function applicationDatatable(Request $request, Event $event)
 		{
-			$events = $event->requirements()->get();
-			$user = Auth::user();
-			$events =  DataTables::of($events)
-				 ->addColumn('name', function($requirement) use ($user){
-					 $name = $user->LanguageId == 1 ? $requirement->requirement_name : $requirement->requirement_name_ar;
-					 return '<a href="'.asset('/storage/'.$requirement->pivot->path).'"  data-fancybox data-caption="'.$name.'">'.$name.'</a>';
-				 })
-				 ->addColumn('issued_date', function($requirement){
-				 	if($requirement->dates_required == 1){
-				 		 return date('d-M-Y',strtotime($requirement->pivot->issued_date));
-				 	}
+			$requirements = Requirement::whereHas('events', function($q) use ($event){
+				$q->where('event.event_id', $event->event_id);
+			})->get();
 
-					 return 'Not Required';
-				 })
-				 ->addColumn('expired_date', function($requirement){
-					if($requirement->dates_required == 1){
-				 		  return date('d-M-Y',strtotime($requirement->pivot->expired_date));
-				 	}
-					 return 'Not Required';
-				 })
-				 ->addColumn('files', function($event){
+			$requirements = DataTables::of($requirements)
+			->addColumn('type', function($requirement){
+				return strtoupper($requirement->eventRequirement()->first()->type).' REQUIREMENTS';
+			})
+			->addColumn('name', function($requirement) use ($request){
+				return $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar; 
+			})
+			->addColumn('issued_date', function($requirement){
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
+			})
+			->addColumn('expired_date', function($requirement){
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : 'Not Required';
+			})
+			->addColumn('files', function($requirement) use ($event){
+		
 
-				 	return null;
-				 })
-				 ->rawColumns(['name', 'files'])
-				 ->make(true);
+				return $requirement->eventRequirement()->where('event_id', $event->event_id)->count();
+			})
+			->rawColumns(['files'])
+			->make(true);
 
-				$data = $events->getData(true);
+			$data = $requirements->getData(true);
 
 				$data['data'][] = [
 				    'name' => '<a href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">Event Logo</a>',
 				    'issued_date'=> 'Not Required',
 				    'expired_date'=> 'Not Required',
-				];
+				    'type'=>'EVENT REQUIREMENTS'
+				];	
 
 				 return response()->json($data);
+
+			return $requirements;
+
+			// $events = $event->requirements()->get();
+			// $user = Auth::user();
+			// $events =  DataTables::of($events)
+			// 	 ->addColumn('name', function($requirement) use ($user){
+			// 		 $name = $user->LanguageId == 1 ? $requirement->requirement_name : $requirement->requirement_name_ar;
+			// 		 return '<a href="'.asset('/storage/'.$requirement->pivot->path).'"  data-fancybox data-caption="'.$name.'">'.$name.'</a>';
+			// 	 })
+			// 	 ->addColumn('issued_date', function($requirement){
+			// 	 	if($requirement->dates_required == 1){
+			// 	 		 return date('d-M-Y',strtotime($requirement->pivot->issued_date));
+			// 	 	}
+
+			// 		 return 'Not Required';
+			// 	 })
+			// 	 ->addColumn('requirement', function($requirement){
+			// 	 	return $requirement->whereHas('eventRequirement', function($q) use ($requirement){
+			// 	 		$q->where('requirement_id',$requirement->requirement_id);
+			// 	 	})->count();
+			// 	 	// foreach ($requirement->events as $key => $value) {
+			// 	 	// 	# code...
+			// 	 	// }
+				 	
+			// 	 })
+			// 	 ->addColumn('type', function($requirement){
+			// 	 	return strtoupper($requirement->eventRequirement()->first()->type).' REQUIREMENTS';
+			// 	 })
+			// 	 ->addColumn('expired_date', function($requirement){
+			// 		if($requirement->dates_required == 1){
+			// 	 		  return date('d-M-Y',strtotime($requirement->pivot->expired_date));
+			// 	 	}
+			// 		 return 'Not Required';
+			// 	 })
+			// 	 ->addColumn('files', function($event){
+
+			// 	 	return null;
+			// 	 })
+			// 	 ->rawColumns(['name', 'files', 'requirement'])
+			// 	 ->make(true);
+
+			// 	$data = $events->getData(true);
+
+			// 	$data['data'][] = [
+			// 	    'name' => '<a href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">Event Logo</a>',
+			// 	    'issued_date'=> 'Not Required',
+			// 	    'expired_date'=> 'Not Required',
+			// 	    'type'=> 'EVENT REQUIREMENTS',
+			// 	];
+
+			// 	 return response()->json($data);
 		}
 
 		public function dataTable(Request $request)

@@ -148,7 +148,7 @@
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
-                                <form id="eventdetails" action="" novalidate>
+                                <form id="eventdetails" action="" novalidate autocomplete="off">
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
@@ -301,8 +301,38 @@
                                                                 placeholder="Venue - Ar">
                                                         </div>
 
+                                                        <div class="col-md-4 form-group form-group-sm ">
+                                                            <label for="street"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                Street<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="street" id="street" placeholder="Street">
+                                                        </div>
 
-                                                        {{--
+
+                                                        <div class="col-md-4 form-group form-group-sm ">
+                                                            <label for="description_en"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                Description <span class="text-danger">*</span></label>
+                                                            <textarea type="text" class="form-control form-control-sm"
+                                                                name="description_en" id="description_en"
+                                                                placeholder="Description" rows="1"
+                                                                style="resize:none"></textarea>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-sm ">
+                                                            <label for="description_ar"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                Description - Ar <span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea class="form-control form-control-sm"
+                                                                name="description_ar" dir="rtl" id="description_ar"
+                                                                placeholder="Description - Ar" rows="1"
+                                                                style="resize:none"></textarea>
+                                                        </div>
+
+
+
                                                         <div class="col-md-4  form-group form-group-sm ">
                                                             <label class=" col-form-label kt-font-bold text-right">
                                                                 Do you have any Food truck ?</label>
@@ -322,156 +352,147 @@
 
                                                         <div class="col-md-4 form-group form-group-sm "
                                                             id="how_many_div">
-                                                            <label for="venue_ar"
+                                                            <label for="no_of_trucks"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 How Many ?<span class="text-danger">*</span></label>
                                                             <select class="form-control form-control-sm"
                                                                 name="no_of_trucks" id="no_of_trucks">
                                                                 <option value=" ">Select</option>
                                                                 @for($i = 1;$i < 15; $i++) <option value="{{$i}}">{{$i}}
-                                                        </option>
-                                                        @endfor
-                                                        </select>
+                                                                    </option>
+                                                                    @endfor
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="card">
+                                        <div class="card-header" id="headingTwo6">
+                                            <div class="card-title collapsed" data-toggle="collapse"
+                                                data-target="#collapseTwo6" aria-expanded="false"
+                                                aria-controls="collapseTwo6">
+                                                <h6 class="kt-font-transform-u">Contact
+                                                    information
+                                                </h6>
+                                            </div>
+                                        </div>
+
+                                        <div class="collapse show" aria-labelledby="headingTwo6"
+                                            data-parent="#accordionExample6" id="collapseTwo6">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4 form-group form-group-sm ">
+                                                        <label for="address"
+                                                            class=" col-form-label kt-font-bold text-right">Address
+                                                            <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-sm "
+                                                            name="address" id="address" placeholder="Address">
                                                     </div>
 
-                                                    --}}
+                                                    <div class="col-md-4 form-group form-group-sm ">
+                                                        <label for="emirate_id"
+                                                            class=" col-form-label kt-font-bold text-right">Emirate
+                                                        </label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            value="Ras Al Khaimah" readonly>
+                                                        <input type="hidden" name="emirate_id" id="emirate_id"
+                                                            value="5" />
+                                                        </select>
+
+                                                    </div>
+
+
+                                                    <div class="col-md-4 form-group form-group-sm ">
+                                                        <label for="area_id"
+                                                            class=" col-form-label kt-font-bold text-right">Area
+                                                        </label>
+                                                        <select class="  form-control form-control-sm " name="area_id"
+                                                            id="area_id">
+                                                            <option value="">Select</option>
+                                                            @foreach($areas as $ar)
+                                                            <option value="{{$ar->id}}">
+                                                                {{$ar->area_en}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </form>
+
                             </div>
+                        </div>
+                    </div>
 
+                    <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
 
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        <div class="kt-form__section kt-form__section--first ">
+                            <div class="kt-wizard-v3__form">
+                                <form id="documents_required" method="post">
 
-                            <div class="card">
-                                <div class="card-header" id="headingTwo6">
-                                    <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
-                                        aria-expanded="false" aria-controls="collapseTwo6">
-                                        <h6 class="kt-font-transform-u">Contact
-                                            information
-                                        </h6>
-                                    </div>
-                                </div>
+                                </form>
+                                <form id="added_documents" method="post">
 
-                                <div class="collapse show" aria-labelledby="headingTwo6"
-                                    data-parent="#accordionExample6" id="collapseTwo6">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4 form-group form-group-sm ">
-                                                <label for="address"
-                                                    class=" col-form-label kt-font-bold text-right">Address
-                                                    <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control form-control-sm " name="address"
-                                                    id="address" placeholder="Address">
-                                            </div>
-
-                                            <div class="col-md-4 form-group form-group-sm ">
-                                                <label for="emirate_id"
-                                                    class=" col-form-label kt-font-bold text-right">Emirate
-                                                </label>
-                                                <input type="text" class="form-control form-control-sm"
-                                                    value="Ras Al Khaimah" readonly>
-                                                <input type="hidden" name="emirate_id" id="emirate_id" value="5" />
-                                                </select>
-
-                                            </div>
-
-
-                                            <div class="col-md-4 form-group form-group-sm ">
-                                                <label for="area_id"
-                                                    class=" col-form-label kt-font-bold text-right">Area
-                                                </label>
-                                                <select class="  form-control form-control-sm " name="area_id"
-                                                    id="area_id">
-                                                    <option value="">Select</option>
-                                                    @foreach($areas as $ar)
-                                                    <option value="{{$ar->id}}">
-                                                        {{$ar->area_en}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-4 form-group form-group-sm ">
-                                                <label for="country_id"
-                                                    class=" col-form-label kt-font-bold text-right">Country
-                                                </label>
-                                                <input type="text" class="form-control form-control-sm"
-                                                    value="United Arab Emirates" readonly>
-                                                <input type="hidden" name="country_id" id="country_id" value="232" />
-
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
+                                {{-- <div class="text-right" id="add_document_btn">
+                                    <span class="btn btn-sm btn-dark my-4" onclick="addUploadRow()"><i
+                                            class="fa fa-plus"></i> Add New Document
+                                    </span>
+                                </div> --}}
                             </div>
-                            </form>
+                        </div>
+                    </div>
 
+
+                    <div class="kt-form__actions">
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-prev" id="prev_btn">
+                            Previous
+                        </div>
+
+
+                        <a href="{{route('event.index')}}#applied">
+                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                                Back
+                            </div>
+                        </a>
+
+                        <div class="btn-group" role="group" id="submit--btn-group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Submit
+                            </button>
+                            <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
+                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
+                                    value="finished" id="submit_btn">Finish &
+                                    Submit</button>
+                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-danger"
+                                    value="finished" id="submit_btn_artist">Submit & Add Artist</button>
+                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
+                                    id="draft_btn">Save
+                                    as Draft</button>
+                            </div>
+                        </div>
+
+
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-next" id="next_btn">
+                            Next Step
                         </div>
                     </div>
                 </div>
-
-                <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
-
-                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                    <div class="kt-form__section kt-form__section--first ">
-                        <div class="kt-wizard-v3__form">
-                            <form id="documents_required" method="post">
-
-
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="kt-form__actions">
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                        data-ktwizard-type="action-prev" id="prev_btn">
-                        Previous
-                    </div>
-
-
-                    <a href="{{route('event.index')}}#applied">
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                            Back
-                        </div>
-                    </a>
-
-                    <div class="btn-group" role="group" id="submit--btn-group">
-                        <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Submit
-                        </button>
-                        <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
-                            <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
-                                value="finished" id="submit_btn">Finish &
-                                Submit</button>
-                            <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
-                                id="draft_btn">Save
-                                as Draft</button>
-                        </div>
-                    </div>
-
-
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                        data-ktwizard-type="action-next" id="next_btn">
-                        Next Step
-                    </div>
-
-                </div>
-
             </div>
-
-
-
-
         </div>
     </div>
-</div>
 </div>
 </div>
 </div>
@@ -524,15 +545,36 @@
     var docRules = {};
     var docMessages = {};
     var documentsValidator ;
+    var picUploader ;
+    var truckDocUploader = [];
 
 
     $(document).ready(function(){
         setWizard();
         localStorage.clear();
         uploadFunction();
+        picUploadFunction();
+
+        // getRequirementsList(5);
+        // wizard.goTo(3);
+
+        $('#add_document_btn').css('display', 'none');
         $('#how_many_div').css('display', 'none');
         $('#submit--btn-group').css('display', 'none');
     });
+
+    function checkTruck(id) {
+        if (id == 1) {
+            $("#how_many_div").css("display", "block");
+            $("#no_of_trucks").attr("required", true);
+            $('#add_document_btn').css('display', "block");
+        } else {
+            $("#how_many_div").css("display", "none");
+            $("#no_of_trucks").attr("required", false);
+            $('#add_document_btn').css('display', "none");
+        }
+    }
+
 
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
@@ -596,6 +638,29 @@
             }
         };
 
+        const picUploadFunction = () => {
+            picUploader = $('#pic_uploader').uploadFile({
+                url: "{{route('event.uploadLogo')}}",
+                method: "POST",
+                allowedTypes: "jpeg,jpg,png",
+                fileName: "pic_file",
+                multiple: false,
+                deleteStr: `<i class="la la-trash"></i>`,
+                showFileSize: false,
+                showFileCounter: false,
+                abortStr: '',
+                previewHeight: '200px',
+                previewWidth: "auto",
+                returnType: "json",
+                maxFileCount: 1,
+                showPreview: true,
+                showDelete: true,
+                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+            });
+            $('#pic_uploader div').attr('id', 'pic-upload');
+            $('#pic_uploader + div').attr('id', 'pic-file-upload');
+        };
+
 
         var eventValidator = $('#eventdetails').validate({
             ignore: [],
@@ -607,6 +672,9 @@
                     required: true,
                     dateNL: true
                 },
+                street: 'required',
+                description_en: 'required',
+                description_ar: 'required',
                 time_start: 'required',
                 venue_en: 'required',
                 expired_date: {
@@ -623,6 +691,9 @@
                 name_ar: '',
                 issued_date: '',
                 time_start: '',
+                street: '',
+                description_en: '',
+                description_ar: '',
                 venue_en: '',
                 expired_date: '',
                 time_end: '',
@@ -671,7 +742,6 @@
                 wizard.goNext();
                 result = true;
             }
-
             return result;
         };
 
@@ -688,6 +758,7 @@
             if (eventValidator.form()) {
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#submit--btn-group').css('display', 'block');
+                var noOfTrucks = $("input:radio[name='isTruck']:checked").val() == "1" ? $('#no_of_trucks').val() : "0" ;
                 eventdetails = {
                     event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
@@ -701,7 +772,12 @@
                     address: $('#address').val(),
                     emirate_id: $('#emirate_id').val(),
                     area_id: $('#area_id').val(),
-                    country_id: $('#country_id').val()
+                    country_id: $('#country_id').val(),
+                    street: $('#street').val(),
+                    description_en: $('#description_en').val(),
+                    description_ar: $('#description_ar').val(),
+                    // is_truck: $("input:radio[name='isTruck']:checked").val(),
+                    no_of_trucks: noOfTrucks
                 };
 
                 localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
@@ -745,8 +821,15 @@
             }
             }
 
+            if ($('#pic-file-upload').contents().length == 0) {
+                hasPicture = false;
+                $('#pic-upload').css('border', '2px dotted red');
+            } else {
+                hasPicture = true;
+                $("#pic-upload").css('border', '2px dotted #A5A5C7');
+            }
 
-            if (hasFileArray.includes(false) ) {
+            if (hasFileArray.includes(false) || hasPicture == false) {
                 hasFile = false;
             } else {
                 hasFile = true;
@@ -801,7 +884,7 @@
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
-            var expDate = moment(minDate, 'DD-MM-YYYY').add('month', 1);
+            var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'month');
             $('#expired_date').datepicker('setStartDate', minDate);
             $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
             $('#expired_date').val(expDate.format("DD-MM-YYYY")).datepicker('update');
@@ -828,8 +911,7 @@
 
         };
 
-        $('#submit_btn').click((e) => {
-
+        function call_this_to_submit(isArtist = null){
             var hasFile = docValidation();
 
                 if (documentsValidator.form() && hasFile) {
@@ -852,13 +934,28 @@
                             success: function (result) {
                                 console.log(result);
                                 if(result.message[0]){
+                                    if(isArtist)
+                                    {
+                                        var hrefUrl = "{{route('event.add_artist', ':id')}}";
+                                        hrefUrl = hrefUrl.replace(':id', 0);
+                                        window.location.href =  hrefUrl;
+                                    } else
+                                    {
+                                        window.location.href = "{{route('event.index')}}#applied";
+                                    }
                                     localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}#applied";
                                 }
                             }
                         });
                 }
+        }
 
+        $('#submit_btn_artist').click(()=>{
+            call_this_to_submit(1)
+        })
+
+        $('#submit_btn').click((e) => {
+            call_this_to_submit();
         });
 
 
@@ -883,8 +980,8 @@
                             },
                             success: function (result) {
                                 if(result.message[0]){
-                                    localStorage.clear();
                                     window.location.href = "{{route('event.index')}}#draft";
+                                    localStorage.clear();
                                 }
                             }
                         });
@@ -903,17 +1000,15 @@
                  if(result){
                     $('#documents_required').empty();
                      var res = result.requirements;
-                     $('#documents_required').append('<input hidden id="requirements_count" value="'+ res.length +'" />');
+                     $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo <span class="text-danger">( required )</span></label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count" value="'+ res.length +'" />');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
-
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'<span class="text-danger"> ( required ) </span></label><p for="" class="reqName">'+( res[i].requirement_description ? res[i].requirement_description : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
                          if(res[i].dates_required == "1")
                          {
                             $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
-                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
+                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+30d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />');
                          }
-
                             docRules['doc_issue_date_' + j] = 'required';
                             docRules['doc_exp_date_' + j] = 'required';
                             docMessages['doc_issue_date_' + j] = '';
@@ -922,6 +1017,7 @@
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
                      }
                      uploadFunction();
+                     picUploadFunction();
                       documentsValidator = $('#documents_required').validate({
                         rules: docRules,
                         messages: docMessages
@@ -929,9 +1025,61 @@
                  }else {
                     $('#documents_required').empty();
                  }
-
                 }
             });
+        }
+
+
+        const truckDocUpload = () => {
+            var count = parseInt($('#added_documents > div').length);
+                for(var i = 1; i <= count ;i++){
+                    truckDocUploader[i] = $('#upload_foodtruck_'+i).uploadFile({
+                    url: "{{route('event.uploadTruck')}}",
+                    method: "POST",
+                    allowedTypes: "jpeg,jpg,png",
+                    fileName: "truck_file_"+i,
+                    multiple: false,
+                    downloadStr: `<i class="la la-download"></i>`,
+                    deleteStr: `<i class="la la-trash"></i>`,
+                    showFileSize: false,
+                    showFileCounter: false,
+                    abortStr: '',
+                    previewWidth: "auto",
+                    returnType: "json",
+                    maxFileCount: 1,
+                    showPreview: true,
+                    showDelete: true,
+                    showDownload: true,
+                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    formData: {id: i },
+                });
+                $('#upload_foodtruck_'+i+' div').attr('id', 'truck-upload_'+i);
+                $('#upload_foodtruck_'+i+' + div').attr('id', 'truck-file-upload_'+i);
+            }
+        };
+
+        function addUploadRow(){
+            var count = parseInt($('#added_documents > div').length);
+            var j = count == 0 ? 1 : parseInt(count) + 1 ;
+            var checkVal ;
+            if(count > 0)
+            {
+                if ($('#truck-file-upload_' + count).contents().length == 0){
+                    checkVal = false;
+                }else { checkVal = true ;}
+            }
+            if(checkVal == false){
+                alert("Please upload the file and add new document !");
+                return;
+            }
+            $('#added_documents').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Food Truck</label><p for="" class="reqName">Additional Documents for Food Truck</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="upload_foodtruck_'+j+'">Upload</div></div><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"><label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="truck_doc_issue_date_'+j+'" data-date-end-date="0d" id="truck_doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/></div><div class="col-lg-2 col-sm-12" ><label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="truck_doc_issue_date_'+j+'" data-date-start-date="+30d" id="truck_doc_issue_date_'+j+'" placeholder="DD-MM-YYYY" /></div></div>');
+
+            truckDocUpload();
+            $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+
+            // $('#issue_dd_'+j+'').append('');
+            // $('#exp_dd_'+j+'').append('');
+
         }
 
 

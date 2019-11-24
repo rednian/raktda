@@ -10,28 +10,11 @@
                  <i class="la la-arrow-left"></i>
                  Back to permit list
             </a>
-            <div class="dropdown dropdown-inline">
-                 <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="flaticon-more"></i>
-                 </button>
-                 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                        @if ($event->status == 'active' || $event->status == 'expired')
-                            {{-- <div class="dropdown-divider"></div> --}}
-                            <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> download</a>
-                        @endif
-                 </div>
-            </div>
+            
          </div>
     </div>
     <div class="kt-portlet__body kt-padding-t-5">
-      @if ($event->permit)
-      <a href="{{ route('admin.artist_permit.show', $event->permit->permit_id) }}">
-        <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
-          <div class="alert-text">This event has an artist with reference number <span class="kt-font-danger">{{ $event->permit->reference_number }}</span>
-          </div>
-        </div>
-        </a>
-      @endif
+      @include('admin.event.includes.existing-notification')
       <div class="kt-widget kt-widget--project-1">
           <div class="kt-widget__head">
             <div class="kt-widget__label">
@@ -56,34 +39,26 @@
               </a>
               <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right">
                 <ul class="kt-nav">
-                  <li class="kt-nav__item">
+                  @if ($event->status == 'active' || $event->status == 'expired')
+                    <li class="kt-nav__item">
+                      <a href="{{ route('admin.event.download', $event->event_id) }}" target="_blank" class="kt-nav__link">
+                        <i class="kt-nav__link-icon la la-download"></i>
+                        <span class="kt-nav__link-text">Download</span>
+                      </a>
+                    </li>
+                  @endif
+                  @if ($event->status == 'active' || $event->status == 'approved-unpaid')
+                    <li class="kt-nav__item">
                     <a href="#" class="kt-nav__link">
-                      <i class="kt-nav__link-icon flaticon2-line-chart"></i>
-                      <span class="kt-nav__link-text">Reports</span>
+                      <i class="kt-nav__link-icon la la-minus-circle"></i>
+                      <span class="kt-nav__link-text">Cancel</span>
                     </a>
                   </li>
+                  @endif
                   <li class="kt-nav__item">
                     <a href="#" class="kt-nav__link">
-                      <i class="kt-nav__link-icon flaticon2-send"></i>
-                      <span class="kt-nav__link-text">Messages</span>
-                    </a>
-                  </li>
-                  <li class="kt-nav__item">
-                    <a href="#" class="kt-nav__link">
-                      <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
-                      <span class="kt-nav__link-text">Charts</span>
-                    </a>
-                  </li>
-                  <li class="kt-nav__item">
-                    <a href="#" class="kt-nav__link">
-                      <i class="kt-nav__link-icon flaticon2-avatar"></i>
-                      <span class="kt-nav__link-text">Members</span>
-                    </a>
-                  </li>
-                  <li class="kt-nav__item">
-                    <a href="#" class="kt-nav__link">
-                      <i class="kt-nav__link-icon flaticon2-settings"></i>
-                      <span class="kt-nav__link-text">Settings</span>
+                      <i class="kt-nav__link-icon la la-industry"></i>
+                      <span class="kt-nav__link-text">Company</span>
                     </a>
                   </li>
                 </ul>
@@ -120,12 +95,6 @@
                             <td>Permit Duration : </td>
                              <td class="kt-font-dark">{{ $event->created_at->format('d-M-Y') }}</td>
                         </tr>
-                        @if ($event->no_of_trucks)
-                          <tr>
-                            <td>No. of Food Truck :</td>
-                            <td>{{ $event->no_of_trucks }}</td>
-                          </tr>
-                        @endif
                         <tr>
                             <td>Venue : </td>
                              <td class="kt-font-dark">{{ $event->venue_en }}</td>
@@ -199,11 +168,11 @@
             
             <div class="kt-widget__content">
               <div class="kt-widget__details">
-                <span class="kt-widget__subtitle">FOOD TRUCKS</span>
-                <span class="kt-widget__value">{{ $event->no_of_trucks ? $event->no_of_trucks : 0 }}</span>
+                <span class="kt-widget__subtitle kt-padding-b-5">FOOD TRUCKS</span>
+                <span class="kt-widget__value img-circle text-center">{{ $event->no_of_trucks ? $event->no_of_trucks : 0 }}</span>
               </div>
               <div class="kt-widget__details">
-                <span class="kt-widget__subtitle">ARTIST ON EVENT</span>
+                <span class="kt-widget__subtitle kt-padding-b-5 text-center">ARTIST ON EVENT</span>
                 @if ($event->permit()->count() > 0)
                   <div class="kt-badge kt-badge__pics">
                     @foreach ($event->permit->artistpermit as $index => $artist)
@@ -286,6 +255,7 @@
             <table class="table table-hover table-borderless border table-striped" id="document-table">
                 <thead>
                     <tr>
+                        <th>TYPE</th>
                         <th>DOCUMENT NAME</th>
                         <th>ISSUED DATE</th>
                         <th>EXPIRED DATE</th>
@@ -335,14 +305,33 @@
     document_table = $('#document-table').DataTable({
       ajax: '{{ route('admin.event.uploadedRequiremet', $event->event_id) }}',
       columnDefs:[
-      {targets:[1,2,3], className: 'no-wrap'}
+      {targets:[1,2,3], className: 'no-wrap'},
+      {targets:[0], "visible": false},
+
       ],
+       "order": [[ 0, 'asc' ]],
       columns:[
+        { data: 'type'},
         { data: 'name'},
         { data: 'start'},
         { data: 'end'},
-        { data: 'files'},
-      ]
+        { data: 'files'}, 
+      ],
+       "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(0, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group"><td colspan="5">'+group+'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        }
     });
   });
 </script>
