@@ -21,6 +21,13 @@ class Requirement extends Model implements Auditable
         return $this->hasMany(EventRequirement::class, 'requirement_id');
      }
 
+     public function events()
+     {
+        return $this->belongsToMany(Event::class, 'event_requirement', 'requirement_id', 'event_id')
+        ->withPivot(['path', 'issued_date', 'expired_date', 'type'])
+        ->withTimestamps();
+     }
+
      public function additionalRequirements()
      {
          return $this->belongsToMany(Requirement::class, 'event_additional_requirement', 'requirement_id', 'event_id')->where('requirement_type', 'event');

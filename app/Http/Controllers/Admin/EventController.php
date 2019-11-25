@@ -11,6 +11,7 @@
 	use App\EventType;
 	use Carbon\Carbon;
 	use App\Requirement;
+	use App\EventRequirement;
 	use App\GeneralSetting;
 	use NumberToWords\NumberToWords;
 	use Illuminate\Http\Request;
@@ -47,13 +48,39 @@
 		public function cancel(Request $request, Event $event)
 		{
 			if ($event) {
-				// $event->
+				// dd($request->all());
+			try {
+				$event->update(['cancel_reason'=>$request->cancel_reason, 'cancelled_by'=> $request->user()->user_id, 'status'=>'cancelled']);
+				$result = ['success', ucfirst($event->name_en).' has been cancelled Successfully ', 'Success'];
+			} catch (Exception $e) {
+				$result = ['error', $e->getMessage(), 'Error'];
+			}
+			  return response()->json(['message' => $result]);
 			}
 		}
 
+		public function showWeb(Request $request, Event $event)
+		{
+			try {
+				$event->update(['is_display_web'=>$request->is_display_web]);
+				$result = ['success', ucfirst($event->name_en).' has will display in the website calendar ', 'Success'];
+			} catch (Exception $e) {
+				$result = ['error', $e->getMessage(), 'Error'];
+			}
+			 return response()->json(['message' => $result]);
+		}
+
+
+
 		public function showAll(Request $request, Event $event)
 		{
-
+			try {
+				$event->update(['is_display_all'=>$request->is_display_all]);
+				$result = ['success', ucfirst($event->name_en).' has will display in the client\'s calendar ', 'Success'];
+			} catch (Exception $e) {
+				$result = ['error', $e->getMessage(), 'Error'];
+			}
+			 return response()->json(['message' => $result]);
 		}
 
 		public function calendar(Request $request)
@@ -78,7 +105,8 @@
 		public function submit(Request $request, Event $event)
 		{
 			try {
-				DB::beginTransaction();
+				DB::beginTransaction(); 	dd($request->all());
+			
 			
 				$user = Auth::user();
 				$request['user_id'] = $user->user_id;
@@ -86,7 +114,7 @@
 				$event->check()->where('event_id', $event->event_id)->delete();
 				$event->check()->create($request->all());
 
-				if($request->status == 'rejected'  || $request->status == 'need modification'){
+				if($request->status == 'rejected'  || $request->status == 'need modification'){ 
 					if($request->status == 'need modification'){
 						if($request->requirements_id){
 							$requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
@@ -114,7 +142,7 @@
 					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
 				}
 
-				if ($request->status == 'approved-unpaid') {
+				if ($request->status == 'approved-unpaid') { 
 					$comment = $event->comment()->create($request->all()); 
 					$request['role_id'] = $user->roles()->first()->role_id;
 					$request['type'] = $type = 1; 
@@ -122,7 +150,7 @@
 					$event->update(['status'=>$request->status, 'note_en'=>$request->note_en, 'note_ar'=>$request->note_ar]);
 				}
 
-				if($request->status == 'need approval'){
+				if($request->status == 'need approval'){ 
 					$request['role_id'] = $user->roles()->first()->role_id;
 					$request['type']  = 0; 
 					$comment = $event->comment()->create($request->all());
@@ -219,6 +247,9 @@
 			->addColumn('end', function($requirement){
 				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required'; 
 			})
+			->addColumn('type', function($requirement){
+				return strtoupper($requirement->eventRequirement()->first()->type);
+			})
 			->addColumn('files', function($requirement) use ($request, $event){
 				$name =  $request->user()->LanguageId == 1 ?  ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
 				$files = $requirement->eventRequirement()->where('event_id', $event->event_id)->get();
@@ -267,42 +298,93 @@
 
 		public function applicationDatatable(Request $request, Event $event)
 		{
-			$events = $event->requirements()->get();
-			$user = Auth::user();
-			$events =  DataTables::of($events)
-				 ->addColumn('name', function($requirement) use ($user){
-					 $name = $user->LanguageId == 1 ? $requirement->requirement_name : $requirement->requirement_name_ar;
-					 return '<a href="'.asset('/storage/'.$requirement->pivot->path).'"  data-fancybox data-caption="'.$name.'">'.$name.'</a>';
-				 })
-				 ->addColumn('issued_date', function($requirement){
-				 	if($requirement->dates_required == 1){
-				 		 return date('d-M-Y',strtotime($requirement->pivot->issued_date));
-				 	}
+			$requirements = Requirement::whereHas('events', function($q) use ($event){
+				$q->where('event.event_id', $event->event_id);
+			})->get();
 
-					 return 'Not Required';
-				 })
-				 ->addColumn('expired_date', function($requirement){
-					if($requirement->dates_required == 1){
-				 		  return date('d-M-Y',strtotime($requirement->pivot->expired_date));
-				 	}
-					 return 'Not Required';
-				 })
-				 ->addColumn('files', function($event){
+			$requirements = DataTables::of($requirements)
+			->addColumn('type', function($requirement){
+				return strtoupper($requirement->eventRequirement()->first()->type).' REQUIREMENTS';
+			})
+			->addColumn('name', function($requirement) use ($request){
+				return $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar; 
+			})
+			->addColumn('issued_date', function($requirement){
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
+			})
+			->addColumn('expired_date', function($requirement){
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : 'Not Required';
+			})
+			->addColumn('files', function($requirement) use ($event){
+		
 
-				 	return null;
-				 })
-				 ->rawColumns(['name', 'files'])
-				 ->make(true);
+				return $requirement->eventRequirement()->where('event_id', $event->event_id)->count();
+			})
+			->rawColumns(['files'])
+			->make(true);
 
-				$data = $events->getData(true);
+			$data = $requirements->getData(true);
 
 				$data['data'][] = [
 				    'name' => '<a href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">Event Logo</a>',
 				    'issued_date'=> 'Not Required',
 				    'expired_date'=> 'Not Required',
-				];
+				    'type'=>'EVENT REQUIREMENTS'
+				];	
 
 				 return response()->json($data);
+
+			return $requirements;
+
+			// $events = $event->requirements()->get();
+			// $user = Auth::user();
+			// $events =  DataTables::of($events)
+			// 	 ->addColumn('name', function($requirement) use ($user){
+			// 		 $name = $user->LanguageId == 1 ? $requirement->requirement_name : $requirement->requirement_name_ar;
+			// 		 return '<a href="'.asset('/storage/'.$requirement->pivot->path).'"  data-fancybox data-caption="'.$name.'">'.$name.'</a>';
+			// 	 })
+			// 	 ->addColumn('issued_date', function($requirement){
+			// 	 	if($requirement->dates_required == 1){
+			// 	 		 return date('d-M-Y',strtotime($requirement->pivot->issued_date));
+			// 	 	}
+
+			// 		 return 'Not Required';
+			// 	 })
+			// 	 ->addColumn('requirement', function($requirement){
+			// 	 	return $requirement->whereHas('eventRequirement', function($q) use ($requirement){
+			// 	 		$q->where('requirement_id',$requirement->requirement_id);
+			// 	 	})->count();
+			// 	 	// foreach ($requirement->events as $key => $value) {
+			// 	 	// 	# code...
+			// 	 	// }
+				 	
+			// 	 })
+			// 	 ->addColumn('type', function($requirement){
+			// 	 	return strtoupper($requirement->eventRequirement()->first()->type).' REQUIREMENTS';
+			// 	 })
+			// 	 ->addColumn('expired_date', function($requirement){
+			// 		if($requirement->dates_required == 1){
+			// 	 		  return date('d-M-Y',strtotime($requirement->pivot->expired_date));
+			// 	 	}
+			// 		 return 'Not Required';
+			// 	 })
+			// 	 ->addColumn('files', function($event){
+
+			// 	 	return null;
+			// 	 })
+			// 	 ->rawColumns(['name', 'files', 'requirement'])
+			// 	 ->make(true);
+
+			// 	$data = $events->getData(true);
+
+			// 	$data['data'][] = [
+			// 	    'name' => '<a href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">Event Logo</a>',
+			// 	    'issued_date'=> 'Not Required',
+			// 	    'expired_date'=> 'Not Required',
+			// 	    'type'=> 'EVENT REQUIREMENTS',
+			// 	];
+
+			// 	 return response()->json($data);
 		}
 
 		public function dataTable(Request $request)
@@ -318,7 +400,7 @@
 				->when($request->status, function($q) use ($request){
 					$q->whereIn('status', $request->status);
 				})
-				->whereNotIn('status', ['draft', 'cancelled'])
+				->whereNotIn('status', ['draft'])
 				->orderBy('updated_at', 'desc')
 				->get();
 
@@ -334,14 +416,8 @@
 				})
 				->addColumn('website', function($event){
 					$display = $event->is_display_web ? 'checked="checked"' : null; 
-					// return '<div class="custom-control   custom-checkbox">
-					//     <input type="checkbox" class="custom-control-input " id="switch1">
-					//     <label class="custom-control-label website" for="switch1">Toggle me</label>
-					//   </div>';
 
-
-
-					$html =  '<span class="kt-switch website  kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
+					$html =  '<span class="kt-switch  kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
 					$html .=  '	<label>';
 					$html .=  '	<input class="website" type="checkbox" '.$display.' name="">';
 					$html .=  '		<span></span>';
@@ -354,7 +430,7 @@
 
 					$html =  '<span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
 					$html .=  '	<label >';
-					$html .=  '	<input data-name="'.$event->name_en.'" data-event="'.$event->event_id.'" class="display-all" type="checkbox" '.$display.' name="" >';
+					$html .=  '	<input class="display-all" type="checkbox" '.$display.' name="" >';
 					$html .=  '		<span ></span>';
 					$html .=  '	</label>';
 					$html .=  '</span>';
@@ -372,24 +448,19 @@
 					$html  .= '	<button type="button" class="btn btn-secondary btn-elevate-hover btn-icon btn-sm btn-icon-md btn-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 					$html  .= '<i class="flaticon-more-1"></i>';
 					$html  .= '	</button>';
-					$html  .= '		<div class="dropdown-menu dropdown-menu-right">';
-					$html  .= '	<a class="dropdown-item" href="'.route('admin.event.show', $event->event_id).'"><i class="la la-calendar-check-o"></i>Event Details</a>';
-					$html  .= '				<a class="dropdown-item" href="'.route('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
-					$html  .= '				<div class="dropdown-divider"></div>';
-					$html  .= '					<a data-toggle="modal" class="dropdown-item" href="#cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
-					$html  .= '					</div>';
+					if ($event->status != 'cancelled' || $event->status != 'rejected') {
+						$html  .= '		<div class="dropdown-menu dropdown-menu-right">';
+						$html  .= '	<a class="dropdown-item" href="'.route('admin.event.show', $event->event_id).'"><i class="la la-calendar-check-o"></i>Event Details</a>';
+						$html  .= '				<a class="dropdown-item" target="_blank" href="'.route('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
+						$html  .= '				<div class="dropdown-divider"></div>';
+						$html  .= '					<a href="javascript:void(0)" class="dropdown-item cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
+						$html  .= '					</div>';
+					}
+	
 					$html  .= '					</div>';
 
 					return $html;
 					
-																			
-																				
-																		
-																		
-																			
-	
-					 	// if($event->status == 'rejected'){ return null; }
-					 	// return '<a href="'.route('admin.event.download', $event->event_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><i class="la la-download"></i></a>';
 					 })
 					 ->rawColumns(['status', 'action', 'show', 'website'])
 //				 ->setTotalRecords($totalRecords)s

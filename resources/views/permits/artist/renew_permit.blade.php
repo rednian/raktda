@@ -18,7 +18,7 @@
                     <i class="la la-arrow-left"></i>
                     Back
                 </button>
-                <a href="{{url('company/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
+                <a href="{{url('company/artist/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
@@ -29,7 +29,7 @@
                     <i class="la la-arrow-left"></i>
 
                 </button>
-                <a href="{{url('company/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
+                <a href="{{url('company/artist/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                 </a>
@@ -169,7 +169,7 @@
             return;
         }
         var total = $('#total_artist_details').val();
-        var addUrl = "{{url('company/add_artist_to_permit/renew')}}/"+permit_id ;
+        var addUrl = "{{url('company/artist/add_artist_to_permit/renew')}}/"+permit_id ;
         if(nextUrl != addUrl ){
             var tempArr = [];
             for(var i = 0 ; i < total; i++){

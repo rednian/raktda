@@ -225,8 +225,8 @@
         </thead>
         <tbody>
             <tr>
-                <td>Fitness Classes Shall be done by Professional trainers.</td>
-                <td>يجب أن يتم فصول اللياقة البدنية بواسطة مدربين محترفين</td>
+                <td>{{$event_details->note_en}}</td>
+                <td>{{$event_details->note_ar}}</td>
             </tr>
         </tbody>
     </table>

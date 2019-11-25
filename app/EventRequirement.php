@@ -9,7 +9,7 @@ class EventRequirement extends Model
     protected $table = 'event_requirement';
     protected $primaryKey = 'event_requirement_id';
     protected $dates = ['created_at', 'updated_at', 'expired_date', 'issued_date'];
-    protected $fillable = ['event_id', 'event_type_id', 'path', 'issued_date', 'expired_date', 'requirement_id'];
+    protected $fillable = ['type', 'event_id', 'event_type_id', 'path', 'issued_date', 'expired_date', 'requirement_id'];
 
     public function type()
     {

@@ -9,6 +9,10 @@
         <div class="kt-portlet__head-label">
             <h3 class="kt-portlet__head-title">Event Permit Details
             </h3>
+            <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+                <strong>{{$event->permit_number}}
+                </strong>
+            </span>
         </div>
 
         <div class="kt-portlet__head-toolbar">
@@ -30,40 +34,121 @@
         </div>
     </div>
 
+
     <div class="kt-portlet__body">
-
-
         <div class="kt-container">
             <div class="event--view-head">
-                <h1>{{$event->reference_number}}</h1>
-                <h1>{{$event->permit_number}}</h1>
-                <div class="event--view-location">
-                    <div>{{$event->address}} </div>
-                    <div>{{$event->area['area_en']}}</div>
-                    <div>{{$event->emirate['name_en']}}</div>
-                    <div>{{$event->country['name_en']}}</div>
+                <div class="col-md-12 pb-4 d-flex flex-sm-column flex-md-row">
+                    <div class="col-md-4 img-responsive">
+                        <img src="{{url('storage').'/'.$event->logo_thumbnail}}" alt="image">
+                    </div>
+                    <div class="col-md-8 d-flex flex-column justify-content-flex-start">
+                        <div class="pb-2 row">
+                            <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">REF
+                                NO</label>
+                            <span class="col-md-6">{{$event->reference_number}}</span>
+                        </div>
+                        <div class="pb-2 row">
+                            <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">EVENT
+                                NAME</label>
+                            <span class="col-md-6">{{getLangId() == 1 ? $event->name_en : $event->name_ar}}</span>
+                        </div>
+                        <div class="pb-2 row">
+                            <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">VENUE
+                                NAME
+                            </label>
+                            <span class="col-md-6">{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}</span>
+                        </div>
+                        <div class="pb-2 row">
+                            <label
+                                class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">ADDRESS</label>
+                            <span class="col-md-6">{{$event->address}}</span>
+                        </div>
+                        <div class="pb-2 row">
+                            <label
+                                class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">AREA</label>
+                            <span class="col-md-6">{{$event->area['area_en']}}</span>
+                        </div>
+
+                    </div>
                 </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Issue
+                        Date</label>
+                    <span class="col-md-6">{{$event->issued_date}}</span>
+                </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Time from
+                    </label>
+                    <span class="col-md-6">{{$event->time_start}}</span>
+                </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Expiry
+                        Date</label>
+                    <span class="col-md-6">{{$event->expired_date}}</span>
+                </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Time To
+                    </label>
+                    <span class="col-md-6">{{$event->time_end}}</span>
+                </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Description
+                    </label>
+                    <span
+                        class="col-md-6">{{getLangId() == 1 ? $event->description_en : $event->description_ar }}</span>
+                </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Street
+                    </label>
+                    <span class="col-md-6">{{$event->street}}</span>
+                </div>
+                @if($event->no_of_trucks > 0)
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">No of Trucks
+                    </label>
+                    <span class="col-md-6">{{$event->no_of_trucks}}</span>
+                </div>
+                @endif
             </div>
-            <div class="event--view-details">
-                <div class="event--view-detail-item">
-                    <span class="event--view-detail-item-title text-left pl-4">EVENT NAME</span>
-                    <span class="event--view-detail-item-value">{{$event->name_en}} <br> {{$event->name_ar}}</span>
-                </div>
-                <div class="event--view-detail-item ">
-                    <span class="event--view-detail-item-title text-left pl-4">ISSUE DATE / TIME</span>
-                    <span class="event--view-detail-item-value">{{$event->issued_date}} <br>
-                        {{$event->time_start}}</span>
-                </div>
-                <div class="event--view-detail-item">
-                    <span class="event--view-detail-item-title text-left pl-4">EXPIRY DATE / TIME</span>
-                    <span class="event--view-detail-item-value">{{$event->expired_date}} <br>
-                        {{$event->time_end}}</span>
-                </div>
-                <div class="event--view-detail-item">
-                    <span class="event--view-detail-item-title text-left pl-4">VENUE NAME</span>
-                    <span class="event--view-detail-item-value">{{$event->venue_en}} <br /> {{$event->venue_ar}}</span>
-                </div>
+            @if($artist)
+            {{-- {{dd($artist)}} --}}
+            <div class="pt-2 img-responsive">
+                <h5 class="text--maroon kt-font-transform-u p-4">Artist Details</h5>
+                <table class="table table-striped table-hover border table-borderless">
+                    <thead>
+                        <tr>
+                            <th>@lang('words.first_name')</th>
+                            <th>@lang('words.last_name')</th>
+                            <th>@lang('words.profession')</th>
+                            <th>@lang('words.mobile_number')</th>
+                            <th>@lang('words.status')</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($artist->artistPermit as $at)
+                        <tr>
+                            <td>{{$at->firstname_en}}</td>
+                            <td>{{$at->lastname_en}}</td>
+                            <td>{{$at->profession['name_en']}}</td>
+                            <td>{{$at->mobile_number}}</td>
+                            <td>
+                                {{ucwords($at->artist_permit_status)}}
+                            </td>
+
+                            <td class="text-center"> <a
+                                    href="{{route('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
+                                    title="View">
+                                    <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                </a></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+            @endif
+
             @if(count($eventReq) > 0)
             <div class="event--requirement-files pt-5">
                 <table class="table table-hover table-borderless border table-striped">

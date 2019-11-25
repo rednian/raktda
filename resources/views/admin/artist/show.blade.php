@@ -1,5 +1,6 @@
 @extends('layouts.admin.admin-app')
 @section('content')
+
 	 <section class="kt-portlet kt-portlet--head-sm">
 			<div class="kt-portlet__head kt-portlet__head--sm">
 				 <div class="kt-portlet__head-label">
@@ -215,8 +216,8 @@
       @include('admin.artist_permit.includes.document')
 @endsection
 @section('script')
-	 <script>
-        var is_checked = false;
+<script>
+    var is_checked = false;
       $(document).ready(function () {
         $('input#artist-status').change(function(){ $('#kt_modal_1').modal('show'); });
         $('#kt_modal_1').on('hidden.bs.modal', function () {
@@ -299,7 +300,7 @@
             }
          });
       }
-
+      
       function documents(data){
         console.log(data)
           $('#document-modal').on('shown.bs.modal', function(){

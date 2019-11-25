@@ -15,7 +15,7 @@
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-angle-left"></i>
-                    Back
+                    {{__('Back')}}
                 </button>
                 {{-- <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()">
@@ -25,7 +25,7 @@
                 <a href="{{url('company/artist/add_new/'.$artist_details[0]->permit_id.'/draft')}}">
                     <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                         <i class="la la-plus"></i>
-                        Add Artist
+                        {{__('Add Artist')}}
                     </button>
                 </a>
             </div>
@@ -38,7 +38,7 @@
                     <i class="la la-plus"></i>
                 </button> --}}
                 <a href="{{url('company/artist/add_new/'.$artist_details[0]->permit_id.'/draft')}}">
-                    <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
+                    <button id="add_artist_sm" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                         <i class="la la-plus"></i>
                     </button>
                 </a>
@@ -57,9 +57,10 @@
                         <div class="kt-wizard-v3__form">
                             <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
-                                    <div class="form-group col-lg-3">
-                                        <label for="permit_from" class="col-form-label col-form-label-sm">From
-                                            Date <span class="text-danger">*</span></label>
+                                    <div class="form-group col-lg-2">
+                                        <label for="permit_from"
+                                            class="col-form-label col-form-label-sm">{{__('From Date')}} <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <div class="kt-input-icon kt-input-icon--right">
                                                 <input type="text"
@@ -77,9 +78,10 @@
                                     </div>
                                     <input type="hidden" id="artiststartafter"
                                         value="{{getSettings()->artist_start_after}}">
-                                    <div class="form-group col-lg-3">
-                                        <label for="permit_to" class="col-form-label col-form-label-sm">To
-                                            Date <span class="text-danger">*</span></label>
+                                    <div class="form-group col-lg-2">
+                                        <label for="permit_to"
+                                            class="col-form-label col-form-label-sm">{{__('To Date')}}<span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <div class="kt-input-icon kt-input-icon--right">
                                                 <input type="text"
@@ -96,26 +98,48 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-lg-3">
-                                        <label for="work_loc" class="col-form-label col-form-label-sm">Work
-                                            Location <span class="text-danger">*</span></label>
+                                        <label for="work_loc"
+                                            class="col-form-label col-form-label-sm">{{__('Location')}}<span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm"
                                             placeholder="Work Location" name="work_loc" id="work_loc"
                                             onkeyup="checkFilled()"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
-                                    <div class="form-group col-lg-3">
+
+                                    {{-- {{dd($artist_details[0])}} --}}
+                                    <div class="form-group col-lg-2">
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio kt-radio--solid">
-                                                <input type="radio" name="isEvent" value="0"> Yes
+                                                <input type="radio" name="isEvent" onClick="changeIsEvent(1)" value="1"
+                                                    {{$artist_details[0]->event ? 'checked' : ''}}> Yes
                                                 <span></span>
                                             </label>
                                             <label class="kt-radio kt-radio--solid">
-                                                <input type="radio" name="isEvent" checked value="1"> No
+                                                <input type="radio" name="isEvent" onClick="changeIsEvent(0)"
+                                                    {{$artist_details[0]->event ? '' : 'checked'}} value="0">
+                                                No
                                                 <span></span>
                                             </label>
                                         </div>
+                                    </div>
+                                    <input type="hidden" value="{{$artist_details[0]->event}}" id="eventdetails" />
+                                    <div class="form-group col-lg-3" id="events_div">
+                                        <label for="event_id" class="col-form-label col-form-label-sm">
+                                            Events <span class="text-danger">*</span></label>
+                                        <select type="text" class="form-control form-control-sm" name="event_id"
+                                            id="event_id" onchange="checkFilled()">
+                                            <option value=" ">Select</option>
+                                            @if(count($events) > 0)
+                                            @foreach($events as $event)
+                                            <option value="{{$event->event_id}}"
+                                                {{$artist_details[0]->event ? $artist_details[0]->event->event_id == $event->event_id ? 'selected' : '' : ''}}>
+                                                {{getLangId() == 1 ? $event->name_en : $event->name_ar}}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
                                     </div>
                                 </div>
                             </form>
@@ -132,13 +156,13 @@
             <table class="table table-striped table-hover border table-borderless">
                 <thead>
                     <tr>
-                        <th>@lang('words.first_name')</th>
-                        <th>@lang('words.last_name')</th>
-                        <th>@lang('words.profession')</th>
-                        <th>@lang('words.mobile_number')</th>
+                        <th>{{__('First Name')}}</th>
+                        <th>{{__('Last Name')}}</th>
+                        <th>{{__('Profession')}}</th>
+                        <th>{{__('Mobile Number')}}</th>
                         {{-- <th>Email</th> --}}
-                        <th>@lang('words.status')</th>
-                        <th class="text-center">Actions</th>
+                        <th>{{__('Status')}}</th>
+                        <th class="text-center">{{__('Action')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -246,6 +270,16 @@
             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
         });
 
+        function changeIsEvent(id){
+            if(id==1){
+                $('#events_div').css('display', 'block');
+            }else {
+                $('#events_div').css('display', 'none');
+            }
+            checkFilled();
+        }
+
+
         $(document).ready(function(){
             $('#add_artist').attr('disabled', true);
             checkFilled();
@@ -257,6 +291,8 @@
             var maxDate = moment(minDate).add(3, 'M').toDate();
             $('#permit_to').datepicker('setStartDate', minDate);
             $('#permit_to').datepicker('setEndDate', maxDate);
+            var eventd = $('#eventdetails').val();
+            if(eventd == '') $('#events_div').css('display', 'none');
         });
 
 
@@ -290,13 +326,39 @@
             var from = $('#permit_from').val();
             var to = $('#permit_to').val();
             var loc = $('#work_loc').val();
+            var isEvent = $("input:radio[name='isEvent']:checked").val();
+            var eventId = $('#event_id').val();
+            var artistcount = $('#total_artist_details').val();
             $('#add_artist').attr('disabled', loc == '' ? true : false) ;
+            $('#add_artist_sm').attr('disabled', loc == '' ? true : false) ;
             if(from && to && loc) {
-                $('#add_artist').attr('disabled', false);
-            }else {
-                $('#add_artist').attr('disabled', true);
+                if(isEvent == 0 || (isEvent == 1 && eventId != ' '))
+                {
+                    $('#add_artist').attr('disabled', false);
+                    $('#add_artist_sm').attr('disabled', false);
+                    if(artistcount > 0)
+                    {
+                        $('#draft_btn').css('display', 'block');
+                        $('#submit_btn').css('display', 'block');
+                    }
+                }
+                else {
+                    disabledThese();
+                }
+            }
+            else
+            {
+                disabledThese();
             }
 
+        }
+
+        function disabledThese()
+        {
+            $('#add_artist').attr('disabled', true);
+            $('#add_artist_sm').attr('disabled', true);
+            $('#draft_btn').css('display', 'none');
+            $('#submit_btn').css('display', 'none');
         }
 
         // function setCokkie(){
@@ -417,6 +479,7 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
+                        event_id: $('#event_id').val()
                     },
                     success: function(result){
                         window.location.href="{{route('artist.index')}}#applied";
@@ -435,6 +498,7 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
+                        event_id: $('#event_id').val()
                     },
                     success: function(result){
                         window.location.href="{{route('artist.index')}}#draft";

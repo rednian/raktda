@@ -11,17 +11,17 @@
 	<section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 		<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 			 <div class="kt-portlet__head-label">
-					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Edit {{ $req->requirement_type == 'artist' ? 'Artist' : 'Event' }} Requirement</h3>
+					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Edit ' . ($req->requirement_type == 'artist' ? 'Artist' : 'Event') . ' Requirement') }}</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ $req->requirement_type == 'artist' ? url('settings#artist_requirements') : url('settings#event_requirements')  }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
-						 Back to Settings
+						 {{ __('BACK TO SETTINGS') }}
 					</a>
 					<div class="btn-group">
 						<button type="button" data-submittype="continue" class="btn btn-sm btn-warning btn-submit">
 							<i class="la la-check"></i>
-							<span class="kt-hidden-mobile">Save</span>
+							<span class="kt-hidden-mobile">{{ __('Save') }}</span>
 						</button>
 						<button type="button" class="btn btn-sm btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						</button>
@@ -30,7 +30,7 @@
 								<li class="kt-nav__item">
 									<a href="#" data-submittype="continue" class="kt-nav__link btn-submit">
 										<i class="kt-nav__link-icon flaticon2-reload"></i>
-										<span class="kt-nav__link-text">Save & continue</span>
+										<span class="kt-nav__link-text">{{ __('Save & Continue') }}</span>
 									</a>
 								</li>{{-- 
 								<li class="kt-nav__item">
@@ -48,7 +48,7 @@
 								<li class="kt-nav__item">
 									<a href="#" data-submittype="new" class="kt-nav__link btn-submit">
 										<i class="kt-nav__link-icon flaticon2-add-1"></i>
-										<span class="kt-nav__link-text">Save & edit</span>
+										<span class="kt-nav__link-text">{{ __('Save & edit') }}</span>
 									</a>
 								</li>
 							</ul>
@@ -64,7 +64,7 @@
                 <div class="col-sm-6">
 					<span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
 						<label>
-							<input type="checkbox" value="1" {{ $req->status ? 'checked' : '' }} name="status"> <b class="kt-padding-t-5 kt-padding-l-5 kt-font-dark" style="font-weight:normal;display:inline-block;">Enable Requirement</b>
+							<input type="checkbox" value="1" {{ $req->status ? 'checked' : '' }} name="status"> <b class="kt-padding-t-5 kt-padding-l-5 kt-font-dark" style="font-weight:normal;display:inline-block;">{{ __('Enable Requirement') }}</b>
 							<span></span>
 						</label>
 					</span>
@@ -73,7 +73,7 @@
 			<section class="row kt-margin-t-10">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Requirement Name
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Requirement Name') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input value="{{ $req->requirement_name }}" type="text" name="requirement_name" required class="form-control form-control-sm">
@@ -81,7 +81,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Requirement Name (AR)
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Requirement Name (AR)') }}
                         	<span class="text-danger">*</span>
                         </label>
                         <input value="{{ $req->requirement_name_ar }}" type="text" name="requirement_name_ar" required class="form-control form-control-sm">
@@ -91,7 +91,7 @@
             <section class="row">
                 <div class="col-sm-12">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">Description
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Description') }}
                             <span class="text-danger">*</span>
                         </label>
                         <textarea rows="4" name="requirement_description" required class="form-control from-control-sm">{{ $req->requirement_description }}</textarea>
@@ -103,7 +103,7 @@
                 <div class="col-sm-6">
 					<span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
 						<label>
-							<input {{ $req->dates_required ? 'checked' : '' }} type="checkbox" name="dates_required" value="1"> <b class="kt-padding-t-5 kt-padding-l-5 kt-font-dark" style="font-weight:normal;display:inline-block;">Requires Date Validation</b>
+							<input {{ $req->dates_required ? 'checked' : '' }} type="checkbox" name="dates_required" value="1"> <b class="kt-padding-t-5 kt-padding-l-5 kt-font-dark" style="font-weight:normal;display:inline-block;">{{ __('Requires Date Validation') }}</b>
 							<span></span>
 						</label>
 					</span>
@@ -113,7 +113,7 @@
             <section class="row kt-margin-t-10 validity-input {{ $req->dates_required ? '' : 'kt-hide' }}">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark"> Valid before expiry date (Months)
+                        <label for="example-search-input" class="kt-font-dark"> {{ __('Valid before expiry date (Months)') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input value="{{ $req->validity }}" type="text" name="validity" class="form-control form-control-sm">
@@ -137,13 +137,13 @@
                 <input type="hidden" value="{{ $req->requirement_type }}" name="requirement_type">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark"> Permit Term
+                        <label for="example-search-input" class="kt-font-dark"> {{ __('Permit Term') }}
                             
                         </label>
                         <select name="term" id="" class="form-control form-control-sm custom-select custom-select-sm">
                         	<option value=""></option>
-                        	<option {{ $req->term == 'long' ? 'selected' : '' }} value="long">Long Term</option>
-                        	<option {{ $req->term == 'short' ? 'selected' : '' }} value="short">Short Term</option>
+                        	<option {{ $req->term == 'long' ? 'selected' : '' }} value="long">{{ __('Long Term') }}</option>
+                        	<option {{ $req->term == 'short' ? 'selected' : '' }} value="short">{{ __('Short Term') }}</option>
                         </select>
                     </div>
                 </div>
