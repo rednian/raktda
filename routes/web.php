@@ -33,24 +33,6 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         return redirect()->route('admin.event.index');
     })->name('admin.dashboard');
 
-
-
-    //---------------------------------------------------------------------------------------------------------------
-    // Event Permit
-    //----------------------------------------------------------------------------------------------------------------
-    Route::get('/event', 'Admin\EventController@index')->name('admin.event.index');
-    Route::get('/event/datatable', 'Admin\EventController@dataTable')->name('admin.event.datatable');
-    Route::get('/event/calendar', 'Admin\EventController@calendar')->name('admin.event.calendar');
-    Route::get('/event/{event}/application', 'Admin\EventController@application')->name('admin.event.application');
-    Route::get('/event/{event}/show-all', 'Admin\EventController@application')->name('admin.event.showall');
-    Route::get('/event/{event}/show-website', 'Admin\EventController@application')->name('admin.event.website');
-    Route::get('/event/{event}/application/datatable', 'Admin\EventController@showAll')->name('admin.event.applicationDatatable');
-    Route::get('/event/{event}', 'Admin\EventController@show')->name('admin.event.show');
-    Route::get('/event/{event}/lock', 'Admin\EventController@updateLock')->name('admin.event.lock');
-    Route::post('/event/{event}', 'Admin\EventController@submit')->name('admin.event.submit');
-    Route::get('/event/{event}/download', 'Admin\EventController@download')->name('admin.event.download');
-    Route::get('/event/{event}/addition-requirement-datatable', 'Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
-
   //---------------------------------------------------------------------------------------------------------------
 	// Event Permit
 	//----------------------------------------------------------------------------------------------------------------
@@ -59,7 +41,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('/event/calendar','Admin\EventController@calendar')->name('admin.event.calendar');
 	Route::get('/event/{event}/application','Admin\EventController@application')->name('admin.event.application');
 	Route::get('/event/{event}/application/datatable','Admin\EventController@applicationDatatable')->name('admin.event.applicationDatatable');
-    Route::get('/event/{event}/cancel','Admin\EventController@cancel')->name('admin.event.cancel');
+    Route::post('/event/{event}/cancel','Admin\EventController@cancel')->name('admin.event.cancel');
+    Route::get('/event/{event}/show-all', 'Admin\EventController@showAll')->name('admin.event.showall');
+    Route::get('/event/{event}/show-web', 'Admin\EventController@showWeb')->name('admin.event.showweb');
 	Route::get('/event/{event}','Admin\EventController@show')->name('admin.event.show');
 	Route::get('/event/{event}/lock','Admin\EventController@updateLock')->name('admin.event.lock');
 	Route::post('/event/{event}','Admin\EventController@submit')->name('admin.event.submit');

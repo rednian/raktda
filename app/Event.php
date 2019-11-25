@@ -16,14 +16,16 @@ class Event extends Model
     protected $casts = ['is_display_web' => 'boolean', 'is_display_all'=>'boolean'];
     protected $fillable = [
         'name_en', 'no_of_trucks', 'name_ar', 'street', 'logo_thumbnail', 'logo_original', 'reference_number', 'issued_date', 'expired_date', 'time_start', 'time_end', 'permit_number', 'venue_en', 'venue_ar', 'description_en', 'description_ar',
-        'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_display_web', 'is_display_all', 'last_check_by', 'lock', 'created_by','note_en', 'note_ar'
+        'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_display_web', 'is_display_all', 'last_check_by', 'lock', 'created_by','note_en', 'note_ar', 'cancelled_by', 'cancel_reason', 'latitude', 'longitude', 'full_address'
     ];
-    public function permits()
+    
+    public function permit()
     {
-        return $this->belongsToMany(Permit::class, 'event_artist_permit', 'event_id', 'permit_id');
+        return $this->hasOne(Permit::class, 'event_id');
     }
 
-    public function approval()      
+
+    public function approval()
     {
         return $this->hasMany(Approval::class, 'event_id', 'approval_id');
     }
@@ -62,7 +64,7 @@ class Event extends Model
     {
         return $this->belongsToMany(Requirement::class, 'event_requirement', 'event_id', 'requirement_id')
             ->where('requirement_type', 'event')
-            ->withPivot(['path', 'issued_date', 'expired_date'])
+            ->withPivot(['path', 'issued_date', 'expired_date', 'type'])
             ->withTimestamps();
     }
 
@@ -73,17 +75,17 @@ class Event extends Model
 
     public function area()
     {
-        return $this->belongsTo(Areas::class, 'area_id', 'id')->withDefault(['name_en'=> null, 'name_ar'=>null]);
+        return $this->belongsTo(Areas::class, 'area_id', 'id')->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function emirate()
     {
-        return $this->belongsTo(Emirates::class, 'emirate_id', 'id')->withDefault(['name_en'=> null, 'name_ar'=>null]);
+        return $this->belongsTo(Emirates::class, 'emirate_id', 'id')->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function country()
     {
-        return $this->belongsTo(Country::class, 'country_id')->withDefault(['name_en'=> null, 'name_ar'=>null]);
+        return $this->belongsTo(Country::class, 'country_id')->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function type()

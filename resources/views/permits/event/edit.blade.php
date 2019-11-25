@@ -312,162 +312,204 @@
                                                             placeholder="Venue - Ar" value="{{$event->venue_ar}}">
                                                     </div>
 
-                                                    {{--
-                                                        <div class="col-md-4  form-group form-group-sm ">
-                                                            <label class=" col-form-label kt-font-bold text-right">
-                                                                Do you have any Food truck ?</label>
-                                                            <div class="kt-radio-inline">
-                                                                <label class="kt-radio kt-radio--solid">
-                                                                    <input type="radio" name="isTruck" value="1"
-                                                                        onclick="checkTruck(1)"> Yes
-                                                                    <span></span>
-                                                                </label>
-                                                                <label class="kt-radio kt-radio--solid">
-                                                                    <input type="radio" name="isTruck" value="0" checked
-                                                                        onclick="checkTruck(0)"> No
-                                                                    <span></span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
 
-                                                        <div class="col-md-4 form-group form-group-sm "
-                                                            id="how_many_div">
-                                                            <label for="venue_ar"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                How Many ?<span class="text-danger">*</span></label>
-                                                            <select class="form-control form-control-sm"
-                                                                name="no_of_trucks" id="no_of_trucks">
-                                                                <option value=" ">Select</option>
-                                                                @for($i = 1;$i < 15; $i++) <option value="{{$i}}">{{$i}}
-                                                    </option>
-                                                    @endfor
+                                                    <div class="col-md-4 form-group form-group-sm ">
+                                                        <label for="street"
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            Street<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="street" id="street" placeholder="Street"
+                                                            value="{{$event->street}}">
+                                                    </div>
+
+
+                                                    <div class="col-md-4 form-group form-group-sm">
+                                                        <label for="description_en"
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            Description <span class="text-danger">*</span></label>
+                                                        <textarea type="text" class="form-control form-control-sm"
+                                                            name="description_en" id="description_en"
+                                                            placeholder="Description" rows="1"
+                                                            style="resize:none">{{$event->description_en}}</textarea>
+                                                    </div>
+
+                                                    <div class="col-md-4 form-group form-group-sm ">
+                                                        <label for="description_ar"
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            Description - Ar <span class="text-danger">*</span></label>
+                                                        <textarea class="form-control form-control-sm"
+                                                            name="description_ar" dir="rtl" id="description_ar"
+                                                            placeholder="Description - Ar" rows="1"
+                                                            style="resize:none">{{$event->description_ar}}</textarea>
+                                                    </div>
+
+
+
+                                                    <div class="col-md-4  form-group form-group-sm ">
+                                                        <label class=" col-form-label kt-font-bold text-right">
+                                                            Do you have any Food truck ?</label>
+                                                        <div class="kt-radio-inline">
+                                                            <label class="kt-radio kt-radio--solid">
+                                                                <input type="radio" name="isTruck" value="1"
+                                                                    onclick="checkTruck(1)"
+                                                                    {{$event->no_of_trucks == 0 ? '' : 'checked'}}>
+                                                                Yes
+                                                                <span></span>
+                                                            </label>
+                                                            <label class="kt-radio kt-radio--solid">
+                                                                <input type="radio" name="isTruck" value="0"
+                                                                    {{$event->no_of_trucks == 0 ? 'checked' : ''}}
+                                                                    onclick="checkTruck(0)"> No
+                                                                <span></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 form-group form-group-sm " id="how_many_div">
+                                                        <label for="no_of_trucks"
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            How Many ?<span class="text-danger">*</span></label>
+                                                        <select class="form-control form-control-sm" name="no_of_trucks"
+                                                            id="no_of_trucks">
+                                                            <option value=" ">Select</option>
+                                                            @for($i = 1;$i < 15; $i++) <option value="{{$i}}"
+                                                                {{$event->no_of_trucks == $i ? 'selected' : ''}}>
+                                                                {{$i}}
+                                                                </option>
+                                                                @endfor
+                                                        </select>
+                                                    </div>
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=" card">
+                                    <div class="card-header" id="headingTwo6">
+                                        <div class="card-title collapsed" data-toggle="collapse"
+                                            data-target="#collapseTwo6" aria-expanded="false"
+                                            aria-controls="collapseTwo6">
+                                            <h6 class="kt-font-transform-u">Contact
+                                                information
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    {{--id="collapseTwo6"--}}
+                                    <div class="collapse show" aria-labelledby="headingTwo6"
+                                        data-parent="#accordionExample6">
+                                        <div class="card-body">
+
+                                            <div class="row">
+
+
+                                                <div class="col-md-4 form-group form-group-sm ">
+                                                    <label for="address"
+                                                        class=" col-form-label kt-font-bold text-right">Address
+                                                        <small>( <span class="text-danger">required</span>
+                                                            )</small></label>
+                                                    <input type="text" class="form-control form-control-sm "
+                                                        name="address" id="address" placeholder="Address"
+                                                        value="{{$event->address}}">
+                                                </div>
+
+                                                <div class="col-md-4 form-group form-group-sm ">
+                                                    <label for="emirate_id"
+                                                        class=" col-form-label kt-font-bold text-right">Emirate
+                                                    </label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        value="Ras Al Khaimah" readonly>
+                                                    <input type="hidden" name="emirate_id" id="emirate_id" value="5" />
+
+                                                </div>
+
+
+                                                <div class="col-md-4 form-group form-group-sm ">
+                                                    <label for="area_id"
+                                                        class=" col-form-label kt-font-bold text-right">Area
+                                                    </label>
+                                                    <select class="  form-control form-control-sm " name="area_id"
+                                                        id="area_id">
+                                                        <option value="">Select</option>
+                                                        @foreach($areas as $ar)
+                                                        <option value="{{$ar->id}}"
+                                                            {{$ar->id == $event->area_id ? 'selected' : ''}}>
+                                                            {{$ar->area_en}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
-                                                --}}
-
+                                                {{-- <div class="col-md-4 form-group form-group-sm ">
+                                                    <label for="country_id"
+                                                        class=" col-form-label kt-font-bold text-right">Country
+                                                    </label>
+                                                    <input type="text" class="form-control form-control-sm "
+                                                        value="United Arab Emirates" readonly>
+                                                    <input type="hidden" name="country_id" id="country_id" value="232">
+                                                </div> --}}
 
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        <div class="kt-form__section kt-form__section--first ">
+                            @component('permits.components.eventcomments', ['staff_comments' => $staff_comments])
+                            @endcomponent
+                            <input type="hidden" id="requirements_count" />
+                            <form id="documents_required" novalidate>
+
+                            </form>
+                            <input type="hidden" id="addi_requirements_count">
+                            <form id="addi_documents_required" novalidate>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <div class="kt-form__actions">
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-prev" id="prev_btn">
+                            Previous
                         </div>
 
-                        <div class=" card">
-                            <div class="card-header" id="headingTwo6">
-                                <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
-                                    aria-expanded="false" aria-controls="collapseTwo6">
-                                    <h6 class="kt-font-transform-u">Contact
-                                        information
-                                    </h6>
-                                </div>
+
+                        <a href="{{route('event.index')}}#applied">
+                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                                Back
                             </div>
-                            {{--id="collapseTwo6"--}}
-                            <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample6">
-                                <div class="card-body">
-
-                                    <div class="row">
+                        </a>
 
 
-                                        <div class="col-md-4 form-group form-group-sm ">
-                                            <label for="address" class=" col-form-label kt-font-bold text-right">Address
-                                                <small>( <span class="text-danger">required</span>
-                                                    )</small></label>
-                                            <input type="text" class="form-control form-control-sm " name="address"
-                                                id="address" placeholder="Address" value="{{$event->address}}">
-                                        </div>
-
-                                        <div class="col-md-4 form-group form-group-sm ">
-                                            <label for="emirate_id"
-                                                class=" col-form-label kt-font-bold text-right">Emirate
-                                            </label>
-                                            <input type="text" class="form-control form-control-sm"
-                                                value="Ras Al Khaimah" readonly>
-                                            <input type="hidden" name="emirate_id" id="emirate_id" value="5" />
-
-                                        </div>
-
-
-                                        <div class="col-md-4 form-group form-group-sm ">
-                                            <label for="area_id" class=" col-form-label kt-font-bold text-right">Area
-                                            </label>
-                                            <select class="  form-control form-control-sm " name="area_id" id="area_id">
-                                                <option value="">Select</option>
-                                                @foreach($areas as $ar)
-                                                <option value="{{$ar->id}}"
-                                                    {{$ar->id == $event->area_id ? 'selected' : ''}}>
-                                                    {{$ar->area_en}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-4 form-group form-group-sm ">
-                                            <label for="country_id"
-                                                class=" col-form-label kt-font-bold text-right">Country
-                                            </label>
-                                            <input type="text" class="form-control form-control-sm "
-                                                value="United Arab Emirates" readonly>
-                                            <input type="hidden" name="country_id" id="country_id" value="232">
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+                            Update & Submit
                         </div>
-                        </form>
-                    </div>
-                </div>
 
 
 
-                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                    <div class="kt-form__section kt-form__section--first ">
-                        @component('permits.components.eventcomments', ['staff_comments' => $staff_comments])
-                        @endcomponent
-                        <input type="hidden" id="requirements_count" />
-                        <form id="documents_required" novalidate>
-
-                        </form>
-                        <input type="hidden" id="addi_requirements_count">
-                        <form id="addi_documents_required" novalidate>
-                        </form>
-                    </div>
-                </div>
-
-
-                <div class="kt-form__actions">
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                        data-ktwizard-type="action-prev" id="prev_btn">
-                        Previous
-                    </div>
-
-
-                    <a href="{{route('event.index')}}#applied">
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                            Back
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-next" id="next_btn">
+                            Next Step
                         </div>
-                    </a>
 
-
-                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                        Update & Submit
                     </div>
 
 
-
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                        data-ktwizard-type="action-next" id="next_btn">
-                        Next Step
-                    </div>
 
                 </div>
-
-
-
             </div>
         </div>
     </div>
-</div>
 </div>
 </div>
 
@@ -526,6 +568,7 @@
         getRequirementsList(event_type_id);
         getAddtionalRequirementsList(event_id);
         uploadFunction();
+        picUploadFunction();
         $('#submit_btn').css('display', 'none');
     });
 
@@ -617,6 +660,42 @@
             }
         };
 
+        const picUploadFunction = () => {
+            picUploader = $('#pic_uploader').uploadFile({
+                url: "{{route('event.uploadLogo')}}",
+                method: "POST",
+                allowedTypes: "jpeg,jpg,png",
+                fileName: "pic_file",
+                multiple: false,
+                deleteStr: `<i class="la la-trash"></i>`,
+                showFileSize: false,
+                showFileCounter: false,
+                abortStr: '',
+                previewHeight: '200px',
+                previewWidth: "auto",
+                returnType: "json",
+                maxFileCount: 1,
+                showPreview: true,
+                showDelete: true,
+                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                onLoad: function (obj) {
+                    var url = "{{route('event.get_uploaded_logo',':id')}}" ;
+                    url = url.replace(':id', $('#event_id').val() );
+                    $.ajax({
+                        url: url,
+                        success: function (data) {
+                            // console.log(data);
+                            if (data) {
+                                obj.createProgress('Logo Pic', "{{url('storage')}}"+'/'+ data, '');
+                            }
+                        }
+                    });
+                },
+            });
+            $('#pic_uploader div').attr('id', 'pic-upload');
+            $('#pic_uploader + div').attr('id', 'pic-file-upload');
+        };
+
 
         var eventValidator = $('#eventdetails').validate({
             ignore: [],
@@ -628,6 +707,9 @@
                     required: true,
                     dateNL: true
                 },
+                street: 'required',
+                description_en: 'required',
+                description_ar: 'required',
                 time_start: 'required',
                 venue_en: 'required',
                 expired_date: {
@@ -642,10 +724,19 @@
                 event_type_id: '',
                 name_en: '',
                 name_ar: '',
-                issued_date: '',
+                issued_date: {
+                    required: '' ,
+                    dateNL: ''
+                },
+                street: '',
+                description_en: '',
+                description_ar: '',
                 time_start: '',
                 venue_en: '',
-                expired_date: '',
+                expired_date:  {
+                    required: '' ,
+                    dateNL: ''
+                },
                 time_end: '',
                 venue_ar: '',
                 address: '',
@@ -712,7 +803,17 @@
         }
         });
 
+        function checkTruck(id) {
+            if (id == 1) {
+                $("#how_many_div").css("display", "block");
+            } else {
+                $("#how_many_div").css("display", "none");
+            }
+        }
+
+
         function setEventDetails(){
+            var noOfTrucks = $("input:radio[name='isTruck']:checked").val() == "1" ? $('#no_of_trucks').val() : "0" ;
             eventdetails = {
                     event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
@@ -726,7 +827,13 @@
                     address: $('#address').val(),
                     emirate_id: $('#emirate_id').val(),
                     area_id: $('#area_id').val(),
-                    country_id: $('#country_id').val()
+                    // country_id: $('#country_id').val()
+                    event_draft_id: $('#event_id').val(),
+                    street: $('#street').val(),
+                    description_en: $('#description_en').val(),
+                    description_ar: $('#description_ar').val(),
+                    // is_truck: $("input:radio[name='isTruck']:checked").val(),
+                    no_of_trucks: noOfTrucks
             };
             localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
         }
@@ -766,8 +873,16 @@
             }
             }
 
+            if ($('#pic-file-upload').contents().length == 0) {
+                hasPicture = false;
+                $('#pic-upload').css('border', '2px dotted red');
+            } else {
+                hasPicture = true;
+                $("#pic-upload").css('border', '2px dotted #A5A5C7');
+            }
 
-            if (hasFileArray.includes(false) ) {
+
+            if (hasFileArray.includes(false) || hasPicture == false) {
                 hasFile = false;
             } else {
                 hasFile = true;
@@ -831,6 +946,7 @@
 
 
         const getAreas = (city_id) => {
+           if(city_id){
             $.ajax({
                 url: "{{url('company/fetch_areas')}}" + '/' + city_id,
                 success: function (result) {
@@ -844,7 +960,7 @@
 
                 }
             });
-
+           }
         };
 
         var docRules = {};
@@ -864,9 +980,10 @@
                     $('#documents_required').empty();
                      var res = result.requirements;
                      $('#requirements_count').val(res.length);
+                     $('#documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo <span class="text-danger">( required )</span></label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+' <span class="text-danger">( required )</span></label><p for="" class="reqName">'+(res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
@@ -882,12 +999,13 @@
                             documentsValidator = $('#documents_required').validate({
                                     rules: docRules,
                                     messages: docMessages
-                                });
+                            });
 
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
 
                      }
                      uploadFunction();
+                     picUploadFunction();
                  }else {
                     $('#documents_required').empty();
                  }
@@ -910,7 +1028,7 @@
                      var j =  parseInt($('#requirements_count').val()) + 1 ;
                      if(j != NaN){
                      for(var i = 0; i < res.length; i++){
-                         $('#addi_documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'</label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#addi_documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'<span class="text-danger">( required )</span></label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {

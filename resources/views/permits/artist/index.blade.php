@@ -13,20 +13,20 @@
                     role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#"
-                            data-target="#applied">@lang('words.applied_artist_permit')</a>
+                            data-target="#applied">{{__('Applied Artist Permit')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#valid">@lang('words.valid_artist_permit')</a>
+                        <a class="nav-link" data-toggle="tab" href="#valid">{{__('Valid Artist Permit')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#draft">@lang('words.artist_permit_drafts')</a>
+                        <a class="nav-link" data-toggle="tab" href="#draft">{{__('Artist Permit Drafts')}}</a>
                     </li>
                     <span class="nav-item"
                         style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ url('company/artist/new/1')}}">
                             <button class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                                 id="nav--new-permit-btn">
-                                <i class="la la-plus"></i>@lang('words.add_new')
+                                <i class="la la-plus"></i>{{__('Add New')}}
                             </button>
                             <button class="btn btn--yellow btn-sm mx-2" id="nav--new-permit-btn-mobile">
                                 <i class="la la-plus"></i>
@@ -43,14 +43,14 @@
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                     <thead>
                         <tr>
-                            <th>@lang('words.reference_no')</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
-                            <th>@lang('words.location')</th>
-                            <th>@lang('words.noofartist')</th>
-                            <th>@lang('words.status')</th>
-                            <th>Actions</th>
-                            <th>Details</th>
+                            <th>{{__('Ref NO.')}}</th>
+                            <th>{{__('From Date')}}</th>
+                            <th>{{__('To Date')}}</th>
+                            <th>{{__('Location')}}</th>
+                            <th>{{__('No of Artist')}}</th>
+                            <th>{{__('Status')}}</th>
+                            <th>{{__('Action')}}</th>
+                            <th>{{__('Details')}}</th>
                         </tr>
                     </thead>
                 </table>
@@ -60,14 +60,14 @@
                 <table class="table table-striped table-borderless table-hover border" id="existing-artists-table">
                     <thead>
                         <tr>
-                            <th>@lang('words.reference_no')</th>
-                            <th>@lang('words.permit_number')</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
-                            <th>@lang('words.location')</th>
-                            <th>@lang('words.noofartist')</th>
-                            <th>Actions</th>
-                            <th>Details</th>
+                            <th>{{__('Ref NO.')}}</th>
+                            <th>{{__('Permit Number')}}</th>
+                            <th>{{__('From Date')}}</th>
+                            <th>{{__('To Date')}}</th>
+                            <th>{{__('Location')}}</th>
+                            <th>{{__('No of Artist')}}</th>
+                            <th>{{__('Action')}}</th>
+                            <th>{{__('Details')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -79,12 +79,12 @@
                 <table class="table table-striped table-borderless table-hover border" id="drafts-artists-table">
                     <thead>
                         <tr>
-                            <th>From Date</th>
-                            <th>To Date</th>
-                            <th>@lang('words.location')</th>
-                            <th>Added On</th>
-                            <th>Actions</th>
-                            <th>Details</th>
+                            <th>{{__('From Date')}}</th>
+                            <th>{{__('To Date')}}</th>
+                            <th>{{__('Location')}}</th>
+                            <th>{{__('Applied Date')}}</th>
+                            <th>{{__('Action')}}</th>
+                            <th>{{__('Details')}}</th>
                         </tr>
                     </thead>
 
@@ -104,7 +104,7 @@
             <div class="modal-dialog " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Cancel Permit</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{__('Cancel Permit')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -113,7 +113,7 @@
                         <form action="{{route('company.cancel_permit')}}" id="cancel_permit_form" method="post"
                             novalidate>
                             @csrf
-                            <label>Are you sure to Cancel this Permit of Ref No. <span class="text--maroon"
+                            <label>{{__('Are you sure to Cancel this Permit of Ref No. ')}} <span class="text--maroon"
                                     id="cancel_permit_number"></span>
                                 ?</label>
                             <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..."

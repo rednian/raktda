@@ -13,14 +13,6 @@
     $("#doc_exp_date_" + id).val(expiryMonth.format("DD-MM-YYYY"));
 }*/
 
-function checkTruck(id) {
-    if (id == 1) {
-        $("#how_many_div").css("display", "block");
-    } else {
-        $("#how_many_div").css("display", "none");
-    }
-}
-
 function setExpiryMindate(i) {
     var i = parseInt(i);
     if ($("#doc_issue_date_" + i).length) {

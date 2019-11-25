@@ -1,9 +1,6 @@
 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
     <div class="kt-form__section kt-form__section--first">
         <div class="kt-wizard-v3__form">
-            @php
-            $language_id = Auth::user()->LanguageId;
-            @endphp
             <!--begin::Accordion-->
             <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
 
@@ -11,7 +8,7 @@
                     <div class="card-header" id="headingTwo6">
                         <div class="card-title" data-toggle="collapse" data-target="#collapseTwo6" aria-expanded="false"
                             aria-controls="collapseTwo6">
-                            <h6 class="kt-font-transform-u"> Documents Required</h6>
+                            <h6 class="kt-font-transform-u">{{__('Documents Required')}}</h6>
                         </div>
                     </div>
                     <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
@@ -20,13 +17,14 @@
 
                             <table class="table table-borderless">
                                 <tr>
-                                    <th>Document</th>
-                                    <th>Description</th>
+                                    <th>{{__('Document Name')}}</th>
+                                    <th>{{__('Description')}}</th>
                                 </tr>
                                 @foreach($requirements as $req)
                                 <tr>
-                                    <td>{{$language_id == 1 ? $req->requirement_name : $req->requirement_name_ar}}</td>
-                                    <td>{{$req->requirement_description}}</td>
+                                    <td>{{getLangId() == 1 ? $req->requirement_name : $req->requirement_name_ar}}</td>
+                                    <td>{{getLangId() == 1 ? $req->requirement_description : $req->requirement_description_ar}}
+                                    </td>
                                 </tr>
                                 @endforeach
                             </table>
@@ -38,7 +36,7 @@
                     <div class="card-header" id="headingThree6">
                         <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseThree6"
                             aria-expanded="false" aria-controls="collapseThree6">
-                            <h6 class="kt-font-transform-u"> Permit Fees Structure</h6>
+                            <h6 class="kt-font-transform-u"> {{__('Permit Fee')}}</h6>
                         </div>
                     </div>
                     <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
@@ -46,12 +44,12 @@
                         <div class="card-body">
                             <table class="table table-borderless">
                                 <tr>
-                                    <th>Profession</th>
-                                    <th class="text-right">Fee (AED)</th>
+                                    <th>{{__('Profession')}}</th>
+                                    <th class="text-right">{{__('Fee')}} (AED)</th>
                                 </tr>
                                 @foreach($profession as $pt)
                                 <tr>
-                                    <td>{{$language_id == 1 ? $pt->name_en : $pt->name_ar}}</td>
+                                    <td>{{getLangId() == 1 ? $pt->name_en : $pt->name_ar}}</td>
                                     <td class="text-right">{{number_format($pt->amount,2)}}</td>
                                 </tr>
                                 @endforeach
@@ -80,9 +78,8 @@
                     </div>
                 </div>
                 <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                    <input type="checkbox" id="agree" name="agree" checked> I Read and
-                    understand all
-                    service rules, And agree to continue submitting it.
+                    <input type="checkbox" id="agree" name="agree" checked>
+                    {{__('I Read and understand all service rules and agree to continue submitting it.')}}
                     <span></span>
                 </label>
             </div>
