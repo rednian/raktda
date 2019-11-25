@@ -15,7 +15,7 @@
                                 data-ktwizard-state="current" id="check_inst">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
-                                        <span>01</span> Check Instructions
+                                        <span>01</span>{{__('Instructions')}}
                                     </div>
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
@@ -23,7 +23,7 @@
                             <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
-                                        <span>02</span> Artist Details
+                                        <span>02</span> {{__('Artist Details')}}
                                     </div>
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
@@ -31,7 +31,7 @@
                             <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                                 <div class="kt-wizard-v3__nav-body">
                                     <div class="kt-wizard-v3__nav-label">
-                                        <span>03</span> @lang('words.upload_documents')
+                                        <span>03</span>{{__('Upload Documents')}}
                                     </div>
                                     <div class="kt-wizard-v3__nav-bar"></div>
                                 </div>
@@ -45,6 +45,7 @@
                 @php
                 $language_id = getLangId();
                 @endphp
+
 
                 <input type="hidden" id="artist_permit_id" value="{{$artist_details->artist_permit_id }}">
                 <input type="hidden" id="temp_artist_id" value="{{$artist_details->artist_id }}">
@@ -69,11 +70,14 @@
                         <!--end: Form Wizard Step 1-->
 
                         @include('permits.artist.common.edit-artist-details-html', [ 'artist_details' =>
-                        $artist_details, 'from' => $from])
+                        $artist_details, 'from' => $from, 'staff_comments' => $staff_comments])
 
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first ">
+                                @component('permits.components.artist_permit_comments', ['staff_comments' =>
+                                $staff_comments])
+                                @endcomponent
                                 <div class="kt-wizard-v3__form">
                                     <form id="documents_required" method="post" autocomplete="off">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
@@ -108,7 +112,7 @@
                                                     <label
                                                         class="kt-font-bold text--maroon">{{$language_id == 1 ?$req->requirement_name : $req->requirement_name_ar}}
                                                         <span
-                                                            class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-secondary' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span>
+                                                            class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-muted' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span>
                                                     </label>
                                                     <p for="" class="reqName">
                                                         {{$req->requirement_description}}</p>
@@ -165,7 +169,7 @@
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
-                            Previous
+                            {{__('Previous')}}
                         </div>
                         <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
                         @php
@@ -183,22 +187,25 @@
                         case 'new':
                         $backUrl = 'company/artist/new/1';
                         break;
+                        case 'event':
+                        $backUrl = 'company/event/add_artist/'.$artist_details->permit_id ;
+                        break;
                         }
                         @endphp
 
                         <a href="{{url($backUrl)}}">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                Back
+                                {{__('Back')}}
                             </div>
                         </a>
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                             <i class="la la-check"></i>
-                            Update & Submit
+                            {{__('Submit')}}
                         </div>
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
-                            Next Step
+                            {{__('Next')}}
                         </div>
 
                     </div>
@@ -389,78 +396,77 @@
     }
 
 
+    var detailsValidator = $("#artist_details").validate({
+    ignore: [],
+    rules: {
+        fname_en: "required",
+        fname_ar: "required",
+        lname_en: "required",
+        lname_ar: "required",
+        profession: "required",
+        permit_type: "required",
+        dob: {
+            required: true,
+            dateNL: true
+        },
+        uid_number: "required",
+        uid_expiry: {
+            required: true,
+            dateNL: true
+        },
+        passport: "required",
+        pp_expiry: {
+            required: true,
+            dateNL: true
+        },
+        visa_type: "required",
+        visa_expiry: {
+            required: true,
+            dateNL: true
+        },
+        sp_name: "required",
+        gender: "required",
+        nationality: "required",
+        address: "required",
+        mobile: {
+            // number: true,
+            required: true
+        },
+        email: {
+            required: true,
+            email: true
+        }
+    },
+    messages: {
+        fname_en: "",
+        fname_ar: "",
+        lname_en: "",
+        lname_ar: "",
+        profession: "",
+        dob: "",
+        uid_number: "",
+        uid_expiry: "",
+        permit_type: "",
+        passport: "",
+        pp_expiry: "",
+        visa_type: "",
+        visa_expiry: "",
+        sp_name: "",
+        gender: "",
+        nationality: "",
+        address: "",
+        mobile: {
+            // number: 'Please enter number',
+            required: ""
+        },
+        email: {
+            required: "",
+            email: ""
+        }
+    }
+});
 
 
-    var detailsValidator =  $('#artist_details').validate({
-            ignore: [],
-            rules: {
-                fname_en: 'required',
-                fname_ar: 'required',
-                lname_en: 'required',
-                lname_ar: 'required',
-                profession: 'required',
-                permit_type: 'required',
-                dob: {
-                    required: true,
-                    dateNL: true
-                },
-                uid_number: 'required',
-                uid_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                passport: 'required',
-                pp_expiry:{
-                    required: true,
-                    dateNL: true
-                },
-                visa_type: 'required',
-                // visa_number: 'required',
-                visa_expiry: {
-                    required: true,
-                    dateNL: true
-                },
-                sp_name: 'required',
-                nationality: 'required',
-                address: 'required',
-                mobile: {
-                    // number: true,
-                    required : true
-                } ,
-                email: {
-                    required: true,
-                    email: true,
-                },
-            },
-            messages: {
-                fname_en: '',
-                fname_ar: '',
-                lname_en: '',
-                lname_ar: '',
-                profession: '',
-                dob: '',
-                uid_number: '',
-                uid_expiry: '',
-                permit_type: '',
-                passport: '',
-                pp_expiry: '',
-                visa_type: '',
-                // visa_number: '',
-                visa_expiry: '',
-                sp_name: '',
-                gender: '',
-                nationality: '',
-                address: '',
-                mobile: {
-                    // number: 'Please enter number',
-                    required: ''
-                },
-                email: {
-                    required: '',
-                    email: '',
-                },
-            },
-        });
 
         var docRules = {};
         var docMessages = {};
@@ -686,6 +692,8 @@
                                 toUrl = toUrl.replace(':from', 'renew');
                             } else if(fromPage == 'draft') {
                                 toUrl = toUrl.replace(':from', 'draft');
+                            }  else if(fromPage == 'event') {
+                                toUrl = toUrl.replace(':from', 'event');
                             }
                             toUrl = toUrl.replace(':id', permit_id);
                             window.location.href= toUrl ;

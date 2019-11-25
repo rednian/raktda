@@ -19,7 +19,7 @@
                     <i class="la la-arrow-left"></i>
                     Back
                 </button>
-                <a href="{{url('/company/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
+                <a href="{{url('/company/artist/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     Add Artist
@@ -29,7 +29,7 @@
                 <button id="back_btn_sm" class="btn btn--maroon btn-sm kt-font-bold">
                     <i class="la la-arrow-left"></i>
                 </button>
-                <a href="{{url('/company/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
+                <a href="{{url('/company/artist/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u ">
                     <i class="la la-plus"></i>
                 </a>
@@ -53,7 +53,13 @@
                 <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
             </div>
         </div>
-
+        @if($permit_details->event)
+        <div class="pb-3">
+            <span>Connected to Event :</span>&emsp;
+            <span
+                class="kt-font-info">{{getLangId() == 1 ? $permit_details->event[0]->name_en : $permit_details->event[0]->name_ar}}</span>&emsp;&emsp;
+        </div>
+        @endif
         <div class="table-responsive">
             <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                 <thead>
@@ -166,7 +172,7 @@
             return;
         }
         var total = $('#total_artist_details').val();
-        var addUrl = "{{url('company/add_artist_to_permit/amend')}}/"+permit_id ;
+        var addUrl = "{{url('company/artist/add_artist_to_permit/amend')}}/"+permit_id ;
         if(nextUrl != addUrl ){
             var tempArr = [];
             for(var i = 0 ; i < total; i++){

@@ -24,27 +24,27 @@
             <ul class="kt-menu__nav ">
                 <li class="kt-menu__item kt-menu__item">
                     <a href="#" class="kt-menu__link">
-                        <span class="kt-menu__link-text">@lang('words.dashboard')</span>
+                        <span class="kt-menu__link-text">{{ __('Dashboard')}}</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">@lang('words.business_name')</span>
+                        <span class="kt-menu__link-text">{{ __('Business License')}}</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">@lang('words.business_license')</span>
+                        <span class="kt-menu__link-text">{{__('Business Name')}}</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">@lang('words.classification')</span>
+                        <span class="kt-menu__link-text">{{__('Classification')}}</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">@lang('words.inspection')</span>
+                        <span class="kt-menu__link-text">{{__('Inspection')}}</span>
                     </a>
                 </li>
 
@@ -52,19 +52,19 @@
                     class="kt-menu__item {{ (\Request::is('company/artist/*') || \Request::is('company/artist'))  ? 'kt-menu__item--active' : ''}}">
 
                     <a href="{{url('company/artist')}}" class="kt-menu__link">
-                        <span class="kt-menu__link-text">@lang('words.artist_permit')</span>
+                        <span class="kt-menu__link-text">{{__('Artist Permit')}}</span>
                     </a>
                 </li>
                 <li
                     class="kt-menu__item {{ (\Request::is('company/event/*') || \Request::is('company/event')) ? 'kt-menu__item--active' : ''}}">
                     <a href="{{url('company/event')}}" class="kt-menu__link ">
 
-                        <span class="kt-menu__link-text">@lang('words.event_permit')</span>
+                        <span class="kt-menu__link-text">{{__('Event Permit')}}</span>
                     </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
-                        <span class="kt-menu__link-text">@lang('words.reports')</span>
+                        <span class="kt-menu__link-text">{{__('Reports')}}</span>
                     </a>
                 </li>
 
