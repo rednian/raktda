@@ -377,5 +377,7 @@
     "male":"رجال",
     "female":"نساء",
     "documents required":"المستندات المطلوبة",
-    "Also please provide the list of emirates and areas in arabic and english":"أيضا قم بتقديم قائمة أسماء الإمارات والمناطق بالعربية والانجليزية"
+    "Also please provide the list of emirates and areas in arabic and english":"أيضا قم بتقديم قائمة أسماء الإمارات والمناطق بالعربية والانجليزية",
+    "Name" : "اسم",
+    "Save Changes" : "حفظ"
 }

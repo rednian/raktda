@@ -166,5 +166,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         Route::get('event_type/datatable', 'Admin\EventTypeController@datatable')->name('event_type.datatable');
         Route::get('event_type/isexist', 'Admin\EventTypeController@isexist')->name('event_type.isexist');
         Route::resource('event_type', 'Admin\EventTypeController');
+
+        //ACCOUNT SETTINGS
+        Route::get('account', 'Admin\AccountSettingsController@index')->name('admin.settings.account');
+        Route::post('account/save', 'Admin\AccountSettingsController@store')->name('admin.settings.account.save');
     });
 });
