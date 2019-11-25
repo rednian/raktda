@@ -12,18 +12,18 @@
 <section id="app-wizard" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
 	<div class="kt-portlet__head kt-portlet__head--sm">
 		<div class="kt-portlet__head-label">
-			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ ucwords($event->name_en) }}- application</span></h3>
+			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ ucwords($event->name_en) }} - {{ __('APPLICATION') }}</span></h3>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-outline-secondary kt-margin-r-4 kt-font-transform-u">
-				<i class="la la-arrow-left"></i>back to event list
+				<i class="la la-arrow-left"></i>{{ __('BACK TO EVENT LIST') }}
 			</a>
 			<div class="dropdown dropdown-inline">
 				<button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-elevate btn-icon btn-sm btn-icon-sm">
 					<i class="flaticon-more"></i>
 				</button>
 				<div x-placement="bottom-end" class="dropdown-menu dropdown-menu-right">
-					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">Company Information</a>
+					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">{{ __('COMPANY INFORMATION') }}</a>
 				</div>
 			</div>
 		</div>
@@ -62,15 +62,7 @@
 								<div class="kt-wizard-v3__form">
 									<section class="row kt-margin-t-20 kt-margin-b-20">
 										<div class="col">
-											@if ($event->permits()->count() > 0)
-											<a href="{{ route('admin.artist_permit.show', $event->permits->first()->permit_id) }}">
-											  <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
-											    <div class="alert-text">This event has an artist with reference number <span class="kt-font-danger">{{ $event->permits->first()->reference_number }}</span>
-											      {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
-											    </div>
-											  </div>
-											  </a>
-											@endif
+											@include('admin.event.includes.existing-notification')
 											@include('admin.event.includes.latest-comment')
 					 						@include('admin.artist_permit.includes.comment')
 					 						@if ($existing_event->count() > 0)
@@ -114,7 +106,7 @@
 																	  </div>
 																</div>
 																<div class="col-sm-6">
-																	 <label class="kt-font-dark">{{ __('Number of food Trucks') }}</label>
+																	 <label class="kt-font-dark">{{ __('Number of Food Trucks') }}</label>
 																	  <div class="input-group input-group-sm">
 																	 	<input value="{{ ucfirst($event->no_of_trucks) }}" name="no_of_trucks" readonly="readonly" type="text"
 																	 					 class="form-control">
@@ -377,6 +369,68 @@
 														 </div>
 													</div>
 											 </section>
+											 <div class="accordion accordion-solid accordion-toggle-plus" id="accordion-map">
+												<div class="card">
+													<div class="card-header" id="heading-map">
+														<div class="card-title" data-toggle="collapse" data-target="#collapse-map" aria-expanded="true" aria-controls="collapse-map">
+														<h6 class="kt-font-transform-u kt-font-dark kt-font-bolder">map details</h6>
+														</div>
+													</div>
+													<div id="collapse-map" class="collapse show" aria-labelledby="heading-map" data-parent="#accordion-map" style="">
+														<div class="card-body">
+															<div class="row">
+																<div class="col-sm-8">
+																	<label>Map Full Address <span class="text-danger">*</span></label>
+																	<div class="input-group input-group-sm">
+																		<input value="{{$event->full_address}}" name="" readonly="readonly" type="text" class="form-control" > 
+																		<div class="input-group-append">
+																			<span class="input-group-text">
+																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																					<input data-step="step-1" type="checkbox"> 
+																					<span></span>
+																				</label>
+																			</span>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-sm-2">
+																	<label>Latitude <span class="text-danger">*</span></label>
+																	<div class="input-group input-group-sm">
+																		<input value="{{$event->latitude}}" name="" readonly="readonly" type="text" class="form-control" > 
+																		<div class="input-group-append">
+																			<span class="input-group-text">
+																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																					<input data-step="step-1" type="checkbox"> 
+																					<span></span>
+																				</label>
+																			</span>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-sm-2">
+																	<label>Latitude <span class="text-danger">*</span></label>
+																	<div class="input-group input-group-sm">
+																		<input value="{{$event->longitude}}" name="" readonly="readonly" type="text" class="form-control" > 
+																		<div class="input-group-append">
+																			<span class="input-group-text">
+																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																					<input data-step="step-1" type="checkbox"> 
+																					<span></span>
+																				</label>
+																			</span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<section class="row">
+																<div class="col">
+																	<div id="kt_gmap_3" style="height:150px;"></div>
+																</div>
+															</section>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									 </section>
 								</div>
@@ -387,28 +441,140 @@
 								<div class="kt-wizard-v3__form">
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
-												@if ($event->permits()->count() > 0)
-												<a href="{{ route('admin.artist_permit.show', $event->permits->first()->permit_id) }}">
-												  <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
-												    <div class="alert-text">This event has an artist with reference number <span class="kt-font-danger">{{ $event->permits->first()->reference_number }}</span>
-												      {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
-												    </div>
-												  </div>
-												  </a>
-												@endif
+												@include('admin.event.includes.existing-notification')
 												@include('admin.event.includes.latest-comment')
 												 @include('admin.artist_permit.includes.comment')
-												 <table class="table table-striped border borderless table-hover" id="requirement-table">
+												 <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
+												<div class="card">
+													<div class="card-header" id="headingOne6">
+														<div class="card-title kt-padding-t-5 kt-padding-b-10" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
+															<h6 class="kt-font-transform-u kt-font-dark">Event requirements</h6>
+														</div>
+													</div>
+													<div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6" style="">
+														<div class="card-body">
+															 <table class="table border borderless table-hover">
+																<thead>
+																	<tr>
+																		 <th>#</th>
+																		 <th>{{ __('DOCUMENT NAME') }}</th>
+																		 <th>{{ __('ISSUED DATE') }}</th>
+																		 <th>{{ __('EXPIRED DATE') }}</th>
+																		 <th>{{ __('ACTION') }}</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	@php
+																		$requirements = App\Requirement::whereHas('events', function($q) use ($event){
+																			$q->where('event.event_id', $event->event_id);
+																		})->whereHas('eventRequirement', function($q){
+																			$q->where('requirement_type', 'event');
+																		})->get();
+																	@endphp
+																	<tr>
+																		<td>1</td>
+																		<td><a href="{{ asset('/storage/'.$event->logo_thumbnail) }}" data-fancybox data-caption="Event Logo">Event Logo</a></td>
+																		<td>Not Required</td>
+																		<td>Not Required</td>
+																		<td>
+																			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default"><input type="checkbox" class="step-2" data-step="2"><span></span></label>
+																		</td>
+																	</tr>
+																	@if ($requirements->count() > 0)
+																		@foreach ($requirements as $index => $requirement)
+																			<tr>
+																				<td>{{ ++$index+1 }}</td>
+																				<td>
+																					@php
+																						$name = Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
+																					@endphp
+																					 <a href="{{ asset('/storage/'.$requirement->eventRequirement()->first()->path) }}"  data-fancybox data-caption="{{$name}}">{{$name}}</a>
+																					
+																				</td>
+																				<td>{{ $requirement->dates_required ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required' }}</td>
+																				<td>{{ $requirement->dates_required ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required' }}</td>
+																				<td>
+																					<label class="kt-checkbox kt-checkbox--single kt-checkbox--default"><input type="checkbox" class="step-2" data-step="2"><span></span></label>
+																				</td>
+																			</tr>
+																		@endforeach
+																	@endif
+																</tbody>
+															 </table>
+														</div>
+													</div>
+												</div>
+											</div>
+											@if ($event->no_of_trucks > 0)
+											 <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-5" id="accordion-truck">
+											<div class="card">
+												<div class="card-header" id="heading-truck">
+													<div class="card-title kt-padding-t-5 kt-padding-b-10" data-toggle="collapse" data-target="#collapse-truck" aria-expanded="true" aria-controls="collapse-truck">
+														<h6 class="kt-font-transform-u kt-font-dark">FOOD TRUCK requirements</h6>
+													</div>
+												</div>
+												<div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck" style="">
+													<div class="card-body">
+														 <table class="table border borderless table-hover">
+															<thead>
+																<tr>
+																	 <th>#</th>
+																	 <th>{{ __('DOCUMENT NAME') }}</th>
+																	 <th>{{ __('ISSUED DATE') }}</th>
+																	 <th>{{ __('EXPIRED DATE') }}</th>
+																	 <th>{{ __('ACTION') }}</th>
+																</tr>
+															</thead>
+															<tbody>
+																@php
+																	$requirements = App\Requirement::whereHas('events', function($q) use ($event){
+																		$q->where('event.event_id', $event->event_id);
+																	})->whereHas('eventRequirement', function($q){
+																		$q->where('requirement_type', 'truck');
+																	})->get();
+																@endphp
+																
+																@if ($requirements->count() > 0)
+																	@foreach ($requirements as $index => $requirement)
+																		<tr>
+																			<td>{{ ++$index+1 }}</td>
+																			<td>
+																				@php
+																					$name = Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
+																				@endphp
+																				 <a href="{{ asset('/storage/'.$requirement->eventRequirement()->first()->path) }}"  data-fancybox data-caption="{{$name}}">{{$name}}</a>
+																				
+																			</td>
+																			<td>{{ $requirement->dates_required ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required' }}</td>
+																			<td>{{ $requirement->dates_required ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required' }}</td>
+																			<td>
+																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default"><input type="checkbox" class="step-2" data-step="2"><span></span></label>
+																			</td>
+																		</tr>
+																	@endforeach
+																@endif
+															</tbody>
+														 </table>
+													</div>
+												</div>
+											</div>
+										</div>
+											@endif
+
+												  
+
+												 {{-- <table class="table border borderless table-hover" id="requirement-table">
 													<thead>
 														<tr>
-															 <th>{{ __('REQUIREMENT NAME') }}</th>
-															 {{-- <th>FILES</th> --}}
+															 <th></th>
+															 <th>{{ __('TYPE') }}</th>
+															 <th></th>	
 															 <th>{{ __('ISSUED DATE') }}</th>
 															 <th>{{ __('EXPIRED DATE') }}</th>
 															 <th>{{ __('ACTION') }}</th>
 														</tr>
 													</thead>
-												 </table>
+												 </table> --}}
 											</div>
 									 </section>
 								</div>
@@ -419,66 +585,58 @@
 								<div class="kt-wizard-v3__form">
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
-												@if ($event->permits()->count() > 0)
-												<a href="{{ route('admin.artist_permit.show', $event->permits->first()->permit_id) }}">
-												  <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
-												    <div class="alert-text">This event has an artist with reference number <span class="kt-font-danger">{{ $event->permits->first()->reference_number }}</span>
-												      {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
-												    </div>
-												  </div>
-												  </a>
-												@endif
+												@include('admin.event.includes.existing-notification')
 												@include('admin.event.includes.latest-comment')
 												  @include('admin.artist_permit.includes.comment')
 												   <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-action">
 												  	<div class="card">
 												  		<div class="card-header" id="heading-action">
 												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-action" aria-expanded="true" aria-controls="collapse-action">
-												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Select action</h6>
+												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Select Action') }}</h6>
 												  			</div>
 												  		 </div>
 												  		 <div id="collapse-action" class="collapse show" aria-labelledby="heading-action" data-parent="#accordion-action">
 												  			<div class="card-body">
 												  				<section class="row">
 												  					<div class="col-md-12">
-												  						{{-- <div class="form-group row"> --}}
-  																			{{-- <label class="col-3 col-form-label">Inline Radioes</label> --}}
-  																{{-- 			<div class="col-12">
+												  						<div class="form-group row">
+  																			<div class="col-12">
   																				<div class="kt-radio-inline">
   																					<label class="kt-radio kt-radion--bold kt-radio--success">
-  																						<input type="radio" name="radio4"> Approve Application
+  																						<input value="approved-unpaid" type="radio" name="status"> Approve Application
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success">
-  																						<input type="radio" name="radio4"> Send Back for Amendment
+  																						<input value="need modification" type="radio" name="status"> Send Back for Amendment
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success">
-  																						<input type="radio" name="radio4"> Need Approval
+  																						<input value="need approval" type="radio" name="status"> Need Approval
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success">
-  																						<input type="radio" name="radio4"> Reject Application
+  																						<input value="rejected" type="radio" name="status"> Reject Application
   																						<span></span>
   																					</label>
   																				</div>
   																			</div>
   																		</div>
-												  					</div> --}}
+												  					</div>
 
 												  					<div class="col-md-4">
 												  						<div class="form-group form-group-sm">
-												  							<label for="" class="kt-font-dark">Action <span class="text-danger">*</span></label>
+												  							<label for="" class="kt-font-dark">{{ __('Action') }} <span class="text-danger">*</span></label>
+
 												  							<select name="status" id="" class="form-control custom-select" required>
-												  								 <option selected disabled>Select Action</option>
-												  								 <option value="approved-unpaid">Approve Application</option>
-												  								 <option value="need approval">Need Approval</option>
-												  								 <option value="need modification">Send back for Amendments</option>
-												  								 <option value="rejected">Reject Application</option>
+												  								 <option selected disabled>{{ __('Select Action') }}</option>
+												  								 <option value="approved-unpaid">{{ __('Approve Application') }}</option>
+												  								 <option value="need approval">{{ __('Need Approval') }}</option>
+												  								 <option value="need modification">{{ __('Send back for Amendments') }}</option>
+												  								 <option value="rejected">{{ __('Reject Application') }}</option>
 												  							</select>												  	
-												  						</div>
+												  						</div> --}}
 												  						<div class="form-group form-group-sm kt-hide">
-												  							<label for="" class="kt-font-dark">Approvers <span class="text-danger">*</span></label>
+												  							<label for="" class="kt-font-dark">{{ __('Approvers') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
 												  										 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
 												  										 ->count() > 0)
@@ -494,17 +652,31 @@
 												  				<section class="row d-none" id="printed-note">
 												  					<div class="col-sm-6">
 												  						<div class="form-group-sm">
-												  							<label>Note</label>
+												  							<label>{{ __('Note') }}</label>
 												  							<textarea disabled name="note_en" rowspan="3" class="form-control form-control-sm" placeholder="Please write a short note that will appear in the printed permit"></textarea>
 												  						</div>
 												  					</div>
 												  					<div class="col-sm-6">
 												  						<div class="form-group-sm">
-												  							<label>Note (AR)</label>
+												  							<label>{{ __('Note (AR)') }}</label>
 												  							<textarea disabled placeholder="Please write an arabic note" name="note_ar" rowspan="3" class="form-control form-control-sm"></textarea>
 												  						</div>
 												  					</div>
 												  				</section>
+												  				{{-- <section class="row" id="select-additional">
+												  					<div class="col">
+												  						<p style="display: inline;">
+												  							Do you want to add an additional Requirement before sending back to client?
+												  							
+												  						</p>
+					  						  							<span class="kt-switch kt-switch--sm kt-switch--success kt-switch--outline kt-padding-t-20">
+					  														<label style="margin-bottom: 0">
+					  															<input type="checkbox" name="">
+					  															<span></span>
+					  														</label>
+					  													</span>
+												  					</div>
+												  				</section> --}}
 												  			</div>
 												  		</div>
 												  	</div>
@@ -513,8 +685,8 @@
 												  	<div class="card">
 												  		<div class="card-header" id="heading-requirements">
 												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
-												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">Additional Requirements</span>
-												  					<small class="text-muted">Select Addtional Requirements from the list or add new requirement.</small>
+												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('Additional Requirements') }}</span>
+												  					<small class="text-muted">{{ __('Select Additional Requirements from the list or add new requirement') }}</small>
 												  				</h6>
 												  			</div>
 												  		 </div>
@@ -524,7 +696,7 @@
 												  					<thead>
 												  						<tr>
 												  							<th></th>
-												  							<th>REQUIREMENT NAME</th>
+												  							<th>{{ __('REQUIREMENT NAME') }}</th>
 												  						</tr>
 												  					</thead>
 												  				</table>
@@ -538,7 +710,7 @@
 												           <div class="card-header" id="headingOne-approver">
 												               <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapse-approver"
 												                   aria-expanded="true" aria-controls="collapse-approver">
-												                   <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Checked & Approval History</h6>
+												                   <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">{{ __('Checked & Approval History') }}</h6>
 												               </div>
 												           </div>
 												           <div id="collapse-approver" class="collapse show" aria-labelledby="headingOne-approver" data-parent="#accordion-approver">
@@ -546,11 +718,11 @@
 												                   <table class="table table-hover table-borderless border table-striped">
 												                       <thead>
 												                           <tr>
-												                               <th>CHECKED BY</th>
-												                               <th>REMARKS</th>
-												                               <th>USER GROUP</th>
-												                               <th>CHECKED DATE</th>
-												                               <th>ACTION TAKEN</th>
+												                               <th>{{ __('CHECKED BY') }}</th>
+												                               <th>{{ __('REMARKS') }}</th>
+												                               <th>{{ __('USER GROUP') }}</th>
+												                               <th>{{ __('CHECKED DATE') }}</th>
+												                               <th>{{ __('ACTION TAKEN') }}</th>
 												                           </tr>
 												                       </thead>
 												                       <tbody>
@@ -579,13 +751,13 @@
 					</div>
 					<div class="kt-form__actions">
 						 <button type="button" data-ktwizard-type="action-prev" class="btn btn-elevate btn-maroon btn-sm kt-font-bold kt-font-transform-u btn-wide">
-								Previous
+								{{ __('PREVIOUS') }}
 						 </button>
 						 <button type="button" data-ktwizard-type="action-next"
-										 class="btn btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u">Next
+										 class="btn btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u">{{ __('NEXT') }}
 						 </button>
 						 <div data-ktwizard-type="action-submit" class="dropdown">
-								<button id="btn-submit" type="submit" class="btn btn-warning btn-sm  kt-font-bold kt-font-transform-u">Submit</button>
+								<button id="btn-submit" type="submit" class="btn btn-warning btn-sm  kt-font-bold kt-font-transform-u">{{ __('SUBMIT') }}</button>
 						 </div>
 					</div>
 			 </form>
@@ -602,6 +774,8 @@
 		new Vue({ el: '#app-wizard', data: { comment: null } });
 
      $(document).ready(function () {
+
+
        var todayDate = moment().startOf('day');
        var YM = todayDate.format('YYYY-MM');
        var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
@@ -678,9 +852,10 @@
      
      function formSubmit() {
        var approver = $('select#select-approver');
+
        
        //show or hide the approver selection
-       $('select[name=status]').change(function () {
+       $('input[name=status]').change(function () {
 		 if($(this).val() == 'need approval') { approver.parents('.form-group').removeClass('kt-hide'); $('#printed-note').addClass('d-none').find('textarea').attr('disabled', true); }
 		 else if($(this).val() == 'approved-unpaid'){ $('#printed-note').removeClass('d-none').find('textarea').removeAttr('disabled', true); }
 		 else{ approver.parents('.form-group').addClass('kt-hide');  $('#printed-note').addClass('d-none').find('textarea').attr('disabled', true); }
@@ -728,7 +903,7 @@
 
      	var counter = 0;
 
-     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">Add New Requirement</button>');
+     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">{{ __('Add New Requirement') }}</button>');
      	 $('#btn-add').on( 'click', function () {
      	 	var html = '<section class="row">';
      	 		html += '	<div class="col-sm-4">'
@@ -765,17 +940,24 @@
      }
      
      function requirementTable(){
-       $('table#requirement-table').DataTable({
+       var dt = $('table#requirement-table').DataTable({
 				 ajax: {
 				   url: '{{ route('admin.event.applicationDatatable',  $event->event_id) }}',
 					  data: function(d){},
 				 },
 				 columnDefs:[
-					 {targets: [1,2, 3], className: 'no-wrap'}
+					 {targets: [1,2, 3], className: 'no-wrap'},
+					 {targets:[1], "visible": false},
 				 ],
+				  "order": [[ 1, 'asc' ]],
 				 columns:[
+				 	 {
+				 	 	orderable:  false,
+				 	 	data: null,
+				 	 	defaultContent: '<span class="la la-angle-double-down text-success"></span>'
+				 	 },
+					 {data: 'type'},
 					 {data: 'name'},
-					 // {data: 'files'},
 					 {data: 'issued_date'},
 					 {data: 'expired_date'},
            {
@@ -787,8 +969,72 @@
                return html;
              }
            }
-				 ]
+				 ],
+				 "drawCallback": function ( settings ) {
+				      var api = this.api();
+				      var rows = api.rows( {page:'current'} ).nodes();
+				      var last=null;
+				 
+				      api.column(1, {page:'current'} ).data().each( function ( group, i ) {
+				          if ( last !== group ) {
+				              $(rows).eq( i ).before(
+				                  '<tr class="group"><td colspan="5">'+group+'</td></tr>'
+				              );
+				 
+				              last = group;
+				          }
+				      } );
+				  },
+				  initComplete: function(){
+				  	// $("#requirement-table").DataTable().rows().every( function () {
+				  	//     var tr = $(this.node());
+				  	//     this.child(format(tr.data('child-value'))).show();
+				  	//     tr.addClass('shown');
+				  	// });
+				  }
 			 });
+
+        var detailRows = [];
+
+     
+
+       // $('#requirement-table tbody tr td .la-angle-double-down').click();
+
+        // $('#requirement-table tbody').on( 'click', 'tr td .la-angle-double-down', function () {
+        //        var tr = $(this).closest('tr');
+        //        var row = dt.row( tr );
+        //        var idx = $.inArray( tr.attr('id'), detailRows );
+        
+        //        if ( row.child.isShown() ) {
+        //            tr.removeClass( 'details' );
+        //            row.child.hide();
+        
+        //            // Remove from the 'open' array
+        //            detailRows.splice( idx, 1 );
+        //        }
+        //        else {
+        //            tr.addClass( 'details' );
+        //            row.child( format( row.data() ) ).show();
+        
+        //            // Add to the 'open' array
+        //            if ( idx === -1 ) {
+        //                detailRows.push( tr.attr('id') );
+        //            }
+        //        }
+        //    } );
+
+        // On each draw, loop over the `detailRows` array and show any child rows
+           dt.on( 'draw', function () {
+               $.each( detailRows, function ( i, id ) {
+                   $('#'+id+' td .la-angle-double-down').trigger( 'click' );
+               } );
+           } );
+		 }
+
+		 function format ( d ) {
+		     return 'Full name:<br>'+
+		         'Salary: <br>'+
+		         'The child row can contain any data you wish, including links, images, inner tables etc.';
 		 }
      
      function wizard() {
@@ -841,13 +1087,19 @@
 
      	$('form#kt_form').submit(function(e){
 
-     		if($('select[name=status]').val() != 'approved-unpaid' && $('textarea[name=comment]').val() == ''){
+     		if($('input[name=status]').val() != 'approved-unpaid' && $('textarea[name=comment]').val() == ''){
      			e.preventDefault();
+     			// alert(123456);
      			// $('form#kt_form').validate().element('.txt-comment');
      			$('textarea[name=comment]').addClass('is-invalid');
      		}
      		else{
      			$('textarea[name=comment]').removeClass('is-invalid');
+     		}
+
+     		if($('input[name=status]').val() == 'rejected' && $('textarea[name=comment]').val() == ''){
+     			e.preventDefault();
+     			$('textarea[name=comment]').addClass('is-invalid');
      		}
 
      		// if($('select[name=status]').val() == 'need approval'){
@@ -858,7 +1110,7 @@
      		// }
      	});
 
-     	$('select[name=status]').change(function(){
+     	$('input[name=status]').click(function(){
      		if($(this).val() == 'need approval'){
      			$('#select-approver').removeAttr('disabled');
      		}

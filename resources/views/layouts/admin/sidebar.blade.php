@@ -7,7 +7,7 @@
             @if (Auth::user()->LanguageId == 1)
                <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-en.svg') }}" />
                @else
-               <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-en.svg') }}" />
+               <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-ar.svg') }}" />
             @endif
               
            </a>
