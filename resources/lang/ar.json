@@ -245,6 +245,7 @@
     "NEW PROFESSION":"مهنة جديدة",
     "PROFESSION NAME":"اسم المهنة",
     "ALLOW MULTIPLE PERMIT":"السماح لتصريح متعدد الاستخدام",
+    "Allows multiple permit":"السماح لتصريح متعدد الاستخدام",
     "PROFESSION FEE":"رسوم المهنة",
     "ADDED BY":"أضيف بواسطة",
     "ADDED ON":"أضيف على",
@@ -389,6 +390,8 @@
     "female":"نساء",
     "documents required":"المستندات المطلوبة",
     "Also please provide the list of emirates and areas in arabic and english":"أيضا قم بتقديم قائمة أسماء الإمارات والمناطق بالعربية والانجليزية",
+    "Event" : "هدف",
+    "Save Setting Changes" : "احفظ التغييرات"
     "Amended" : "معدل",
     "Pending Requests" : "طلب معلق",
     "Name" : "اسم",

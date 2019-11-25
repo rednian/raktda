@@ -35,7 +35,7 @@
 						<div class="tab-pane active" id="profession" role="tabpanel">
 							<section class="row">
 								 <div class="col-12">
-										<a href="{{ route('settings.profession.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Profession') }}</a>
+										<a href="{{ route('settings.profession.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW PROFESSION') }}</a>
 								 </div>
 							</section>
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblProfession">
@@ -55,7 +55,7 @@
 							<section class="row">
 								 <div class="col-12">
 										{{-- <a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a> --}}
-										<a href="{{ URL::signedRoute('requirements.create', ['t' => 'artist']) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a>
+										<a href="{{ URL::signedRoute('requirements.create', ['t' => 'artist']) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW REQUIREMENT') }}</a>
 										
 								 </div>
 							</section>
@@ -97,7 +97,7 @@
 						<div class="tab-pane" id="event_types" role="tabpanel">
 							 <section class="row">
 								 <div class="col-12">
-										<a href="{{ route('event_type.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Event Type') }}</a>
+										<a href="{{ route('event_type.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW EVENT TYPE') }}</a>
 								 </div>
 							</section>
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblEventTypes">
