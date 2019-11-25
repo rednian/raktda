@@ -535,14 +535,14 @@ $language_id = Auth::user()->LanguageId;
                                                             <section class="kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="email"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Address')}}
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Email')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
-                                                                                placeholder="{{__('Address')}}"
+                                                                                placeholder="{{__('Email')}}"
                                                                                 name="email" id="email" />
                                                                         </div>
                                                                     </div>
@@ -755,7 +755,7 @@ $language_id = Auth::user()->LanguageId;
                                             </div>
                                             <div class="col-lg-2 col-sm-12">
                                                 <label for="" class="text--maroon kt-font-bold"
-                                                    title="Expiry Date">>{{__('Expiry Date')}}</label>
+                                                    title="Expiry Date">{{__('Expiry Date')}}</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_exp_date_{{$i}}" id="doc_exp_date_{{$i}}"
                                                     placeholder="DD-MM-YYYY" />
@@ -787,7 +787,7 @@ $language_id = Auth::user()->LanguageId;
                     if($from == 'draft')
                     {
                     $routeBack = url('company/artist/view_draft_details/'.$permit_id);
-                    } else if($from = 'event'){
+                    } else if($from == 'event'){
                     $routeBack = url('company/event/add_artist/'.$permit_id);
                     }else {
                     $routeBack = url('company/artist/new/'.$permit_id);
@@ -803,25 +803,39 @@ $language_id = Auth::user()->LanguageId;
                     class="btn red mt-ladda-btn ladda-button mt-progress-demo" --}}
 
 
-                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    {{-- <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-submit" id="submit_btn">
                         {{__('Add Artist')}}
+                </div> --}}
+
+                <div class="btn-group" role="group" id="submit--btn-group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        data-ktwizard-type="action-submit">
+                        {{__('Add Artist')}}
+                    </button>
+                    <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
+                        <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-elevate"
+                            value="Save & Continue" id="submit_btn">Save & Continue</button>
+                        <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-elevate"
+                            value="Save & Add New" id="submit_add_btn">Save & Add New</button>
                     </div>
+                </div>
 
 
 
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                        data-ktwizard-type="action-next" id="next_btn">
-                        {{__('Next')}}
-                    </div>
-
+                <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    data-ktwizard-type="action-next" id="next_btn">
+                    {{__('Next')}}
                 </div>
 
             </div>
 
-            <!--end: Form Wizard Form-->
         </div>
+
+        <!--end: Form Wizard Form-->
     </div>
+</div>
 </div>
 </div>
 </div>
@@ -1146,7 +1160,8 @@ $language_id = Auth::user()->LanguageId;
             $('#prev_btn').css('display', prev);
             $('#next_btn').css('display', next);
             $('#back_btn').css('display', back);
-            $('#submit_btn').css('display', submit);
+            // $('#submit_btn').css('display', submit);
+            $('#submit--btn-group').css('display', submit);
         };
 
         const checkForTick = () => {
@@ -1191,6 +1206,7 @@ $language_id = Auth::user()->LanguageId;
                 var artist_id = $('#artist_number').val();
                 if (detailsValidator.form()) {
                     $('#submit_btn').css('display', 'block'); // display the submit button
+                    $('#submit--btn-group').css('display', 'block'); // display the submit button
                     $('#next_btn').css('display', 'none'); // hide the next button
                     artistDetails = {
                         id: $('#artist_id').val(),
@@ -1301,6 +1317,7 @@ $language_id = Auth::user()->LanguageId;
                 $('#next_btn').css('display', 'block');
             }
             $('#submit_btn').css('display', 'none');
+            $('#submit--btn-group').css('display','none');
         });
 
 
@@ -1586,49 +1603,65 @@ $language_id = Auth::user()->LanguageId;
 
         $('#submit_btn').click((e) => {
 
-        var hasFile = docValidation();
+            var hasFile = docValidation();
 
             if (documentsValidator.form() && hasFile) {
+               submitFunction(1);
+            }
 
-                $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+        });
 
-                var pd = localStorage.getItem('permitDetails');
-                var ad = localStorage.getItem('artistDetails');
-                var dd = localStorage.getItem('documentDetails');
-                // $('.kt-spinner').show();
+        $('#submit_add_btn').click((e) => {
 
-                // $('#pleaseWaitDialog').modal('show');
+            var hasFile = docValidation();
 
-                var from_date  = $('#from_date').val();
-                var to_date = $('#to_date').val();
-                var location = $('#location').val();
-                var is_event = $('#is_event').val();
-                var event_id = $('#event_id').val();
+            if (documentsValidator.form() && hasFile) {
+                submitFunction(2);
+            }
 
-                var permit_id = $('#permit_id').val();
+        });
 
-                var from =  $('#from').val();
+        function submitFunction(id){
 
-                var permitD = {
-                    from : from_date,
-                    to: to_date,
-                    location: location,
-                    is_event: is_event,
-                    event_id: event_id
-                }
-                $.ajax({
-                    url: "{{route('company.add_artist_temp')}}",
-                    type: "POST",
-                    data: {
-                        artistD: ad,
-                        documentD: dd,
-                        permitD: permitD,
-                        permit_id: permit_id,
-                        from: from
-                    },
-                    success: function (result) {
-                        if(result.message[0]){
-                            localStorage.clear();
+            $('#submit--btn_group').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+
+            var pd = localStorage.getItem('permitDetails');
+            var ad = localStorage.getItem('artistDetails');
+            var dd = localStorage.getItem('documentDetails');
+            // $('.kt-spinner').show();
+
+            // $('#pleaseWaitDialog').modal('show');
+
+            var from_date  = $('#from_date').val();
+            var to_date = $('#to_date').val();
+            var location = $('#location').val();
+            var is_event = $('#is_event').val();
+            var event_id = $('#event_id').val();
+            var permit_id = $('#permit_id').val();
+            var from =  $('#from').val();
+
+            var permitD = {
+                from : from_date,
+                to: to_date,
+                location: location,
+                is_event: is_event,
+                event_id: event_id
+            }
+            $.ajax({
+                url: "{{route('company.add_artist_temp')}}",
+                type: "POST",
+                data: {
+                    artistD: ad,
+                    documentD: dd,
+                    permitD: permitD,
+                    permit_id: permit_id,
+                    from: from
+                },
+                success: function (result) {
+                    if(result.message[0]){
+                        localStorage.clear();
+                        if(id == 1)
+                        {
                             if(from == 'draft')
                             {
                                 window.location.href = "{{url('company/artist/view_draft_details')}}"+'/'+ permit_id;
@@ -1637,13 +1670,13 @@ $language_id = Auth::user()->LanguageId;
                             }else {
                                 window.location.href = "{{url('company/artist/new')}}"+'/'+ permit_id;
                             }
-
+                        }else if(id == 2){
+                            window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id;
                         }
                     }
-                });
-            }
-
-        });
+                }
+            });
+        }
 
 
 </script>

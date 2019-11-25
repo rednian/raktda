@@ -37,6 +37,7 @@ class ArtistController extends Controller
 
     public function index()
     {
+        Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
         Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
         return view('permits.artist.index');
     }
@@ -700,7 +701,7 @@ class ArtistController extends Controller
             ]);
 
             if (isset($request->event_id)) {
-                $permit->event()->attach($request->event_id);
+                $permit->event_id = $request->event_id;
             }
 
             $temp_ids = [];
@@ -1091,6 +1092,9 @@ class ArtistController extends Controller
             case 'new':
                 $route_back = 'company/artist/new/1';
                 break;
+            case 'event':
+                $route_back = 'company/event/add_artist/' . $permit_id;
+                break;
             default:
                 break;
         }
@@ -1324,7 +1328,7 @@ class ArtistController extends Controller
                     'company_id' => $permit_details->company_id,
                     'created_by' => $permit_details->created_by,
                     'process' => $status,
-                    'event_id' => $permit_details->event ? $permit_details->event[0]->event_id : ''
+                    'event_id' => $permit_details->event ? $permit_details->event->event_id : ''
                 ]);
 
                 if ($status == 'renew') {
@@ -1767,6 +1771,12 @@ class ArtistController extends Controller
     {
         Permit::where('permit_id', $id)->update(['is_edit' => 0, "lock" => null]);
         return true;
+    }
+
+    public function fetch_event_details(Request $request)
+    {
+        $event_id = $request->event_id;
+        return \App\Event::where('event_id', $event_id)->latest()->first();
     }
 
 

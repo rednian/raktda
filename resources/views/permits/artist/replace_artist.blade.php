@@ -14,7 +14,7 @@ $language_id = Auth::user()->LanguageId;
                             data-ktwizard-state="current" id="check_inst">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>01</span> Check Instructions
+                                    <span>01</span> {{__('Instructions')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -22,7 +22,7 @@ $language_id = Auth::user()->LanguageId;
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>02</span> Artist Details
+                                    <span>02</span> {{__('Artist Details')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -30,7 +30,7 @@ $language_id = Auth::user()->LanguageId;
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> Upload Docs
+                                    <span>03</span> {{__('Upload Docs')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -652,8 +652,8 @@ $language_id = Auth::user()->LanguageId;
                                             <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
                                             @if($req->dates_required == 1)
                                             <div class="col-lg-2 col-sm-12">
-                                                <label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue
-                                                    Date</label>
+                                                <label for="" class="text--maroon kt-font-bold"
+                                                    title="Issue Date">{{__('Issue Date')}}</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_issue_date_{{$i}}" data-date-end-date="0d"
                                                     id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
@@ -663,8 +663,8 @@ $language_id = Auth::user()->LanguageId;
                                             </div>
                                             <div class="col-lg-2 col-sm-12">
                                                 <label for="" class="text--maroon kt-font-bold"
-                                                    title="Expiry Date">Expiry
-                                                    Date</label>
+                                                    title="Expiry Date">{{__('Expiry Date')}}
+                                                </label>
                                                 <input type="text" class="form-control form-control-sm date-picker "
                                                     name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                     id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
@@ -683,23 +683,23 @@ $language_id = Auth::user()->LanguageId;
                 <div class="kt-form__actions">
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
-                        Previous
+                        {{__('Previous')}}
                     </div>
                     <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
                     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
                     <a href="{{url('company/artist/permit/'.$permit_details->permit_id .'/amend')}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                            Back
+                            {{__('Back')}}
                         </div>
                     </a>
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
                         style="display:none;">
                         <i class="la la-check"></i>
-                        Submit
+                        {{__('Submit')}}
                     </div>
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
-                        Next Step
+                        {{__('Next')}}
                     </div>
                 </div>
             </div>

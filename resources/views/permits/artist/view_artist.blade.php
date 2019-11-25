@@ -10,14 +10,13 @@
             <h3 class="kt-portlet__head-title">{{__('Artist Details')}}
             </h3>
         </div>
-
         @php
         if($from == 'details'){
         $backUrl = url('company/artist/get_permit_details').'/'.$artist_details->permit_id .'?tab=applied' ;
         } else if($from == 'payment') {
         $backUrl = url('company/artist/make_payment/').'/'.$artist_details->permit_id ;
         } else if($from == 'event') {
-        $backUrl = url('company/event').'/'.$artist_details->permit->event[0]->event_id .'?tab=applied';
+        $backUrl = url('company/event').'/'.$artist_details->permit->event_id .'?tab=applied';
         }
         @endphp
 
