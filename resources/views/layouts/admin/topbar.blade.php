@@ -64,6 +64,7 @@
                 <div class="kt-header__topbar-user">
                     @php
                         $name=ucwords(Auth::user()->NameEn);
+                        $nameAr=ucwords(Auth::user()->NameAr);
                         $first_name = explode(' ', $name);
                         $first_name = $first_name[0];
                         $first_letter = substr($first_name, 0, 1);
@@ -84,29 +85,29 @@
                                 <div class="kt-badge kt-badge--xl kt-badge--success"><span>{{ ucwords($first_letter) }}</span></div>
                             </div>
                             <div class="kt-user-card-v2__details">
-                                <span class="kt-user-card-v2__name">{{ $name }}</span>
+                                <span class="kt-user-card-v2__name">{{ Auth::user()->LanguageId == 1 ? $name : $nameAr }}</span>
                                 <a href="#" class="kt-user-card-v2__email kt-link">{{ ucwords(Auth::user()->designation) }}</a>
                             </div>
                         </div>
                     </div>
                     <div class="kt-user-card__badge"> <span class="btn btn-label-success btn-sm btn-bold btn-font-md">1
-                            Notifications</span> </div>
+                            {{ __('Notifications') }}</span> </div>
                 </div>
                 <!--end: Head -->
                 <!--begin: Navigation -->
                 <div class="kt-notification">
-                    <a href="javascript:void(0)" class="kt-notification__item">
+                    <a href="{{ route('admin.settings.account') }}" class="kt-notification__item">
                         <div class="kt-notification__item-icon"> <i class="flaticon2-calendar-3 kt-font-dark"></i>
                         </div>
                         <div class="kt-notification__item-details">
-                            <div class="kt-notification__item-title kt-font-bold"> My Profile </div>
+                            <div class="kt-notification__item-title kt-font-bold"> {{ __('Account Settings') }} </div>
                             {{-- <div class="kt-notification__item-time"> Account settings and more </div> --}}
                         </div>
                     </a>
                     <div class="kt-notification__custom kt-space-between">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                            class="btn btn-secondary btn-elevate btn-sm kt-font-dark kt-font-transform-u"> logout</a>
+                            class="btn btn-secondary btn-elevate btn-sm kt-font-dark kt-font-transform-u"> {{ __('Logout') }}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
