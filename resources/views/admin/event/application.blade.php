@@ -12,18 +12,18 @@
 <section id="app-wizard" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
 	<div class="kt-portlet__head kt-portlet__head--sm">
 		<div class="kt-portlet__head-label">
-			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ ucwords($event->name_en) }}- application</span></h3>
+			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ ucwords($event->name_en) }} - {{ __('APPLICATION') }}</span></h3>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-outline-secondary kt-margin-r-4 kt-font-transform-u">
-				<i class="la la-arrow-left"></i>back to event list
+				<i class="la la-arrow-left"></i>{{ __('BACK TO EVENT LIST') }}
 			</a>
 			<div class="dropdown dropdown-inline">
 				<button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-elevate btn-icon btn-sm btn-icon-sm">
 					<i class="flaticon-more"></i>
 				</button>
 				<div x-placement="bottom-end" class="dropdown-menu dropdown-menu-right">
-					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">Company Information</a>
+					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">{{ __('COMPANY INFORMATION') }}</a>
 				</div>
 			</div>
 		</div>
@@ -106,7 +106,7 @@
 																	  </div>
 																</div>
 																<div class="col-sm-6">
-																	 <label class="kt-font-dark">{{ __('Number of food Trucks') }}</label>
+																	 <label class="kt-font-dark">{{ __('Number of Food Trucks') }}</label>
 																	  <div class="input-group input-group-sm">
 																	 	<input value="{{ ucfirst($event->no_of_trucks) }}" name="no_of_trucks" readonly="readonly" type="text"
 																	 					 class="form-control">
@@ -592,7 +592,7 @@
 												  	<div class="card">
 												  		<div class="card-header" id="heading-action">
 												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-action" aria-expanded="true" aria-controls="collapse-action">
-												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> Select action</h6>
+												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Select Action') }}</h6>
 												  			</div>
 												  		 </div>
 												  		 <div id="collapse-action" class="collapse show" aria-labelledby="heading-action" data-parent="#accordion-action">
@@ -624,18 +624,19 @@
 												  					</div>
 
 												  					<div class="col-md-4">
-												  						{{-- <div class="form-group form-group-sm">
-												  							<label for="" class="kt-font-dark">Action <span class="text-danger">*</span></label>
+												  						<div class="form-group form-group-sm">
+												  							<label for="" class="kt-font-dark">{{ __('Action') }} <span class="text-danger">*</span></label>
+
 												  							<select name="status" id="" class="form-control custom-select" required>
-												  								 <option selected disabled>Select Action</option>
-												  								 <option value="approved-unpaid">Approve Application</option>
-												  								 <option value="need approval">Need Approval</option>
-												  								 <option value="need modification">Send back for Amendments</option>
-												  								 <option value="rejected">Reject Application</option>
+												  								 <option selected disabled>{{ __('Select Action') }}</option>
+												  								 <option value="approved-unpaid">{{ __('Approve Application') }}</option>
+												  								 <option value="need approval">{{ __('Need Approval') }}</option>
+												  								 <option value="need modification">{{ __('Send back for Amendments') }}</option>
+												  								 <option value="rejected">{{ __('Reject Application') }}</option>
 												  							</select>												  	
 												  						</div> --}}
 												  						<div class="form-group form-group-sm kt-hide">
-												  							<label for="" class="kt-font-dark">Approvers <span class="text-danger">*</span></label>
+												  							<label for="" class="kt-font-dark">{{ __('Approvers') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
 												  										 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
 												  										 ->count() > 0)
@@ -651,13 +652,13 @@
 												  				<section class="row d-none" id="printed-note">
 												  					<div class="col-sm-6">
 												  						<div class="form-group-sm">
-												  							<label>Note</label>
+												  							<label>{{ __('Note') }}</label>
 												  							<textarea disabled name="note_en" rowspan="3" class="form-control form-control-sm" placeholder="Please write a short note that will appear in the printed permit"></textarea>
 												  						</div>
 												  					</div>
 												  					<div class="col-sm-6">
 												  						<div class="form-group-sm">
-												  							<label>Note (AR)</label>
+												  							<label>{{ __('Note (AR)') }}</label>
 												  							<textarea disabled placeholder="Please write an arabic note" name="note_ar" rowspan="3" class="form-control form-control-sm"></textarea>
 												  						</div>
 												  					</div>
@@ -684,8 +685,8 @@
 												  	<div class="card">
 												  		<div class="card-header" id="heading-requirements">
 												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
-												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">Additional Requirements</span>
-												  					<small class="text-muted">Select Addtional Requirements from the list or add new requirement.</small>
+												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('Additional Requirements') }}</span>
+												  					<small class="text-muted">{{ __('Select Additional Requirements from the list or add new requirement') }}</small>
 												  				</h6>
 												  			</div>
 												  		 </div>
@@ -695,7 +696,7 @@
 												  					<thead>
 												  						<tr>
 												  							<th></th>
-												  							<th>REQUIREMENT NAME</th>
+												  							<th>{{ __('REQUIREMENT NAME') }}</th>
 												  						</tr>
 												  					</thead>
 												  				</table>
@@ -709,7 +710,7 @@
 												           <div class="card-header" id="headingOne-approver">
 												               <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapse-approver"
 												                   aria-expanded="true" aria-controls="collapse-approver">
-												                   <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Checked & Approval History</h6>
+												                   <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">{{ __('Checked & Approval History') }}</h6>
 												               </div>
 												           </div>
 												           <div id="collapse-approver" class="collapse show" aria-labelledby="headingOne-approver" data-parent="#accordion-approver">
@@ -717,11 +718,11 @@
 												                   <table class="table table-hover table-borderless border table-striped">
 												                       <thead>
 												                           <tr>
-												                               <th>CHECKED BY</th>
-												                               <th>REMARKS</th>
-												                               <th>USER GROUP</th>
-												                               <th>CHECKED DATE</th>
-												                               <th>ACTION TAKEN</th>
+												                               <th>{{ __('CHECKED BY') }}</th>
+												                               <th>{{ __('REMARKS') }}</th>
+												                               <th>{{ __('USER GROUP') }}</th>
+												                               <th>{{ __('CHECKED DATE') }}</th>
+												                               <th>{{ __('ACTION TAKEN') }}</th>
 												                           </tr>
 												                       </thead>
 												                       <tbody>
@@ -750,13 +751,13 @@
 					</div>
 					<div class="kt-form__actions">
 						 <button type="button" data-ktwizard-type="action-prev" class="btn btn-elevate btn-maroon btn-sm kt-font-bold kt-font-transform-u btn-wide">
-								Previous
+								{{ __('PREVIOUS') }}
 						 </button>
 						 <button type="button" data-ktwizard-type="action-next"
-										 class="btn btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u">Next
+										 class="btn btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u">{{ __('NEXT') }}
 						 </button>
 						 <div data-ktwizard-type="action-submit" class="dropdown">
-								<button id="btn-submit" type="submit" class="btn btn-warning btn-sm  kt-font-bold kt-font-transform-u">Submit</button>
+								<button id="btn-submit" type="submit" class="btn btn-warning btn-sm  kt-font-bold kt-font-transform-u">{{ __('SUBMIT') }}</button>
 						 </div>
 					</div>
 			 </form>
@@ -902,7 +903,7 @@
 
      	var counter = 0;
 
-     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">Add New Requirement</button>');
+     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">{{ __('Add New Requirement') }}</button>');
      	 $('#btn-add').on( 'click', function () {
      	 	var html = '<section class="row">';
      	 		html += '	<div class="col-sm-4">'
