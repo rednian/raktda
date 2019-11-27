@@ -62,7 +62,7 @@ class Event extends Model
     {
         return $this->belongsToMany(Requirement::class, 'event_requirement', 'event_id', 'requirement_id')
             ->where('requirement_type', 'event')
-            ->withPivot(['path', 'issued_date', 'expired_date'])
+            ->withPivot(['path', 'issued_date', 'expired_date', 'type'])
             ->withTimestamps();
     }
 
