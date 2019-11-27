@@ -42,7 +42,10 @@
     <div class="kt-portlet__body pt-0">
         <div class="kt-widget5__info py-4">
             <div class="pb-2">
-                <span>{{__('From Date')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('Term')}}:</span>&emsp;
+                <span class="kt-font-info">{{$permit_details->term}}</span>&emsp;&emsp;
+                <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
+                <span class="kt-font-dark">{{__('From Date')}}:</span>&emsp;
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->issue_date))}}</span>&emsp;&emsp;
                 <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
@@ -50,11 +53,11 @@
                 $to_date = date('d-M-Y', strtotime('+31 days', strtotime($permit_details->expired_date)));
                 $db_to_date = date('Y-m-d', strtotime('+31 days', strtotime($permit_details->expired_date)));
                 @endphp --}}
-                <span>{{__('To Date')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('To Date')}}:</span>&emsp;
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->expiry_date))}}</span>&emsp;&emsp;
                 <input type="hidden" id="expired_date" value="{{$artist_details[0]->expiry_date}}">
-                <span>{{__('Location')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('Location')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
                 <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
             </div>

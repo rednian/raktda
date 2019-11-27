@@ -13,6 +13,7 @@
     "Artist Permit Drafts": "الفنان تصريح مسودات",
     "Add New": "اضف جديد",
     "Add New Artist Permit": "",
+    "Artist Name": "اسم الفنان",
 
     "From Date": "من تاريخ",
     "To Date": "إلى تاريخ",
@@ -92,6 +93,8 @@
     "Enter the reason here": "أدخل السبب هنا",
     "From": "من عند",
     "To": "إلى",
+    "Name": "الصيت",
+    "Type": "نوع",
     "From Time": "من وقت",
     "To Time": "إلى وقت",
     "Event Name": "اسم الفعالية",

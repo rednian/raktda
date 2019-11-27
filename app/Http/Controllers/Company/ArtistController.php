@@ -28,6 +28,7 @@ use App\ArtistTempData;
 use App\ArtistTempDocument;
 use App\PermitComment;
 use App\GeneralSetting;
+use App\Happiness;
 use PDF;
 use App\Transaction;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -79,6 +80,8 @@ class ArtistController extends Controller
             } else {
                 return 'None';
             }
+        })->editColumn('term', function ($permits) {
+            return ucwords($permits->term);
         })->editColumn('artist_count', function ($permits) use ($status) {
             $noofapproved = 0;
             $total = count($permits->artistPermit);
@@ -152,7 +155,7 @@ class ArtistController extends Controller
 
     public function get_permit_details($id, Request $request)
     {
-        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'artistPermit.artistPermitDocument', 'event')->where('permit_id', $id)->first();
+        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'artistPermit.artistPermitDocument', 'event')->where('created_by', Auth::user()->user_id)->where('permit_id', $id)->first();
         $data_bundle['tab'] = $request->tab;
         // dd($data_bundle['permit_details']);
         return view('permits.artist.view_details', $data_bundle);
@@ -265,7 +268,7 @@ class ArtistController extends Controller
     public function fetch_artist_temp_data(Request $request)
     {
         $id = $request->artist_temp_id;
-        $artists = ArtistTempData::with('Nationality', 'Profession', 'visaType')->where('id', $id)->first();
+        $artists = ArtistTempData::with('Nationality', 'Profession', 'visaType')->where('created_by', Auth::user()->user_id)->where('id', $id)->first();
         return $artists;
     }
 
@@ -697,6 +700,7 @@ class ArtistController extends Controller
                 'user_id' => $user_id,
                 'created_by' => $user_id,
                 'created_at' => $currentDateTime,
+                'term' => $request->term,
                 'company_id' => Auth::user()->type == 1 ? Auth::user()->EmpClientId : ''
             ]);
 
@@ -1026,13 +1030,13 @@ class ArtistController extends Controller
     public function fetch_artist_details(Request $request)
     {
         $ap_id = $request->ap_id;
-        $artistPermitDetails = ArtistPermit::with('artist', 'artistPermitDocument', 'profession', 'Nationality', 'visaType')->where('artist_permit_id', $ap_id)->first();
+        $artistPermitDetails = ArtistPermit::with('artist', 'artistPermitDocument', 'profession', 'Nationality', 'visaType')->where('created_by', Auth::user()->user_id)->where('artist_permit_id', $ap_id)->first();
         return $artistPermitDetails;
     }
 
     public function get_artist_details($id, $from)
     {
-        $data['artist_details'] = ArtistPermit::with('artist', 'artistPermitDocument', 'profession', 'Nationality', 'visaType', 'area', 'language', 'religion', 'emirate', 'artistPermitDocument.requirement', 'permit.event')->where('artist_permit_id', $id)->first();
+        $data['artist_details'] = ArtistPermit::with('artist', 'artistPermitDocument', 'profession', 'Nationality', 'visaType', 'area', 'language', 'religion', 'emirate', 'artistPermitDocument.requirement', 'permit.event')->where('created_by', Auth::user()->user_id)->where('artist_permit_id', $id)->first();
         $data['from'] = $from;
         return view('permits.artist.view_artist', $data);
     }
@@ -1077,7 +1081,7 @@ class ArtistController extends Controller
         $temp_id = $request->del_temp_id;
 
         // Artistpermit::where('artist_permit_id', $artist_permit_id)->update(['artist_permit_status' => 'inactive']);
-        ArtistTempData::where('id', $temp_id)->update(['status' => 1]);
+        ArtistTempData::where('id', $temp_id)->where('created_by', Auth::user()->user_id)->update(['status' => 1]);
         $result = ['success', 'Artist Removed successfully ', 'Success'];
         switch ($from) {
             case 'amend':
@@ -1261,8 +1265,11 @@ class ArtistController extends Controller
     public function permit($id, $status)
     {
 
-        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'event')->where('permit_id', $id)->first();
+        $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'event')->where('created_by', Auth::user()->user_id)->where('permit_id', $id)->first();
 
+        if (empty($permit_details)) {
+            abort(404);
+        }
 
         Permit::where('permit_id', $id)->update(["lock" => Carbon::now()->toDateTimeString()]);
 
@@ -1499,7 +1506,7 @@ class ArtistController extends Controller
             'status' => 5,
             'issue_date' => Carbon::parse($request->from)->toDateString(),
             'expiry_date' => Carbon::parse($request->to)->toDateString(),
-            'work_location' => $request->loc,
+            'work_location' => $request->loc
         );
 
         if (isset($request->event_id)) {
@@ -1792,14 +1799,14 @@ class ArtistController extends Controller
             'title' => 'Artist Permit',
             'default_font_size' => 10
         ]);
-        return $pdf->stream('Permit-' . $permitNumber . '.pdf');
+        return $pdf->stream('Artist Permit-' . $permitNumber . '.pdf');
     }
 
     // Make Payment Function
 
     public function make_payment($id)
     {
-        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->first();
+        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession', 'event')->where('permit_id', $id)->first();
         return view('permits.artist.payment', $data_bundle);
     }
 
@@ -1809,7 +1816,7 @@ class ArtistController extends Controller
     public function payment_gateway(Permit $permit)
     {
         $id = $permit->permit_id;
-        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->first();
+        $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->where('created_by', Auth::user()->user_id)->first();
         return view('permits.artist.payment_gateway', $data_bundle);
     }
 
@@ -1866,19 +1873,22 @@ class ArtistController extends Controller
 
     public function submit_happiness(Request $request)
     {
-        $id = $request->permit_id;
-        $happiness = $request->happiness;
+        $updateArray = array(
+            'type' => 'artist',
+            'application_id' =>  $request->permit_id,
+            'rating' => $request->happiness,
+            'remarks' => $request->remarks,
+            'created_by' => Auth::user()->user_id
+        );
+        Happiness::create($updateArray);
 
-        $artists = Permit::where('permit_id', $id)->update(['happiness' => $happiness]);
-
-        // return view('permits.happinessmeter', ['id' => $id]);
-        if ($artists) {
-            $result = ['success', 'Thank you for your Feedback', 'Success'];
-        } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
-        }
-
+        $result = ['success', 'Thank you for your Feedback', 'Success'];
         return response()->json(['message' => $result]);
+    }
+
+    public function checkVisaRequired($id)
+    {
+        return  Country::where('country_id', $id)->first()->continent_code;
     }
 
 

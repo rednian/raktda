@@ -76,72 +76,73 @@
             </div>
             <div class="mt-5 col-md-12">
                 <div class="row">
-                    <div class="col-md-6 col-sm-12 row">
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Birth Date')}}:</strong></label>
                         <p class="col col-md-6">
                             {{date('d-M-Y', strtotime($artist_details->birthdate))}}</p>
                     </div>
-                    <div class="col-md-6 col-sm-12 row">
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Gender')}}:</strong></label>
                         <p class="col col-md-6">
                             {{$artist_details->gender == '1' ? 'Male' : 'Female'}}</p>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-12 row">
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Passport No')}}:</strong></label>
                         <p class="col col-md-6 text-left">
                             {{$artist_details->passport_number}}</p>
                     </div>
-                    <div class="col-md-6 col-sm-12 row">
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Passport Expiry')}}:</strong></label>
                         <p class="col col-md-6 text-left">
-                            {{date('d-M-Y', strtotime($artist_details->passport_expire_date))}}</p>
+                            {{$artist_details->passport_expire_date != '0000-00-00' ? date('d-M-Y', strtotime($artist_details->passport_expire_date)) : ''}}
+                        </p>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-12 row">
-                        <label class="col col-md-6 "><strong>{{__('Phone Number')}}:</strong></label>
-                        <p class="col col-md-6 text-left">
-                            {{$artist_details->phone_number ? $artist_details->phone_number : 'Not Given'}}</p>
-                    </div>
-                    <div class="col-md-6 col-sm-12 row">
+
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Visa Type')}}:</strong></label>
                         <p class="col col-md-6 text-left">
-                            {{$artist_details->visaType->visa_type_en}}</p>
+                            {{$artist_details->visaType ? $artist_details->visaType->visa_type_en : ''}}</p>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-12 row">
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Visa Number')}}:</strong></label>
                         <p class="col col-md-6 text-left">
                             {{$artist_details->visa_number ? $artist_details->visa_number : 'Not Given'}}</p>
                     </div>
-                    <div class="col-md-6 col-sm-12 row">
-                        <label class="col col-md-6 "><strong>{{__('Visa Expiry')}}:</strong></label>
-                        <p class="col col-md-6 text-left">
-                            {{date('d-M-Y', strtotime($artist_details->visa_expire_date))}}</p>
-                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-sm-12 row">
+                    <div class="col-md-4 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>{{__('Visa Expiry')}}:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{$artist_details->visa_expire_date != '0000-00-00' ? date('d-M-Y', strtotime($artist_details->visa_expire_date)) : ''}}
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('UID No')}}:</strong></label>
                         <p class="col col-md-6 text-left">
                             {{$artist_details->uid_number}}</p>
                     </div>
-                    <div class="col-md-6 col-sm-12 row">
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('UID Expiry')}}:</strong></label>
                         <p class="col col-md-6 text-left">
-                            {{date('d-M-Y', strtotime($artist_details->uid_expire_date))}}</p>
+                            {{$artist_details->uid_expire_date != '0000-00-00' ? date('d-M-Y', strtotime($artist_details->uid_expire_date)) : ''}}
+                        </p>
                     </div>
                 </div>
+
                 <div class="row">
-                    <div class="col-md-6 col-sm-12 row">
+                    <div class="col-md-4 col-sm-12 row">
+                        <label class="col col-md-6 "><strong>{{__('Phone Number')}}:</strong></label>
+                        <p class="col col-md-6 text-left">
+                            {{$artist_details->phone_number ? $artist_details->phone_number : 'Not Given'}}</p>
+                    </div>
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Sponser Name')}}:</strong></label>
                         <p class="col col-md-6 text-left">
                             {{$artist_details->sponsor_name_en}}</p>
                     </div>
-                    <div class="col-md-6 col-sm-12 row">
+                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Address')}}:</strong></label>
                         <p class="col col-md-6 text-left">
                             {{$artist_details->address_en}}</p>

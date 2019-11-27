@@ -41,18 +41,18 @@
     {{-- <link href="{{ asset('/assets/vendors/global/vendors.bundle.css') }}" rel="stylesheet" type="text/css" /> --}}
     @if (Auth::user()->LanguageId == 1)
     <link href="{{ asset('/assets/css/demo1/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-    {{-- <style>
+    <style>
         .kt-aside {
             box-shadow: 4px 0 5px -2px #888;
         }
-    </style> --}}
+    </style>
     @else
     <link href="{{ asset('/assets/css/demo1/style.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
-    {{-- <style>
+    <style>
         .kt-aside {
             box-shadow: 4px 0 5px 4px #888 !important;
         }
-    </style> --}}
+    </style>
     @endif
 
 

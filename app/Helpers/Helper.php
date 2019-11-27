@@ -1,18 +1,19 @@
 <?php
 
-function defaults($name = null, $role){
+function defaults($name = null, $role)
+{
     $fname = explode(' ', $name);
-    $html = '<div class="kt-user-card-v2">'; 
-    $html .= ' <div class="kt-user-card-v2__pic">'; 
-    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--warning"><span>'.strtoupper(substr($fname[0], 0, 1)).'</span></div>'; 
-    $html .= '  </div>'; 
-    $html .= '  <div class="kt-user-card-v2__details">'; 
-    $html .= '   <span class="kt-user-card-v2__name">'.ucwords($name).'</span>'; 
-    $html .= '   <span class="kt-user-card-v2__email kt-link">'.ucwords($role).'</span>'; 
-    $html .= '   </div>'; 
-    $html .= '   </div>'; 
+    $html = '<div class="kt-user-card-v2">';
+    $html .= ' <div class="kt-user-card-v2__pic">';
+    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--warning"><span>' . strtoupper(substr($fname[0], 0, 1)) . '</span></div>';
+    $html .= '  </div>';
+    $html .= '  <div class="kt-user-card-v2__details">';
+    $html .= '   <span class="kt-user-card-v2__name">' . ucwords($name) . '</span>';
+    $html .= '   <span class="kt-user-card-v2__email kt-link">' . ucwords($role) . '</span>';
+    $html .= '   </div>';
+    $html .= '   </div>';
 
-    return $html;     
+    return $html;
 }
 
 function fileExtension($path)
@@ -36,13 +37,14 @@ function fileExtension($path)
     }
     return '<span style="font-size:x-large" class="la ' . $className . '"></span>';
 }
+
+
 function language($data)
 {
     $user = Auth::user()->LanguageId;
 
     return $user  == 1 ? $data['en'] : $data['ar'];
 }
-
 
 
 function eventType($type)

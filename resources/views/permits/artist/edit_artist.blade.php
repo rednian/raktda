@@ -98,11 +98,11 @@
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-12">
                                                     <label
-                                                        class="kt-font-bold text--maroon">{{getLangId() == 1 ?$req->requirement_name : $req->requirement_name_ar}}
-                                                        <span
-                                                            class="text-danger">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '*' : ''}}</span></label>
-                                                    <p for="" class="reqName    ">
-                                                        {{$req->requirement_description}}</p>
+                                                        class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}
+                                                        <span id="cnd_{{$i}}"></span></label>
+                                                    <p for="" class="reqName">
+                                                        {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                                                    </p>
                                                 </div>
                                                 <input type="hidden" value="{{$req->requirement_id}}"
                                                     id="req_id_{{$i}}">
@@ -153,23 +153,23 @@
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
-                            Previous
+                            {{__('Previous')}}
                         </div>
                         <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
 
                         <a href="{{url('company/artist/view_draft_details').'/'.$artist_details->permit_id}}">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                Back
+                                {{__('Back')}}
                             </div>
                         </a>
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                             <i class="la la-check"></i>
-                            Update Artist
+                            {{__('Update')}}
                         </div>
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
-                            Next Step
+                            {{__('Next')}}
                         </div>
 
                     </div>
@@ -222,7 +222,7 @@
         wizard = new KTWizard("kt_wizard_v3");
         wizard.goTo(2);
         $('#back_btn').css('display', 'none');
-
+        $('.sh-uae').hide();
         $('#city').val() ? getAreas($('#city').val(), $('#sel_area').val()) : '';
 
     });
@@ -253,6 +253,11 @@
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                 formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
+                onSuccess: function (files, response, xhr, pd) {
+                        //You can control using PD
+                    pd.progressDiv.show();
+                    pd.progressbar.width('0%');
+                },
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();
@@ -335,6 +340,9 @@
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
+                onSuccess: function (files, response, xhr, pd) {
+                    pd.filename.html('');
+                },
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();
@@ -349,7 +357,7 @@
                                 // console.log(data[0].original_pic);
                                 if(data[0].original)
                                 {
-                                    obj.createProgress('Profile Pic',"{{url('/storage')}}"+'/'+data[0].original,'');
+                                    obj.createProgress('',"{{url('/storage')}}"+'/'+data[0].original,'');
                                 }
                             }
                         });
@@ -388,6 +396,7 @@
                     dateNL: true
                 },
                 visa_type: "required",
+                visa_number: "required",
                 visa_expiry: {
                     required: true,
                     dateNL: true
@@ -418,6 +427,7 @@
                 passport: "",
                 pp_expiry: "",
                 visa_type: "",
+                visa_number: "",
                 visa_expiry: "",
                 sp_name: "",
                 gender: "",
@@ -440,6 +450,7 @@
         var docRules = {};
         var docMessages = {};
         var term ;
+        var documentsValidator ;
         for(var i = 1; i < $('#requirements_count').val(); i++)
         {
             var noofdays = $('#permitNoOfDays').val();
@@ -453,11 +464,71 @@
             }
         }
 
-        var documentsValidator = $('#documents_required').validate({
-            rules: docRules,
-            messages: docMessages
-        })
+        function checkVisaRequired(){
+            var nationality = $('#nationality').val();
+            if(nationality)
+            {
+                if(nationality == '232'){
+                    $('.sh-uae').show();
+                    $('.hd-uae').hide();
+                    $('select[name="visa_type"]').rules("remove", "required");$('#visa_type').removeClass('is-invalid');
+                    $('input[name="visa_number"]').rules("remove"), "required";$('#visa_number').removeClass('is-invalid');
+                    $('input[name="visa_expiry"]').rules("remove", "required");$('#visa_expiry').removeClass('is-invalid');
+                    $('input[name="passport"]').rules("remove", "required");$('#passport').removeClass('is-invalid');
+                    $('input[name="pp_expiry"]').rules("remove", "required");$('#pp_expiry').removeClass('is-invalid');
+                    $('input[name="uid_number"]').rules("remove", "required");$('#uid_number').removeClass('is-invalid');
+                    $('input[name="uid_expiry"]').rules("remove", "required");$('#uid_expiry').removeClass('is-invalid');
+                    $('input[name="id_no"]').rules('add', { required: true, messages: {required:''}});
+                    for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                        if($('#req_id_'+i).val() == 6){
+                            delete docRules['doc_issue_date_' + i];
+                            delete docRules['doc_exp_date_' + i];
+                        }
+                    }
+                    return ;
+                }else
+                {
+                    $('.sh-uae').hide();
+                    $('.hd-uae').show();
+                    $('input[name="id_no"]').rules('remove', "required");$('#id_no').removeClass('is-invalid');
+                    $('input[name="passport"]').rules('add', { required: true, messages: {required:''}});
+                    $('input[name="pp_expiry"]').rules('add', { required: true, messages: {required:''}});
+                    $('input[name="uid_number"]').rules('add', { required: true, messages: {required:''}});
+                    $('input[name="uid_expiry"]').rules('add', { required: true, messages: {required:''}});
+                    for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                        if($('#req_id_'+i).val() == 6){
+                            docRules['doc_issue_date_' + i] = 'required';
+                            docRules['doc_exp_date_' + i] = 'required';
+                        }
+                    }
+                }
+                var url = "{{route('artist.checkVisaRequired', ':id')}}";
+                url = url.replace(':id', nationality);
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (result) {
+                        $('#nationality_cont').val(result.trim());
+                        // console.log(result.trim())
+                        if(result.trim() == "EU")
+                        {
+                            $('select[name="visa_type"]').rules('remove', "required");$('#visa_type').removeClass('is-invalid');
+                            $('input[name="visa_number"]').rules('remove', "required");$('#visa_number').removeClass('is-invalid');
+                            $('input[name="visa_expiry"]').rules('remove', "required");$('#visa_expiry').removeClass('is-invalid');
+                            $('.hd-eu').hide();
+                        }else {
+                            $('select[name="visa_type"]').rules('add', { required: true, messages: {required:''}});
+                            $('input[name="visa_number"]').rules('add', { required: true, messages: {required:''}});
+                            $('input[name="visa_expiry"]').rules('add', { required: true, messages: {required:''}});
+                            $('.hd-eu').show();
+                        }
+                        
+                    }
+                });
+            }
+        }
 
+        
         $( "#check_inst" ).on( "click", function() {
             setThis('none', 'block', 'block', 'none');
         });
@@ -561,6 +632,33 @@
                 // insertIntoDrafts(3, JSON.stringify(artistDetails));
             }
         }
+
+        var nationality = $('#nationality').val();
+
+        if(nationality)
+        {
+            var noofdays = $('#permitNoOfDays').val();
+            var term ;
+            for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                term = $('#permitTerm_'+i).val();
+                if((term == 'long' && noofdays > 30) || term == 'short')
+                {
+                    $('#cnd_'+i).html('( Required )');
+                    $('#cnd_'+i).addClass('text-danger');
+                    $('#cnd_'+i).removeClass('text-muted');
+                    if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                    {
+                        $('#cnd_'+i).html('( Optional )');
+                        $('#cnd_'+i).removeClass('text-danger');
+                        $('#cnd_'+i).addClass('text-muted');
+                    }
+                }else{
+                    $('#cnd_'+i).html('( Optional )');
+                    $('#cnd_'+i).removeClass('text-danger');
+                    $('#cnd_'+i).addClass('text-muted');
+                }
+            }
+        }
     });
 
 
@@ -571,6 +669,7 @@
         var hasFileArray = [];
         documentDetails = {};
         var noofdays = $('#permitNoOfDays').val();
+        var nationality = $('#nationality').val();
         var term ;
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
@@ -586,6 +685,11 @@
                         hasFileArray[i] = true;
                         $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
                     }
+                }
+                if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                {
+                    hasFileArray[i] = true;
+                    $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
                 }
             }
             documentDetails[i] = {
@@ -614,6 +718,11 @@
     $('#submit_btn').click((e) => {
 
         var hasFile = docValidation();
+
+        documentsValidator = $('#documents_required').validate({
+            rules: docRules,
+            messages: docMessages
+        })
 
         if(documentsValidator.form() && hasFile){
 
