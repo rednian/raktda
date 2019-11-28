@@ -11,51 +11,81 @@
 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
     <div class="kt-portlet__body">
       <section class="row">
-        <div class="col-4">
+        <div class="col-2">
           <div class="kt-section kt-section--space-sm widget-toolbar">
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('New Request') }}</a>
-                  <small class="kt-widget24__desc">{{ __('All') }}</small>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('New') }}</a>
+                  <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                 </div>
-                <span class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
+                <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
               </div>
-              <!-- <div class="progress progress--sm">
-                <div class="progress-bar kt-bg-default" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-              </div> -->
             </div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-2">
           <div class="kt-section kt-section--space-sm widget-toolbar">
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending Request') }}</a>
-                  <small class="kt-widget24__desc">{{ __('All Customer Request') }}</small>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending ') }}</a>
+                  <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                 </div>
-                <span class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
+                <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
               </div>
-              <!-- <div class="progress progress--sm">
-                <div class="progress-bar kt-bg-brand" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-              </div> -->
             </div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-2">
+          <div class="kt-section kt-section--space-sm widget-toolbar">
+            <div class="kt-widget24 kt-widget24--solid">
+              <div class="kt-widget24__details">
+                <div class="kt-widget24__info">
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Cancelled ') }}</a>
+                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
+                </div>
+                <span id="cancelled-count" class="kt-widget24__stats kt-font-default">{{ $cancelled_permit }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="kt-section kt-section--space-sm widget-toolbar">
+            <div class="kt-widget24 kt-widget24--solid">
+              <div class="kt-widget24__details">
+                <div class="kt-widget24__info">
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved ') }}</a>
+                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
+                </div>
+                <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="kt-section kt-section--space-sm widget-toolbar">
+            <div class="kt-widget24 kt-widget24--solid">
+              <div class="kt-widget24__details">
+                <div class="kt-widget24__info">
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Rejected ') }}</a>
+                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
+                </div>
+                <span class="kt-widget24__stats kt-font-default">{{ $rejected_permit }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
           <div class="kt-section kt-section--space-sm ">
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
                   <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Action Taken') }}</a>
-                  <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
+                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
                 </div>
                 <span class="kt-widget24__stats kt-font-default">{{ $active_request }}</span>
               </div>
-              <!-- <div class="progress progress--sm">
-                <div class="progress-bar kt-bg-brand" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -100,10 +130,10 @@
                     </div>
                     <div class="col-3">
                       <select name="" id="new-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()" >
-                        <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
-                        <option value="1">{{ __('Private') }}</option>
-                        <option value="3">{{ __('Government') }}</option>
-                        <option value="2">{{ __('Individual') }}</option>
+                        <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
+                        <option value="private">{{ __('Private') }}</option>
+                        <option value="government">{{ __('Government') }}</option>
+                        <option value="individual">{{ __('Individual') }}</option>
                       </select>
                     </div>
                     <div class="col-3">
@@ -136,9 +166,8 @@
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('PERMIT OWNER') }}</th>
                             <th>{{ __('EVENT NAME') }}</th>
+                            <th>{{ __('APPLICATION TYPE') }}</th>
                             <th>{{ __('APPLIED DATE') }}</th>
-                            <th>{{ __('APPLICANT TYPE') }}</th>
-                            {{-- <th>PERMIT START</th> --}}
                             <th>{{ __('STATUS') }}</th>
                         </tr>
                     </thead>
@@ -171,10 +200,10 @@
                     </div>
                     <div class="col-3">
                       <select name="" id="pending-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()" >
-                        <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
-                        <option value="1">{{ __('Private') }}</option>
-                        <option value="3">{{ __('Government') }}</option>
-                        <option value="2">{{ __('Individual') }}</option>
+                       <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
+                       <option value="private">{{ __('Private') }}</option>
+                       <option value="government">{{ __('Government') }}</option>
+                       <option value="individual">{{ __('Individual') }}</option>
                       </select>
                     </div>
                     <div class="col-3">
@@ -208,7 +237,7 @@
                             <th>{{ __('PERMIT OWNER') }}</th>
                             <th>{{ __('EVENT NAME') }}</th>
                             <th>{{ __('APPLIED DATE') }}</th>
-                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('APPLICATION TYPE') }}</th>
                             {{-- <th>PERMIT START</th> --}}
                             <th>{{ __('STATUS') }}</th>
                         </tr>
@@ -242,10 +271,10 @@
                      </div>
                      <div class="col-3">
                        <select name="" id="processing-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventProcessingTable.draw()" >
-                         <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
-                         <option value="1">{{ __('Private') }}</option>
-                         <option value="3">{{ __('Government') }}</option>
-                         <option value="2">{{ __('Individual') }}</option>
+                        <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
+                        <option value="private">{{ __('Private') }}</option>
+                        <option value="government">{{ __('Government') }}</option>
+                        <option value="individual">{{ __('Individual') }}</option>
                        </select>
                      </div>
                      <div class="col-3">
@@ -281,7 +310,7 @@
                             <th>{{ __('PERMIT OWNER') }}</th>
                             <th>{{ __('EVENT NAME') }}</th>
                             <th>{{ __('APPLIED DATE') }}</th>
-                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('APPLICATION TYPE') }}</th>
                             {{-- <th>PERMIT START</th> --}}
                             <th>{{ __('STATUS') }}</th>
                         </tr>
@@ -315,10 +344,10 @@
                      </div> --}}
                      <div class="col-3">
                        <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventActiveTable.draw()" >
-                         <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
-                         <option value="1">{{ __('Private') }}</option>
-                         <option value="3">{{ __('Government') }}</option>
-                         <option value="2">{{ __('Individual') }}</option>
+                        <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
+                        <option value="private">{{ __('Private') }}</option>
+                        <option value="government">{{ __('Government') }}</option>
+                        <option value="individual">{{ __('Individual') }}</option>
                        </select>
                      </div>
                      {{-- <div class="col-3">
@@ -353,7 +382,7 @@
                             <th>{{ __('PERMIT OWNER') }}</th>
                             <th>{{ __('EVENT NAME') }}</th>
                             <!-- <th>{{ __('PERMIT START') }}</th> -->
-                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('APPLICATION TYPE') }}</th>
                             <th>{{ __('SHOW TO ALL') }}</th>
                             <th>{{ __('WEBSITE') }}</th>
                             <th>{{ __('ACTION') }}</th>
@@ -388,10 +417,10 @@
                      </div> --}}
                      <div class="col-3">
                        <select name="" id="archive-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventArchiveTable.draw()" >
-                         <option selected disabled >{{ __('APPLICANT TYPE') }}</option>
-                         <option value="1">{{ __('Private') }}</option>
-                         <option value="3">{{ __('Government') }}</option>
-                         <option value="2">{{ __('Individual') }}</option>
+                        <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
+                        <option value="private">{{ __('Private') }}</option>
+                        <option value="government">{{ __('Government') }}</option>
+                        <option value="individual">{{ __('Individual') }}</option>
                        </select>
                      </div>
                      <div class="col-3">
@@ -425,7 +454,7 @@
                             <th>{{ __('PERMIT OWNER') }}</th>
                             <th>{{ __('EVENT NAME') }}</th>
                             {{-- <th>APPLIED DATE</th> --}}
-                            <th>{{ __('APPLICANT TYPE') }}</th>
+                            <th>{{ __('APPLICATION TYPE') }}</th>
                             <th>{{ __('STATUS') }}</th>
                             <th>{{ __('ACTION') }}</th>
                         </tr>
@@ -485,8 +514,11 @@
           </div>
           <div class="modal-body">  
               <div class="form-group">
-                <label for="message-text" class="form-control-label">Cancel Reason<span class="text-danger">*</span></label>
-                <textarea name="cancel_reason" maxlength="255" required rows="4" class="form-control" id="message-text"></textarea>
+                <input type="hidden" name="user_type" value="admin">
+                <input type="hidden" name="type" value="0">
+                <input type="hidden" name="action" value="cancelled">
+                <label for="message-text" class="form-control-label">Remarks<span class="text-danger">*</span></label>
+                <textarea name="comment" maxlength="255" required rows="4" class="form-control" id="message-text" placeholder="write your reason for cancelling..."></textarea>
               </div>
          
           </div>
@@ -503,6 +535,7 @@
 @section('script')
 
 <script type="text/javascript">
+
     var newEventTable = {};
     var pendingEventTable = {};
     var eventProcessingTable= {};
@@ -519,11 +552,14 @@
        }
      };
      $(document).ready(function () {
+
+
       
       $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){ $('.nav-tabs a[href="#new-request"]').tab('show');  });
       $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });
 
        newEvent();
+       setInterval(function(){ newEvent(); pendingEvent();},100000);
        calendar();
        var hash = window.location.hash;
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
@@ -633,6 +669,9 @@
           $(row).click(function () {
             location.href = '{{ url('/event') }}/' + data.event_id+'?tab=archive-permit';
           });
+        },
+        initComplete: function(){
+           $('[data-toggle="tooltip"]').tooltip();
         }
       });
 
@@ -971,16 +1010,21 @@
            {data: 'establishment_name'},
            {data: 'owner'},
            {data: 'event_name'},
-           {data: 'created_at'},
            {data: 'type'},
-           // {data: 'start'},
+           {data: 'created_at'},
            {data: 'status'}
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
              location.href = '{{ url('/event') }}/' + data.event_id + '/application';
            });
-         }
+         },
+          initComplete: function(setting, json){
+            $('#new-count').html(json.new_count);
+            $('#pending-count').html(json.pending_count);
+            $('#cancelled-count-count').html(json.cancelled_count);
+           $('[data-toggle="tooltip"]').tooltip();
+        }
        });
 
        //clear fillte button

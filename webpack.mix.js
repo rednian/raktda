@@ -100,6 +100,7 @@ mix.scripts([
     'public/assets/vendors/general/jquery.repeater/src/jquery.input.js',
     'public/assets/vendors/general/jquery.repeater/src/repeater.js',
     'public/assets/vendors/general/dompurify/dist/purify.js',
+    'public/assets/vendors/custom/jquery.treetable.js',
    
 ], 'public/js/plugins.js');
 

@@ -46,39 +46,72 @@
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
 			<div class="kt-portlet__body">
         <section class="row kt-padding-b-20">
-          <div class="col-4">
+          <div class="col-2">
             <div class="kt-section kt-section--space-sm widget-toolbar">
               <div class="kt-widget24 kt-widget24--solid">
                 <div class="kt-widget24__details">
                   <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('New Request') }}</span>
-                    <small class="kt-widget24__desc">{{ __('All') }}</small>
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('New ') }}</span>
+                    <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                   </div>
-                  <span class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
+                  <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
                 </div>
-                <!-- <div class="progress progress--sm">
-                  <div class="progress-bar kt-bg-default" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                </div> -->
               </div>
             </div>
           </div>
-          <div class="col-4">
+          <div class="col-2">
             <div class="kt-section kt-section--space-sm widget-toolbar">
               <div class="kt-widget24 kt-widget24--solid">
                 <div class="kt-widget24__details">
                   <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('Pending Request') }}</span>
-                    <small class="kt-widget24__desc">{{ __('All Customer Request') }}</small>
+                    <span  class="kt-widget24__title" title="Click to edit">{{ __('Pending') }}</span>
+                    <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                   </div>
-                  <span class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
+                  <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
                 </div>
-                <!-- <div class="progress progress--sm">
-                  <div class="progress-bar kt-bg-brand" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                </div> -->
               </div>
             </div>
           </div>
-          <div class="col-4">
+          <div class="col-2">
+            <div class="kt-section kt-section--space-sm widget-toolbar">
+              <div class="kt-widget24 kt-widget24--solid">
+                <div class="kt-widget24__details">
+                  <div class="kt-widget24__info">
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('Cancelled') }}</span>
+                    <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
+                  </div>
+                  <span class="kt-widget24__stats kt-font-default">{{ $cancelled_permit }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="kt-section kt-section--space-sm widget-toolbar">
+              <div class="kt-widget24 kt-widget24--solid">
+                <div class="kt-widget24__details">
+                  <div class="kt-widget24__info">
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('Rejected') }}</span>
+                    <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
+                  </div>
+                  <span class="kt-widget24__stats kt-font-default">{{ $rejected_permit }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="kt-section kt-section--space-sm widget-toolbar">
+              <div class="kt-widget24 kt-widget24--solid">
+                <div class="kt-widget24__details">
+                  <div class="kt-widget24__info">
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</span>
+                    <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
+                  </div>
+                  <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
             <div class="kt-section kt-section--space-sm">
               <div class="kt-widget24 kt-widget24--solid">
                 <div class="kt-widget24__details">
@@ -88,9 +121,6 @@
                   </div>
                   <span class="kt-widget24__stats kt-font-default">{{ $active_permit }}</span>
                 </div>
-                <!-- <div class="progress progress--sm">
-                  <div class="progress-bar kt-bg-brand" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                </div> -->
               </div>
             </div>
           </div>
@@ -271,6 +301,7 @@
 
 
     newRequest();
+    setInterval(function(){ newRequest(); pendingRequest();}, 100000);
 
     hash && $('ul.nav a[href="' + hash + '"]').tab('show');
     
@@ -841,8 +872,8 @@
            {data: 'reference_number'},
            {data: 'company_name'},
            {data: 'artist_number'},
-           {data: 'applied_date'},
            {data: 'request_type'},
+           {data: 'applied_date'},
            {data: 'permit_status'}
          ],
          createdRow: function (row, data, index) {
@@ -850,6 +881,11 @@
              location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
            });
          },
+         initComplete: function(setting, json){
+          $('#new-count').html(json.new_count);
+          $('#pending-count').html(json.pending_count);
+          $('#cancelled-count').html(json.cancelled_count);
+         }
        });
 
        //clear fillte button

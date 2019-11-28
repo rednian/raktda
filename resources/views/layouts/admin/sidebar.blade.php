@@ -24,16 +24,16 @@
                        <span class="kt-menu__link-text">{{ __('Dashboard') }}</span>
                    </a>
                </li>
-               <li class="kt-menu__item">
+               {{-- <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
                        <span class="kt-menu__link-text ">{{ __('Business Name') }}</span>
                    </a>
-               </li>
-               <li class="kt-menu__item">
+               </li> --}}
+               {{-- <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Business License') }}</span>
                    </a>
-               </li>
+               </li> --}}
                <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Classification') }}</span>
@@ -62,7 +62,7 @@
                </li>
                <li class="kt-menu__item">
                    <a href="javascript:void(0)" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">{{ __('User Management') }}</span>
+                       <span class="kt-menu__link-text">{{ __('Employee Management') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item {{ Request::is('settings*') ? 'kt-menu__item--active': '' }}">
