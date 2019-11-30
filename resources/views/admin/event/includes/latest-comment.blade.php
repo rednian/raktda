@@ -1,5 +1,6 @@
-@if ($event->approve()->has('user')->count() > 0)
-<?php $approve = $event->approve()->has('user')->first(); ?>
+
+@if ($event->comment()->has('user')->count() > 0)
+<?php $approve = $event->comment()->has('user')->first(); ?>
 <table class="table table-borderless table-striped border">
     <tbody>
         <tr>

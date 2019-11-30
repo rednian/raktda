@@ -43,13 +43,15 @@
     <div class="kt-portlet__body">
         <div class="kt-widget5__info py-4">
             <div class="pb-2">
-                <span>{{__('From Artist')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('Term')}}:</span>&emsp;
+                <span class="kt-font-info">{{$permit_details->term}}</span>&emsp;&emsp;
+                <span class="kt-font-dark">{{__('From Date')}}:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
-                <span>{{__('From Artist')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('To Date')}}:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                <span>{{__('Location')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('Location')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
-                <span>{{__('Reference No')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('Ref No.')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
             </div>
         </div>
@@ -57,7 +59,7 @@
         <div class="pb-3">
             <span>Connected to Event :</span>&emsp;
             <span
-                class="kt-font-info">{{getLangId() == 1 ? $permit_details->event[0]->name_en : $permit_details->event[0]->name_ar}}</span>&emsp;&emsp;
+                class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>&emsp;&emsp;
         </div>
         @endif
         <div class="table-responsive">

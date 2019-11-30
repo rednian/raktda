@@ -78,8 +78,7 @@
                                                     class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
                                                     name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
                                                     onchange="checkFilled()"
-                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}"
-                                                    {{count($artist_details) > 0 ? 'mk-disabled' : ''}} />
+                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}" />
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
                                                         <i class="la la-calendar"></i>
@@ -101,15 +100,16 @@
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
-                                            <label class="kt-radio kt-radio--solid ">
+                                            <label class="kt-radio  ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(1)"
+                                                    {{count($artist_details) > 0 ? 'disabled' : ''}}
                                                     {{session($user_id.'_apn_is_event') && session($user_id.'_apn_is_event') == 1 ? 'checked' : ''}}
                                                     value="1">
                                                 Yes
                                                 <input type="hidden" name="isEvent" value="1">
                                                 <span></span>
                                             </label>
-                                            <label class="kt-radio kt-radio--solid ">
+                                            <label class="kt-radio  ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(0)"
                                                     {{count($artist_details) > 0 ? 'disabled' : ''}}
                                                     {{session($user_id.'_apn_is_event') ? session($user_id.'_apn_is_event') == 0 ? 'checked' : '' : 'checked'}}
@@ -229,6 +229,7 @@
 
 
     @section('script')
+    <script src="{{ asset('js/company/artist.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -250,10 +251,10 @@
             var today = moment().toDate();
             var startDate = moment(today).add(artiststartafter, 'days').toDate();
             $('#permit_from').datepicker('setStartDate', startDate);
-            var minDate = moment($('#permit_from').val(), 'DD-MM-YYYY').toDate();
-            var maxDate = moment(minDate).add(3, 'M').toDate();
+            var minDate = $('#permit_from').val() ? moment($('#permit_from').val(), 'DD-MM-YYYY').toDate() : startDate;
+            var maxDate = moment(minDate).add(3, 'M').toDate(); 
+            $('#permit_to').datepicker('setEndDate', maxDate );
             $('#permit_to').datepicker('setStartDate', minDate);
-            $('#permit_to').datepicker('setEndDate', maxDate);
             // $('#events_div').css('display', 'none');
         });
 
@@ -275,8 +276,8 @@
             $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
             var maxDate = moment(minDate).add(3, 'M').toDate();
-            $('#permit_to').datepicker('setStartDate', minDate);
             $('#permit_to').datepicker('setEndDate', maxDate);
+            $('#permit_to').datepicker('setStartDate', minDate);
         });
         $('#permit_to').on('changeDate', function (ev) {
             $('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');
@@ -290,13 +291,16 @@
             var diff = $('#noofdays').val();
             var isEvent = $("input:radio[name='isEvent']:checked").val();
             var eventId = $('#event_id').val();
-            // if(isEvent == 1 && eventId != ' '){
-            //     fetchEventDetails();
-            // }else if(isEvent == 0){
-            //     $('#event_id').val(' ');
-            //     eventId = ' ';
-            //     clearEventDetails();
-            // }
+            if(isEvent == 1 && eventId != ' '){
+                fetchEventDetails();
+            }else if(isEvent == 0){
+                $('#event_id').val(' ');
+                eventId = ' ';
+                if($('#total_artist_details').val() == 0)
+                {
+                    removeDisabled();
+                }
+            }
             var artistcount = $('#total_artist_details').val();
             $('#add_artist').attr('disabled', loc == '' ? true : false) ;
             $('#add_artist_sm').attr('disabled', loc == '' ? true : false) ;
@@ -310,11 +314,9 @@
                         $('#draft_btn').css('display', 'block');
                         $('#submit_btn').css('display', 'block');
                     }
-                    // if(eventId != ' '){
-                    //     fetchEventDetails();
-                    // }else {
-                    //     clearEventDetails();
-                    // }
+                    if(eventId != ' '){
+                        fetchEventDetails();
+                    }
                 }
                 else {
                     disabledThese();
@@ -332,6 +334,13 @@
             $('#add_artist_sm').attr('disabled', true);
             $('#draft_btn').css('display', 'none');
             $('#submit_btn').css('display', 'none');
+        }
+
+        function removeDisabled()
+        {
+            $('#permit_from').removeClass('mk-disabled');
+            $('#permit_to').removeClass('mk-disabled');
+            $('#work_loc').removeClass('mk-disabled');
         }
 
         function fetchEventDetails()
@@ -467,10 +476,11 @@
             });
         }
 
-
         $('#submit_btn').click((e) => {
             $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
+            var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
+            if(noofdays < 30) { term = 'short'; } else { term='long';}
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",
@@ -479,7 +489,8 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
-                        event_id: $('#event_id').val()
+                        event_id: $('#event_id').val(),
+                        term: term
                     },
                     success: function(result){
                         $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');

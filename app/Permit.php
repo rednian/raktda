@@ -3,6 +3,7 @@
 namespace App;
 
 use DB;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,9 +15,16 @@ class Permit extends Model
     protected $primaryKey = 'permit_id';
     protected $fillable = [
         'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
-        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id'
+        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid'
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
+
+    public function scopeLastMonth($q, $status = [])
+    {
+        return $q->has('artist')->whereHas('comment', function($q) use ($status){
+             $q->where('action', $status[0])->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
+        })->whereIn('permit_status', [$status]);
+    }
 
 
     public function scopeHistory($q, $permit_number)

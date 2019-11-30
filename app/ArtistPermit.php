@@ -14,14 +14,26 @@ class ArtistPermit extends Model implements Auditable
 
     protected $table = 'artist_permit';
     protected $primaryKey = 'artist_permit_id';
-    protected $dates = ['created_at', 'updated_at', 'deleted_at',  'uid_expire_date', 'passport_expire_date', 'visa_expire_date'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at',  'uid_expire_date', 'passport_expire_date', 'visa_expire_date', 'birthdate'];
     protected $fillable = [
         'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type_id', 'language_id', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'emirate_id', 'area_id', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion_id', 'identification_number', 'uid_number', 'profession_id', 'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'birthdate', 'country_id', 'gender_id'
     ];
 
+
+    public function scopeIsEurope($q)
+    {
+        return $q->whereHas('country', function($q){ $q->where('continent_code', 'EU'); });
+    }
+
+
+    public function scopeIsLocal($q)
+    {
+        return $q->whereHas('country', function($q){ $q->where('country_code', 'AE'); });
+    }
+
     public function profession()
     {
-        return $this->belongsTo(Profession::class, 'profession_id')->withDefault(['name_en'=>null, 'name_ar'=>null]);
+        return $this->belongsTo(Profession::class, 'profession_id')->withDefault(['name_en' => null, 'name_ar' => null]);
     }
 
     public function check()

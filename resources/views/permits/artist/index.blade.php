@@ -44,6 +44,7 @@
                     <thead>
                         <tr>
                             <th>{{__('Ref NO.')}}</th>
+                            <th>{{__('Term')}}</th>
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
                             <th>{{__('Location')}}</th>
@@ -61,6 +62,7 @@
                     <thead>
                         <tr>
                             <th>{{__('Ref NO.')}}</th>
+                            <th>{{__('Term')}}</th>
                             <th>{{__('Permit Number')}}</th>
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
@@ -195,7 +197,7 @@
 
         var table1 = $('#applied-artists-table').DataTable({
             responsive: true,
-            processing: false,
+            processing: true,
             serverSide: true,
             searching: true,
             ordering: false,
@@ -205,6 +207,7 @@
             ajax:'{{route("company.fetch_applied_artists")}}',
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
+                { data: 'term', name: 'term' },
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'work_location', name: 'work_location' },
@@ -225,7 +228,7 @@
             // beforeSend: function (request) {
             //     request.setRequestHeader("token", token);
             // },
-            processing: false,
+            processing: true,
             serverSide: true,
             searching: true,
             ordering: false,
@@ -236,6 +239,7 @@
             ajax:'{{route("company.fetch_existing_artists")}}',
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
+                { data: 'term', name: 'term' },
                 { data: 'permit_number', name: 'permit_number' },
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
@@ -262,7 +266,7 @@
 
         var table3 = $('#drafts-artists-table').DataTable({
             responsive: true,
-            processing: false,
+            processing: true,
             serverSide: true,
             searching: true,
             ordering: false,

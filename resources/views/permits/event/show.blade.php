@@ -49,6 +49,12 @@
                             <span class="col-md-6">{{$event->reference_number}}</span>
                         </div>
                         <div class="pb-2 row">
+                            <label
+                                class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Application
+                                Type</label>
+                            <span class="col-md-6">{{ucwords($event->firm)}}</span>
+                        </div>
+                        <div class="pb-2 row">
                             <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">EVENT
                                 NAME</label>
                             <span class="col-md-6">{{getLangId() == 1 ? $event->name_en : $event->name_ar}}</span>
@@ -78,14 +84,19 @@
                     <span class="col-md-6">{{$event->issued_date}}</span>
                 </div>
                 <div class="col-md-4 pb-2 row">
-                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Time from
-                    </label>
-                    <span class="col-md-6">{{$event->time_start}}</span>
-                </div>
-                <div class="col-md-4 pb-2 row">
                     <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Expiry
                         Date</label>
                     <span class="col-md-6">{{$event->expired_date}}</span>
+                </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Est.
+                        Audience</label>
+                    <span class="col-md-6">{{$event->audience_number}}</span>
+                </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Time from
+                    </label>
+                    <span class="col-md-6">{{$event->time_start}}</span>
                 </div>
                 <div class="col-md-4 pb-2 row">
                     <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Time To
@@ -103,13 +114,32 @@
                     </label>
                     <span class="col-md-6">{{$event->street}}</span>
                 </div>
-                @if($event->no_of_trucks > 0)
                 <div class="col-md-4 pb-2 row">
-                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">No of Trucks
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Longitude
                     </label>
-                    <span class="col-md-6">{{$event->no_of_trucks}}</span>
+                    <span class="col-md-6">{{$event->longitude}}</span>
                 </div>
-                @endif
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Latitude
+                    </label>
+                    <span class="col-md-6">{{$event->latitude}}</span>
+                </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Have Truck ?
+                    </label>
+                    <span class="col-md-6">{{$event->is_truck == 1 ? 'Yes' : 'No'}}</span>
+                </div>
+                <div class="col-md-4 pb-2 row">
+                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">Have Liquor ?
+                    </label>
+                    <span class="col-md-6">{{$event->is_liquor == 1 ? 'Yes' : 'No'}}</span>
+                </div>
+            </div>
+            <input type="hidden" class="map-input" id="address-input" value="{{$event->address}}" />
+            <input type="hidden" id="latitude" value="{{$event->latitude}}" />
+            <input type="hidden" id="longitude" value="{{$event->longitude}}" />
+            <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
+                <div style="width: 100%; height: 100%" id="map"></div>
             </div>
             @if($artist)
             {{-- {{dd($artist)}} --}}
@@ -182,4 +212,11 @@
 
             </div>
             @endif
+            @endsection
+
+            @section('script')
+            <script src="{{asset('js/company/map.js')}}"></script>
+            <script
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
+                async defer></script>
             @endsection

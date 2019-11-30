@@ -112,12 +112,12 @@
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
-                                            <label class="kt-radio kt-radio--solid">
+                                            <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(1)" value="1"
                                                     {{$artist_details[0]->event ? 'checked' : ''}}> Yes
                                                 <span></span>
                                             </label>
-                                            <label class="kt-radio kt-radio--solid">
+                                            <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(0)"
                                                     {{$artist_details[0]->event ? '' : 'checked'}} value="0">
                                                 No
@@ -259,12 +259,11 @@
 
     @include('permits.artist.modals.leave_page')
 
-
-
     @endsection
 
 
     @section('script')
+    <script src="{{ asset('js/company/artist.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -471,6 +470,8 @@
         $('#submit_btn').click((e) => {
             $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
+            var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
+            if(noofdays < 30) { term = 'short'; } else { term='long';}
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",
@@ -479,7 +480,8 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
-                        event_id: $('#event_id').val()
+                        event_id: $('#event_id').val(),
+                        term: term
                     },
                     success: function(result){
                         window.location.href="{{route('artist.index')}}#applied";

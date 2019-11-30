@@ -55,12 +55,31 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
+                                                                Firm Type <span class="text-danger">*</span>
+                                                            </label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="firm_type" id="firm_type"
+                                                                onchange="getRequirementsList()">
+                                                                <option value="">{{__('Select')}}</option>
+                                                                <option value="government"
+                                                                    {{$event->firm == 'government' ? 'selected' : ''}}>
+                                                                    Goverment
+                                                                </option>
+                                                                <option value="private"
+                                                                    {{$event->firm == 'private' ? 'selected' : ''}}>
+                                                                    Private
+                                                                </option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="event_type_id"
+                                                                class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Event Type')}} <span class="text-danger">*</span>
                                                             </label>
                                                             <select class="form-control form-control-sm"
                                                                 name="event_type_id" id="event_type_id"
-                                                                placeholder="Type"
-                                                                onchange="getRequirementsList(this.value)">
+                                                                placeholder="Type" onchange="getRequirementsList()">
                                                                 <option value="">{{__('Select')}}</option>
                                                                 @foreach ($event_types as $pt)
                                                                 <option value="{{$pt->event_type_id}}"
@@ -74,8 +93,8 @@
 
                                                         <div class="col-md-4 form-group form-group-xs">
                                                             <label for="name_en"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}<span
-                                                                    class="text-danger">*</span></label>
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
+                                                                <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="name_en" id="name_en"
                                                                 placeholder="{{__('Event Name')}}"
@@ -85,7 +104,7 @@
                                                         <div class=" col-md-4 form-group form-group-xs">
                                                             <label for="name_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Name - Ar')}}<span
+                                                                {{__('Event Name - Ar')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm "
                                                                 name="name_ar" dir="rtl" id="name_ar"
@@ -98,7 +117,7 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="description_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Description')}}<span
+                                                                {{__('Description')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <textarea type="text" class="form-control form-control-sm"
                                                                 name="description_en" id="description_en"
@@ -119,41 +138,68 @@
 
 
 
+                                                        <div class=" col-md-4 form-group form-group-xs ">
+                                                            <label for="no_of_audience"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                Expected Audience <span
+                                                                    class="text-danger">*</span></label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="no_of_audience" id="no_of_audience">
+                                                                <option value="">{{__('Select')}}</option>
+                                                                <option value="0-100"
+                                                                    {{$event->audience_number == '0-100' ? 'selected': ''}}>
+                                                                    0-100</option>
+                                                                <option value="100-500"
+                                                                    {{$event->audience_number == '100-500' ? 'selected': ''}}>
+                                                                    100-500</option>
+                                                                <option value="500-1000"
+                                                                    {{$event->audience_number == '500-1000' ? 'selected': ''}}>
+                                                                    500-1000</option>
+                                                                <option value="1000&above"
+                                                                    {{$event->audience_number == '1000&above' ? 'selected': ''}}>
+                                                                    1000 & above</option>
+                                                            </select>
+                                                        </div>
+
+
                                                         <div class="col-md-4  form-group form-group-xs ">
-                                                            <label class=" col-form-label kt-font-bold text-right">
-                                                                Do you have any Food truck ?</label>
+                                                            <label class="col-form-label"> Food truck ?</label>
+                                                            {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
+                                                                        <input type="checkbox" name="isTruck" id="isTruck">
+                                                                        <span></span>
+                                                                    </label> --}}
                                                             <div class="kt-radio-inline">
-                                                                <label class="kt-radio kt-radio--solid">
-                                                                    <input type="radio" name="isTruck" value="1"
-                                                                        onclick="checkTruck(1)"
-                                                                        {{$event->no_of_trucks == 0 ? '' : 'checked'}}>
-                                                                    Yes
+                                                                <label class="kt-radio ">
+                                                                    <input type="radio" name="isTruck"
+                                                                        onclick="checkTruck(1)" value="1"
+                                                                        {{$event->is_truck == '1' ? 'checked': ''}}> Yes
                                                                     <span></span>
                                                                 </label>
-                                                                <label class="kt-radio kt-radio--solid">
-                                                                    <input type="radio" name="isTruck" value="0" checked
-                                                                        onclick="checkTruck(0)"
-                                                                        {{$event->no_of_trucks == 0 ? 'checked' : ''}}>
-                                                                    No
+                                                                <label class="kt-radio">
+                                                                    <input type="radio" name="isTruck"
+                                                                        onclick="checkTruck(1)" value="0"
+                                                                        {{$event->is_truck == '0' ? 'checked': ''}}> No
                                                                     <span></span>
                                                                 </label>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-xs "
-                                                            id="how_many_div">
-                                                            <label for="no_of_trucks"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                How Many ?<span class="text-danger">*</span></label>
-                                                            <select class="form-control form-control-sm"
-                                                                name="no_of_trucks" id="no_of_trucks">
-                                                                <option value=" ">Select</option>
-                                                                @for($i = 1;$i < 15; $i++) <option value="{{$i}}"
-                                                                    {{$event->no_of_trucks == $i ? 'selected' : ''}}>
-                                                                    {{$i}}
-                                                                    </option>
-                                                                    @endfor
-                                                            </select>
+                                                        <div class="col-md-4  form-group form-group-xs ">
+                                                            <label class="col-form-label"> Liquor ?</label>
+                                                            <div class="kt-radio-inline">
+                                                                <label class="kt-radio">
+                                                                    <input type="radio" name="isLiquor" value="1"
+                                                                        {{$event->is_liquor == '1' ? 'checked': ''}}>
+                                                                    Yes
+                                                                    <span></span>
+                                                                </label>
+                                                                <label class="kt-radio">
+                                                                    <input type="radio" name="isLiquor" value="0"
+                                                                        {{$event->is_liquor == '0' ? 'checked': ''}}>
+                                                                    No
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
                                                         </div>
 
                                                     </div>
@@ -182,7 +228,7 @@
                                                         <div class="col-md-3 form-group form-group-xs ">
                                                             <label for="issued_date"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('From Date')}}<span
+                                                                {{__('From Date')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <div class="input-group input-group-sm date">
                                                                 <div class="kt-input-icon kt-input-icon--right">
@@ -190,6 +236,7 @@
                                                                         class="form-control form-control-sm"
                                                                         name="issued_date" id="issued_date"
                                                                         placeholder="{{__('From Date')}}"
+                                                                        onchange="givWarn()"
                                                                         value="{{date('d-m-Y',strtotime($event->issued_date))}}" />
                                                                     <span
                                                                         class="kt-input-icon__icon kt-input-icon__icon--right">
@@ -225,8 +272,8 @@
 
                                                         <div class="col-md-3 form-group form-group-xs ">
                                                             <label for="expired_date"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('To Date')}}<span
-                                                                    class="text-danger">*</span></label>
+                                                                class=" col-form-label kt-font-bold text-right">{{__('To Date')}}
+                                                                <span class="text-danger">*</span></label>
                                                             <div class="input-group input-group-sm date">
                                                                 <div class="kt-input-icon kt-input-icon--right">
                                                                     <input type="text"
@@ -245,9 +292,8 @@
                                                         </div>
 
                                                         <div class="col-md-3 form-group form-group-xs">
-                                                            <label class="col-form-label">{{__('To Time')}}<span
+                                                            <label class="col-form-label">{{__('To Time')}} <span
                                                                     class="text-danger">*</span></label>
-
                                                             <div class="input-group input-group-sm timepicker">
                                                                 <div class="kt-input-icon kt-input-icon--right">
                                                                     <input class="form-control form-control-sm"
@@ -310,8 +356,6 @@
                                                             </div>
 
 
-
-
                                                             <div class="col-md-4 form-group form-group-xs ">
                                                                 <label for="emirate_id"
                                                                     class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
@@ -371,7 +415,7 @@
                                                                 <div
                                                                     class="col-md-8 col-sm-12 form-group form-group-xs ">
                                                                     <label for="address"
-                                                                        class=" col-form-label kt-font-bold text-right">Address
+                                                                        class=" col-form-label kt-font-bold text-right">{{__('Address')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <input type="text"
@@ -384,7 +428,8 @@
                                                                 <div class="col-md-4 form-group form-group-xs ">
                                                                     <label for="street"
                                                                         class=" col-form-label kt-font-bold text-right">
-                                                                        Street<span class="text-danger">*</span></label>
+                                                                        {{__('Street')}} <span
+                                                                            class="text-danger">*</span></label>
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
                                                                         name="street" id="street" placeholder="Street"
@@ -398,7 +443,7 @@
                                                                 <div class="col-md-6 form-group form-group-xs ">
                                                                     <label for="longitude"
                                                                         class=" col-form-label kt-font-bold text-right">
-                                                                        Longitude <span
+                                                                        {{__('Longitude')}} <span
                                                                             class="text-danger">*</span></label>
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
@@ -410,7 +455,7 @@
                                                                 <div class="col-md-6 form-group form-group-xs ">
                                                                     <label for="latitude"
                                                                         class=" col-form-label kt-font-bold text-right">
-                                                                        Latitude <span
+                                                                        {{__('Latitude')}} <span
                                                                             class="text-danger">*</span></label>
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
@@ -439,9 +484,7 @@
                     </div>
 
 
-
-
-
+                    <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
 
 
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -519,13 +562,7 @@
     </div>
 </div>
 
-<!--begin::Modal-->
-
-
-
-<!--end::Modal-->
-
-
+@include('permits.event.common.show_warning_modal');
 
 
 @endsection
@@ -553,13 +590,41 @@
         wizard.goTo(2);
         $('#back_btn').css('display', 'none');
         localStorage.clear();
-        var event_type_id = $('#event_type_id').val();
-        getRequirementsList(event_type_id);
-        uploadFunction();
-        picUploadFunction();
+        getRequirementsList();
         checkTruck(0);
         $('#submit--btn-group').css('display', 'none');
+        $('#add_document_btn').hide();
+        if($('#no_of_trucks').val() > 0){
+            $('#how_many_div').show();
+        }
+        truckDocUpload();
     });
+
+    function givWarn()
+        {
+            var from_date = $('#issued_date').val();
+            // var exp_date = $('#expired_date').val();
+            let start_days_count = $('#settings_event_start_date').val();
+            if(from_date)
+            {
+                var x = moment(from_date, "DD-MM-YYYY");
+                // var y = moment(exp_date, "DD-MM-YYYY");
+                var to = moment();
+
+                var from = moment([x.format('YYYY'), x.month(), x.format('DD')]);
+                // var to = moment([y.format('YYYY'), y.month(), y.format('DD')]);
+                var today = moment([to.format('YYYY'), to.month(), to.format('DD')]);
+
+                var diff = from.diff(today, 'days');
+
+                if(diff <= start_days_count)
+                {
+                    // alert('It will take 10 days to process the permit');
+                    $('#showwarning').modal('show');
+                }
+            }
+        }
+
 
     function checkTruck(id) {
         if (id == 1) {
@@ -572,6 +637,30 @@
             $('#add_document_btn').css('display', "none");
         }
     }
+
+    $('#no_of_trucks').change(function(){
+        var no_of_trucks = $('#no_of_trucks').val();
+        var count = parseInt($('#added_documents > div').length)
+        if(no_of_trucks > 0){
+            $('#added_documents').css('display', 'block');
+            if(no_of_trucks > 1 && no_of_trucks > count){
+                truckDocUpload();
+                var nextCount = count + 1; var th = '';
+                console.log(nextCount);
+                if(nextCount == 2){
+                    th = 'nd';
+                }else if(nextCount == 3){
+                    th = 'rd';
+                }else {
+                    th = 'th';
+                }
+                $('#add_document_btn').css('display', "block");
+                $('#food_truck_doc_num').html(nextCount +'<sup>'+th+'</sup>');
+            }else if(no_of_trucks == 1){
+                $('#add_document_btn').hide();
+            }
+        }
+    });
 
 
     const uploadFunction = () => {
@@ -595,6 +684,11 @@
                     showDelete: true,
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                     formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
+                    onSuccess: function (files, response, xhr, pd) {
+                            //You can control using PD
+                        pd.progressDiv.show();
+                        pd.progressbar.width('0%');
+                    },
                     onLoad: function (obj) {
                         $.ajax({
                             cache: false,
@@ -669,7 +763,7 @@
                 allowedTypes: "jpeg,jpg,png",
                 fileName: "pic_file",
                 multiple: false,
-                deleteStr: `<i class="la la-trash"></i>`,
+                deleteStr: `<i class="la la-trash"></i>`,   
                 showFileSize: false,
                 showFileCounter: false,
                 abortStr: '',
@@ -680,6 +774,9 @@
                 showPreview: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                onSuccess: function (files, response, xhr, pd) {
+                    pd.filename.html('');
+                },
                 onLoad: function (obj) {
                     var url = "{{route('event.get_uploaded_logo',':id')}}" ;
                     url = url.replace(':id', $('#event_id').val() );
@@ -687,8 +784,8 @@
                         url: url,
                         success: function (data) {
                             // console.log(data);
-                            if (data) {
-                                obj.createProgress('Logo Pic', "{{url('storage')}}"+'/'+ data, '');
+                            if (data.trim() != '') {
+                                obj.createProgress('', "{{url('storage')}}"+'/'+ data, '');
                             }
                         }
                     });
@@ -724,6 +821,8 @@
                 time_end: 'required',
                 venue_ar: 'required',
                 address: 'required',
+                firm_type: 'required',
+                no_of_audience: 'required'
             },
             messages: {
                 event_type_id: '',
@@ -748,6 +847,8 @@
                 time_end: '',
                 venue_ar: '',
                 address: '',
+                firm_type: '',
+                no_of_audience: ''
             },
         });
 
@@ -818,6 +919,7 @@
                 $('#submit--btn-group').css('display', 'block');
                 var noOfTrucks = $("input:radio[name='isTruck']:checked").val() == "1" ? $('#no_of_trucks').val() : "0" ;
                 eventdetails = {
+                    event_draft_id: $('#event_id').val(),
                     event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
@@ -837,7 +939,10 @@
                     description_en: $('#description_en').val(),
                     description_ar: $('#description_ar').val(),
                     full_address: $('#full_address').val(),
-                    no_of_trucks: noOfTrucks
+                    firm_type: $('#firm_type').val(),
+                    isTruck: $("input:radio[name='isTruck']:checked").val(),
+                    isLiquor: $("input:radio[name='isLiquor']:checked").val(),
+                    no_of_audience: $('#no_of_audience').val()
                 };
 
                 localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
@@ -880,16 +985,7 @@
             }
             }
 
-            if ($('#pic-file-upload').contents().length == 0) {
-                hasPicture = false;
-                $('#pic-upload').css('border', '2px dotted red');
-            } else {
-                hasPicture = true;
-                $("#pic-upload").css('border', '2px dotted #A5A5C7');
-            }
-
-
-            if (hasFileArray.includes(false) || hasPicture == false) {
+            if (hasFileArray.includes(false)) {
                 hasFile = false;
             } else {
                 hasFile = true;
@@ -974,21 +1070,35 @@
         var docMessages = {};
         var documentsValidator = '';
 
+        function toCapitalize(word) {
+            return word.toLowerCase().replace(/(?<= )[^\s]|^./g, a => a.toUpperCase());
+        }
 
-        function getRequirementsList(id)
+
+        function getRequirementsList()
         {
-            var url = "{{route('company.event.get_requirements', ':id')}}";
-            url = url.replace(':id', id);
+            var id = $('#event_type_id').val();
+            var firm = $('#firm_type').val();
             $.ajax({
-                url: url,
+                url: "{{route('company.event.get_requirements')}}",
+                type: "POST", 
+                data: { id: id, firm: firm},
                 success: function (result) {
                  if(result){
                     $('#documents_required').empty();
                      var res = result.requirements;
-                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo <span class="text-danger">( required )</span></label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count" value="'+ res.length +'" />');
+                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count" value="'+ res.length +'" />');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+' <span class="text-danger">( required )</span></label><p class="reqName">'+( res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         if(res[i].requirement_name.toLowerCase() == "insurance policy" || res[i].requirement_name.toLowerCase() == "noc letter")
+                         {
+                            $('#cnd_'+j).html(' ( Optional ) ');
+                            $('#cnd_'+j).removeClass('text-danger').addClass('text-muted');
+                         }else {
+                            $('#cnd_'+j).html(' ( Required ) ');
+                            $('#cnd_'+j).removeClass('text-muted').addClass('text-danger');
+                         }
 
                          if(res[i].dates_required == "1")
                          {
@@ -1088,6 +1198,146 @@
                 }
 
         });
+
+        const truckDocUpload = () => {
+            var count = parseInt($('#added_documents > div').length);
+            var per_truck_doc = $('#truck_document_count').val();
+            for(var i = 1; i <= count ;i++){
+                for(var j = 1; j <= per_truck_doc; j++)
+                {
+                    truckDocUploader[i] = $('#upload_foodtruck_'+i+"_"+j).uploadFile({
+                    url: "{{route('event.uploadTruck')}}",
+                    method: "POST",
+                    allowedTypes: "jpeg,jpg,png,pdf",
+                    fileName: "truck_file_"+i+"_"+j,
+                    multiple: true,
+                    downloadStr: `<i class="la la-download"></i>`,
+                    deleteStr: `<i class="la la-trash"></i>`,
+                    showFileSize: false,
+                    showFileCounter: false,
+                    showProgress: false,
+                    abortStr: '',
+                    returnType: "json",
+                    maxFileCount: 2,
+                    showPreview: false,
+                    showDelete: true,
+                    showDownload: true,
+                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    formData: {id: i, subid: j },
+                    downloadCallback:function(files,pd)
+                    {
+                        if(files[0]) {
+                            let user_id = $('#user_id').val();
+                            let artistId = $('#temp_artist_id').val();
+                            let this_url = user_id + '/artist/' + artistId +'/'+files;
+                            window.open(
+                            "{{url('storage')}}"+'/' + this_url,
+                            '_blank'
+                            );
+                        } else {
+                                let file_path = files.filepath;
+                                let path = file_path.replace('public/','');
+                                window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                            );
+                        }
+                    },
+                    onLoad:function(obj)
+                    {
+                        var event_id = $('#event_id').val();
+                        if(event_id){
+                            var url = "{{route('event.get_truck_files_uploaded', ':id')}}" ;
+                            url = url.replace(':id', event_id);
+                            $.ajax({
+                                cache: false,
+                                url: url,
+                                type: 'GET',
+                                dataType: "json",
+                                success: function(data)
+                                {
+                                    console.log(data)
+                                    // console.log('../../storage/'+data[0]["path"]);
+                                    let id = obj[0].id;
+                                    let number = id.split("_");
+                                    let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                    let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                    const d = data["path"].split("/");
+                                    let docName = d[d.length - 1];
+                                    obj.createProgress(docName,"{{url('/storage')}}"+'/'+data.path,'');
+                                    if(formatted_issue_date != NaN-NaN-NaN)
+                                    {
+                                        $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
+                                        $('#doc_exp_date_'+number[1]).val(formatted_exp_date);
+                                    }
+                                }
+                            });
+                        }
+
+                    },
+                    deleteCallback: function(data,pd)
+                    {
+                        $.ajax({
+                            url: "{{route('event.deleteTruckUploadedfile')}}",
+                            type: 'POST',
+                            data: {path: data.filepath, ext: data.ext, id: i , subid: j},
+                            success: function (result) {
+                                console.log('success');
+                            }   
+                        });
+                    }
+                });
+                // $('#upload_foodtruck_'+i+'_'+j+'  div').attr('id', 'truck-upload_'+i+'_'+j);
+                // $('#upload_foodtruck_'+i+'_'+j+' + div').attr('id', 'truck-file-upload_'+i+'_'+j);
+                }
+            }
+        };
+
+        function addUploadRow(){
+            var per_truck_doc = $('#truck_document_count').val();
+            var no_of_trucks = $('#no_of_trucks').val();
+            var total = parseInt($('#added_documents > div').length);
+            var count =  total / per_truck_doc;
+            var nextcount = count + 1;
+            var th = '';
+ 
+            $.ajax({
+                url: "{{route('event.fetch_truck_req', '1')}}",
+                success: function (result) {
+                    if(result)
+                    {
+                        var j = nextcount;
+                        for(var i = 0;i < result.length; i++)
+                        {
+                            var k = i+1;
+                            $('#added_documents').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+result[i].requirement_name.toUpperCase()+'</label><p for="" class="reqName">'+result[i].requirement_description+'</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="upload_foodtruck_'+j+'_'+k+'">Upload</div></div><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'_'+k+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'_'+k+'"></div></div>');
+
+                            if(result[i].dates_required)
+                            {
+                                $('#issue_dd_'+j+'_'+k).append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="truck_doc_issue_date_'+j+'_'+k+'" data-date-end-date="0d" id="truck_doc_issue_date_'+j+'_'+k+'" placeholder="DD-MM-YYYY"/>');
+                                $('#exp_dd_'+j+'_'+k).append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="truck_doc_expiry_date_'+j+'_'+k+'" data-date-start-date="+30d" id="truck_doc_expiry_date_'+j+'_'+k+'" placeholder="DD-MM-YYYY" />');
+                            }
+                            truckDocUpload();
+                            $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+                        }
+                        if(nextcount == no_of_trucks)
+                        {
+                            $('#add_document_btn').hide();
+                        }
+                        if((nextcount + 1) == 2){
+                            th = 'nd';
+                        }else if((nextcount + 1) == 3){
+                            th = 'rd';
+                        }else {
+                            th = 'th';
+                        }
+                        $('#food_truck_doc_num').html((nextcount + 1) +'<sup>'+th+'</sup>');
+                       
+                    }
+                }
+            });
+            
+        }
 
 
 

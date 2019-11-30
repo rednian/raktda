@@ -50,6 +50,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('/event/{event}/download','Admin\EventController@download')->name('admin.event.download');
     Route::get('/event/{event}/addition-requirement-datatable','Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
     Route::get('/event/{event}/requirement-datatable','Admin\EventController@uploadedRequiremet')->name('admin.event.uploadedRequiremet');
+    Route::get('/event/{event}/comment-datatable','Admin\EventController@commentDatatable')->name('admin.event.comment');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist

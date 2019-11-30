@@ -56,11 +56,29 @@
                                                     <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="event_type_id"
                                                             class=" col-form-label kt-font-bold text-right">
+                                                            Firm Type <span class="text-danger">*</span>
+                                                        </label>
+                                                        <select class="form-control form-control-sm" name="firm_type"
+                                                            id="firm_type" onchange="getRequirementsList()">
+                                                            <option value="">{{__('Select')}}</option>
+                                                            <option value="government"
+                                                                {{$event->firm == 'government' ? 'selected' : ''}}>
+                                                                Goverment
+                                                            </option>
+                                                            <option value="private"
+                                                                {{$event->firm == 'private' ? 'selected' : ''}}>Private
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-4 form-group form-group-xs ">
+                                                        <label for="event_type_id"
+                                                            class=" col-form-label kt-font-bold text-right">
                                                             {{__('Event Type')}} <span class="text-danger">*</span>
                                                         </label>
                                                         <select class="form-control form-control-sm"
                                                             name="event_type_id" id="event_type_id" placeholder="Type"
-                                                            onchange="getRequirementsList(this.value)">
+                                                            onchange="getRequirementsList()">
                                                             <option value="">{{__('Select')}}</option>
                                                             @foreach ($event_types as $pt)
                                                             <option value="{{$pt->event_type_id}}"
@@ -74,8 +92,8 @@
 
                                                     <div class="col-md-4 form-group form-group-xs">
                                                         <label for="name_en"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}<span
-                                                                class="text-danger">*</span></label>
+                                                            class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
+                                                            <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="name_en" id="name_en"
                                                             placeholder="{{__('Event Name')}}"
@@ -85,7 +103,7 @@
                                                     <div class=" col-md-4 form-group form-group-xs">
                                                         <label for="name_ar"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Event Name - Ar')}}<span
+                                                            {{__('Event Name - Ar')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm "
                                                             name="name_ar" dir="rtl" id="name_ar"
@@ -98,7 +116,7 @@
                                                     <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="description_en"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Description')}}<span
+                                                            {{__('Description')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <textarea type="text" class="form-control form-control-sm"
                                                             name="description_en" id="description_en"
@@ -116,42 +134,66 @@
                                                             style="resize:none">{{$event->description_ar}}</textarea>
                                                     </div>
 
+                                                    <div class=" col-md-4 form-group form-group-xs ">
+                                                        <label for="no_of_audience"
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            Expected Audience <span class="text-danger">*</span></label>
+                                                        <select class="form-control form-control-sm"
+                                                            name="no_of_audience" id="no_of_audience">
+                                                            <option value="">{{__('Select')}}</option>
+                                                            <option value="0-100"
+                                                                {{$event->audience_number == '0-100' ? 'selected': ''}}>
+                                                                0-100</option>
+                                                            <option value="100-500"
+                                                                {{$event->audience_number == '100-500' ? 'selected': ''}}>
+                                                                100-500</option>
+                                                            <option value="500-1000"
+                                                                {{$event->audience_number == '500-1000' ? 'selected': ''}}>
+                                                                500-1000</option>
+                                                            <option value="1000&above"
+                                                                {{$event->audience_number == '1000&above' ? 'selected': ''}}>
+                                                                1000 & above</option>
+                                                        </select>
+                                                    </div>
 
 
                                                     <div class="col-md-4  form-group form-group-xs ">
-                                                        <label class=" col-form-label kt-font-bold text-right">
-                                                            Do you have any Food truck ?</label>
+                                                        <label class="col-form-label"> Food truck ?</label>
+                                                        {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
+                                                                <input type="checkbox" name="isTruck" id="isTruck">
+                                                                <span></span>
+                                                            </label> --}}
                                                         <div class="kt-radio-inline">
-                                                            <label class="kt-radio kt-radio--solid">
-                                                                <input type="radio" name="isTruck" value="1"
-                                                                    onclick="checkTruck(1)"
-                                                                    {{$event->no_of_trucks == 0 ? '' : 'checked'}}>
-                                                                Yes
+                                                            <label class="kt-radio ">
+                                                                <input type="radio" name="isTruck"
+                                                                    onclick="checkTruck(1)" value="1"
+                                                                    {{$event->is_truck == '1' ? 'checked': ''}}> Yes
                                                                 <span></span>
                                                             </label>
-                                                            <label class="kt-radio kt-radio--solid">
-                                                                <input type="radio" name="isTruck" value="0" checked
-                                                                    onclick="checkTruck(0)"
-                                                                    {{$event->no_of_trucks == 0 ? 'checked' : ''}}>
-                                                                No
+                                                            <label class="kt-radio">
+                                                                <input type="radio" name="isTruck"
+                                                                    onclick="checkTruck(1)" value="0"
+                                                                    {{$event->is_truck == '0' ? 'checked': ''}}> No
                                                                 <span></span>
                                                             </label>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-4 form-group form-group-xs " id="how_many_div">
-                                                        <label for="no_of_trucks"
-                                                            class=" col-form-label kt-font-bold text-right">
-                                                            How Many ?<span class="text-danger">*</span></label>
-                                                        <select class="form-control form-control-sm" name="no_of_trucks"
-                                                            id="no_of_trucks">
-                                                            <option value=" ">Select</option>
-                                                            @for($i = 1;$i < 15; $i++) <option value="{{$i}}"
-                                                                {{$event->no_of_trucks == $i ? 'selected' : ''}}>
-                                                                {{$i}}
-                                                                </option>
-                                                                @endfor
-                                                        </select>
+                                                    <div class="col-md-4  form-group form-group-xs ">
+                                                        <label class="col-form-label"> Liquor ?</label>
+                                                        <div class="kt-radio-inline">
+                                                            <label class="kt-radio">
+                                                                <input type="radio" name="isLiquor" value="1"
+                                                                    {{$event->is_liquor == '1' ? 'checked': ''}}> Yes
+                                                                <span></span>
+                                                            </label>
+                                                            <label class="kt-radio">
+                                                                <input type="radio" name="isLiquor" value="0"
+                                                                    {{$event->is_liquor == '0' ? 'checked': ''}}>
+                                                                No
+                                                                <span></span>
+                                                            </label>
+                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -180,13 +222,14 @@
                                                     <div class="col-md-3 form-group form-group-xs ">
                                                         <label for="issued_date"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('From Date')}}<span
+                                                            {{__('From Date')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <div class="input-group input-group-sm date">
                                                             <div class="kt-input-icon kt-input-icon--right">
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="issued_date" id="issued_date"
                                                                     placeholder="{{__('From Date')}}"
+                                                                    onchange="givWarn()"
                                                                     value="{{date('d-m-Y',strtotime($event->issued_date))}}" />
                                                                 <span
                                                                     class="kt-input-icon__icon kt-input-icon__icon--right">
@@ -200,7 +243,7 @@
 
 
                                                     <div class="col-md-3 form-group form-group-xs">
-                                                        <label class="col-form-label">{{__('From Time')}}<span
+                                                        <label class="col-form-label">{{__('From Time')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <div class="input-group input-group-sm timepicker">
                                                             <div class="kt-input-icon kt-input-icon--right">
@@ -222,8 +265,8 @@
 
                                                     <div class="col-md-3 form-group form-group-xs ">
                                                         <label for="expired_date"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('To Date')}}<span
-                                                                class="text-danger">*</span></label>
+                                                            class=" col-form-label kt-font-bold text-right">{{__('To Date')}}
+                                                            <span class="text-danger">*</span></label>
                                                         <div class="input-group input-group-sm date">
                                                             <div class="kt-input-icon kt-input-icon--right">
                                                                 <input type="text" class="form-control form-control-sm"
@@ -241,7 +284,7 @@
                                                     </div>
 
                                                     <div class="col-md-3 form-group form-group-xs">
-                                                        <label class="col-form-label">{{__('To Time')}}<span
+                                                        <label class="col-form-label">{{__('To Time')}} <span
                                                                 class="text-danger">*</span></label>
 
                                                         <div class="input-group input-group-sm timepicker">
@@ -364,7 +407,7 @@
 
                                                             <div class="col-md-8 col-sm-12 form-group form-group-xs ">
                                                                 <label for="address"
-                                                                    class=" col-form-label kt-font-bold text-right">Address
+                                                                    class=" col-form-label kt-font-bold text-right">{{__('Address')}}
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
@@ -376,7 +419,8 @@
                                                             <div class="col-md-4 form-group form-group-xs ">
                                                                 <label for="street"
                                                                     class=" col-form-label kt-font-bold text-right">
-                                                                    Street<span class="text-danger">*</span></label>
+                                                                    {{__('Street')}} <span
+                                                                        class="text-danger">*</span></label>
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="street" id="street" placeholder="Street"
                                                                     value="{{$event->street}}">
@@ -388,7 +432,8 @@
                                                             <div class="col-md-6 form-group form-group-xs ">
                                                                 <label for="longitude"
                                                                     class=" col-form-label kt-font-bold text-right">
-                                                                    Longitude <span class="text-danger">*</span></label>
+                                                                    {{__('Longitude')}} <span
+                                                                        class="text-danger">*</span></label>
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="longitude" id="longitude"
                                                                     placeholder="Longitude"
@@ -398,7 +443,8 @@
                                                             <div class="col-md-6 form-group form-group-xs ">
                                                                 <label for="latitude"
                                                                     class=" col-form-label kt-font-bold text-right">
-                                                                    Latitude <span class="text-danger">*</span></label>
+                                                                    {{__('Latitude')}} <span
+                                                                        class="text-danger">*</span></label>
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="latitude" id="latitude" placeholder="Latitude"
                                                                     value="{{$event->latitude}}">
@@ -422,6 +468,7 @@
                         </div>
                     </div>
 
+                    <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
 
 
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -498,6 +545,7 @@
 <!--end::Modal-->
 
 
+@include('permits.event.common.show_warning_modal');
 
 
 @endsection
@@ -532,13 +580,15 @@
         localStorage.clear();
         setEventDetails();
         let event_id = $('#event_id').val();
-        let event_type_id = $('#event_type_id').val();
-        getRequirementsList(event_type_id);
+        getRequirementsList();
         getAddtionalRequirementsList(event_id);
         uploadFunction();
         picUploadFunction();
         checkTruck(0);
         $('#submit_btn').css('display', 'none');
+        if($('#no_of_trucks').val() > 0){
+            $('#how_many_div').show();
+        }
     });
 
     const uploadFunction = () => {
@@ -564,6 +614,11 @@
                     showDownload: true,
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                     formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
+                    onSuccess: function (files, response, xhr, pd) {
+                            //You can control using PD
+                        pd.progressDiv.show();
+                        pd.progressbar.width('0%');
+                    },
                     onLoad: function (obj) {
                         $.ajax({
                             cache: false,
@@ -643,15 +698,17 @@
                 showPreview: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                onSuccess: function (files, response, xhr, pd) {
+                    pd.filename.html('');
+                },
                 onLoad: function (obj) {
                     var url = "{{route('event.get_uploaded_logo',':id')}}" ;
                     url = url.replace(':id', $('#event_id').val() );
                     $.ajax({
                         url: url,
                         success: function (data) {
-                            // console.log(data);
-                            if (data) {
-                                obj.createProgress('Logo Pic', "{{url('storage')}}"+'/'+ data, '');
+                            if (data.trim() != '') {
+                                obj.createProgress('', "{{url('storage')}}"+'/'+ data, '');
                             }
                         }
                     });
@@ -687,6 +744,8 @@
                 time_end: 'required',
                 venue_ar: 'required',
                 address: 'required',
+                firm_type: 'required',
+                no_of_audience: 'required'
             },
             messages: {
                 event_type_id: '',
@@ -711,6 +770,8 @@
                 time_end: '',
                 venue_ar: '',
                 address: '',
+                firm_type: '',
+                no_of_audience: ''
             },
         });
 
@@ -775,19 +836,18 @@
         });
 
         function checkTruck(id) {
-        if (id == 1) {
-            $("#how_many_div").css("display", "block");
-            $("#no_of_trucks").attr("required", true);
-            $('#add_document_btn').css('display', "block");
-        } else {
-            $("#how_many_div").css("display", "none");
-            $("#no_of_trucks").attr("required", false);
-            $('#add_document_btn').css('display', "none");
+            if (id == 1) {
+                $("#how_many_div").css("display", "block");
+                $("#no_of_trucks").attr("required", true);
+                $('#add_document_btn').css('display', "block");
+            } else {
+                $("#how_many_div").css("display", "none");
+                $("#no_of_trucks").attr("required", false);
+                $('#add_document_btn').css('display', "none");
+            }
         }
-    }
 
         function setEventDetails(){
-            var noOfTrucks = $("input:radio[name='isTruck']:checked").val() == "1" ? $('#no_of_trucks').val() : "0" ;
             eventdetails = {
                 event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
@@ -808,7 +868,10 @@
                     description_en: $('#description_en').val(),
                     description_ar: $('#description_ar').val(),
                     full_address: $('#full_address').val(),
-                    no_of_trucks: noOfTrucks
+                    firm_type: $('#firm_type').val(),
+                    isTruck: $("input:radio[name='isTruck']:checked").val(),
+                    isLiquor: $("input:radio[name='isLiquor']:checked").val(),
+                    no_of_audience: $('#no_of_audience').val()
             };
             localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
         }
@@ -848,16 +911,8 @@
             }
             }
 
-            if ($('#pic-file-upload').contents().length == 0) {
-                hasPicture = false;
-                $('#pic-upload').css('border', '2px dotted red');
-            } else {
-                hasPicture = true;
-                $("#pic-upload").css('border', '2px dotted #A5A5C7');
-            }
 
-
-            if (hasFileArray.includes(false) || hasPicture == false) {
+            if (hasFileArray.includes(false)) {
                 hasFile = false;
             } else {
                 hasFile = true;
@@ -943,22 +998,36 @@
         var documentsValidator = '';
         var addiDocumentsValidator = '';
 
+        function toCapitalize(word) {
+            return word.toLowerCase().replace(/(?<= )[^\s]|^./g, a => a.toUpperCase());
+        }
 
-        function getRequirementsList(id)
+
+        function getRequirementsList()
         {
-            var url = "{{route('company.event.get_requirements', ':id')}}";
-            url = url.replace(':id', id);
+            var id = $('#event_type_id').val();
+            var firm = $('#firm_type').val();
             $.ajax({
-                url: url,
+                url: "{{route('company.event.get_requirements')}}",
+                type: 'POST',
+                data: {id: id, firm: firm},
                 success: function (result) {
                  if(result){
                     $('#documents_required').empty();
                      var res = result.requirements;
                      $('#requirements_count').val(res.length);
-                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo <span class="text-danger">( required )</span></label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
+                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+' <span class="text-danger">( required )</span></label><p for="" class="reqName">'+(res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+(res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         if(res[i].requirement_name.toLowerCase() == "insurance policy" || res[i].requirement_name.toLowerCase() == "noc letter")
+                         {
+                            $('#cnd_'+j).html(' ( Optional ) ');
+                            $('#cnd_'+j).removeClass('text-danger').addClass('text-muted');
+                         }else {
+                            $('#cnd_'+j).html(' ( Required ) ');
+                            $('#cnd_'+j).removeClass('text-muted').addClass('text-danger');
+                         }
 
                          if(res[i].dates_required == "1")
                          {
@@ -989,7 +1058,7 @@
 
         }
 
-         function getAddtionalRequirementsList(id)
+        function getAddtionalRequirementsList(id)
         {
             var url = "{{route('company.event.get_additional_requirements', ':id')}}";
             url = url.replace(':id', id);
@@ -1003,7 +1072,7 @@
                      var j =  parseInt($('#requirements_count').val()) + 1 ;
                      if(j != NaN){
                      for(var i = 0; i < res.length; i++){
-                         $('#addi_documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'<span class="text-danger">( required )</span></label><p for="" class="reqName">'+res[i].requirement_description+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#addi_documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name.toUpperCase()+'<span class="text-danger">( required )</span></label><p for="" class="reqName">'+(res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
@@ -1069,6 +1138,32 @@
 
         });
 
+        function givWarn()
+        {
+            var from_date = $('#issued_date').val();
+            // var exp_date = $('#expired_date').val();
+            let start_days_count = $('#settings_event_start_date').val();
+            if(from_date)
+            {
+                var x = moment(from_date, "DD-MM-YYYY");
+                // var y = moment(exp_date, "DD-MM-YYYY");
+                var to = moment();
+
+                var from = moment([x.format('YYYY'), x.month(), x.format('DD')]);
+                // var to = moment([y.format('YYYY'), y.month(), y.format('DD')]);
+                var today = moment([to.format('YYYY'), to.month(), to.format('DD')]);
+
+                var diff = from.diff(today, 'days');
+
+                if(diff <= start_days_count)
+                {
+                    // alert('It will take 10 days to process the permit');
+                    $('#showwarning').modal('show');
+                }
+            }
+        }
+
+      
 
         
 </script>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Event Permit</title>
+    <title>{{$event_details->permit_number}} - Event Permit</title>
     <style>
         * {
             box-sizing: border-box;
@@ -215,7 +215,7 @@
             </tr>
         </tbody>
     </table>
-
+    @if($event_details->note_en)
     <table id="note_data" border="1">
         <thead>
             <tr>
@@ -230,7 +230,7 @@
             </tr>
         </tbody>
     </table>
-
+    @endif
     <table id="date_data" border="1">
         <tr>
             <td>Printing Date: </td>

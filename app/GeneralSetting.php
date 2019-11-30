@@ -13,7 +13,8 @@ class GeneralSetting extends Model
         'artist_permit_grace_period_amendment',
         'artist_permit_grace_period_renew',
         'event_start_after',
-        'artist_start_after'
+        'artist_start_after',
+        'event_grace_period_amendment'
     ];
 
     protected $dates = ['deleted_at'];

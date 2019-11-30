@@ -76,9 +76,7 @@ function initialize() {
                 ) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         const street =
-                            results[0].address_components[0].short_name +
-                            ", " +
-                            results[0].address_components[1].short_name;
+                            results[0].address_components[0].short_name;
                         const full_address = results[0].formatted_address;
                         const lat = results[0].geometry.location.lat();
                         const lng = results[0].geometry.location.lng();

@@ -24,7 +24,7 @@
 
                     <div class="kt-form__section kt-form__section--first">
                         <div class="kt-wizard-v3__review">
-                            <div class="kt-form__section kt-form__section--first">
+                            <form id="happiness_center" autocomplete="off" novalidate>
                                 <div class="d-flex justify-content-around happiness--center">
                                     <input type="hidden" id="sel_value">
                                     <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 1)">
@@ -47,8 +47,12 @@
                                     </div>
                                     <input type="hidden" id="permit_id" value={{$id}}>
                                 </div>
-
-                            </div>
+                                <div>
+                                    <label for="" class="kt-margin-t-20 kt-font-dark">Comments :</label>
+                                    <textarea name="remarks" id="remarks" class="form-control form-control-sm " rows="5"
+                                        placeholder=" Please enter your valueable feedback..."></textarea>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -74,27 +78,42 @@
 
 @section('script')
 <script>
+    var happinessValidator =   $('#happiness_center').validate({
+                rules: {
+                    remarks: 'required'
+                },
+                messages: {
+                    remarks: '',
+                }
+            });
+   
+            
     $('#submit_btn').click((e) => {
 
                 var value =  $('#sel_value').val();
 
                 if(value)
                 {
-                    $.ajax({
-                        url: "{{route('artist.submit_happiness')}}",
-                        type: "POST",
-                        data: {
-                            permit_id:$('#permit_id').val(),
-                            happiness: value,
-                        },
-                        success: function (result) {
-                            if(result.message[0]){
-                                window.location.href = "{{route('artist.index')}}#valid";
+                    if(happinessValidator.form())
+                    {
+                        $.ajax({
+                            url: "{{route('artist.submit_happiness')}}",
+                            type: "POST",
+                            data: {
+                                permit_id:$('#permit_id').val(),
+                                happiness: value,
+                                remarks: $('#remarks').val()
+                            },
+                            success: function (result) {
+                                if(result.message[0]){
+                                    window.location.href = "{{route('artist.index')}}#valid";
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                    
                 } else {
-                    alert('Please Select Your Experience');
+                    alert('Please select your experience');
                 }
 
 

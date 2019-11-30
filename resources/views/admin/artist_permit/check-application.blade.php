@@ -63,8 +63,9 @@
 							<div class="kt-wizard-v3__form">
 								<section class="row">
 									<div class="col kt-margin-t-20 kt-margin-b-20">
+										@include('admin.artist_permit.includes.notification')
 										@include('admin.artist_permit.includes.comment')
-										@include('admin.artist_permit.includes.personal-info-tab')
+										@include('admin.artist_permit.includes.personal-info-tab')	
 										@include('admin.artist_permit.includes.address-info-tab')
 										@include('admin.artist_permit.includes.address1-info-tab')
 									</div>
@@ -79,6 +80,7 @@
 								<div class="kt-wizard-v3__form">
 									<section class="row">
 										<div class="col kt-margin-t-20 kt-margin-b-20">
+											@include('admin.artist_permit.includes.notification')
 											@include('admin.artist_permit.includes.comment')
 											<?php
 											$nearly_expire = $artist_permit->artistPermitDocument()->whereDate('expired_date', '<', Carbon\Carbon::now()->addMonth())->get();
@@ -124,6 +126,7 @@
 								<div class="kt-wizard-v3__form">
 									<section class="row">
 										<div class="col kt-margin-t-20 kt-margin-b-20">
+											@include('admin.artist_permit.includes.notification')
 											@include('admin.artist_permit.includes.comment')
 {{--											@if ($existing_permit->count() > 0)--}}
 {{--												<div class="alert alert-outline-danger show" role="alert">--}}

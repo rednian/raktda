@@ -133,7 +133,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                             <select
                                                                                 class="form-control form-control-sm "
                                                                                 name="nationality" id="nationality"
-                                                                                onchange="checkforArtist()">
+                                                                                onchange="checkforArtist();checkVisaRequired();">
                                                                                 {{--   - class for search in select  --}}
                                                                                 <option value="">{{__('Select')}}
                                                                                 </option>
@@ -165,7 +165,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                     <label for="profession"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
                                                                         {{__('Passport No')}}<span
-                                                                            class="text-danger">*</span>
+                                                                            class="text-danger hd-uae">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -180,7 +180,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                     <label for="pp_expiry"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
                                                                         {{__('Passport Expiry')}}<span
-                                                                            class="text-danger">*</span>
+                                                                            class="text-danger hd-uae">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -195,7 +195,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="uid_number"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID No')}}
-                                                                        <span class="text-danger">
+                                                                        <span class="text-danger hd-uae">
                                                                             *</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -210,7 +210,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry')}}<span
-                                                                            class="text-danger">*</span>
+                                                                            class="text-danger hd-uae">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -323,7 +323,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_type"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Visa Type')}}<span
-                                                                            class="text-danger">*</span>
+                                                                            class="text-danger hd-uae hd-eu">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -344,7 +344,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_number"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
-                                                                        {{__('Visa Number')}}
+                                                                        {{__('Visa Number')}} <span
+                                                                            class="text-danger hd-uae hd-eu">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -359,7 +360,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                     <label for="visa_expiry"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
                                                                         {{__('Visa Expiry')}}<span
-                                                                            class="text-danger">*</span>
+                                                                            class="text-danger hd-uae hd-eu">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -374,7 +375,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="id_no"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Identification
-                                                                        No </label>
+                                                                        No <span
+                                                                            class="text-danger sh-uae">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
@@ -646,11 +648,13 @@ $language_id = \Auth::user()->LanguageId;
                                         @foreach ($requirements as $req)
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
-                                                <label class="kt-font-bold text--maroon">{{$req->requirement_name}}
-                                                    <span
-                                                        class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-muted' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span></label>
+                                                <label
+                                                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                                                    <span id="cnd_{{$i}}"></span>
+                                                </label>
                                                 <p for="" class="reqName    ">
-                                                    {{$req->requirement_description}}</p>
+                                                    {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                                                </p>
                                             </div>
                                             <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
                                             <input type="hidden" value="{{$req->requirement_name}}"
@@ -749,10 +753,13 @@ $language_id = \Auth::user()->LanguageId;
 </div>
 @endsection
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script>
+    $.ajaxSetup({
+            headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
+    });
+    
     var fileUploadFns = [];
     var picUploader ;
     var artistDetails = new Object();
@@ -764,16 +771,10 @@ $language_id = \Auth::user()->LanguageId;
        uploadFunction();
        PicUploadFunction();
        getAreas(5);
+       $('.sh-uae').hide();
 
         wizard.on("change", function(wizard) {
             KTUtil.scrollTop();
-        });
-        $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            type: "GET",
-            url:"{{route('clear_the_temp')}}"
         });
     });
     const uploadFunction = () => {
@@ -799,6 +800,11 @@ $language_id = \Auth::user()->LanguageId;
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                 formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
+                onSuccess: function (files, response, xhr, pd) {
+                        //You can control using PD
+                    pd.progressDiv.show();
+                    pd.progressbar.width('0%');
+                },
                 onLoad:function(obj)
                 {
                     var code = $('#code').val();
@@ -873,6 +879,9 @@ $language_id = \Auth::user()->LanguageId;
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
+                onSuccess: function (files, response, xhr, pd) {
+                    pd.filename.html('');
+                },
                 onLoad:function(obj)
                 {
                     $code = $('#code').val();
@@ -886,7 +895,7 @@ $language_id = \Auth::user()->LanguageId;
                             {
                                 if(data[0].artist_permit[0].original)
                                 {
-                                    obj.createProgress('Profile Pic',"{{url('storage')}}"+'/'+data[0].artist_permit[0].original,'');
+                                    obj.createProgress('',"{{url('storage')}}"+'/'+data[0].artist_permit[0].original,'');
                                 }
                             }
                         });
@@ -921,6 +930,7 @@ $language_id = \Auth::user()->LanguageId;
             dateNL: true
         },
         visa_type: "required",
+        visa_number: 'required',
         visa_expiry: {
             required: true,
             dateNL: true
@@ -950,6 +960,7 @@ $language_id = \Auth::user()->LanguageId;
         permit_type: "",
         passport: "",
         pp_expiry: "",
+        visa_number:"",
         visa_type: "",
         visa_expiry: "",
         sp_name: "",
@@ -966,11 +977,77 @@ $language_id = \Auth::user()->LanguageId;
         }
     }
 });
+        
 
+function checkVisaRequired(){
+            var nationality = $('#nationality').val();
+            if(nationality)
+            {
+                if(nationality == '232'){
+                    $('.sh-uae').show();
+                    $('.hd-uae').hide();
+                    $('select[name="visa_type"]').rules("remove", "required");$('#visa_type').removeClass('is-invalid');
+                    $('input[name="visa_number"]').rules("remove"), "required";$('#visa_number').removeClass('is-invalid');
+                    $('input[name="visa_expiry"]').rules("remove", "required");$('#visa_expiry').removeClass('is-invalid');
+                    $('input[name="passport"]').rules("remove", "required");$('#passport').removeClass('is-invalid');
+                    $('input[name="pp_expiry"]').rules("remove", "required");$('#pp_expiry').removeClass('is-invalid');
+                    $('input[name="uid_number"]').rules("remove", "required");$('#uid_number').removeClass('is-invalid');
+                    $('input[name="uid_expiry"]').rules("remove", "required");$('#uid_expiry').removeClass('is-invalid');
+                    $('input[name="id_no"]').rules('add', { required: true, messages: {required:''}});
+                    for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                        if($('#req_id_'+i).val() == 6){
+                            delete docRules['doc_issue_date_' + i];
+                            delete docRules['doc_exp_date_' + i];
+                        }
+                    }
+                    return ;
+                }else
+                {
+                    $('.sh-uae').hide();
+                    $('.hd-uae').show();
+                    $('input[name="id_no"]').rules('remove', "required");$('#id_no').removeClass('is-invalid');
+                    $('input[name="passport"]').rules('add', { required: true, messages: {required:''}});
+                    $('input[name="pp_expiry"]').rules('add', { required: true, messages: {required:''}});
+                    $('input[name="uid_number"]').rules('add', { required: true, messages: {required:''}});
+                    $('input[name="uid_expiry"]').rules('add', { required: true, messages: {required:''}});
+                    for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                        if($('#req_id_'+i).val() == 6){
+                            docRules['doc_issue_date_' + i] = 'required';
+                            docRules['doc_exp_date_' + i] = 'required';
+                        }
+                    }
+                }
+                var url = "{{route('artist.checkVisaRequired', ':id')}}";
+                url = url.replace(':id', nationality);
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (result) {
+                        $('#nationality_cont').val(result.trim());
+                        // console.log(result.trim())
+                        if(result.trim() == "EU")
+                        {
+                            $('select[name="visa_type"]').rules('remove', "required");$('#visa_type').removeClass('is-invalid');
+                            $('input[name="visa_number"]').rules('remove', "required");$('#visa_number').removeClass('is-invalid');
+                            $('input[name="visa_expiry"]').rules('remove', "required");$('#visa_expiry').removeClass('is-invalid');
+                            $('.hd-eu').hide();
+                        }else {
+                            $('select[name="visa_type"]').rules('add', { required: true, messages: {required:''}});
+                            $('input[name="visa_number"]').rules('add', { required: true, messages: {required:''}});
+                            $('input[name="visa_expiry"]').rules('add', { required: true, messages: {required:''}});
+                            $('.hd-eu').show();
+                        }
+                        
+                    }
+                });
+            }
+        }
 
         var docRules = {};
         var docMessages = {};
         var term;
+        var documentsValidator;
+
         for(var i = 1; i < $('#requirements_count').val(); i++)
         {
             var noofdays = $('#permitNoOfDays').val();
@@ -983,10 +1060,7 @@ $language_id = \Auth::user()->LanguageId;
                 docMessages['doc_exp_date_'+i] = 'This field is required';
             }
         }
-        var documentsValidator = $('#documents_required').validate({
-            rules: docRules,
-            messages: docMessages
-        })
+        
         $( "#check_inst" ).on( "click", function() {
             setThis('none', 'block', 'block', 'none');
         });
@@ -1082,6 +1156,33 @@ $language_id = \Auth::user()->LanguageId;
                 // insertIntoDrafts(3, JSON.stringify(artistDetails));
             }
         }
+
+        var nationality = $('#nationality').val();
+
+            if(nationality)
+            {
+                var noofdays = $('#permitNoOfDays').val();
+                var term ;
+                for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                    term = $('#permitTerm_'+i).val();
+                    if((term == 'long' && noofdays > 30) || term == 'short')
+                    {
+                        $('#cnd_'+i).html('( Required )');
+                        $('#cnd_'+i).addClass('text-danger');
+                        $('#cnd_'+i).removeClass('text-muted');
+                        if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                        {
+                            $('#cnd_'+i).html('( Optional )');
+                            $('#cnd_'+i).removeClass('text-danger');
+                            $('#cnd_'+i).addClass('text-muted');
+                        }
+                    }else{
+                        $('#cnd_'+i).html('( Optional )');
+                        $('#cnd_'+i).removeClass('text-danger');
+                        $('#cnd_'+i).addClass('text-muted');
+                    }
+                }
+            }
     });
     const docValidation = () => {
         var artist_number = $('#artist_number').val();
@@ -1089,6 +1190,7 @@ $language_id = \Auth::user()->LanguageId;
         var hasFileArray = [];
         documentDetails = {};
         var noofdays = $('#permitNoOfDays').val();
+        var nationality = $('#nationality').val();
         var term ;
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
@@ -1106,6 +1208,11 @@ $language_id = \Auth::user()->LanguageId;
                         $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
                     }
 
+                }
+                if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                {
+                    hasFileArray[i] = true;
+                    $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
                 }
             }
             documentDetails[i] = {
@@ -1150,20 +1257,7 @@ $language_id = \Auth::user()->LanguageId;
        }
        $('#submit_btn').css('display', 'none');
     });
-    const isExpiry = (num) => {
-        let val = $('#doc_type_'+num).val();
-        if((val == 'photograph') || (val == 'medical') ){
-            $('#doc_exp_date_'+num).css('display', 'none');
-            $('#doc_issue_date_'+num).css('display', 'none');
-            $('#doc_exp_date_'+num).removeAttr( "required" );
-            $('#doc_issue_date_'+num).removeAttr( "required" );
-        } else {
-            $('#doc_exp_date_'+num).css('display', 'block');
-            $('#doc_issue_date_'+num).css('display', 'block');
-            $('#doc_exp_date_'+num).prop('required',true);
-            $('#doc_issue_date_'+num).prop('required',true);
-        }
-    }
+
     $('.date-picker').datepicker({format: 'dd-mm-yyyy',autoclose: true});
     $('#dob').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true,startView: 2, endDate: '-10Y'});
     $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
@@ -1205,14 +1299,17 @@ $language_id = \Auth::user()->LanguageId;
                     },
                     success: function (data) {
 
-                        $('#artist_exists').modal({
-                                backdrop: 'static',
-                                keyboard: false,
-                                show: true
-                            });
-
-                            $('#person_code_modal').empty();
-
+                    $('#artist_exists').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                    $('#person_code_modal').empty();
+                    if(data.artist_status == 'blocked')
+                    {
+                        $('#person_code_modal').append('<div class="kt-font-dark kt-font-bold">Sorry This Artist is blocked ! Please Select a New Artist</div>');
+                        return ;
+                    }
                     if(data.artist_permit) {
                         let total_aps = data.artist_permit.length;
                             let j = total_aps - 1 ;
@@ -1242,7 +1339,6 @@ $language_id = \Auth::user()->LanguageId;
                         }
                         else
                         {
-
                             $('#person_code_modal').append('<p class="text-center"><span class="text--maroon kt-font-bold">** Optional field</span><br/>Sorry ! No Artist Found with <span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> ( or  is already added ). <br /> Please Add Another Artist ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">Ok !</button> </div>');
                             $('#not_artist_personcode').html(code);
                         }
@@ -1382,6 +1478,11 @@ $language_id = \Auth::user()->LanguageId;
                                 keyboard: false,
                                 show: true
                             });
+                            if(data.artist.artist_status == 'blocked')
+                            {
+                                $('#person_code_modal').append('<div class="text--maroon">Sorry This Artist is blocked ! Please Select a New Artist</div>');
+                                return ;
+                            }
                             $("#person_code_modal").append(
                                 '<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)"data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>'
                             );
@@ -1429,6 +1530,10 @@ $language_id = \Auth::user()->LanguageId;
 
         $('#submit_btn').click((e) => {
         var hasFile = docValidation();
+        documentsValidator = $('#documents_required').validate({
+            rules: docRules,
+            messages: docMessages
+        })
         if(documentsValidator.form() && hasFile){
         var ad = localStorage.getItem('artistDetails');
         var dd = localStorage.getItem('documentDetails');
