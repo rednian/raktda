@@ -241,6 +241,32 @@
   border-color: var(---p-light) !important;
 }
 
+table.treetable {
+    /*border: 1px solid #f7f8fa;*/
+    font-size: inherit;
+    line-height: inherit;
+    /*width: 100%;*/
+}
+
+table.treetable thead {
+  background: #f7f8fa;
+  font-size: inherit;
+}
+
+table.treetable thead tr th {
+    border: 1px solid #f7f8fa;
+    font-weight: normal;
+    padding: .3em 1em .1em 1em;
+    text-align: left;
+}
+table.treetable tbody tr td {
+    cursor: default;
+    padding: .3em 0;
+}
+table.treetable span {
+  padding: 0;
+}
+
 /*table tr td {
   cursor: pointer;
 }*/

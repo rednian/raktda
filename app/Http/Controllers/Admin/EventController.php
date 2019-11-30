@@ -22,7 +22,7 @@
 	{
 		public function index()
 		{
-			$event = Event::whereDate('expired_date', '<', Carbon::now())->update(['status'=>'expired']);
+			$event = Event::whereDate('expired_date', '<', Carbon::now())->where('status', 'active')->update(['status'=>'expired']);
 
 			$event = Event::whereIn('status', ['amended', 'approved-unpaid', 'active', 'expired', 'rejected', 'need-approval'])->whereHas('comment',function($q){
 					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
@@ -157,25 +157,7 @@
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
 				}
-			
 
-				// if($request->status == 'need approval'){ 
-				// 	$request['role_id'] = $user->roles()->first()->role_id;
-				// 	$request['type']  = 0; 
-				
-				// 	
-				// 	$comment->approve()->create(array_merge ($request->all(), ['event_id'=>$comment->event_id ]));
-
-
-				// 	foreach ($request->approver as $role_id) {
-				// 		$request['role_id'] = $role_id;
-				// 		$request['status'] = 'pending';
-				// 		$request['user_id'] = null;
-				// 		$event->approve()->create($request->all());
-				// 	}
-				// 	
-				// }
-		
 
 				DB::commit();
 				
@@ -237,7 +219,7 @@
 			return view('admin.event.show', ['page_title' => '', 'event'=>$event, 'tab'=>$request->tab]);
 		}
 
-		public function uploadedRequiremet(Request $request, Event $event)
+		public function uploadedRequirement(Request $request, Event $event)
 		{
 
 			$requirements = Requirement::whereHas('eventRequirement', function($q) use ($event){

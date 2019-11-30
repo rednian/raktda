@@ -681,61 +681,71 @@
 													</div>
 												</div>
 											</div>
-											@if ($event->no_of_trucks > 0)
-											 <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-5" id="accordion-truck">
-											<div class="card">
-												<div class="card-header" id="heading-truck">
-													<div class="card-title kt-padding-t-5 kt-padding-b-10" data-toggle="collapse" data-target="#collapse-truck" aria-expanded="true" aria-controls="collapse-truck">
-														<h6 class="kt-font-transform-u kt-font-dark">FOOD TRUCK requirements</h6>
-													</div>
-												</div>
-												<div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck" style="">
-													<div class="card-body">
-														 <table class="table border borderless table-hover">
-															<thead>
-																<tr>
-																	 <th>#</th>
-																	 <th>{{ __('DOCUMENT NAME') }}</th>
-																	 <th>{{ __('ISSUED DATE') }}</th>
-																	 <th>{{ __('EXPIRED DATE') }}</th>
-																	 <th>{{ __('ACTION') }}</th>
-																</tr>
-															</thead>
-															<tbody>
-																@php
-																	$requirements = App\Requirement::whereHas('events', function($q) use ($event){
-																		$q->where('event.event_id', $event->event_id);
-																	})->whereHas('eventRequirement', function($q){
-																		$q->where('requirement_type', 'truck');
-																	})->get();
-																@endphp
-																
-																@if ($requirements->count() > 0)
-																	@foreach ($requirements as $index => $requirement)
-																		<tr>
-																			<td>{{ ++$index+1 }}</td>
-																			<td>
-																				@php
-																					$name = Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
-																				@endphp
-																				 <a href="{{ asset('/storage/'.$requirement->eventRequirement()->first()->path) }}"  data-fancybox data-caption="{{$name}}">{{$name}}</a>
-																				
-																			</td>
-																			<td>{{ $requirement->dates_required ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required' }}</td>
-																			<td>{{ $requirement->dates_required ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required' }}</td>
-																			<td>
-																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default"><input type="checkbox" class="step-2" data-step="2"><span></span></label>
-																			</td>
-																		</tr>
-																	@endforeach
-																@endif
-															</tbody>
-														 </table>
-													</div>
-												</div>
-											</div>
-										</div>
-											@endif
+
+											<table id="event-table" class="table dataTable border ">
+												<thead>
+													<tr>
+														<th>DOCUMENT NAME</th>
+														<th>ISSUED DATE</th>
+														<th>EXPIRED DATE</th>
+														<th>ACTION</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr data-tt-id="1" class="expanded">
+											    		<td colspan="4"><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> EVENT DOCUMENTS</td>
+											  		</tr>
+											  		{{ dd($event->requirements) }}
+											  		@if ($event->requirements()->exists())
+											  			{{-- expr --}}
+											  		@endif
+											  		<tr data-tt-id="1-1" data-tt-parent-id="1">
+											    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Uploaded Documents</td>
+											  		</tr>
+											  	
+
+											  		@if ($event->additionalRequirements()->exists())
+											  		<tr data-tt-id="1-3" data-tt-parent-id="1">
+											    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Additional Documents</td>
+											  		</tr>
+											  		@foreach ($event->additionalRequirements as $index => $requirement)
+											  			<tr data-tt-id="1-3-1" data-tt-parent-id="1-3">
+											    			<td colspan="4">{{ ++$index }}. {{ $requirement->requirement_name }}</td>
+											  			</tr>
+											  			@if ($requirement->eventRequirement()->exists())
+											  				@foreach ($requirement->eventRequirement as $key => $uploaded)
+											  					<tr data-tt-id="1-3-1-1" data-tt-parent-id="1-3-1">
+											    					<td colspan="4">{{ ++$key }}. {{ $requirement->requirement_name }}</td>
+											  					</tr>
+											  				@endforeach
+											  			@endif
+											  		@endforeach
+											  		@endif
+											  		
+											  		<tr data-tt-id="1-2" data-tt-parent-id="1">
+												    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
+											  		</tr>
+											  			<tr data-tt-id="1-2-1" data-tt-parent-id="1-2">
+											    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
+											  		</tr>
+											  		</tr>
+											  			<tr data-tt-id="1-2-1-1" data-tt-parent-id="1-2-1">
+											    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
+											  		</tr>
+											  		<tr data-tt-id="3">
+											    		<td><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> TRUCK DOCUMENTS</td>
+											  		</tr>
+											  		<tr data-tt-id="2" data-tt-parent-id="3">
+											    		<td>Child</td>
+											  		</tr>
+											  		<tr data-tt-id="2" data-tt-parent-id="3">
+											    		<td>Child</td>
+											  		</tr>
+											  		<tr data-tt-id="a">
+											    		<td><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> LIQUOR DOCUMENTS</td>
+											  		</tr>
+												</tbody>
+											</table>
 
 												  
 
@@ -897,6 +907,34 @@
 
      $(document).ready(function () {
 
+     	$('#event-table').treetable({
+     		// expandable: true,
+     	});
+     	// $('#event-table').treetable('expandAll');
+
+     	$("#event-table tbody").on("mousedown", "tr", function() {
+     	  $(".selected").not(this).removeClass("selected");
+     	  $(this).toggleClass("selected");
+     	});
+
+     	$("#event-table .folder").each(function() {
+     	  $(this).parents("tr").droppable({
+     	    accept: ".file, .folder",
+     	    drop: function(e, ui) {
+     	      var droppedEl = ui.draggable.parents("tr");
+     	      $("#example-advanced").treetable("move", droppedEl.data("ttId"), $(this).data("ttId"));
+     	    },
+     	    hoverClass: "accept",
+     	    over: function(e, ui) {
+     	      var droppedEl = ui.draggable.parents("tr");
+     	      if(this != droppedEl[0] && !$(this).is(".expanded")) {
+     	        $("#event-table").treetable("expandNode", $(this).data("ttId"));
+     	      }
+     	    }
+     	  });
+     	});
+
+
        var todayDate = moment().startOf('day');
        var YM = todayDate.format('YYYY-MM');
        var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
@@ -967,13 +1005,10 @@
        eventDetails();
        wizard();
        requirementTable();
-       formSubmit();
      });
 
      
-     function formSubmit() {
 
-     }
 
      function additionalRequirementTable(){
      	add_requirements_table = $('table#additional-requirement').DataTable({
@@ -1220,7 +1255,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {
