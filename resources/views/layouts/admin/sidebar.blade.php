@@ -60,9 +60,10 @@
                        <span class="kt-menu__link-text">{{ __('Reports') }}</span>
                    </a>
                </li>
-               <li class="kt-menu__item">
-                   <a href="javascript:void(0)" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">{{ __('Employee Management') }}</span>
+               <li class="kt-menu__item {{ Request::is('user_management*') ? 'kt-menu__item--active': '' }}">
+                   <a href="{{ URL::signedRoute('user_management.index') }}" class="kt-menu__link ">
+                       <span class="kt-menu__link-text">{{ __('User Management') }}</span>
+
                    </a>
                </li>
                <li class="kt-menu__item {{ Request::is('settings*') ? 'kt-menu__item--active': '' }}">

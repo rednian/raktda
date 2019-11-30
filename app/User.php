@@ -19,14 +19,14 @@ class User extends Authenticatable implements Auditable
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'modifiedAt';
 
-    protected $connection = 'bls';
+    // protected $connection = 'smartrak_bls';
     //smartrak_bls
 
-    protected $table = 'user';
+    protected $table = 'smartrak_smartgov.user';
 
     protected $primaryKey = 'user_id';
     protected $fillable = [
-        'NameAr', 'NameEn', 'username', 'password', 'type', 'isactive', 'createby', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number'
+        'NameAr', 'NameEn', 'username', 'password', 'type', 'IsActive', 'CreatedBy', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number'
     ];
 
     // protected $auditInclude = [
@@ -39,6 +39,8 @@ class User extends Authenticatable implements Auditable
     ];
 
     protected $casts = ['email_verified_at' => 'datetime'];
+
+    protected $dates = ['CreatedAt'];
 
     public function scopeAvailableInspector($q, $start_date)
     {
@@ -75,5 +77,13 @@ class User extends Authenticatable implements Auditable
     public function roles()
     {
         return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id');
+    }
+
+    public function workschedule(){
+        return $this->hasOne(EmployeeWorkSchedule::class, 'user_id');
+    }
+
+    public function customSchedules(){
+        return $this->hasMany(EmployeeCustomWorkSchedule::class, 'emp_custom_id');
     }
 }

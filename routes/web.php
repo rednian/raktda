@@ -119,6 +119,22 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         ->name('admin.artist_permit.index');
 
     //---------------------------------------------------------------------------------------------------------------
+    // User Management
+    //---------------------------------------------------------------------------------------------------------------
+
+    Route::get('user_management/datatable', 'Admin\UserController@datatable')->name('user_management.datatable');
+    Route::get('user_management/details/{user}', 'Admin\UserController@showUser')->name('user_management.details');
+    Route::patch('user_management/details/{user}', 'Admin\UserController@updateUSer')->name('user_management.update_user');
+    Route::get('user_management/schedule/get', 'Admin\UserController@getSchedule')->name('user_management.get_schedule');
+    Route::post('user_management/schedule/set_active', 'Admin\UserController@setScheduleActive')->name('user_management.set_active_schedule');
+    Route::get('user_management/details/{user}/schedule/create', 'Admin\UserController@addCustomSchedule')->name('user_management.schedule.create');
+    Route::post('user_management/details/{user}/schedule/store', 'Admin\UserController@saveCustomSchedule')->name('user_management.schedule.store');
+    Route::get('user_management/details/{user}/schedule/{custom}/edit', 'Admin\UserController@editCustomSchedule')->name('user_management.schedule.edit');
+    Route::post('user_management/details/{user}/schedule/{custom}/update', 'Admin\UserController@updateCustomSchedule')->name('user_management.schedule.update');
+    Route::post('user_management/details/{user}/schedule/{custom}/delete', 'Admin\UserController@deleteCustomSchedule')->name('user_management.schedule.delete');
+    Route::resource('user_management', 'Admin\UserController');
+
+    //---------------------------------------------------------------------------------------------------------------
     // Settings
     //---------------------------------------------------------------------------------------------------------------
 
@@ -155,5 +171,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         //ACCOUNT SETTINGS
         Route::get('account', 'Admin\AccountSettingsController@index')->name('admin.settings.account');
         Route::post('account/save', 'Admin\AccountSettingsController@store')->name('admin.settings.account.save');
+
+        //SCHEDULE TYPE SETTINGS
+        Route::resource('schedule_type', 'Admin\ScheduleTypeController');
+        Route::post('schedule_type/set_active/{schedule_type}', 'Admin\ScheduleTypeController@setActive')->name('schedule_type.set_active');
     });
 });
