@@ -1,5 +1,6 @@
 <?php
 
+
 function humanDate($date){
     return $date-> diffForHumans();
 }
@@ -16,7 +17,7 @@ function defaults($name = null, $role){
     $html .= '   </div>'; 
     $html .= '   </div>'; 
 
-    return $html;     
+    return $html;
 }
 
 
@@ -42,13 +43,14 @@ function fileExtension($path)
     }
     return '<span style="font-size:x-large" class="la ' . $className . '"></span>';
 }
+
+
 function language($data)
 {
     $user = Auth::user()->LanguageId;
 
     return $user  == 1 ? $data['en'] : $data['ar'];
 }
-
 
 
 function eventType($type)

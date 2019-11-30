@@ -32,7 +32,7 @@
             </div>
 
             <div class="kt-portlet__body">
-                <div class="kt-widget5__info pb-4">
+                <div class="kt-widget5__info py-2">
                     <div class="pb-2">
                         <span>{{__('From Date')}}:</span>&emsp;
                         <span
@@ -41,22 +41,28 @@
                         <span
                             class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
                         <span>{{__('Location')}}:</span>&emsp;
-                        <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
-                        <span>{{__('Reference No')}}:</span>&emsp;
+                        <span class="kt-font-info">{{ucwords($permit_details->work_location)}}</span>&emsp;&emsp;
+                        <span>{{__('Ref No.')}}:</span>&emsp;
                         <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
                     </div>
                 </div>
-
+                @if($permit_details->event)
+                <div class="pb-3">
+                    <span>Connected to Event :</span>&emsp;
+                    <span
+                        class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>&emsp;&emsp;
+                </div>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                         <thead>
                             <tr>
-                                <th>@lang('words.first_name')</th>
-                                <th>@lang('words.last_name')</th>
-                                <th>@lang('words.profession')</th>
-                                <th>@lang('words.mobile_number')</th>
+                                <th>{{__('First Name')}}</th>
+                                <th>{{__('Last Name')}}</th>
+                                <th>{{__('Profession')}}</th>
+                                <th>{{__('Mobile Number')}}</th>
                                 {{-- <th>Email</th> --}}
-                                <th>@lang('words.status')</th>
+                                <th>{{__('Status')}}</th>
                                 <th class="text-center">{{__('Action')}}</th>
                             </tr>
                         </thead>
@@ -94,7 +100,6 @@
                         </tbody>
                     </table>
                 </div>
-
 
                 <div class="d-flex justify-content-end">
                     <a href="{{url('company/artist/payment_gateway/'.$permit_details->permit_id)}}">

@@ -15,7 +15,7 @@ class Permit extends Model
     protected $primaryKey = 'permit_id';
     protected $fillable = [
         'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
-        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id', 'term'
+        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid'
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
 

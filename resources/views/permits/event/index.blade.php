@@ -6,7 +6,7 @@
 
 @section('content')
 
-
+<input type="hidden" id="lang_id" value="{{getLangId()}}">
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
     <div class="kt-portlet__body kt-padding-t-5">
@@ -51,11 +51,11 @@
                     <thead>
                         <tr>
                             <th>{{__('Ref NO.')}}</th>
-                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('Type')}}</th>
                             <th>{{__('From')}} </th>
                             <th>{{__('To')}} </th>
-                            <th>{{__('Venue')}}</th>
-                            <th>{{__('Event Type')}}</th>
+                            <th>{{__('Name')}}</th>
+                            {{-- <th>{{__('Venue')}}</th> --}}
                             <th>{{__('Status')}}</th>
                             <th>{{__('Action')}}</th>
                             <th>{{__('Details')}}</th>
@@ -69,11 +69,11 @@
                     <thead>
                         <tr>
                             <th>{{__('Permit No')}}</th>
-                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('Type')}}</th>
                             <th>{{__('From')}} </th>
                             <th>{{__('To')}} </th>
-                            <th>{{__('Venue')}}</th>
-                            <th>{{__('Event Type')}}</th>
+                            <th>{{__('Name')}}</th>
+                            {{-- <th>{{__('Venue')}}</th> --}}
                             <th>{{__('Action')}}</th>
                             <th>{{__('Details')}}</th>
                             <th></th>
@@ -131,10 +131,11 @@
                 <table class="table table-striped table-borderless border" id="drafts-events-table">
                     <thead>
                         <tr>
+                            <th>{{__('Type')}}</th>
                             <th>{{__('From')}} </th>
                             <th>{{__('To')}} </th>
-                            <th>{{__('Venue')}}</th>
-                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('Name')}}</th>
+                            {{-- <th>{{__('Venue')}}</th> --}}
                             <th>{{__('Applied Date')}}</th>
                             <th>{{__('Action')}}</th>
                             <th>{{__('Details')}}</th>
@@ -255,7 +256,6 @@
 
 
         $(document).ready(function(){
-
             var hash = window.location.hash;
             hash && $('ul.nav a[href="' + hash + '"]').tab('show');
             $('.nav-tabs a').click(function (e) {
@@ -276,11 +276,11 @@
             ajax:'{{route("company.event.fetch_applied")}}',
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
-                { data: 'name_en', name: 'name_en' },
+                { data: 'type.name_en', name: 'type.name_en' },
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
-                { data: 'venue_en', name: 'venue_en' },
-                { data: 'type.name_en', name: 'type.name_en' },
+                { data: 'name_en', name: 'name_en' },
+                // { data: 'venue_en', name: 'venue_en' },          
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
@@ -288,52 +288,18 @@
             columnDefs: [
                 {
                     targets:1,
-
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span >${data}<br/>${full.name_ar}</span>`;
-					}
-                },
-                {
-                    targets:2,
-
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}<br/>${full.time_start}</span>`;
-					}
-                },
-                {
-                    targets:3,
-
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}<br/>${full.time_end}</span>`;
-					}
-                },
-                {
-                    targets:4,
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}<br/>${full.venue_ar}</span>`;
-					}
-                },
-                {
-                    targets:5,
-                    width: '15%',
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}</span>`;
+						return  $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span>${full.type.name_ar}</span>`;
 					}
                 },
                 // {
-                //     targets:6,
-                //     className:'dt-head-nowrap dt-body-nowrap',
+                //     targets:4,
+                //     className: 'dt-body-nowrap dt-head-nowrap',
                 //     render: function(data, type, full, meta) {
-                //         return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
-
+				// 		return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span>${full.name_ar}</span>`;
 				// 	}
                 // },
-
                 {
                     targets:-3,
                     width: '10%',
@@ -362,11 +328,13 @@
             },
             columns: [
                 { data: 'permit_number', name: 'permit_number' },
-                { data: 'name_en', name: 'name_en' },
+                { data: 'type.name_en', name: 'type.name_en' },
+                
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
-                { data: 'venue_en', name: 'venue_en' },
-                { data: 'type.name_en', name: 'type.name_en' },
+                { data: 'name_en', name: 'name_en' },
+                // { data: 'venue_en', name: 'venue_en' },
+               
                 // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
@@ -377,40 +345,9 @@
                     targets:1,
                     className: 'dt-body-nowrap dt-head-nowrap',
                     render: function(data, type, full, meta) {
-						return `<span >${data}<br/>${full.name_ar}</span>`;
+						return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span >${full.type.name_ar}</span>`;
 					}
                 },
-                {
-                    targets:2,
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}<br/>${full.time_start}</span>`;
-					}
-                },
-                {
-                    targets:3,
-                    width:'18%',
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}<br/>${full.time_end}</span>`;
-					}
-                },
-                {
-                    targets:4,
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}<br/>${full.venue_ar}</span>`;
-					}
-                },
-                {
-                    targets:5,
-                    width: '12%',
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return `<span >${data}</span>`;
-					}
-                },
-
             ],
             language: {
                 emptyTable: "No Existing Event Permits"
@@ -431,8 +368,8 @@
             columns: [
                 { data: 'issued_date', name: 'issued_date' },
                 { data: 'expired_date', name: 'expired_date' },
-                { data: 'venue_en', name: 'venue_en' },
                 { data: 'name_en', name: 'name_en' },
+                { data: 'venue_en', name: 'venue_en' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
@@ -447,56 +384,11 @@
 					}
                 },
                 {
-                    targets:0,
+                    targets: 2,
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
-                        return '<span >'+ data +' <br/> '+full.time_start+'</span>';
-
-					}
-                },
-                {
-                    targets:1,
-                    width: '10%',
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-                        return '<span >'+ data +' <br/> '+full.time_end+'</span>';
-
-					}
-                },
-                {
-                    targets:2,
-                    width: '10%',
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-                        return '<span >'+ data +' <br/> '+full.venue_ar+'</span>';
-
-					}
-                },
-                {
-                    targets:3,
-                    width: '10%',
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-                        return '<span >'+ data +' <br/> '+full.name_ar+'</span>';
-
-					}
-                },
-                {
-                    targets:-1,
-                    width: '10%',
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-                        return '<span >'+ data+'</span>';
-
-					}
-                },
-                {
-                    targets:-2,
-                    width: '10%',
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-                        return '<span >'+ data +'</span>';
+                        return $('#lang_id').val() == 1 ?  '<span >'+ data +'</span>' : '<span >'+ full.name_ar +'</span>';
 
 					}
                 },

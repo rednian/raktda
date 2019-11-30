@@ -112,12 +112,25 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
+                                                                Firm Type <span class="text-danger">*</span>
+                                                            </label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="firm_type" id="firm_type"
+                                                                onchange="getRequirementsList()">
+                                                                <option value="">{{__('Select')}}</option>
+                                                                <option value="government">Goverment</option>
+                                                                <option value="private">Private</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="event_type_id"
+                                                                class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Event Type')}} <span class="text-danger">*</span>
                                                             </label>
                                                             <select class="form-control form-control-sm"
                                                                 name="event_type_id" id="event_type_id"
-                                                                placeholder="Type"
-                                                                onchange="getRequirementsList(this.value)">
+                                                                placeholder="Type" onchange="getRequirementsList()">
                                                                 <option value="">{{__('Select')}}</option>
                                                                 @foreach ($event_types as $pt)
                                                                 <option value="{{$pt->event_type_id}}">
@@ -130,8 +143,8 @@
 
                                                         <div class="col-md-4 form-group form-group-xs">
                                                             <label for="name_en"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}<span
-                                                                    class="text-danger">*</span></label>
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
+                                                                <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="name_en" id="name_en"
                                                                 placeholder="{{__('Event Name')}}">
@@ -140,7 +153,7 @@
                                                         <div class=" col-md-4 form-group form-group-xs">
                                                             <label for="name_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Name - Ar')}}<span
+                                                                {{__('Event Name - Ar')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm "
                                                                 name="name_ar" dir="rtl" id="name_ar"
@@ -152,7 +165,7 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="description_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Description')}}<span
+                                                                {{__('Description')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <textarea type="text" class="form-control form-control-sm"
                                                                 name="description_en" id="description_en"
@@ -171,40 +184,56 @@
                                                                 style="resize:none"></textarea>
                                                         </div>
 
+                                                        <div class=" col-md-4 form-group form-group-xs ">
+                                                            <label for="no_of_audience"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                Expected Audience <span
+                                                                    class="text-danger">*</span></label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="no_of_audience" id="no_of_audience">
+                                                                <option value="">{{__('Select')}}</option>
+                                                                <option value="0-100">0-100</option>
+                                                                <option value="100-500">100-500</option>
+                                                                <option value="500-1000">500-1000</option>
+                                                                <option value="1000&above">1000 & above</option>
+                                                            </select>
+                                                        </div>
 
 
                                                         <div class="col-md-4  form-group form-group-xs ">
-                                                            <label class=" col-form-label kt-font-bold text-right">
-                                                                Do you have any Food truck ?</label>
+                                                            <label class="col-form-label"> Food truck ?</label>
+                                                            {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
+                                                                <input type="checkbox" name="isTruck" id="isTruck">
+                                                                <span></span>
+                                                            </label> --}}
                                                             <div class="kt-radio-inline">
-                                                                <label class="kt-radio kt-radio--solid">
-                                                                    <input type="radio" name="isTruck" value="1"
-                                                                        onclick="checkTruck(1)"> Yes
+                                                                <label class="kt-radio ">
+                                                                    <input type="radio" name="isTruck"
+                                                                        onclick="checkTruck(1)" value="1"> Yes
                                                                     <span></span>
                                                                 </label>
-                                                                <label class="kt-radio kt-radio--solid">
-                                                                    <input type="radio" name="isTruck" value="0" checked
-                                                                        onclick="checkTruck(0)"> No
+                                                                <label class="kt-radio">
+                                                                    <input type="radio" name="isTruck"
+                                                                        onclick="checkTruck(1)" value="0" checked> No
                                                                     <span></span>
                                                                 </label>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-xs "
-                                                            id="how_many_div">
-                                                            <label for="no_of_trucks"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                How Many ?<span class="text-danger">*</span></label>
-                                                            <select class="form-control form-control-sm"
-                                                                name="no_of_trucks" id="no_of_trucks">
-                                                                <option value="">{{__('Select')}}</option>
-                                                                @for($i = 1;$i < 15; $i++) <option value="{{$i}}">
-                                                                    {{$i}}
-                                                                    </option>
-                                                                    @endfor
-                                                            </select>
+                                                        <div class="col-md-4  form-group form-group-xs ">
+                                                            <label class="col-form-label"> Liquor ?</label>
+                                                            <div class="kt-radio-inline">
+                                                                <label class="kt-radio">
+                                                                    <input type="radio" name="isLiquor" value="1"> Yes
+                                                                    <span></span>
+                                                                </label>
+                                                                <label class="kt-radio">
+                                                                    <input type="radio" name="isLiquor" value="0"
+                                                                        checked> No
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -231,13 +260,14 @@
                                                         <div class="col-md-3 form-group form-group-xs ">
                                                             <label for="issued_date"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('From Date')}}<span
+                                                                {{__('From Date')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <div class="input-group input-group-sm date">
                                                                 <div class="kt-input-icon kt-input-icon--right">
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
                                                                         name="issued_date" id="issued_date"
+                                                                        onchange="givWarn()"
                                                                         placeholder="{{__('From Date')}}" />
                                                                     <span
                                                                         class="kt-input-icon__icon kt-input-icon__icon--right">
@@ -251,7 +281,7 @@
 
 
                                                         <div class="col-md-3 form-group form-group-xs">
-                                                            <label class="col-form-label">{{__('From Time')}}<span
+                                                            <label class="col-form-label">{{__('From Time')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <div class="input-group input-group-sm timepicker">
                                                                 <div class="kt-input-icon kt-input-icon--right">
@@ -273,8 +303,8 @@
 
                                                         <div class="col-md-3 form-group form-group-xs ">
                                                             <label for="expired_date"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('To Date')}}<span
-                                                                    class="text-danger">*</span></label>
+                                                                class=" col-form-label kt-font-bold text-right">{{__('To Date')}}
+                                                                <span class="text-danger">*</span></label>
                                                             <div class="input-group input-group-sm date">
                                                                 <div class="kt-input-icon kt-input-icon--right">
                                                                     <input type="text"
@@ -292,7 +322,7 @@
                                                         </div>
 
                                                         <div class="col-md-3 form-group form-group-xs">
-                                                            <label class="col-form-label">{{__('To Time')}}<span
+                                                            <label class="col-form-label">{{__('To Time')}} <span
                                                                     class="text-danger">*</span></label>
 
                                                             <div class="input-group input-group-sm timepicker">
@@ -427,7 +457,8 @@
                                                                 <div class="col-md-4 form-group form-group-xs ">
                                                                     <label for="street"
                                                                         class=" col-form-label kt-font-bold text-right">
-                                                                        Street<span class="text-danger">*</span></label>
+                                                                        Street <span
+                                                                            class="text-danger">*</span></label>
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
                                                                         name="street" id="street" placeholder="Street">
@@ -485,54 +516,6 @@
                                 <form id="documents_required" method="post">
 
                                 </form>
-                                {{-- <form id="added_documents" method="post">
-                                    <h5 class="text-dark kt-font-bold text-underline kt-margin-b-15">Food Truck Required
-                                        documents</h5>
-                                    @php
-                                    $i = 1 ;
-                                    @endphp
-                                    <input type="hidden" id="truck_document_count" value="{{count($truck_req)}}">
-                                @foreach($truck_req as $truck_requ)
-                                <div class="row">
-                                    <div class="col-lg-4 col-sm-12">
-                                        <label
-                                            class="kt-font-bold text--maroon">{{getLangId()== 1 ?  $truck_requ->requirement_name :  $truck_requ->requirement_name_ar }}</label>
-                                        <p for="" class="reqName">
-                                            {{getLangId() == 1 ?  $truck_requ->requirement_description : $truck_requ->requirement_description_ar}}
-                                        </p>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-12">
-                                        <label style="visibility:hidden">hidden</label>
-                                        <div id="upload_foodtruck_1_{{$i}}">Upload</div>
-                                    </div>
-                                    @if($truck_requ->dates_required)
-                                    <div class="col-lg-2 col-sm-12">
-                                        <label for="" class="text--maroon kt-font-bold" title="Issue Date">
-                                            {{__('Issue Date')}}</label>
-                                        <input type="text" class="form-control form-control-sm date-picker"
-                                            name="truck_doc_issue_date_1_{{$i}}" data-date-end-date="0d"
-                                            id="truck_doc_issue_date_1_{{$i}}" placeholder="DD-MM-YYYY" />
-                                    </div>
-                                    <div class="col-lg-2 col-sm-12">
-                                        <label for="" class="text--maroon kt-font-bold" title="Expiry Date">
-                                            {{__('Expiry Date')}}</label>
-                                        <input type="text" class="form-control form-control-sm date-picker"
-                                            name="truck_doc_issue_date_1_{{$i}}" data-date-start-date="+30d"
-                                            id="truck_doc_issue_date_1_{{$i}}" placeholder="DD-MM-YYYY" />
-                                    </div>
-                                    @endif
-                                </div>
-                                @php
-                                $i++;
-                                @endphp
-                                @endforeach
-                                </form>
-                                <div class="text-right" id="add_document_btn">
-                                    <span class="btn btn-sm btn-dark my-4" onclick="addUploadRow()"><i
-                                            class="fa fa-plus"></i> Add Document of Food Truck <span
-                                            id="food_truck_doc_num"></span>
-                                    </span>
-                                </div>--}}
                             </div>
                         </div>
                     </div>
@@ -608,9 +591,8 @@
 
 <!--begin::Modal-->
 
+@include('permits.event.common.show_warning_modal');
 
-
-<!--end::Modal-->
 
 @endsection
 
@@ -630,7 +612,6 @@
     var fileUploadFns = [];
     var eventdetails = {};
     var documentDetails = {};
-    // var truckdocumentDetails = {};
     var docRules = {};
     var docMessages = {};
     var documentsValidator ;
@@ -673,8 +654,17 @@
             $('#added_documents').css('display', 'block');
             if(no_of_trucks > 1 && no_of_trucks > count){
                 truckDocUpload();
+                var nextCount = count + 1; var th = '';
+                console.log(nextCount);
+                if(nextCount == 2){
+                    th = 'nd';
+                }else if(nextCount == 3){
+                    th = 'rd';
+                }else {
+                    th = 'th';
+                }
                 $('#add_document_btn').css('display', "block");
-                $('#food_truck_doc_num').html(count + 1);
+                $('#food_truck_doc_num').html(nextCount +'<sup>'+th+'</sup>');
             }else if(no_of_trucks == 1){
                 $('#add_document_btn').hide();
             }
@@ -803,6 +793,8 @@
                 time_end: 'required',
                 venue_ar: 'required',
                 address: 'required',
+                firm_type: 'required',
+                no_of_audience: 'required'
             },
             messages: {
                 event_type_id: '',
@@ -821,6 +813,8 @@
                 time_end: '',
                 venue_ar: '',
                 address: '',
+                firm_type: '',
+                no_of_audience:''
             },
         });
 
@@ -875,19 +869,11 @@
         checkForTick();
         // checking the next page is artist details
         if (wizard.currentStep == 2) {
-            var isTruck = $("input:radio[name='isTruck']:checked").val();
             stopNext(eventValidator);
-            $('#eventdetails').validate();
-            if(isTruck == 1){
-                $("#no_of_trucks").rules("add", "required");
-            } else if(isTruck == 0) {
-                $("#no_of_trucks").rules("remove", "required");
-            }
             KTUtil.scrollTop();// validating the artist details page
             if (eventValidator.form()) {
                 $('#next_btn').css('display', 'none'); // hide the next button
                 $('#submit--btn-group').css('display', 'block');
-                var noOfTrucks = $("input:radio[name='isTruck']:checked").val() == "1" ? $('#no_of_trucks').val() : "0" ;
                 eventdetails = {
                     event_type_id: $('#event_type_id').val(),
                     name: $('#name_en').val(),
@@ -908,7 +894,10 @@
                     description_en: $('#description_en').val(),
                     description_ar: $('#description_ar').val(),
                     full_address: $('#full_address').val(),
-                    no_of_trucks: noOfTrucks
+                    firm_type: $('#firm_type').val(),
+                    isTruck: $("input:radio[name='isTruck']:checked").val(),
+                    isLiquor: $("input:radio[name='isLiquor']:checked").val(),
+                    no_of_audience: $('#no_of_audience').val()
                 };
 
                 localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
@@ -955,57 +944,20 @@
 
             }
 
-            
-            if ($('#pic-file-upload').contents().length == 0) {
-                hasPicture = false;
-                $('#pic-upload').css('border', '2px dotted red');
-            } else {
-                hasPicture = true;
-                $("#pic-upload").css('border', '2px dotted #A5A5C7');
-            }
-            
-           /* var hasTruckFileArray = [];
-            var per_truck_doc = $('#truck_document_count').val();
-            var no_of_trucks = $('#no_of_trucks').val();
-            if(no_of_trucks > 0)
-            {
-                for(var k = 1;k <= no_of_trucks; k++)
-                {
-                    for(var j = 1; j <= per_truck_doc; j++)
-                    {
-                        console.log(truckdocumentDetails);
-                        truckdocumentDetails[k] ={};
-                        hasTruckFileArray[k] = {};
-                        if ($('#truck-file-upload_' +k+'_'+j).length) {
-                            if ($('#truck-file-upload_'+k+'_'+j).contents().length == 0) {
-                                hasTruckFileArray[k] = false;
-                                $("#upload_foodtruck_" +k+'_'+j).css('border', '2px dotted red');
-                            } else {
-                                hasTruckFileArray[k] = true;
-                                $("#upload_foodtruck_" +k+'_'+j).css('border', '2px dotted #A5A5C7');
-                            }
-                        }
-                        truckdocumentDetails[k][j] = {
-                            issue_date: $('#truck_doc_issue_date_' + k+'_'+j).val(),
-                            exp_date: $('#truck_doc_expiry_date_' + k+'_'+j).val()
-                        }
-                    }
-                }
-            }
-
-            || hasTruckFileArray.includes(false
-            */
-            
-
-            if (hasFileArray.includes(false) || hasPicture == false ) {
+            if (hasFileArray.includes(false)) {
                 hasFile = false;
             } else {
                 hasFile = true;
             }
 
+            // if(no_of_trucks*per_truck_doc != $('#added_documents > div').length)
+            // {
+            //     alert('Upload the Foodtruck Required Docs');
+            //     return ;
+            // }
+
             localStorage.setItem('documentDetails', JSON.stringify(documentDetails));
             localStorage.setItem('documentNames', JSON.stringify(documentNames));
-            // localStorage.setItem('truckdocumentDetails', JSON.stringify(truckdocumentDetails));
             return hasFile;
 
         }
@@ -1032,13 +984,12 @@
             $('#submit--btn-group').css('display', 'none');
         });
 
-        let start_days_count = $('#settings_event_start_date').val();
 
         $('#issued_date').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
-            startDate: '+'+start_days_count+'d',
+            startDate: '+1d',
             orientation: "bottom left"
         });
         $('#expired_date').datepicker({
@@ -1083,16 +1034,11 @@
 
         function call_this_to_submit(isArtist = null){
             var hasFile = docValidation();
-
                 if (documentsValidator.form() && hasFile) {
-
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
-
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
                     var dn = localStorage.getItem('documentNames');
-                    // var tdd = localStorage.getItem('truckdocumentDetails');
-
                         $.ajax({
                             url: "{{route('event.store')}}",
                             type: "POST",
@@ -1100,11 +1046,9 @@
                                 eventD: ed,
                                 documentD: dd,
                                 documentN: dn,
-                                // tdd:tdd,
                                 from: 'new'
                             },
                             success: function (result) {
-                                console.log(result);
                                 if(result.message[0]){
                                     if(isArtist)
                                     {
@@ -1119,8 +1063,6 @@
                                 }
                             }
                         });
-                }else {
-                    alert('Please Upload the required food truck documents');
                 }
         }
 
@@ -1135,16 +1077,13 @@
 
 
         $('#draft_btn').click((e) => {
-
             var hasFile = docValidation();
-
                 if (documentsValidator.form() && hasFile) {
 
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
-                    // var tdd = localStorage.getItem('truckdocumentDetails');
 
                     $.ajax({
                         url: "{{route('company.event.add_draft')}}",
@@ -1152,7 +1091,6 @@
                         data: {
                             eventD: ed,
                             documentD: dd,
-                            // tdd: tdd
                         },
                         success: function (result) {
                             if(result.message[0]){
@@ -1162,24 +1100,64 @@
                         }
                     });
                 }
-
         });
 
-
-        function getRequirementsList(id)
+        function givWarn()
         {
-            var url = "{{route('company.event.get_requirements', ':id')}}";
-            url = url.replace(':id', id);
-            $.ajax({
-                url: url,
+            var from_date = $('#issued_date').val();
+            // var exp_date = $('#expired_date').val();
+            let start_days_count = $('#settings_event_start_date').val();
+            if(from_date)
+            {
+                var x = moment(from_date, "DD-MM-YYYY");
+                // var y = moment(exp_date, "DD-MM-YYYY");
+                var to = moment();
+
+                var from = moment([x.format('YYYY'), x.month(), x.format('DD')]);
+                // var to = moment([y.format('YYYY'), y.month(), y.format('DD')]);
+                var today = moment([to.format('YYYY'), to.month(), to.format('DD')]);
+
+                var diff = from.diff(today, 'days');
+
+                if(diff <= start_days_count)
+                {
+                    // alert('It will take 10 days to process the permit');
+                    $('#showwarning').modal('show');
+                }
+            }
+        }
+
+        function toCapitalize(word) {
+            return word.toLowerCase().replace(/(?<= )[^\s]|^./g, a => a.toUpperCase());
+        }
+
+
+        function getRequirementsList()
+        {
+            var firm = $('#firm_type').val();
+            var id = $('#event_type_id').val();
+            if(firm && id){
+                $.ajax({
+                url: "{{route('company.event.get_requirements')}}",
+                type: "POST",
+                data: { firm: firm , id: id},
                 success: function (result) {
                  if(result){
                     $('#documents_required').empty();
                      var res = result.requirements;
-                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo <span class="text-danger">( required )</span></label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count" value="'+ res.length +'" />');
+                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count" value="'+ res.length +'" />');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name+'<span class="text-danger"> ( required ) </span></label><p for="" class="reqName">'+( res[i].requirement_description ? res[i].requirement_description : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         if(res[i].requirement_name.toLowerCase() == "insurance policy" || res[i].requirement_name.toLowerCase() == "noc letter")
+                         {
+                            $('#cnd_'+j).html(' ( Optional ) ');
+                            $('#cnd_'+j).removeClass('text-danger').addClass('text-muted');
+                         }else {
+                            $('#cnd_'+j).html(' ( Required ) ');
+                            $('#cnd_'+j).removeClass('text-muted').addClass('text-danger');
+                         }
+                        
                          if(res[i].dates_required == "1")
                          {
                             $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">{{__("Issue Date")}}</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
@@ -1194,7 +1172,7 @@
                      }
                      uploadFunction();
                      picUploadFunction();
-                      documentsValidator = $('#documents_required').validate({
+                    documentsValidator = $('#documents_required').validate({
                         rules: docRules,
                         messages: docMessages
                     });
@@ -1203,6 +1181,7 @@
                  }
                 }
             });
+            }
         }
 
 
@@ -1247,12 +1226,12 @@
                             data: {path: data.filepath, ext: data.ext, id: i , subid: j},
                             success: function (result) {
                                 console.log('success');
-                            }
+                            }   
                         });
                     }
                 });
-                $('#upload_foodtruck_'+i+'_'+j+' div').attr('id', 'truck-upload_'+i+'_'+j);
-                $('#upload_foodtruck_'+i+'_'+j+' + div').attr('id', 'truck-file-upload_'+i+'_'+j);
+                // $('#upload_foodtruck_'+i+'_'+j+'  div').attr('id', 'truck-upload_'+i+'_'+j);
+                // $('#upload_foodtruck_'+i+'_'+j+' + div').attr('id', 'truck-file-upload_'+i+'_'+j);
                 }
             }
         };
@@ -1263,13 +1242,14 @@
             var total = parseInt($('#added_documents > div').length);
             var count =  total / per_truck_doc;
             var nextcount = count + 1;
-
+            var th = '';
+ 
             $.ajax({
                 url: "{{route('event.fetch_truck_req', '1')}}",
                 success: function (result) {
                     if(result)
                     {
-                        let j = nextcount;
+                        var j = nextcount;
                         for(var i = 0;i < result.length; i++)
                         {
                             var k = i+1;
@@ -1287,31 +1267,20 @@
                         {
                             $('#add_document_btn').hide();
                         }
-                        $('#food_truck_doc_num').html(nextcount);
+                        if((nextcount + 1) == 2){
+                            th = 'nd';
+                        }else if((nextcount + 1) == 3){
+                            th = 'rd';
+                        }else {
+                            th = 'th';
+                        }
+                        $('#food_truck_doc_num').html((nextcount + 1) +'<sup>'+th+'</sup>');
+                       
                     }
                 }
             });
             
         }
-
-
-        // for(let j = 1;j<=no_of_trucks; j++)
-        // {
-        //     for(var k = 1;k <= per_truck_doc; k++)
-        //     {
-        //         if ($('#truck-file-upload_' +j+'_'+k).length && $('#truck-file-upload_' +j+'_'+k).contents().length == 0){
-        //             alert("Please upload the file and add next truck document !");
-        //             return;
-        //             checkVal = false;
-        //         }else{
-        //             checkval = true;
-        //         }
-        //     }
-        // }
-
-        // $('#issue_dd_'+j+'').append('');
-        // $('#exp_dd_'+j+'').append('');
-
 
 
 </script>

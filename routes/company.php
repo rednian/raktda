@@ -62,6 +62,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::get('artist/fetch_artist_comment/{id}', 'Company\ArtistController@fetch_artist_comment')->name('artist.fetch_artist_comment');
     Route::post('artist/check_artist/exists', 'Company\ArtistController@check_artist_exists')->name('artist.check_artist_exists');
     Route::post('artist/fetch_event_details', 'Company\ArtistController@fetch_event_details')->name('artist.fetch_event_details');
+    Route::get('artist/checkVisaRequired/{id}', 'Company\ArtistController@checkVisaRequired')->name('artist.checkVisaRequired');
+
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
@@ -76,7 +78,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::get('fetch_applied_events', 'Company\EventController@fetch_applied')->name('company.event.fetch_applied');
     Route::get('fetch_existing_events', 'Company\EventController@fetch_valid')->name('company.event.fetch_valid');
     Route::get('fetch_event_drafts',  'Company\EventController@fetch_draft')->name('company.event.fetch_draft');
-    Route::get('event/fetch_requirements/{id}', 'Company\EventController@fetch_requirements')->name('company.event.get_requirements');
+    Route::post('event/fetch_requirements', 'Company\EventController@fetch_requirements')->name('company.event.get_requirements');
     Route::get('event/get_additional_requirements/{id}', 'Company\EventController@fetch_additional_requirements')->name('company.event.get_additional_requirements');
     Route::get('event/get_status/{id}', 'Company\EventController@get_status')->name('company.event.get_status');
     Route::post('event/get_uploaded_docs', 'Company\EventController@get_uploaded_docs')->name('company.event.get_uploaded_docs');
@@ -94,7 +96,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::post('event/uploadTruck', 'Company\EventController@uploadTruck')->name('event.uploadTruck');
     Route::get('event/add_artist/{id?}', 'Company\EventController@add_artist')->name('event.add_artist');
     Route::get('event/fetch_truck_req/{id}', 'Company\EventController@fetch_truck_req')->name('event.fetch_truck_req');
-    Route::get('artist/getTruckUploads', 'Company\EventController@getTruckUploads')->name('event.getTruckUploads');
+    Route::get('event/get_truck_files_uploaded/{id}', 'Company\EventController@get_truck_files_uploaded')->name('event.get_truck_files_uploaded');
 
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 });

@@ -517,9 +517,9 @@
 }
 
 .mk-disabled {
-    background: #ccc;
-    color: #333;
-    pointer-events: none;
+    background: #ccc !important;
+    color: #333 !important;
+    pointer-events: none !important;
 }
 
 .ajax-upload-dragdrop {
@@ -736,4 +736,9 @@ select option:first-child {
     .artist--view-head-image {
         margin-right: 0px;
     }
+}
+
+.ajax-file-upload-filename {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }

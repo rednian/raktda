@@ -39,3 +39,11 @@ function setWizard() {
         KTUtil.scrollTop();
     });
 }
+
+function dayCount(from, to) {
+    var x = moment(from, "DD-MM-YYYY");
+    var y = moment(to, "DD-MM-YYYY");
+    var from = moment([x.format("YYYY"), x.month(), x.format("DD")]);
+    var to = moment([y.format("YYYY"), y.month(), y.format("DD")]);
+    return to.diff(from, "days");
+}

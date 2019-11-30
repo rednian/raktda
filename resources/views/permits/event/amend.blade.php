@@ -34,6 +34,8 @@
         </div>
     </div>
 
+    <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
+
     <div class="kt-portlet__body">
         <form action="{{route('event.applyAmend')}}" method="POST">
             @csrf
@@ -60,7 +62,7 @@
                         </label>
                         <input type="text" class="col-md-6 form-control form-control-sm datepicker" name="issued_date"
                             id="issued_date" value="{{date('d-m-Y', strtotime($event->issued_date))}}"
-                            onchange="changeExpiry()" />
+                            onchange="changeExpiry();givWarn()" />
                     </div>
                     @php
                     $issued_date = strtotime($event->issued_date);
@@ -149,6 +151,9 @@
 @endif
 --}}
 
+@include('permits.event.common.show_warning_modal');
+
+
 
 @endsection
 
@@ -166,5 +171,32 @@
             $('#disp_expired_date').val(moment(exp).format('DD-MM-YYYY'));
             $('#expired_date').val(moment(exp).format('DD-MM-YYYY'));
         }
+
+        function givWarn()
+        {
+            console.log('hiere')
+            var from_date = $('#issued_date').val();
+            // var exp_date = $('#expired_date').val();
+            let start_days_count = $('#settings_event_start_date').val();
+            if(from_date)
+            {
+                var x = moment(from_date, "DD-MM-YYYY");
+                // var y = moment(exp_date, "DD-MM-YYYY");
+                var to = moment();
+
+                var from = moment([x.format('YYYY'), x.month(), x.format('DD')]);
+                // var to = moment([y.format('YYYY'), y.month(), y.format('DD')]);
+                var today = moment([to.format('YYYY'), to.month(), to.format('DD')]);
+
+                var diff = from.diff(today, 'days');
+
+                if(diff <= start_days_count)
+                {
+                    // alert('It will take 10 days to process the permit');
+                    $('#showwarning').modal('show');
+                }
+            }
+        }
+
 </script>
 @endsection

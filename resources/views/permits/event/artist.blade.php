@@ -93,12 +93,12 @@
                                         <label for="" class="col-form-label col-form-label-sm">Connected Event
                                             ?</label>
                                         <div class="kt-radio-inline">
-                                            <label class="kt-radio kt-radio--solid">
+                                            <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" checked value="1">
                                                 Yes
                                                 <span></span>
                                             </label>
-                                            <label class="kt-radio kt-radio--solid">
+                                            <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" value="0" disabled> No
                                                 <span></span>
                                             </label>

@@ -111,8 +111,7 @@
                                                 <div class="col-lg-4 col-sm-12">
                                                     <label
                                                         class="kt-font-bold text--maroon">{{$language_id == 1 ?$req->requirement_name : $req->requirement_name_ar}}
-                                                        <span
-                                                            class="{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? 'text-danger' : 'text-muted' }}">{{($req->term == 'long' && $diff > 30 || $req->term == 'short') ? '( required )' : '( optional )'}}</span>
+                                                        <span id="cnd_{{$i}}"></span>
                                                     </label>
                                                     <p for="" class="reqName">
                                                         {{$req->requirement_description}}</p>
@@ -249,6 +248,9 @@
         // upload file
        uploadFunction();
        PicUploadFunction();
+       var nationality = $('#nationality').val();
+       checkVisaRequired(nationality);
+       $('.sh-uae').hide();
 
        $('#submit_btn').css('display', 'none');
 
@@ -284,6 +286,11 @@
                 showDownload: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                 formData: {id: i, reqId: requiId , artistNo: $('#artist_number_doc').val()},
+                onSuccess: function (files, response, xhr, pd) {
+                        //You can control using PD
+                    pd.progressDiv.show();
+                    pd.progressbar.width('0%');
+                },
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();
@@ -296,7 +303,6 @@
                             url: "{{route('company.get_temp_files_by_temp_id')}}",
                             type: 'POST',
                             data: {temp_id:  temp_id, reqId: requiId },
-
                             dataType: "json",
                             success: function(data)
                             {
@@ -365,6 +371,9 @@
                 showDelete: true,
                 uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
+                onSuccess: function (files, response, xhr, pd) {
+                    pd.filename.html('');
+                },
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();
@@ -379,7 +388,7 @@
                                 // console.log(data[0].original_pic);
                                 if(data[0].original)
                                 {
-                                    obj.createProgress('Profile Pic',"{{url('/storage')}}"+'/'+data[0].original,'');
+                                    obj.createProgress('',"{{url('/storage')}}"+'/'+data[0].original,'');
                                 }
                             }
                         });
@@ -397,74 +406,140 @@
 
 
     var detailsValidator = $("#artist_details").validate({
-    ignore: [],
-    rules: {
-        fname_en: "required",
-        fname_ar: "required",
-        lname_en: "required",
-        lname_ar: "required",
-        profession: "required",
-        permit_type: "required",
-        dob: {
-            required: true,
-            dateNL: true
-        },
-        uid_number: "required",
-        uid_expiry: {
-            required: true,
-            dateNL: true
-        },
-        passport: "required",
-        pp_expiry: {
-            required: true,
-            dateNL: true
-        },
-        visa_type: "required",
-        visa_expiry: {
-            required: true,
-            dateNL: true
-        },
-        sp_name: "required",
-        gender: "required",
-        nationality: "required",
-        address: "required",
-        mobile: {
-            // number: true,
-            required: true
-        },
-        email: {
-            required: true,
-            email: true
+            ignore: [],
+            rules: {
+                fname_en: "required",
+                fname_ar: "required",
+                lname_en: "required",
+                lname_ar: "required",
+                profession: "required",
+                permit_type: "required",
+                dob: {
+                    required: true,
+                    dateNL: true
+                },
+                uid_number: "required",
+                uid_expiry: {
+                    required: true,
+                    dateNL: true
+                },
+                passport: "required",
+                pp_expiry: {
+                    required: true,
+                    dateNL: true
+                },
+                visa_number: "required",
+                visa_type: "required",
+                visa_expiry: {
+                    required: true,
+                    dateNL: true
+                },
+                sp_name: "required",
+                gender: "required",
+                nationality: "required",
+                address: "required",
+                mobile: {
+                    // number: true,
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            messages: {
+                fname_en: "",
+                fname_ar: "",
+                lname_en: "",
+                lname_ar: "",
+                profession: "",
+                dob: "",
+                uid_number: "",
+                uid_expiry: "",
+                permit_type: "",
+                passport: "",
+                pp_expiry: "",
+                visa_type: "",
+                visa_number: "",
+                visa_expiry: "",
+                sp_name: "",
+                gender: "",
+                nationality: "",
+                address: "",
+                mobile: {
+                    // number: 'Please enter number',
+                    required: ""
+                },
+                email: {
+                    required: "",
+                    email: ""
+                }
+            }
+        });
+
+        function checkVisaRequired(){
+            var nationality = $('#nationality').val();
+            if(nationality)
+            {
+                if(nationality == '232'){
+                    $('.sh-uae').show();
+                    $('.hd-uae').hide();
+                    $('select[name="visa_type"]').rules("remove", "required");$('#visa_type').removeClass('is-invalid');
+                    $('input[name="visa_number"]').rules("remove"), "required";$('#visa_number').removeClass('is-invalid');
+                    $('input[name="visa_expiry"]').rules("remove", "required");$('#visa_expiry').removeClass('is-invalid');
+                    $('input[name="passport"]').rules("remove", "required");$('#passport').removeClass('is-invalid');
+                    $('input[name="pp_expiry"]').rules("remove", "required");$('#pp_expiry').removeClass('is-invalid');
+                    $('input[name="uid_number"]').rules("remove", "required");$('#uid_number').removeClass('is-invalid');
+                    $('input[name="uid_expiry"]').rules("remove", "required");$('#uid_expiry').removeClass('is-invalid');
+                    $('input[name="id_no"]').rules('add', { required: true, messages: {required:''}});
+                    for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                        if($('#req_id_'+i).val() == 6){
+                            delete docRules['doc_issue_date_' + i];
+                            delete docRules['doc_exp_date_' + i];
+                        }
+                    }
+                    return ;
+                }else
+                {
+                    $('.sh-uae').hide();
+                    $('.hd-uae').show();
+                    $('input[name="id_no"]').rules('remove', "required");$('#id_no').removeClass('is-invalid');
+                    $('input[name="passport"]').rules('add', { required: true, messages: {required:''}});
+                    $('input[name="pp_expiry"]').rules('add', { required: true, messages: {required:''}});
+                    $('input[name="uid_number"]').rules('add', { required: true, messages: {required:''}});
+                    $('input[name="uid_expiry"]').rules('add', { required: true, messages: {required:''}});
+                    for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                        if($('#req_id_'+i).val() == 6){
+                            docRules['doc_issue_date_' + i] = 'required';
+                            docRules['doc_exp_date_' + i] = 'required';
+                        }
+                    }
+                }
+                var url = "{{route('artist.checkVisaRequired', ':id')}}";
+                url = url.replace(':id', nationality);
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (result) {
+                        $('#nationality_cont').val(result.trim());
+                        // console.log(result.trim())
+                        if(result.trim() == "EU")
+                        {
+                            $('select[name="visa_type"]').rules('remove', "required");$('#visa_type').removeClass('is-invalid');
+                            $('input[name="visa_number"]').rules('remove', "required");$('#visa_number').removeClass('is-invalid');
+                            $('input[name="visa_expiry"]').rules('remove', "required");$('#visa_expiry').removeClass('is-invalid');
+                            $('.hd-eu').hide();
+                        }else {
+                            $('select[name="visa_type"]').rules('add', { required: true, messages: {required:''}});
+                            $('input[name="visa_number"]').rules('add', { required: true, messages: {required:''}});
+                            $('input[name="visa_expiry"]').rules('add', { required: true, messages: {required:''}});
+                            $('.hd-eu').show();
+                        }
+                        
+                    }
+                });
+            }
         }
-    },
-    messages: {
-        fname_en: "",
-        fname_ar: "",
-        lname_en: "",
-        lname_ar: "",
-        profession: "",
-        dob: "",
-        uid_number: "",
-        uid_expiry: "",
-        permit_type: "",
-        passport: "",
-        pp_expiry: "",
-        visa_type: "",
-        visa_expiry: "",
-        sp_name: "",
-        gender: "",
-        nationality: "",
-        address: "",
-        mobile: {
-            // number: 'Please enter number',
-            required: ""
-        },
-        email: {
-            required: "",
-            email: ""
-        }
-    }
-});
 
 
 
@@ -484,11 +559,6 @@
                 docMessages['doc_exp_date_'+i] = 'This field is required';
             }
         }
-
-        var documentsValidator = $('#documents_required').validate({
-            rules: docRules,
-            messages: docMessages
-        })
 
         $( "#check_inst" ).on( "click", function() {
             setThis('none', 'block', 'block', 'none');
@@ -587,6 +657,34 @@
                 localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
             }
         }
+
+        var nationality = $('#nationality').val();
+
+        if(nationality)
+        {
+            var noofdays = $('#permitNoOfDays').val();
+            var term ;
+            for (var i = 1; i <= $('#requirements_count').val(); i++) {
+                term = $('#permitTerm_'+i).val();
+                if((term == 'long' && noofdays > 30) || term == 'short')
+                {
+                    $('#cnd_'+i).html('( Required )');
+                    $('#cnd_'+i).addClass('text-danger');
+                    $('#cnd_'+i).removeClass('text-muted');
+                    if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                    {
+                        $('#cnd_'+i).html('( Optional )');
+                        $('#cnd_'+i).removeClass('text-danger');
+                        $('#cnd_'+i).addClass('text-muted');
+                    }
+                }else{
+                    $('#cnd_'+i).html('( Optional )');
+                    $('#cnd_'+i).removeClass('text-danger');
+                    $('#cnd_'+i).addClass('text-muted');
+                }
+            }
+        }
+
     });
 
 
@@ -597,6 +695,7 @@
         var hasFileArray = [];
         documentDetails = {};
         var noofdays = $('#permitNoOfDays').val();
+        var nationality = $('#nationality').val();
         var term ;
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
@@ -612,6 +711,11 @@
                         hasFileArray[i] = true;
                         $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
                     }
+                }
+                if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                {
+                    hasFileArray[i] = true;
+                    $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
                 }
             }
             documentDetails[i] = {
@@ -640,6 +744,11 @@
     $('#submit_btn').click((e) => {
 
         var hasFile = docValidation();
+
+        documentsValidator = $('#documents_required').validate({
+            rules: docRules,
+            messages: docMessages
+        })
 
         if(documentsValidator.form() && hasFile){
 
@@ -727,21 +836,6 @@
        $('#submit_btn').css('display', 'none');
     });
 
-
-    const isExpiry = (num) => {
-        let val = $('#doc_type_'+num).val();
-        if((val == 'photograph') || (val == 'medical') ){
-            $('#doc_exp_date_'+num).css('display', 'none');
-            $('#doc_issue_date_'+num).css('display', 'none');
-            $('#doc_exp_date_'+num).removeAttr( "required" );
-            $('#doc_issue_date_'+num).removeAttr( "required" );
-        } else {
-            $('#doc_exp_date_'+num).css('display', 'block');
-            $('#doc_issue_date_'+num).css('display', 'block');
-            $('#doc_exp_date_'+num).prop('required',true);
-            $('#doc_issue_date_'+num).prop('required',true);
-        }
-    }
 
 
     $('.date-picker').datepicker({

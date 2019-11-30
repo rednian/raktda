@@ -35,9 +35,9 @@
             <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
             <span>{{__('To Date')}}:</span>&emsp;
             <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-            <span>@lang('words.location'):</span>&emsp;
+            <span>{{__('Location')}}:</span>&emsp;
             <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
-            <span>@lang('words.reference_no'):</span>&emsp;
+            <span>{{__('Ref NO.')}}</span>&emsp;
             <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
         </div>
         @if($permit_details->event)
@@ -51,13 +51,13 @@
             <table class="table table-striped table-hover border table-borderless  " id="applied-artists-table">
                 <thead>
                     <tr>
-                        <th>@lang('words.first_name')</th>
-                        <th>@lang('words.last_name')</th>
-                        <th>@lang('words.profession')</th>
-                        <th>@lang('words.mobile_number')</th>
+                        <th>{{__('First Name')}}</th>
+                        <th>{{__('Last Name')}}</th>
+                        <th>{{__('Profession')}}</th>
+                        <th>{{__('Mobile Number')}}</th>
                         {{-- <th>@lang('words.email')</th> --}}
-                        <th>@lang('words.status')</th>
-                        <th>Actions</th>
+                        <th>{{__('Status')}}</th>
+                        <th>{{__('Action')}}</th>
                     </tr>
                 </thead>
                 {{-- {{dd($permit_details)}} --}}
