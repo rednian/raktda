@@ -201,6 +201,8 @@
 
             </div>
             <div class="tab-pane" id="artist_requirements" role="tabpanel">
+
+              @if(!is_null($user->workschedule))
               <section class="row kt-margin-t-10">
                   <div class="col-6">
                     <div class="form-group form-group-sm kt-margin-b-0">
@@ -232,7 +234,7 @@
                       
                   </div>
               </section>
-
+              @endif
               
             </div>
             <div class="tab-pane" id="event_requirements" role="tabpanel">
@@ -316,12 +318,16 @@
           });
           calendar.render();
 
+        @if(!is_null($user->workschedule))
         @php
         $type = $user->workschedule->is_custom ? 'custom' : 'system';
         $id = is_null($user->workschedule->is_custom) ? $user->workschedule->schedule_type_id : $user->workschedule->emp_custom_id;
         @endphp
 
         getSchedules('{{ $type }}', {{ $id }});
+        @endif
+
+        
 
         var hash = window.location.hash;
 
