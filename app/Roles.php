@@ -9,9 +9,9 @@ class Roles extends Model
     const CREATED_AT = 'CreatedAt';
     const UPDATED_AT = 'ModifiedAt';
 
-    protected $connection = 'bls';
+    // protected $connection = 'bls';
 
-    protected $table = 'smartrak_bls.roles';
+    protected $table = 'smartrak_smartgov.roles';
 
     protected $primaryKey = 'role_id';
 

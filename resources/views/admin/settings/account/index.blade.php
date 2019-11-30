@@ -87,7 +87,7 @@
 				                <div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label class="kt-checkbox kt-checkbox--default kt-font-dark">
-											<input name="change_username" value="1" type="checkbox"> Change Username
+											<input name="change_username" value="1" type="checkbox"> {{ __('Change Username') }}
 											<span></span>
 										</label>
 				                    </div>
@@ -110,7 +110,7 @@
 				                <div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label class="kt-checkbox kt-checkbox--default kt-font-dark">
-											<input name="change_password" value="1" type="checkbox"> Change Password
+											<input name="change_password" value="1" type="checkbox"> {{ __('Change Password') }}
 											<span></span>
 										</label>
 				                    </div>
