@@ -22,11 +22,11 @@ class User extends Authenticatable implements Auditable
     protected $connection = 'bls';
     //smartrak_bls
 
-    protected $table = 'smartrak_bls.user';
+    protected $table = 'user';
 
     protected $primaryKey = 'user_id';
     protected $fillable = [
-        'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive', 'createby', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number'
+        'NameAr', 'NameEn', 'username', 'password', 'type', 'isactive', 'createby', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number'
     ];
 
     // protected $auditInclude = [
