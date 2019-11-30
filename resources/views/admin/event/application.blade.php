@@ -695,13 +695,20 @@
 													<tr data-tt-id="1" class="expanded">
 											    		<td colspan="4"><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> EVENT DOCUMENTS</td>
 											  		</tr>
-											  		{{ dd($event->requirements) }}
+											  		{{-- {{ dd($event->requirements) }} --}}
 											  		@if ($event->requirements()->exists())
-											  			{{-- expr --}}
+											  			<tr data-tt-id="1-1" data-tt-parent-id="1">
+											    			<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Uploaded Documents</td>
+											  			</tr>
+											  			<tr data-tt-id="1-1-1" data-tt-parent-id="1-1">
+											    			<td>{!! fileExtension($event->logo_thumbnail)  !!}Event Logo.{{ fileName($event->logo_thumbnail) }}</td>
+											    			<td>-</td>
+											    			<td>-</td>
+											    			<td>-</td>
+											  			</tr>
 											  		@endif
-											  		<tr data-tt-id="1-1" data-tt-parent-id="1">
-											    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Uploaded Documents</td>
-											  		</tr>
+											  			
+											  	
 											  	
 
 											  		@if ($event->additionalRequirements()->exists())

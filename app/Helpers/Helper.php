@@ -1,5 +1,10 @@
 <?php
 
+// function fileExtension($filename = null){
+//     $array = explode('.', $filename);
+//     return array_pop($array);
+// }
+
 
 function humanDate($date){
     return $date-> diffForHumans();
@@ -20,12 +25,16 @@ function defaults($name = null, $role){
     return $html;
 }
 
+function fileName($filename = null){
+    $array = explode('.', $filename);
+    return strtolower(array_pop($array));
+}
+
 
 
 function fileExtension($path)
 {
-    $ext = explode('.', $path);
-    $ext = strtolower(array_pop($ext));
+    $ext = fileName($path);
     $className = null;
     switch ($ext) {
         case 'pdf':
