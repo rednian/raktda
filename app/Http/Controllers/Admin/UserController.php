@@ -136,7 +136,7 @@ class UserController extends Controller
     		$type = $user->customSchedules()->where('emp_custom_id', $request->id)->first();
     	}
 
-    	return view('admin.user_management.partial.schedules', ['sched' => $type, 'type' => $request->type, 'empSched' => $user->workschedule ]);
+    	return view('admin.user_management.partial.schedules', ['sched' => $type, 'type' => $request->type, 'user' => $user, 'empSched' => $user->workschedule ]);
     }	
 
     public function setScheduleActive(Request $request){
@@ -156,10 +156,13 @@ class UserController extends Controller
     		];
     	}
 
-    	// dd($data);
-
     	try {
-    		$user->workschedule->update($data);
+    		if(!is_null($user->workschedule)){
+    			$user->workschedule->update($data);
+    		}else{
+    			$user->workschedule()->create($data);
+    		}
+    		
     		$result = ['success', 'Schedule Type has been set to active.', 'Success'];
 
     	} catch (\Exception $e) {
@@ -201,7 +204,7 @@ class UserController extends Controller
             $result = ['success', 'Schedule Type has been added successfully.', 'Success'];
 
             if($request->submit_type == 'continue'){
-                return redirect(URL::signedRoute('user_management.details', ['user' => $request->user_id]) . '#artist_requirements')->with('message', $result);
+                return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#artist_requirements')->with('message', $result);
             }
             
         } catch (\Exception $e) {

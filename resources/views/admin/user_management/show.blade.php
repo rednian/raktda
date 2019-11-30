@@ -228,13 +228,41 @@
                     <a href="{{ URL::signedRoute('user_management.schedule.create', ['user' => $user->user_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('ADD CUSTOM SCHEDULE') }}</a>
                  </div>
               </section>
+              @else
               
+              <section class="row kt-margin-t-10">
+                  <div class="col-6">
+                    <div class="form-group form-group-sm kt-margin-b-0">
+                        <select name="schedule" id="schedule" class="form-control form-control-sm">
+                          <optgroup label="System Schedules">
+                            @foreach(App\ScheduleType::all() as $type)
+                            <option {{ App\ScheduleType::where('is_active')->first()->schedule_type_id == $type->schedule_type_id ? 'selected' : '' }} data-type="system" value="{{ $type->schedule_type_id }}">{{ Auth::user()->LanguageId == 1 ? $type->schedule_type_name : $type->schedule_type_name_ar }}</option>
+                            @endforeach
+                          </optgroup>
+                          @if($user->customSchedules()->count() > 0)
+                          <optgroup label="Custom Schedules">
+                            @foreach($user->customSchedules as $custom)
+                            <option data-type="custom" value="{{ $custom->emp_custom_id }}">{{ Auth::user()->LanguageId == 1 ? $custom->emp_custom_name : $custom->emp_custom_name_ar }}</option>
+                            @endforeach
+                          </optgroup>
+                          @endif
+                        </select>
+                    </div>
+                    <small class="kt-font-bolder">( Select schedule type above to see schedules )</small>
+                  </div>
+                 <div class="col-6">
+                    {{-- <a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a> --}}
+                    <a href="{{ URL::signedRoute('user_management.schedule.create', ['user' => $user->user_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('ADD CUSTOM SCHEDULE') }}</a>
+                 </div>
+              </section>
+              
+              @endif
+
               <section class="row kt-margin-t-10">
                   <div class="col-12" id="showScheduleContainer">
                       
                   </div>
               </section>
-              @endif
               
             </div>
             <div class="tab-pane" id="event_requirements" role="tabpanel">
@@ -323,8 +351,12 @@
         $type = $user->workschedule->is_custom ? 'custom' : 'system';
         $id = is_null($user->workschedule->is_custom) ? $user->workschedule->schedule_type_id : $user->workschedule->emp_custom_id;
         @endphp
-
         getSchedules('{{ $type }}', {{ $id }});
+
+        @else
+
+        //SELECT THE DEFAULT SCHEDULE FROM SETTINGS
+        getSchedules('system', {{ App\ScheduleType::where('is_active')->first()->schedule_type_id }});
         @endif
 
         

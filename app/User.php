@@ -84,6 +84,6 @@ class User extends Authenticatable implements Auditable
     }
 
     public function customSchedules(){
-        return $this->hasMany(EmployeeCustomWorkSchedule::class, 'emp_custom_id');
+        return $this->hasMany(EmployeeCustomWorkSchedule::class, 'user_id');
     }
 }
