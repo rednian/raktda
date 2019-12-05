@@ -78,7 +78,7 @@
 							 @endif --}}
 						 </div>
                      <div class="tab-pane show fade active" id="event-report" role="tabpanel">
-                            <h1>event Report</h1>
+
                         {{--@include('admin.report.includes.block-artist')--}}
                          {{--  @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
                           @else
