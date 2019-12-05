@@ -21,11 +21,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ArtistPermitController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
       $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
 
-	    return view('admin.artist_permit.index', [
+      $view = $request->user()->roles()->where('roles.role_id', 4)->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
+
+	    return view($view, [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
             'professions'=>Profession::has('artistpermit')->get(),
@@ -98,6 +100,10 @@ class ArtistPermitController extends Controller
                $permit->comment()->create($request->all());
               break;
               case 'need approval':
+
+
+              //ADD TO APPROVALS
+              
 
               // if ($request->is_manual_schedule) {
 

@@ -124,4 +124,8 @@ class ArtistPermit extends Model implements Auditable
     {
         return Carbon::parse($this->attributes['birthdate'])->age;
     }
+
+    public function getPermitApproval(){
+        return $this->hasMany(Approval::class, 'approval_id', 'inspection_id')->where()
+    }
 }
