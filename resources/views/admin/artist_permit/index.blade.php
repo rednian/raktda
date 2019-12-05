@@ -1,4 +1,4 @@
-@extends('layouts.admin.admin-app')
+    @extends('layouts.admin.admin-app')
 @section('style')
 <style>
   .widget-toolbar{ cursor: pointer; }
@@ -146,7 +146,7 @@
               </div>
             </div>
           </div>
-        
+
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
 									@include('admin.artist_permit.includes.new_request')
@@ -304,7 +304,7 @@
     setInterval(function(){ newRequest(); pendingRequest();}, 100000);
 
     hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-    
+
     $('.nav-tabs a').click(function (e) {
       $(this).tab('show');
       var scrollmem = $('body').scrollTop();
@@ -537,7 +537,7 @@
 
 
       function approvedTable() {
-        
+
         var start = moment().subtract(29, 'days');
         var end = moment();
         var selected_date = [];
@@ -674,10 +674,10 @@
          $('input#search-processing-request').keyup(function(){ search($(this).val()); });
       }
 
-   
+
 
      function rejectedTable() {
-      
+
       var start = moment().subtract(29, 'days');
       var end = moment();
       var selected_date = [];
@@ -790,7 +790,7 @@
              // var status = $('select#pending-permit-status').val();
              d.request_type = $('select#pending-request-type').val();
              d.status =  ['modified'];
-             d.date = $('#pending-applied-date').val()  ? selected_date : null; 
+             d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
          },
          columnDefs: [
@@ -820,7 +820,7 @@
        var search = $.fn.dataTable.util.throttle(function(v){ pendingPermit.search(v).draw(); }, 500);
        $('input#search-pending-request').keyup(function(){ search($(this).val()); });
      }
-        
+
      function newRequest() {
 
        var start = moment().subtract(29, 'days');
@@ -861,7 +861,7 @@
              // var status = $('select#new-permit-status').val();
              d.request_type = $('select#new-request-type').val();
              d.status = ['new'];
-             d.date = $('#new-applied-date').val()  ? selected_date : null; 
+             d.date = $('#new-applied-date').val()  ? selected_date : null;
            }
          },
          // order: [[ 3, "desc" ]],

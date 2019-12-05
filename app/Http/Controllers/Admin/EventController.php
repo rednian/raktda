@@ -3,10 +3,10 @@
 
 	use App\Notifications\EventNotification;
 	use DB;
-	use PDF;
+	use niklasravnsborg\LaravelPdf\Pdf;
 	use Auth;
 	use App\User;
-	use Calendar;
+	use MaddHatter\LaravelFullcalendar\Calendar;
 	use App\Event;
 	use App\EventType;
 	use Carbon\Carbon;
@@ -29,7 +29,7 @@
 				})->count();
 
 			return view('admin.event.index', [
-				'page_title' => 'Event Permit', 
+				'page_title' => 'Event Permit',
 				'types'=> EventType::all(),
 				'new_request'=>Event::where('status', 'new')->count(),
 				'pending_request'=>Event::where('status', 'amended')->count(),
@@ -37,12 +37,13 @@
 				'cancelled_permit'=> Event::lastMonth(['cancelled'])->count(),
 				'rejected_permit'=> Event::lastMonth(['rejected'])->count(),
 				'approved_permit'=> Event::lastMonth(['approved-unpaid'])->count(),
-				
+
 			]);
 		}
 
 		public function cancel(Request $request, Event $event)
 		{
+
 			if ($event) {
 				// dd($request->all());
 			try {
@@ -95,17 +96,17 @@
 					'textColor' => '#fff !important',
 				];
 			});
-			return response()->json($events);	
+			return response()->json($events);
 		}
 
 
 		public function submit(Request $request, Event $event)
 		{
 			try {
-				DB::beginTransaction(); 
+				DB::beginTransaction();
 
 				// dd($request->all());
-	
+
 				$request['checked_at'] = Carbon::now();
 				$request['action']  =  $request->status;
 				$request['user_type']  =  'admin';
@@ -121,7 +122,7 @@
 						break;
 					case 'approved-unpaid':
 						$event->update(['status'=>$request->status, 'note_en'=>$request->note_en, 'note_ar'=>$request->note_ar]);
-						$request['type'] = $type = 1; 
+						$request['type'] = $type = 1;
 						$event->comment()->create($request->all());
 						$result = ['success', ucfirst($event->name_en).' Approved Successfully', 'Success'];
 						break;
@@ -131,7 +132,7 @@
 						$request['type'] = 1;
 						$request['action'] = 'send back for amendments';
 						$event->comment()->create($request->all());
-						
+
 						if($request->requirements_id){
 							$requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
 							$event->additionalRequirements()->sync($requirements_id);
@@ -140,9 +141,9 @@
 						if($request->requirements){
 							foreach ($request->requirements as $requirement) {
 								$requirement = Requirement::create([
-									'requirement_name'=>$requirement['name'], 
-									'dates_required'=>!empty($requirement['date']) ? 1 : 0 , 
-									'requirement_description'=>$requirement['description'] , 
+									'requirement_name'=>$requirement['name'],
+									'dates_required'=>!empty($requirement['date']) ? 1 : 0 ,
+									'requirement_description'=>$requirement['description'] ,
 									'requirement_type'=>'event'
 								]);
 								$event->additionalRequirements()->sync($requirement->requirement_id);
@@ -160,11 +161,12 @@
 
 
 				DB::commit();
-				
+
 			} catch (Exception $e) {
 				$result = ['error', $e->getMessage(), 'Error'];
 				DB::rollBack();
 			}
+
 			return redirect('/event#new-request')->with('message',$result);
 		}
 
@@ -234,10 +236,10 @@
 				return $request->user()->LanguageId == 1 ?  ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
 			})
 			->addColumn('start', function($requirement){
-				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required'; 
+				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required';
 			})
 			->addColumn('end', function($requirement){
-				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required'; 
+				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required';
 			})
 			->addColumn('type', function($requirement){
 				return strtoupper($requirement->eventRequirement()->first()->type);
@@ -258,7 +260,7 @@
 				}
 				$html .= '</div>';
 
-				
+
 				return $html;
 			})
 			->rawColumns(['files'])
@@ -299,7 +301,7 @@
 				return strtoupper($requirement->eventRequirement()->first()->type).' REQUIREMENTS';
 			})
 			->addColumn('name', function($requirement) use ($request){
-				return $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar; 
+				return $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
 			})
 			->addColumn('issued_date', function($requirement){
 				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
@@ -308,7 +310,7 @@
 				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : 'Not Required';
 			})
 			->addColumn('files', function($requirement) use ($event){
-		
+
 
 				return $requirement->eventRequirement()->where('event_id', $event->event_id)->count();
 			})
@@ -322,7 +324,7 @@
 				    'issued_date'=> 'Not Required',
 				    'expired_date'=> 'Not Required',
 				    'type'=>'EVENT REQUIREMENTS'
-				];	
+				];
 
 				 return response()->json($data);
 
@@ -349,7 +351,7 @@
 			// 	 	// foreach ($requirement->events as $key => $value) {
 			// 	 	// 	# code...
 			// 	 	// }
-				 	
+
 			// 	 })
 			// 	 ->addColumn('type', function($requirement){
 			// 	 	return strtoupper($requirement->eventRequirement()->first()->type).' REQUIREMENTS';
@@ -437,7 +439,7 @@
 					return $event->owner->NameAr;
 				})
 				->addColumn('website', function($event){
-					$display = $event->is_display_web ? 'checked="checked"' : null; 
+					$display = $event->is_display_web ? 'checked="checked"' : null;
 
 					$html =  '<span class="kt-switch  kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
 					$html .=  '	<label>';
@@ -448,7 +450,7 @@
 					return $html;
 				})
 				->addColumn('show', function($event){
-					$display = $event->is_display_all ? 'checked="checked"' : null; 
+					$display = $event->is_display_all ? 'checked="checked"' : null;
 
 					$html =  '<span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
 					$html .=  '	<label >';
@@ -459,11 +461,11 @@
 					return $html;
 
 				})
-				->addColumn('event_name', function($event) use ($user){	
+				->addColumn('event_name', function($event) use ($user){
 					if ($user->LanguageId == 1) {return ucwords($event->name_en);} return $event->name_ar; })
 				->addColumn('type', function($event){ return ucwords($event->firm); })
-				->editColumn('created_at', function($event){ 
-					return '<span title="'.$event->created_at->format('l d-M-Y h:i A').'" data-original-title="'.$event->created_at->format('l d-M-Y h:i A').'" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" class="text-underline">'.humanDate($event->created_at).'</span>'; 
+				->editColumn('created_at', function($event){
+					return '<span title="'.$event->created_at->format('l d-M-Y h:i A').'" data-original-title="'.$event->created_at->format('l d-M-Y h:i A').'" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" class="text-underline">'.humanDate($event->created_at).'</span>';
 				})
 				->addColumn('start', function($event){ return $event->issued_date.'  '.$event->time_start; })
 				->editColumn('status', function($event){ return permitStatus($event->status); })
@@ -480,11 +482,11 @@
 						$html  .= '					<a href="javascript:void(0)" class="dropdown-item cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
 						$html  .= '					</div>';
 					}
-	
+
 					$html  .= '					</div>';
 
 					return $html;
-					
+
 					 })
 					->rawColumns(['status', 'action', 'show', 'website', 'created_at'])
 					 ->make(true);

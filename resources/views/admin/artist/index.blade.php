@@ -10,7 +10,7 @@
                 <div class="kt-portlet__head-toolbar">
                     <i class="la la-arrow-left"></i>
                     <button class="kt-hidden-mobile" onclick="goBack()">Back</button>
-                    <div class="dropdown dropdown-inline">
+                    <div class="dropdown indropdown-inline">
                         <button type="button" class="btn btn-clean btn-icon btn-sm btn-icon-md" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="flaticon-more"></i>
