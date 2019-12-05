@@ -126,6 +126,6 @@ class ArtistPermit extends Model implements Auditable
     }
 
     public function getPermitApproval(){
-        return $this->hasMany(Approval::class, 'approval_id', 'inspection_id')->where()
+        return $this->hasMany(Approval::class, 'approval_id', 'inspection_id');
     }
 }
