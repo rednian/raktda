@@ -75,15 +75,15 @@
 
 			return view('admin.artist.show', [
 				 'page_title' => $artist_permit->fullname.' - details',
-				 'artist_permit' => $artist_permit
+				 'artist_permit' => $artist_permit,
+				 'artist'=>$artist
 			]);
 		}
 
 		public function datatable(Request $request)
 		{
 			if ($request->ajax()) {
-				$limit = $request->length;
-				$start = $request->start;
+
 
 				$artist = Artist::has('artistpermit.profession')
 				->whereHas('permit', function($q){
@@ -104,10 +104,6 @@
 				})
 				->orderby('updated_at', 'desc')
 				->get();
-
-
-				// $totalRecords = $artist->count();
-				// $artist = $artist->offset($start)->limit($limit);
 
 				return DataTables::of($artist)
 					 ->addColumn('name', function($artist){
@@ -193,7 +189,7 @@
 					 return $permit->issued_date->format('d-M-Y');
 				 })
 				 ->addColumn('company_name', function($permit){
-					 return ucwords($permit->company->company_name);
+					 return ucwords($permit->owner->company->name_en);
 				 })
 				 ->editColumn('permit_status', function($permit){
 					 $class_name = 'default';

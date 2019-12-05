@@ -5,7 +5,6 @@
 @section('content')
 
 <link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
-
 {{-- {{dd(session()->all())}} --}}
 <!-- begin:: Content -->
 {{-- <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"> --}}
@@ -176,24 +175,39 @@
                                                                     {{$event->is_truck == '0' ? 'checked': ''}}> No
                                                                 <span></span>
                                                             </label>
+
+                                                            <i class="fa fa-edit fa-2x pull-right" id="truckEditBtn"
+                                                                onclick="editTruck()"></i>
+
                                                         </div>
+                                                        <input type="hidden" id="prev_val_isTruck"
+                                                            value="{{$event->is_truck}}">
                                                     </div>
 
                                                     <div class="col-md-4  form-group form-group-xs ">
                                                         <label class="col-form-label"> Liquor ?</label>
                                                         <div class="kt-radio-inline">
                                                             <label class="kt-radio">
-                                                                <input type="radio" name="isLiquor" value="1"
+                                                                <input type="radio" name="isLiquor"
+                                                                    onclick="checkLiquor(1)" value="1"
                                                                     {{$event->is_liquor == '1' ? 'checked': ''}}> Yes
                                                                 <span></span>
                                                             </label>
                                                             <label class="kt-radio">
-                                                                <input type="radio" name="isLiquor" value="0"
+                                                                <input type="radio" name="isLiquor"
+                                                                    onclick="checkLiquor(0)" value="0"
                                                                     {{$event->is_liquor == '0' ? 'checked': ''}}>
                                                                 No
                                                                 <span></span>
+
+
                                                             </label>
+                                                            <i class="fa fa-edit fa-2x pull-right" id="liquorEditBtn"
+                                                                onclick="editLiquor()"></i>
+
                                                         </div>
+                                                        <input type="hidden" id="prev_val_isLiquor"
+                                                            value="{{$event->is_liquor}}">
                                                     </div>
 
                                                 </div>
@@ -201,7 +215,7 @@
                                         </div>
                                     </div>
 
-
+                                    <input type="hidden" id="et_liquor_id" id="{{$liquor->event_liquor_id}}">
 
 
                                     <div class="card kt-margin-t-5">
@@ -538,15 +552,9 @@
     </div>
 </div>
 
-<!--begin::Modal-->
-
-
-
-<!--end::Modal-->
-
-
 @include('permits.event.common.show_warning_modal');
-
+@include('permits.event.common.edit_food_truck', [ 'truck_req'=>$truck_req]);
+@include('permits.event.common.liquor');
 
 @endsection
 
@@ -570,7 +578,13 @@
     var addidocumentDetails = {};
     var truckDocUploader = [];
     var picUploader ;
-
+    var truckDocRules = {};
+    var truckDocMessages = {};
+    var truckDetails = {};
+    var truckDocDetails = {};
+    var liquorDocRules = {};
+    var liquorDocMessages = {};
+    var liquorDocValidator ;
 
     $(document).ready(function(){
         setWizard();
@@ -589,7 +603,68 @@
         if($('#no_of_trucks').val() > 0){
             $('#how_many_div').show();
         }
+        var isTruck = $('#prev_val_isTruck').val();
+        if(isTruck == 0){
+            $('#truckEditBtn').hide();
+        }
+        var isLiquor = $('#prev_val_isLiquor').val();
+        if(isLiquor == 0){
+            $('#liquorEditBtn').hide();
+        }
     });
+
+    function checkLiquor(id){
+        var prev = $('#prev_val_isLiquor').val();
+        if(id == 1 && prev == 0){
+            // $('#liquor_details').modal('show');
+            $('#liquor_details').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+            liquorDocUpload();
+            $('#prev_val_isLiquor').val(1);
+        }
+        if(prev == 1 && id == 0) {
+            // alert('The Added data will be lost');
+            $('#notSaveModal').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+            $('#from_l_or_t').val('liquor');
+        }
+    }
+
+
+    function editLiquor(){
+            var liquor_id = $('#et_liquor_id').val();
+            var url = "{{route('event.fetch_liquor_details', ':id')}}";
+            url = url.replace(':id', liquor_id);
+            $.ajax({
+                url:  url,
+                success: function (result) {
+                    if(result) 
+                    {
+                        checkTruck(1);
+                        var LD = result.event_liquor[0];
+                        $('#edit_liquor_details').modal('show');
+                        $('#l_company_name_en').val(LD.company_name_en);
+                        $('#l_company_name_ar').val(LD.company_name_ar);
+                        $('#license_no').val(LD.license_number);
+                        $('#license_no').val(LD.license_number);
+                        $('#l_issue_date').val(moment(LD.license_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY'));
+                        $('#l_expiry_date').val(moment(LD.license_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY'));
+                        $('#l_emirates').val(JSON.parse(LD.emirate_id));
+                        $('#trade_license_no').val(LD.trade_license);
+                        $('#tl_issue_date').val(moment(LD.trade_license_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY'));
+                        $('#trade_license_expired_date').val(moment(LD.trade_license , 'YYYY-MM-DD').format('DD-MM-YYYY'));
+                        $('#event_liquor_id').val(LD.event_liquor_id);
+                    }
+                }
+            });
+        }
+
 
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
@@ -633,8 +708,6 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let issue_datetime = new Date(data['issued_date']);
-                                        let exp_datetime = new Date(data['expired_date']);
                                         let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
@@ -1072,7 +1145,7 @@
                      var j =  parseInt($('#requirements_count').val()) + 1 ;
                      if(j != NaN){
                      for(var i = 0; i < res.length; i++){
-                         $('#addi_documents_required').append('<div class="row col-md-12"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name.toUpperCase()+'<span class="text-danger">( required )</span></label><p for="" class="reqName">'+(res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#addi_documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name.toUpperCase()+'<span class="text-danger"> ( required )</span></label><p for="" class="reqName">'+(res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
@@ -1163,6 +1236,621 @@
             }
         }
 
+        function editTruck(){
+            var event_id = $('#event_id').val() ;
+            var url = "{{route('event.fetch_truck_details_by_event_id', ':id')}}" ;
+            url = url.replace(':id', event_id);
+            $.ajax({    
+                url:  url,
+                success: function (result) {
+                    if(result) 
+                    {
+                        $('#food_truck_list').empty();
+                        // console.log(result);
+                        $('#edit_food_truck').modal('show');
+                        for(var s = 0;s < result.length;s++)
+                        {
+                            var k = s + 1 ;
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="editThisTruck('+result[s].event_truck_id+', '+k+')">Edit</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
+
+                           if(result.length > 1){
+                               $('#append_'+s+'').append('<button class="btn btn-secondary" onclick="deleteThisTruck('+result[s].event_truck_id+')">Remove</button>');
+                           }
+                        
+                        }
+
+                        
+                    }
+                }
+            });
+        }
+
+        function deleteThisTruck(id)
+        {
+            var url = "{{route('event.delete_truck_details', ':id')}}";
+            url = url.replace(':id', id);
+            $.ajax({
+                url:  url,
+                success: function (result) {
+                    if(result) 
+                    {
+                        editTruck();
+                        $('#disp_mess').html('<h5 class="text-danger py-2">Truck is Deleted successfully</h5>');
+                        setTimeout(function(){ $('#disp_mess').html('');}, 2000)
+                    }
+                }
+            });
+        }
+    
+        function editThisTruck(id, num)
+        {
+            var url = "{{route('event.fetch_this_truck_details', ':id')}}";
+            url = url.replace(':id', id);
+            $.ajax({
+                url:  url,
+                success: function (result) {
+                    if(result) 
+                    {
+                        // console.log(result);
+                        $('#edit_food_truck').modal('hide');
+                        $('#edit_one_food_truck').modal('show');
+                        $('#company_name_en').val(result.company_name_en);
+                        $('#company_name_ar').val(result.company_name_ar);
+                        $('#plate_no').val(result.plate_number);
+                        $('#food_type').val(result.food_type);
+                        $('#regis_issue_date').val(moment(result.registration_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
+                        $('#regis_expiry_date').val(moment(result.registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
+                        $('#truck_no').val(num);
+                        $('#this_event_truck_id').val(result.event_truck_id);
+                        truckDocUpload();
+                    }
+                }
+            });
+        }
+
+        $('#add_new_truck').click(function(){
+            $('#foodTruckDetails').modal('show');
+            $('#edit_food_truck').modal('hide');
+            truckDocUpload();
+        });
+
+        $('#add_td').click(function(){
+            var hasFile = truckDocValidation();
+            if(truckValidator.form() && hasFile)
+            {
+                addToTruckDetails();
+                var truckDetails = localStorage.getItem('truck_details');
+                var truckDocDetails = localStorage.getItem('truck_doc_details');
+                if(truckDetails)
+                {
+                    $.ajax({
+                        url: "{{route('event.update_this_truck_details')}}",
+                        type: "POST",
+                        data: {
+                            event_id: $('#event_id').val(),
+                            truckDetails: truckDetails,
+                            truckDocDetails: truckDocDetails,
+                            truck_id: ''
+                        },
+                        success: function (result) {
+                            if(result)
+                            {
+                                $('#foodTruckDetails').modal('hide');
+                                $('#edit_food_truck').modal('show');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details Added successfully</h5>');
+                                setTimeout(function(){ $('#disp_mess').html('');}, 2000);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        $('#update_this_td').click(function(){
+            var hasFile = truckDocValidation();
+            if(truckValidator.form() && hasFile)
+            {
+                addToTruckDetails();
+                var truckDetails = localStorage.getItem('truck_details');
+                var truckDocDetails = localStorage.getItem('truck_doc_details');
+                if(truckDetails)
+                {
+                    $.ajax({
+                        url:  "{{route('event.update_this_truck_details')}}",
+                        type: 'POST', 
+                        data: {
+                            truck_id : $('#this_event_truck_id').val(),
+                            truckDetails: truckDetails,
+                            truckDocDetails: truckDocDetails,
+                            eventId: $('#event_id').val()
+                        },
+                        success: function (result) {
+                            if(result) 
+                            {
+                                editTruck();
+                                $('#edit_food_truck').modal('show');
+                                $('#edit_one_food_truck').modal('hide');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details updated successfully</h5>');
+                                setTimeout(function(){ $('#disp_mess').html('');}, 2000);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        const truckDocUpload = () => {
+            var per_truck_doc = $('#truck_document_count').val();
+            var total = parseInt($('#truck_additional_doc > div').length);
+            var truckNo = $('#truck_no').val() ;
+            for(var i = 1; i <= parseInt(per_truck_doc) + total ;i++){
+                    truckDocUploader[i] = $('#truckuploader_'+i).uploadFile({
+                    url: "{{route('event.uploadTruck')}}",
+                    method: "POST",
+                    allowedTypes: "jpeg,jpg,png,pdf",
+                    fileName: "truck_file_"+i,
+                    multiple: true,
+                    downloadStr: `<i class="la la-download"></i>`,
+                    deleteStr: `<i class="la la-trash"></i>`,
+                    showFileSize: false,
+                    showFileCounter: false,
+                    showProgress: false,
+                    abortStr: '',
+                    returnType: "json",
+                    maxFileCount: 2,
+                    showPreview: false,
+                    showDelete: true,
+                    showDownload: true,
+                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    formData: {
+                        id: i , 
+                        reqId: $('#truck_req_id_'+i).val(),
+                        truckNo:  truckNo
+                    },
+                    downloadCallback: function (files, pd) {
+                        let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    },
+                    onLoad:function(obj)
+                    {
+                        var ev_tr_id = $('#this_event_truck_id').val();
+                        $.ajax({
+                            url: "{{route('event.fetch_this_truck_docs')}}",
+                            type: 'POST',
+                            data: {
+                                truckId: ev_tr_id,
+                                reqId: $('#truck_req_id_'+i).val(),
+                            },
+                            dataType: "json",
+                            success: function(data)
+                            {
+                                if (data) {
+                                    let j = 1 ;
+                                   for(data of data) {
+                                        if(j <= 2 ){
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        const d = data["path"].split("/");
+                                        var cc = d.splice(4,5);
+                                        let docName =  cc.length > 1 ? cc.join('/') : cc ;
+                                        // let docName = d[d.length - 1];
+                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                        if (formatted_issue_date != NaN - NaN - NaN) {
+                                            $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                            $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                        }
+                                        }
+                                    j++;
+                                   }
+                                }
+                            }
+                        });
+                    },
+                    deleteCallback: function(data,pd)
+                    {
+                        $.ajax({
+                            url: "{{route('event.deleteTruckUploadedfile')}}",
+                            type: 'POST',
+                            data: {path: data.filepath, ext: data.ext, id: i },
+                            success: function (result) {
+                                console.log('success');
+                            }   
+                        });
+                    }
+                });
+                $('#truckuploader_'+i+'  div').attr('id', 'truck-upload_'+i);
+                $('#truckuploader_'+i+' + div').attr('id', 'truck-file-upload_'+i);
+            }
+        };
+
+    
+ 
+        $('.date-picker').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            startDate: '+1d',
+            orientation: "bottom left"
+        });
+
+   
+
+        $('#submit_foodtruck_count').click(function(){
+            var total = $('#truck_count').val();
+            if(total){
+                $('#please_select').hide();
+                localStorage.setItem('truck_details', []);
+                
+                $('#foodtruck_count').modal('hide');
+                // $('#foodTruckDetails').modal('show');
+                $('#foodTruckDetails').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                $('#noOfTrucks').html(total);
+                $('#truck_no').val(1);
+                $('#truck_num_disp').html('- <span class="text-danger">'+1+'</span>');
+                if(total > 1)
+                {
+                    $('#next_td').show();
+                    $('#update_td').hide();
+                }else {
+                    $('#update_td').show();
+                    $('#next_td').hide();
+                }
+            }else {
+                $('#please_select').show();
+            }
+            truckDocUpload();
+        });
+
+        var truckValidator = $('#truck_details_form').validate({
+            rules: {
+                company_name_en: 'required',
+                company_name_ar: 'required',
+                plate_no: 'required',
+                food_type: 'required',
+                regis_issue_date: 'required',
+                regis_expiry_date: 'required'
+            },
+            messages: {
+                company_name_en: '',
+                company_name_ar: '',
+                plate_no: '',
+                food_type: '',
+                regis_issue_date: '',
+                regis_expiry_date: ''
+            }
+        });
+
+      
+        function addToTruckDetails() {
+            var truckNo = $('#truck_no').val();
+            truckDetails[truckNo] = {
+                company_name_en: $('#company_name_en').val(),
+                company_name_ar: $('#company_name_ar').val(),
+                plate_no: $('#plate_no').val(),
+                food_type: $('#food_type').val(),
+                regis_issue_date: $('#regis_issue_date').val(),
+                regis_expiry_date: $('#regis_expiry_date').val()
+            }
+            localStorage.setItem('truck_details', JSON.stringify(truckDetails));
+        }
+
+        function truckDocValidation(){
+            var hasFile = true;
+            var hasFileArray = [];
+            var reqCount = $('#truck_document_count').val();
+            var truckNo = $('#truck_no').val();
+            // var total = parseInt($('#truck_additional_doc > div').length);
+            if(reqCount > 0)
+            {
+                for (var i = 1; i <= reqCount; i++) 
+                {
+                    truckDocDetails[truckNo] = {};
+                    if($('#truck-file-upload_'+i).length) {
+                        if($('#truck-file-upload_'+i).contents().length === 0)
+                        {
+                            hasFileArray[i] = false;
+                            $('#truck-upload_'+i).css('border', '2px dotted red');
+                        } else {
+                            hasFileArray[i] = true;
+                            $("#truck-upload_" + i).css('border', '2px dotted #A5A5C7');
+                        }
+                        truckDocDetails[truckNo][i] = {
+                            issue_date: $('#truck_doc_issue_date_' + i).val(),
+                            exp_date: $('#truck_doc_exp_date_' + i).val()
+                        }
+                    }
+                }
+            }
+            if (hasFileArray.includes(false)) {
+                hasFile = false;
+            } else {
+                hasFile = true;
+            }
+            localStorage.setItem('truck_doc_details', JSON.stringify(truckDocDetails));
+
+            return hasFile;
+        }
+
+        for(var i = 1; i <= $('#truck_document_count').val() + parseInt($('#truck_additional_doc > div').length); i++)
+        {
+            docRules['truck_doc_issue_date_'+i] = 'required';
+            docRules['truck_doc_exp_date_'+i] = 'required';
+            docMessages['truck_doc_issue_date_'+i] = '';
+            docMessages['truck_doc_exp_date_'+i] = '';
+        }
+
+        $('#next_td').click(function(){
+            var hasFile = truckDocValidation();
+            if(truckValidator.form() && hasFile)
+            {
+                addToTruckDetails();
+                var newTruckNo = parseInt($('#truck_no').val()) + 1;
+                var total = parseInt($('#truck_count').val());
+                $('#truck_no').val(newTruckNo);
+                $('#truck_num_disp').html('- <span class="text-danger">'+newTruckNo+'</span>');
+                if(total > newTruckNo)
+                {
+                    $('#next_td').show();
+                    $('#update_td').hide();
+                }else {
+                    $('#update_td').show();
+                    $('#next_td').hide();
+                }
+                $('.ajax-file-upload-red').trigger('click');
+                $('#truck_details_form').resetForm();
+            }
+        })
+
+        $('#update_td').click(function(){
+            var hasFile = truckDocValidation();
+            if(truckValidator.form() && hasFile)
+            {
+                addToTruckDetails();
+                var truckDetails = localStorage.getItem('truck_details');
+                var truckDocDetails = localStorage.getItem('truck_doc_details');
+                if(truckDetails)
+                {
+                    $.ajax({
+                        url: "{{route('event.add_truck')}}",
+                        type: "POST",
+                        data: {
+                            truckCount: $('#truck_count').val(),
+                            truckDetails: truckDetails,
+                            truckDocDetails: truckDocDetails
+                        },
+                        success: function (result) {
+                            if(result)
+                            {
+                                $('#et_truck_ids').val(JSON.stringify(result.event_truck_ids));
+                                $('#truckEditBtn').show();
+                            }
+                        }
+                    });
+                    $('#foodTruckDetails').modal('hide');
+                }
+            }
+        });
+
+        $('#changeNoOfTrucks').click(function(){
+            $('#foodtruck_count').modal('show');
+            $('#foodTruckDetails').modal('hide');
+            $('#warning_text').show();
+        });
+
+        $('#go_back_btn').click(function(){
+            $('#foodtruck_count').modal('hide');
+            $('#foodTruckDetails').modal('show');
+        });
+
+        // script for liquor details
+
+
+        var liquorValidator = $('#liquor_details_form').validate({
+            rules: {
+                l_company_name_en: 'required',
+                l_company_name_ar: 'required',
+                license_no: 'required',
+                l_issue_date: 'required',
+                l_expiry_date: 'required',
+                "l_emirates[]": {
+                    l_emirate: true,
+                },
+                trade_license_no: 'required',
+                tl_issue_date: 'required',
+                tl_expiry_date: 'required'
+            },
+            messages: {
+                l_company_name_en: '',
+                l_company_name_ar: '',
+                license_no: '',
+                l_issue_date: '',
+                l_expiry_date: '',
+                "l_emirates[]": 'must have rasalkhaimah',
+                trade_license_no: '',
+                tl_issue_date: '',
+                tl_expiry_date: ''
+            }
+        });
+
+        function liqourDocValidation(){
+            var hasFile = true;
+            var hasFileArray = [];
+            var reqCount = parseInt($('#liquor_document_count').val());
+            var total = parseInt($('#liquor_additional_doc > div').length);
+            var fullTotal = reqCount + total ;
+            if(fullTotal > 0)
+            {
+                for (var d = 1; d <= fullTotal; d++) 
+                {
+                    if($('#liquor-file-upload_'+d).length) {
+                        if($('#liquor-file-upload_'+d).contents().length === 0)
+                        {
+                            hasFileArray[d] = false;
+                            $('#liquor-upload_'+d).css('border', '2px dotted red');
+                        } else {
+                            hasFileArray[d] = true;
+                            $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
+                        }
+                        liquorDocDetails[d] = {
+                            issue_date: $('#liquor_doc_issue_date_' + d).val(),
+                            exp_date: $('#liquor_doc_issue_date_' + d).val(),
+                        }
+                    }
+                }
+            }
+            if (hasFileArray.includes(false)) {
+                hasFile = false;
+            } else {
+                hasFile = true;
+            }
+            localStorage.setItem('liquordocumentDetails', JSON.stringify(liquorDocDetails));
+
+            return hasFile;
+        }
+
+
+
+    
+        const liquorDocUpload = () => {
+            var per_doc = $('#liquor_document_count').val();
+            var total = parseInt($('#liquor_additional_doc > div').length);
+            for(var i = 1; i <= parseInt(per_doc) + total ;i++){
+                    var reqID = $('#liqour_req_id_'+i).length ? $('#liqour_req_id_'+i).val() : i ;
+                    var add = $('#liqour_req_id_'+i).length ? 'no' : 'yes' ;
+                    liquorDocUploader[i] = $('#liquoruploader_'+i).uploadFile({
+                    url: "{{route('event.uploadLiquor')}}",
+                    method: "POST",
+                    allowedTypes: "jpeg,jpg,png,pdf",       
+                    fileName: "liquor_file_"+i,
+                    multiple: true,
+                    downloadStr: `<i class="la la-download"></i>`,
+                    deleteStr: `<i class="la la-trash"></i>`,
+                    showFileSize: false,
+                    showFileCounter: false,
+                    showProgress: false,
+                    abortStr: '',
+                    returnType: "json",
+                    maxFileCount: 2,
+                    showPreview: false,
+                    showDelete: true,
+                    showDownload: true,
+                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    formData: {id:  i, reqId: reqID , add: add },
+                    downloadCallback: function (files, pd) {
+                        let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    },
+                    deleteCallback: function(data,pd)
+                    {
+                        $.ajax({
+                            url: "{{route('event.deleteLiquorFile')}}",
+                            type: 'POST',
+                            data: {path: data.filepath, ext: data.ext, id: data.id},
+                            success: function (result) {
+                                console.log('success');
+                            }
+                        });
+                    }
+                    
+                });
+                $('#liquoruploader_'+i+'  div').attr('id', 'liquor-upload_'+i);
+                $('#liquoruploader_'+i+' + div').attr('id', 'liquor-file-upload_'+i);
+            }
+        };
+
+        var liquorDetails = {};
+ 
+        $.validator.addMethod("l_emirate", function(value, element) {
+            // return $('select[name="l_emirates[]"]').includes('5');
+            return value.includes("5");
+        },'License must be valid in Rasalkhaimah');
+    
+
+        $('#update_lq').click(function(){
+            var hasFile = liqourDocValidation();
+            if(liquorValidator.form() && hasFile)
+            {
+                liquorDetails = {
+                    company_name_en: $('#l_company_name_en').val(),
+                    company_name_ar: $('#l_company_name_ar').val(),
+                    license_no: $('#license_no').val(),
+                    l_emirates: $('#l_emirates').val(),
+                    l_issue_date: $('#l_issue_date').val(),
+                    l_expiry_date: $('#l_expiry_date').val(),
+                    trade_license_no: $('#trade_license_no').val(),
+                    tl_issue_date: $('#tl_issue_date').val(),
+                    tl_expiry_date: $('#tl_expiry_date').val()
+                };
+                var liquorDocDetails = localStorage.getItem('liquordocumentDetails');
+                $.ajax({
+                        url: "{{route('event.add_liquor')}}",
+                        type: "POST",
+                        data: {
+                            liquorDetails: liquorDetails,
+                            liquorDocDetails: liquorDocDetails,
+                            event_liquor_id: $('#event_liquor_id').val()
+                        },  
+                        success: function (result) {
+                            if(result)
+                            {
+                                $('#et_liquor_id').val(result.event_liquor_id);
+                                $('#liquorEditBtn').show();
+                            }
+                        }
+                });
+                // localStorage.setItem('liquor_details', JSON.stringify(liquorDetails));
+                $('#liquor_details').modal('hide');
+            }
+        });
+
+        
+        function go_back_truck_list()
+        {
+            $('#edit_food_truck').modal('show');
+            $('#edit_one_food_truck').modal('hide');
+        }
+       
+
+        // function editTruck(){
+        //     var truck_id = $('#et_truck_ids').val();
+        //     $.ajax({
+        //         url:  "{{route('event.fetch_truck_details')}}",
+        //         type: 'POST',
+        //         data: {
+        //             ids: truck_id
+        //         },
+        //         success: function (result) {
+        //             if(result) 
+        //             {
+        //                 $('#food_truck_list').empty();
+        //                 console.log(result);
+        //                 // checkTruck(1);
+        //                 // var LD = result.event_liquor[0];
+        //                  $('#edit_food_truck').modal('show');
+        //                 //  var et = result.event_truck;
+        //                 // for(var s = 0;s <= et.length;s++)
+        //                 // {
+        //                 //     $('#food_truck_list').append('<td>'+ et.company_name_en+'</td><td>'+ et.company_name_en+'</td>');
+        //                 // }
+                        
+        //             }
+        //         }
+        //     });
+        // }
       
 
         

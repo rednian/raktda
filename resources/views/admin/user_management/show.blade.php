@@ -1,11 +1,11 @@
 @extends('layouts.admin.admin-app')
 @section('style')
-   <style>
-      /*.dataTables_length{*/
-      /*   display:inline;*/
-      /*}*/
-   </style>
-   {{-- <link rel="stylesheet" href="{{ asset('assets/vendors/general/fullcalendar/fullcalendar.min.css') }}"> --}}
+<link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
+<style>
+  .fc-unthemed .fc-event .fc-title, .fc-unthemed .fc-event-dot .fc-title { color: #fff; }
+  .fc-unthemed .fc-event .fc-time, .fc-unthemed .fc-event-dot .fc-time { color: #fff; }
+   .widget-toolbar{ cursor: pointer; }
+</style>
 @stop
 @section('content')
    <section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
@@ -23,20 +23,20 @@
       <div class="kt-portlet__body kt-padding-t-0">
          <ul id="main-tab" class="nav nav-tabs  nav-tabs-line nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
             <li class="nav-item">
-               <a class="nav-link active" data-toggle="tab" href="#profession" role="tab">{{ __('Personal Details') }}</a>
+               <a class="nav-link active" data-toggle="tab" href="#personal" role="tab">{{ __('Personal Details') }}</a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" data-toggle="tab" href="#artist_requirements" role="tab">{{ __('Weekly Work Schedule') }}</a>
+               <a class="nav-link" data-toggle="tab" href="#work_schedule" role="tab">{{ __('Weekly Work Schedule') }}</a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" data-toggle="tab" href="#event_requirements" role="tab">{{ __('Leave') }}</a>
+               <a class="nav-link" data-toggle="tab" href="#leave" role="tab">{{ __('Time Off') }}</a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" data-toggle="tab" href="#event_types" role="tab">{{ __('Appointments') }}</a>
+               <a class="nav-link" data-toggle="tab" href="#appointments" role="tab">{{ __('Appointments') }}</a>
             </li>
          </ul>
          <div class="tab-content">
-            <div class="tab-pane active" id="profession" role="tabpanel">
+            <div class="tab-pane active" id="personal" role="tabpanel">
               
               <form method="POST" id="formAddUser" action="{{ route('user_management.update_user', $user->user_id) }}">
               @csrf
@@ -200,7 +200,9 @@
              </form>
 
             </div>
-            <div class="tab-pane" id="artist_requirements" role="tabpanel">
+            <div class="tab-pane" id="work_schedule" role="tabpanel">
+
+              @if(!is_null($user->workschedule))
               <section class="row kt-margin-t-10">
                   <div class="col-6">
                     <div class="form-group form-group-sm kt-margin-b-0">
@@ -226,20 +228,60 @@
                     <a href="{{ URL::signedRoute('user_management.schedule.create', ['user' => $user->user_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('ADD CUSTOM SCHEDULE') }}</a>
                  </div>
               </section>
+              @else
+
+              <div class="alert alert-outline-danger fade show" role="alert">
+                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                 <div class="alert-text">
+                    {{ __('Employee has no set schedule. Please select schedule.') }}
+                 </div>
+                 <div class="alert-close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                       <span aria-hidden="true"><i class="la la-close"></i></span>
+                    </button>
+                 </div>
+              </div>
               
+              <section class="row kt-margin-t-10">
+                  <div class="col-6">
+                    <div class="form-group form-group-sm kt-margin-b-0">
+                        <select name="schedule" id="schedule" class="form-control form-control-sm">
+                          <optgroup label="System Schedules">
+                            @foreach(App\ScheduleType::all() as $type)
+                            <option {{ App\ScheduleType::where('is_active')->first()->schedule_type_id == $type->schedule_type_id ? 'selected' : '' }} data-type="system" value="{{ $type->schedule_type_id }}">{{ Auth::user()->LanguageId == 1 ? $type->schedule_type_name : $type->schedule_type_name_ar }}</option>
+                            @endforeach
+                          </optgroup>
+                          @if($user->customSchedules()->count() > 0)
+                          <optgroup label="Custom Schedules">
+                            @foreach($user->customSchedules as $custom)
+                            <option data-type="custom" value="{{ $custom->emp_custom_id }}">{{ Auth::user()->LanguageId == 1 ? $custom->emp_custom_name : $custom->emp_custom_name_ar }}</option>
+                            @endforeach
+                          </optgroup>
+                          @endif
+                        </select>
+                    </div>
+                    <small class="kt-font-bolder">( Select schedule type above to see schedules )</small>
+                  </div>
+                 <div class="col-6">
+                    {{-- <a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a> --}}
+                    <a href="{{ URL::signedRoute('user_management.schedule.create', ['user' => $user->user_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('ADD CUSTOM SCHEDULE') }}</a>
+                 </div>
+              </section>
+              
+              @endif
+
               <section class="row kt-margin-t-10">
                   <div class="col-12" id="showScheduleContainer">
                       
                   </div>
               </section>
-
               
             </div>
-            <div class="tab-pane" id="event_requirements" role="tabpanel">
+            <div class="tab-pane" id="leave" role="tabpanel">
               <section class="row">
                  <div class="col-12">
                     {{-- <a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a> --}}
-                    <a href="{{ URL::signedRoute('requirements.create', ['t' => 'event']) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW TIME OFF') }}</a>
+                    <a href="{{ URL::signedRoute('user_management.leave.add', ['user' => $user->user_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW TIME OFF') }}</a>
                  </div>
               </section>
               <section class="row">
@@ -249,7 +291,7 @@
               </section>
               
             </div>
-            <div class="tab-pane" id="event_types" role="tabpanel">
+            <div class="tab-pane" id="appointments" role="tabpanel">
                <section class="row">
                  <div class="col-12">
                     <a href="{{ route('event_type.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW EVENT TYPE') }}</a>
@@ -280,6 +322,9 @@
                   center: 'title',
                   right: 'listWeek,timeGridWeek,dayGridMonth',
               },
+              @if(Auth::user()->LanguageId != 1)
+              locale: 'ar',
+              @endif
               height: 'auto',
               allDaySlot: true,
               contentHeight: 450,
@@ -291,14 +336,14 @@
                   timeGridDay: { buttonText: '{{ __('Day') }}' },
                   listWeek: { buttonText: '{{ __('Week List') }}' }
               },
-              defaultView: 'dayGridMonth',
-              editable: true,
+              defaultView: 'listWeek',
+              editable: false,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
-              // events: {
-              //   url: '{{ route('admin.event.calendar') }}',
-              //   textColor : '#ffffff',
-              // },
+              events: {
+                  url: '{{ URL::signedRoute('user_management.leave.get', ['user' => $user->user_id]) }}',
+                  textColor : '#ffffff',
+              },
               eventRender: function(info) {
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {
@@ -316,12 +361,18 @@
           });
           calendar.render();
 
+        @if(!is_null($user->workschedule))
         @php
         $type = $user->workschedule->is_custom ? 'custom' : 'system';
         $id = is_null($user->workschedule->is_custom) ? $user->workschedule->schedule_type_id : $user->workschedule->emp_custom_id;
         @endphp
-
         getSchedules('{{ $type }}', {{ $id }});
+        @else
+        //SELECT THE DEFAULT SCHEDULE FROM SETTINGS
+        getSchedules('system', {{ App\ScheduleType::where('is_active')->first()->schedule_type_id }});
+        @endif
+
+        
 
         var hash = window.location.hash;
 
@@ -339,16 +390,16 @@
       $('#main-tab.nav.nav-tabs a').on('shown.bs.tab', function (event) {
 
           // var current_tab = $(event.target).attr('href');
-          // if(current_tab == '#profession'){
-          //   //loadProfessions();
+          // if(current_tab == '#personal'){
+          //   //loadpersonals();
           // }
-          // if(current_tab == '#artist_requirements'){
+          // if(current_tab == '#work_schedule'){
           //   ///loadRequirements()
           // }
-          // if(current_tab == '#event_requirements'){
+          // if(current_tab == '#leave'){
           //   //loadEventRequirements()
           // }
-          // if(current_tab == '#event_types'){
+          // if(current_tab == '#appointments'){
           //   //loadEventType();
           // }
       });
@@ -357,19 +408,19 @@
       $('#main-tab.nav.nav-tabs a[data-toggle="tab"]').on('hidden.bs.tab', function (e) {
       
       var prevTab = $(e.target).attr('href');
-          if(prevTab == '#profession'){
-            //tblProfession.destroy();
+          if(prevTab == '#personal'){
+            //tblpersonal.destroy();
           }
 
-          if(prevTab == '#artist_requirements'){
+          if(prevTab == '#work_schedule'){
             //tblRequirement.destroy();
           }
 
-          if(prevTab == '#event_requirements'){
+          if(prevTab == '#leave'){
             //tblEventRequirement.destroy();
           }
 
-          if(prevTab == '#event_types'){
+          if(prevTab == '#appointments'){
             //tblEventTypes.destroy();
           }
     });

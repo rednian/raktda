@@ -471,7 +471,7 @@ class ArtistPermitController extends Controller
 
       $table = Datatables::of($permit)
       ->addColumn('artist_number', function($permit){
-        $total = $permit->artistpermit()->count();
+        $total = $permit->artistpermit()->count();  
         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
         if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
         return 'Checked '.$check.' of '.$total;
@@ -485,8 +485,8 @@ class ArtistPermitController extends Controller
         if(!$permit->issued_date) return null;
         return $permit->issued_date->format('d-M-Y');
       })
-      ->addColumn('company_name', function($permit){
-         return $permit->company ? ucwords($permit->company->company_name) :  null;
+      ->addColumn('company_name', function($permit) use ($request){
+          return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : $permit->owner->company->name_ar;
       })
       ->addColumn('company_type', function($permit){
             return;

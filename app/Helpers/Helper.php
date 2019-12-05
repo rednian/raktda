@@ -1,5 +1,10 @@
 <?php
 
+// function fileExtension($filename = null){
+//     $array = explode('.', $filename);
+//     return array_pop($array);
+// }
+
 
 function humanDate($date){
     return $date-> diffForHumans();
@@ -20,12 +25,16 @@ function defaults($name = null, $role){
     return $html;
 }
 
+function fileName($filename = null){
+    $array = explode('.', $filename);
+    return strtolower(array_pop($array));
+}
+
 
 
 function fileExtension($path)
 {
-    $ext = explode('.', $path);
-    $ext = strtolower(array_pop($ext));
+    $ext = fileName($path);
     $className = null;
     switch ($ext) {
         case 'pdf':
@@ -116,7 +125,7 @@ function permitStatus($status)
     if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active') {
         $classname = 'success';
     }
-    if ($status == 'send back for amendments' || $status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended') {
+    if ($status == 'send back for amendments' || $status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended' || $status == 'pending') {
         $classname = 'warning';
     }
     if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled') {

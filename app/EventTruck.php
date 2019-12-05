@@ -8,12 +8,8 @@ class EventTruck extends Model
 {
    protected $table = 'event_truck';
    protected $primaryKey = 'event_truck_id';
-   protected $fillable = ['company_name_en', 'company_name_ar', 'plate_number', 'food_type_id', 'registration_issued_date', 'registration_expired_date', 'event_id'];
+   protected $fillable = ['company_name_en', 'company_name_ar', 'plate_number', 'food_type', 'registration_issued_date', 'registration_expired_date', 'event_id', 'status', 'created_by'];
 
-   public function type()
-   {
-      return $this->hasMany(FoodType::class, 'food_type_id');
-   }
 
    public function event()
    {

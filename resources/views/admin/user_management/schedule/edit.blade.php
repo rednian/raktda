@@ -59,7 +59,7 @@
 		<div class="kt-portlet__body kt-padding-t-0">
 			<form method="POST" id="formAddScheduleType" action="{{ route('user_management.schedule.update', ['user' => $user->user_id, 'custom' => $custom->emp_custom_id]) }}">
 			@csrf
-			@if($user->workschedule->emp_custom_id != $custom->emp_custom_id)
+			@if(is_null($user->workschedule) || $user->workschedule->emp_custom_id != $custom->emp_custom_id)
 			<section class="row kt-margin-t-50">
                 <div class="col-sm-6">
 					<span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">

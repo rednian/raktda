@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Auth;
 use DataTables;
 use App\Requirement;
+use App\EventTypeRequirement;
 use App\EventType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -223,7 +224,28 @@ class RequirementController extends Controller
             }
             return 0;
         })
-        ->rawColumns(['status', 'actions'])
+        ->addColumn('is_required', function($requirement) use($request){
+
+            $checked = '';
+            $disabled = 'disabled';
+            if($request->has('event_type_id')){
+                $rq = EventTypeRequirement::where(['event_type_id' => $request->event_type_id, 'requirement_id' => $requirement->requirement_id])->first();
+
+                if($rq){
+                    $disabled = '';
+                    $checked = $rq->is_mandatory == 1 ? 'checked' : '';
+                }
+            }
+
+            return '<span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                        <label>
+                            <input ' . $disabled . ' ' . $checked . ' data-id="' . $requirement->requirement_id . '" type="checkbox" name="is_required" value="1" class="requirement_is_required"> <b class="kt-padding-t-5 kt-padding-l-5 kt-font-dark" style="font-weight:normal;display:inline-block;"></b>
+                            <span></span>
+                        </label>
+                    </span>';
+        
+        })
+        ->rawColumns(['status', 'actions', 'is_required'])
         ->make(true);
     }
 

@@ -1,21 +1,78 @@
 @extends('layouts.admin.admin-app')
 @section('content')
-
-	 <section class="kt-portlet kt-portlet--head-sm">
-			<div class="kt-portlet__head kt-portlet__head--sm">
-				 <div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST PROFILE') }}</span></h3></div>
-				 <div class="kt-portlet__head-toolbar">
-						<button id="clickme" class="btn btn-sm btn-maroon btn-elevate  kt-font-transform-u">
-							 <i class="la la-arrow-left"></i>{{ __('BACK') }}
-                        </button>
-				 </div>
-
-			</div>
-			<div class="kt-portlet__body" style="padding-bottom: 0 !important;">
-				 <div class="accordion accordion-solid accordion-toggle-plus kt-margin-b-5" id="accordion-personal">
-						<div class="card">
-							 <div class="card-header" id="heading-personal">
+<section class="kt-portlet kt-portlet--head-sm">
+   <div class="kt-portlet__head kt-portlet__head--sm">
+      <div class="kt-portlet__head-label">
+         <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST PROFILE') }}</span></h3></div>
+         <div class="kt-portlet__head-toolbar">
+            <button id="clickme" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
+               <i class="la la-arrow-left"></i>{{ __('BACK TO Previous') }}
+            </button>
+         </div>
+      </div>
+      <div class="kt-portlet__body" style="padding-bottom: 0 !important;">
+         <div class="kt-widget kt-widget--user-profile-3">
+            <div class="kt-widget__top">
+               <div class="kt-widget__media">
+                   <img class="img img-thumbnail" src="{{ asset('/storage/'.$artist_permit->thumbnail) }}" alt="">   
+               </div>
+               <div class="kt-widget__content">
+                  <div class="kt-widget__head">
+                     <div class="kt-widget__user">
+                        <span class="kt-widget__username kt-margin-r-5">{{ ucwords($artist_permit->fullname) }}</span>
+                        @if ($artist_permit->artist->artist_status == 'active')
+                             <span id="status" class="kt-badge kt-badge--bolder kt-badge kt-badge--inline kt-badge--unified-success kt-font-transform-u">
+                              {{ $artist_permit->artist->artist_status }}
+                              </span>
+                           @else
+                           <span id="status" class="kt-badge kt-badge--bolder kt-badge kt-badge--inline kt-badge--unified-danger kt-font-transform-u">
+                            {{ $artist_permit->artist->artist_status }}
+                            </span>
+                        @endif
+                       
+                     </div>
+                     <div class="kt-widget__action">
+                        @if ($artist_permit->artist->artist_status == 'active')
+                             <button id="btn-action" class="btn btn-maroon btn-sm kt-font-transform-u">{{__('Block Artist')}}</button>
+                          @else
+                             <button id="btn-action" class="btn btn-success btn-sm kt-font-transform-u">{{__('Unblock Artist')}}</button>
+                        @endif
+                      
+                     </div>
+                  </div>
+                  <div class="kt-widget__subhead kt-padding-t-0 kt-hide">
+                     @if ($artist_permit->artist->permit()->where('permit_status', 'active')->count() > 0)
+                        <span class="kt-font-bold kt-font-dark"> Active Profession :</span>
+                       
+                        <span class="kt-font-bold tag"> david.s@loop.com</span>
+                        @else
+                        <span class="kt-font-bold kt-font-dark"> Recent Profession :</span>
+                        <span class="kt-font-bold"> david.s@loop.com</span>
+                     @endif
+                     
+                  </div>
+                  <div class="kt-widget__info">
+                     <div class="kt-widget__desc">
+                       
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="kt-widget__bottom kt-margin-t-5">
+               <div class="kt-widget__item kt-padding-t-0">
+                  <div class="kt-widget__icon">
+                     <i class="flaticon-file-2"></i>
+                  </div>
+                  <div class="kt-widget__details">
+                     <a href="#" class="kt-widget__value">Active Permit</a>
+                     <span class="kt-widget__title text-center">{{$artist_permit->artist->permit()->where('permit_status', 'active')->count() }}</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="accordion accordion-solid accordion-toggle-plus kt-margin-b-5 kt-hide" id="accordion-personal">
+            <div class="card">
+               <div class="card-header" id="heading-personal">
 									<div class="card-title collapsed kt-padding-t-15 kt-padding-b-10" data-toggle="collapse" data-target="#collapse-personal" aria-expanded="false" aria-controls="collapse-personal">
 										 <h6 class="kt-font-dark kt-font-transform-u">{{ __('PERSONAL INFORMATION') }}</h6>
 									</div>
@@ -34,7 +91,7 @@
                                                             </div>
 													 @endif
 													 	
-													 @include('admin.artist.include.artist-block-modal')
+													
 													 <div class="kt-widget__content">
 															<div class="kt-widget__head">
 																 <div class="kt-widget__user">
@@ -51,7 +108,7 @@
 															<div class="kt-widget__subhead">
 																 <span>{{ __('Current Company') }} : 
                                                                     <span class="kt-font-dark kt-font-bolder">
-                                                                        {{ $artist_permit->permit()->latest()->first()->company->company_name }}
+                                                                        {{ $artist_permit->permit()->latest()->first()->owner->company->name_en }}
                                                                     </span>
                                                                 </span>
 																 {{--										 <a href="#"><i class="flaticon2-calendar-3"></i>PR Manager </a>--}}
@@ -97,80 +154,23 @@
 							 </div>
 						</div>
 				 </div>
-				 <section class="row">
-						<div class="col-6">
-							 <div class="accordion accordion-solid accordion-toggle-plus kt-margin-b-5" id="accordion-contact">
-									<div class="card">
-										 <div class="card-header" id="heading-personal">
-												<div class="card-title collapsed kt-padding-t-15 kt-padding-b-10" data-toggle="collapse" data-target="#collapse-contact" aria-expanded="false"
-														 aria-controls="collapse-contact">
-													 <h6 class="kt-font-dark kt-font-transform-u">{{ __('CONTACT INFORMATION') }}</h6>
-												</div>
-										 </div>
-										 <div id="collapse-contact" class="collapse show" aria-labelledby="heading-contact" data-parent="#accordion-contact" style="">
-												<div class="card-body" style="padding: 1px 1.25rem;">
-													 <table class="table table-borderless table-sm">
-															<tr>
-																 <td width="25%">{{ __('Email') }}</td>
-																 <td>: <span class="kt-font-bold">{{ $artist_permit->email }}</span></td>
-															</tr>
-															<tr>
-																 <td>{{ __('Mobile Number') }}</td>
-																 <td>: <span class="kt-font-bold">{{ $artist_permit->mobile_number}}</span></td>
-															</tr>
-															<tr>
-																 <td>{{ __('Phone Number') }}</td>
-																 <td>: <span class="kt-font-bold">{{ $artist_permit->phone_number}}</span></td>
-															</tr>
-													 </table>
-												</div>
-										 </div>
-									</div>
-							 </div>
-						</div>
-						<div class="col-6">
-							 <div class="accordion accordion-solid accordion-toggle-plus " id="accordion-address">
-									<div class="card">
-										 <div class="card-header" id="heading-personal">
-												<div class="card-title collapsed kt-padding-t-15 kt-padding-b-10" data-toggle="collapse" data-target="#collapse-address" aria-expanded="false"
-														 aria-controls="collapse-address">
-													 <h6 class="kt-font-dark kt-font-transform-u">{{ __('ADDRESS INFORMATION') }}</h6>
-												</div>
-										 </div>
-										 <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address" style="">
-												<div class="card-body" style="padding: 1px 1.25rem;">
-                                                    <table class="table table-borderless table-sm">
-															<tbody>
-															<tr>
-																 <td width="15%">{{ __('Address') }}</td>
-																 <td>: <span class="kt-font-bold ">{{ ucwords($artist_permit->address_en) }}</span></td>
-															</tr>
-															<tr>
-																 <td>{{ __('Area') }}</td>
-																 <td>: <span class="kt-font-bold">{{ ucwords($artist_permit->area->area_en) }}</span></td>
-															</tr>
-															<tr>
-																 <td>{{ __('Emirate') }}</td>
-																 <td>: <span class="kt-font-bold">{{ ucwords($artist_permit->emirate->name_en)}}</span></td>
-															</tr>
-															</tbody>
-													 </table>
-												</div>
-										 </div>
-									</div>
-						 </div>
-						</div>
-				 </section>
+				 
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
-						<li class="nav-item">
-							 <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_1" role="tab" aria-selected="true">{{ __('PERMIT HISTORY') }}</a>
-						</li>
-						<li class="nav-item">
-							 <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_2" role="tab" aria-selected="false">{{ __('STATUS HISTORY') }}</a>
-						</li>
+               <li class="nav-item">
+                  <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_1" role="tab" aria-selected="true">{{ __('PERSONAL INFORMATION') }}</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_2" role="tab" aria-selected="true">{{ __('PERMIT HISTORY') }}</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_3" role="tab" aria-selected="false">{{ __('STATUS HISTORY') }}</a>
+               </li>
 				 </ul>
 				 <div class="tab-content">
-						<div class="tab-pane active" id="kt_tabs_6_1" role="tabpanel">
+               <div class="tab-pane active" id="kt_tabs_6_1" role="tabpanel">
+                     
+                  </div>
+						<div class="tab-pane" id="kt_tabs_6_2" role="tabpanel">
 							 @if($artist_permit->permit()->count() > 0)
 									<table class="table table-striped table-borderless table-hover border" id="artist-permit-history">
 										 <thead>
@@ -191,7 +191,7 @@
 									@endempty
 							 @endif
 						</div>
-						<div class="tab-pane" id="kt_tabs_6_2" role="tabpanel">
+						<div class="tab-pane" id="kt_tabs_6_3" role="tabpanel">
 							 @if($artist_permit->artist->action->count() > 0)
 									<table class="table table-striped table-borderless table-hover border table-hover" id="status-history">
 										 <thead>
@@ -213,13 +213,19 @@
 
 			</div>
 	 </section>
+     @include('admin.artist.include.artist-block-modal')
       @include('admin.artist_permit.includes.document')
 @endsection
 @section('script')
 <script>
     var is_checked = false;
       $(document).ready(function () {
-        $('input#artist-status').change(function(){ $('#kt_modal_1').modal('show'); });
+         $('button#btn-action').click(function(){
+            $('#kt_modal_1').modal('show');
+         });
+
+        $('input#artist-status').change(function(){  });
+
         $('#kt_modal_1').on('hidden.bs.modal', function () {
             $('input#artist-status').attr();
         })

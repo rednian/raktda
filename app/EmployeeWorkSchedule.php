@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +13,15 @@ class EmployeeWorkSchedule extends Model
     protected $fillable = [
         'user_id', 'schedule_type_id', 'is_custom', 'emp_custom_id'
     ];
+
+    public function getSchedule(){
+        if ($this->is_custom) {
+            return $this->belongsTo(EmployeeCustomWorkSchedule::class, 'emp_custom_id');
+        }
+        else{
+            return $this->belongsTo(ScheduleType::class, 'schedule_type_id');
+        }
+    }
 
     public function getScheduleType(){
     	return $this->belongsTo(ScheduleType::class, 'schedule_type_id');
