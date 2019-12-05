@@ -640,9 +640,9 @@
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script src="{{asset('js/company/map.js')}}"></script>
-{{-- <script
+<script
     src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}&libraries=places&callback=initialize"
-async defer></script> --}}
+    async defer></script>
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
