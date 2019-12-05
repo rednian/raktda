@@ -141,6 +141,23 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('user_management/details/{user}/schedule/{custom}/edit', 'Admin\UserController@editCustomSchedule')->name('user_management.schedule.edit');
     Route::post('user_management/details/{user}/schedule/{custom}/update', 'Admin\UserController@updateCustomSchedule')->name('user_management.schedule.update');
     Route::post('user_management/details/{user}/schedule/{custom}/delete', 'Admin\UserController@deleteCustomSchedule')->name('user_management.schedule.delete');
+
+    // LEAVE ROUTES
+    Route::get('user_management/leave/add/{user?}', 'Admin\UserController@addLeave')->name('user_management.leave.add');
+    Route::post('user_management/leave/save/{user?}', 'Admin\UserController@saveLeave')->name('user_management.leave.save');
+    Route::get('user_management/leave/get/{user?}', 'Admin\UserController@getLeaves')->name('user_management.leave.get');
+    Route::get('user_mangement/leave/{leave}/show/{user?}', 'Admin\UserController@showLeave')->name('user_management.leave.show');
+    Route::post('user_management/leave/{leave}/update/{user?}', 'Admin\UserController@updateLeave')->name('user_management.leave.update');
+    Route::post('user_management/leave/{leave}/delete/{user?}', 'Admin\UserController@deleteLeave')->name('user_management.leave.delete');
+
+    //HOLIDAYS ROUTES
+    Route::get('user_management/holiday/add', 'Admin\UserController@addHoliday')->name('user_management.holiday.add');
+    Route::post('user_management/holiday/save', 'Admin\UserController@saveHoliday')->name('user_management.holiday.save');
+    Route::get('user_management/holiday/get', 'Admin\UserController@getHoliday')->name('user_management.holiday.get');
+    Route::get('user_management/holiday/{holiday}', 'Admin\UserController@showHoliday')->name('user_management.holiday.show');
+    Route::patch('user_management/holiday/{holiday}', 'Admin\UserController@updateHoliday')->name('user_management.holiday.update');
+    Route::delete('user_management/holiday/{holiday}', 'Admin\UserController@deleteHoliday')->name('user_management.holiday.delete');
+
     Route::resource('user_management', 'Admin\UserController');
 
     //---------------------------------------------------------------------------------------------------------------

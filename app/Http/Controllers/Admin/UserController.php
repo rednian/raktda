@@ -6,6 +6,8 @@ use Auth;
 use App\User;
 use App\ScheduleType;
 use App\EmployeeCustomWorkSchedule;
+use App\EmployeeLeave;
+use App\Holiday;
 use App;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -28,7 +30,15 @@ class UserController extends Controller
 			'setScheduleActive',
 			'saveCustomSchedule',
 			'updateCustomSchedule',
-			'deleteCustomSchedule'
+			'deleteCustomSchedule',
+            'saveLeave',
+            'getLeaves',
+            'updateLeave',
+            'deleteLeave',
+            'getHoliday',
+            'saveHoliday',
+            'updateHoliday',
+            'deleteHoliday'
 		]);
 	}
 
@@ -58,13 +68,13 @@ class UserController extends Controller
     		]);
 
     		//ADD USER ROLE
-    		$user->roles()->sync($request->role_id);
+    		$user->roles()->sync([ $request->role_id => [ 'IsActive' => 1] ]);
 
     		DB::commit();
     		$result = ['success', 'Employee has been added successfully.', 'Success'];
 
     		if($request->submit_type == 'continue'){
-                return redirect(URL::signedRoute('user_management'))->with('message', $result);
+                return redirect(URL::signedRoute('user_management.index'))->with('message', $result);
             }
     	} catch (\Exception $e) {
     		DB::rollBack();
@@ -112,8 +122,9 @@ class UserController extends Controller
             DB::beginTransaction();
 
             $status = $request->has('IsActive') ? 1 : 0;
-
     		$user->update(array_merge( $request->except(['password', 'IsActive']), ['password' => bcrypt($request->new_password), 'IsActive' => $status]) );
+
+            $user->roles()->sync([ $request->role_id => [ 'IsActive' => $status]]);
 
     		DB::commit();
     		$result = ['success', 'Employee has been saved successfully.', 'Success'];
@@ -169,7 +180,7 @@ class UserController extends Controller
     		$result = ['error', $e->getMessage(), 'Error'];
     	}
 
-    	return redirect(URL::signedRoute('user_management.details', ['user' => $request->user_id]) . '#artist_requirements')->with('message', $result);
+    	return redirect(URL::signedRoute('user_management.details', ['user' => $request->user_id]) . '#work_schedule')->with('message', $result);
         
     }
 
@@ -204,7 +215,7 @@ class UserController extends Controller
             $result = ['success', 'Schedule Type has been added successfully.', 'Success'];
 
             if($request->submit_type == 'continue'){
-                return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#artist_requirements')->with('message', $result);
+                return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#work_schedule')->with('message', $result);
             }
             
         } catch (\Exception $e) {
@@ -243,7 +254,7 @@ class UserController extends Controller
             $result = ['success', 'Schedule Type has been saved successfully.', 'Success'];
 
             if($request->submit_type == 'continue'){
-                return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#artist_requirements')->with('message', $result);
+                return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#work_schedule')->with('message', $result);
             }
             
         } catch (\Exception $e) {
@@ -267,6 +278,205 @@ class UserController extends Controller
         	DB::rollBack();
             $result = ['error', $e->getMessage(), 'Error'];
         }
-        return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#artist_requirements')->with('message', $result);
+        return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#work_schedule')->with('message', $result);
+    }
+
+    //LEAVE SCRIPTS
+    public function addLeave(User $user, Request $request){
+        return view('admin.user_management.leave.create', ['page_title' => 'Add Leave', 'user' => $user ]);
+    }
+
+    public function saveLeave(User $user, Request $request){
+        try {
+            $dates = [
+                'leave_start' => date('Y-m-d H:i:s', strtotime($request->leave_start)), 
+                'leave_end' => date('Y-m-d H:i:s', strtotime($request->leave_end)) 
+            ];
+
+            $data = array_merge( $request->except(['leave_start', 'leave_end']), $dates );
+
+            if(!is_null($user->user_id)){
+                $user->leave()->create($data); 
+            }else{
+                EmployeeLeave::create($data); 
+            }
+            $result = ['success', 'Leave has been saved successfully.', 'Success'];
+
+            if($request->submit_type == 'continue'){
+
+                if(!is_null($user->user_id)){
+                    return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#leave')->with('message', $result);
+                }
+
+                return redirect(URL::signedRoute('user_management.index') . '#leave')->with('message', $result);
+            }
+        } catch (\Exception $e) {
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+        return redirect()->back()->with('message',$result);
+    }
+
+    public function getLeaves(User $user, Request $request){
+
+        // dd($request->all());
+
+        $colors = [
+            '#5867dd',
+            '#0abb87',
+            '#ffb822',
+            '#fd397a',
+            '#282a3c',
+            '#9c27b0',
+        ];
+
+        $leaves = EmployeeLeave::when($user->user_id, function($q) use($user){
+            $q->where('user_id', $user->user_id);
+        })->orderBy('leave_start')->get();
+
+        $leaves = $leaves->map(function($leave) use ($request, $colors, $user){
+            return [
+                'title'=> ($request->user()->LanguageId == 1 ? $leave->getLeaveType->leave_type_name : $leave->getLeaveType->leave_type_name_ar) . ' - ' . ($request->user()->LanguageId == 1 ? $leave->getUser->NameEn : $leave->getUser->NameAr),
+                'start'=> $leave->leave_start,
+                'end'=> $leave->leave_end,
+                'id'=> $leave->employee_leave_id,
+                'url'=> URL::signedRoute('user_management.leave.show', ['leave' => $leave->employee_leave_id, 'user' => $user->user_id]),
+                'description'=> 'Remarks: ' . $leave->remarks,
+                'backgroundColor'=> $colors[array_rand($colors)],
+                'textColor' => '#fff !important',
+            ];
+        });
+
+        return response()->json($leaves);   
+    }
+
+    public function showLeave(EmployeeLeave $leave, User $user, Request $request){
+        return view('admin.user_management.leave.show', ['page_title' => 'Edit Leave', 'user' => $user, 'leave' => $leave]);
+    }
+
+    public function updateLeave(EmployeeLeave $leave, User $user, Request $request){
+        try {
+            $dates = [
+                'leave_start' => date('Y-m-d H:i:s', strtotime($request->leave_start)), 
+                'leave_end' => date('Y-m-d H:i:s', strtotime($request->leave_end)) 
+            ];
+            $data = array_merge( $request->except(['leave_start', 'leave_end']), $dates );
+            $leave->update($data);
+
+            $result = ['success', 'Leave has been saved successfully.', 'Success'];
+
+            if($request->submit_type == 'continue'){
+
+                if(!is_null($user->user_id)){
+                    return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#leave')->with('message', $result);
+                }
+
+                return redirect(URL::signedRoute('user_management.index') . '#leave')->with('message', $result);
+            }
+        } catch (\Exception $e) {
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+        return redirect()->back()->with('message',$result);
+    }
+
+    public function deleteLeave(EmployeeLeave $leave, User $user, Request $request){
+        try {
+            $leave->delete();
+            $result = ['success', 'Leave has been deleted successfully.', 'Success'];
+        } catch (\Exception $e) {
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+
+        if(!is_null($user->user_id)){
+            return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#leave')->with('message', $result);
+        }
+
+        return redirect(URL::signedRoute('user_management.index') . '#leave')->with('message', $result);
+    }
+
+    //HOLIDAYS
+    public function addHoliday(){
+        return view('admin.user_management.holiday.create', ['page_title' => 'Add Holiday']);
+    }
+
+    public function saveHoliday(Request $request){
+        try {
+            $dates = [
+                'holiday_start' => date('Y-m-d H:i:s', strtotime($request->holiday_start)), 
+                'holiday_end' => date('Y-m-d H:i:s', strtotime($request->holiday_end)) 
+            ];
+            $data = array_merge( $request->except(['holiday_start', 'holiday_end']), $dates );
+
+            Holiday::create($data);
+            $result = ['success', 'Holiday has been saved successfully.', 'Success'];
+
+            if($request->submit_type == 'continue'){
+                return redirect(URL::signedRoute('user_management.index') . '#holiday')->with('message', $result);
+            }
+        } catch (\Exception $e) {
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+        return redirect()->back()->with('message',$result);
+    }
+
+    public function getHoliday(Request $request){
+        $colors = [
+            '#5867dd',
+            '#0abb87',
+            '#ffb822',
+            '#fd397a',
+            '#282a3c',
+            '#9c27b0',
+        ];
+
+        $holidays = Holiday::orderBy('holiday_start')->get();
+        $holidays = $holidays->map(function($holiday) use ($request, $colors){
+            return [
+                'title'=> ($request->user()->LanguageId == 1 ? $holiday->holiday_name : $holiday->holiday_name_ar),
+                'start'=> $holiday->holiday_start,
+                'end'=> $holiday->holiday_end,
+                'id'=> $holiday->holiday_id,
+                'url'=> URL::signedRoute('user_management.holiday.show', ['holiday' => $holiday->holiday_id]),
+                'description'=> ($request->user()->LanguageId == 1 ? $holiday->holiday_name : $holiday->holiday_name_ar),
+                'backgroundColor'=> $colors[array_rand($colors)],
+                'textColor' => '#fff !important',
+            ];
+        });
+
+        return response()->json($holidays);   
+    }
+
+    public function showHoliday(Holiday $holiday, Request $request){
+        return view('admin.user_management.holiday.show', ['page_title' => 'Add Holiday', 'holiday' => $holiday]);
+    }
+
+    public function updateHoliday(Holiday $holiday, Request $request){
+        try {
+            $dates = [
+                'holiday_start' => date('Y-m-d H:i:s', strtotime($request->holiday_start)), 
+                'holiday_end' => date('Y-m-d H:i:s', strtotime($request->holiday_end)) 
+            ];
+            $data = array_merge( $request->except(['holiday_start', 'holiday_end']), $dates );
+
+            $holiday->update($data);
+            $result = ['success', 'Holiday has been saved successfully.', 'Success'];
+
+            if($request->submit_type == 'continue'){
+                return redirect(URL::signedRoute('user_management.index') . '#holiday')->with('message', $result);
+            }
+        } catch (\Exception $e) {
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+        return redirect()->back()->with('message',$result);
+    }
+
+    public function deleteHoliday(Holiday $holiday, Request $request){
+        try {
+            $holiday->delete();
+            $result = ['success', 'Holdiay has been deleted successfully.', 'Success'];
+        } catch (\Exception $e) {
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+
+        return redirect(URL::signedRoute('user_management.index') . '#holiday')->with('message', $result);
     }
 }

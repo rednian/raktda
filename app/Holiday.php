@@ -9,9 +9,9 @@ class Holiday extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'holidays';
+    protected $table = 'holiday';
     protected $primaryKey = 'holiday_id';
     protected $fillable = [
-        'holiday_name', 'holiday_start', 'holiday_end', 'is_working'
+        'holiday_name', 'holiday_name_ar', 'holiday_start', 'holiday_end', 'is_working'
     ];
 }

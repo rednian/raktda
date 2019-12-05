@@ -91,4 +91,8 @@ public function workschedule(){
     public function customSchedules(){
         return $this->hasMany(EmployeeCustomWorkSchedule::class, 'user_id');
     }
+
+    public function scopeAreEmployees($query){
+        return $query->whereType(4);
+    }
 }

@@ -66,12 +66,20 @@ class EventTypeController extends Controller
 
     public function store(Request $request)
     {
+
         try{
             $event_type = EventType::create(array_merge($request->all(), ['created_by' => $request->user()->user_id ] ));
             $result = ['success', 'New Requirement has been added', 'Success'];
 
+            $requirements = [];
+            foreach ($request->requirement_id as $key => $value) {
+                $requirements[$value] = [
+                    'is_mandatory' => in_array($value, $request->required) ? 1 : null
+                ];
+            }
+
             if($request->has('requirement_id')){
-                $event_type->requirements()->sync( (array) $request->requirement_id );
+                $event_type->requirements()->sync( (array) $requirements);
             }
 
             if($request->submit_type == 'continue'){
@@ -90,7 +98,19 @@ class EventTypeController extends Controller
 
     public function edit(EventType $event_type)
     {
-        return view('admin.settings.event.edit', ['page_title'=>'Edit Event Type', 'event_type' => $event_type]);
+        $required = [];
+        $selected = [];
+
+        if($event_type->event_type_requirements()->count() > 0){
+            foreach ($event_type->event_type_requirements as $key => $value) {
+                $selected[] = $value->requirement_id;
+                if($value->is_mandatory){
+                    $required[] = $value->requirement_id;
+                }
+            }
+        }
+        
+        return view('admin.settings.event.edit', ['page_title'=>'Edit Event Type', 'event_type' => $event_type, 'required' => $required, 'selected' => $selected]);
     }
 
 
@@ -101,7 +121,18 @@ class EventTypeController extends Controller
             $result = ['success', 'Event Type has been saved successfully', 'Success'];
 
             if($request->has('requirement_id')){
-                $event_type->requirements()->sync( (array) $request->requirement_id );
+
+                $requirements = [];
+
+                if($request->required){
+                    foreach ($request->requirement_id as $key => $value) {
+                        $requirements[$value] = [
+                            'is_mandatory' => in_array($value, $request->required) ? 1 : null
+                        ];
+                    }
+                }
+
+                $event_type->requirements()->sync( (array) $requirements );
             }else{
                 $event_type->requirements()->sync([]);
             }
