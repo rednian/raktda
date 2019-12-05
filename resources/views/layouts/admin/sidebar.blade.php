@@ -34,7 +34,7 @@
                        <span class="kt-menu__link-text">{{ __('Business License') }}</span>
                    </a>
                </li> --}}
-               <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
+               <li class="kt-menu__item {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.company.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Company') }}</span>
                    </a>
