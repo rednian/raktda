@@ -47,11 +47,11 @@ class User extends Authenticatable implements Auditable
         return $q->whereHas('roles', function ($q) {
             $q->where('roles.role_id', 4);
         })
-            ->whereDoesntHave('leave', function ($q) use ($start_date) {
-                $q->whereDate('start_date', '>=', Carbon::now()->format('Y-m-d'))
-                    ->whereDate('end_date', '<=', date('Y-m-d', strtotime($start_date)));
-            })
-            ->whereType(4);
+        ->whereDoesntHave('leave', function ($q) use ($start_date) {
+            $q->whereDate('start_date', '>=', Carbon::now()->format('Y-m-d'))
+                ->whereDate('end_date', '<=', date('Y-m-d', strtotime($start_date)));
+        })
+        ->whereType(4);
     }
 
     public function approver()
@@ -85,5 +85,9 @@ class User extends Authenticatable implements Auditable
 
     public function customSchedules(){
         return $this->hasMany(EmployeeCustomWorkSchedule::class, 'user_id');
+    }
+
+    public function scopeAreEmployees($query){
+        return $query->whereType(4);
     }
 }
