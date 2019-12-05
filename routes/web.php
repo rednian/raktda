@@ -32,10 +32,19 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('/dashboard', function () {
         return redirect()->route('admin.event.index');
     })->name('admin.dashboard');
+  //---------------------------------------------------------------------------------------------------------------
+  // Company Registration
+ //----------------------------------------------------------------------------------------------------------------
+    Route::get('/company_registration/datatable', 'Admin\CompanyController@datatable')->name('admin.company.datatable');
+    Route::get('/company_registration', 'Admin\CompanyController@index')->name('admin.company.index');
+    Route::get('/company_registration/{company}', 'Admin\CompanyController@show')->name('admin.company.show');
+    Route::post('/company_registration/{company}', 'Admin\CompanyController@submit')->name('admin.company.submit');
+    Route::get('/company_registration/{company}/application', 'Admin\CompanyController@application')->name('admin.company.application');
+    Route::get('/company_registration/{company}/application-datatable', 'Admin\CompanyController@applicationDatatable')->name('admin.company.application.datatable');
 
   //---------------------------------------------------------------------------------------------------------------
-	// Event Permit
-	//----------------------------------------------------------------------------------------------------------------
+  // Event Permit
+ //----------------------------------------------------------------------------------------------------------------
 	Route::get('/event','Admin\EventController@index')->name('admin.event.index');
 	Route::get('/event/datatable','Admin\EventController@dataTable')->name('admin.event.datatable');
     Route::get('/event/calendar','Admin\EventController@calendar')->name('admin.event.calendar');
