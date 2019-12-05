@@ -9,6 +9,7 @@
 	use Calendar;
 	use App\Event;
 	use App\EventType;
+	use App\EmployeeWorkSchedule;
 	use Carbon\Carbon;
 	use App\Requirement;
 	use App\EventRequirement;
@@ -22,26 +23,22 @@
 	{
 		public function index()
 		{
+			$event = Event::whereDate('expired_date', '<', Carbon::now())->where('status', 'active')->update(['status'=>'expired']);
 
-			// $user = new User();
-			// $user->email = 'rednianred@gmail.com';
-			// dd($user);
-			// $user->notify(new EventNotification());
-			// $user->notify(new EventNotification());
+			$event = Event::whereIn('status', ['amended', 'approved-unpaid', 'active', 'expired', 'rejected', 'need-approval'])->whereHas('comment',function($q){
+					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
+				})->count();
 
-			$event = Event::whereDate('expired_date', '<', Carbon::now())->update(['status'=>'expired']);
-			$types = EventType::all();
-			$new_request = '';
-			$pending_request = '';
-			$active_request = '';
 			return view('admin.event.index', [
 				'page_title' => 'Event Permit', 
-				'types'=>$types, 
+				'types'=> EventType::all(),
 				'new_request'=>Event::where('status', 'new')->count(),
 				'pending_request'=>Event::where('status', 'amended')->count(),
-				'active_request'=>Event::whereIn('status', ['amended', 'approved-unpaid', 'active', 'expired', 'rejected', 'need-approval'])->whereHas('comment',function($q){
-					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()]);
-				})->count(),
+				'active_request'=> $event,
+				'cancelled_permit'=> Event::lastMonth(['cancelled'])->count(),
+				'rejected_permit'=> Event::lastMonth(['rejected'])->count(),
+				'approved_permit'=> Event::lastMonth(['approved-unpaid'])->count(),
+				
 			]);
 		}
 
@@ -50,7 +47,8 @@
 			if ($event) {
 				// dd($request->all());
 			try {
-				$event->update(['cancel_reason'=>$request->cancel_reason, 'cancelled_by'=> $request->user()->user_id, 'status'=>'cancelled']);
+				$event->update(['cancel_reason'=> $request->comment ,'status'=>'cancelled']);
+				$event->comment()->create(array_merge($request->all(), ['user_id'=>$request->user()->user_id]));
 				$result = ['success', ucfirst($event->name_en).' has been cancelled Successfully ', 'Success'];
 			} catch (Exception $e) {
 				$result = ['error', $e->getMessage(), 'Error'];
@@ -105,21 +103,41 @@
 		public function submit(Request $request, Event $event)
 		{
 			try {
-				DB::beginTransaction(); 	dd($request->all());
-			
-			
-				$user = Auth::user();
-				$request['user_id'] = $user->user_id;
+				DB::beginTransaction(); 
+
+				// dd($request->all());
+	
 				$request['checked_at'] = Carbon::now();
+				$request['action']  =  $request->status;
+				$request['user_type']  =  'admin';
+				$request['user_id']  =  $request->user()->user_id;
 				$event->check()->where('event_id', $event->event_id)->delete();
 				$event->check()->create($request->all());
 
-				if($request->status == 'rejected'  || $request->status == 'need modification'){ 
-					if($request->status == 'need modification'){
+				switch ($request->status) {
+					case 'rejected':
+						$event->update(['status'=>$request->status]);
+						$event->comment()->create($request->all());
+						$result = ['success', ucfirst($event->name_en).'Rejected Successfully', 'Success'];
+						break;
+					case 'approved-unpaid':
+						$event->update(['status'=>$request->status, 'note_en'=>$request->note_en, 'note_ar'=>$request->note_ar]);
+						$request['type'] = $type = 1; 
+						$event->comment()->create($request->all());
+						$result = ['success', ucfirst($event->name_en).' Approved Successfully', 'Success'];
+						break;
+					case 'need modification':
+
+						$event->update(['status'=>$request->status]);
+						$request['type'] = 1;
+						$request['action'] = 'send back for amendments';
+						$event->comment()->create($request->all());
+						
 						if($request->requirements_id){
 							$requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
 							$event->additionalRequirements()->sync($requirements_id);
 						}
+
 						if($request->requirements){
 							foreach ($request->requirements as $requirement) {
 								$requirement = Requirement::create([
@@ -128,47 +146,30 @@
 									'requirement_description'=>$requirement['description'] , 
 									'requirement_type'=>'event'
 								]);
-								$event->additionalRequirements()->attach($requirement->requirement_id);
+								$event->additionalRequirements()->sync($requirement->requirement_id);
 							}
 						}
-					}
-					$event->update(['status'=>$request->status]);
-					$request['role_id'] = $user->roles()->first()->role_id;
-					$request['type'] = 1;
-					if ($request->comment) {$comment = $event->comment()->create($request->all());}
-					if($request->status == 'need modification'){
-						$request['status'] = 'send back for amendments';
-					}
-					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
+						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
+						break;
+					case 'need approval':
+
+
+						// $user = User::availableInspector($event->issued_date)->get();
+						// $emp = EmployeeWorkSchedule::getSchedule()->get();
+						// dd($emp);
+
+							// dd($user);
+
+						$event->update(['status'=>'need approval']);
+						$request['type'] = 1;
+						$comment = $event->comment()->create($request->all());
+						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
+						break;
 				}
 
-				if ($request->status == 'approved-unpaid') { 
-					$comment = $event->comment()->create($request->all()); 
-					$request['role_id'] = $user->roles()->first()->role_id;
-					$request['type'] = $type = 1; 
-					$comment->approve()->create(array_merge($request->all(), ['event_id'=>$event->event_id]));
-					$event->update(['status'=>$request->status, 'note_en'=>$request->note_en, 'note_ar'=>$request->note_ar]);
-				}
-
-				if($request->status == 'need approval'){ 
-					$request['role_id'] = $user->roles()->first()->role_id;
-					$request['type']  = 0; 
-					$comment = $event->comment()->create($request->all());
-					$comment->approve()->create(array_merge ($request->all(), ['event_id'=>$comment->event_id ]));
-
-
-					foreach ($request->approver as $role_id) {
-						$request['role_id'] = $role_id;
-						$request['status'] = 'pending';
-						$request['user_id'] = null;
-						$event->approve()->create($request->all());
-					}
-					$event->update(['status'=>'need approval']);
-				}
-		
 
 				DB::commit();
-				$result = ['success', ucfirst($event->name_en).' Successfully checked', 'Success'];
+				
 			} catch (Exception $e) {
 				$result = ['error', $e->getMessage(), 'Error'];
 				DB::rollBack();
@@ -213,11 +214,15 @@
 				 ->whereBetween('time_end', [$event->time_start, $event->time_end])
 				 ->whereBetween('expired_date', [$event->issued_date, $event->expired_date])->get();
 
+				 $requirements = Requirement::whereHas('events', function($q) use ($event){
+				 	$q->where('event.event_id', $event->event_id);
+				 })->get();
 
 			return view('admin.event.application', [
 				 'page_title' => 'Event Application',
 				 'event' => $event,
-				 'existing_event' => $existing_event
+				 'existing_event' => $existing_event,
+				 'requirements' =>$requirements
 			]);
 		}
 
@@ -227,7 +232,7 @@
 			return view('admin.event.show', ['page_title' => '', 'event'=>$event, 'tab'=>$request->tab]);
 		}
 
-		public function uploadedRequiremet(Request $request, Event $event)
+		public function uploadedRequirement(Request $request, Event $event)
 		{
 
 			$requirements = Requirement::whereHas('eventRequirement', function($q) use ($event){
@@ -387,26 +392,56 @@
 			// 	 return response()->json($data);
 		}
 
+		public function imageDatatable(Request $request, Event $event)
+		{
+			$images = $event->eventRequirement()->where('image')->get();
+			return DataTables::of($images)
+			->make(true);
+		}
+
+		public function commentDatatable(Request $request, Event $event)
+		{
+			if ($request->ajax()) {
+				$comments = $event->comment()->latest();
+
+				return DataTables::of($comments)
+				->addColumn('name', function($comment){
+					$role = $comment->user_type == 'admin' ? $comment->user->roles()->first()->NameEn : 'Client';
+					return defaults($comment->user->NameEn, $role);
+				})
+				->editColumn('comment', function($comment){
+					return ucfirst($comment->comment);
+				})
+				->addColumn('date', function($comment){
+					// dd($comment->created_at->);
+					return $comment->created_at->format('d-M-Y h:i A');
+				})
+				->addColumn('action_taken', function($comment){
+					return ucwords($comment->action);
+				})
+				->rawColumns(['name'])
+				->make(true);
+			}
+		}
+
 		public function dataTable(Request $request)
 		{
 			if ($request->ajax()) {
 				$user = Auth::user();
 
 				$events = Event::when($request->type, function($q) use ($request){
-					$q->whereHas('owner', function($q) use ($request){
-						$q->where('type', $request->type);
-					});
+					$q->where('firm', $request->type);
 				})
 				->when($request->status, function($q) use ($request){
 					$q->whereIn('status', $request->status);
 				})
 				->whereNotIn('status', ['draft'])
-				->orderBy('updated_at', 'desc')
-				->get();
+				// ->orderBy('created_at')
+				->latest();
 
-				return DataTables::of($events)
+				$table =  DataTables::of($events)
 				->addColumn('establishment_name', function($event){
-					return $event->owner->type != 2 ? $event->owner->company->company_name : null;
+					return $event->owner->type != 2 ? $event->owner->company->name_en : null;
 				})
 				->addColumn('owner', function($event) use ($user){
 					if ($user->LanguageId == 1) {
@@ -439,8 +474,10 @@
 				})
 				->addColumn('event_name', function($event) use ($user){	
 					if ($user->LanguageId == 1) {return ucwords($event->name_en);} return $event->name_ar; })
-				->addColumn('type', function($event){ return ucwords(userType($event->owner->type)); })
-				->editColumn('created_at', function($event){ return $event->created_at->format('d-M-Y'); })
+				->addColumn('type', function($event){ return ucwords($event->firm); })
+				->editColumn('created_at', function($event){ 
+					return '<span title="'.$event->created_at->format('l d-M-Y h:i A').'" data-original-title="'.$event->created_at->format('l d-M-Y h:i A').'" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" class="text-underline">'.humanDate($event->created_at).'</span>'; 
+				})
 				->addColumn('start', function($event){ return $event->issued_date.'  '.$event->time_start; })
 				->editColumn('status', function($event){ return permitStatus($event->status); })
 				->addColumn('action', function($event){
@@ -462,9 +499,13 @@
 					return $html;
 					
 					 })
-					 ->rawColumns(['status', 'action', 'show', 'website'])
-//				 ->setTotalRecords($totalRecords)s
+					->rawColumns(['status', 'action', 'show', 'website', 'created_at'])
 					 ->make(true);
+					$table = $table->getData(true);
+					$table['new_count'] = Event::where('status', 'new')->count();
+					$table['pending_count'] = Event::where('status', 'amended')->count();
+					$table['cancelled_count'] = Event::where('status', 'cancelled')->count();
+					return response()->json($table);
 			}
 		}
 	}

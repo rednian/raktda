@@ -11,7 +11,7 @@
 	<section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 		<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 			 <div class="kt-portlet__head-label">
-					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Add New ' . ($type == 'artist' ? 'Artist' : 'Event') . ' Requirement') }}</h3>
+					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __(strtoupper('Add New ' . ($type == 'artist' ? 'Artist' : 'Event') . ' Requirement')) }}</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ $type == 'artist' ? url('settings#artist_requirements') : url('settings#event_requirements') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">

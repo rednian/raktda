@@ -15,13 +15,13 @@ class EventLiquorTruckRequirement extends Model
       return $this->belongsTo(Requirement::class, 'requirement_id');
    }
 
-   public function liquor()
-   {
-      return $this->belongsTo(EventLiquor::class, 'event_liquor_id', 'liquor_truck_id');
-   }
-
    public function truck()
    {
-      return $this->belongsTo(EventTruck::class, 'event_truck_id', 'liquor_truck_id');
+      return $this->belongsTo(EventTruck::class, 'event_liquor_id' ,'liquor_truck_id');
+   }
+
+   public function liquor()
+   {
+      return $this->belongsTo(EventTruck::class, 'event_truck_id' ,'liquor_truck_id');
    }
 }

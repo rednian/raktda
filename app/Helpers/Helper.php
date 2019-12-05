@@ -1,25 +1,40 @@
 <?php
 
-function defaults($name = null, $role)
-{
+// function fileExtension($filename = null){
+//     $array = explode('.', $filename);
+//     return array_pop($array);
+// }
+
+
+function humanDate($date){
+    return $date-> diffForHumans();
+}
+
+function defaults($name = null, $role){
     $fname = explode(' ', $name);
-    $html = '<div class="kt-user-card-v2">';
-    $html .= ' <div class="kt-user-card-v2__pic">';
-    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--warning"><span>' . strtoupper(substr($fname[0], 0, 1)) . '</span></div>';
-    $html .= '  </div>';
-    $html .= '  <div class="kt-user-card-v2__details">';
-    $html .= '   <span class="kt-user-card-v2__name">' . ucwords($name) . '</span>';
-    $html .= '   <span class="kt-user-card-v2__email kt-link">' . ucwords($role) . '</span>';
-    $html .= '   </div>';
-    $html .= '   </div>';
+    $html = '<div class="kt-user-card-v2">'; 
+    $html .= ' <div class="kt-user-card-v2__pic">'; 
+    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--success"><span>'.strtoupper(substr($fname[0], 0, 1)).'</span></div>'; 
+    $html .= '  </div>'; 
+    $html .= '  <div class="kt-user-card-v2__details">'; 
+    $html .= '   <span class="kt-user-card-v2__name">'.ucwords($name).'</span>'; 
+    $html .= '   <span class="kt-user-card-v2__email kt-link">'.ucwords($role).'</span>'; 
+    $html .= '   </div>'; 
+    $html .= '   </div>'; 
 
     return $html;
 }
 
+function fileName($filename = null){
+    $array = explode('.', $filename);
+    return strtolower(array_pop($array));
+}
+
+
+
 function fileExtension($path)
 {
-    $ext = explode('.', $path);
-    $ext = strtolower(array_pop($ext));
+    $ext = fileName($path);
     $className = null;
     switch ($ext) {
         case 'pdf':
@@ -101,6 +116,8 @@ function userType($type)
     }
 }
 
+
+
 function permitStatus($status)
 {
     $status = strtolower($status);
@@ -108,7 +125,7 @@ function permitStatus($status)
     if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active') {
         $classname = 'success';
     }
-    if ($status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended') {
+    if ($status == 'send back for amendments' || $status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended' || $status == 'pending') {
         $classname = 'warning';
     }
     if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled') {

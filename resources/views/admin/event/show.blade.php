@@ -31,6 +31,7 @@
               <div class="kt-widget__media">
                 <span class="kt-userpic kt-userpic--lg kt-userpic--circle">
                   <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}" alt="image">
+                  
                 </span>
               </div>
               <div class="kt-widget__info">
@@ -204,6 +205,9 @@
                 
               </div>
             </div>
+            <h6 class="kt-font-dark kt-margin-t-10">Map Location</h6>
+            <iframe class="border kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 310px; width: 100%; margin-top: 1%; border-style: none;" >
+            </iframe>
           </div>
           {{-- <div class="kt-widget__footer">
             <div class="kt-widget__wrapper">
@@ -256,7 +260,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_2_2_tab_content" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('CHECKED & APPROVAL HISTORY') }}
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('EVENT ACTION HISTORY') }}
             </a>
           </li>
           
@@ -277,29 +281,15 @@
             </table>
           </div>
           <div class="tab-pane" id="kt_portlet_base_demo_2_2_tab_content" role="tabpanel">
-            <table class="table table-hover table-borderless border table-striped">
+            <table class="table table-hover table-borderless border table-striped table-sm" id="event-comment-datatable">
                 <thead>
                     <tr>
-                        <th class="no-wrap">{{ __('CHECKED BY') }}</th>
+                        <th class="no-wrap">{{ __('NAME') }}</th>
                         <th>{{ __('REMARKS') }}</th>
-                        <th class="no-wrap">{{ __('USER GROUP') }}</th>
                         <th class="no-wrap">{{ __('CHECKED DATE') }}</th>
                         <th class="no-wrap">{{ __('ACTION TAKEN') }}</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @if ($event->approve()->exists())
-                    @foreach ($event->approve()->orderBy('updated_at')->get() as $approve)
-                        <tr>
-                            <td class="no-wrap">{{ ucwords($approve->user->NameEn) }}</td>
-                            <td>{{ ($approve->comment->comment) }}</td>
-                            <td>{{ ucwords($approve->role->NameEn) }}</td>
-                            <td>{{ $approve->checked_at ? $approve->checked_at->format('d-M-Y') : null }}</td>
-                            <td class="no-wrap">{{ $approve->status }}</td>
-                        </tr>
-                    @endforeach
-                    @endif
-                </tbody>
             </table>
           </div>
           
@@ -312,7 +302,11 @@
 @section('script')
 <script>
   var document_table = {}; 
+  var comment_table = {}; 
   $(document).ready(function(){
+
+   
+
     document_table = $('#document-table').DataTable({
       ajax: '{{ route('admin.event.uploadedRequiremet', $event->event_id) }}',
       columnDefs:[
@@ -344,6 +338,21 @@
             } );
         }
     });
+     eventComment();
   });
+
+  function eventComment(){
+    comment_table = $('table#event-comment-datatable').DataTable({
+      ajax:{
+        url: '{{ route('admin.event.comment', $event->event_id) }}',
+      },
+      columns: [
+      {data: 'name'},
+      {data: 'comment'},
+      {data: 'date'},
+      {data: 'action_taken'},
+      ]
+    });
+  }
 </script>
 @endsection

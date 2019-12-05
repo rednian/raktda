@@ -127,6 +127,9 @@
 .text-danger {
   color: var(---danger) !important;
 }
+.text-underline{
+  text-decoration: underline;
+}
 
 .kt-user-card .kt-user-card__avatar .kt-badge, .kt-user-card .kt-user-card__avatar img {
   /*border-radius: 0px; */
@@ -236,6 +239,32 @@
   color: #fff;
   background-color: var(---p-light) !important;
   border-color: var(---p-light) !important;
+}
+
+table.treetable {
+    /*border: 1px solid #f7f8fa;*/
+    font-size: inherit;
+    line-height: inherit;
+    /*width: 100%;*/
+}
+
+table.treetable thead {
+  background: #f7f8fa;
+  font-size: inherit;
+}
+
+table.treetable thead tr th {
+    border: 1px solid #f7f8fa;
+    font-weight: normal;
+    padding: .3em 1em .1em 1em;
+    text-align: left;
+}
+table.treetable tbody tr td {
+    cursor: default;
+    padding: .3em 0;
+}
+table.treetable span {
+  padding: 0;
 }
 
 /*table tr td {
@@ -468,6 +497,11 @@ div[class*="toolbar"] {
   padding: 1.25rem;
   background-color: #f7f8fa;
   border-radius: 0;
+}
+
+.accordion.accordion-toggle-plus .card .card-header .card-title {
+    color: #74788d;
+    position: relative;
 }
 
 /*text*/

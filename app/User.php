@@ -15,8 +15,7 @@ class User extends Authenticatable implements Auditable
     use HasRoleAndPermission;
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'modifiedAt';
-    // protected $connection = 'smartrak_bls';
-    //smartrak_bls
+
     protected $table = 'smartrak_smartgov.user';
     protected $primaryKey = 'user_id';
     protected $fillable = [
@@ -30,6 +29,8 @@ class User extends Authenticatable implements Auditable
     ];
     protected $casts = ['email_verified_at' => 'datetime'];
     protected $dates = ['CreatedAt'];
+
+
     public function scopeAvailableInspector($q, $start_date)
     {
         return $q->whereHas('roles', function ($q) {
@@ -65,13 +66,18 @@ class User extends Authenticatable implements Auditable
     {
         return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id');
     }
+
+
 public function workschedule(){
         return $this->hasOne(EmployeeWorkSchedule::class, 'user_id');
     }
+
     public function customSchedules(){
         return $this->hasMany(EmployeeCustomWorkSchedule::class, 'user_id');
     }
+
     public function scopeAreEmployees($query){
         return $query->whereType(4);
     }
 }
+

@@ -49,6 +49,7 @@ mix.styles([
   'public/assets/vendors/general/toastr/build/toastr.css',
   'public/assets/vendors/general/morris.js/morris.css',
   'public/assets/vendors/general/sweetalert2/dist/sweetalert2.css',
+  // 'public/assets/vendors/custom/jquery.treetable/jquery.treetable.css',
 ], 'public/css/vendor.css');
 
 mix.scripts([
@@ -100,6 +101,8 @@ mix.scripts([
     'public/assets/vendors/general/jquery.repeater/src/jquery.input.js',
     'public/assets/vendors/general/jquery.repeater/src/repeater.js',
     'public/assets/vendors/general/dompurify/dist/purify.js',
+    'public/assets/vendors/custom/fullcalendar/ar.js',
+    // 'public/assets/vendors/custom/jquery.treetable1/jquery.treetable.js',
    
 ], 'public/js/plugins.js');
 

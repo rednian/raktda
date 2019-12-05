@@ -20,14 +20,13 @@ class Event extends Model
 
     public function scopeLastMonth($q, $status)
     {
-        return $q->whereHas('comment', function ($q) use ($status) {
+        return $q->whereHas('comment', function($q) use ($status){
             return $q->where('action', $status)->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
         });
     }
-
     public function liquor()
     {
-        return $this->hasMany(EventLiquor::class, 'event_id');
+        return $this->hasOne(EventLiquor::class, 'event_id')->withDefault(['company_name_en'=>null, 'company_name_ar'=>null]);
     }
 
     public function truck()
@@ -58,11 +57,6 @@ class Event extends Model
     public function additionalRequirements()
     {
         return $this->belongsToMany(Requirement::class, 'event_additional_requirement', 'event_id', 'requirement_id')->where('requirement_type', 'event');
-    }
-
-    public function approve()
-    {
-        return $this->hasMany(EventApprover::class, 'event_id');
     }
 
     public function check()
