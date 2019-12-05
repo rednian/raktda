@@ -1,0 +1,153 @@
+<div class="modal fade" id="foodtruck_count" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck')}} <i class="fa fa-truck"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
+                </button>
+            </div>
+            <div class="modal-body row col-md-12">
+
+                <div class="col-md-5 form-group form-group-xs">
+                    <label for="col-form-label kt-font-bold">{{__('How many food Truck ?')}}</label>
+                </div>
+
+                <div class="col-md-3 form-group form-group-xs">
+                    <select name="truck_count" id="truck_count" class="form-control form-control-sm" autocomplete="off">
+                        <option value="">{{__('Select')}}</option>
+                        @for($i = 1; $i <= 15; $i++) <option value="{{$i}}">{{$i}}</option>
+                            @endFor
+                    </select>
+                </div>
+                <div class="col-md-4 form-group form-group-xs kt-align-center">
+                    <button id="submit_foodtruck_count"
+                        class="btn btn-sm btn-wide btn--yellow">{{__('Submit')}}</button>
+                </div>
+            </div>
+            <div id="please_select" class="text-danger w-100 text-center pb-3 ">
+                <small><em>{{__('Please select a valid  value')}}</em></small></div>
+            <div id="warning_text" class="text-danger w-100 text-center pb-3 ">
+                <small>{{__('If you update the no of trucks you will need to add truck details from start')}} <span
+                        id="go_back_btn" class="text-muted"
+                        style="cursor: pointer"><em>{{__('not change')}}</em></span></small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="foodTruckDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style=" overflow-y:auto">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck')}} <span id="truck_num_disp"></span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 row justify-content-between">
+                    <h5 class="col-md-8">{{__('You selected')}} <span id="noOfTrucks" class="text-danger"></span>
+                        {{__('truck')}}
+                    </h5>
+                    <button class="col-md-2 btn btn-sm btn-warning" id="changeNoOfTrucks">{{__('Change')}}</button>
+                </div>
+                <form class="col-md-12" id="truck_details_form">
+                    <input type="hidden" id="truck_no">
+                    <div class="row">
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}}</label>
+                            <input type="text" class="form-control form-control-sm" name="company_name_en"
+                                id="company_name_en" autocomplete="off" placeholder="company name">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}}</label>
+                            <input type="text" class="form-control form-control-sm" name="company_name_ar"
+                                id="company_name_ar" autocomplete="off" placeholder="company name - Ar">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Plate No')}}</label>
+                            <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
+                                autocomplete="off" placeholder="plate no">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Type of Food')}}</label>
+                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
+                                autocomplete="off" placeholder="food type">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Issue')}} </label>
+                            <input type="text" class="form-control form-control-sm date-picker" name="regis_issue_date"
+                                id="regis_issue_date" autocomplete="off" placeholder="DD-MM-YYYY">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Expiry')}} </label>
+                            <input type="text" class="form-control form-control-sm date-picker" name="regis_expiry_date"
+                                id="regis_expiry_date" autocomplete="off" placeholder="DD-MM-YYYY">
+                        </div>
+                    </div>
+                </form>
+                <div class="row col-md-12 justify-content-between kt-margin-b-15 kt-margin-t-15">
+                    <h5 class="text-dark  text-underline kt-font-bold">{{__('Food Truck Required Documents')}}
+                    </h5>
+                    {{-- <div class="kt-pull-right">
+                        <button class="btn btn-sm btn-dark" onclick="truck_add_new_doc()"> <i
+                                class="la la-plus"></i>{{__('Add Document')}}</button>
+                </div> --}}
+            </div>
+            <form id="truck_upload_form" class="col-md-12">
+                <input type="hidden" id="truck_document_count" value="{{count($truck_req)}}">
+                @php
+                $i = 1;
+                @endphp
+                @foreach($truck_req as $req)
+                <div class="row">
+                    <div class="col-lg-4 col-sm-12">
+                        <label
+                            class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                            <span id="cnd_{{$i}}"></span>
+                        </label>
+                        <p for="" class="reqName">
+                            {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                        </p>
+                    </div>
+                    <input type="hidden" value="{{$req->requirement_id}}" id="truck_req_id_{{$i}}">
+                    <input type="hidden" value="{{$req->requirement_name}}" id="truck_req_name_{{$i}}">
+                    <div class="col-lg-4 col-sm-12">
+                        <label style="visibility:hidden">hidden</label>
+                        <div id="truckuploader_{{$i}}">{{__('Upload')}}
+                        </div>
+                    </div>
+                    <input type="hidden" id="datesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
+                    @if($req->dates_required == 1)
+                    <div class="col-lg-2 col-sm-12">
+                        <label for="" class="text--maroon kt-font-bold" title="Issue Date">{{__('Issue Date')}}</label>
+                        <input type="text" class="form-control form-control-sm date-picker"
+                            name="truck_doc_issue_date_{{$i}}" data-date-end-date="0d" id="truck_doc_issue_date_{{$i}}"
+                            placeholder="DD-MM-YYYY" />
+                    </div>
+                    <div class="col-lg-2 col-sm-12">
+                        <label for="" class="text--maroon kt-font-bold"
+                            title="Expiry Date">{{__('Expiry Date')}}</label>
+                        <input type="text" class="form-control form-control-sm date-picker"
+                            name="truck_doc_exp_date_{{$i}}" id="truck_doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                    </div>
+                    @endif
+                </div>
+                @php
+                $i++;
+                @endphp
+                @endforeach
+            </form>
+            <form id="truck_additional_doc" class="col-md-12" novalidate autocomplete="off">
+            </form>
+            <small id="truck_warning_text" class="text-center text-danger "></small>
+            <div class="kt-pull-right kt-margin-t-10">
+                <button class="btn btn-sm btn--maroon" id="update_td">{{__('Update')}}</button>
+                <button class="btn btn-sm btn--maroon" id="next_td">{{__('Next')}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

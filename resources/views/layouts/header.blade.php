@@ -197,8 +197,8 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
                 <div class="kt-header__topbar-user">
                     @php
-                    $company_name = Auth::user()->company->company_name;
-                    $designation = Auth::user()->company->contact_person_designation;
+                    $company_name = getLangId() == 1 ? Auth::user()->company->name_en : Auth::user()->company->name_ar;
+
                     $name = Auth::user()->NameEn;
                     $first_name = explode(' ', Auth::user()->NameEn);
                     $first_name = $first_name[0];
@@ -221,7 +221,7 @@
                     </div>
                     <div style="display: flex; flex-direction: column;">
                         <div class="kt-user-card__name">{{ $name }}</div>
-                        <div id="header--desig">{{ $designation }}</div>
+
                         <div id="header--company">{{ $company_name }}</div>
                     </div>
                     {{-- <div class="kt-user-card__badge"> <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">1
