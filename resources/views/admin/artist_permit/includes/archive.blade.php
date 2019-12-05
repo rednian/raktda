@@ -6,12 +6,12 @@
 			    <option value='25'>25</option>
 			    <option value='50'>50</option>
 			    <option value='75'>75</option>
-			    <option value='100'>100</option>
-			</select>
-		</div>
-	</div>
-	<div class="col-8">
-		<form class="form-row">
+                    <option value='100'>100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-8">
+            <form class="form-row">
 			<div class="col-4">
 				  <div class="input-group input-group-sm">
 				  		<div class="kt-input-icon kt-input-icon--right">

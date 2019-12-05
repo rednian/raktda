@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Admin;
 use DB;
 use PDF;
 use Auth;
-use DataTables;
+
 use Carbon\Carbon;
 use CountryState;
 use App\User;
@@ -17,6 +17,7 @@ use App\ApproverProcedure;
 use App\ArtistPermitComment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
 
 class ArtistPermitController extends Controller
 {
@@ -102,7 +103,7 @@ class ArtistPermitController extends Controller
 
                 // $user = User::availableInspector($permit->issued_date)->first();
 
-                
+
 
                 // $approval->approver()->create(['user_id'=>$user->user_id]);
               // }
@@ -125,7 +126,7 @@ class ArtistPermitController extends Controller
                     'role_id'=>$role_id,
                     'user_id'=> null,
                     'comment'=> null,
-                  ]); 
+                  ]);
                 }
                }
               break;
@@ -142,7 +143,7 @@ class ArtistPermitController extends Controller
     }
 
     public function checkActivePermit(Request $request, Permit $permit, Artist $artist)
-    { 
+    {
     	$permit = Permit::whereHas('artistpermit', function($q) use ($artist){
     		$q->where('artist_id',$artist->artist_id);
 	    })->where('permit_status', 'active')->get();
@@ -160,8 +161,8 @@ class ArtistPermitController extends Controller
 //	      if($permit->artistPermit()->where('artist_permit_status', 'reject')->count()){
 //
 //	      }
-//         
-         // dd($request->all());         
+//
+         // dd($request->all());
          $artistpermit->update(['artist_permit_status'=>$request->artist_permit_status]);
 
          //delete the last checklist and replace with recentb
@@ -212,7 +213,7 @@ class ArtistPermitController extends Controller
         $permit_count = Artist::where('artist_id', $artistpermit->artist_id)->whereHas('permit', function($q){
           $q->where('permit_status', 'active');
         })->get();
-       
+
         return view('admin.artist_permit.check-application', [
         	'page_title'=>'check artist details',
           'permit'=>$permit,
@@ -285,7 +286,7 @@ class ArtistPermitController extends Controller
       ->make(true);
 
       $data = $artist_permit_document->getData(true);
-      
+
       $data['data'][] = [
           'document_name' => '<a href="'.asset('/storage/'.$artistpermit->thumbnail).'" data-fancybox data-caption="'.ucwords($artistpermit->artist->fullname).' - Photo">Artist Photo</a>',
           'issued_date'=> 'Not Required',
@@ -362,7 +363,7 @@ class ArtistPermitController extends Controller
 			    	return $artist_permit->profession->is_multiple ? true : false;
 			    })
 			    ->addColumn('existing_permit', function($artist_permit) use ($permit){
-            
+
 			    	$existing_permit = Permit::whereHas('artistpermit', function($q) use ($artist_permit){
 			    		$q->where('artist_id', $artist_permit->artist_id)
 						    ->whereHas('profession', function($q){
@@ -428,7 +429,6 @@ class ArtistPermitController extends Controller
 
     public function applicationCommentDataTable(Request $request, Permit $permit, ArtistPermit $artistpermit)
     {
-
     	$comments = $artistpermit->comments()->orderBy('created_at', 'desc')->get();
     	return DataTables::of($comments)
 		    ->addColumn('comment', function ($comments){
@@ -442,6 +442,7 @@ class ArtistPermitController extends Controller
 		    })
 		    ->make(true);
     }
+
 
     public function dataTable(Request $request)
     {
@@ -475,7 +476,7 @@ class ArtistPermitController extends Controller
         if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
         return 'Checked '.$check.' of '.$total;
       })
-      ->editColumn('permit_status', function($permit){ return permitStatus($permit->permit_status); })
+        ->editColumn('permit_status', function($permit){ return permitStatus($permit->permit_status); })
 	    ->editColumn('reference_number', function($permit){ return '<span class="kt-font-bold">'.$permit->reference_number.'</span>'; })
 	    ->addColumn('applied_date', function($permit){
         return '<span class="text-underline" title="'.$permit->created_at->format('l d-M-Y h:i A').'">'.humanDate($permit->created_at).'</span>';

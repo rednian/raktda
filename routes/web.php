@@ -82,9 +82,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     //---------------------------------------------------------------------------------------------------------------
     // Artist Permit
     //---------------------------------------------------------------------------------------------------------------
-    
+
     Route::get('/artist_permit/search', 'Admin\ArtistPermitController@search')->name('admin.artist_permit.search');
-    
+
     Route::get('/artist_permit/{permit}/history', 'Admin\ArtistPermitController@permitHistory')
         ->name('admin.artist_permit.history');
 
@@ -102,7 +102,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('/artist_permit/{permit}/application/{artistpermit}/documentDatatable', 'Admin\ArtistPermitController@artistChecklistDocument')
         ->name('admin.artist_permit.document');
 
-    Route::get('/arist_permit/{permit}/checkactivepermit/{artist}', 'Admin\ArtistPermitController@checkActivePermit')
+    Route::get('/artist_permit/{permit}/checkactivepermit/{artist}', 'Admin\ArtistPermitController@checkActivePermit')
         ->name('admin.artist_permit.checkactivepermit');
 
     Route::post('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@submitApplication')
@@ -126,6 +126,24 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         ->name('admin.artist_permit.show');
     Route::get('/artist_permit', 'Admin\ArtistPermitController@index')
         ->name('admin.artist_permit.index');
+
+
+
+
+    //Reports
+
+    Route::get('/artist_reports', 'Admin\ReportController@reports')
+        ->name('admin.artist_permit_reports.reports');
+
+        Route::get('/artist_permit_reports', 'Admin\ReportController@artist_reports')
+        ->name('admin.artist_permit_reports.artist_reports');
+
+
+    Route::post('/artist_reports/search_artist', 'Admin\ReportController@search_artist')
+        ->name('admin.artist_permit_reports.search_artist');
+
+
+
 
     //---------------------------------------------------------------------------------------------------------------
     // User Management
@@ -175,7 +193,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         Route::get('profession/isexist', 'Admin\ProfessionController@isexist')->name('settings.profession.isexist');
 
         Route::get('profession/datatable', 'Admin\ProfessionController@datatable')->name('settings.profession.datatable');
-        
+
         Route::get('profession/create', 'Admin\ProfessionController@create')->name('settings.profession.create');
         Route::post('profession/store', 'Admin\ProfessionController@store')->name('settings.profession.store');
 

@@ -9,7 +9,7 @@
                @else
                <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-ar.svg') }}" />
             @endif
-              
+
            </a>
        </div>
    </div>
@@ -34,7 +34,7 @@
                        <span class="kt-menu__link-text">{{ __('Business License') }}</span>
                    </a>
                </li> --}}
-               <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
+               <li class="kt-menu__item {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.company.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Company') }}</span>
                    </a>
@@ -60,8 +60,8 @@
                        <span class="kt-menu__link-text">{{ __('Event Permit') }}</span>
                    </a>
                </li>
-               <li class="kt-menu__item">
-                   <a href="javascript:void(0)" class="kt-menu__link ">
+               <li class="kt-menu__item {{ Request::is('artist_reports*') ? 'kt-menu__item--active': '' }}">
+                   <a href="{{ route('admin.artist_permit_reports.reports') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Reports') }}</span>
                    </a>
                </li>
