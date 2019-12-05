@@ -41,8 +41,12 @@
          table= $('#block-artist').DataTable({
           dom: 'Bfrtip',
            "searching":false,
-            buttons: ['excel', 'pdf', 'print'
+            buttons: ['pageLength','excel', 'pdf', 'print'
             ],
+             lengthMenu: [
+                 [ 10, 25, 50, -1 ],
+                 [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+             ],
             processing: true,
             language: {
                 processing: '<span>Processing</span>',
