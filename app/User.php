@@ -4,6 +4,7 @@ namespace App;
 
 use Auth;
 use Carbon\Carbon;
+use App\GeneralSetting;
 use OwenIt\Auditing\Contracts\Auditable;
 use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 use Illuminate\Notifications\Notifiable;
@@ -48,8 +49,12 @@ class User extends Authenticatable implements Auditable
             $q->where('roles.role_id', 4);
         })
         ->whereDoesntHave('leave', function ($q) use ($start_date) {
-            $q->whereDate('start_date', '>=', Carbon::now()->format('Y-m-d'))
-                ->whereDate('end_date', '<=', date('Y-m-d', strtotime($start_date)));
+            $q->whereDate('leave_start', '>=', Carbon::now()->format('Y-m-d'))
+            ->whereDate('leave_end', '<=', date('Y-m-d', strtotime($start_date)));
+        })
+        // ->has('approver', '<=', GeneralSetting::first()->inspection_per_day)
+        ->whereDoesntHave('approver', function($q) use ($start_date){
+            $q->whereNull('status');
         })
         ->whereType(4);
     }
@@ -79,7 +84,7 @@ class User extends Authenticatable implements Auditable
         return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id');
     }
 
-    public function workschedule(){
+public function workschedule(){
         return $this->hasOne(EmployeeWorkSchedule::class, 'user_id');
     }
 

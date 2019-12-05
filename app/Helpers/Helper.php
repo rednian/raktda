@@ -125,7 +125,7 @@ function permitStatus($status)
     if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active') {
         $classname = 'success';
     }
-    if ($status == 'send back for amendments' || $status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended') {
+    if ($status == 'send back for amendments' || $status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended' || $status == 'pending') {
         $classname = 'warning';
     }
     if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled') {

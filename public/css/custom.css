@@ -499,6 +499,11 @@ div[class*="toolbar"] {
   border-radius: 0;
 }
 
+.accordion.accordion-toggle-plus .card .card-header .card-title {
+    color: #74788d;
+    position: relative;
+}
+
 /*text*/
 .underlined:hover {
   text-decoration: var(---danger) underline !important;

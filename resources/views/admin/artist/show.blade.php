@@ -51,7 +51,7 @@
 															<div class="kt-widget__subhead">
 																 <span>{{ __('Current Company') }} : 
                                                                     <span class="kt-font-dark kt-font-bolder">
-                                                                        {{ $artist_permit->permit()->latest()->first()->company->company_name }}
+                                                                        {{ $artist_permit->permit()->latest()->first()->owner->company->name_en }}
                                                                     </span>
                                                                 </span>
 																 {{--										 <a href="#"><i class="flaticon2-calendar-3"></i>PR Manager </a>--}}

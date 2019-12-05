@@ -279,6 +279,143 @@
 														 </div>
 													</div>
 											 </section>
+											 @if ($event->truck()->count() > 0)
+											 	<section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border" id="accordion-truck">
+													<div class="card">
+														 <div class="card-header" id="heading-truck">
+																<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-truck"
+																		 aria-expanded="true"
+																		 aria-controls="collapse-truck">
+																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('TRUCK DETAILS') }}</h6>
+																</div>
+														 </div>
+														 <div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck">
+																<div class="card-body">
+																	<section class="row form-group form-group-sm">
+																		<div class="col-6">
+																				 <label class="kt-font-dark">{{ __('Number of Food Truck') }} <span class="text-danger">*</span></label>
+																				 <div class="input-group input-group-sm">
+																						<input value="{{ $event->number_of_trucks }}" name="time_end" readonly="readonly" type="text" class="form-control">
+																						<div class="input-group-append">
+																							 <span class="input-group-text">
+																									<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																										 <input data-step="step-1" type="checkbox">
+																										 <span></span>
+																									</label>
+																							 </span>
+																						</div>
+																				 </div>
+																			</div>
+																	</section>
+																	@foreach ($event->truck as  $index => $truck)
+																		<section class="kt-section border kt-padding-5" style="margin-bottom: 10px !important">
+																			<div class="kt-section__title kt-margin-b-10">
+																				<h4 class="kt-margin-b-0 kt-font-dark kt-font-transform-u text-danger" style="font-size: small;">Truck {{++$index}} - Information</h4>
+																			</div>
+																			<div class="kt-section__content">
+																				<div class="row form-group form-group-sm">
+																					<div class="col-6">
+																						 <label class="kt-font-dark">{{ __('Company Name') }} <span class="text-danger">*</span></label>
+																						 <div class="input-group input-group-sm">
+																								<input value="{{ $truck->company_name_en }}" name="company_name_en" readonly="readonly" type="text"
+																											 class="form-control">
+																								<div class="input-group-append">
+																									 <span class="input-group-text">
+																											<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																												 <input data-step="step-1"  type="checkbox">
+																												 <span></span>
+																											</label>
+																									 </span>
+																								</div>
+																						 </div>
+																					</div>
+																					<div class="col-6">
+																						<label class="kt-font-dark">{{ __('Company Name (AR)') }} <span class="text-danger">*</span></label>
+																						<div class="input-group input-group-sm">
+																							<input value="{{ $truck->company_name_ar }}" name="company_name_ar" readonly="readonly" type="text"
+																											 class="form-control">
+																								<div class="input-group-append">
+																									<span class="input-group-text">
+																										<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																											<input data-step="step-1"  type="checkbox">
+																											<span></span>
+																										</label>
+																									</span>
+																								</div>
+																						 </div>
+																					</div>
+																		 		</div>
+																		 		<div class="row form-group form-group-sm">
+																					<div class="col-3">
+																						 <label class="kt-font-dark">{{ __('Food Type') }} <span class="text-danger">*</span></label>
+																						 <div class="input-group input-group-sm">
+																								<input value="{{ $truck->food_type }}" name="food_type" readonly="readonly" type="text"
+																											 class="form-control">
+																								<div class="input-group-append">
+																									 <span class="input-group-text">
+																											<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																												 <input data-step="step-1"  type="checkbox">
+																												 <span></span>
+																											</label>
+																									 </span>
+																								</div>
+																						 </div>
+																					</div>
+																					<div class="col-3">
+																						<label class="kt-font-dark">{{ __('Plate Number') }} <span class="text-danger">*</span></label>
+																						<div class="input-group input-group-sm">
+																							<input value="{{ $truck->plate_number }}" name="plate_number" readonly="readonly" type="text"
+																											 class="form-control">
+																								<div class="input-group-append">
+																									<span class="input-group-text">
+																										<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																											<input data-step="step-1"  type="checkbox">
+																											<span></span>
+																										</label>
+																									</span>
+																								</div>
+																						 </div>
+																					</div>
+																					<div class="col-3">
+																						<label class="kt-font-dark">{{ __('Registration Issued Date') }} <span class="text-danger">*</span></label>
+																						<div class="input-group input-group-sm">
+																							<input value="{{ $truck->registration_issued_date->format('d-M-Y') }}" name="registration_issued_date" readonly="readonly" type="text"
+																											 class="form-control">
+																								<div class="input-group-append">
+																									<span class="input-group-text">
+																										<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																											<input data-step="step-1"  type="checkbox">
+																											<span></span>
+																										</label>
+																									</span>
+																								</div>
+																						 </div>
+																					</div>
+																					<div class="col-3">
+																						<label class="kt-font-dark">{{ __('Registration Expired Date') }} <span class="text-danger">*</span></label>
+																						<div class="input-group input-group-sm">
+																							<input value="{{ $truck->registration_expired_date->format('d-M-Y') }}" name="registration_expired_date" readonly="readonly" type="text"
+																											 class="form-control">
+																								<div class="input-group-append">
+																									<span class="input-group-text">
+																										<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																											<input data-step="step-1"  type="checkbox">
+																											<span></span>
+																										</label>
+																									</span>
+																								</div>
+																						 </div>
+																					</div>
+																		 		</div>
+
+																			</div>
+																		</section>
+																	@endforeach
+																</div>
+														 </div>
+													</div>
+											 </section>
+											 @endif
 											 @if ($event->liquor()->exists() )
 											 	<section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border" id="accordion-liquor">
 													<div class="card">
@@ -597,10 +734,7 @@
 															</div>
 															<section class="row">
 																<div class="col">
-																<div id="wrapper-9cd199b9cc5410cd3b1ad21cab2e54d3">
-																    <div id="map-9cd199b9cc5410cd3b1ad21cab2e54d3"></div>
-																 </div>
-																 <iframe width='100%' height='100%' id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 310px; padding: 1px; width: 100%; margin-top: 1%; border-style: none;" >
+																 <iframe class="border kt-padding-5" width='100%' height='100%' id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 310px; padding: 1px; width: 100%; margin-top: 1%; border-style: none;" >
 																 	</iframe>
 																</div>
 															</section>
@@ -664,7 +798,7 @@
 																					@php
 																						$name = Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
 																					@endphp
-																					 <a href="{{ asset('/storage/'.$requirement->eventRequirement()->first()->path) }}"  data-fancybox data-caption="{{$name}}">{{$name}}</a>
+																					 <a data-fancybox="gallery" href="{{ asset('/storage/'.$requirement->eventRequirement()->first()->path) }}"  data-fancybox data-caption="{{$name}}">{{$name}}</a>
 																					
 																				</td>
 																				<td>{{ $requirement->dates_required ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required' }}</td>
@@ -682,30 +816,54 @@
 												</div>
 											</div>
 
+
 											<table id="event-table" class="table dataTable border ">
 												<thead>
 													<tr>
 														<th>DOCUMENT NAME</th>
+														<th>NUMBER OF FILE</th>
 														<th>ISSUED DATE</th>
 														<th>EXPIRED DATE</th>
+														<th>FIlE TYPE</th>
 														<th>ACTION</th>
 													</tr>
 												</thead>
 												<tbody>
 													<tr data-tt-id="1" class="expanded">
-											    		<td colspan="4"><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> EVENT DOCUMENTS</td>
+											    		<td colspan="5"><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> EVENT DOCUMENTS</td>
 											  		</tr>
-											  		{{-- {{ dd($event->requirements) }} --}}
-											  		@if ($event->requirements()->exists())
+											  		@if ($requirements->count() > 0)
 											  			<tr data-tt-id="1-1" data-tt-parent-id="1">
-											    			<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Uploaded Documents</td>
+											    			<td colspan="5"><span class="flaticon-folder kt-font-dark"></span> Uploaded Documents</td>
 											  			</tr>
-											  			<tr data-tt-id="1-1-1" data-tt-parent-id="1-1">
-											    			<td>{!! fileExtension($event->logo_thumbnail)  !!}Event Logo.{{ fileName($event->logo_thumbnail) }}</td>
+											  			@foreach ($requirements as $index => $requirement)
+											  				@php
+											  					$event_requirements = $requirement->eventRequirement()->whereHas('event', function($q) use ($event){ $q->where('event.event_id', $event->event_id);})->get();
+											  				@endphp
+											  				<tr data-tt-id="1-1-{{$index}}" data-tt-parent-id="1-1">
+											    				<td>{{++$index}}. {{ucfirst($requirement->requirement_name)}}{{ fileName('') }}</td>
+											    				<td>{{ $event_requirements->count() }}</td>
+											    				<td>{{$event_requirements->first()->issued_date->year > 1 ? $event_requirements->first()->issued_date->format('d-M-Y') : null}}</td>
+											    				<td>{{$event_requirements->first()->issued_date->year > 1 ? $event_requirements->first()->expired_date->format('d-M-Y') : null}}</td>
+											    				
+											  				</tr>
+											  				@foreach ($event_requirements as $key => $event_requirement)
+										  						<tr data-tt-id="1-1-1-1" data-tt-parent-id="1-1-{{$index}}">
+										  							<td>File {{++$key}} of {{ +$index }}</td>
+										  						</tr>
+											  				@endforeach
+
+											  			@endforeach
+											  			@if ($event->logo_thumbnail)
+											  				<tr data-tt-id="1-1-1" data-tt-parent-id="1-1">
+											    			<td>{{$event->requirements()->count()+1}}. Event Logo</td>
 											    			<td>-</td>
 											    			<td>-</td>
+											    			<td>{{ fileName($event->logo_thumbnail) }}</td>
 											    			<td>-</td>
 											  			</tr>
+											  			@endif
+											  			
 											  		@endif
 											  			
 											  	
@@ -713,7 +871,7 @@
 
 											  		@if ($event->additionalRequirements()->exists())
 											  		<tr data-tt-id="1-3" data-tt-parent-id="1">
-											    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Additional Documents</td>
+											    		<td colspan="5"><span class="flaticon-folder kt-font-dark"></span> Additional Documents</td>
 											  		</tr>
 											  		@foreach ($event->additionalRequirements as $index => $requirement)
 											  			<tr data-tt-id="1-3-1" data-tt-parent-id="1-3">
@@ -733,11 +891,11 @@
 												    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
 											  		</tr>
 											  			<tr data-tt-id="1-2-1" data-tt-parent-id="1-2">
-											    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
+											    		<td colspan="5"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
 											  		</tr>
 											  		</tr>
 											  			<tr data-tt-id="1-2-1-1" data-tt-parent-id="1-2-1">
-											    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
+											    		<td colspan="5"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
 											  		</tr>
 											  		<tr data-tt-id="3">
 											    		<td><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> TRUCK DOCUMENTS</td>
@@ -1262,7 +1420,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {

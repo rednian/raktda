@@ -8,6 +8,7 @@ class EventTruck extends Model
 {
    protected $table = 'event_truck';
    protected $primaryKey = 'event_truck_id';
+   protected $dates = ['registration_issued_date', 'registration_expired_date'];
    protected $fillable = ['company_name_en', 'company_name_ar', 'plate_number', 'food_type_id', 'registration_issued_date', 'registration_expired_date', 'event_id'];
 
    public function type()

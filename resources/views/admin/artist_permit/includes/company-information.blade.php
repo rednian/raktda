@@ -94,27 +94,27 @@
 						<table class="table table-borderless table-sm">
 							 <tr>
 									<td width="36%">{{ __('Establishment Name') }} :</td>
-									<td class="text-danger kt-font-bolder">{{ ucwords($permit->company->company_name) }}</td>
+									<td class="text-danger kt-font-bolder">{{ ucwords($permit->owner->company->name_en) }}</td>
 							 </tr>
 							 <tr>
 									<td>{{ __('Trade License Number') }} :</td>
-									<td>{{ $permit->company->company_trade_license }}</td>
+									<td>{{ $permit->owner->company->trade_license }}</td>
 							 </tr>
 							 <tr>
 									<td>{{ __('Establishment Status') }} :</td>
 									
 									<td>
-										 @if($permit->company->company_status == 'active')
-												<span class="kt-badge kt-badge--success kt-badge--inline">{{ __(ucfirst($permit->company->company_status)) }}</span>
+										 @if($permit->owner->company->status == 'active')
+												<span class="kt-badge kt-badge--success kt-badge--inline">{{ __(ucfirst($permit->owner->company->status)) }}</span>
 										 @endif
-										 @if($permit->company->company_status == 'block')
-												<span class="kt-badge kt-badge--danger kt-badge--inline">{{ __(ucfirst($permit->company->company_status)) }}</span>
+										 @if($permit->owner->company->company_status == 'block')
+												<span class="kt-badge kt-badge--danger kt-badge--inline">{{ __(ucfirst($permit->owner->company->status)) }}</span>
 										 @endif
 									</td>
 							 </tr>
 						</table>
 						<h6 class="kt-font-dark kt-font-bold kt-margin-b-10 kt-margin-t-20">{{ __('Contact Information') }}</h6>
-						<table class="table table-borderless table-sm">
+						{{-- <table class="table table-borderless table-sm">
 							 <tr>
 									<td width="36%">{{ __('Contact Person') }} :</td>
 									<td class=" kt-font-bolder ">{{ ucwords($permit->company->contact_person) }}</td>
@@ -131,7 +131,7 @@
 									<td>{{ __('Company Email') }} :</td>
 									<td>{{ $permit->company->company_email }}</td>
 							 </tr>
-						</table>
+						</table> --}}
 				 </div>
 			</section>
 	 </div>

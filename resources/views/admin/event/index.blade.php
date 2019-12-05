@@ -561,6 +561,7 @@
        newEvent();
        setInterval(function(){ newEvent(); pendingEvent();},100000);
        calendar();
+
        var hash = window.location.hash;
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
         $('.nav-tabs a').click(function (e) {
@@ -569,6 +570,7 @@
           window.location.hash = this.hash;
           $('html,body').scrollTop(scrollmem);
         });
+        
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var current_tab = $(e.target).attr('href');
 

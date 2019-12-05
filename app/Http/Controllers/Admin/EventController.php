@@ -9,6 +9,7 @@
 	use Calendar;
 	use App\Event;
 	use App\EventType;
+	use App\EmployeeWorkSchedule;
 	use Carbon\Carbon;
 	use App\Requirement;
 	use App\EventRequirement;
@@ -151,6 +152,14 @@
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
 					case 'need approval':
+
+
+						// $user = User::availableInspector($event->issued_date)->get();
+						// $emp = EmployeeWorkSchedule::getSchedule()->get();
+						// dd($emp);
+
+							// dd($user);
+
 						$event->update(['status'=>'need approval']);
 						$request['type'] = 1;
 						$comment = $event->comment()->create($request->all());
@@ -205,11 +214,15 @@
 				 ->whereBetween('time_end', [$event->time_start, $event->time_end])
 				 ->whereBetween('expired_date', [$event->issued_date, $event->expired_date])->get();
 
+				 $requirements = Requirement::whereHas('events', function($q) use ($event){
+				 	$q->where('event.event_id', $event->event_id);
+				 })->get();
 
 			return view('admin.event.application', [
 				 'page_title' => 'Event Application',
 				 'event' => $event,
-				 'existing_event' => $existing_event
+				 'existing_event' => $existing_event,
+				 'requirements' =>$requirements
 			]);
 		}
 
@@ -428,7 +441,7 @@
 
 				$table =  DataTables::of($events)
 				->addColumn('establishment_name', function($event){
-					return $event->owner->type != 2 ? $event->owner->company->company_name : null;
+					return $event->owner->type != 2 ? $event->owner->company->name_en : null;
 				})
 				->addColumn('owner', function($event) use ($user){
 					if ($user->LanguageId == 1) {

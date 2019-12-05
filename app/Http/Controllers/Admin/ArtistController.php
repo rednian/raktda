@@ -193,7 +193,7 @@
 					 return $permit->issued_date->format('d-M-Y');
 				 })
 				 ->addColumn('company_name', function($permit){
-					 return ucwords($permit->company->company_name);
+					 return ucwords($permit->owner->company->name_en);
 				 })
 				 ->editColumn('permit_status', function($permit){
 					 $class_name = 'default';
