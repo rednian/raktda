@@ -13,9 +13,14 @@
         width: 36px;
         margin-left: 6px;
     }
+    .dataTables_wrapper {
+        font-size: 12px;
+    }
+    .dataTables_wrapper tr td {
+        font-size: 11px;
+    }
 
 </style>
-
 <table class="table  table-hover  table-borderless table-striped border" id="block-artist">
     <thead>
     <tr>
@@ -24,8 +29,8 @@
                     <option value="1">Person Code</option>
                     <option value="2">Artist Status</option>
                      <option value="3">Artist Name</option>
-                    <option value="4">Profession</option>
-                    <option value="5">Nationality</option>
+                     <option value="4">Profession</option>
+                     <option value="5">Nationality</option>
                    </select></th>
         <th colspan="2">
             <div class="row" id="search_by_name" style="display:-webkit-box">
@@ -52,7 +57,7 @@
             <button style="" id="search_button_css1" class="fa fa-search submit_button_profession"></button>
             </div>
         </th>
-        <th><button style="margin-left: 20px" class="form-control reset_table" >Reset</button></th>
+        <th><button style="margin-left: 20px" class="form-control" id="resetButton" >Reset</button></th>
         </tr>
     <tr style="font-size: 12px">
         <th></th>
@@ -70,11 +75,12 @@
 
 @section('script')
 <script>
-        $(function mytable() {
+
+        $(function myTable() {
          table= $('#block-artist').DataTable({
           dom: 'Bfrtip',
            "searching":false,
-            buttons: ['pageLength','excel', 'print',
+            buttons: ['pageLength',
                 {
                     extend: 'pdf',
                     title: function () { return 'ARTIST REPORT'; },
@@ -84,6 +90,10 @@
                         doc.styles.title.fontSize = 14;
                         doc.styles.tableHeader={'color': "Grey"};
                     }
+                },
+                {
+                    extend: 'excel',
+                    title: function () { return 'ARTIST REPORT'; },
                 }
             ],
              lengthMenu: [
@@ -119,14 +129,11 @@
     });
 
 
-
         function fill_datatable(filter_search = '', search_artist = '')
         {
-
-
             var dataTable = $('#block-artist').DataTable({
                 dom: 'Bfrtip',
-                buttons: ['pageLength','excel', 'print',
+                buttons: ['pageLength',
                     {
                         extend: 'pdf',
                         title: function () { return 'ARTIST REPORT'; },
@@ -135,8 +142,15 @@
                             doc.styles.tableHeader.fontSize = 7;
                             doc.styles.title.fontSize = 14;
                             doc.styles.tableHeader={'color': "Grey"};
-                        }
+                        },
+                    },
+                    {
+                        extend: 'excel',
+                        title: function () {
+                            return 'ARTIST REPORT';
+                        },
                     }
+
                 ],
                 lengthMenu: [
                     [ 10, 25, 50, 1 ],
@@ -183,6 +197,11 @@
             }
         });
 
+    $('#resetButton').click(function () {
+        myTableRefresh();
+    })
+
+
         $('.submit_button_nationality').click(function(){
             var filter_search = $('#filter_search').val();
             var search_artist = $('#search_by_nationality').val();
@@ -218,8 +237,23 @@
        {
            table= $('#block-artist').DataTable({
                dom: 'Bfrtip',
+
                "searching":false,
-               buttons: ['pageLength','excel', 'pdf', 'print'
+               buttons: ['pageLength',
+                   {
+                       extend: 'pdf',
+                       title: function () { return 'ARTIST REPORT'; },
+                       customize: function (doc) {
+                           doc.defaultStyle.fontSize = 7;
+                           doc.styles.tableHeader.fontSize = 7;
+                           doc.styles.title.fontSize = 14;
+                           doc.styles.tableHeader={'color': "Grey"};
+                       }
+                   },
+                   {
+                   extend: 'excel',
+           title: function () { return 'ARTIST REPORT'; },
+       }
                ],
                lengthMenu: [
                    [ 10, 25, 50, 1 ],
@@ -230,12 +264,14 @@
                    processing: '<span>Processing</span>',
                },
                serverSide: true,
-                ajax: {
+               footer: true,
+               ajax: {
                    url: '{{ route('admin.artist_permit_reports.artist_reports')}}',
                    method: 'get',
                    data: function (d) {
                    }
                },
+
                columns: [
                    {data: 'artist_id',name:'artist_id'},
                    {data: 'person_code',name:'person_code'},
