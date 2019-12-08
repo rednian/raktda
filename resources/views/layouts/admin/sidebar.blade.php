@@ -19,7 +19,7 @@
        <div id="kt_aside_menu"class="kt-aside-menu "data-ktmenu-vertical="1" data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500" >
             
            <ul class="kt-menu__nav ">
-               @if(!Auth::user()->roles()->where('roles.role_id', 4)->exists())
+               @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
                <li class="kt-menu__item {{ Request::is('dashboard*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.dashboard') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Dashboard') }}</span>
@@ -61,7 +61,7 @@
                        <span class="kt-menu__link-text">{{ __('Event Permit') }}</span>
                    </a>
                </li>
-               @if(!Auth::user()->roles()->where('roles.role_id', 4)->exists())
+               @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
                <li class="kt-menu__item {{ Request::is('artist_reports*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.artist_permit_reports.reports') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Reports') }}</span>

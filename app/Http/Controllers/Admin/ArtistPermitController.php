@@ -15,6 +15,7 @@ use App\ArtistPermit;
 use App\Profession;
 use App\ApproverProcedure;
 use App\ArtistPermitComment;
+use App\PermitComment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -25,7 +26,7 @@ class ArtistPermitController extends Controller
     {
       $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
 
-      $view = $request->user()->roles()->where('roles.role_id', 4)->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
+      $view = $request->user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
 
 	    return view($view, [
             'page_title'=> 'Artist Permit Dashboard',
@@ -69,7 +70,14 @@ class ArtistPermitController extends Controller
 
     public function applicationDetails(Request $request, Permit $permit)
     {
-      if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
+        if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
+
+        //UPDATE LOCK ARTIST PERMIT
+        $permit->update([
+          'lock' => Carbon::now(),
+          'lock_user_id' => $request->user()->user_id
+        ]);
+
         return view('admin.artist_permit.application-details', [
         	'page_title'=> 'artist permit details',
           'permit'=>$permit,
@@ -79,12 +87,20 @@ class ArtistPermitController extends Controller
 
     public function submitApplication(Request $request, Permit $permit)
     {
+
+      
       try {
         DB::beginTransaction();
            $user_time = $request->session()->get('user');
            $user = Auth::user();
            $request['user_id'] = $user->user_id;
-           $request['role_id'] =  $user->roles->where('NameEn', 'admin')->first()->role_id;
+           $request['checked_date'] = Carbon::now();
+
+
+           // $request['role_id'] =  $user->roles->where('NameEn', 'admin')->first()->role_id;
+
+           //GET USER ROLE UPDATED BY DONSKIE
+           $request['role_id'] = $user->roles()->first()->role_id;
 
            switch ($request->action) {
              case 'approved-unpaid':
@@ -103,6 +119,10 @@ class ArtistPermitController extends Controller
 
 
               //ADD TO APPROVALS
+              // $approval = $permit->getPermitApproval()->create([
+              //   'type' => 'artist',
+              //   'created_by' => $request->user()->user_id
+              // ]);
               
 
               // if ($request->is_manual_schedule) {
@@ -136,12 +156,45 @@ class ArtistPermitController extends Controller
                 }
                }
               break;
+              //INSPECTOR AND MANAGER APPROVAL
+              case 'checked':
+
+                  $status = $user->roles()->first()->role_id == 4 ? 'inspector' : 'manager';
+
+                  $comment = $permit->comment()->where([
+                    'action' => 'pending', 
+                    'role_id' => $user->roles()->first()->role_id
+                  ])->first();
+
+                  $comment->update($request->except(['_token', 'bypass_payment']));
+
+                  //RESET LOCK TO NONE
+                  $permit->update([
+                    'lock' => null,
+                    'lock_user_id' => null
+                  ]);
+
+                  if($request->has('bypass_payment')){
+
+                      $comment->exempt_payment = 1;
+                      $comment->save();
+
+                      $permit->exempt_payment = 1;
+                      $permit->exempt_by = $request->user()->user_id;
+                      $permit->save();
+                  }
+
+                  //CHANGE THE STATUS THAT WILL IDENTIFY IF IT IS FROM INSPECTOR OR MANAGER
+                  $request['action'] = 'checked-'.$status;
+
+              break;
+
            }
              $permit->update(['permit_status'=>$request->action]);
 
         DB::commit();
 	      $result = ['success', ' Permit has been rejected successfully ', 'Success'];
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
       	DB::rollBack();
 	      $result = ['error', $e->getMessage(), 'Error'];
       }
@@ -470,10 +523,11 @@ class ArtistPermitController extends Controller
         ->whereDate('created_at', '<=', Carbon::parse($date['end'])->endOfDay()->toDateTimeString());
       })
       ->when($request->approval, function($q) use($request){
-        $q->whereHas('approval.approver', function($q) use($request){
-          $q->where('user_id', $request->user()->user_id);
+        $q->whereHas('comment', function($q) use($request){
+          $q->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id);
         });
-      })->latest();
+      })
+      ->latest();
 
       $table = Datatables::of($permit)
       ->addColumn('artist_number', function($permit){

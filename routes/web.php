@@ -118,7 +118,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         ->name('admin.artist_permit.checkApplication');
 
     Route::get('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@applicationDetails')
-        ->name('admin.artist_permit.applicationdetails');
+        ->name('admin.artist_permit.applicationdetails')->middleware('lock_artist_permit');
 
     Route::get('/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')
         ->name('admin.artist_permit.datatable');
@@ -128,10 +128,16 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         ->name('admin.artist_permit.index');
 
 
+    //ADDED BY DON
+    Route::post('/artist_permit/lock/{permit}', function(Illuminate\Http\Request $request, App\Permit $permit){
+        $permit->update([
+            'lock' => Carbon\Carbon::now(),
+            'lock_user_id' => $request->user()->user_id
+        ]);
+    })->name('artist_permit.lock');
 
 
     //Reports
-
     Route::get('/artist_reports', 'Admin\ReportController@reports')
         ->name('admin.artist_permit_reports.reports');
 

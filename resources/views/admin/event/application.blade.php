@@ -1397,7 +1397,7 @@
  
      }
 
-     function updateLock() {
+    function updateLock() {
        setInterval(function () {
          $.ajax({
            url: '{{ route('admin.event.lock', $event->event_id) }}',
