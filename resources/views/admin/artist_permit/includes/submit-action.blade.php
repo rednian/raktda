@@ -18,16 +18,21 @@
 							 $disaaproved_artist = $permit->artistpermit()->where('artist_permit_status', 'approved')->count();
 							 ?>
 							<div class="form-group form-group-xs row">
-								<label class="col-sm-2 col-form-label">Action <span class="text-danger">*</span></label>
+								<label class="col-sm-2 col-form-label {{ Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'd-none' : '' }}">Action <span class="text-danger">*</span></label>
 								<div class="col-sm-8">
-									<select name="action" class="form-control-sm form-control custom-select">
+									<select name="action" class="form-control-sm form-control custom-select {{ Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'd-none' : '' }}">
+										@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
 										<option disabled selected>-Select Action-</option>
 										 @if($all_artist == $disaaproved_artist ){
 													<option value="approved-unpaid">Approve Application & Notify client for payment</option>
 										 @endif
+
 										<option value="send_back">Send back to client for modification of one or more artist information</option>
 										<option value="need approval">Need higher Approval</option>
 										<option value="rejected">Reject Application & Notify client</option>
+										@else
+										<option selected value="checked"></option>
+										@endif
 									</select>
 								</div>
 							</div>
@@ -54,6 +59,17 @@
 									<textarea name="comment" rows="4" class="form-control-sm form-control"></textarea>
 								</div>
 							</div>
+							@if(Auth::user()->roles()->whereIn('roles.role_id', [5])->exists())
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8">
+									<label class="kt-checkbox kt-checkbox--default kt-font-dark">
+										<input name="bypass_payment" value="1" type="checkbox"> {{ __('Bypass the payment') }}
+										<span></span>
+									</label>
+								</div>
+							</div>
+							@endif
 						</div>
 					</section>
 				</div>

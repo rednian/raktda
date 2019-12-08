@@ -1,6 +1,15 @@
 @extends('layouts.admin.admin-app')
 @section('style')
 	<link href="{{ asset('/assets/css/wizard-3.css') }}" rel="stylesheet" type="text/css"/>
+	
+	{{-- <style>
+		@if($artist_permit->artist_permit_status == 'approved' && Auth::user()->)
+		.input-group-append{
+			display:none;
+		}
+		@endif
+	</style> --}}
+	
 @endsection
 @section('content')
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border" id="app-wizard">
@@ -226,6 +235,7 @@
 
 			var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 			wizard.on("beforeNext", function(wizardObj) {
+				{{-- @if($artist_permit->artist_permit_status != 'approved') --}}
 				if(wizardObj.currentStep == 1){
 					$('input[type=checkbox][data-step=step-1]').each(function () {
 						if(!$(this).is(':checked')){
@@ -247,7 +257,7 @@
 					});
 
 				}
-
+				{{-- @endif --}}
 			}).on("change", function(wizard) { KTUtil.scrollTop(); });
 		});
 	</script>

@@ -69,9 +69,14 @@
                         @foreach($permit->comment()->doesntHave('artistPermitComment')->orderBy('created_at', 'desc')->get() as $comment)
                         <tr>
                             <td>{{ ucwords($comment->user->NameEn) }}</td>
-                            <td>{{ ucfirst($comment->comment) }}</td>
+                            <td>
+                              {{ ucfirst($comment->comment) }}
+                              @if($comment->exempt_payment)
+                              <br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>
+                              @endif
+                            </td>
                             <td>{{ ucfirst($comment->role->NameEn) }}</td>
-                            <td>{{ $comment->created_at->format('d-M-Y') }}</td>
+                            <td>{{ $comment->checked_date }}</td>
                             <td>{{ ucfirst($comment->action) }}</td>
                         </tr>
                         @endforeach
@@ -178,9 +183,14 @@
 <script type="text/javascript">
   var artist = {};
   $(document).ready(function () {
+
+
     submitAction();
     artistTable();
     permitHistory();
+
+    //UPDATE LOCK EVERY 5 SECONDS
+    var lockinterval = setInterval(updateLock, 60000);
 
     $('button#btn-action').click(function () {
       if ('{{ $is_artist_check  }}') {
@@ -210,14 +220,16 @@
   },
 
   submitHandler: function (form) {
-    var rows_selected = artist.column(0).checkboxes.selected();
-    rows_selected.each(function (v) {
-      $(form).append($('<input >').attr('type', 'hidden').attr('name', 'artist_permit_id[]').val(v)); });
-    form[0].submit();
-  }
-});
+      var rows_selected = artist.column(0).checkboxes.selected();
+      rows_selected.each(function (v) {
+        $(form).append($('<input >').attr('type', 'hidden').attr('name', 'artist_permit_id[]').val(v)); });
+      form[0].submit();
+    }
+  });
 
-    $('div.toolbar').html($('#action-container'));
+  $('div.toolbar').html($('#action-container'));
+
+     $('input[name=bypass_payment][type=checkbox]').prop('checked', false);
 
   });
 
@@ -382,5 +394,15 @@
         });
      });
   }
-				 </script>
+
+  function updateLock(){
+      $.ajax({
+         url: '{{ route('artist_permit.lock', $permit->permit_id) }}',
+         type: 'post',
+         success: function(){
+            console.log('test lock');
+         }
+      });
+  }
+</script>
 @endsection

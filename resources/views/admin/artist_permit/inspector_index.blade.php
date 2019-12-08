@@ -47,7 +47,7 @@
 			<div class="kt-portlet__body">
         
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
-						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Request Permits') }}</a></li>
+						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('For Approval Permits') }}</a></li>
 				 </ul>
           <div class="form-row d-none" style="position: absolute; right: -80px; top: 23px; width: 30%">
             <div class="col-12">
@@ -197,8 +197,9 @@
           data: function (d) {
              // var status = $('select#new-permit-status').val();
              d.request_type = $('select#new-request-type').val();
-             d.status = ['new'];
+             d.status = ['need approval', 'checked-inspector', 'checked-manager'];
              d.date = $('#new-applied-date').val()  ? selected_date : null; 
+             d.approval = 1;
            }
          },
          // order: [[ 3, "desc" ]],
