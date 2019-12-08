@@ -145,6 +145,10 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::post('/artist_reports/search_artist', 'Admin\ReportController@search_artist')
         ->name('admin.artist_permit_reports.search_artist');
 
+    Route::post('/artist_reports/search_artist_select', 'Admin\ReportController@onChangeSelect')
+        ->name('admin.artist_permit_reports.search_artist_select');
+
+
 
 
 
