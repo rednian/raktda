@@ -254,31 +254,43 @@
         @endif
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_2_3_tab_content" role="tab">
+            <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_1_4_tab_content" role="tab">
               <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{ __('UPLOADED REQUIREMENTS') }}
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->eventRequirement()->count()}}</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_2_2_tab_content" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('EVENT ACTION HISTORY') }}
+            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_2_4_tab_content" role="tab">
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK INFORMATION') }} 
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_3_4_tab_content" role="tab">
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ARTIST INFORMATION') }} 
+              {{-- <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span> --}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_4_4_tab_content" role="tab">
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ACTION HISTORY') }} 
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->comment()->count()}}</span>
             </a>
           </li>
           
         </ul>
         <div class="tab-content">
-          <div class="tab-pane active" id="kt_portlet_base_demo_2_3_tab_content" role="tabpanel">
-            <table class="table table-hover table-borderless border table-striped" id="document-table">
-                <thead>
-                    <tr>
-                          <th>TYPE</th>
-                        <th>{{ __('DOCUMENT NAME') }}</th>
-                        <th>{{ __('ISSUED DATE') }}</th>
-                        <th>{{ __('EXPIRED DATE') }}</th>
-                        <th>{{ __('FILES') }}</th>
-                    </tr>
-                </thead>
-                
-            </table>
+          <div class="tab-pane active" id="kt_portlet_base_demo_1_4_tab_content" role="tabpanel">
+             <table class="table border borderless table-hover table-" id="requirement-table">
+              <thead>
+                <tr>
+                   <th>{{ __('REQUIREMENT NAME') }}</th>
+                   <th>{{ __('FILES') }}</th>
+                   <th>{{ __('ISSUED DATE') }}</th>
+                   <th>{{ __('EXPIRED DATE') }}</th>
+                </tr>
+              </thead>
+             </table>
           </div>
           <div class="tab-pane" id="kt_portlet_base_demo_2_2_tab_content" role="tabpanel">
             <table class="table table-hover table-borderless border table-striped table-sm" id="event-comment-datatable">
@@ -305,41 +317,42 @@
   var comment_table = {}; 
   $(document).ready(function(){
 
-   
-
-    document_table = $('#document-table').DataTable({
-      ajax: '{{ route('admin.event.uploadedRequiremet', $event->event_id) }}',
-      columnDefs:[
-      {targets:[1,2,3], className: 'no-wrap'},
-      {targets:[0], "visible": false},
-
-      ],
-       "order": [[ 0, 'asc' ]],
-      columns:[
-        { data: 'type'},
-        { data: 'name'},
-        { data: 'start'},
-        { data: 'end'},
-        { data: 'files'}, 
-      ],
-       "drawCallback": function ( settings ) {
-            var api = this.api();
-            var rows = api.rows( {page:'current'} ).nodes();
-            var last=null;
- 
-            api.column(0, {page:'current'} ).data().each( function ( group, i ) {
-                if ( last !== group ) {
-                    $(rows).eq( i ).before(
-                        '<tr class="group"><td colspan="5">'+group+'</td></tr>'
-                    );
- 
-                    last = group;
-                }
-            } );
-        }
-    });
      eventComment();
+     requirementTable();
   });
+
+  function requirementTable(){
+    $('table#requirement-table').DataTable({
+         ajax: {
+           url: '{{ route('admin.event.applicationDatatable',  $event->event_id) }}',
+            data: function(d){},
+         },
+         columnDefs:[
+           {targets: [1,2, 3], className: 'no-wrap'},
+         ],
+          "order": [[ 0, 'asc' ]],
+          rowGroup: {
+            startRender: function ( rows, group ) {
+             var row_data = rows.data()[0];
+             return $('<tr/>').append( '<td >'+group+'</td>' )
+                        .append( '<td>'+rows.count()+'</td>' )
+                        .append( '<td>'+row_data.issued_date+'</td>' )
+                              .append( '<td>'+row_data.expired_date+'</td>' )
+                              .append( '<td></td>' )
+                              .append( '<tr/>' );
+              },
+           dataSrc: 'name'
+        },
+         columns:[
+           {data: 'files'},
+           {render: function(data){ return null}},
+           {render: function(data){ return null}},
+           {render: function(data){ return null}},
+         ],       
+       });
+
+   
+     }
 
   function eventComment(){
     comment_table = $('table#event-comment-datatable').DataTable({

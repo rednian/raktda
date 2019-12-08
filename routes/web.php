@@ -60,6 +60,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('/event/{event}/addition-requirement-datatable','Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
     Route::get('/event/{event}/requirement-datatable','Admin\EventController@uploadedRequiremet')->name('admin.event.uploadedRequiremet');
     Route::get('/event/{event}/comment-datatable','Admin\EventController@commentDatatable')->name('admin.event.comment');
+    Route::get('/event/{event}/liquor-datatable','Admin\EventController@liquorRequirementDatatable')->name('admin.event.liquor.requirement');
+    Route::get('/event/{event}/truck-datatable','Admin\EventController@truckDatatable')->name('admin.event.truck.datatable');
+    Route::get('/event/{event}/truck/{eventtruck}/datatable','Admin\EventController@truckRequirementDatatable')->name('admin.event.truck.requirement');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist

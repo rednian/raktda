@@ -6,7 +6,7 @@
 						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Artist Permit Details</h3>
 				 </div>
 				 <div class="kt-portlet__head-toolbar">
-						<a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u">
+						<a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
 							 <i class="la la-arrow-left"></i>
 							 Back to permit list
 						</a>
@@ -270,11 +270,7 @@
            {data: 'profession'},
            {data: 'nationality'},
            {data: 'artist_status'},
-           {
-              render: function (type, data, full, meta) {
-                 return '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">Document</button><button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment</button>';
-              }
-           }
+           {data: 'action'},
         ],
         createdRow: function (row, data, index) {
            $('td input[type=checkbox]', row).click(function (e) {

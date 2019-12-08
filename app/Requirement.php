@@ -16,6 +16,11 @@ class Requirement extends Model implements Auditable
 
     protected $fillable = ['requirement_name', 'requirement_name_ar', 'dates_required', 'requirement_description', 'requirement_description_ar', 'term', 'requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by', 'validity', 'type'];
 
+    public function eventLiquorTruck()
+    {
+        return $this->hasMany(EventLiquorTruckRequirement::class, 'requirement_id');
+    }
+
     public function eventRequirement()
     {
         return $this->hasMany(EventRequirement::class, 'requirement_id');
@@ -41,5 +46,9 @@ class Requirement extends Model implements Auditable
     public function type()
     {
         return $this->belongsToMany(EventType::class, 'event_type_requirement', 'requirement_id', 'event_type_id');
+    }
+
+     public function event_type_requirements(){
+        return $this->hasOne(EventTypeRequirement::class, 'requirement_id');
     }
 }

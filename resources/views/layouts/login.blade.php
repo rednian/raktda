@@ -78,10 +78,6 @@
                 <div class="news-feed-overlay"></div>
                 <div class="news-caption">
                     <img src="{{ asset('img/login-logo.svg') }}" style="width: 40%;" class="center-block">
-
-                    {{--<p class="text-center">--}}
-                    {{--Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque delectus dolores facere minus quaerat ut voluptate. Commodi doloribus eaque esse eum, fugit libero modi pariatur quidem quis vitae voluptatem?--}}
-                    {{--</p>--}}
                 </div>
             </div>
             <!-- end news-feed -->
@@ -133,11 +129,11 @@
                         <div class="login-buttons">
                             <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
                         </div>
-                        {{--<div class="m-t-20 m-b-40 p-b-40 text-inverse">--}}
-                        {{--Not a member yet? Click <a href="register_v3.html" class="text-success">here</a> to register.--}}
-                        {{--</div>--}}
+                        <div class="m-t-20 m-b-40 p-b-40 text-inverse">
+                        Not a member yet? Click <a href="#" class="text-success">here</a> to register.
+                        </div>
                         {{--<hr />--}}
-                        {{--<p class="text-center">--}}
+                        {{--<p <center></center>lass="text-center">--}}
                         {{--&copy; Color Admin All Right Reserved 2015--}}
                         {{--</p>--}}
                     </form>

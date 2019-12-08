@@ -282,11 +282,11 @@ class ArtistPermitController extends Controller
         return $artist_permit_document->issued_date->format('d-M-Y');
       })
       ->editColumn('expired_date', function($artist_permit_document){
-	      if(strtolower($artist_permit_document->requirement->requirement_nam) == 'medical certificate'){ return 'Not Required';}
+	      if(strtolower($artist_permit_document->requirement->requirement_name) == 'medical certificate'){ return 'Not Required';}
         return $artist_permit_document->expired_date->format('d-M-Y');
       })
       ->addColumn('name', function($artist_permit_document){
-         return  $artist_permit_document->requirement->name_en;
+         return  $artist_permit_document->requirement->requirement_name;
       })
       ->rawColumns(['action', 'document_name'])
       ->make(true);
@@ -392,7 +392,12 @@ class ArtistPermitController extends Controller
 			    	return '<span class="kt-font-bolder kt-font-transform-u">'.$name.'</span> currently has an existing permit that will expire '.$date.' with profession of 
 								<span class="kt-font-bolder  kt-font-transform-u">'.ucwords($profession).' </span>';
 			    })
-			    ->rawColumns(['artist_status', 'existing_permit'])
+          ->addColumn('action', function($artist_permit){
+            $html = '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">Document <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">'.($artist_permit->artistPermitDocument()->count()+1).'</span></button>';
+            $html .= '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">'.$artist_permit->comments()->count().'</span></button>';
+            return $html;
+          })
+			    ->rawColumns(['artist_status', 'existing_permit', 'action'])
 			    ->make(true);
         }
     }
