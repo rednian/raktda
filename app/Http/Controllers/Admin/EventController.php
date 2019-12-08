@@ -162,7 +162,7 @@
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
 					case 'need approval':
-
+						dd($request->all());
 
 						// $user = User::availableInspector($event->issued_date)->get();
 						// $emp = EmployeeWorkSchedule::getSchedule()->get();

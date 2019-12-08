@@ -871,7 +871,7 @@
 												  					</div>
 
 												  					<div class="col-md-4">
-												  						<div class="form-group form-group-sm kt-hide">
+												  						<div class="form-group form-group kt-hide">
 												  							<label for="" class="kt-font-dark">{{ __('Approvers') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
 												  										 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
@@ -882,6 +882,14 @@
 												  												@endforeach
 												  										 @endif
 												  							 </select>
+												  						</div>
+												  						<div class="form-group form-group kt-hide">
+												  							<div class="kt-checkbox-inline">
+																				<label class="kt-checkbox">
+																					<input type="checkbox" id="site-inspection" name="inpection"> {{ __('Site Inspection required') }}
+																					<span></span>
+																				</label>
+																			</div>
 												  						</div>
 												  					</div>
 												  				</section>
@@ -1322,6 +1330,16 @@
 
      	var approver = $('select#select-approver');
 
+     	approver.change(function(){
+     		var val = $(this).val();
+     		if(val.indexOf('4') > -1){
+     			$('input#site-inspection').parents('.form-group').removeClass('kt-hide');
+     		}	
+     		else{
+     			$('input#site-inspection').parents('.form-group').addClass('kt-hide');	
+     		}
+     	});
+
      	approver.select2({
 		 minimumResultsForSearch: 'Infinity',
 		 maximumSelectionLength: 2,
@@ -1392,7 +1410,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {
