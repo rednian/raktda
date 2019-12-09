@@ -145,6 +145,18 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::post('/artist_reports/search_artist_select', 'Admin\ReportController@onChangeSelect')
         ->name('admin.artist_permit_reports.search_artist_select');
 
+    Route::get('/event_reports/event_report', 'Admin\EventReportController@event_reports')
+        ->name('admin.event_reports.event_report');
+
+    Route::post('/event_reports/applied_date', 'Admin\EventReportController@applied_date')
+        ->name('admin.event_reports.applied_date');
+
+    Route::post('/event_reports/application_type', 'Admin\EventReportController@application_type')
+        ->name('admin.event_reports.application_type');
+
+    Route::post('/event_reports/status', 'Admin\EventReportController@status')
+        ->name('admin.event_reports.status');
+
 
 
 
