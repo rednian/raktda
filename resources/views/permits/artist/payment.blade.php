@@ -44,15 +44,16 @@
                         <span class="kt-font-info">{{ucwords($permit_details->work_location)}}</span>&emsp;&emsp;
                         <span>{{__('Ref No.')}}:</span>&emsp;
                         <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
+                        @if($permit_details->event)
+                        <span>{{__('Connected to Event')}} :</span>&emsp;
+                        <span
+                            class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>
+                        @endif
                     </div>
                 </div>
-                @if($permit_details->event)
-                <div class="pb-3">
-                    <span>Connected to Event :</span>&emsp;
-                    <span
-                        class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>&emsp;&emsp;
-                </div>
-                @endif
+
+
+
                 <div class="table-responsive">
                     <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                         <thead>
@@ -101,15 +102,22 @@
                     </table>
                 </div>
 
+                @if($permit_details->event)
+
+                @endif
+
+
                 <div class="d-flex justify-content-end">
                     <a href="{{url('company/artist/payment_gateway/'.$permit_details->permit_id)}}">
                         <button class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm"
                             {{in_array('approved',$statuses) ? '' : 'disabled'}}>
                             <i class="la la-check"></i>
-                            Make Payment
+                            {{__('Make Payment')}}
                         </button>
                     </a>
                 </div>
+
+
 
             </div>
         </div>
@@ -122,7 +130,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Artist Details</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{__('Artist Details')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>

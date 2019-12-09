@@ -401,7 +401,7 @@ class ArtistController extends Controller
         // return $status;
     }
 
-    public function generatePermitNumber()
+    public function generateArtistPermitNumber()
     {
         $last_permit_d = Permit::orderBy('created_at', 'desc')->where('permit_number', 'not like', '%-%')->first();
 
@@ -417,6 +417,26 @@ class ArtistController extends Controller
                 $x++;
             }
             $new_permit_no = sprintf("AP%0" . $x . "d", $n + 1);
+        }
+        return $new_permit_no;
+    }
+
+    function generateEventPermitNumber()
+    {
+        $last_permit_d = Event::where('permit_number', 'not like', '%-%')->latest()->first();
+
+        if (!isset($last_permit_d->permit_number)) {
+            $new_permit_no = sprintf("EP%04d",  1);
+        } else {
+            $last_pn = $last_permit_d->permit_number;
+            $n = substr($last_pn, 2);
+            $f = substr($n, 0, 1);
+            $l = substr($n, -1, 1);
+            $x = 4;
+            if ($f == 9 && $l == 9) {
+                $x++;
+            }
+            $new_permit_no = sprintf("EP%0" . $x . "d", $n + 1);
         }
         return $new_permit_no;
     }
@@ -1820,24 +1840,84 @@ class ArtistController extends Controller
         return view('permits.artist.payment_gateway', $data_bundle);
     }
 
-    public function payment(Permit $permit)
+    public function payment(Request $request)
     {
+        $permit_id = $request->permit_id;
+        $amount = $request->amount;
+        $vat = $request->vat;
+        $total = $request->total;
+        $paidEventFee = $request->paidEventFee;
+        $noofdays = $request->noofdays;
+
         $transArr = Transaction::create([
+            'reference_number' => getTransactionReferNumber(),
             'transaction_type' => 'artist',
             'transaction_date' => Carbon::now(),
-            'company_id' => Auth::user()->type == 1 ? Auth::user()->EmpClientId : '',
+            'created_by' => Auth::user()->user_id
         ]);
 
-        foreach ($permit->artistPermit() as $artist) {
+        $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
+
+        foreach ($artistPermits as $artistPermit) {
+            $per_day_fee = $artistPermit->profession->amount;
+            $total_fee = $per_day_fee * $noofdays;
+            $vat_fee = $total_fee * 0.05 ; 
             $transArr->artistPermitTransaction()->create([
-                'vat' => $artist->profession->amount * 0.05,
-                'amount' => $artist->profession->amount,
-                'artist_permit_id' => $artist->artist_permit_id,
+                'vat' => $vat_fee ,
+                'amount' => $total_fee,
+                'permit_id' => $permit_id,
+                'artist_permit_id' => $artistPermit->artist_permit_id,
                 'transaction_id' => $transArr->transaction_id
             ]);
         }
 
-        $permit_number = $this->generatePermitNumber();
+        $permit_number = $this->generateArtistPermitNumber();
+
+        $permit = Permit::where('permit_id', $permit_id)->first();
+
+        if($paidEventFee)
+        {
+            \App\Event::where('event_id', $permit->event_id)->update([
+                'paid' => 1,
+                'status' => 'active',
+            ]);
+
+            $trans = Transaction::create([
+                'reference_number' => getTransactionReferNumber(),
+                'transaction_type' => 'event',
+                'transaction_date' => Carbon::now(),
+                'created_by' => Auth::user()->user_id
+            ]);
+
+            $ev_amount = $permit->event->type->amount * $noofdays;
+            $ev_vat = $ev_amount * 0.05;
+
+            \App\EventTransaction::create([
+                'event_id' => $permit->event_id,
+                'user_id' => Auth::user()->user_id,
+                'transaction_id' => $trans->transaction_id,
+                'amount' => $ev_amount,
+                'vat' => $ev_vat,
+                'type'=> 'event'
+            ]);
+
+            if($permit->event->is_truck == 1)
+            {
+                $tr_amount = getSettings()->food_truck_fee * $noofdays;
+
+                \App\EventTransaction::create([
+                    'event_id' => $permit->event_id,
+                    'user_id' => Auth::user()->user_id,
+                    'transaction_id' => $trans->transaction_id,
+                    'amount' => $tr_amount,
+                    'vat' => 0,
+                    'type'=> 'truck',
+                    'total_trucks' => count($permit->event->truck)
+                ]);
+            }
+    
+        }
+
 
         $issued_date = strtotime($permit->issued_date);
         $expired_date = strtotime($permit->exprired_date);
@@ -1863,7 +1943,7 @@ class ArtistController extends Controller
             $result = ['error', 'Error, Please Try Again', 'Error'];
         }
 
-        return redirect('company/artist/happiness_center/' . $permit->permit_id);
+        return response()->json(['message' => $result]);
     }
 
     public function happiness_center($id)

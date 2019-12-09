@@ -53,7 +53,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::get('artist/permit/{id}/{status}',  'Company\ArtistController@permit')->name('artist.permit');
     Route::get('artist/make_payment/{id?}',  'Company\ArtistController@make_payment')->name('company.make_payment');
     Route::get('artist/payment_gateway/{permit}',  'Company\ArtistController@payment_gateway')->name('company.payment_gateway');
-    Route::post('artist/payment/{permit}/payment',  'Company\ArtistController@payment')->name('company.payment');
+    Route::post('artist/payment',  'Company\ArtistController@payment')->name('company.payment');
     Route::get('artist/happiness_center/{id}',  'Company\ArtistController@happiness_center')->name('company.happiness_center');
     Route::post('submit_happiness',  'Company\ArtistController@submit_happiness')->name('artist.submit_happiness');
     Route::get('artist/get_status/{id}', 'Company\ArtistController@get_status')->name('company.artist.get_status');
@@ -101,23 +101,23 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::get('event/get_truck_files_uploaded/{id}', 'Company\EventController@get_truck_files_uploaded')->name('event.get_truck_files_uploaded');
     Route::get('event/fetch_liquor_req/{id}', 'Company\EventController@fetch_liquor_req')->name('event.fetch_liquor_req');
     Route::get('event/get_liquor_files_uploaded/{id}', 'Company\EventController@get_liquor_files_uploaded')->name('event.get_liquor_files_uploaded');
-    Route::post('event/add_truck', 'Company\EventController@add_truck')->name('event.add_truck');
+    Route::post('event/add_update_truck', 'Company\EventController@add_update_truck')->name('event.add_update_truck');
     Route::post('event/add_liquor', 'Company\EventController@add_liquor')->name('event.add_liquor');
-    Route::get('event/fetch_liquor_details/{id}', 'Company\EventController@fetch_liquor_details')->name('event.fetch_liquor_details');
+
+    Route::post('event/fetch_liquor_details', 'Company\EventController@fetch_liquor_details')->name('event.fetch_liquor_details');
+    Route::get('event/fetch_liquor_details_by_event_id/{id}', 'Company\EventController@fetch_liquor_details_by_event_id')->name('event.fetch_liquor_details_by_event_id');
+    
     Route::post('event/fetch_truck_details', 'Company\EventController@fetch_truck_details')->name('event.fetch_truck_details');
     Route::get('event/fetch_truck_details_by_event_id/{id}', 'Company\EventController@fetch_truck_details_by_event_id')->name('event.fetch_truck_details_by_event_id');
 
 
     Route::get('event/delete_truck_details/{id}', 'Company\EventController@delete_truck_details')->name('event.delete_truck_details');
 
+    Route::post('event/deleteTruckLiquor', 'Company\EventController@deleteTruckLiquor')->name('event.deleteTruckLiquor');
+
     Route::get('event/fetch_this_truck_details/{id}', 'Company\EventController@fetch_this_truck_details')->name('event.fetch_this_truck_details');
     Route::post('event/fetch_this_truck_docs', 'Company\EventController@fetch_this_truck_docs')->name('event.fetch_this_truck_docs');
-
-    Route::post('event/update_this_truck_details', 'Company\EventController@update_this_truck_details')->name('event.update_this_truck_details');
-
-
-
-
+    Route::post('event/fetch_this_liquor_docs', 'Company\EventController@fetch_this_liquor_docs')->name('event.fetch_this_liquor_docs');   
 
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 });

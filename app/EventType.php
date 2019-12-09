@@ -20,4 +20,9 @@ class EventType extends Model
     {
         return $this->hasMany(Event::class, 'event_type_id');
     }
+
+    public function event_type_requirements()
+    {
+        return $this->hasMany(EventTypeRequirement::class, 'event_type_id');
+    }
 }

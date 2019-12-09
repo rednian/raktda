@@ -41,7 +41,6 @@ class EventController extends Controller
         return view('permits.event.index', ['types' => $eventtypes]);
     }
 
-
     public function create()
     {
         $data['event_types'] = EventType::all()->sortBy('name_en');
@@ -52,21 +51,15 @@ class EventController extends Controller
         return view('permits.event.create', $data);
     }
 
-    public function add_truck(Request $request)
+    public function add_update_truck(Request $request)
     {
-        $count = $request->truckCount;
+        $event_id = $request->event_id;
+        $truck_id = $request->truck_id;
         $truck_details = json_decode($request->truckDetails, true);
         $truck_doc_details = json_decode($request->truckDocDetails, true);
-        $event_truck_id = '';
-
-        if ($count == 0) {
-            abort(404);
-        }
-
+        
         $requirements = Requirement::where('requirement_type', 'truck')->get();
-
         $requirement_ids = [];
-
         foreach ($requirements as $req) {
             array_push($requirement_ids, $req->requirement_id);
         }
@@ -74,86 +67,102 @@ class EventController extends Controller
         $userid = Auth::user()->user_id;
         $date = date('d_m_Y_H_i_s');
 
-        $event_truck_ids = [];
+        $update_array = array(
+            'company_name_en' => $truck_details['company_name_en'],
+            'company_name_ar' => $truck_details['company_name_ar'],
+            'plate_number'    => $truck_details['plate_no'],
+            'food_type'       => $truck_details['food_type'],
+            'registration_issued_date' => $truck_details['regis_issue_date'] ? Carbon::parse($truck_details['regis_issue_date'])->toDateString() : '',
+            'registration_expired_date' => $truck_details['regis_expiry_date'] ? Carbon::parse($truck_details['regis_expiry_date'])->toDateString() : '',
+            'status' => 0,
+            'created_by' => Auth::user()->user_id,
+        );
 
-        for ($s = 1; $s <= $count; $s++) {
+        if($truck_id)
+        {
+            $event_truck_details = EventTruck::where('event_truck_id', $truck_id)->update($update_array);
+        }else
+        {
+            if($event_id){
+                $update_array['event_id'] = $event_id;
+            }
+            $event_truck_details = EventTruck::create($update_array);
+            $truck_id = $event_truck_details->event_truck_id;
+        }
 
-            $update_array = array(
-                'company_name_en' => $truck_details[$s]['company_name_en'],
-                'company_name_ar' => $truck_details[$s]['company_name_ar'],
-                'plate_number'    => $truck_details[$s]['plate_no'],
-                'food_type'       => $truck_details[$s]['food_type'],
-                'registration_issued_date' => $truck_details[$s]['regis_issue_date'] ? Carbon::parse($truck_details[$s]['regis_issue_date'])->toDateString() : '',
-                'registration_expired_date' => $truck_details[$s]['regis_expiry_date'] ? Carbon::parse($truck_details[$s]['regis_expiry_date'])->toDateString() : '',
-                'status' => 'draft',
-                'created_by' => Auth::user()->user_id,
-            );
-            $event_truck = EventTruck::create($update_array);
+       if($event_id)
+       {
+            $is_truck  = Event::where('event_id', $event_id)->first()->is_truck;
 
-            $event_truck_id = $event_truck->event_truck_id;
+            if($is_truck == 0)
+            {
+                Event::where('event_id', $event_id)->update([
+                    'is_truck' => 1
+                ]);
+            }
+       }
 
-            array_push($event_truck_ids, $event_truck_id);
+        if ($truck_doc_details) {
 
-            if ($truck_doc_details) {
+            for ($j = 0; $j < $total; $j++) {
 
-                for ($j = 0; $j < $total; $j++) {
+                $l = $requirement_ids[$j];
+                $m = $j + 1;
 
-                    $l = $requirement_ids[$j];
-                    $m = $j + 1;
+                if (session($userid . '_truck_file_'  . $l)) {
 
-                    if (session($userid . '_truck_file_' . $s . '_' . $l)) {
+                    $total_docs = count(session($userid . '_truck_file_'  . $l));
 
-                        $total_docs = count(session($userid . '_truck_file_' . $s . '_' . $l));
+                    if ($total_docs > 0) {
 
-                        if ($total_docs > 0) {
+                        for ($k = 0; $k < $total_docs; $k++) {
+                            if (Storage::exists(session($userid  . '_truck_file_'  . $l)[$k])) {
 
-                            for ($k = 0; $k < $total_docs; $k++) {
-                                if (Storage::exists(session($userid  . '_truck_file_' . $s . '_' . $l)[$k])) {
+                                $ext = session($userid . '_truck_ext_'  . $l)[$k];
 
-                                    $ext = session($userid . '_truck_ext_' . $s . '_' . $l)[$k];
+                                $check_path = 'public/' . $userid . '/event/temp/truck/' . $truck_id . '/' . $l;
 
-                                    $check_path = 'public/' . $userid . '/event/temp/truck/' . $event_truck_id . '/' . $l;
+                                $file_count = count(Storage::files($check_path));
 
-                                    $file_count = count(Storage::files($check_path));
-
-                                    if ($file_count == 0) {
-                                        $next_file_no = 1;
-                                    } else {
-                                        $next_file_no = $file_count + 1;
-                                    }
-
-                                    $newPath = 'public/' . $userid . '/event/temp/truck/' . $event_truck_id . '/' . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
-
-                                    $newPathLink = $userid . '/event/temp/truck/' . $event_truck_id . '/'  . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
-
-                                    Storage::move(session($userid  . '_truck_file_' . $s . '_' . $l)[$k], $newPath);
-
-                                    EventLiquorTruckRequirement::create([
-                                        'issued_date' => !empty((array) $truck_doc_details[$s]) ? Carbon::parse($truck_doc_details[$s][$m]['issue_date'])->toDateTimeString() : '',
-                                        'expired_date' => !empty((array) $truck_doc_details[$s]) ? Carbon::parse($truck_doc_details[$s][$m]['exp_date'])->toDateTimeString() : '',
-                                        'created_at' =>  Carbon::now()->toDateTimeString(),
-                                        'created_by' =>  Auth::user()->user_id,
-                                        'requirement_id' => $l,
-                                        'path' =>  $newPathLink,
-                                        'type' => 'truck',
-                                        'liquor_truck_id' => $event_truck_id
-                                    ]);
+                                if ($file_count == 0) {
+                                    $next_file_no = 1;
+                                } else {
+                                    $next_file_no = $file_count + 1;
                                 }
+
+                                $newPath = 'public/' . $userid . '/event/temp/truck/' . $truck_id . '/' . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                $newPathLink = $userid . '/event/temp/truck/' . $truck_id . '/'  . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                Storage::move(session($userid  . '_truck_file_'  . $l)[$k], $newPath);
+
+                                EventLiquorTruckRequirement::create([
+                                    'issued_date' => !empty((array) $truck_doc_details[$m]) ? Carbon::parse($truck_doc_details[$m]['issue_date'])->toDateTimeString() : '',
+                                    'expired_date' => !empty((array) $truck_doc_details[$m]) ? Carbon::parse($truck_doc_details[$m]['exp_date'])->toDateTimeString() : '',
+                                    'created_at' =>  Carbon::now()->toDateTimeString(),
+                                    'created_by' =>  Auth::user()->user_id,
+                                    'requirement_id' => $l,
+                                    'event_id' => $event_id,
+                                    'path' =>  $newPathLink,
+                                    'type' => 'truck',
+                                    'liquor_truck_id' => $truck_id
+                                ]);
                             }
-                            $request->session()->forget([$userid . '_truck_file_' . $s . '_' . $l, $userid . '_truck_ext_' . $s . '_' . $l]);
                         }
+                        $request->session()->forget([$userid . '_truck_file_'  . $l, $userid . '_truck_ext_'  . $l]);
                     }
                 }
             }
         }
 
-        if ($event_truck_ids) {
-            $result = ['success', 'Food Truck Details Added Successfully', 'Success'];
-        } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+        if(isset($request->from) && $request->from == "amend")
+        {
+            Event::where('event_id', $request->event_id)->update([
+                    'status' => 'amended'
+                ]);
         }
 
-        return response()->json(['message' => $result, 'event_truck_ids' => $event_truck_ids]);
+       return;
     }
 
     public function add_liquor(Request $request)
@@ -177,7 +186,7 @@ class EventController extends Controller
                 'trade_license_expired_date' => $lq['tl_expiry_date'] ? Carbon::parse($lq['tl_expiry_date'])->toDateString() : '',
                 'license_issued_date' => $lq['l_issue_date'] ? Carbon::parse($lq['l_issue_date'])->toDateString() : '',
                 'license_expired_date' => $lq['l_expiry_date'] ? Carbon::parse($lq['l_expiry_date'])->toDateString() : '',
-                'status' => 'temp',
+                'status' => 0,
                 'created_by' => Auth::user()->user_id,
             );
 
@@ -303,14 +312,47 @@ class EventController extends Controller
         return response()->json(['message' => $result, 'event_liquor_id' => $event_liquor_id]);
     }
 
+    public function deleteTruckLiquor(Request $request)
+    {
+        $event_id = $request->eventId;
+        $from = $request->from;
+
+       if($event_id) {      
+            if($from == 'liquor')
+            {
+                EventLiquor::where('event_id', $event_id)->update(['status' => 1]);
+            } else if ($from == 'truck')
+            {
+                EventTruck::where('event_id', $event_id)->update(['status' => 1]);
+            }
+       }else {
+            if($from == 'liquor')
+            {
+                EventLiquor::whereNull('event_id')->update(['status' => 1]);
+            } else if ($from == 'truck')
+            {
+                EventTruck::whereNull('event_id')->update(['status' => 1]);
+            }
+       }
+
+       if($from == 'liquor')
+       {
+            Event::where('event_id', $event_id)->update(['is_liquor' => 0]);
+       } else if ($from == 'truck')
+       {
+            Event::where('event_id', $event_id)->update(['is_truck' => 0]);
+       }
+
+       return;
+
+    }
+
     public function store(Request $request)
     {
 
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
         $lq = json_decode($request->lq, true);
-        $truck_ids = json_decode($request->truckIds, true);
-        $liquor_id = $request->liquorId;
         $from = $request->from;
         $cid = Auth::user()->type == 1 ? Auth::user()->EmpClientId : '';
         $userid = Auth::user()->user_id;
@@ -380,41 +422,62 @@ class EventController extends Controller
                 }
             }
         }
-
-        if ($liquor_id) {
-            EventLiquor::where('event_liquor_id', $liquor_id)->update([
+     
+        if($evd['isLiquor'] == 1)
+        {
+            $ss = EventLiquor::whereNull('event_id')->where('status',0)->where('created_by', Auth::user()->user_id)->update([
                 'event_id' => $event_id,
             ]);
 
-            $requirements =  EventLiquorTruckRequirement::where('liquor_truck_id', $liquor_id)->where('type', 'liquor')->get();
+            $eventLiquor = EventLiquor::where('event_id', $event_id)->latest()->first();
 
-            foreach ($requirements as $req) {
-                $path = $req->path;
-                $newpath = str_replace('temp', $event_id, $path);
-                EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
-                    'path' => $newpath
-                ]);
-            }
-        }
-
-        if ($truck_ids) {
-            for ($a = 0; $a < count($truck_ids); $a++) {
-                EventTruck::where('event_truck_id', $truck_ids[$a])->update([
-                    'event_id' => $event_id
-                ]);
-
-                $requirements =  EventLiquorTruckRequirement::where('liquor_truck_id', $liquor_id)->where('type', 'truck')->get();
+            if($eventLiquor)
+            {
+                $requirements =  EventLiquorTruckRequirement::where('liquor_truck_id', $eventLiquor->event_liquor_id)->where('type', 'liquor')->get();
 
                 foreach ($requirements as $req) {
                     $path = $req->path;
                     $newpath = str_replace('temp', $event_id, $path);
+                    Storage::move('public/'.$path, 'public/'.$newpath);
                     EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
-                        'path' => $newpath
+                        'path' => $newpath,
+                        'event_id' => $event_id
                     ]);
                 }
             }
         }
 
+
+        if($evd['isTruck'] == 1)
+        {
+            EventTruck::whereNull('event_id')->where('status',0)->where('created_by', Auth::user()->user_id)->update([
+                'event_id' => $event_id
+            ]);
+
+            $truck_id_query = EventTruck::where('event_id', $event_id)->get();
+            $truck_ids = [];
+            foreach($truck_id_query as $truck_idd)
+            {
+                array_push($truck_ids, $truck_idd->event_truck_id);
+            }
+
+            for ($a = 0; $a < count($truck_ids); $a++) {
+                $requirements =  EventLiquorTruckRequirement::where('liquor_truck_id', $truck_ids[$a])->where('type', 'truck')->get();
+
+                foreach ($requirements as $req) {
+                    $path = $req->path;
+                    $newpath = str_replace('temp', $event_id, $path);
+                    Storage::move('public/'.$path, 'public/'.$newpath);
+                    EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
+                        'path' => $newpath,
+                        'event_id' => $event_id
+                    ]);
+                }
+            }
+        }
+
+        EventLiquor::whereNull('event_id')->where('status',1)->delete();
+        EventTruck::whereNull('event_id')->where('status',1)->delete();
 
         $firm = $evd['firm_type'];
 
@@ -544,8 +607,14 @@ class EventController extends Controller
         } else {
             $artist = [];
         }
-        $eventReq = $event->requirements()->get();
-        return view('permits.event.show', ['event' => $event, 'eventReq' => $eventReq,  'artist' => $artist, 'tab' => $request->tab]);
+        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
+        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
+        $data['emirates'] = Emirates::all()->sortBy('name_en');
+        $data['eventReq'] = $event->requirements()->get();
+        $data['event'] = $event;
+        $data['artist'] = $artist;
+        $data['tab'] =  $request->tab;
+        return view('permits.event.show', $data);
     }
 
     public function edit(Event $event)
@@ -557,8 +626,6 @@ class EventController extends Controller
         $data['emirates'] = Emirates::all()->sortBy('name_en');
         $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
         $data['event'] = $event;
-        $data['liquor'] = $event->liquor->first();
-
 
         if ($event->status == 'processing') {
             return redirect('company/event');
@@ -568,7 +635,7 @@ class EventController extends Controller
 
     public function fetch_truck_details_by_event_id($id)
     {
-        return  EventTruck::where('event_id', $id)->where('status', '!=', '1')->get();
+        return  EventTruck::where('event_id', $id)->where('status', '0')->get();
     }
 
     public function fetch_this_truck_docs(Request $request)
@@ -580,101 +647,6 @@ class EventController extends Controller
             ['liquor_truck_id', $truck_id],
             ['requirement_id',  $req],
         ])->get();
-    }
-
-
-    public function update_this_truck_details(Request $request)
-    {
-        $event_id = $request->event_id;
-        $truck_id = $request->truck_id;
-        $truck_details = json_decode($request->truckDetails, true);
-        $truck_doc_details = json_decode($request->truckDocDetails, true);
-        $requirements = Requirement::where('requirement_type', 'truck')->get();
-        $requirement_ids = [];
-        foreach ($requirements as $req) {
-            array_push($requirement_ids, $req->requirement_id);
-        }
-        $total = $requirements->count();
-        $userid = Auth::user()->user_id;
-        $date = date('d_m_Y_H_i_s');
-        $s = 1;
-
-            $update_array = array(
-                'company_name_en' => $truck_details[$s]['company_name_en'],
-                'company_name_ar' => $truck_details[$s]['company_name_ar'],
-                'plate_number'    => $truck_details[$s]['plate_no'],
-                'food_type'       => $truck_details[$s]['food_type'],
-                'registration_issued_date' => $truck_details[$s]['regis_issue_date'] ? Carbon::parse($truck_details[$s]['regis_issue_date'])->toDateString() : '',
-                'registration_expired_date' => $truck_details[$s]['regis_expiry_date'] ? Carbon::parse($truck_details[$s]['regis_expiry_date'])->toDateString() : '',
-                'status' => 'draft',
-                'created_by' => Auth::user()->user_id,
-            );
-
-            if($truck_id)
-            {
-                $event_truck_details = EventTruck::where('event_truck_id', $truck_id)->update($update_array);
-            }else
-            {
-                $event_truck_details = EventTruck::create($update_array);
-                $truck_id = $event_truck_details->event_truck_id;
-            }
-            
-            
-
-            if ($truck_doc_details) {
-
-                for ($j = 0; $j < $total; $j++) {
-
-                    $l = $requirement_ids[$j];
-                    $m = $j + 1;
-
-                    if (session($userid . '_truck_file_' . $s . '_' . $l)) {
-
-                        $total_docs = count(session($userid . '_truck_file_' . $s . '_' . $l));
-
-                        if ($total_docs > 0) {
-
-                            for ($k = 0; $k < $total_docs; $k++) {
-                                if (Storage::exists(session($userid  . '_truck_file_' . $s . '_' . $l)[$k])) {
-
-                                    $ext = session($userid . '_truck_ext_' . $s . '_' . $l)[$k];
-
-                                    $check_path = 'public/' . $userid . '/event/'.$event_id.'/truck/' . $event_truck_id . '/' . $l;
-
-                                    $file_count = count(Storage::files($check_path));
-
-                                    if ($file_count == 0) {
-                                        $next_file_no = 1;
-                                    } else {
-                                        $next_file_no = $file_count + 1;
-                                    }
-
-                                    $newPath = 'public/' . $userid . '/event/'.$event_id.'/truck/' . $event_truck_id . '/' . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
-
-                                    $newPathLink = $userid . '/event/'.$event_id.'/truck/' . $event_truck_id . '/'  . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
-
-                                    Storage::move(session($userid  . '_truck_file_' . $s . '_' . $l)[$k], $newPath);
-
-                                    EventLiquorTruckRequirement::create([
-                                        'issued_date' => !empty((array) $truck_doc_details[$s]) ? Carbon::parse($truck_doc_details[$s][$m]['issue_date'])->toDateTimeString() : '',
-                                        'expired_date' => !empty((array) $truck_doc_details[$s]) ? Carbon::parse($truck_doc_details[$s][$m]['exp_date'])->toDateTimeString() : '',
-                                        'created_at' =>  Carbon::now()->toDateTimeString(),
-                                        'created_by' =>  Auth::user()->user_id,
-                                        'requirement_id' => $l,
-                                        'path' =>  $newPathLink,
-                                        'type' => 'truck',
-                                        'liquor_truck_id' => $event_truck_id
-                                    ]);
-                                }
-                            }
-                            $request->session()->forget([$userid . '_truck_file_' . $s . '_' . $l, $userid . '_truck_ext_' . $s . '_' . $l]);
-                        }
-                    }
-
-                }
-            }
-    
-        return ;
     }
 
     public function calendarFn()
@@ -1023,13 +995,24 @@ class EventController extends Controller
 
     public function amend(Event $event)
     {
-        $eventReq = $event->requirements()->get();
-        return view('permits.event.amend', ['event' => $event, 'tab' => 'valid', 'eventReq' => $eventReq]);
+        $data['eventReq'] = $event->requirements()->get();
+        $data['event'] =  $event;
+        $data['tab'] = 'valid';
+        $data['truck_req'] = $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
+        $data['emirates'] = Emirates::all()->sortBy('name_en');
+        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
+
+        return view('permits.event.amend', $data);
     }
 
     public function applyAmend(Request $request)
     {
-        Event::where('event_id', $request->event_id)->update(
+
+        $liquor_details = $request->liquorDetails;
+        $liquorDocDetails = json_decode($request->liquorDocDetails,  true);
+        $event_liquor_id = $request->event_liquor_id;
+
+        $event = Event::where('event_id', $request->event_id)->update(
             [
                 'issued_date' => Carbon::parse($request->issued_date)->toDateString(),
                 'expired_date' => Carbon::parse($request->expired_date)->toDateString(),
@@ -1039,7 +1022,97 @@ class EventController extends Controller
             ]
         );
 
-        return redirect(route('event.index'));
+        if ($liquor_details) {
+            $lq = $liquor_details;
+            $update_array = array(
+                'company_name_en' => $lq['company_name_en'],
+                'company_name_ar' => $lq['company_name_ar'],
+                'emirate_id'      => json_encode($lq['l_emirates']),
+                'license_number'  => $lq['license_no'],
+                'trade_license'   => $lq['trade_license_no'],
+                'trade_license_issued_date' => $lq['tl_issue_date'] ? Carbon::parse($lq['tl_issue_date'])->toDateString() : '',
+                'trade_license_expired_date' => $lq['tl_expiry_date'] ? Carbon::parse($lq['tl_expiry_date'])->toDateString() : '',
+                'license_issued_date' => $lq['l_issue_date'] ? Carbon::parse($lq['l_issue_date'])->toDateString() : '',
+                'license_expired_date' => $lq['l_expiry_date'] ? Carbon::parse($lq['l_expiry_date'])->toDateString() : '',
+                'status' => 0,
+                'created_by' => Auth::user()->user_id,
+            );
+
+            $event_liquor = EventLiquor::where('event_liquor_id', $event_liquor_id)->update($update_array);
+        }
+
+        $requirements = Requirement::where('requirement_type', 'liquor')->get();
+
+        $requirement_ids = [];
+
+        foreach ($requirements as $req) {
+            array_push($requirement_ids, $req->requirement_id);
+        }
+        $total = $requirements->count();
+        $userid = Auth::user()->user_id;
+        $date = date('d_m_Y_H_i_s');
+
+        if ($liquorDocDetails) {
+
+            for ($j = 0; $j < $total; $j++) {
+
+                $l = $requirement_ids[$j];
+                $m = $j + 1;
+
+                if (session($userid . '_liquor_file_' . $l)) {
+
+                    $total_docs = count(session($userid . '_liquor_file_' . $l));
+
+                    if ($total_docs > 0) {
+
+                        for ($k = 0; $k < $total_docs; $k++) {
+                            if (Storage::exists(session($userid  . '_liquor_file_' . $l)[$k])) {
+
+                                $ext = session($userid . '_liquor_ext_' . $l)[$k];
+
+                                $check_path = 'public/' . $userid . '/event/temp/liquor/' . $event_liquor_id . '/' . $l;
+
+                                $file_count = count(Storage::files($check_path));
+
+                                if ($file_count == 0) {
+                                    $next_file_no = 1;
+                                } else {
+                                    $next_file_no = $file_count + 1;
+                                }
+
+                                $newPath = 'public/' . $userid . '/event/temp/liquor/' . $event_liquor_id . '/' . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                $newPathLink = $userid . '/event/temp/liquor/' . $event_liquor_id . '/'  . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
+
+                                EventLiquorTruckRequirement::create([
+                                    'issued_date' => !empty((array) $liquorDocDetails[$m]) ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
+                                    'expired_date' => !empty((array) $liquorDocDetails[$m]) ? Carbon::parse($liquorDocDetails[$m]['exp_date'])->toDateTimeString() : '',
+                                    'created_at' =>  Carbon::now()->toDateTimeString(),
+                                    'created_by' =>  Auth::user()->user_id,
+                                    'requirement_id' => $l,
+                                    'path' =>  $newPathLink,
+                                    'event_id'=>$request->event_id,
+                                    'type' => 'liquor',
+                                    'liquor_truck_id' => $event_liquor_id
+                                ]);
+
+                                Storage::move(session($userid  . '_liquor_file_' . $l)[$k], $newPath);
+                            }
+                        }
+                        $request->session()->forget([$userid . '_liquor_file_' . $l, $userid . '_liquor_ext_' . $l]);
+                    }
+                }
+            }
+        }
+            
+
+        if ($event) {
+            $result = ['success', 'Event Permit Amended Successfully', 'Success'];
+        } else {
+            $result = ['error', 'Error, Please Try Again', 'Error'];
+        }
+
+        return response()->json(['message' => $result]);
     }
 
     public function fetch_truck_req($id)
@@ -1070,9 +1143,15 @@ class EventController extends Controller
     {
         $id = $request->id;
         $firm = $request->firm;
-        $requirements = EventType::with(['requirements' => function ($q) use ($firm) {
-            $q->where('type', '=', $firm);
-        }])->where('event_type_id', $id)->latest()->first();
+        // $requirements = EventType::with(['requirements' => function ($q) use ($firm) {
+        //     $q->where('type', '=', $firm);
+        // }, 'requirements.event_type_requirements'])->where('event_type_id', $id)->latest()->first();
+
+        $requirements = Requirement::whereHas('type', function ($q) use ($id){
+            $q->where('event_type.event_type_id', $id);
+        })->where('type', $firm)->where('requirement_type', 'event')->with(['event_type_requirements' => function($q) use($id ){ $q->where('event_type_id', $id);}])->get();
+
+
         return $requirements;
     }
 
@@ -1205,6 +1284,61 @@ class EventController extends Controller
             }
         }
 
+        if($evd['isLiquor'] == 1)
+        {
+            EventLiquor::whereNull('event_id')->where('status',0)->where('created_by', Auth::user()->user_id)->update([
+                'event_id' => $event_id,
+            ]);
+
+            $eventLiquor = EventLiquor::where('event_id', $event_id)->latest()->first();
+
+            if($eventLiquor)
+            {
+                $requirements =  EventLiquorTruckRequirement::where('liquor_truck_id', $eventLiquor->event_liquor_id)->where('type', 'liquor')->get();
+
+                foreach ($requirements as $req) {
+                    $path = $req->path;
+                    $newpath = str_replace('temp', $event_id, $path);
+                    Storage::move('public/'.$path, 'public/'.$newpath);
+                    EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
+                        'path' => $newpath,
+                        'event_id' =>  $event_id
+                    ]);
+                }
+            }
+        }
+
+        if($evd['isTruck'] == 1)
+        {
+            EventTruck::whereNull('event_id')->where('status',0)->update([
+                'event_id' => $event_id
+            ]);
+
+            $truck_id_query = EventTruck::where('event_id', $event_id)->get();
+            $truck_ids = [];
+            foreach($truck_id_query as $truck_idd)
+            {
+                array_push($truck_ids, $truck_idd->event_truck_id);
+            }
+
+            for ($a = 0; $a < count($truck_ids); $a++) {
+                $requirements =  EventLiquorTruckRequirement::where('liquor_truck_id', $truck_ids[$a])->where('type', 'truck')->get();
+
+                foreach ($requirements as $req) {
+                    $path = $req->path;
+                    $newpath = str_replace('temp', $event_id, $path);
+                    Storage::move('public/'.$path, 'public/'.$newpath);
+                    EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
+                        'path' => $newpath,
+                        'event_id' =>$event_id
+                    ]);
+                }
+            }
+        }
+
+        EventLiquor::whereNull('event_id')->where('status',1)->delete();
+        EventTruck::whereNull('event_id')->where('status',1)->delete();
+
         if (session($userid . '_event_pic_file')) {
             $ext = session($userid . '_event_ext');
             $check_path = 'public/' .  $userid . '/event/' .  $event_id . '/photos';
@@ -1244,6 +1378,11 @@ class EventController extends Controller
         $data['event_types'] = EventType::all()->sortBy('name_en');
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_docs'] = EventRequirement::with('requirement')->where('event_id', $event->event_id)->where('type', 'truck')->get();
+
+        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
+        $data['emirates'] = Emirates::all()->sortBy('name_en');
+        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
+
         $data['event'] = $event;
         return view('permits.event.draft', $data);
     }
@@ -1417,74 +1556,119 @@ class EventController extends Controller
         $data['event_types'] = EventType::all()->sortBy('name_en');
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_docs'] = EventRequirement::with('requirement')->where('event_id', $event->event_id)->where('type', 'truck')->get();
+
+        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
+        $data['emirates'] = Emirates::all()->sortBy('name_en');
+        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
+
         $data['event'] = $event;
+
+        $permit_status = [];
+        $is_paid = [];
+
+        foreach($event->permit->artistPermit as $ap){
+            array_push($permit_status,strtolower($ap->artist_permit_status));
+            array_push($is_paid,strtolower($ap->is_paid));
+        }
+
+        $data['containsApproved'] = 0;
+        $data['isPaid'] = 1;
+
+        if(in_array('approved', $permit_status)){
+            $data['containsApproved'] = 1;
+        }
+
+        if(in_array(0, $is_paid)){
+            $data['isPaid'] = 0;
+        }
+
         return view('permits.event.payment', $data);
     }
 
-    function getTransactionReferNumber()
-    {
-        $last_tran_d = Transaction::latest()->first();
-        if (empty($last_tran_d)) {
-            $new_refer_no = sprintf("TRN%04d",  1);
-        } else {
-            $last_rn = $last_tran_d->reference_number;
-            $n = substr($last_rn, 3);
-            $f = substr($n, 0, 1);
-            $l = substr($n, -1, 1);
-            $x = 4;
-            if ($f == 9 && $l == 9) {
-                $x++;
-            }
-            $new_refer_no = sprintf("TRN%0" . $x . "d", $n + 1);
-        }
-        return $new_refer_no;
-    }
-
-    function generatePermitNumber()
-    {
-        $last_permit_d = Event::where('permit_number', 'not like', '%-%')->latest()->first();
-
-        if (!isset($last_permit_d->permit_number)) {
-            $new_permit_no = sprintf("EP%04d",  1);
-        } else {
-            $last_pn = $last_permit_d->permit_number;
-            $n = substr($last_pn, 2);
-            $f = substr($n, 0, 1);
-            $l = substr($n, -1, 1);
-            $x = 4;
-            if ($f == 9 && $l == 9) {
-                $x++;
-            }
-            $new_permit_no = sprintf("EP%0" . $x . "d", $n + 1);
-        }
-        return $new_permit_no;
-    }
+    
 
     public function make_payment(Request $request)
     {
         $event_id = $request->event_id;
         $amount = $request->amount;
         $vat = $request->vat;
+        $total = $request->total;
+        $paidArtistFee = $request->paidArtistFee;
+        $truck_fee = $request->truck_fee;
+        $is_truck = $request->isTruck;
 
         $trnx_id = Transaction::create([
-            'reference_number' => $this->getTransactionReferNumber(),
+            'reference_number' => getTransactionReferNumber(),
             'transaction_type' => 'event',
-            'company_id' => Auth::user()->type == 1 ? Auth::user()->EmpClientId : '',
+            'created_by' => Auth::user()->user_id,
             'transaction_date' => Carbon::now()->format('Y-m-d')
         ]);
 
-        if ($trnx_id) {
+        $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
+        
+        if ($trnx_id)
+        {
+            $event_amount = (int)$amount - (int)$truck_fee;
             EventTransaction::create([
                 'event_id' => $event_id,
                 'transaction_id' => $trnx_id->transaction_id,
-                'amount' => $amount,
+                'amount' => $event_amount,
+                'type' => 'event',
                 'vat' => $vat,
+                'user_id' => Auth::user()->user_id
             ]);
+
+            if($is_truck == 1)
+            {
+                EventTransaction::create([
+                    'event_id' => $event_id,
+                    'transaction_id' => $trnx_id->transaction_id,
+                    'type' => 'truck',
+                    'amount' => $truck_fee,
+                    'vat' => 0,
+                    'user_id' => Auth::user()->user_id
+                ]);
+            }
 
             Event::where('event_id', $event_id)->update([
                 'status' => 'active',
-                'permit_number' => $this->generatePermitNumber()
+                'permit_number' => generateEventPermitNumber(),
+                'paid' => 1,
+                'paid_artist_fee' => $paidArtistFee
             ]);
+        }
+
+        if($paidArtistFee)
+        {
+            $trns = Transaction::create([
+                'reference_number' => getTransactionReferNumber(),
+                'transaction_type' => 'event',
+                'created_by' => Auth::user()->user_id,
+                'transaction_date' => Carbon::now()->format('Y-m-d')
+            ]);
+
+            $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
+
+            foreach ($artistPermits as $artistPermit) {
+                $per_day_fee = $artistPermit->profession->amount;
+                $total_fee = $per_day_fee * $noofdays;
+                $vat_fee = $total_fee * 0.05 ; 
+                $trns->artistPermitTransaction()->create([
+                    'vat' => $vat_fee ,
+                    'amount' => $total_fee,
+                    'permit_id' => $permit_id,
+                    'artist_permit_id' => $artistPermit->artist_permit_id,
+                    'transaction_id' => $trns->transaction_id
+                ]);
+            }
+
+            Permit::where('permit_id', $permit_id)->update([
+                'paid' => 1,
+                'permit_number' => generateArtistPermitNumber(),
+                'status' => 'active'
+            ]);
+
+            ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
         }
 
         if ($trnx_id) {
@@ -1501,6 +1685,11 @@ class EventController extends Controller
         $data['event_types'] = EventType::all()->sortBy('name_en');
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_docs'] = EventRequirement::with('requirement')->where('event_id', $event->event_id)->where('type', 'truck')->get();
+
+        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
+        $data['emirates'] = Emirates::all()->sortBy('name_en');
+        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
+
         $data['event'] = $event;
         return view('permits.event.happiness', $data);
     }
@@ -1543,16 +1732,14 @@ class EventController extends Controller
         $id = $request->id;
         $date = date('d_m_Y_H_i_s');
         $req_id = $request->reqId;
-        $truck_no = $request->truckNo;
-
         $ext = $request->files->get('truck_file_' . $id)->getClientOriginalExtension();
-        $path  = Storage::putFileAs('public/' . $user_id . '/event/temp/truck/' . $truck_no . '/' . $req_id, $request->files->get('truck_file_' . $id), 'truck_document_' . $request->id . '_' . $date . '.' . $ext);
-        if (!Session::exists($user_id . '_truck_file_' . $truck_no . '_' . $req_id)) {
-            session()->put($user_id . '_truck_file_' . $truck_no . '_' . $req_id, []);
-            session()->put($user_id . '_truck_ext_' .  $truck_no . '_' . $req_id, []);
+        $path  = Storage::putFileAs('public/' . $user_id . '/event/temp/truck/' . $req_id, $request->files->get('truck_file_' . $id), 'truck_document_' . $request->id . '_' . $date . '.' . $ext);
+        if (!Session::exists($user_id . '_truck_file_' . $req_id)) {
+            session()->put($user_id . '_truck_file_'  . $req_id, []);
+            session()->put($user_id . '_truck_ext_'  . $req_id, []);
         }
-        session()->push($user_id . '_truck_file_' .  $truck_no . '_' . $req_id, $path);
-        session()->push($user_id . '_truck_ext_' .  $truck_no . '_' . $req_id, $ext);
+        session()->push($user_id . '_truck_file_'  . $req_id, $path);
+        session()->push($user_id . '_truck_ext_'  . $req_id, $ext);
         return response()->json(['filepath' => $path, 'ext' => $ext]);
         // return json_encode($file);
     }
@@ -1561,7 +1748,6 @@ class EventController extends Controller
     {
         $user_id = Auth::user()->user_id;
         $id = $request->id;
-        $isAdd = $request->add;
         $date = date('d_m_Y_H_i_s');
         $reqId = $request->reqId;
         $ext = $request->files->get('liquor_file_' . $id)->getClientOriginalExtension();
@@ -1586,28 +1772,32 @@ class EventController extends Controller
         return response()->json(['filepath' => $path, 'ext' => $ext]);
     }
 
-    public function fetch_liquor_details($id)
+    public function fetch_liquor_details_by_event_id($id)
     {
-        $data['event_liquor'] =  EventLiquor::where('event_liquor_id', $id)->get();
-        $data['event_liquor_docs'] =  EventLiquorTruckRequirement::where('liquor_truck_id', $id)->where('type', 'liquor')->get();
+        return EventLiquor::where('event_id', $id)->where('created_by', Auth::user()->user_id)->first();
+    }
 
-        return $data;
+    public function fetch_liquor_details(Request $request)
+    {
+        return EventLiquor::whereNull('event_id')->where('created_by', Auth::user()->user_id)->latest()->first();
+    }
+
+    public function fetch_this_liquor_docs(Request $request)
+    {
+        $liquor_id = $request->liquor_id;
+        $reqId = $request->reqId;
+
+        return EventLiquorTruckRequirement::where([
+            ['liquor_truck_id', $liquor_id],
+            ['type', 'liquor'],
+            ['requirement_id', $reqId]
+        ])->get();
+      
     }
 
     public function fetch_truck_details(Request $request)
     {
-        $ids = json_decode($request->ids, true);
-        $event_truck = [];
-        $event_truck_docs = [];
-        foreach ($ids as $id) {
-            array_push($event_truck, EventTruck::where('event_truck_id', $id)->first());
-            array_push($event_truck_docs, EventLiquorTruckRequirement::where('liquor_truck_id', $id)->where('type', 'truck')->get());
-        }
-
-        $data['event_truck'] = $event_truck;
-        $data['event_truck_docs'] = $event_truck_docs;
-
-        return $data;
+        return EventTruck::whereNull('event_id')->where('status', 0)->get();
     }
 
     public function uploadLogo(Request $request)
@@ -1718,6 +1908,8 @@ class EventController extends Controller
         }
         return view('permits.event.artist', $data);
     }
+
+
 }
 
 /*

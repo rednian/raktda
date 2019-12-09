@@ -124,6 +124,65 @@ function permitStatus($status)
     return '<span class="kt-badge kt-badge--' . $classname . ' kt-badge--inline">' . ucwords($status) . '</span>';
 }
 
+function getTransactionReferNumber()
+{
+    $last_tran_d = \App\Transaction::latest()->first();
+    if (empty($last_tran_d)) {
+        $new_refer_no = sprintf("TRN%04d",  1);
+    } else {
+        $last_rn = $last_tran_d->reference_number;
+        $n = substr($last_rn, 3);
+        $f = substr($n, 0, 1);
+        $l = substr($n, -1, 1);
+        $x = 4;
+        if ($f == 9 && $l == 9) {
+            $x++;
+        }
+        $new_refer_no = sprintf("TRN%0" . $x . "d", $n + 1);
+    }
+    return $new_refer_no;
+}
+
+function generateEventPermitNumber()
+{
+    $last_permit_d = \App\Event::where('permit_number', 'not like', '%-%')->latest()->first();
+
+    if (!isset($last_permit_d->permit_number)) {
+        $new_permit_no = sprintf("EP%04d",  1);
+    } else {
+        $last_pn = $last_permit_d->permit_number;
+        $n = substr($last_pn, 2);
+        $f = substr($n, 0, 1);
+        $l = substr($n, -1, 1);
+        $x = 4;
+        if ($f == 9 && $l == 9) {
+            $x++;
+        }
+        $new_permit_no = sprintf("EP%0" . $x . "d", $n + 1);
+    }
+    return $new_permit_no;
+}
+
+function generateArtistPermitNumber()
+{
+    $last_permit_d = \App\Permit::orderBy('created_at', 'desc')->where('permit_number', 'not like', '%-%')->first();
+
+    if (!isset($last_permit_d->permit_number)) {
+        $new_permit_no = sprintf("AP%04d",  1);
+    } else {
+        $last_pn = $last_permit_d->permit_number;
+        $n = substr($last_pn, 2);
+        $f = substr($n, 0, 1);
+        $l = substr($n, -1, 1);
+        $x = 4;
+        if ($f == 9 && $l == 9) {
+            $x++;
+        }
+        $new_permit_no = sprintf("AP%0" . $x . "d", $n + 1);
+    }
+    return $new_permit_no;
+}
+
 function artistStatus($status)
 {
     $classname = $status == 'active' ? 'success' : 'danger';
