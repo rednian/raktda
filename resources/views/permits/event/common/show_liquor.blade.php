@@ -5,66 +5,56 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{__('Liquor Details')}} <i
                         class="fa fa-glass-cheers"></i></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsLiquor()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
-                <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
+                <form class="col-md-12" id="liquor_details_form" novalidate>
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}}</label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_en"
-                                id="l_company_name_en" autocomplete="off" placeholder="company name">
+                                id="l_company_name_en" disabled placeholder="company name">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}}</label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
-                                id="l_company_name_ar" autocomplete="off" placeholder="company name - Ar">
+                                id="l_company_name_ar" disabled placeholder="company name - Ar">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Trade License No')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Trade License No')}}</label>
                             <input type="text" class="form-control form-control-sm" name="trade_license_no"
-                                id="trade_license_no" autocomplete="off" placeholder="Trade license no">
+                                id="trade_license_no" disabled placeholder="Trade license no">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('TL Issue')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('TL Issue')}} </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="tl_issue_date"
-                                data-date-end-date="+0d" id="tl_issue_date" autocomplete="off" placeholder="DD-MM-YYYY">
+                                data-date-end-date="+0d" id="tl_issue_date" disabled placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('TL Expiry')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('TL Expiry')}} </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="tl_expiry_date"
-                                data-date-start-date="+0d" id="tl_expiry_date" autocomplete="off"
-                                placeholder="DD-MM-YYYY">
+                                data-date-start-date="+0d" id="tl_expiry_date" disabled placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('License No')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('License No')}}</label>
                             <input type="text" class="form-control form-control-sm" name="license_no" id="license_no"
-                                autocomplete="off" placeholder="license no">
+                                disabled placeholder="license no">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('License Issue')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('License Issue')}} </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="l_issue_date"
-                                data-date-end-date="+0d" id="l_issue_date" autocomplete="off" placeholder="DD-MM-YYYY">
+                                data-date-end-date="+0d" id="l_issue_date" disabled placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('License Expiry')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('License Expiry')}} </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="l_expiry_date"
-                                data-date-start-date="+0d" id="l_expiry_date" autocomplete="off"
-                                placeholder="DD-MM-YYYY">
+                                data-date-start-date="+0d" id="l_expiry_date" disabled placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Emirates')}} <span
-                                    class="text-danger">*</span></label>
-                            <select name="l_emirates[]" id="l_emirates" multiple class="form-control form-control-sm">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Emirates')}} </label>
+                            <select name="l_emirates[]" id="l_emirates" multiple disabled
+                                class="form-control form-control-sm">
                                 <option value=" ">{{__('Select')}}</option>
                                 @foreach($emirates as $em)
                                 <option value="{{$em->id}}">{{$em->name_en}}</option>
@@ -126,9 +116,6 @@
                     @endphp
                     @endforeach
                 </form>
-                <div class="kt-pull-right kt-margin-t-10">
-                    <button class="btn btn-sm btn--maroon" id="update_lq">{{__('Update')}}</button>
-                </div>
             </div>
         </div>
     </div>

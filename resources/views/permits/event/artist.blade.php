@@ -201,37 +201,11 @@
 
 
     @section('script')
+    <script src="{{ asset('js/company/artist.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
         });
-
-
-        $(document).ready(function(){
-
-
-        });
-
-
-        // $('#permit_from').on('changeDate', function (selected) {
-        //     $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
-        //     var minDate = new Date(selected.date.valueOf());
-        //     var maxDate = moment(minDate).add(3, 'M').toDate();
-        //     $('#permit_to').datepicker('setStartDate', minDate);
-        //     $('#permit_to').datepicker('setEndDate', maxDate);
-        // });
-        // $('#permit_to').on('changeDate', function (ev) {
-        //     $('#permit_to').valid() || $('#permit_to').removeClass('invalid').addClass('success');
-        // });
-
-
-        // function disabledThese()
-        // {
-        //     $('#add_artist').attr('disabled', true);
-        //     $('#add_artist_sm').attr('disabled', true);
-        //     $('#draft_btn').css('display', 'none');
-        //     $('#submit_btn').css('display', 'none');
-        // }
 
         function setCokkie(){
             var from = $('#permit_from').val();
@@ -325,6 +299,8 @@
         $('#submit_btn').click((e) => {
             $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
             var temp_permit_id = $('#temp_permit_id').val();
+            var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
+            if(noofdays < 30) { term = 'short'; } else { term='long';}
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",
@@ -333,7 +309,8 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
-                        event_id: $('#event_id').val()
+                        event_id: $('#event_id').val(),
+                        term: term
                     },
                     success: function(result){
                         $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');

@@ -11,4 +11,5 @@ class ArtistPermitTransaction extends Model
     protected $table = 'artist_permit_transaction';
     protected $primaryKey = 'artist_permit_transaction_id';
     protected $fillable = ['amount', 'vat', 'transaction_type', 'artist_permit_id', 'transaction_id'];
+
 }

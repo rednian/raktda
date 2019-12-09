@@ -48,7 +48,9 @@ class Requirement extends Model implements Auditable
         return $this->belongsToMany(EventType::class, 'event_type_requirement', 'requirement_id', 'event_type_id');
     }
 
-     public function event_type_requirements(){
-        return $this->hasOne(EventTypeRequirement::class, 'requirement_id');
+    public function event_type_requirements()
+    {
+        return $this->hasMany(EventTypeRequirement::class, 'requirement_id');
     }
+
 }

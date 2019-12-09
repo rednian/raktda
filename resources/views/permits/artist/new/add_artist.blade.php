@@ -1031,7 +1031,7 @@ $language_id = Auth::user()->LanguageId;
             showFileSize: false,
             showFileCounter: false,
             abortStr: '',
-            previewHeight: '200px',
+            previewHeight: '100px',
             previewWidth: "auto",
             returnType: "json",
             maxFileCount: 1,

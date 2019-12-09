@@ -3,16 +3,12 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{__('Edit Food Truck')}} <i class="fa fa-truck"></i>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('View Food Truck')}} <i class="fa fa-truck"></i>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
-                <div class="d-flex pull-right kt-margin-b-10">
-                    <button class="btn btn-sm btn--yellow" id="add_new_truck">Add New</button>
-                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal">Done</button>
-                </div>
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead>
@@ -38,9 +34,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="edit_truck_title">{{__('Edit Food Truck')}}
-                </h5>
-                <h5 class="modal-title" id="add_truck_title">{{__('Add Food Truck')}}
+                <h5 class="modal-title" id="edit_truck_title">{{__('View Food Truck')}}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
@@ -49,42 +43,34 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" autocomplete="off" placeholder="company name">
+                                id="company_name_en" disabled placeholder="company name">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" dir="rtl" autocomplete="off" placeholder="company name - Ar">
+                                id="company_name_ar" disabled placeholder="company name - Ar">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Plate No')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Plate No')}}</label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
-                                autocomplete="off" placeholder="plate no">
+                                disabled placeholder="plate no">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Type of Food')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Type of Food')}}</label>
                             <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
-                                autocomplete="off" placeholder="food type">
+                                disabled placeholder="food type">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Issue')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Issue')}} </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_issue_date"
-                                data-date-end-date="+0d" id="regis_issue_date" autocomplete="off"
-                                placeholder="DD-MM-YYYY">
+                                data-date-end-date="+0d" id="regis_issue_date" disabled placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Expiry')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Expiry')}} </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_expiry_date"
-                                data-date-start-date="+0d" id="regis_expiry_date" autocomplete="off"
-                                placeholder="DD-MM-YYYY">
+                                data-date-start-date="+0d" id="regis_expiry_date" disabled placeholder="DD-MM-YYYY">
                         </div>
                         <input type="hidden" id="this_event_truck_id">
                     </div>
@@ -142,8 +128,6 @@
                 <small id="truck_warning_text" class="text-center text-danger "></small>
                 <div class="d-flex justify-content-between kt-margin-t-10">
                     <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">Back</button>
-                    <button class="btn btn-sm btn--maroon" id="update_this_td">{{__('Update')}}</button>
-                    <button class="btn btn-sm btn--maroon" id="add_new_td">{{__('Add')}}</button>
                 </div>
             </div>
         </div>

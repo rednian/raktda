@@ -224,7 +224,12 @@
                                                                         disabled> No
                                                                     <span></span>
                                                                 </label>
+
+                                                                <i class="fa fa-file fa-2x pull-right" id="truckEditBtn"
+                                                                    onclick="editTruck()"></i>
                                                             </div>
+                                                            <input type="hidden" id="prev_val_isTruck"
+                                                                value="{{$event->is_truck}}">
                                                         </div>
 
                                                         <div class="col-md-4  form-group form-group-xs ">
@@ -243,7 +248,11 @@
                                                                     No
                                                                     <span></span>
                                                                 </label>
+                                                                <i class="fa fa-file fa-2x pull-right"
+                                                                    id="liquorEditBtn" onclick="editLiquor()"></i>
                                                             </div>
+                                                            <input type="hidden" id="prev_val_isLiquor"
+                                                                value="{{$event->is_liquor}}">
                                                         </div>
 
                                                     </div>
@@ -410,7 +419,7 @@
                                                                     class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
                                                                 </label>
                                                                 <input type="text" class="form-control form-control-sm"
-                                                                    value="Rasal Khaimah" readonly>
+                                                                    value="Ras Al Khaimah" readonly>
                                                                 <input type="hidden" name="emirate_id" id="emirate_id"
                                                                     value="5">
                                                             </div>
@@ -566,15 +575,24 @@
                                         </div>
                                     </div>
                                     {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
+                                    @php
+                                    $event_fee_total = 0;
+                                    $event_vat_total = 0;
+                                    $event_grand_total = 0;
+                                    $truck_fee = 0;
+                                    $issued_date = strtotime($event->issued_date);
+                                    $expired_date = strtotime($event->expired_date);
+                                    $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                                    @endphp
                                     <div class="table-responsive">
                                         <table class="table table-borderless table-hover border table-striped">
                                             <thead>
-                                                <tr class="text-center">
-                                                    <th class="text-left">{{__('Event Name')}}</th>
-                                                    <th class="text-left">{{__('Event Type')}}</th>
+                                                <tr>
+                                                    <th>{{__('Event Name')}}</th>
+                                                    <th>{{__('Event Type')}}</th>
                                                     <th class="text-right">{{__('Fee')}} (AED)</th>
-                                                    <th class="text-right">VAT(5%)</th>
-                                                    <th class="text-right">Total (AED) </th>
+                                                    <th class="text-right">{{__('VAT')}} (5%)</th>
+                                                    <th class="text-right">{{__('Total')}} (AED) </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -585,67 +603,96 @@
                                                     <td class="text-left">
                                                         {{getLangId() == 1 ? $event->type['name_en'] : $event->type['name_ar']}}
                                                     </td>
+                                                    @php
+                                                    $event_fee = $event->type['amount'] * $noofdays;
+                                                    $vat_amt = $event_fee * 0.05;
+                                                    $event_total = $event_fee + $vat_amt ;
+                                                    $event_fee_total += $event_fee;
+                                                    $event_vat_total += $vat_amt;
+                                                    $event_grand_total += $event_total;
+                                                    @endphp
                                                     <td class="text-right">
-                                                        {{number_format($event->type['amount'],2)}}
+                                                        {{number_format($event_fee,2)}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{number_format($event->type['amount'] * 0.05, 2)}}
-                                                        @php
-                                                        $vat = $event->type['amount'] * 0.05 ;
-                                                        @endphp
+                                                        {{number_format($vat_amt , 2)}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{number_format($event->type['amount'] + $vat, 2)}}
+                                                        {{number_format($event_total, 2)}}
                                                     </td>
                                                 </tr>
+                                                @if($event->is_truck == 1)
+                                                <tr>
+                                                    <td colspan="2">{{__('Truck Fee')}} </td>
+                                                    @php
+                                                    $per_truck_fee = getSettings()->food_truck_fee;
+                                                    $truck_fee += $noofdays * $per_truck_fee;
+                                                    $event_fee_total += $truck_fee;
+                                                    $event_grand_total += $truck_fee;
+                                                    @endphp
+                                                    <td class="text-right">{{number_format($truck_fee, 2)}}</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">{{number_format($truck_fee, 2)}}</td>
+                                                </tr>
+                                                @endif
                                             </tbody>
-
-                                            <input type="hidden" id="amount" value="{{$event->type['amount']}}">
-                                            <input type="hidden" id="vat" value="{{$vat}}">
                                         </table>
                                     </div>
 
+                                    <input type="hidden" id="truck_fee" value="{{$truck_fee}}">
+                                    <input type="hidden" id="is_truck" value="{{$event->is_truck}}">
+
+                                    <input type="hidden" id="event_total_amount" value="{{$event_fee_total}}">
+                                    <input type="hidden" id="event_vat_total" value="{{$event_vat_total}}">
+                                    <input type="hidden" id="event_grand_total" value="{{$event_grand_total}}">
+
+
+                                    <input type="hidden" value="{{$containsApproved}}" id="containsApproved">
+                                    <input type="hidden" value="{{$isPaid}}" id="isPaid">
+
+                                    @php
+                                    $artist_fee_total = 0;
+                                    $artist_vat_total = 0;
+                                    $artist_g_total = 0 ;
+                                    @endphp
+
                                     @if($event->permit)
-                                    <div class="table-responsive">
+                                    <div class="table-responsive" id="artist_pay_table" style="display:none;">
                                         <table class="table table-borderless border table-hover table-striped">
                                             <thead>
                                                 <tr>
                                                     <th>{{__('Artist Name')}}</th>
-                                                    <th>{{__('Type')}}</th>
+                                                    <th>{{__('Artist Permit Type')}}</th>
                                                     <th class="text-right">{{__('Fee')}} (AED)</th>
-                                                    <th class="text-right">VAT(5%)</th>
-                                                    <th class="text-right">Total (AED) </th>
+                                                    <th class="text-right">{{__('VAT')}} (5%)</th>
+                                                    <th class="text-right">{{__('Total')}} (AED) </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @php
-                                                $extras = 0 ;
-                                                $fee = 0;
-                                                $total = 0;
-                                                $vat_t = 0;
-                                                @endphp
                                                 @foreach($event->permit->artistPermit as $ap)
-                                                @if($ap->artist_permit_status == 'approved')
+                                                @if($ap->artist_permit_status == 'approved' && $ap->is_paid == 0)
                                                 <tr>
-                                                    <td>{{$ap['firstname_en'] .' '.$ap['lastname_en'] }}
+                                                    <td>{{getLangId() == 1 ? $ap['firstname_en'] .' '.$ap['lastname_en'] : $ap['lastname_ar'] .' '.$ap['firstname_ar']}}
                                                     </td>
                                                     <td>
-                                                        {{$ap->profession['name_en']}}
+                                                        {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
+                                                    </td>
+                                                    @php
+                                                    $artist_fee = $ap->profession['amount'] * $noofdays;
+                                                    $artist_vat = $artist_fee * 0.05;
+                                                    $artist_total = $artist_fee + $artist_vat;
+                                                    $artist_fee_total += $artist_fee;
+                                                    $artist_vat_total += $artist_vat;
+                                                    $artist_g_total += $artist_total;
+                                                    @endphp
+                                                    <td class="text-right">
+                                                        {{number_format($artist_fee,2)}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{number_format($ap->profession['amount'],2)}}
-                                                        @php
-                                                        $fee+=$ap->profession['amount'];
-                                                        $vat = $ap->profession['amount'] * 0.05;
-                                                        $vat_t+= $vat;
-                                                        @endphp
-                                                    </td>
-
-                                                    <td class="text-right">
-                                                        {{number_format($vat,2)}}
+                                                        {{number_format($artist_vat,2)}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{number_format($ap->profession['amount'] + $vat, 2)}}
+                                                        {{number_format($artist_total, 2)}}
                                                     </td>
                                                 </tr>
                                                 @endif
@@ -657,28 +704,61 @@
                                                         Total
                                                     </td>
                                                     <td class="kt-font-bold text-right">
-                                                        {{number_format($fee,2)}}
+                                                        {{number_format($artist_fee_total,2)}}
                                                     </td>
 
                                                     <td class="kt-font-bold text-right">
-                                                        {{number_format($vat_t,2)}}
+                                                        {{number_format($artist_vat_total,2)}}
                                                     </td>
                                                     <td class="kt-font-bold text-right">
-                                                        {{number_format($fee+$extras+$vat_t,2)}}
+                                                        {{number_format($artist_g_total,2)}}
                                                     </td>
                                                 </tr>
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div>
+                                    <div style="display:none" id="is_event_pay_div">
                                         <label class="kt-checkbox kt-checkbox--warning ml-2 mt-3">
-                                            <input type="checkbox" id="isEventPay" name="isEventPay">
+                                            <input type="checkbox" id="isEventPay" name="isEventPay"
+                                                onchange="check_permit()">
                                             Do you wish to pay associated artist permit fee ?
                                             <span></span>
                                         </label>
                                     </div>
                                     @endif
 
+                                    <input type="hidden" id="artist_fee_total" value="{{$artist_fee_total}}">
+                                    <input type="hidden" id="artist_vat_total" value="{{$artist_vat_total}}">
+                                    <input type="hidden" id="artist_g_total" value="{{$artist_g_total}}">
+
+                                    <div class="table-responsive">
+                                        <div class="pull-right">
+                                            <table class=" table table-borderless">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            {{__('Total Amount')}}
+                                                        </td>
+                                                        <td id="total_amt" class="pull-right kt-font-bold"></td>
+                                                    </tr>
+                                                    <tr style="border-bottom:1px solid black;">
+                                                        <td>{{__('Total Vat')}}</td>
+                                                        <td id="total_vat" class="pull-right kt-font-bold"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="kt-font-transform-u">
+                                                            {{__('Grand Total')}}
+                                                        </td>
+                                                        <td id="grand_total" class="pull-right kt-font-bold"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" id="amount">
+                                    <input type="hidden" id="vat">
+                                    <input type="hidden" id="total">
                                 </form>
                             </div>
                         </div>
@@ -748,6 +828,8 @@
 <!--end::Modal-->
 
 
+@include('permits.event.common.show_food_truck', ['truck_req'=>$truck_req])
+@include('permits.event.common.show_liquor', ['liquor_req'=>$liquor_req])
 
 
 @endsection
@@ -768,6 +850,8 @@
     var fileUploadFns = [];
     var eventdetails = {};
     var documentDetails = {};
+    var truckDocUploader = [];
+    var liquorDocUploader = [];
 
     $(document).ready(function(){
         setWizard();
@@ -781,10 +865,206 @@
         getRequirementsList();
         getAddtionalRequirementsList($('#event_id').val());
         $('#submit_btn').css('display', 'block');
-        if($('#no_of_trucks').val() > 0){
-            $('#how_many_div').show();
+
+        var artistContains = $('#containsApproved').val();
+        var isPaid = $('#isPaid').val();
+        
+        if(artistContains == 1 && isPaid == 0){
+            $('#is_event_pay_div').show();
+        }else {
+            $('#is_event_pay_div').hide();
+        }
+
+        var eventTotalAmount = $('#event_total_amount').val();
+        $('#total_amt').html(parseInt(eventTotalAmount).toFixed(2));
+        var eventVatTotal = $('#event_vat_total').val();
+        $('#total_vat').html(parseInt(eventVatTotal).toFixed(2));
+        var eventGrandTotal = $('#event_grand_total').val();
+        $('#grand_total').html(parseInt(eventGrandTotal).toFixed(2));
+        $('#amount').val(eventTotalAmount);
+        $('#vat').val(eventVatTotal);
+        $('#total').val(eventGrandTotal);
+        var isTruck = $('#prev_val_isTruck').val();
+        if(isTruck == 0){
+            $('#truckEditBtn').hide();
+        }
+        var isLiquor = $('#prev_val_isLiquor').val();
+        if(isLiquor == 0){
+            $('#liquorEditBtn').hide();
         }
     });
+
+    function check_permit()
+    {
+        var eventTotalAmount = $('#event_total_amount').val();
+        var eventVatTotal = $('#event_vat_total').val();
+        var eventGrandTotal = $('#event_grand_total').val();
+        var artist_fee_total = $('#artist_fee_total').val();
+        var artist_vat_total = $('#artist_vat_total').val();
+        var artist_g_total = $('#artist_g_total').val(); 
+        var total_amt = parseInt(artist_fee_total) + parseInt(eventTotalAmount);
+        var total_vat = parseInt(artist_vat_total) + parseInt(eventVatTotal);
+        var grand_total = parseInt(artist_g_total) + parseInt(eventGrandTotal);
+        if($('#isEventPay').prop("checked"))
+        {
+            $('#artist_pay_table').show();
+            $('#total_amt').html(total_amt.toFixed(2));
+            $('#total_vat').html(total_vat.toFixed(2));
+            $('#grand_total').html(grand_total.toFixed(2));
+            $('#amount').val(total_amt);
+            $('#vat').val(total_vat);
+            $('#total').val(grand_total);
+        }else {
+            $('#artist_pay_table').hide();
+            $('#total_amt').html(parseInt(eventTotalAmount).toFixed(2));
+            $('#total_vat').html(parseInt(eventVatTotal).toFixed(2));
+            $('#grand_total').html(parseInt(eventGrandTotal).toFixed(2));
+            $('#amount').val(eventTotalAmount);
+            $('#vat').val(eventVatTotal);
+            $('#total').val(eventGrandTotal);
+        }
+    }
+
+    function editTruck(){
+            var event_id = $('#event_id').val() ;
+            var url = "{{route('event.fetch_truck_details_by_event_id', ':id')}}" ;
+            url = url.replace(':id', event_id);
+            $.ajax({    
+                url:  url,
+                success: function (result) {
+                    if(result) 
+                    {
+                        $('#food_truck_list').empty();
+                        // console.log(result);
+                        $('#edit_food_truck').modal('show');
+                        for(var s = 0;s < result.length;s++)
+                        {
+                            var k = s + 1 ;
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
+
+                        
+                        }
+
+                        
+                    }
+                }
+            });
+        }
+
+        function viewThisTruck(id, num)
+        {
+            var url = "{{route('event.fetch_this_truck_details', ':id')}}";
+            url = url.replace(':id', id);
+            $.ajax({
+                url:  url,
+                success: function (result) {
+                    if(result) 
+                    {
+                        // console.log(result);
+                        $('#edit_food_truck').modal('hide');
+                        $('#edit_truck_title').show();
+                        $('#add_truck_title').hide();
+                        $('#update_this_td').show();
+                        $('#add_new_td').hide();
+                        $('#edit_one_food_truck').modal('show');
+                        $('#company_name_en').val(result.company_name_en);
+                        $('#company_name_ar').val(result.company_name_ar);
+                        $('#plate_no').val(result.plate_number);
+                        $('#food_type').val(result.food_type);
+                        $('#regis_issue_date').val(moment(result.registration_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
+                        $('#regis_expiry_date').val(moment(result.registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
+                        $('#this_event_truck_id').val(result.event_truck_id);
+                        truckDocUpload();
+                    }
+                }
+            });
+        }
+
+        const truckDocUpload = () => {
+            var per_truck_doc = $('#truck_document_count').val();
+            var total = parseInt($('#truck_additional_doc > div').length);
+            for(var i = 1; i <= parseInt(per_truck_doc) + total ;i++){
+                var requiId = $('#truck_req_id_'+i).val();
+                    truckDocUploader[i] = $('#truckuploader_'+i).uploadFile({
+                    url: "{{route('event.uploadTruck')}}",
+                    method: "POST",
+                    allowedTypes: "jpeg,jpg,png,pdf",
+                    fileName: "truck_file_"+i,
+                    multiple: true,
+                    downloadStr: `<i class="la la-download"></i>`,
+                    deleteStr: `<i class="la la-trash"></i>`,
+                    showFileSize: false,
+                    showFileCounter: false,
+                    showProgress: false,
+                    abortStr: '',
+                    returnType: "json",
+                    maxFileCount: 2,
+                    showPreview: false,
+                    showDelete: false,
+                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    showDownload: true,
+                    formData: {
+                        id: i , 
+                        reqId: $('#truck_req_id_'+i).val()
+                    },
+                    onSuccess: function (files, response, xhr, pd) {
+                            //You can control using PD
+                        pd.progressDiv.show();
+                        pd.progressbar.width('0%');
+                    },
+                    downloadCallback: function (files, pd) {
+                        let user_id = $('#user_id').val();
+                        let eventId = $('#event_id').val();
+                        let this_url = user_id + '/event/' + eventId +'/truck/'+requiId+'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    },
+                    onLoad:function(obj)
+                    {
+                        var ev_tr_id = $('#this_event_truck_id').val();
+                        $.ajax({
+                            url: "{{route('event.fetch_this_truck_docs')}}",
+                            type: 'POST',
+                            data: {
+                                truckId: ev_tr_id,
+                                reqId: $('#truck_req_id_'+i).val(),
+                            },
+                            dataType: "json",
+                            success: function(data)
+                            {
+                                if (data) {
+                                    let j = 1 ;
+                                   for(data of data) {
+                                        if(j <= 2 ){
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        const d = data["path"].split("/");
+                                        var cc = d.splice(4,5);
+                                        let docName =  cc.length > 1 ? cc.join('/') : cc ;
+                                        // let docName = d[d.length - 1];
+                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                        if (formatted_issue_date != NaN - NaN - NaN) {
+                                            $('#truck_doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                            $('#truck_doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                        }
+                                        }
+                                    j++;
+                                   }
+                                }
+                            }
+                        });
+                    },
+                });
+                $('#truckuploader_'+i+'  div').attr('id', 'truck-upload_'+i);
+                $('#truckuploader_'+i+' + div').attr('id', 'truck-file-upload_'+i);
+                $("#truck-upload_" + i).css('pointer-events', 'none');
+            }
+        };
+
 
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
@@ -800,6 +1080,7 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    showDelete: false,
                     returnType: "json",
                     showFileCounter: false,
                     abortStr: '',
@@ -882,7 +1163,7 @@
                 showFileSize: false,
                 showFileCounter: false,
                 abortStr: '',
-                previewHeight: '200px',
+                previewHeight: '100px',
                 previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
@@ -981,12 +1262,10 @@
             }
         }
 
-        if (wizard.currentStep == 3) {
- 
-            $('#submit_btn').css('display', 'block');
-            $('#next_btn').css('display', 'none');
-            
-        }
+            if (wizard.currentStep == 3) {
+                $('#submit_btn').css('display', 'block');
+                $('#next_btn').css('display', 'none');
+            }
         });
 
 
@@ -1091,7 +1370,10 @@
         };
 
         function toCapitalize(word) {
-            return word.toLowerCase().replace(/(?<= )[^\s]|^./g, a => a.toUpperCase());
+            if(word)
+            {
+                return word.toLowerCase().replace(/(?<= )[^\s]|^./g, a => a.toUpperCase());
+            }
         }
 
 
@@ -1106,19 +1388,19 @@
                 success: function (result) {
                  if(result){
                     $('#documents_required').empty();
-                     var res = result.requirements;
+                     var res = result;
                      $('#requirements_count').val(res.length);
                      $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
                          $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' ) +'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
-                         if(res[i].requirement_name.toLowerCase() == "insurance policy" || res[i].requirement_name.toLowerCase() == "noc letter")
+                         if(res[i].event_type_requirements[0].is_mandatory == 1)
                          {
-                            $('#cnd_'+j).html(' ( Optional ) ');
-                            $('#cnd_'+j).removeClass('text-danger').addClass('text-muted');
-                         }else {
                             $('#cnd_'+j).html(' ( Required ) ');
                             $('#cnd_'+j).removeClass('text-muted').addClass('text-danger');
+                         }else {
+                            $('#cnd_'+j).html(' ( Optional ) ');
+                            $('#cnd_'+j).removeClass('text-danger').addClass('text-muted');
                          }
 
                          if(res[i].dates_required)
@@ -1174,17 +1456,136 @@
 
         }
 
+        const liquorDocUpload = () => {
+            var per_doc = $('#liquor_document_count').val();
+            // var total = parseInt($('#liquor_additional_doc > div').length);
+            for(var i = 1; i <=  parseInt(per_doc);i++){
+                    var reqID =  $('#liqour_req_id_'+i).val()  ;
+                    liquorDocUploader[i] = $('#liquoruploader_'+i).uploadFile({
+                    url: "{{route('event.uploadLiquor')}}",
+                    method: "POST",
+                    allowedTypes: "jpeg,jpg,png,pdf",       
+                    fileName: "liquor_file_"+i,
+                    multiple: true,
+                    downloadStr: `<i class="la la-download"></i>`,
+                    deleteStr: `<i class="la la-trash"></i>`,
+                    showFileSize: false,
+                    showFileCounter: false,
+                    showProgress: false,
+                    abortStr: '',
+                    returnType: "json",
+                    maxFileCount: 2,
+                    showPreview: false,
+                    showDownload: true,
+                    showDelete: false,
+                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    showDownload: true,
+                    formData: {id:  i, reqId: reqID },
+                    downloadCallback: function (files, pd) {
+                        let user_id = $('#user_id').val();
+                        let eventId = $('#event_id').val();
+                        let this_url = user_id + '/event/' + eventId +'/liquor/'+reqID+'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    },
+                    onLoad:function(obj)
+                    {
+                        var ev_lq_id = $('#event_liquor_id').val();
+                        $.ajax({
+                            url: "{{route('event.fetch_this_liquor_docs')}}",
+                            type: 'POST',
+                            data: {
+                                liquor_id: ev_lq_id,
+                                reqId: $('#liqour_req_id_'+i).val(),
+                            },
+                            dataType: "json",
+                            success: function(data)
+                            {
+                                if (data) {
+                                    let j = 1 ;
+                                   for(data of data) {
+                                        if(j <= 2 ){
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        const d = data["path"].split("/");
+                                        var cc = d.splice(4,5);
+                                        let docName =  cc.length > 1 ? cc.join('/') : cc ;
+                                        // let docName = d[d.length - 1];
+                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                        if (formatted_issue_date != NaN - NaN - NaN) {
+                                            $('#liquor_doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                            $('#liquor_doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                        }
+                                        }
+                                    j++;
+                                   }
+                                }
+                            }
+                        });
+                    }
+                    
+                });
+                $('#liquoruploader_'+i+'  div').attr('id', 'liquor-upload_'+i);
+                $('#liquoruploader_'+i+' + div').attr('id', 'liquor-file-upload_'+i);
+                $("#liquor-upload_" + i).css('pointer-events', 'none');
+            }
+        };
+
+        function go_back_truck_list()
+        {
+            $('#edit_food_truck').modal('show');
+            $('#edit_one_food_truck').modal('hide');
+        }
+
+
+        function editLiquor(){
+            var url = "{{route('event.fetch_liquor_details_by_event_id', ':id')}}";
+            url = url.replace(':id', $('#event_id').val());
+            $.ajax({
+                url:  url,
+                success: function (data) {
+                    // console.log(data)
+                    if(data) 
+                    {
+                        $('#liquor_details').modal('show');
+                        $('#l_company_name_en').val(data.company_name_en);
+                        $('#l_company_name_ar').val(data.company_name_ar);
+                        $('#license_no').val(data.license_number);
+                        $('#license_no').val(data.license_number);
+                        $('#l_issue_date').val(moment(data.license_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY'));
+                        $('#l_expiry_date').val(moment(data.license_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY'));
+                        $('#l_emirates').val(JSON.parse(data.emirate_id));
+                        $('#trade_license_no').val(data.trade_license);
+                        $('#tl_issue_date').val(moment(data.trade_license_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY'));
+                        $('#tl_expiry_date').val(moment(data.trade_license_expired_date , 'YYYY-MM-DD').format('DD-MM-YYYY'));
+                        $('#event_liquor_id').val(data.event_liquor_id);
+                        liquorDocUpload();
+                    }
+                }
+            });
+        }
+
 
         $('#submit_btn').click((e) => {
-
-
+                var paidArtistFee = 0;
+                if($('#isEventPay').prop("checked")){
+                    paidArtistFee = 1;
+                }
                 $.ajax({
                     url: "{{route('company.event.make_payment')}}",
                     type: "POST",
                     data: {
                         event_id:$('#event_id').val(),
                         amount: $('#amount').val(),
-                        vat: $('#vat').val()
+                        vat: $('#vat').val(),
+                        isTruck: $('#is_truck').val(),
+                        truck_fee: $('#truck_fee').val(),
+                        total: $('#total').val(),
+                        paidArtistFee: paidArtistFee
                     },
                     success: function (result) {
                         var toUrl = "{{route('event.happiness', ':id')}}";
