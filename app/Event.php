@@ -14,7 +14,7 @@ class Event extends Model
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'issued_date', 'expired_date', 'lock'];
     protected $casts = ['is_display_web' => 'boolean', 'is_display_all' => 'boolean'];
     protected $fillable = [
-        'name_en', 'no_of_trucks', 'name_ar', 'street', 'logo_thumbnail', 'logo_original', 'reference_number', 'issued_date', 'expired_date', 'time_start', 'time_end', 'permit_number', 'venue_en', 'venue_ar', 'description_en', 'description_ar', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_display_web', 'is_display_all', 'last_check_by', 'lock', 'created_by', 'note_en', 'note_ar', 'cancelled_by', 'cancel_reason', 'latitude', 'longitude', 'full_address', 'firm', 'is_liquor', 'is_truck', 'audience_number', 'paid'
+        'name_en', 'no_of_trucks', 'name_ar', 'street', 'logo_thumbnail', 'logo_original', 'reference_number', 'issued_date', 'expired_date', 'time_start', 'time_end', 'permit_number', 'venue_en', 'venue_ar', 'description_en', 'description_ar', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_display_web', 'is_display_all', 'last_check_by', 'lock', 'created_by', 'note_en', 'note_ar', 'cancelled_by', 'cancel_reason', 'latitude', 'longitude', 'full_address', 'firm', 'is_liquor', 'is_truck', 'audience_number', 'paid', 'paid_artist_fee'
     ];
 
 
@@ -24,6 +24,12 @@ class Event extends Model
             return $q->where('action', $status)->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
         });
     }
+
+    public function transaction()
+    {
+        return $this->hasMany(EventTransaction::class, 'event_id');
+    }
+
     public function liquor()
     {
         return $this->hasOne(EventLiquor::class, 'event_id')->withDefault(['company_name_en'=>null, 'company_name_ar'=>null]);

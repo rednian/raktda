@@ -59,15 +59,14 @@
                 <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
                 <span class="kt-font-dark">{{__('Ref NO.')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
+                @if($permit_details->event)
+                <span>Connected to Event :</span>&emsp;
+                <span
+                    class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>
+                @endif
             </div>
         </div>
-        @if($permit_details->event)
-        <div class="pb-3">
-            <span>Connected to Event :</span>&emsp;
-            <span
-                class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>&emsp;&emsp;
-        </div>
-        @endif
+
         <div class="table-responsive">
             <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                 <thead>

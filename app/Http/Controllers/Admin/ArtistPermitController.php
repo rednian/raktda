@@ -15,17 +15,20 @@ use App\ArtistPermit;
 use App\Profession;
 use App\ApproverProcedure;
 use App\ArtistPermitComment;
+use App\PermitComment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class ArtistPermitController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
       $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
 
-	    return view('admin.artist_permit.index', [
+      $view = $request->user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
+
+	    return view($view, [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
             'professions'=>Profession::has('artistpermit')->get(),
@@ -67,7 +70,14 @@ class ArtistPermitController extends Controller
 
     public function applicationDetails(Request $request, Permit $permit)
     {
-      if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
+        if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
+
+        //UPDATE LOCK ARTIST PERMIT
+        $permit->update([
+          'lock' => Carbon::now(),
+          'lock_user_id' => $request->user()->user_id
+        ]);
+
         return view('admin.artist_permit.application-details', [
         	'page_title'=> 'artist permit details',
           'permit'=>$permit,
@@ -77,12 +87,20 @@ class ArtistPermitController extends Controller
 
     public function submitApplication(Request $request, Permit $permit)
     {
+
+      
       try {
         DB::beginTransaction();
            $user_time = $request->session()->get('user');
            $user = Auth::user();
            $request['user_id'] = $user->user_id;
-           $request['role_id'] =  $user->roles->where('NameEn', 'admin')->first()->role_id;
+           $request['checked_date'] = Carbon::now();
+
+
+           // $request['role_id'] =  $user->roles->where('NameEn', 'admin')->first()->role_id;
+
+           //GET USER ROLE UPDATED BY DONSKIE
+           $request['role_id'] = $user->roles()->first()->role_id;
 
            switch ($request->action) {
              case 'approved-unpaid':
@@ -98,6 +116,14 @@ class ArtistPermitController extends Controller
                $permit->comment()->create($request->all());
               break;
               case 'need approval':
+
+
+              //ADD TO APPROVALS
+              // $approval = $permit->getPermitApproval()->create([
+              //   'type' => 'artist',
+              //   'created_by' => $request->user()->user_id
+              // ]);
+              
 
               // if ($request->is_manual_schedule) {
 
@@ -130,12 +156,45 @@ class ArtistPermitController extends Controller
                 }
                }
               break;
+              //INSPECTOR AND MANAGER APPROVAL
+              case 'checked':
+
+                  $status = $user->roles()->first()->role_id == 4 ? 'inspector' : 'manager';
+
+                  $comment = $permit->comment()->where([
+                    'action' => 'pending', 
+                    'role_id' => $user->roles()->first()->role_id
+                  ])->first();
+
+                  $comment->update($request->except(['_token', 'bypass_payment']));
+
+                  //RESET LOCK TO NONE
+                  $permit->update([
+                    'lock' => null,
+                    'lock_user_id' => null
+                  ]);
+
+                  if($request->has('bypass_payment')){
+
+                      $comment->exempt_payment = 1;
+                      $comment->save();
+
+                      $permit->exempt_payment = 1;
+                      $permit->exempt_by = $request->user()->user_id;
+                      $permit->save();
+                  }
+
+                  //CHANGE THE STATUS THAT WILL IDENTIFY IF IT IS FROM INSPECTOR OR MANAGER
+                  $request['action'] = 'checked-'.$status;
+
+              break;
+
            }
              $permit->update(['permit_status'=>$request->action]);
 
         DB::commit();
 	      $result = ['success', ' Permit has been rejected successfully ', 'Success'];
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
       	DB::rollBack();
 	      $result = ['error', $e->getMessage(), 'Error'];
       }
@@ -276,11 +335,11 @@ class ArtistPermitController extends Controller
         return $artist_permit_document->issued_date->format('d-M-Y');
       })
       ->editColumn('expired_date', function($artist_permit_document){
-	      if(strtolower($artist_permit_document->requirement->requirement_nam) == 'medical certificate'){ return 'Not Required';}
+	      if(strtolower($artist_permit_document->requirement->requirement_name) == 'medical certificate'){ return 'Not Required';}
         return $artist_permit_document->expired_date->format('d-M-Y');
       })
       ->addColumn('name', function($artist_permit_document){
-         return  $artist_permit_document->requirement->name_en;
+         return  $artist_permit_document->requirement->requirement_name;
       })
       ->rawColumns(['action', 'document_name'])
       ->make(true);
@@ -386,7 +445,12 @@ class ArtistPermitController extends Controller
 			    	return '<span class="kt-font-bolder kt-font-transform-u">'.$name.'</span> currently has an existing permit that will expire '.$date.' with profession of 
 								<span class="kt-font-bolder  kt-font-transform-u">'.ucwords($profession).' </span>';
 			    })
-			    ->rawColumns(['artist_status', 'existing_permit'])
+          ->addColumn('action', function($artist_permit){
+            $html = '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">Document <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">'.($artist_permit->artistPermitDocument()->count()+1).'</span></button>';
+            $html .= '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">'.$artist_permit->comments()->count().'</span></button>';
+            return $html;
+          })
+			    ->rawColumns(['artist_status', 'existing_permit', 'action'])
 			    ->make(true);
         }
     }
@@ -464,10 +528,11 @@ class ArtistPermitController extends Controller
         ->whereDate('created_at', '<=', Carbon::parse($date['end'])->endOfDay()->toDateTimeString());
       })
       ->when($request->approval, function($q) use($request){
-        $q->whereHas('approval.approver', function($q) use($request){
-          $q->where('user_id', $request->user()->user_id);
+        $q->whereHas('comment', function($q) use($request){
+          $q->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id);
         });
-      })->latest();
+      })
+      ->latest();
 
       $table = Datatables::of($permit)
       ->addColumn('artist_number', function($permit){

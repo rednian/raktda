@@ -66,7 +66,7 @@
                                                 <input type="text"
                                                     class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
                                                     name="permit_from" id="permit_from" placeholder="DD-MM-YYYY"
-                                                    onchange="checkFilled()"
+                                                    data-date-start-date="+0d" onchange="checkFilled();givWarn()"
                                                     value="{{ count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->issue_date)) : '' }}" />
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
@@ -259,6 +259,8 @@
 
     @include('permits.artist.modals.leave_page')
 
+    @include('permits.artist.modals.show_warning_modal');
+
     @endsection
 
 
@@ -285,7 +287,7 @@
             var artiststartafter = $('#artiststartafter').val();
             var today = moment().toDate();
             var startDate = moment(today).add(artiststartafter, 'days').toDate();
-            $('#permit_from').datepicker('setStartDate', startDate);
+            // $('#permit_from').datepicker('setStartDate', startDate);
             var minDate = moment($('#permit_from').val(), 'DD-MM-YYYY').toDate();
             var maxDate = moment(minDate).add(3, 'M').toDate();
             $('#permit_to').datepicker('setStartDate', minDate);
@@ -507,6 +509,25 @@
                     }
                 });
         });
+
+        
+        function givWarn()
+        {
+            var from_date = $('#permit_from').val();
+            let start_days_count = $('#artiststartafter').val();
+            if(from_date)
+            {
+                var x = moment(from_date, "DD-MM-YYYY");
+                var to = moment();
+                var from = moment([x.format('YYYY'), x.month(), x.format('DD')]);
+                var today = moment([to.format('YYYY'), to.month(), to.format('DD')]);
+                var diff = from.diff(today, 'days');
+                if(diff <= start_days_count)
+                {
+                    $('#showwarning').modal('show');
+                }
+            }
+        }
 
 
     </script>

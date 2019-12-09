@@ -29,7 +29,6 @@ class Approval extends Model
         }
     }   
 
-
     public function report()
     {
         return $this->hasMany(ApprovalReport::class, 'approval_id');

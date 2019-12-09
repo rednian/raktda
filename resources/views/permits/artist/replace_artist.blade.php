@@ -879,7 +879,7 @@ $language_id = Auth::user()->LanguageId;
                 allowedTypes: "jpeg,jpg,png",
                 fileName: "pic_file",
                 multiple: false,
-                previewHeight: '200px',
+                previewHeight: '100px',
                 previewWidth: "auto",
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,

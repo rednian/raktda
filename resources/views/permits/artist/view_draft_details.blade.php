@@ -34,15 +34,14 @@
                     class="kt-font-info">{{date('d-M-Y',strtotime($draft_details[0]->expiry_date))}}</span>&emsp;&emsp;
                 <span>{{__('Location')}}:</span>&emsp;
                 <span class="kt-font-info">{{$draft_details[0]->work_location}}</span>&emsp;&emsp;
-
+                @if($draft_details[0]->event)
+                <span>{{__('Connected to Event')}} :</span>&emsp;
+                <span
+                    class="kt-font-info">{{ getLangId() == 1 ? $draft_details[0]->event->name_en : $draft_details[0]->event->name_ar }}</span>&emsp;&emsp;
+                @endif
             </div>
         </div>
-        @if($draft_details[0]->event)
-        <div class="pb-3">
-            <span>Connected to Event :</span>&emsp;
-            <span class="kt-font-info">{{$draft_details[0]->event->name_en}}</span>&emsp;&emsp;
-        </div>
-        @endif
+
 
         <div class="table-responsive">
             <table class="table table-striped table-borderless border" id="applied-artists-table">
