@@ -2,8 +2,6 @@
 
 @section('title', 'Event Permits - Smart Government Rak')
 
-
-
 @section('content')
 
 <input type="hidden" id="lang_id" value="{{getLangId()}}">
@@ -50,13 +48,13 @@
                 <table class="table table-striped table-hover table-borderless border" id="applied-events-table">
                     <thead>
                         <tr>
-                            <th>{{__('Ref NO.')}}</th>
+                            <th style="width:10%;">{{__('Ref NO.')}}</th>
                             <th>{{__('Type')}}</th>
-                            <th>{{__('From')}} </th>
-                            <th>{{__('To')}} </th>
+                            <th style="width:11%;" class="text-center">{{__('From')}} </th>
+                            <th style="width:11%;" class="text-center">{{__('To')}} </th>
                             <th>{{__('Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
-                            <th>{{__('Status')}}</th>
+                            <th class="text-center">{{__('Status')}}</th>
                             <th>{{__('Action')}}</th>
                             <th>{{__('Details')}}</th>
                         </tr>
@@ -70,13 +68,13 @@
                         <tr>
                             <th>{{__('Permit No')}}</th>
                             <th>{{__('Type')}}</th>
-                            <th>{{__('From')}} </th>
-                            <th>{{__('To')}} </th>
+                            <th style="width:11%;" class="text-center">{{__('From')}} </th>
+                            <th style="width:11%;" class="text-center">{{__('To')}} </th>
                             <th>{{__('Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
                             <th>{{__('Action')}}</th>
                             <th>{{__('Details')}}</th>
-                            <th></th>
+                            <th>{{__('Download')}}</th>
                         </tr>
                     </thead>
 
@@ -85,45 +83,9 @@
 
 
             <div class="tab-pane fade" id="calendar" role="tabpanel">
-                <div class="row">
-                    <div class="col-md-3">
-                        <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
-                            <div class="card">
-                                <div class="card-header" id="heading-address">
-                                    <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse"
-                                        data-target="#collapse-address" aria-expanded="true"
-                                        aria-controls="collapse-address">
-                                        <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">Event type legend</h6>
-                                    </div>
-                                </div>
-                                <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
-                                    data-parent="#accordion-address">
-                                    <div class="card-body" style="padding: 1px;">
-                                        <table class="table table-borderless">
-                                            <tbody>
-                                                @if (!empty($types))
-                                                @foreach ($types as $type)
-                                                <tr>
-                                                    <td>
-                                                        <span
-                                                            style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
-                                                            {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)): ucfirst($type->name_ar)  }}
-                                                    </td>
-                                                    </span>
-                                                </tr>
-                                                @endforeach
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="col-md-9">
-                        <section id="event-calendar">
-                        </section>
-                    </div>
+                <div class="col-md-12">
+                    <section id="event-calendar">
+                    </section>
                 </div>
             </div>
 
@@ -305,7 +267,7 @@
                     width: '10%',
                     className: 'text-center',
                     render: function(data, type, full, meta) {
-						return `<span class="kt-font-transform-c">${data}</span>`;
+						return `<span class="kt-font-transform-c text-center">${data}</span>`;
 					}
                 }
             ],
@@ -479,6 +441,7 @@
           var TODAY = todayDate.format('YYYY-MM-DD');
           var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
           var calendarEl = document.getElementById('event-calendar');
+
           var calendar = new FullCalendar.Calendar(calendarEl, {
               plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
               isRTL: KTUtil.isRTL(),
@@ -488,16 +451,17 @@
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
               height: 'auto',
+              allDaySlot: true,
               contentHeight: 450,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
               views: {
-                  dayGridMonth: { buttonText: 'Month' },
-                  timeGridWeek: { buttonText: 'Week' },
-                  timeGridDay: { buttonText: 'Day' },
-                  listDay: { buttonText: 'Day List' },
-                  listWeek: { buttonText: 'Week List' }
+                  dayGridMonth: { buttonText: '{{ __('Month') }}' },
+                  timeGridWeek: { buttonText: '{{ __('Week') }}' },
+                  timeGridDay: { buttonText: '{{ __('Day') }}' },
+                  listDay: { buttonText: '{{ __('Day List') }}' },
+                  listWeek: { buttonText: '{{ __('Week List') }}' }
               },
               defaultView: 'dayGridMonth',
               // defaultDate: TODAY,

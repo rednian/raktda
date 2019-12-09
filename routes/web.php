@@ -22,11 +22,15 @@ Route::get('/live', function () {
     return Artisan::call('up');
 });
 
-Auth::routes(['register' => false]);
+Route::get('/registration', 'Company\CompanyController@create')->name('company.create')->middleware('signed');
+Route::post('/registration', 'Company\CompanyController@store')->name('company.store');
+Route::get('/registration/is_exist', 'Company\CompanyController@isexist')->name('company.isexist');
+
+Auth::routes(['register' => false, 'verify' => true ]);
 Route::post('/update_language', 'Admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
 
 
-Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
+Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
 
     Route::get('/dashboard', function () {
@@ -60,6 +64,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('/event/{event}/addition-requirement-datatable','Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
     Route::get('/event/{event}/requirement-datatable','Admin\EventController@uploadedRequiremet')->name('admin.event.uploadedRequiremet');
     Route::get('/event/{event}/comment-datatable','Admin\EventController@commentDatatable')->name('admin.event.comment');
+    Route::get('/event/{event}/liquor-datatable','Admin\EventController@liquorRequirementDatatable')->name('admin.event.liquor.requirement');
+    Route::get('/event/{event}/truck-datatable','Admin\EventController@truckDatatable')->name('admin.event.truck.datatable');
+    Route::get('/event/{event}/truck/{eventtruck}/datatable','Admin\EventController@truckRequirementDatatable')->name('admin.event.truck.requirement');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist
@@ -118,7 +125,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         ->name('admin.artist_permit.checkApplication');
 
     Route::get('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@applicationDetails')
-        ->name('admin.artist_permit.applicationdetails');
+        ->name('admin.artist_permit.applicationdetails')->middleware('lock_artist_permit');
 
     Route::get('/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')
         ->name('admin.artist_permit.datatable');
@@ -128,10 +135,16 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         ->name('admin.artist_permit.index');
 
 
+    //ADDED BY DON
+    Route::post('/artist_permit/lock/{permit}', function(Illuminate\Http\Request $request, App\Permit $permit){
+        $permit->update([
+            'lock' => Carbon\Carbon::now(),
+            'lock_user_id' => $request->user()->user_id
+        ]);
+    })->name('artist_permit.lock');
 
 
     //Reports
-
     Route::get('/artist_reports', 'Admin\ReportController@reports')
         ->name('admin.artist_permit_reports.reports');
 

@@ -8,7 +8,7 @@ class EventLiquorTruckRequirement extends Model
 {
    protected $table = 'event_liquor_truck_requirement';
    protected $primaryKey = 'liquor_truck_requirement_id';
-   protected $fillable = ['type', 'liquor_truck_id', 'requirement_id', 'path', 'requirement_id'];
+   protected $fillable = ['type', 'liquor_truck_id', 'requirement_id', 'path', 'requirement_id', 'event_id'];
 
    public function requirement()
    {
