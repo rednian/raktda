@@ -473,23 +473,25 @@ class ArtistController extends Controller
 
         if (Storage::exists(session($userid . '_pic_file'))) {
 
-            $check_path = 'public/' . $userid . '/artist/temp/' . $temp_id . '/photos';
+            $check_path = $userid . '/artist/temp/' . $temp_id . '/photos';
 
-            if (Storage::exists($check_path)) {
-                $file_count = count(Storage::files($check_path));
+            if (Storage::exists('public/' . $check_path)) {
+                $file_count = count(Storage::files('public/' . $check_path));
                 $file_nos = $file_count / 2;
                 $next_file_no = $file_nos + 1;
             } else {
                 $next_file_no = 1;
             }
 
-            $newPath = 'public/' . $userid . '/artist/temp/' . $temp_id . '/photos/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-            $newPathLink = $userid . '/artist/temp/' . $temp_id . '/photos/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-            $newThumbPath = 'public/' . $userid . '/artist/temp/' . $temp_id . '/photos/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-            $newThumbPathLink = $userid . '/artist/temp/' . $temp_id . '/photos/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
+            $newPathLink = $check_path.'/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
+            $newThumbPathLink = $check_path.'/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
 
-            Storage::move(session($userid . '_pic_file'), $newPath);
-            Storage::move(session($userid . '_thumb_file'), $newThumbPath);
+            if(!Storage::exists('public/'.$newPathLink)){
+                Storage::move(session($userid . '_pic_file'), 'public/'.$newPathLink);
+            }
+            if(!Storage::exists('public/'.$newThumbPathLink)){
+                Storage::move(session($userid . '_thumb_file'), 'public/'.$newThumbPathLink);
+            }
 
             $request->session()->forget($userid . '_pic_file');
             $request->session()->forget($userid . '_thumb_file');
@@ -534,19 +536,22 @@ class ArtistController extends Controller
 
                 $ext = session($userid . '_ext_' . $l);
 
-                $check_path = 'public/' . $userid . '/artist/temp/' . $temp_id;
+                $check_path =  $userid . '/artist/temp/' . $temp_id;
 
-                if (Storage::exists($check_path)) {
-                    $file_count = count(Storage::files($check_path));
+                if (Storage::exists('public/' .$check_path)) {
+                    $file_count = count(Storage::files('public/' .$check_path));
                     $next_file_no = $file_count + 1;
                 } else {
                     $next_file_no = 1;
                 }
 
-                $newPath = 'public/' . $userid . '/artist/temp/' . $temp_id . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
-                $newPathLink = $userid . '/artist/temp/' . $temp_id . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
+                $newPathLink = $check_path . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
 
-                Storage::move(session($userid  . '_doc_file_' . $l), $newPath);
+                if(!Storage::exists('public/'.$newPathLink))
+                {
+                    Storage::move(session($userid  . '_doc_file_' . $l), 'public/'.$newPathLink);
+                }
+
                 Storage::delete(session($userid  . '_doc_file_' . $l));
 
                 $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
@@ -761,27 +766,31 @@ class ArtistController extends Controller
                         $ext = explode('.', $exttt);
                         $pic_ext = $ext[1];
 
-                        $check_path = 'public/' .  $user_id . '/artist/' .  $artistPermitId . '/photos';
+                        $check_path =   $user_id . '/artist/' .  $artistPermitId . '/photos';
 
-                        if (Storage::exists($check_path)) {
-                            $file_count = count(Storage::files($check_path));
+                        if (Storage::exists('public/' .$check_path)) {
+                            $file_count = count(Storage::files('public/' .$check_path));
                             $file_nos = $file_count / 2;
                             $next_file_no = $file_nos + 1;
                         } else {
                             $next_file_no = 1;
                         }
 
+                        $newPathLink = $check_path.'/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
 
-                        $newPath = 'public/' . $user_id . '/artist/' . $artistPermitId . '/photos/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-                        $newPathLink = $user_id . '/artist/' . $artistPermitId . '/photos/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-                        $newThumbPath = 'public/' . $user_id . '/artist/' . $artistPermitId . '/photos/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-                        $newThumbPathLink = $user_id . '/artist/' . $artistPermitId . '/photos/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
+                        $newThumbPathLink = $check_path.'/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
 
                         $oldPath = 'public/' . $data->original;
                         $oldThumbPath = 'public/' . $data->thumbnail;
 
-                        Storage::move($oldPath, $newPath);
-                        Storage::move($oldThumbPath, $newThumbPath);
+                        if(!Storage::exists('public/'.$newPathLink)){
+                            Storage::move($oldPath, 'public/'.$newPathLink);
+                        }
+                        if(!Storage::exists('public/'.$newThumbPathLink)){
+                            Storage::move($oldThumbPath, 'public/'.$newThumbPathLink);
+                        }
+                        
+
                     } else {
                         $newPathLink = $data->original;
                         $newThumbPathLink = $data->thumbnail;
@@ -821,22 +830,23 @@ class ArtistController extends Controller
                             $exttt = explode('.', $extt);
                             $ext = $exttt[1];
 
-                            $check_path = 'public/' . $user_id . '/artist/' . $artistPermitId . '/'  . $l;
+                            $check_path =  $user_id . '/artist/' . $artistPermitId . '/'  . $l;
 
-                            $file_count = count(Storage::files($check_path));
+                            $file_count = count(Storage::files('public/' .$check_path));
 
                             if ($file_count == 0) {
                                 $next_file_no = 1;
                             } else {
                                 $next_file_no = $file_count + 1;
                             }
+                            
+                            $newPathLink = $check_path . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
 
-                            $newPath = 'public/' . $user_id . '/artist/' . $artistPermitId . '/' . $l . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
-                            $newPathLink = $user_id . '/artist/' . $artistPermitId . '/' . $l . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
-
-                            $oldPath = 'public/' . $temp_path;
-
-                            Storage::move($oldPath, $newPath);
+                            if(!Storage::exists('public/'.$newPathLink))
+                            {
+                                Storage::move('public/' . $temp_path, 'public/'.$newPathLink);
+                            }
+                            
 
                             ArtistPermitDocument::create([
                                 'issued_date' => $artist_temp_document->issued_date,
@@ -1110,23 +1120,27 @@ class ArtistController extends Controller
 
         if (Storage::exists(session($userid . '_pic_file'))) {
 
-            $check_path = 'public/' . $userid . '/artist/temp/' . $temp_id . '/photos';
+            $check_path =  $userid . '/artist/temp/' . $temp_id . '/photos';
 
-            if (Storage::exists($check_path)) {
-                $file_count = count(Storage::files($check_path));
+            if (Storage::exists('public/' .$check_path)) {
+                $file_count = count(Storage::files('public/' .$check_path));
                 $file_nos = $file_count / 2;
                 $next_file_no = $file_nos + 1;
             } else {
                 $next_file_no = 1;
             }
 
-            $newPath = 'public/' . $userid . '/artist/temp/' . $temp_id . '/photos/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-            $newPathLink = $userid . '/artist/temp/' . $temp_id . '/photos/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-            $newThumbPath = 'public/' . $userid . '/artist/temp/' . $temp_id . '/photos/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-            $newThumbPathLink = $userid . '/artist/temp/' . $temp_id . '/photos/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
+            $newPathLink = $check_path.'/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
+            $newThumbPathLink = $check_path.'/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
 
-            Storage::move(session($userid .  '_pic_file'), $newPath);
-            Storage::move(session($userid . '_thumb_file'), $newThumbPath);
+            if(!Storage::exists('public/'.$newPathLink))
+            {
+                Storage::move(session($userid .  '_pic_file'), 'public/'.$newPathLink);
+            }
+            if(!Storage::exists('public/'.$newThumbPathLink))
+            {
+                Storage::move(session($userid . '_thumb_file'), 'public/'.$newThumbPathLink);
+            }
 
             $request->session()->forget([$userid . '_pic_file', $userid . '_thumb_file', $userid . '_ext']);
 
@@ -1157,19 +1171,22 @@ class ArtistController extends Controller
 
                 $ext = session($userid . '_ext_' . $l);
 
-                $check_path = 'public/' . $userid . '/artist/temp/' . $temp_id;
+                $check_path =  $userid . '/artist/temp/' . $temp_id;
 
-                if (Storage::exists($check_path)) {
-                    $file_count = count(Storage::files($check_path));
+                if (Storage::exists('public/' .$check_path)) {
+                    $file_count = count(Storage::files('public/' .$check_path));
                     $next_file_no = $file_count + 1;
                 } else {
                     $next_file_no = 1;
                 }
 
-                $newPath = 'public/' . $userid . '/artist/temp/' . $temp_id . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
-                $newPathLink = $userid . '/artist/temp/' . $temp_id . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
+                $newPathLink = $check_path . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
 
-                Storage::move(session($userid .  '_doc_file_' . $l), $newPath);
+                if(!Storage::exists('public/'.$newPathLink))
+                {
+                    Storage::move(session($userid .  '_doc_file_' . $l), 'public/'.$newPathLink);
+                }
+
                 Storage::delete(session($userid .  '_doc_file_' . $l));
 
                 $request->session()->forget([$userid . '_doc_file_' . $l, $userid . '_ext_' . $l]);
@@ -1567,26 +1584,31 @@ class ArtistController extends Controller
                     $pic_ext = $ext[1];
 
 
-                    $check_path = 'public/' .  $user_id . '/artist/' .  $data->artist_id . '/photos';
+                    $check_path = $user_id . '/artist/' .  $data->artist_id . '/photos';
 
-                    if (Storage::exists($check_path)) {
-                        $file_count = count(Storage::files($check_path));
+                    if (Storage::exists('public/'.$check_path)) {
+                        $file_count = count(Storage::files('public/'.$check_path));
                         $file_nos = $file_count / 2;
                         $next_file_no = $file_nos + 1;
                     } else {
                         $next_file_no = 1;
                     }
 
-                    $newPath = 'public/' . $user_id . '/artist/' . $data->artist_id . '/photos/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-                    $newPathLink = $user_id . '/artist/' . $data->artist_id . '/photos/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-                    $newThumbPath = 'public/' . $user_id . '/artist/' . $data->artist_id . '/photos/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
-                    $newThumbPathLink = $user_id . '/artist/' . $data->artist_id . '/photos/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
+                    $newPathLink = $check_path.'/photo_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
+                    $newThumbPathLink = $check_path.'/thumb_' . $next_file_no . '_' . $date_time . '.' . $pic_ext;
 
                     $oldPath = 'public/' . $data->original;
                     $oldThumbPath = 'public/' . $data->thumbnail;
 
-                    Storage::move($oldPath, $newPath);
-                    Storage::move($oldThumbPath, $newThumbPath);
+                    if(!Storage::exists('public/'.$newPathLink))
+                    {
+                        Storage::move($oldPath, 'public/'.$newPathLink);
+                    }
+                    if(!Storage::exists('public/'.$newThumbPathLink))
+                    {
+                        Storage::move($oldThumbPath, 'public/'.$newThumbPathLink);
+                    }
+
                 } else {
                     $newPathLink = $data->original;
                     $newThumbPathLink = $data->thumbnail;
@@ -1663,22 +1685,22 @@ class ArtistController extends Controller
                         $ex = explode('.', $exttt);
                         $ext = $ex[1];
 
+                        $check_path =  $user_id . '/artist/' . $artistID;
 
-                        $check_path = 'public/' . $user_id . '/artist/' . $artistID;
-
-                        if (Storage::exists($check_path)) {
-                            $file_count = count(Storage::files($check_path));
+                        if (Storage::exists('public/' .$check_path)) {
+                            $file_count = count(Storage::files('public/' .$check_path));
                             $next_file_no = $file_count + 1;
                         } else {
                             $next_file_no = 1;
                         }
 
-                        $newPath = 'public/' . $user_id . '/artist/' . $artistID . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
-                        $newPathLink = $user_id . '/artist/' . $artistID . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
+                        $newPathLink = $check_path . '/document_' . $next_file_no . '_' . $date_time . '.' . $ext;
 
                         $oldPath = 'public/' . $temp_path;
 
-                        Storage::move($oldPath, $newPath);
+                        if(!Storage::exists('public/'.$newPathLink)){
+                            Storage::move($oldPath, 'public/'.$newPathLink);
+                        }
 
                         ArtistPermitDocument::create([
                             'issued_date' => $artist_temp_document->issued_date,

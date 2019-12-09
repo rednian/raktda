@@ -91,9 +91,11 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::post('event/deleteTruckUploadedfile', 'Company\EventController@deleteTruckUploadedfile')->name('event.deleteTruckUploadedfile');
     Route::post('event/deleteLiquorFile', 'Company\EventController@deleteLiquorFile')->name('event.deleteLiquorFile');
     Route::get('event/amend/{event}', 'Company\EventController@amend')->name('event.amend');
+    Route::get('event/eventpics/{event}', 'Company\EventController@eventpics')->name('event.eventpics');
     Route::post('event/amend', 'Company\EventController@applyAmend')->name('event.applyAmend');
     Route::post('event/uploadLogo', 'Company\EventController@uploadLogo')->name('event.uploadLogo');
     Route::get('event/get_uploaded_logo/{id}', 'Company\EventController@get_uploaded_logo')->name('event.get_uploaded_logo');
+    Route::post('event/uploadEventPics', 'Company\EventController@uploadEventPics')->name('event.uploadEventPics');
     Route::post('event/uploadTruck', 'Company\EventController@uploadTruck')->name('event.uploadTruck');
     Route::post('event/uploadLiquor', 'Company\EventController@uploadLiquor')->name('event.uploadLiquor');
     Route::get('event/add_artist/{id?}', 'Company\EventController@add_artist')->name('event.add_artist');

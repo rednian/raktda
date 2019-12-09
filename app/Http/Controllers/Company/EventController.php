@@ -133,11 +133,12 @@ class EventController extends Controller
                                     $next_file_no = $file_count + 1;
                                 }
 
-                                $newPath = 'public/' . $userid . '/event/temp/truck/' . $truck_id . '/' . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
-
                                 $newPathLink = $userid . '/event/temp/truck/' . $truck_id . '/'  . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
 
-                                Storage::move(session($userid  . '_truck_file_'  . $l)[$k], $newPath);
+                                if(!Storage::exists('public/'.$newPathLink))
+                                {
+                                    Storage::move(session($userid  . '_truck_file_'  . $l)[$k], 'public/'.$newPathLink);
+                                }
 
                                 EventLiquorTruckRequirement::create([
                                     'issued_date' => !empty((array) $truck_doc_details[$m]) ? Carbon::parse($truck_doc_details[$m]['issue_date'])->toDateTimeString() : '',
@@ -231,9 +232,9 @@ class EventController extends Controller
 
                                 $ext = session($userid . '_liquor_ext_' . $l)[$k];
 
-                                $check_path = 'public/' . $userid . '/event/temp/liquor/' . $event_liquor_id . '/' . $l;
+                                $check_path =  $userid . '/event/temp/liquor/' . $event_liquor_id . '/' . $l;
 
-                                $file_count = count(Storage::files($check_path));
+                                $file_count = count(Storage::files('public/' .$check_path));
 
                                 if ($file_count == 0) {
                                     $next_file_no = 1;
@@ -241,9 +242,7 @@ class EventController extends Controller
                                     $next_file_no = $file_count + 1;
                                 }
 
-                                $newPath = 'public/' . $userid . '/event/temp/liquor/' . $event_liquor_id . '/' . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
-
-                                $newPathLink = $userid . '/event/temp/liquor/' . $event_liquor_id . '/'  . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $check_path . '/' . $next_file_no . '_' . $date . '.' . $ext;
 
                                 EventLiquorTruckRequirement::create([
                                     'issued_date' => !empty((array) $liquorDocDetails[$m]) ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
@@ -256,7 +255,9 @@ class EventController extends Controller
                                     'liquor_truck_id' => $event_liquor_id
                                 ]);
 
-                                Storage::move(session($userid  . '_liquor_file_' . $l)[$k], $newPath);
+                                if(!Storage::exists('public/'.$newPathLink)){
+                                    Storage::move(session($userid  . '_liquor_file_' . $l)[$k], 'public/'.$newPathLink);
+                                }
                             }
                         }
                         $request->session()->forget([$userid . '_liquor_file_' . $l, $userid . '_liquor_ext_' . $l]);
@@ -521,9 +522,9 @@ class EventController extends Controller
 
                                 $ext = session($userid . '_event_ext_' . $l)[$k];
 
-                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+                                $check_path = $userid . '/event/' . $event_id . '/' . $l;
 
-                                $file_count = count(Storage::files($check_path));
+                                $file_count = count(Storage::files('public/' . $check_path));
 
                                 if ($file_count == 0) {
                                     $next_file_no = 1;
@@ -535,11 +536,11 @@ class EventController extends Controller
 
                                 $eventTypeName = preg_replace('/\s+/', '_', str_replace('/', '',  $event_type__name));
 
-                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $check_path . '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
 
-                                $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
-
-                                Storage::move(session($userid  . '_event_doc_file_' . $l)[$k], $newPath);
+                               if(!Storage::exists('public/'.$newPathLink)){
+                                Storage::move(session($userid  . '_event_doc_file_' . $l)[$k],'public/'.$newPathLink);
+                               }
 
                                 EventRequirement::create([
                                     'issued_date' => !empty((array) $dod[$m]) ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
@@ -562,24 +563,29 @@ class EventController extends Controller
 
         if (session($userid . '_event_pic_file')) {
             $ext = session($userid . '_event_ext');
-            $check_path = 'public/' .  $userid . '/event/' .  $event_id . '/photos';
-            $file_count = count(Storage::files($check_path));
+            $check_path =  $userid . '/event/' .  $event_id . '/photos';
+            $file_count = count(Storage::files('public/' . $check_path));
             if ($file_count == 0) {
                 $next_file_no = 1;
             } else {
                 $next_file_no = $file_count + 1;
             }
-            $newPath = 'public/' . $userid . '/event/' . $event_id . '/photos/logo_' . $next_file_no . '_' . $date . '.' . $ext;
-            $newPathLink = $userid . '/event/' . $event_id . '/photos/logo_' . $next_file_no . '_' . $date . '.' . $ext;
 
-            $newThumbPath = 'public/' . $userid . '/event/' . $event_id . '/photos/logo_thumb_' . $next_file_no . '_' . $date . '.' . $ext;
-            $newThumbPathLink = $userid . '/event/' . $event_id . '/photos/logo_thumb_' . $next_file_no . '_' . $date . '.' . $ext;
+            $newPathLink = $check_path .'/logo_' . $next_file_no . '_' . $date . '.' . $ext;
+            $newThumbPathLink = $check_path .'/logo_thumb_' . $next_file_no . '_' . $date . '.' . $ext;
 
-            Storage::move(session($userid . '_event_pic_file'), $newPath);
-            Storage::move(session($userid . '_event_thumb_file'), $newThumbPath);
-
+            if(!Storage::exists('public/'.$newPathLink))
+            {
+                Storage::move(session($userid . '_event_pic_file'), 'public/'.$newPathLink);
+            }
+            if(!Storage::exists('public/'.$newThumbPathLink))
+            {
+                Storage::move(session($userid . '_event_thumb_file'), 'public/'.$newThumbPathLink);
+            }
+            
             session()->forget([$userid . '_event_pic_file', $userid . '_event_ext', $userid . '_event_thumb_file']);
             Event::where('event_id', $event_id)->update(['logo_original' => $newPathLink, 'logo_thumbnail' => $newThumbPathLink]);
+
         }
 
 
@@ -786,10 +792,10 @@ class EventController extends Controller
                             if (Storage::exists(session($userid  . '_event_doc_file_' . $l)[$k])) {
                                 $ext = session($userid . '_event_ext_' . $l)[$k];
 
-                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+                                $check_path = $userid . '/event/' . $event_id . '/' . $l;
 
-                                if (Storage::exists($check_path)) {
-                                    $file_count = count(Storage::files($check_path));
+                                if (Storage::exists('public/' . $check_path)) {
+                                    $file_count = count(Storage::files('public/' . $check_path));
                                     $next_file_no = $file_count + 1;
                                 } else {
                                     $next_file_no = 1;
@@ -802,10 +808,14 @@ class EventController extends Controller
                                 //$eventTypeName = str_replace(' ', '_', EventType::where('event_type_id', $evd['event_type_id'])->first()->name_en);
 
                                 $date = date('d_m_Y_H_i_s');
-                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
-                                $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
+                        
+                                $newPathLink = $check_path. '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
 
-                                Storage::move(session($userid  . '_event_doc_file_' . $l)[$k], $newPath);
+                                if(!Storage::exists('public/'.$newPathLink))
+                                {
+                                    Storage::move(session($userid  . '_event_doc_file_' . $l)[$k], 'public/'.$newPathLink);
+                                }
+
                             } else {
                                 $newPathLink = '';
                             }
@@ -968,7 +978,8 @@ class EventController extends Controller
                         $amend_btn = ($diff <= $amend_grace) ? '<a href="' . route('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Amend </span></a>' : '';
                         return $amend_btn . '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     } else if ($permit->status == 'expired') {
-                        return '<span style="pointer-events:none">Expired</span>';
+                        // return '<a href="' . route('event.eventpics', $permit->event_id) . '" title="Upload Pictures" ><span class="kt-badge kt-badge--info kt-badge--inline kt-margin-r-5">Pictures</span></a>';
+                        return '<span style="pointer-events:none;">Expired</span>';
                     }
                     break;
                 case 'draft':
@@ -1079,9 +1090,9 @@ class EventController extends Controller
 
                                 $ext = session($userid . '_liquor_ext_' . $l)[$k];
 
-                                $check_path = 'public/' . $userid . '/event/temp/liquor/' . $event_liquor_id . '/' . $l;
+                                $check_path =  $userid . '/event/temp/liquor/' . $event_liquor_id . '/' . $l;
 
-                                $file_count = count(Storage::files($check_path));
+                                $file_count = count(Storage::files('public/' .$check_path));
 
                                 if ($file_count == 0) {
                                     $next_file_no = 1;
@@ -1089,9 +1100,7 @@ class EventController extends Controller
                                     $next_file_no = $file_count + 1;
                                 }
 
-                                $newPath = 'public/' . $userid . '/event/temp/liquor/' . $event_liquor_id . '/' . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
-
-                                $newPathLink = $userid . '/event/temp/liquor/' . $event_liquor_id . '/'  . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $check_path . '/' . $next_file_no . '_' . $date . '.' . $ext;
 
                                 EventLiquorTruckRequirement::create([
                                     'issued_date' => !empty((array) $liquorDocDetails[$m]) ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
@@ -1105,7 +1114,10 @@ class EventController extends Controller
                                     'liquor_truck_id' => $event_liquor_id
                                 ]);
 
-                                Storage::move(session($userid  . '_liquor_file_' . $l)[$k], $newPath);
+                                if(!Storage::exists('public/'.$newPathLink)){
+                                    Storage::move(session($userid  . '_liquor_file_' . $l)[$k], 'public/'.$newPathLink);
+                                }
+
                             }
                         }
                         $request->session()->forget([$userid . '_liquor_file_' . $l, $userid . '_liquor_ext_' . $l]);
@@ -1146,6 +1158,11 @@ class EventController extends Controller
             $new_refer_no = sprintf("RNE%04d",  1);
         }
         return $new_refer_no;
+    }
+
+    public function eventpics(Event $event)
+    {
+        return view('permits.event.eventpics', ['event' => $event]);
     }
 
     public function fetch_requirements(Request $request)
@@ -1253,10 +1270,10 @@ class EventController extends Controller
                             if (Storage::exists(session($userid  . '_event_doc_file_' . $l)[$k])) {
                                 $ext = session($userid . '_event_ext_' . $l)[$k];
 
-                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+                                $check_path =  $userid . '/event/' . $event_id . '/' . $l;
 
 
-                                $file_count = count(Storage::files($check_path));
+                                $file_count = count(Storage::files('public/' .$check_path));
                                 if ($file_count == 0) {
                                     $next_file_no =  1;
                                 } else {
@@ -1267,10 +1284,13 @@ class EventController extends Controller
 
                                 $eventTypeName = preg_replace('/\s+/', '_', str_replace('/', '',  $event_type__name));
 
-                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
-                                $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/' . $eventTypeName . '_'  . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $check_path . '/' . $eventTypeName . '_'  . $next_file_no . '_' . $date . '.' . $ext;
 
-                                Storage::move(session($userid  . '_event_doc_file_' . $l)[$k], $newPath);
+                                if(!Storage::exists('public/'.$newPathLink))
+                                {
+                                    Storage::move(session($userid  . '_event_doc_file_' . $l)[$k], 'public/'.$newPathLink);
+                                }
+
                             } else {
                                 $newPathLink = '';
                             }
@@ -1308,7 +1328,9 @@ class EventController extends Controller
                 foreach ($requirements as $req) {
                     $path = $req->path;
                     $newpath = str_replace('temp', $event_id, $path);
-                    Storage::move('public/'.$path, 'public/'.$newpath);
+                    if(!Storage::exists('public/'.$newpath)){
+                        Storage::move('public/'.$path, 'public/'.$newpath);
+                    }
                     EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
                         'path' => $newpath,
                         'event_id' =>  $event_id
@@ -1336,7 +1358,9 @@ class EventController extends Controller
                 foreach ($requirements as $req) {
                     $path = $req->path;
                     $newpath = str_replace('temp', $event_id, $path);
-                    Storage::move('public/'.$path, 'public/'.$newpath);
+                    if(!Storage::exists('public/'.$newpath)){
+                        Storage::move('public/'.$path, 'public/'.$newpath);
+                    }
                     EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
                         'path' => $newpath,
                         'event_id' =>$event_id
@@ -1350,21 +1374,23 @@ class EventController extends Controller
 
         if (session($userid . '_event_pic_file')) {
             $ext = session($userid . '_event_ext');
-            $check_path = 'public/' .  $userid . '/event/' .  $event_id . '/photos';
-            $file_count = count(Storage::files($check_path));
+            $check_path =  $userid . '/event/' .  $event_id . '/photos';
+            $file_count = count(Storage::files('public/' . $check_path));
             if ($file_count == 0) {
                 $next_file_no = 1;
             } else {
                 $next_file_no = $file_count + 1;
             }
-            $newPath = 'public/' . $userid . '/event/' . $event_id . '/photos/logo_' . $next_file_no . '_' . $date . '.' . $ext;
-            $newPathLink = $userid . '/event/' . $event_id . '/photos/logo_' . $next_file_no . '_' . $date . '.' . $ext;
 
-            $newThumbPath = 'public/' . $userid . '/event/' . $event_id . '/photos/logo_thumb_' . $next_file_no . '_' . $date . '.' . $ext;
-            $newThumbPathLink = $userid . '/event/' . $event_id . '/photos/logo_thumb_' . $next_file_no . '_' . $date . '.' . $ext;
+            $newPathLink = $check_path .'/logo_' . $next_file_no . '_' . $date . '.' . $ext;
+            $newThumbPathLink = $check_path.'/logo_thumb_' . $next_file_no . '_' . $date . '.' . $ext;
 
-            Storage::move(session($userid . '_event_pic_file'), $newPath);
-            Storage::move(session($userid . '_event_thumb_file'), $newThumbPath);
+            if(!Storage::exists('public/'.$newPathLink)){
+                Storage::move(session($userid . '_event_pic_file'), 'public/'.$newPathLink);
+            }
+            if(!Storage::exists('public/'.$newThumbPathLink)){
+                Storage::move(session($userid . '_event_thumb_file'), 'public/'.$newThumbPathLink);
+            }
 
             session()->forget([$userid . '_event_pic_file', $userid . '_event_ext', $userid . '_event_thumb_file']);
             Event::where('event_id', $event_id)->update(['logo_original' => $newPathLink, 'logo_thumbnail' => $newThumbPathLink]);
@@ -1487,10 +1513,9 @@ class EventController extends Controller
                             if (Storage::exists(session($userid  . '_event_doc_file_' . $l)[$k])) {
                                 $ext = session($userid . '_event_ext_' . $l)[$k];
 
-                                $check_path = 'public/' . $userid . '/event/' . $event_id . '/' . $l;
+                                $check_path = $userid . '/event/' . $event_id . '/' . $l;
 
-
-                                $file_count = count(Storage::files($check_path));
+                                $file_count = count(Storage::files('public/' . $check_path));
 
                                 if ($file_count == 0) {
                                     $next_file_no = 1;
@@ -1502,10 +1527,12 @@ class EventController extends Controller
 
                                 $eventTypeName = preg_replace('/\s+/', '_', str_replace('/', '',  $event_type__name));
 
-                                $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $l . '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
-                                $newPathLink = $userid . '/event/' . $event_id . '/' . $l . '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $check_path . '/' . $eventTypeName . '_' . $next_file_no . '_' . $date . '.' . $ext;
 
-                                Storage::move(session($userid  . '_event_doc_file_' . $l)[$k], $newPath);
+                                if(!Storage::exists('public/'.$newPathLink))
+                                {
+                                    Storage::move(session($userid  . '_event_doc_file_' . $l)[$k], 'public/'.$newPathLink);
+                                }
 
                                 EventRequirement::create([
                                     'issued_date' => $dod[$m] != null ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
@@ -1528,21 +1555,26 @@ class EventController extends Controller
 
         if (session($userid . '_event_pic_file')) {
             $ext = $userid . '_event_ext';
-            $check_path = 'public/' .  $userid . '/event/' .  $event_id . '/photos';
-            $file_count = count(Storage::files($check_path));
+            $check_path =   $userid . '/event/' .  $event_id . '/photos';
+            $file_count = count(Storage::files('public/' .$check_path));
             if ($file_count == 0) {
                 $next_file_no = 1;
             } else {
                 $next_file_no = $file_count + 1;
             }
-            $newPath = 'public/' . $userid . '/event/' . $event_id . '/photos/logo_' . $next_file_no . '_' . $date . '.' . $ext;
-            $newPathLink = $userid . '/event/' . $event_id . '/photos/logo_' . $next_file_no . '_' . $date . '.' . $ext;
 
-            $newThumbPath = 'public/' . $userid . '/event/' . $event_id . '/photos/logo_thumb_' . $next_file_no . '_' . $date . '.' . $ext;
-            $newThumbPathLink = $userid . '/event/' . $event_id . '/photos/logo_thumb_' . $next_file_no . '_' . $date . '.' . $ext;
+            $newPathLink = $check_path.'/logo_' . $next_file_no . '_' . $date . '.' . $ext;
+            $newThumbPathLink = $check_path.'/logo_thumb_' . $next_file_no . '_' . $date . '.' . $ext;
 
-            Storage::move(session($userid . '_event_pic_file'), $newPath);
-            Storage::move(session($userid . '_event_thumb_file'), $newThumbPath);
+            if(!Storage::exists('public/'.$newPathLink))
+            {
+                Storage::move(session($userid . '_event_pic_file'), 'public/'.$newPathLink);
+            }
+            
+            if(!Storage::exists('public/'.$newThumbPathLink))
+            {
+                Storage::move(session($userid . '_event_thumb_file'), 'public/'.$newThumbPathLink);
+            }
 
             session()->forget([$userid . '_event_pic_file', $userid . '_event_ext', $userid . '_event_thumb_file']);
             Event::where('event_id', $event_id)->update(['logo_original' => $newPathLink, 'logo_thumbnail' => $newThumbPathLink]);
@@ -1749,6 +1781,19 @@ class EventController extends Controller
         }
         session()->push($user_id . '_truck_file_'  . $req_id, $path);
         session()->push($user_id . '_truck_ext_'  . $req_id, $ext);
+        return response()->json(['filepath' => $path, 'ext' => $ext]);
+        // return json_encode($file);
+    }
+
+    public function uploadEventPics(Request $request)
+    {
+        $user_id = Auth::user()->user_id;
+        $date = date('d_m_Y_H_i_s');
+        $eventId = $request->id;
+        $ext = $request->files->get('upload_file')->getClientOriginalExtension();
+        $path  = Storage::putFileAs('public/' . $user_id . '/event/'. $eventId .'/pictures/', $request->files->get('upload_file'), 'picture_' . $date . '.' . $ext);
+        session()->push($user_id . '_event_picture', $path);
+        session()->push($user_id . '_event_picture', $ext);
         return response()->json(['filepath' => $path, 'ext' => $ext]);
         // return json_encode($file);
     }
