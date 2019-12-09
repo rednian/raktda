@@ -555,6 +555,7 @@
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+
       <form name="cancel_form">
         @csrf
         <div class="modal-header">
@@ -605,7 +606,7 @@
      $(document).ready(function () {
 
 
-      
+
       $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){ $('.nav-tabs a[href="#new-request"]').tab('show');  });
       $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });
 
@@ -621,7 +622,7 @@
           window.location.hash = this.hash;
           $('html,body').scrollTop(scrollmem);
         });
-        
+
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var current_tab = $(e.target).attr('href');
 
@@ -697,7 +698,7 @@
           url: '{{ route('admin.event.datatable') }}',
           data: function (d) {
             d.type = $('select#archive-applicant-type').val();
-            var status = $('select#archive-permit-status').val();      
+            var status = $('select#archive-permit-status').val();
             d.status = status != null ? [status] : ['expired', 'rejected', 'cancelled'];
           }
         },
@@ -796,7 +797,7 @@
           {data: 'action'},
         ],
         createdRow: function (row, data, index) {
-          console.log(row);
+
           $('#cancel-modal').on('shown.bs.modal', function () {
             $('#cancel-modal').find('textarea').trigger('focus');
           });
@@ -852,8 +853,8 @@
         }
       });
 
-    
-      
+
+
       //clear fillte button
       $('#active-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); eventActiveTable.draw();});
       //custom pagelength
@@ -869,7 +870,7 @@
       var start = moment().subtract(29, 'days');
       var end = moment();
       var new_selected_date = null;
-      
+
       $('input#processing-applied-date').daterangepicker({
         autoUpdateInput: false,
         buttonClasses: 'btn',
@@ -901,7 +902,7 @@
         ajax: {
           url: '{{ route('admin.event.datatable') }}',
           data: function (d) {
-            var status = $('select#processing-permit-status').val();            
+            var status = $('select#processing-permit-status').val();
              d.status = status != null ? [status] : ['approved-unpaid', 'processing', 'need approval', 'need modification'];
              d.type = $('select#processing-applicant-type').val();
           }
@@ -932,7 +933,7 @@
       eventProcessingTable.page.len($('#processing-length-change').val());
       $('#processing-length-change').change(function(){ eventProcessingTable.page.len( $(this).val() ).draw(); });
       //custom search
-      
+
       var search = $.fn.dataTable.util.throttle(function(v){ eventProcessingTable.search(v).draw(); });
       $('input#search-processing-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
      }
@@ -973,10 +974,10 @@
            url: '{{ route('admin.event.datatable') }}',
            data: function (d) {
 
-            // var status = $('select#new-permit-status').val();            
+            // var status = $('select#new-permit-status').val();
              d.status = ['amended'];
              d.type = $('select#pending-applicant-type').val();
-             d.date = $('#pending-applied-date').val()  ? selected_date : null; 
+             d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
          },
 
@@ -1006,7 +1007,7 @@
        pendingEventTable.page.len($('#pending-length-change').val());
        $('#pending-length-change').change(function(){ pendingEventTable.page.len( $(this).val() ).draw(); });
        //custom search
-       
+
        var search = $.fn.dataTable.util.throttle(function(v){ pendingEventTable.search(v).draw(); });
        $('input#search-pending-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
      }
@@ -1048,10 +1049,10 @@
            url: '{{ route('admin.event.datatable') }}',
            data: function (d) {
 
-            var status = $('select#new-permit-status').val();            
+            var status = $('select#new-permit-status').val();
              d.status =  ['new'];
              d.type = $('select#new-applicant-type').val();
-             d.date = $('#new-applied-date').val()  ? selected_date : null; 
+             d.date = $('#new-applied-date').val()  ? selected_date : null;
            }
          },
 
@@ -1086,7 +1087,7 @@
        newEventTable.page.len($('#new-length-change').val());
        $('#new-length-change').change(function(){ newEventTable.page.len( $(this).val() ).draw(); });
        //custom search
-       
+
        var search = $.fn.dataTable.util.throttle(function(v){ newEventTable.search(v).draw(); });
        $('input#search-new-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
      }
