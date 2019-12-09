@@ -416,6 +416,8 @@
         })
 
         $('#application-type').change(function () {
+
+            console.log('application type')
             var application_type= $('#application-type').val();
             table= $('#event-report').DataTable({
                 dom: 'Bfrtip',
@@ -473,7 +475,7 @@
 
         // Applied Date
         $('#applied-date').change(function () {
-
+            console.log('appled date')
             var applied_date=$('#applied-date').val();
             table= $('#event-report').DataTable({
                 dom: 'Bfrtip',
@@ -506,7 +508,7 @@
                 footer: true,
                 ajax: {
                     url: '{{ route('admin.event_reports.applied_date')}}',
-                    method: 'post',
+                    method: 'get',
                     data:{applied_date:applied_date}
                 },
                 columns: [
