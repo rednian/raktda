@@ -415,9 +415,7 @@
             });
         })
 
-
         $('#application-type').change(function () {
-            console.log('application type')
             var application_type= $('#application-type').val();
             table= $('#event-report').DataTable({
                 dom: 'Bfrtip',
@@ -475,7 +473,7 @@
 
         // Applied Date
         $('#applied-date').change(function () {
-            console.log('appled date')
+
             var applied_date=$('#applied-date').val();
             table= $('#event-report').DataTable({
                 dom: 'Bfrtip',
@@ -521,6 +519,7 @@
                     {data: 'company_id',name:'company_id'},
                     {data: 'issued_date',name:'issued_date'},
                     {data: 'event_type_id',name:'event_type_id'},
+                    {data: 'application_type',name:'application_type'},
                     {data: 'status',name:'status'},
                     {data: 'updated_at',name:'updated_at'},
 
@@ -582,15 +581,10 @@
                     {data: 'application_type',name:'application_type'},
                     {data: 'status',name:'status'},
                     {data: 'updated_at',name:'updated_at'},
-
-
                 ],
             });
 
         })
-
-
-
 </script>
 @endsection
 {{--@include('admin.artist_permit.includes.artist-block-modal')--}}
