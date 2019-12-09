@@ -17,10 +17,15 @@ class Company extends Model
 
         'company_name', 'company_address', 'company_type', 'company_mobile_number', 'company_email', 'comapany_status',
 
-        'name_en', 'name_er', 'logo_original', 'logo_thumbnail', 'type', 'status', 'email', 'phone_number', 'website', 'trade_license', 'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 'reference_number'
+        'name_en', 'name_er', 'logo_original', 'logo_thumbnail', 'type', 'status', 'company_email', 'phone_number', 'website', 'trade_license', 'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 'reference_number'
     ];
 
     protected $dates = ['created_at', 'updated_at', 'application_date', 'issued_date', 'expired_date'];
+
+    public function user()
+    {
+        return $this->hasMany(User::class, 'EmpClientId', 'company_id');
+    }
 
     public function country()
     {

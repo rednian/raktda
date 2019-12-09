@@ -22,11 +22,15 @@ Route::get('/live', function () {
     return Artisan::call('up');
 });
 
-Auth::routes(['register' => false]);
+Route::get('/registration', 'Company\CompanyController@create')->name('company.create')->middleware('signed');
+Route::post('/registration', 'Company\CompanyController@store')->name('company.store');
+Route::get('/registration/is_exist', 'Company\CompanyController@isexist')->name('company.isexist');
+
+Auth::routes(['register' => false, 'verify' => true ]);
 Route::post('/update_language', 'Admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
 
 
-Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
+Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
 
     Route::get('/dashboard', function () {

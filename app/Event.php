@@ -23,6 +23,12 @@ class Event extends Model
             return $q->where('action', $status)->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
         });
     }
+
+    public function transaction()
+    {
+        return $this->hasMany(EventTransaction::class, 'event_id');
+    }
+
     public function liquor()
     {
         return $this->hasOne(EventLiquor::class, 'event_id')->withDefault(['company_name_en'=>null, 'company_name_ar'=>null]);
