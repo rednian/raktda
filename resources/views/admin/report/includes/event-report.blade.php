@@ -28,7 +28,7 @@
             <option value="amended">Amended</option>
             </select>
         </th>
-        <th>RESET</th>
+        <th><button class="btn btn-secondary" id="reset-event-table">RESET</button></th>
     </tr>
 
     <tr>
@@ -41,6 +41,7 @@
         <th>{{ __('Company') }}</th>
         <th>{{ __('Issue Date') }}</th>
         <th>{{ __('Event Type') }}</th>
+        <th>{{ __('Application Type') }}</th>
         <th>{{ __('Status') }}</th>
         <th>{{ __('Updated At') }}</th>
     </tr>

@@ -164,7 +164,6 @@
                     url: '{{ route('admin.artist_permit_reports.search_artist')}}',
                     method: 'post',
                     data:{filter_search:filter_search, search_artist:search_artist}
-
                 },
                 columns: [
                     {data: 'artist_id',name:'artist_id'},
@@ -202,6 +201,7 @@
         $('.submit_button_nationality').click(function(){
             var filter_search = $('#filter_search').val();
             var search_artist = $('#search_by_nationality').val();
+
 
             if(filter_search != '' &&  search_artist != '')
             {
@@ -306,61 +306,114 @@
 
             //Event Report JS
 
-$('#event-report-tab').click(function () {
-    table= $('#event-report').DataTable({
-        dom: 'Bfrtip',
-        "searching":false,
-        buttons: ['pageLength',
-            {
-                extend: 'pdf',
-                title: function () { return 'Event Report'; },
-                customize: function (doc) {
-                    doc.defaultStyle.fontSize = 7;
-                    doc.styles.tableHeader.fontSize = 7;
-                    doc.styles.title.fontSize = 14;
-                    doc.styles.tableHeader={'color': "Grey"};
-                }
-            },
-            {
-                extend: 'excel',
-                title: function () { return 'EVENT REPORT'; },
-            }
-        ],
-        lengthMenu: [
-            [ 10, 25, 50, 1 ],
-            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
-        ],
-        processing: true,
-        language: {
-            processing: '<span>Processing</span>',
-        },
-        serverSide: true,
-        footer: true,
-        ajax: {
-            url: '{{ route('admin.event_reports.event_report')}}',
-            method: 'get',
-            data: function (d) {
+        $('#event-report-tab').click(function () {
+            table= $('#event-report').DataTable({
+                dom: 'Bfrtip',
+                "searching":false,
+                buttons: ['pageLength',
+                    {
+                        extend: 'pdf',
+                        title: function () { return 'Event Report'; },
+                        customize: function (doc) {
+                            doc.defaultStyle.fontSize = 7;
+                            doc.styles.tableHeader.fontSize = 7;
+                            doc.styles.title.fontSize = 14;
+                            doc.styles.tableHeader={'color': "Grey"};
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        title: function () { return 'EVENT REPORT'; },
+                    }
+                ],
+                lengthMenu: [
+                    [ 10, 25, 50, 1 ],
+                    [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+                ],
+                processing: true,
+                language: {
+                    processing: '<span>Processing</span>',
+                },
+                serverSide: true,
+                footer: true,
+                ajax: {
+                    url: '{{ route('admin.event_reports.event_report')}}',
+                    method: 'get',
+                    data: function (d) {
 
-            }
-        },
-        columns: [
-            {data: 'event_id',name:'event_id'},
-            {data: 'reference_number',name:'reference_number'},
-            {data: 'name_en',name:'name_en'},
-            {data: 'description_en',name:'description_en'},
-            {data: 'venue_en',name:'venue_en'},
-            {data: 'address',name:'address'},
-            {data: 'company_id',name:'company_id'},
-            {data: 'issued_date',name:'issued_date'},
-            {data: 'event_type_id',name:'event_type_id'},
-            {data: 'status',name:'status'},
-            {data: 'updated_at',name:'updated_at'},
+                    }
+                },
+                columns: [
+                    {data: 'event_id',name:'event_id'},
+                    {data: 'reference_number',name:'reference_number'},
+                    {data: 'name_en',name:'name_en'},
+                    {data: 'description_en',name:'description_en'},
+                    {data: 'venue_en',name:'venue_en'},
+                    {data: 'address',name:'address'},
+                    {data: 'company_id',name:'company_id'},
+                    {data: 'issued_date',name:'issued_date'},
+                    {data: 'event_type_id',name:'event_type_id'},
+                    {data: 'application_type',name:'application_type'},
+                    {data: 'status',name:'status'},
+                    {data: 'updated_at',name:'updated_at'},
+                ],
+            });
 
+        })
 
-        ],
-    });
+        $('#reset-event-table').click(function () {
+            table= $('#event-report').DataTable({
+                dom: 'Bfrtip',
+                "searching":false,
+                buttons: ['pageLength',
+                    {
+                        extend: 'pdf',
+                        title: function () { return 'Event Report'; },
+                        customize: function (doc) {
+                            doc.defaultStyle.fontSize = 7;
+                            doc.styles.tableHeader.fontSize = 7;
+                            doc.styles.title.fontSize = 14;
+                            doc.styles.tableHeader={'color': "Grey"};
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        title: function () { return 'EVENT REPORT'; },
+                    }
+                ],
+                lengthMenu: [
+                    [ 10, 25, 50, 1 ],
+                    [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+                ],
+                processing: true,
+                language: {
+                    processing: '<span>Processing</span>',
+                },
+                serverSide: true,
+                footer: true,
+                ajax: {
+                    url: '{{ route('admin.event_reports.event_report')}}',
+                    method: 'get',
+                    data: function (d) {
 
-})
+                    }
+                },
+                columns: [
+                    {data: 'event_id',name:'event_id'},
+                    {data: 'reference_number',name:'reference_number'},
+                    {data: 'name_en',name:'name_en'},
+                    {data: 'description_en',name:'description_en'},
+                    {data: 'venue_en',name:'venue_en'},
+                    {data: 'address',name:'address'},
+                    {data: 'company_id',name:'company_id'},
+                    {data: 'issued_date',name:'issued_date'},
+                    {data: 'event_type_id',name:'event_type_id'},
+                    {data: 'application_type',name:'application_type'},
+                    {data: 'status',name:'status'},
+                    {data: 'updated_at',name:'updated_at'},
+                ],
+            });
+        })
 
 
         $('#application-type').change(function () {
@@ -410,6 +463,7 @@ $('#event-report-tab').click(function () {
                     {data: 'company_id',name:'company_id'},
                     {data: 'issued_date',name:'issued_date'},
                     {data: 'event_type_id',name:'event_type_id'},
+                    {data: 'application_type',name:'application_type'},
                     {data: 'status',name:'status'},
                     {data: 'updated_at',name:'updated_at'},
 
@@ -476,11 +530,9 @@ $('#event-report-tab').click(function () {
 
         })
 
-    //status
+        //status
 
         $('#status').change(function () {
-            console.log('status')
-
             var status=$('#status').val();
 
             table= $('#event-report').DataTable({
@@ -527,6 +579,7 @@ $('#event-report-tab').click(function () {
                     {data: 'company_id',name:'company_id'},
                     {data: 'issued_date',name:'issued_date'},
                     {data: 'event_type_id',name:'event_type_id'},
+                    {data: 'application_type',name:'application_type'},
                     {data: 'status',name:'status'},
                     {data: 'updated_at',name:'updated_at'},
 
@@ -535,6 +588,8 @@ $('#event-report-tab').click(function () {
             });
 
         })
+
+
 
 </script>
 @endsection
