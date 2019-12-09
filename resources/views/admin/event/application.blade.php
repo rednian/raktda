@@ -886,7 +886,7 @@
 												  						<div class="form-group form-group kt-hide">
 												  							<div class="kt-checkbox-inline">
 																				<label class="kt-checkbox">
-																					<input type="checkbox" id="site-inspection" name="inpection"> {{ __('Site Inspection required') }}
+																					<input type="checkbox" id="site-inspection" name="inspection"> {{ __('Site Inspection required') }}
 																					<span></span>
 																				</label>
 																			</div>
@@ -1410,7 +1410,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {
