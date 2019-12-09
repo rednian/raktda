@@ -18,6 +18,6 @@ class EventTruck extends Model
 
    public function upload()
    {
-      return $this->hasMany(LiquorTruckRequirement::class, 'liquor_truck_id', 'event_truck_id')->where('type', 'truck');
+      return $this->hasMany(EventLiquorTruckRequirement::class, 'liquor_truck_id','event_truck_id')->whereType('truck');
    }
 }

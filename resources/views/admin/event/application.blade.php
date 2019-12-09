@@ -219,7 +219,7 @@
 																			<div class="col-3">
 																				 <label class="kt-font-dark">{{ __('Date Start') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
-																						<input value="{{ $event->issued_date }}" name="issued_date" readonly="readonly" type="text"
+																						<input value="{{ date('d-F-Y', strtotime($event->issued_date)) }}" name="issued_date" readonly="readonly" type="text"
 																									 class="form-control">
 																						<div class="input-group-append">
 																							 <span class="input-group-text">
@@ -379,7 +379,7 @@
 																					<div class="col-3">
 																						<label class="kt-font-dark">{{ __('Registration Issued Date') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
-																							<input value="{{ $truck->registration_issued_date->format('d-M-Y') }}" name="registration_issued_date" readonly="readonly" type="text"
+																							<input value="{{ date('d-F-Y', strtotime($truck->registration_issued_date)) }}" name="registration_issued_date" readonly="readonly" type="text"
 																											 class="form-control">
 																								<div class="input-group-append">
 																									<span class="input-group-text">
@@ -394,7 +394,7 @@
 																					<div class="col-3">
 																						<label class="kt-font-dark">{{ __('Registration Expired Date') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
-																							<input value="{{ $truck->registration_expired_date->format('d-M-Y') }}" name="registration_expired_date" readonly="readonly" type="text"
+																							<input value="{{ date('d-F-Y', strtotime($truck->registration_expired_date)) }}" name="registration_expired_date" readonly="readonly" type="text"
 																											 class="form-control">
 																								<div class="input-group-append">
 																									<span class="input-group-text">
@@ -754,178 +754,75 @@
 											<div class="col kt-margin-t-20 kt-margin-b-20">
 												@include('admin.event.includes.existing-notification')
 												 @include('admin.artist_permit.includes.comment')
-												 <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-												<div class="card">
-													<div class="card-header" id="headingOne6">
-														<div class="card-title kt-padding-t-5 kt-padding-b-10" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
-															<h6 class="kt-font-transform-u kt-font-dark">Event requirements</h6>
-														</div>
-													</div>
-													<div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6" style="">
-														<div class="card-body">
-															 <table class="table border borderless table-hover">
-																<thead>
-																	<tr>
-																		 <th>#</th>
-																		 <th>{{ __('DOCUMENT NAME') }}</th>
-																		 <th>{{ __('ISSUED DATE') }}</th>
-																		 <th>{{ __('EXPIRED DATE') }}</th>
-																		 <th>{{ __('ACTION') }}</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	@php
-																		$requirements = App\Requirement::whereHas('events', function($q) use ($event){
-																			$q->where('event.event_id', $event->event_id);
-																		})->whereHas('eventRequirement', function($q){
-																			$q->where('requirement_type', 'event');
-																		})->get();
-																	@endphp
-																	<tr>
-																		<td>1</td>
-																		<td><a href="{{ asset('/storage/'.$event->logo_thumbnail) }}" data-fancybox data-caption="Event Logo">Event Logo</a></td>
-																		<td>Not Required</td>
-																		<td>Not Required</td>
-																		<td>
-																			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default"><input type="checkbox" class="step-2" data-step="2"><span></span></label>
-																		</td>
-																	</tr>
-																	@if ($requirements->count() > 0)
-																		@foreach ($requirements as $index => $requirement)
-																			<tr>
-																				<td>{{ ++$index+1 }}</td>
-																				<td>
-																					@php
-																						$name = Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
-																					@endphp
-																					 <a data-fancybox="gallery" href="{{ asset('/storage/'.$requirement->eventRequirement()->first()->path) }}"  data-fancybox data-caption="{{$name}}">{{$name}}</a>
-																					
-																				</td>
-																				<td>{{ $requirement->dates_required ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required' }}</td>
-																				<td>{{ $requirement->dates_required ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required' }}</td>
-																				<td>
-																					<label class="kt-checkbox kt-checkbox--single kt-checkbox--default"><input type="checkbox" class="step-2" data-step="2"><span></span></label>
-																				</td>
-																			</tr>
-																		@endforeach
-																	@endif
-																</tbody>
-															 </table>
-														</div>
-													</div>
-												</div>
-											</div>
-
-
-											<table id="event-table" class="table dataTable border ">
-												<thead>
-													<tr>
-														<th>DOCUMENT NAME</th>
-														<th>NUMBER OF FILE</th>
-														<th>ISSUED DATE</th>
-														<th>EXPIRED DATE</th>
-														<th>FIlE TYPE</th>
-														<th>ACTION</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr data-tt-id="1" class="expanded">
-											    		<td colspan="5"><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> EVENT DOCUMENTS</td>
-											  		</tr>
-											  		@if ($requirements->count() > 0)
-											  			<tr data-tt-id="1-1" data-tt-parent-id="1">
-											    			<td colspan="5"><span class="flaticon-folder kt-font-dark"></span> Uploaded Documents</td>
-											  			</tr>
-											  			@foreach ($requirements as $index => $requirement)
-											  				@php
-											  					$event_requirements = $requirement->eventRequirement()->whereHas('event', function($q) use ($event){ $q->where('event.event_id', $event->event_id);})->get();
-											  				@endphp
-											  				<tr data-tt-id="1-1-{{$index}}" data-tt-parent-id="1-1">
-											    				<td>{{++$index}}. {{ucfirst($requirement->requirement_name)}}{{ fileName('') }}</td>
-											    				<td>{{ $event_requirements->count() }}</td>
-											    				<td>{{$event_requirements->first()->issued_date->year > 1 ? $event_requirements->first()->issued_date->format('d-M-Y') : null}}</td>
-											    				<td>{{$event_requirements->first()->issued_date->year > 1 ? $event_requirements->first()->expired_date->format('d-M-Y') : null}}</td>
-											    				
-											  				</tr>
-											  				@foreach ($event_requirements as $key => $event_requirement)
-										  						<tr data-tt-id="1-1-1-1" data-tt-parent-id="1-1-{{$index}}">
-										  							<td>File {{++$key}} of {{ +$index }}</td>
-										  						</tr>
-											  				@endforeach
-
-											  			@endforeach
-											  			@if ($event->logo_thumbnail)
-											  				<tr data-tt-id="1-1-1" data-tt-parent-id="1-1">
-											    			<td>{{$event->requirements()->count()+1}}. Event Logo</td>
-											    			<td>-</td>
-											    			<td>-</td>
-											    			<td>{{ fileName($event->logo_thumbnail) }}</td>
-											    			<td>-</td>
-											  			</tr>
-											  			@endif
-											  			
-											  		@endif
-											  			
-											  	
-											  	
-
-											  		@if ($event->additionalRequirements()->exists())
-											  		<tr data-tt-id="1-3" data-tt-parent-id="1">
-											    		<td colspan="5"><span class="flaticon-folder kt-font-dark"></span> Additional Documents</td>
-											  		</tr>
-											  		@foreach ($event->additionalRequirements as $index => $requirement)
-											  			<tr data-tt-id="1-3-1" data-tt-parent-id="1-3">
-											    			<td colspan="4">{{ ++$index }}. {{ $requirement->requirement_name }}</td>
-											  			</tr>
-											  			@if ($requirement->eventRequirement()->exists())
-											  				@foreach ($requirement->eventRequirement as $key => $uploaded)
-											  					<tr data-tt-id="1-3-1-1" data-tt-parent-id="1-3-1">
-											    					<td colspan="4">{{ ++$key }}. {{ $requirement->requirement_name }}</td>
-											  					</tr>
-											  				@endforeach
-											  			@endif
-											  		@endforeach
-											  		@endif
-											  		
-											  		<tr data-tt-id="1-2" data-tt-parent-id="1">
-												    		<td colspan="4"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
-											  		</tr>
-											  			<tr data-tt-id="1-2-1" data-tt-parent-id="1-2">
-											    		<td colspan="5"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
-											  		</tr>
-											  		</tr>
-											  			<tr data-tt-id="1-2-1-1" data-tt-parent-id="1-2-1">
-											    		<td colspan="5"><span class="flaticon-folder kt-font-dark"></span> Other Documents</td>
-											  		</tr>
-											  		<tr data-tt-id="3">
-											    		<td><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> TRUCK DOCUMENTS</td>
-											  		</tr>
-											  		<tr data-tt-id="2" data-tt-parent-id="3">
-											    		<td>Child</td>
-											  		</tr>
-											  		<tr data-tt-id="2" data-tt-parent-id="3">
-											    		<td>Child</td>
-											  		</tr>
-											  		<tr data-tt-id="a">
-											    		<td><span style="font-size: large;" class="flaticon-folder kt-font-dark kt-font-boldest"></span> LIQUOR DOCUMENTS</td>
-											  		</tr>
-												</tbody>
-											</table>
-
-												  
-
-												 {{-- <table class="table border borderless table-hover" id="requirement-table">
-													<thead>
-														<tr>
-															 <th></th>
-															 <th>{{ __('TYPE') }}</th>
-															 <th></th>	
-															 <th>{{ __('ISSUED DATE') }}</th>
-															 <th>{{ __('EXPIRED DATE') }}</th>
-															 <th>{{ __('ACTION') }}</th>
-														</tr>
-													</thead>
-												 </table> --}}
+												 @if ($event->truck()->count() > 0)
+												 		<div class="accordion accordion-solid accordion-toggle-plus" id="accordion-truck">
+												 		<div class="card border">
+												 			<div class="card-header" id="heading-truck">
+												 				<div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-truck" aria-expanded="true" aria-controls="collapse-truck">
+												 					<span class="kt-font-dark kt-font-bold">{{__('FOOD TRUCK REQUIREMENTS')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span></span>
+												 				</div>
+												 			</div>
+												 			<div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck">
+												 				<div class="card-body">
+												 					<table class="table table-hover table-borderless table-sm border table-striped" id="truck-table">
+												 						<thead>
+												 							<tr>
+												 								 <th>#</th>
+												 								 <th>{{ __('COMPANY NAME') }}</th>
+												 								 <th>{{ __('FOOD TYPE') }}</th>
+												 								 <th>{{ __('PLATE NUMBER') }}</th>
+												 								 <th>{{ __('ACTION') }}</th>
+												 							</tr>
+												 						</thead>
+												 					 </table>
+												 				</div>
+												 			</div>
+												 		</div>
+												 	</div>
+												 @endif
+											 <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x " role="tablist">
+											 	<li class="nav-item">
+											 		<a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content" role="tab">
+											 			{{__('EVENT REQUIREMENTS')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->eventRequirement()->count()}}</span>
+											 		</a>
+											 	</li>
+											 	@if ($event->liquor()->count() > 0)
+											 		<li class="nav-item">
+											 			<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_3_tab_content" role="tab">
+											 				{{__('LIQUOR REQUIREMENTS')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->liquor()->count()}}</span>
+											 			</a>
+											 		</li>
+											 	@endif
+											 </ul>
+											 <div class="tab-content">
+ 												<div class="tab-pane active" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
+ 													 <table class="table border borderless table-hover table-sm" id="requirement-table">
+ 														<thead>
+ 															<tr>
+ 																 <th>{{ __('REQUIREMENT NAME') }}</th>
+ 																 <th>{{ __('FILES') }}</th>
+ 																 <th>{{ __('ISSUED DATE') }}</th>
+ 																 <th>{{ __('EXPIRED DATE') }}</th>
+ 																 <th>{{ __('ACTION') }}</th>
+ 															</tr>
+ 														</thead>
+ 													 </table>
+ 												</div>
+ 												
+ 												<div class="tab-pane" id="kt_portlet_base_demo_2_3_tab_content" role="tabpanel">
+ 													<table class="table border borderless table-hover table-sm" id="liquor-table">
+ 														<thead>
+ 															<tr>
+ 																 <th>{{ __('REQUIREMENT NAME') }}</th>
+ 																 <th>{{ __('FILES') }}</th>
+ 																 <th>{{ __('ISSUED DATE') }}</th>
+ 																 <th>{{ __('EXPIRED DATE') }}</th>
+ 																 <th>{{ __('ACTION') }}</th>
+ 															</tr>
+ 														</thead>
+ 													 </table>
+ 												</div>
+ 											</div>												 
 											</div>
 									 </section>
 								</div>
@@ -974,7 +871,7 @@
 												  					</div>
 
 												  					<div class="col-md-4">
-												  						<div class="form-group form-group-sm kt-hide">
+												  						<div class="form-group form-group kt-hide">
 												  							<label for="" class="kt-font-dark">{{ __('Approvers') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
 												  										 @if($role = App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
@@ -985,6 +882,14 @@
 												  												@endforeach
 												  										 @endif
 												  							 </select>
+												  						</div>
+												  						<div class="form-group form-group kt-hide">
+												  							<div class="kt-checkbox-inline">
+																				<label class="kt-checkbox">
+																					<input type="checkbox" id="site-inspection" name="inpection"> {{ __('Site Inspection required') }}
+																					<span></span>
+																				</label>
+																			</div>
 												  						</div>
 												  					</div>
 												  				</section>
@@ -1063,6 +968,34 @@
 	</div>
 	 </section>
 	 @include('admin.event.includes.existing-event-modal')
+	 {{-- document modal --}}
+	 <div class="modal fade" id="truck-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="title"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					</button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-borderless table-hover table-striped  border" id="truck-requirement-table">
+						<thead>
+							<tr>
+								 <th>{{ __('REQUIREMENT NAME') }}</th>
+								 <th>{{ __('FILES') }}</th>
+								 <th>{{ __('ISSUED DATE') }}</th>
+								 <th>{{ __('EXPIRED DATE') }}</th>
+								 <th>{{ __('ACTION') }}</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 @stop
 @section('script')
 	 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
@@ -1072,10 +1005,7 @@
 
      $(document).ready(function () {
 
-     	$('#event-table').treetable({
-     		// expandable: true,
-     	});
-     	// $('#event-table').treetable('expandAll');
+ 
 
      	$("#event-table tbody").on("mousedown", "tr", function() {
      	  $(".selected").not(this).removeClass("selected");
@@ -1170,6 +1100,8 @@
        eventDetails();
        wizard();
        requirementTable();
+       liqourRequirement();
+       truck();
      });
 
      
@@ -1231,29 +1163,59 @@
      		   });
      	});
      }
-     
-     function requirementTable(){
-       var dt = $('table#requirement-table').DataTable({
-				 ajax: {
-				   url: '{{ route('admin.event.applicationDatatable',  $event->event_id) }}',
-					  data: function(d){},
-				 },
-				 columnDefs:[
-					 {targets: [1,2, 3], className: 'no-wrap'},
-					 {targets:[1], "visible": false},
-				 ],
-				  "order": [[ 1, 'asc' ]],
-				 columns:[
-				 	 {
-				 	 	orderable:  false,
-				 	 	data: null,
-				 	 	defaultContent: '<span class="la la-angle-double-down text-success"></span>'
-				 	 },
-					 {data: 'type'},
-					 {data: 'name'},
-					 {data: 'issued_date'},
-					 {data: 'expired_date'},
-           {
+
+     function truck(){
+     	$('table#truck-table').DataTable({
+     		ajax: '{{ route('admin.event.truck.datatable', $event->event_id) }}',
+     		columnDefs:[
+     		{targets:[0, 4], className:'no-wrap'},
+     		],
+     		columns: [
+     		{
+     			render: function(data, row, full, meta){
+     				return 'Food Truck No. '+full.DT_RowIndex;
+     			}
+     		},
+     		{data: 'name'},
+     		{data: 'type'},
+     		{data: 'plate_number'},
+     		{data: 'action'},
+     		],
+     		createdRow: function(row, data, index){
+     			$('.btn-document', row).click(function(){
+     				$('#truck-modal').modal('show');
+     				$('#title').html('Food Truck No. '+data.DT_RowIndex);
+     				truckRequirement(data);
+     			});
+     		}
+     	});
+     }
+
+     function truckRequirement(data){
+     	$('table#truck-requirement-table').DataTable({
+     		ajax: '{{ url('/event') }}/'+'{{$event->event_id}}'+'/truck/'+data.event_truck_id+'/datatable',
+     		columnDefs:[
+     			{targets:[1,2,3,4], className:'no-wrap'},
+     			],
+     			"order": [[ 0, 'asc' ]],
+     			  rowGroup: {
+     			  	startRender: function ( rows, group ) {
+     			  	 var row_data = rows.data()[0];
+     			  	 return $('<tr/>').append( '<td >'+group+'</td>' )
+     			  	 						.append( '<td>'+rows.count()+'</td>' )
+     			  	 						.append( '<td>'+row_data.issued_date+'</td>' )
+     			  	                  .append( '<td>'+row_data.expired_date+'</td>' )
+     			  	                  .append( '<td></td>' )
+     			  	                  .append( '<tr/>' );
+     			  	  },
+     			   dataSrc: 'name'
+     			},
+     			columns:[
+  			  	{data: 'files'},
+  			  	{render: function(data){ return null}},
+  			  	{render: function(data){ return null}},
+  			  	{render: function(data){ return null}},
+  			  	{
              render: function (row, type, full, meta) {
                var html = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">';
                html += '<input type="checkbox" class="step-2" data-step="2">';
@@ -1263,73 +1225,91 @@
              }
            }
 				 ],
-				 "drawCallback": function ( settings ) {
-				      var api = this.api();
-				      var rows = api.rows( {page:'current'} ).nodes();
-				      var last=null;
-				 
-				      api.column(1, {page:'current'} ).data().each( function ( group, i ) {
-				          if ( last !== group ) {
-				              $(rows).eq( i ).before(
-				                  '<tr class="group"><td colspan="5">'+group+'</td></tr>'
-				              );
-				 
-				              last = group;
-				          }
-				      } );
-				  },
-				  initComplete: function(){
-				  	// $("#requirement-table").DataTable().rows().every( function () {
-				  	//     var tr = $(this.node());
-				  	//     this.child(format(tr.data('child-value'))).show();
-				  	//     tr.addClass('shown');
-				  	// });
-				  }
+
+     	});
+     }
+
+     function liqourRequirement(){
+     		$('table#liquor-table').DataTable({
+     			ajax: '{{ route('admin.event.liquor.requirement', $event->event_id) }}',
+     			columnDefs:[
+     			{targets:[1,2,3,4], className:'no-wrap'},
+     			],
+  			  "order": [[ 0, 'asc' ]],
+  			    rowGroup: {
+  			    	startRender: function ( rows, group ) {
+  			    	 var row_data = rows.data()[0];
+  			    	 return $('<tr/>').append( '<td >'+group+'</td>' )
+  			    	 						.append( '<td>'+rows.count()+'</td>' )
+  			    	 						.append( '<td>'+row_data.issued_date+'</td>' )
+  			    	                  .append( '<td>'+row_data.expired_date+'</td>' )
+  			    	                  .append( '<td></td>' )
+  			    	                  .append( '<tr/>' );
+  			    	  },
+  			     dataSrc: 'name'
+  			  },
+  			  	columns:[
+  			  	{data: 'files'},
+  			  	{render: function(data){ return null}},
+  			  	{render: function(data){ return null}},
+  			  	{render: function(data){ return null}},
+  			  	{
+             render: function (row, type, full, meta) {
+               var html = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">';
+               html += '<input type="checkbox" class="step-2" data-step="2">';
+               html += '<span></span>';
+               html += '</label>';
+               return html;
+             }
+           }
+				 ],
+     		});
+     }
+     
+     function requirementTable(){
+
+       var dt = $('table#requirement-table').DataTable({
+				 ajax: {
+				   url: '{{ route('admin.event.applicationDatatable',  $event->event_id) }}',
+					  data: function(d){},
+				 },
+				 columnDefs:[
+					 {targets: [1,2, 3, 4], className: 'no-wrap'},
+				 ],
+				  "order": [[ 0, 'asc' ]],
+				  rowGroup: {
+				  	startRender: function ( rows, group ) {
+				  	 var row_data = rows.data()[0];
+				  	 return $('<tr/>').append( '<td >'+group+'</td>' )
+				  	 						.append( '<td>'+rows.count()+'</td>' )
+				  	 						.append( '<td>'+row_data.issued_date+'</td>' )
+				  	                  .append( '<td>'+row_data.expired_date+'</td>' )
+				  	                  .append( '<td></td>' )
+				  	                  .append( '<tr/>' );
+				  	  },
+				   dataSrc: 'name'
+				},
+				 columns:[
+					 {data: 'files'},
+					 {render: function(data){ return null}},
+					 {render: function(data){ return null}},
+					 {render: function(data){ return null}},
+           {
+             render: function (row, type, full, meta) {
+               var html = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">';
+               html += '<input type="checkbox" class="step-2" data-step="2">';
+               html += '<span></span>';
+               html += '</label>';
+               return html;
+             }
+           }
+				 ],				
 			 });
 
-        var detailRows = [];
-
-     
-
-       // $('#requirement-table tbody tr td .la-angle-double-down').click();
-
-        // $('#requirement-table tbody').on( 'click', 'tr td .la-angle-double-down', function () {
-        //        var tr = $(this).closest('tr');
-        //        var row = dt.row( tr );
-        //        var idx = $.inArray( tr.attr('id'), detailRows );
-        
-        //        if ( row.child.isShown() ) {
-        //            tr.removeClass( 'details' );
-        //            row.child.hide();
-        
-        //            // Remove from the 'open' array
-        //            detailRows.splice( idx, 1 );
-        //        }
-        //        else {
-        //            tr.addClass( 'details' );
-        //            row.child( format( row.data() ) ).show();
-        
-        //            // Add to the 'open' array
-        //            if ( idx === -1 ) {
-        //                detailRows.push( tr.attr('id') );
-        //            }
-        //        }
-        //    } );
-
-        // On each draw, loop over the `detailRows` array and show any child rows
-           dt.on( 'draw', function () {
-               $.each( detailRows, function ( i, id ) {
-                   $('#'+id+' td .la-angle-double-down').trigger( 'click' );
-               } );
-           } );
+   
 		 }
 
-		 function format ( d ) {
-		     return 'Full name:<br>'+
-		         'Salary: <br>'+
-		         'The child row can contain any data you wish, including links, images, inner tables etc.';
-		 }
-     
+	
  
 
      function eventDetails() {
@@ -1349,6 +1329,16 @@
      	});
 
      	var approver = $('select#select-approver');
+
+     	approver.change(function(){
+     		var val = $(this).val();
+     		if(val.indexOf('4') > -1){
+     			$('input#site-inspection').parents('.form-group').removeClass('kt-hide');
+     		}	
+     		else{
+     			$('input#site-inspection').parents('.form-group').addClass('kt-hide');	
+     		}
+     	});
 
      	approver.select2({
 		 minimumResultsForSearch: 'Infinity',
@@ -1397,7 +1387,7 @@
  
      }
 
-     function updateLock() {
+    function updateLock() {
        setInterval(function () {
          $.ajax({
            url: '{{ route('admin.event.lock', $event->event_id) }}',
@@ -1432,7 +1422,7 @@
 	 		});
       }
 		if(wizardObj.currentStep == 2){
-			$('input[type=checkbox].step-2').each(function () {
+			$('input[type=checkbox][data-step=step-2]').each(function () {
 				if(!$(this).is(':checked')){
 					$(this).parents('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--danger');
 					wizardObj.stop();

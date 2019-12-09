@@ -96,4 +96,8 @@ class Permit extends Model
             ->where('permit.permit_status', $status)
             ->groupBy('artist_permit.permit_id');
     }
+
+    public function getPermitApproval(){
+        return $this->hasMany(Approval::class, 'inspection_id', 'permit_id')->where('type', 'artist');
+    }
 }

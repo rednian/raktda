@@ -9,16 +9,17 @@
                @else
                <img class="img img-responsive" alt="Logo" src="{{ asset('/img/logo-ar.svg') }}" />
             @endif
-              
+
            </a>
        </div>
    </div>
-
    <!-- end:: Aside -->
    <!-- begin:: Aside Menu -->
    <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
        <div id="kt_aside_menu"class="kt-aside-menu "data-ktmenu-vertical="1" data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500" >
+            
            <ul class="kt-menu__nav ">
+               @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
                <li class="kt-menu__item {{ Request::is('dashboard*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.dashboard') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Dashboard') }}</span>
@@ -34,7 +35,7 @@
                        <span class="kt-menu__link-text">{{ __('Business License') }}</span>
                    </a>
                </li> --}}
-               <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
+               <li class="kt-menu__item {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.company.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Company') }}</span>
                    </a>
@@ -49,7 +50,7 @@
                        <span class="kt-menu__link-text">{{ __('Inspection') }}</span>
                    </a>
                </li>
-
+               @endif
                <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('permit*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.artist_permit.index') }}" class="kt-menu__link">
                        <span class="kt-menu__link-text">{{ __('Artist Permit') }}</span>
@@ -60,8 +61,9 @@
                        <span class="kt-menu__link-text">{{ __('Event Permit') }}</span>
                    </a>
                </li>
-               <li class="kt-menu__item">
-                   <a href="javascript:void(0)" class="kt-menu__link ">
+               @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
+               <li class="kt-menu__item {{ Request::is('artist_reports*') ? 'kt-menu__item--active': '' }}">
+                   <a href="{{ route('admin.artist_permit_reports.reports') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Reports') }}</span>
                    </a>
                </li>
@@ -76,6 +78,7 @@
                        <span class="kt-menu__link-text kt-font-transform-u">{{ __('System Settings') }}</span>
                    </a>
                </li>
+               @endif
            </ul>
        </div>
    </div>

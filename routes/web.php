@@ -60,6 +60,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('/event/{event}/addition-requirement-datatable','Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
     Route::get('/event/{event}/requirement-datatable','Admin\EventController@uploadedRequiremet')->name('admin.event.uploadedRequiremet');
     Route::get('/event/{event}/comment-datatable','Admin\EventController@commentDatatable')->name('admin.event.comment');
+    Route::get('/event/{event}/liquor-datatable','Admin\EventController@liquorRequirementDatatable')->name('admin.event.liquor.requirement');
+    Route::get('/event/{event}/truck-datatable','Admin\EventController@truckDatatable')->name('admin.event.truck.datatable');
+    Route::get('/event/{event}/truck/{eventtruck}/datatable','Admin\EventController@truckRequirementDatatable')->name('admin.event.truck.requirement');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist
@@ -82,9 +85,9 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     //---------------------------------------------------------------------------------------------------------------
     // Artist Permit
     //---------------------------------------------------------------------------------------------------------------
-    
+
     Route::get('/artist_permit/search', 'Admin\ArtistPermitController@search')->name('admin.artist_permit.search');
-    
+
     Route::get('/artist_permit/{permit}/history', 'Admin\ArtistPermitController@permitHistory')
         ->name('admin.artist_permit.history');
 
@@ -102,7 +105,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
     Route::get('/artist_permit/{permit}/application/{artistpermit}/documentDatatable', 'Admin\ArtistPermitController@artistChecklistDocument')
         ->name('admin.artist_permit.document');
 
-    Route::get('/arist_permit/{permit}/checkactivepermit/{artist}', 'Admin\ArtistPermitController@checkActivePermit')
+    Route::get('/artist_permit/{permit}/checkactivepermit/{artist}', 'Admin\ArtistPermitController@checkActivePermit')
         ->name('admin.artist_permit.checkactivepermit');
 
     Route::post('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@submitApplication')
@@ -118,7 +121,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         ->name('admin.artist_permit.checkApplication');
 
     Route::get('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@applicationDetails')
-        ->name('admin.artist_permit.applicationdetails');
+        ->name('admin.artist_permit.applicationdetails')->middleware('lock_artist_permit');
 
     Route::get('/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')
         ->name('admin.artist_permit.datatable');
@@ -126,6 +129,34 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         ->name('admin.artist_permit.show');
     Route::get('/artist_permit', 'Admin\ArtistPermitController@index')
         ->name('admin.artist_permit.index');
+
+
+    //ADDED BY DON
+    Route::post('/artist_permit/lock/{permit}', function(Illuminate\Http\Request $request, App\Permit $permit){
+        $permit->update([
+            'lock' => Carbon\Carbon::now(),
+            'lock_user_id' => $request->user()->user_id
+        ]);
+    })->name('artist_permit.lock');
+
+
+    //Reports
+    Route::get('/artist_reports', 'Admin\ReportController@reports')
+        ->name('admin.artist_permit_reports.reports');
+
+        Route::get('/artist_permit_reports', 'Admin\ReportController@artist_reports')
+        ->name('admin.artist_permit_reports.artist_reports');
+
+
+    Route::post('/artist_reports/search_artist', 'Admin\ReportController@search_artist')
+        ->name('admin.artist_permit_reports.search_artist');
+
+    Route::post('/artist_reports/search_artist_select', 'Admin\ReportController@onChangeSelect')
+        ->name('admin.artist_permit_reports.search_artist_select');
+
+
+
+
 
     //---------------------------------------------------------------------------------------------------------------
     // User Management
@@ -175,7 +206,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         Route::get('profession/isexist', 'Admin\ProfessionController@isexist')->name('settings.profession.isexist');
 
         Route::get('profession/datatable', 'Admin\ProfessionController@datatable')->name('settings.profession.datatable');
-        
+
         Route::get('profession/create', 'Admin\ProfessionController@create')->name('settings.profession.create');
         Route::post('profession/store', 'Admin\ProfessionController@store')->name('settings.profession.store');
 

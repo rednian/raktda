@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-
     protected $connection = 'mysql';
     protected $table = 'smartrak_smartgov.event';
     protected $primaryKey = 'event_id';

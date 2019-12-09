@@ -10,4 +10,10 @@ class EventTypeRequirement extends Model
     protected $primaryKey = 'event_type_requirement_id';
     protected $fillable = ['event_type_id', 'requirement_id', 'is_mandatory'];
 
+     public function requirement()
+    {
+      return $this->belongsTo(Requirement::class, 'requirement_id');
+    }
+
+   
 }

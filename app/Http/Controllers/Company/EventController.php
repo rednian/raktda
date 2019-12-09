@@ -44,8 +44,6 @@ class EventController extends Controller
 
     public function create()
     {
-        $last_page = URL::previous();
-        // dd($last_page);
         EventLiquor::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
         EventTruck::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
         $data['event_types'] = EventType::all()->sortBy('name_en');

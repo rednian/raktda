@@ -61,7 +61,7 @@
 			<th>{{ __('ARTIST NAME') }}</th>
 			<th>{{ __('PROFESSION') }}</th>
 			<th>{{ __('NATIONALITY') }}</th>
-			<th>{{ __('MOBILE NUMBER') }}}</th>
+			<th>{{ __('MOBILE NUMBER') }}</th>
 			<th>{{ __('ACTIVE PERMIT') }}</th>
 	 </tr>
 	 </thead>

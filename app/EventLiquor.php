@@ -22,6 +22,6 @@ class EventLiquor extends Model
 
    public function upload()
    {
-      return $this->hasMany(LiquorTruckRequirement::class, 'liquor_truck_id','event_liquor_id')->where('type', 'liquor');
+      return $this->hasMany(EventLiquorTruckRequirement::class, 'liquor_truck_id','event_liquor_id')->where('type', 'liquor');
    }
 }
