@@ -22,21 +22,8 @@ class ArtistPermitController extends Controller
 {
     public function index()
     {
-      // $permit = Permit::whereNotIn('permit_status', ['expired', 'active', 'rejected', 'draft', 'cancelled', 'unprocessed'])
-      //       ->whereDate('issued_date', '<=', Carbon::now()->format('Y-m-d'))
-      //       ->update(['permit_status'=> 'unprocessed']);
+      $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
 
-          // dd($permit);
-      
-      $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<=',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
-      // dd($permit);
-      
-      $active = Permit::has('artist')->whereHas('comment', function($q){
-        $q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()]);
-      })->whereIn('permit_status', ['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count();
-
-      // dd($active);
-    
 	    return view('admin.artist_permit.index', [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
@@ -44,7 +31,10 @@ class ArtistPermitController extends Controller
             'countries'=> Country::has('artistpermit')->get(),
             'new_request'=> Permit::has('artist')->where('permit_status', 'new')->count(),
             'pending_request'=> Permit::has('artist')->where('permit_status', 'modified')->count(),
-            'active_permit'=> $active
+            'approved_permit'=> Permit::lastMonth(['active'])->count(),
+            'rejected_permit'=> Permit::lastMonth(['rejected'])->count(),
+            'cancelled_permit'=> Permit::lastMonth(['cancelled'])->count(),
+            'active_permit'=> Permit::lastMonth(['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count()
         ]);
     }
 
@@ -219,12 +209,21 @@ class ArtistPermitController extends Controller
       })
       ->where('artist_status', 'active')
       ->exists();
-
+        $permit_count = Artist::where('artist_id', $artistpermit->artist_id)->whereHas('permit', function($q){
+          $q->where('permit_status', 'active');
+        })->get();
+       
         return view('admin.artist_permit.check-application', [
         	'page_title'=>'check artist details',
           'permit'=>$permit,
           'existing_permit'=>$existing_permit,
-          'artist_permit'=>$artistpermit
+          'artist_permit'=>$artistpermit,
+          'is_local'=>$artistpermit->isLocal()->exists(),
+          'is_europe'=>$artistpermit->isEurope()->exists(),
+          'status'=>$artistpermit->artist->artist_status,
+          'age'=>$artistpermit->age,
+          'permit_count'=>$permit_count->count(),
+          'reason'=> $artistpermit->artist->artist_status != 'active' ? $artistpermit->artist->action->first()->remarks : null
         ]);
     }
 
@@ -467,43 +466,28 @@ class ArtistPermitController extends Controller
         $q->whereHas('approval.approver', function($q) use($request){
           $q->where('user_id', $request->user()->user_id);
         });
-      })
-      ->orderBy('updated_at', 'DESC')->get();
+      })->latest();
 
-         return Datatables::of($permit)
-	         ->addColumn('artist_number', function($permit){
-		         $total = $permit->artistpermit()->count();
-		         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
-             if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
-	         	return 'Checked '.$check.' of '.$total;
-	         })
-	         ->editColumn('permit_status', function($permit){
-	         	return permitStatus($permit->permit_status);
-	         })
-	         ->editColumn('reference_number', function($permit){
-                  return '<span class="kt-font-bold">'.$permit->reference_number.'</span>';
-                 })
-	         ->addColumn('applied_date', function($permit){
-	         	if(!$permit->created_at) return null;
-	         	return $permit->created_at->format('d-M-Y h:m a');
-	         })
-	         ->editColumn('permit_start', function($permit){
-	         	if(!$permit->issued_date) return null;
-	         	return $permit->issued_date->format('d-M-Y');
-	         })
-	         ->addColumn('company_name', function($permit){
-	         	if($permit->company){
-	         		return ucwords($permit->company->company_name);
-	         	}
-	         	return false;
-	         })
-	         ->addColumn('trade_license_number', function($permit){
-	         	if($permit->company){
-	         		return $permit->company->company_trade_license;
-	         	}
-	         	return false;
-	         })
-	         ->addColumn('company_type', function($permit){
+      $table = Datatables::of($permit)
+      ->addColumn('artist_number', function($permit){
+        $total = $permit->artistpermit()->count();  
+        $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
+        if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
+        return 'Checked '.$check.' of '.$total;
+      })
+      ->editColumn('permit_status', function($permit){ return permitStatus($permit->permit_status); })
+	    ->editColumn('reference_number', function($permit){ return '<span class="kt-font-bold">'.$permit->reference_number.'</span>'; })
+	    ->addColumn('applied_date', function($permit){
+        return '<span class="text-underline" title="'.$permit->created_at->format('l d-M-Y h:i A').'">'.humanDate($permit->created_at).'</span>';
+      })
+      ->editColumn('permit_start', function($permit){
+        if(!$permit->issued_date) return null;
+        return $permit->issued_date->format('d-M-Y');
+      })
+      ->addColumn('company_name', function($permit) use ($request){
+          return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : $permit->owner->company->name_ar;
+      })
+      ->addColumn('company_type', function($permit){
             return;
 		         $class_name = 'default';
 		         if(strtolower($permit->company->company_type) == 'private'){$class_name = 'success'; }
@@ -525,9 +509,14 @@ class ArtistPermitController extends Controller
            ->addColumn('inspection_url', function($permit){
             return route('tasks.artist_permit.details', $permit->permit_id);
            })
-	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action'])
-	          // ->setTotalRecords($totalRecords)
+	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action' , 'applied_date'])
 	         ->make(true);
+           $table = $table->getData(true);
+           $table['new_count'] = Permit::has('artist')->where('permit_status', 'new')->count();
+           $table['pending_count'] = Permit::has('artist')->where('permit_status', 'modified')->count();
+           $table['cancelled_count'] = Permit::has('artist')->where('permit_status', 'cancelled')->count();
+
+           return response()->json($table);
      }
     }
 

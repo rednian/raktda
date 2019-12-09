@@ -108,6 +108,7 @@
                 </div>
             </section>
             <div class="requirements"></div>
+            <div class="required_requirements"></div>
             <input type="hidden" name="submit_type">
         	</form>
 
@@ -131,6 +132,7 @@
 									 <tr>
 									 	<th></th>
 										<th>{{ __('REQUIREMENT') }}</th>
+                                        <th>{{ __('IS REQUIRED') }}</th>
 										<th>{{ __('DESCRIPTION') }}</th>
 										<th>{{ __('DATE REQUIRED') }}</th>
 										<th>{{ __('VALIDITY (months)') }}</th>
@@ -148,6 +150,8 @@
 	<script>
 	
 	var tblRequirement;
+    var requiredRequirements = {{ json_encode($required) }};
+    var requirementSelected = {{ json_encode($selected) }};
 
     $(document).ready(function () {
 
@@ -210,8 +214,34 @@
                 );
             });
 
+            $.each(requiredRequirements, function(index, requirement_id){
+                $('#formAddEventType .required_requirements').append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'required[]')
+                        .val(requirement_id)
+                );
+            });
+
      		$('#formAddEventType').trigger('submit');
      	});
+
+        //IS REQUIRED REQUIREMENT
+        $(document).on('change', '.requirement_is_required', function(e){
+            e.stopPropagation();
+
+            var id = $(this).data('id');
+
+            if($(this).is(':checked')){
+                requiredRequirements.push(id);
+            }
+            else{
+                var index = requiredRequirements.indexOf(id);
+                if (index > -1) {
+                    requiredRequirements.splice(index, 1);
+                }
+            }
+        });
     });
 
     function loadRequirements(){
@@ -229,11 +259,11 @@
                     targets:0,
                     orderable: false,
                     checkboxes: {
-                        selectRow: true
+                        selectRow: false
                     },
                     className: 'no-wrap', sortable: false
                 },
-                {targets:  [2], className: 'no-wrap', sortable: false},
+                {targets:  [2,3], className: 'no-wrap', sortable: false},
            ],
            select: {
              	style: 'multi'
@@ -241,6 +271,7 @@
            columns: [
            	   { data: 'requirement_id', name: 'requirement_id'},
                { data: 'requirement_name', name: 'requirement_name'},
+               { data: 'is_required', name: 'is_required'},
                { data: 'requirement_description', name: 'requirement_description'},
                { data: 'dates_required', name: 'dates_required'},
                { data: 'validity', name: 'validity'},
@@ -250,6 +281,40 @@
 	        		var cell = tblRequirement.cell($('.dt-checkboxes', row).closest('td'));
 			      	cell.checkboxes.select(true);
 	        	}
+
+                if( requirementSelected.includes( data.requirement_id ) ){
+                    $('.requirement_is_required', row).attr('disabled', false);
+                    $('.requirement_is_required', row).prop('disabled', false);
+                }
+
+                //ON CHANGE CHECKBOX
+                $('.dt-checkboxes', row).change(function(){
+                    if($(this).is(':checked')){
+                        requirementSelected.push(data.requirement_id);
+                        $('.requirement_is_required', row).attr('disabled', false);
+                    }
+                    else{
+                        $('.requirement_is_required', row).attr('disabled', true);
+                        $('.requirement_is_required', row).prop('checked', false);
+                        $('.requirement_is_required', row).attr('checked', false);
+
+                        var index = requiredRequirements.indexOf(parseInt(data.requirement_id));
+                        var index2 = requirementSelected.indexOf(parseInt(data.requirement_id));
+
+                        if (index > -1) {
+                            requiredRequirements.splice(index, 1);
+                        }
+                        if (index2 > -1) {
+                            requirementSelected.splice(index, 1);
+                        }
+                    }
+                });
+
+                if(requiredRequirements.includes(parseInt(data.requirement_id))){
+                    $('.requirement_is_required', row).attr('checked', true);
+                }else{
+                    $('.requirement_is_required', row).attr('checked', false);
+                }
            }
        });
     }

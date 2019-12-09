@@ -17,11 +17,11 @@ class EventLiquor extends Model
 
    public function emirate()
    {
-      return $this->hasMany(Emirates::class, 'id');
+     return $this->hasMany(Emirates::class, 'id')->withDefault(['name_en'=>null, 'name_ar'=>null]);
    }
 
    public function upload()
    {
-      return $this->hasMany(LiquorTruckRequirement::class, 'liquor_truck_id', 'event_liquor_id')->where('type', 'liquor');
+      return $this->hasMany(LiquorTruckRequirement::class, 'liquor_truck_id','event_liquor_id')->where('type', 'liquor');
    }
 }

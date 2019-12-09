@@ -12,7 +12,7 @@ class ProfessionController extends Controller
 	public function datatable()
 	{
 		$user = Auth::user();
-		$professions = Profession::orderBy('name_en')->get();
+		$professions = Profession::orderBy('name_en');
 
 		return DataTables::of($professions)
 		->addColumn('profession_name', function($args) use ($user){

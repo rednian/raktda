@@ -21,6 +21,8 @@
   <link href="{{ asset('assets/vendors/custom/flag-icon-css-master/css/flag-icon.min.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/general/socicon/css/socicon.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/custom/vendors/line-awesome/css/line-awesome.css') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.css') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.theme.default.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/custom/vendors/flaticon/flaticon.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/custom/vendors/flaticon2/flaticon.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
@@ -93,6 +95,7 @@
 <script src="{{ asset('/js/plugins.js') }}"></script>
 <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/custom-pages.js') }}"></script>
+<script src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}"></script>
 <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
 {{-- <script src="{{ asset('/assets/vendors/custom/datatables/dataTables.colVis.js') }}"></script> --}}
 <script type="text/javascript">

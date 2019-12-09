@@ -10,6 +10,7 @@ class EventTruck extends Model
    protected $primaryKey = 'event_truck_id';
    protected $fillable = ['company_name_en', 'company_name_ar', 'plate_number', 'food_type', 'registration_issued_date', 'registration_expired_date', 'event_id', 'status', 'created_by'];
 
+
    public function event()
    {
       return $this->belongsTo(Event::class, 'event_id');

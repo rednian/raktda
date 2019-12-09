@@ -27,16 +27,16 @@
                         <span class="kt-menu__link-text">{{ __('Dashboard')}}</span>
                     </a>
                 </li>
-                <li class="kt-menu__item">
+                {{-- <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{ __('Business License')}}</span>
                     </a>
-                </li>
-                <li class="kt-menu__item">
+                </li> --}}
+                {{-- <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{__('Business Name')}}</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{__('Classification')}}</span>
