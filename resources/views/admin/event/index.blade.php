@@ -2,410 +2,452 @@
 @section('style')
 <link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
 <style>
-  .fc-unthemed .fc-event .fc-title, .fc-unthemed .fc-event-dot .fc-title { color: #fff; }
-  .fc-unthemed .fc-event .fc-time, .fc-unthemed .fc-event-dot .fc-time { color: #fff; }
-   .widget-toolbar{ cursor: pointer; }
+  .fc-unthemed .fc-event .fc-title,
+  .fc-unthemed .fc-event-dot .fc-title {
+    color: #fff;
+  }
+
+  .fc-unthemed .fc-event .fc-time,
+  .fc-unthemed .fc-event-dot .fc-time {
+    color: #fff;
+  }
+
+  .widget-toolbar {
+    cursor: pointer;
+  }
 </style>
 @stop
 @section('content')
 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
-    <div class="kt-portlet__body">
-      <section class="row">
-        <div class="col-2">
-          <div class="kt-section kt-section--space-sm widget-toolbar">
-            <div class="kt-widget24 kt-widget24--solid">
-              <div class="kt-widget24__details">
-                <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('New') }}</a>
-                  <small class="kt-widget24__desc">{{ __('All Request') }}</small>
-                </div>
-                <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
+  <div class="kt-portlet__body">
+    <section class="row">
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('New') }}</a>
+                <small class="kt-widget24__desc">{{ __('All Request') }}</small>
               </div>
+              <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
             </div>
           </div>
         </div>
-        <div class="col-2">
-          <div class="kt-section kt-section--space-sm widget-toolbar">
-            <div class="kt-widget24 kt-widget24--solid">
-              <div class="kt-widget24__details">
-                <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending ') }}</a>
-                  <small class="kt-widget24__desc">{{ __('All Request') }}</small>
-                </div>
-                <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending ') }}</a>
+                <small class="kt-widget24__desc">{{ __('All Request') }}</small>
               </div>
+              <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
             </div>
           </div>
         </div>
-        <div class="col-2">
-          <div class="kt-section kt-section--space-sm widget-toolbar">
-            <div class="kt-widget24 kt-widget24--solid">
-              <div class="kt-widget24__details">
-                <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Cancelled ') }}</a>
-                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
-                </div>
-                <span id="cancelled-count" class="kt-widget24__stats kt-font-default">{{ $cancelled_permit }}</span>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Cancelled ') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
+              <span id="cancelled-count" class="kt-widget24__stats kt-font-default">{{ $cancelled_permit }}</span>
             </div>
           </div>
         </div>
-        <div class="col-2">
-          <div class="kt-section kt-section--space-sm widget-toolbar">
-            <div class="kt-widget24 kt-widget24--solid">
-              <div class="kt-widget24__details">
-                <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved ') }}</a>
-                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
-                </div>
-                <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved ') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
+              <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
             </div>
           </div>
         </div>
-        <div class="col-2">
-          <div class="kt-section kt-section--space-sm widget-toolbar">
-            <div class="kt-widget24 kt-widget24--solid">
-              <div class="kt-widget24__details">
-                <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Rejected ') }}</a>
-                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
-                </div>
-                <span class="kt-widget24__stats kt-font-default">{{ $rejected_permit }}</span>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Rejected ') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
+              <span class="kt-widget24__stats kt-font-default">{{ $rejected_permit }}</span>
             </div>
           </div>
         </div>
-        <div class="col-2">
-          <div class="kt-section kt-section--space-sm ">
-            <div class="kt-widget24 kt-widget24--solid">
-              <div class="kt-widget24__details">
-                <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Action Taken') }}</a>
-                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
-                </div>
-                <span class="kt-widget24__stats kt-font-default">{{ $active_request }}</span>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm ">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Action Taken') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
+              <span class="kt-widget24__stats kt-font-default">{{ $active_request }}</span>
             </div>
           </div>
         </div>
-      </section>
-        <section class="row">
-          <div class="col-md-12">
-             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="artist-permit-nav">
-                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Event Requests') }}</a></li>
-                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Requests') }}</a></li>
-                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#processing-permit">{{ __('Processing Events') }}</a></li>
-                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Active Events') }}</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('Archive Events') }}</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#calendar">{{ __('All Events Calendar') }}</a></li>
-             </ul>
+      </div>
+    </section>
+    <section class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
+          role="tablist" id="artist-permit-nav">
+          <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
+              data-target="#new-request">{{ __('New Event Requests') }}</a></li>
+          <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#pending-request"
+              data-target="#pending-request">{{ __('Pending Requests') }}</a></li>
+          <li class="nav-item"><a class="nav-link " data-toggle="tab"
+              href="#processing-permit">{{ __('Processing Events') }}</a></li>
+          <li class="nav-item"><a class="nav-link " data-toggle="tab"
+              href="#active-permit">{{ __('Active Events') }}</a></li>
+          <li class="nav-item"><a class="nav-link" data-toggle="tab"
+              href="#archive-permit">{{ __('Archive Events') }}</a></li>
+          <li class="nav-item"><a class="nav-link" data-toggle="tab"
+              href="#calendar">{{ __('All Events Calendar') }}</a></li>
+        </ul>
+      </div>
+    </section>
+    <div class="tab-content">
+      <div class="tab-pane show fade active" id="new-request" role="tabpanel">
+        <section class="form-row">
+          <div class="col-1">
+            <div>
+              <select name="length_change" id="new-length-change"
+                class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
+                <option value='10'>10</option>
+                <option value='25'>25</option>
+                <option value='50'>50</option>
+                <option value='75'>75</option>
+                <option value='100'>100</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-8">
+            <form class="form-row">
+              <div class="col-4">
+                <div class="input-group input-group-sm">
+                  <div class="kt-input-icon kt-input-icon--right">
+                    <input autocomplete="off" type="text" class="form-control form-control-sm"
+                      aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}"
+                      id="new-applied-date">
+                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                      <span><i class="la la-calendar"></i></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <select name="" id="new-applicant-type"
+                  class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()">
+                  <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
+                  <option value="private">{{ __('Private') }}</option>
+                  <option value="government">{{ __('Government') }}</option>
+                  <option value="individual">{{ __('Individual') }}</option>
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="" id="new-permit-status"
+                  class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
+                  <option disabled selected>{{ __('STATUS') }}</option>
+                  <option value="new">{{ __('New') }}</option>
+                  <option value="amended">{{ __('Amended') }}</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">{{ __('RESET') }}</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group form-group-sm">
+              <div class="kt-input-icon kt-input-icon--right">
+                <input autocomplete="off" type="search" class="form-control form-control-sm"
+                  placeholder="{{ __('Search') }}..." id="search-new-request">
+                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                  <span><i class="la la-search"></i></span>
+                </span>
+              </div>
+            </div>
           </div>
         </section>
-				 <div class="tab-content">
-						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
-               <section class="form-row">
-                <div class="col-1">
-                  <div>
-                    <select name="length_change" id="new-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
-                        <option value='10'>10</option>
-                        <option value='25'>25</option>
-                        <option value='50'>50</option>
-                        <option value='75'>75</option>
-                        <option value='100'>100</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-8">
-                  <form class="form-row">
-                    <div class="col-4">
-                        <div class="input-group input-group-sm">
-                            <div class="kt-input-icon kt-input-icon--right">
-                              <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="new-applied-date" >
-                              <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                <span><i class="la la-calendar"></i></span>
-                              </span>
-                            </div>
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <select name="" id="new-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()" >
-                        <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
-                        <option value="private">{{ __('Private') }}</option>
-                        <option value="government">{{ __('Government') }}</option>
-                        <option value="individual">{{ __('Individual') }}</option>
-                      </select>
-                    </div>
-                    <div class="col-3">
-                      <select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
-                        <option disabled selected>{{ __('STATUS') }}</option>
-                        <option value="new">{{ __('New') }}</option>
-                        <option value="amended">{{ __('Amended') }}</option>
-                      </select>
-                    </div>
-                    <div class="col-2">
-                      <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">{{ __('RESET') }}</button>
-                    </div>
-                  </form>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group form-group-sm">
-                    <div class="kt-input-icon kt-input-icon--right">
-                      <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-new-request">
-                      <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                        <span><i class="la la-search"></i></span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-               </section>
-                <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">
-                    <thead>
-                        <tr>
-                            <th>{{ __('REFERENCE NO.') }}</th>
-                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                            <th>{{ __('PERMIT OWNER') }}</th>
-                            <th>{{ __('EVENT NAME') }}</th>
-                            <th>{{ __('APPLICATION TYPE') }}</th>
-                            <th>{{ __('APPLIED DATE') }}</th>
-                            <th>{{ __('STATUS') }}</th>
-                        </tr>
-                    </thead>
-                </table>
+        <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">
+          <thead>
+            <tr>
+              <th>{{ __('REFERENCE NO.') }}</th>
+              <th>{{ __('ESTABLISHMENT NAME') }}</th>
+              <th>{{ __('PERMIT OWNER') }}</th>
+              <th>{{ __('EVENT NAME') }}</th>
+              <th>{{ __('APPLICATION TYPE') }}</th>
+              <th>{{ __('APPLIED DATE') }}</th>
+              <th>{{ __('STATUS') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tab-pane show fade" id="pending-request" role="tabpanel">
+        <section class="form-row">
+          <div class="col-1">
+            <div>
+              <select name="length_change" id="pending-length-change"
+                class="form-control-sm form-control custom-select custom-select-sm">
+                <option value='10'>10</option>
+                <option value='25'>25</option>
+                <option value='50'>50</option>
+                <option value='75'>75</option>
+                <option value='100'>100</option>
+              </select>
             </div>
-            <div class="tab-pane show fade" id="pending-request" role="tabpanel">
-               <section class="form-row">
-                <div class="col-1">
-                  <div>
-                    <select name="length_change" id="pending-length-change" class="form-control-sm form-control custom-select custom-select-sm">
-                        <option value='10'>10</option>
-                        <option value='25'>25</option>
-                        <option value='50'>50</option>
-                        <option value='75'>75</option>
-                        <option value='100'>100</option>
-                    </select>
+          </div>
+          <div class="col-8">
+            <form class="form-row">
+              <div class="col-4">
+                <div class="input-group input-group-sm">
+                  <div class="kt-input-icon kt-input-icon--right">
+                    <input autocomplete="off" type="text" class="form-control form-control-sm"
+                      aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}"
+                      id="pending-applied-date">
+                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                      <span><i class="la la-calendar"></i></span>
+                    </span>
                   </div>
                 </div>
-                <div class="col-8">
-                  <form class="form-row">
-                    <div class="col-4">
-                        <div class="input-group input-group-sm">
-                            <div class="kt-input-icon kt-input-icon--right">
-                              <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="pending-applied-date" >
-                              <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                <span><i class="la la-calendar"></i></span>
-                              </span>
-                            </div>
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <select name="" id="pending-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()" >
-                       <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
-                       <option value="private">{{ __('Private') }}</option>
-                       <option value="government">{{ __('Government') }}</option>
-                       <option value="individual">{{ __('Individual') }}</option>
-                      </select>
-                    </div>
-                    <div class="col-3">
-                      <select  name="" id="pending-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
-                        <option disabled selected>{{ __('STATUS') }}</option>
-                        <option value="new">{{ __('New') }}</option>
-                        <option value="amended">{{ __('Amended') }}</option>
-                      </select>
-                    </div>
-                    <div class="col-2">
-                      <button type="button" class="btn btn-sm btn-secondary" id="pending-btn-reset">{{ __('RESET') }}</button>
-                    </div>
-                  </form>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group form-group-sm">
-                    <div class="kt-input-icon kt-input-icon--right">
-                      <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-pending-request">
-                      <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                        <span><i class="la la-search"></i></span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-               </section>
-                <table class="table table-hover table-borderless table- border table-striped" id="pending-event-request">
-                    <thead>
-                        <tr>
-                            <th>{{ __('REFERENCE NO.') }}</th>
-                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                            <th>{{ __('PERMIT OWNER') }}</th>
-                            <th>{{ __('EVENT NAME') }}</th>
-                            <th>{{ __('APPLIED DATE') }}</th>
-                            <th>{{ __('APPLICATION TYPE') }}</th>
-                            {{-- <th>PERMIT START</th> --}}
-                            <th>{{ __('STATUS') }}</th>
-                        </tr>
-                    </thead>
-                </table>
+              </div>
+              <div class="col-3">
+                <select name="" id="pending-applicant-type"
+                  class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()">
+                  <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
+                  <option value="private">{{ __('Private') }}</option>
+                  <option value="government">{{ __('Government') }}</option>
+                  <option value="individual">{{ __('Individual') }}</option>
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="" id="pending-permit-status"
+                  class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
+                  <option disabled selected>{{ __('STATUS') }}</option>
+                  <option value="new">{{ __('New') }}</option>
+                  <option value="amended">{{ __('Amended') }}</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <button type="button" class="btn btn-sm btn-secondary" id="pending-btn-reset">{{ __('RESET') }}</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group form-group-sm">
+              <div class="kt-input-icon kt-input-icon--right">
+                <input autocomplete="off" type="search" class="form-control form-control-sm"
+                  placeholder="{{ __('Search') }}..." id="search-pending-request">
+                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                  <span><i class="la la-search"></i></span>
+                </span>
+              </div>
             </div>
-            <div class="tab-pane fade" id="processing-permit" role="tabpanel">
-                <section class="form-row">
-                 <div class="col-1">
-                   <div>
-                     <select name="length_change" id="processing-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
-                         <option value='10'>10</option>
-                         <option value='25'>25</option>
-                         <option value='50'>50</option>
-                         <option value='75'>75</option>
-                         <option value='100'>100</option>
-                     </select>
-                   </div>
-                 </div>
-                 <div class="col-8">
-                   <form class="form-row">
-                     <div class="col-4">
+          </div>
+        </section>
+        <table class="table table-hover table-borderless table- border table-striped" id="pending-event-request">
+          <thead>
+            <tr>
+              <th>{{ __('REFERENCE NO.') }}</th>
+              <th>{{ __('ESTABLISHMENT NAME') }}</th>
+              <th>{{ __('PERMIT OWNER') }}</th>
+              <th>{{ __('EVENT NAME') }}</th>
+              <th>{{ __('APPLIED DATE') }}</th>
+              <th>{{ __('APPLICATION TYPE') }}</th>
+              {{-- <th>PERMIT START</th> --}}
+              <th>{{ __('STATUS') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="processing-permit" role="tabpanel">
+        <section class="form-row">
+          <div class="col-1">
+            <div>
+              <select name="length_change" id="processing-length-change"
+                class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
+                <option value='10'>10</option>
+                <option value='25'>25</option>
+                <option value='50'>50</option>
+                <option value='75'>75</option>
+                <option value='100'>100</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-8">
+            <form class="form-row">
+              <div class="col-4">
+                <div class="input-group input-group-sm">
+                  <div class="kt-input-icon kt-input-icon--right">
+                    <input autocomplete="off" type="text" class="form-control form-control-sm"
+                      aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}"
+                      id="processing-applied-date">
+                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                      <span><i class="la la-calendar"></i></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <select name="" id="processing-applicant-type"
+                  class="form-control-sm form-control custom-select custom-select-sm "
+                  onchange="eventProcessingTable.draw()">
+                  <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
+                  <option value="private">{{ __('Private') }}</option>
+                  <option value="government">{{ __('Government') }}</option>
+                  <option value="individual">{{ __('Individual') }}</option>
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="" id="processing-permit-status"
+                  class=" form-control form-control-sm custom-select-sm custom-select"
+                  onchange="eventProcessingTable.draw()">
+                  <option disabled selected>{{ __('STATUS') }}</option>
+                  <option value="processing">{{ __('Processing') }}</option>
+                  <option value="approved-unpaid">{{ __('Approved-unpaid') }}</option>
+                  <option value="need-approval">{{ __('Need Approval') }}</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <button type="button" class="btn btn-sm btn-secondary"
+                  id="processing-btn-reset">{{ __('RESET') }}</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group form-group-sm">
+              <div class="kt-input-icon kt-input-icon--right">
+                <input autocomplete="off" type="search" class="form-control form-control-sm"
+                  placeholder="{{ __('Search') }}..." id="search-processing-request">
+                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                  <span><i class="la la-search"></i></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <table class="table table-head-noborder table-borderless table-striped border" id="new-event-processing">
+          <thead>
+            <tr>
+              <th>{{ __('REFERENCE NO.') }}</th>
+              <th>{{ __('ESTABLISHMENT NAME') }}</th>
+              <th>{{ __('PERMIT OWNER') }}</th>
+              <th>{{ __('EVENT NAME') }}</th>
+              <th>{{ __('APPLIED DATE') }}</th>
+              <th>{{ __('APPLICATION TYPE') }}</th>
+              {{-- <th>PERMIT START</th> --}}
+              <th>{{ __('STATUS') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="active-permit" role="tabpanel">
+        <section class="form-row">
+          <div class="col-1">
+            <div>
+              <select name="length_change" id="active-length-change"
+                class="form-control-sm form-control custom-select custom-select-sm">
+                <option value='10'>10</option>
+                <option value='25'>25</option>
+                <option value='50'>50</option>
+                <option value='75'>75</option>
+                <option value='100'>100</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-8">
+            <form class="form-row">
+              {{-- <div class="col-4">
                          <div class="input-group input-group-sm">
                              <div class="kt-input-icon kt-input-icon--right">
-                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="processing-applied-date" >
-                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                 <span><i class="la la-calendar"></i></span>
-                               </span>
-                             </div>
-                       </div>
-                     </div>
-                     <div class="col-3">
-                       <select name="" id="processing-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventProcessingTable.draw()" >
-                        <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
-                        <option value="private">{{ __('Private') }}</option>
-                        <option value="government">{{ __('Government') }}</option>
-                        <option value="individual">{{ __('Individual') }}</option>
-                       </select>
-                     </div>
-                     <div class="col-3">
-                       <select  name="" id="processing-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventProcessingTable.draw()">
-                         <option disabled selected>{{ __('STATUS') }}</option>
-                         <option value="processing">{{ __('Processing') }}</option>
-                         <option value="approved-unpaid">{{ __('Approved-unpaid') }}</option>
-                         <option value="need-approval">{{ __('Need Approval') }}</option>
-                       </select>
-                     </div>
-                     <div class="col-2">
-                       <button type="button" class="btn btn-sm btn-secondary" id="processing-btn-reset">{{ __('RESET') }}</button>
-                     </div>
-                   </form>
-                 </div>
-                 <div class="col-md-3">
-                   <div class="form-group form-group-sm">
-                     <div class="kt-input-icon kt-input-icon--right">
-                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-processing-request">
-                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                         <span><i class="la la-search"></i></span>
-                       </span>
-                     </div>
-                   </div>
-                 </div>
-                </section>
-                <table class="table table-head-noborder table-borderless table-striped border"
-                    id="new-event-processing">
-                    <thead>
-                        <tr>
-                            <th>{{ __('REFERENCE NO.') }}</th>
-                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                            <th>{{ __('PERMIT OWNER') }}</th>
-                            <th>{{ __('EVENT NAME') }}</th>
-                            <th>{{ __('APPLIED DATE') }}</th>
-                            <th>{{ __('APPLICATION TYPE') }}</th>
-                            {{-- <th>PERMIT START</th> --}}
-                            <th>{{ __('STATUS') }}</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="tab-pane fade" id="active-permit" role="tabpanel">
-                <section class="form-row">
-                 <div class="col-1">
-                   <div>
-                     <select name="length_change" id="active-length-change" class="form-control-sm form-control custom-select custom-select-sm">
-                         <option value='10'>10</option>
-                         <option value='25'>25</option>
-                         <option value='50'>50</option>
-                         <option value='75'>75</option>
-                         <option value='100'>100</option>
-                     </select>
-                   </div>
-                 </div>
-                 <div class="col-8">
-                   <form class="form-row">
-                     {{-- <div class="col-4">
-                         <div class="input-group input-group-sm">
-                             <div class="kt-input-icon kt-input-icon--right">
-                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('PERMIT DURATION DATE') }}" id="active-applied-date" >
-                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                 <span><i class="la la-calendar"></i></span>
-                               </span>
-                             </div>
-                       </div>
-                     </div> --}}
-                     <div class="col-3">
-                       <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventActiveTable.draw()" >
-                        <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
-                        <option value="private">{{ __('Private') }}</option>
-                        <option value="government">{{ __('Government') }}</option>
-                        <option value="individual">{{ __('Individual') }}</option>
-                       </select>
-                     </div>
-                     {{-- <div class="col-3">
+                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('PERMIT DURATION DATE') }}"
+              id="active-applied-date" >
+              <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                <span><i class="la la-calendar"></i></span>
+              </span>
+          </div>
+      </div>
+    </div> --}}
+    <div class="col-3">
+      <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm "
+        onchange="eventActiveTable.draw()">
+        <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
+        <option value="private">{{ __('Private') }}</option>
+        <option value="government">{{ __('Government') }}</option>
+        <option value="individual">{{ __('Individual') }}</option>
+      </select>
+    </div>
+    {{-- <div class="col-3">
                        <select  name="" id="active-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventActiveTable.draw()">
                          <option disabled selected>STATUS</option>
                          <option value="active">active</option>
                          <option value="amended">Amended</option>
                        </select>
                      </div> --}}
-                     <div class="col-4">
-                       <button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">{{ __('RESET') }}</button>
-                     </div>
-                   </form>
-                 </div>
-                 <div class="col-md-3">
-                   <div class="form-group form-group-sm">
-                     <div class="kt-input-icon kt-input-icon--right">
-                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-active-request">
-                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                         <span><i class="la la-search"></i></span>
-                       </span>
-                     </div>
-                   </div>
-                 </div>
-                </section>
-                <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
-                    <thead>
-                        <tr>
-                            <!-- <th></th> -->
-                            <th>{{ __('REFERENCE NO.') }}</th>
-                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                            <th>{{ __('PERMIT OWNER') }}</th>
-                            <th>{{ __('EVENT NAME') }}</th>
-                            <!-- <th>{{ __('PERMIT START') }}</th> -->
-                            <th>{{ __('APPLICATION TYPE') }}</th>
-                            <th>{{ __('SHOW TO ALL') }}</th>
-                            <th>{{ __('WEBSITE') }}</th>
-                            <th>{{ __('ACTION') }}</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="tab-pane fade" id="archive-permit" role="tabpanel">
-                <section class="form-row">
-                 <div class="col-1">
-                   <div>
-                     <select name="length_change" id="archive-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
-                         <option value='10'>10</option>
-                         <option value='25'>25</option>
-                         <option value='50'>50</option>
-                         <option value='75'>75</option>
-                         <option value='100'>100</option>
-                     </select>
-                   </div>
-                 </div>
-                 <div class="col-8">
-                   <form class="form-row">
-                     {{-- <div class="col-4">
+    <div class="col-4">
+      <button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">{{ __('RESET') }}</button>
+    </div>
+    </form>
+  </div>
+  <div class="col-md-3">
+    <div class="form-group form-group-sm">
+      <div class="kt-input-icon kt-input-icon--right">
+        <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..."
+          id="search-active-request">
+        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+          <span><i class="la la-search"></i></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+<table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
+  <thead>
+    <tr>
+      <!-- <th></th> -->
+      <th>{{ __('REFERENCE NO.') }}</th>
+      <th>{{ __('ESTABLISHMENT NAME') }}</th>
+      <th>{{ __('PERMIT OWNER') }}</th>
+      <th>{{ __('EVENT NAME') }}</th>
+      <!-- <th>{{ __('PERMIT START') }}</th> -->
+      <th>{{ __('APPLICATION TYPE') }}</th>
+      <th>{{ __('SHOW TO ALL') }}</th>
+      <th>{{ __('WEBSITE') }}</th>
+      <th>{{ __('ACTION') }}</th>
+    </tr>
+  </thead>
+</table>
+</div>
+<div class="tab-pane fade" id="archive-permit" role="tabpanel">
+  <section class="form-row">
+    <div class="col-1">
+      <div>
+        <select name="length_change" id="archive-length-change"
+          class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
+          <option value='10'>10</option>
+          <option value='25'>25</option>
+          <option value='50'>50</option>
+          <option value='75'>75</option>
+          <option value='100'>100</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-8">
+      <form class="form-row">
+        {{-- <div class="col-4">
                          <div class="input-group input-group-sm">
                              <div class="kt-input-icon kt-input-icon--right">
                                <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="archive-applied-date" >
@@ -415,113 +457,123 @@
                              </div>
                        </div>
                      </div> --}}
-                     <div class="col-3">
-                       <select name="" id="archive-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="eventArchiveTable.draw()" >
-                        <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
-                        <option value="private">{{ __('Private') }}</option>
-                        <option value="government">{{ __('Government') }}</option>
-                        <option value="individual">{{ __('Individual') }}</option>
-                       </select>
-                     </div>
-                     <div class="col-3">
-                       <select  name="" id="archive-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventArchiveTable.draw()">
-                         <option disabled selected>{{ __('STATUS') }}</option>
-                         <option value="expired">{{ __('Expired') }}</option>
-                         <option value="rejected">{{ __('Rejected') }}</option>
-                       </select>
-                     </div>
-                     <div class="col-3">
-                       <button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">{{ __('RESET') }}</button>
-                     </div>
-                   </form>
-                 </div>
-                 <div class="col-md-3">
-                   <div class="form-group form-group-sm">
-                     <div class="kt-input-icon kt-input-icon--right">
-                       <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-archive-request">
-                       <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                         <span><i class="la la-search"></i></span>
-                       </span>
-                     </div>
-                   </div>
-                 </div>
-                </section>
-                <table class="table table-head-noborder table-hover table-sm table-striped table-borderless border" id="new-event-archive">
-                    <thead>
-                        <tr>
-                            <th>{{ __('REFERENCE NO.') }}</th>
-                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                            <th>{{ __('PERMIT OWNER') }}</th>
-                            <th>{{ __('EVENT NAME') }}</th>
-                            {{-- <th>APPLIED DATE</th> --}}
-                            <th>{{ __('APPLICATION TYPE') }}</th>
-                            <th>{{ __('STATUS') }}</th>
-                            <th>{{ __('ACTION') }}</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="tab-pane fade" id="calendar" role="tabpanel">
-              <section class="row">
-                <div class="col-md-3">
-                   <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
-                      <div class="card">
-                         <div class="card-header" id="heading-address">
-                            <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
-                                 aria-expanded="true" aria-controls="collapse-address">
-                               <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT TYPE LEGEND') }}</h6>
-                            </div>
-                         </div>
-                         <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
-                            <div class="card-body" style="padding: 1px;">
-                              <table class="table table-borderless ">
-                                <tbody>
-                                  @if (!empty($types))
-                                  @foreach ($types as $type)
-                                    <tr>
-                                      <td>
-                                        <span style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
-                                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)) : ucfirst($type->name_ar)  }}</td>
-                                        </span>
-                                    </tr>
-                                  @endforeach
-                                  @endif
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </section>
-                </div>
-                <div class="col-md-9">
-                    <section id="event-calendar"></section>
-                </div>
-              </section>
-            </div>
+        <div class="col-3">
+          <select name="" id="archive-applicant-type"
+            class="form-control-sm form-control custom-select custom-select-sm " onchange="eventArchiveTable.draw()">
+            <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
+            <option value="private">{{ __('Private') }}</option>
+            <option value="government">{{ __('Government') }}</option>
+            <option value="individual">{{ __('Individual') }}</option>
+          </select>
         </div>
+        <div class="col-3">
+          <select name="" id="archive-permit-status"
+            class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventArchiveTable.draw()">
+            <option disabled selected>{{ __('STATUS') }}</option>
+            <option value="expired">{{ __('Expired') }}</option>
+            <option value="rejected">{{ __('Rejected') }}</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">{{ __('RESET') }}</button>
+        </div>
+      </form>
     </div>
+    <div class="col-md-3">
+      <div class="form-group form-group-sm">
+        <div class="kt-input-icon kt-input-icon--right">
+          <input autocomplete="off" type="search" class="form-control form-control-sm"
+            placeholder="{{ __('Search') }}..." id="search-archive-request">
+          <span class="kt-input-icon__icon kt-input-icon__icon--right">
+            <span><i class="la la-search"></i></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <table class="table table-head-noborder table-hover table-sm table-striped table-borderless border"
+    id="new-event-archive">
+    <thead>
+      <tr>
+        <th>{{ __('REFERENCE NO.') }}</th>
+        <th>{{ __('ESTABLISHMENT NAME') }}</th>
+        <th>{{ __('PERMIT OWNER') }}</th>
+        <th>{{ __('EVENT NAME') }}</th>
+        {{-- <th>APPLIED DATE</th> --}}
+        <th>{{ __('APPLICATION TYPE') }}</th>
+        <th>{{ __('STATUS') }}</th>
+        <th>{{ __('ACTION') }}</th>
+      </tr>
+    </thead>
+  </table>
+</div>
+<div class="tab-pane fade" id="calendar" role="tabpanel">
+  <section class="row">
+    <div class="col-md-3">
+      <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
+        <div class="card">
+          <div class="card-header" id="heading-address">
+            <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse"
+              data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
+              <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT TYPE LEGEND') }}</h6>
+            </div>
+          </div>
+          <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
+            data-parent="#accordion-address">
+            <div class="card-body" style="padding: 1px;">
+              <table class="table table-borderless ">
+                <tbody>
+                  @if (!empty($types))
+                  @foreach ($types as $type)
+                  <tr>
+                    <td>
+                      <span
+                        style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
+                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)) : ucfirst($type->name_ar)  }}
+                    </td>
+                    </span>
+                  </tr>
+                  @endforeach
+                  @endif
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="col-md-9">
+      <section id="event-calendar"></section>
+    </div>
+  </section>
+</div>
+</div>
+</div>
 </section>
 {{-- cancel modal --}}
-<div class="modal fade" id="cancel-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="cancel-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-        <form name="cancel_form">
-          @csrf
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Cancel Event <span id="event-title"></span> <small>This will cancel the event & notify the client</small></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            </button>
+      <form name="cancel_form">
+        @csrf
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Cancel Event <span id="event-title"></span> <small>This will
+              cancel the event & notify the client</small></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="hidden" name="user_type" value="admin">
+            <input type="hidden" name="type" value="0">
+            <input type="hidden" name="action" value="cancelled">
+            <label for="message-text" class="form-control-label">Remarks<span class="text-danger">*</span></label>
+            <textarea name="comment" maxlength="255" required rows="4" class="form-control" id="message-text"
+              placeholder="write your reason for cancelling..."></textarea>
           </div>
-          <div class="modal-body">  
-              <div class="form-group">
-                <input type="hidden" name="user_type" value="admin">
-                <input type="hidden" name="type" value="0">
-                <input type="hidden" name="action" value="cancelled">
-                <label for="message-text" class="form-control-label">Remarks<span class="text-danger">*</span></label>
-                <textarea name="comment" maxlength="255" required rows="4" class="form-control" id="message-text" placeholder="write your reason for cancelling..."></textarea>
-              </div>
-         
-          </div>
+
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-sm kt-font-transform-u" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-warning btn-sm kt-font-transform-u">Submit</button>
@@ -535,8 +587,7 @@
 @section('script')
 
 <script type="text/javascript">
-
-    var newEventTable = {};
+  var newEventTable = {};
     var pendingEventTable = {};
     var eventProcessingTable= {};
     var eventArchiveTable = {};
@@ -601,7 +652,7 @@
               allDaySlot: true,
               contentHeight: 450,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
-              nowIndicator: true,
+              // nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
               views: {
                   dayGridMonth: { buttonText: '{{ __('Month') }}' },

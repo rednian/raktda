@@ -401,66 +401,7 @@ class ArtistController extends Controller
         // return $status;
     }
 
-    public function generateArtistPermitNumber()
-    {
-        $last_permit_d = Permit::orderBy('created_at', 'desc')->where('permit_number', 'not like', '%-%')->first();
-
-        if (!isset($last_permit_d->permit_number)) {
-            $new_permit_no = sprintf("AP%04d",  1);
-        } else {
-            $last_pn = $last_permit_d->permit_number;
-            $n = substr($last_pn, 2);
-            $f = substr($n, 0, 1);
-            $l = substr($n, -1, 1);
-            $x = 4;
-            if ($f == 9 && $l == 9) {
-                $x++;
-            }
-            $new_permit_no = sprintf("AP%0" . $x . "d", $n + 1);
-        }
-        return $new_permit_no;
-    }
-
-    function generateEventPermitNumber()
-    {
-        $last_permit_d = Event::where('permit_number', 'not like', '%-%')->latest()->first();
-
-        if (!isset($last_permit_d->permit_number)) {
-            $new_permit_no = sprintf("EP%04d",  1);
-        } else {
-            $last_pn = $last_permit_d->permit_number;
-            $n = substr($last_pn, 2);
-            $f = substr($n, 0, 1);
-            $l = substr($n, -1, 1);
-            $x = 4;
-            if ($f == 9 && $l == 9) {
-                $x++;
-            }
-            $new_permit_no = sprintf("EP%0" . $x . "d", $n + 1);
-        }
-        return $new_permit_no;
-    }
-
-    public function generateReferenceNumber()
-    {
-        $last_permit_d = Permit::all()->last();
-        if (empty($last_permit_d)) {
-            $new_refer_no = sprintf("RNA%04d",  1);
-        } else {
-            $last_rn = $last_permit_d->reference_number;
-            $n = substr($last_rn, 3);
-            $f = substr($n, 0, 1);
-            $l = substr($n, -1, 1);
-            $x = 4;
-            if ($f == 9 && $l == 9) {
-                $x++;
-            }
-            $new_refer_no = sprintf("RNA%0" . $x . "d", $n + 1);
-        }
-
-        return $new_refer_no;
-    }
-
+  
     public function get_status($id)
     {
         return Permit::where('permit_id', $id)->first()->permit_status;
@@ -704,7 +645,7 @@ class ArtistController extends Controller
         $expiry_date = Carbon::parse($request->to)->toDateString();
 
 
-        $new_refer_no = $this->generateReferenceNumber();
+        $new_refer_no = $this->generateArtistReferenceNumber();
         $permit = '';
         $from = ($artists_total > 0) ? $artist_temp_data[0]->process : '';
 
@@ -1871,7 +1812,7 @@ class ArtistController extends Controller
             ]);
         }
 
-        $permit_number = $this->generateArtistPermitNumber();
+        $permit_number = generateArtistPermitNumber();
 
         $permit = Permit::where('permit_id', $permit_id)->first();
 
@@ -1880,6 +1821,7 @@ class ArtistController extends Controller
             \App\Event::where('event_id', $permit->event_id)->update([
                 'paid' => 1,
                 'status' => 'active',
+                'permit_number' => generateEventPermitNumber()
             ]);
 
             $trans = Transaction::create([
@@ -1969,6 +1911,26 @@ class ArtistController extends Controller
     public function checkVisaRequired($id)
     {
         return  Country::where('country_id', $id)->first()->continent_code;
+    }
+
+    function generateArtistReferenceNumber()
+    {
+        $last_permit_d = \App\Permit::all()->last();
+        if (empty($last_permit_d)) {
+            $new_refer_no = sprintf("RNA%04d",  1);
+        } else {
+            $last_rn = $last_permit_d->reference_number;
+            $n = substr($last_rn, 3);
+            $f = substr($n, 0, 1);
+            $l = substr($n, -1, 1);
+            $x = 4;
+            if ($f == 9 && $l == 9) {
+                $x++;
+            }
+            $new_refer_no = sprintf("RNA%0" . $x . "d", $n + 1);
+        }
+
+        return $new_refer_no;
     }
 
 

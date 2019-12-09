@@ -479,6 +479,7 @@
           var TODAY = todayDate.format('YYYY-MM-DD');
           var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
           var calendarEl = document.getElementById('event-calendar');
+          
           var calendar = new FullCalendar.Calendar(calendarEl, {
               plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
               isRTL: KTUtil.isRTL(),
@@ -488,16 +489,17 @@
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
               height: 'auto',
+              allDaySlot: true,
               contentHeight: 450,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
               views: {
-                  dayGridMonth: { buttonText: 'Month' },
-                  timeGridWeek: { buttonText: 'Week' },
-                  timeGridDay: { buttonText: 'Day' },
-                  listDay: { buttonText: 'Day List' },
-                  listWeek: { buttonText: 'Week List' }
+                  dayGridMonth: { buttonText: '{{ __('Month') }}' },
+                  timeGridWeek: { buttonText: '{{ __('Week') }}' },
+                  timeGridDay: { buttonText: '{{ __('Day') }}' },
+                  listDay: { buttonText: '{{ __('Day List') }}' },
+                  listWeek: { buttonText: '{{ __('Week List') }}' }
               },
               defaultView: 'dayGridMonth',
               // defaultDate: TODAY,

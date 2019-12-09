@@ -25,6 +25,7 @@ use App\EventTransaction;
 use App\Transaction;
 use App\EventComment;
 use Session;
+use URL;
 use App\Happiness;
 use Storage;
 use NumberToWords\NumberToWords;
@@ -43,6 +44,10 @@ class EventController extends Controller
 
     public function create()
     {
+        $last_page = URL::previous();
+        // dd($last_page);
+        EventLiquor::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
+        EventTruck::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
         $data['event_types'] = EventType::all()->sortBy('name_en');
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
@@ -438,7 +443,10 @@ class EventController extends Controller
                 foreach ($requirements as $req) {
                     $path = $req->path;
                     $newpath = str_replace('temp', $event_id, $path);
-                    Storage::move('public/'.$path, 'public/'.$newpath);
+                    if(!Storage::exists('public/'.$newpath))
+                    {
+                        Storage::move('public/'.$path, 'public/'.$newpath);
+                    }
                     EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
                         'path' => $newpath,
                         'event_id' => $event_id
@@ -467,7 +475,10 @@ class EventController extends Controller
                 foreach ($requirements as $req) {
                     $path = $req->path;
                     $newpath = str_replace('temp', $event_id, $path);
-                    Storage::move('public/'.$path, 'public/'.$newpath);
+                    if(!Storage::exists('public/'.$newpath))
+                    {
+                        Storage::move('public/'.$path, 'public/'.$newpath);
+                    }
                     EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
                         'path' => $newpath,
                         'event_id' => $event_id
@@ -1797,7 +1808,7 @@ class EventController extends Controller
 
     public function fetch_truck_details(Request $request)
     {
-        return EventTruck::whereNull('event_id')->where('status', 0)->get();
+        return EventTruck::whereNull('event_id')->where('status', 0)->where('created_by',Auth::user()->user_id)->get();
     }
 
     public function uploadLogo(Request $request)

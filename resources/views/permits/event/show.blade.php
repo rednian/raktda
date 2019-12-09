@@ -41,9 +41,11 @@
         <div class="kt-container">
             <div class="event--view-head">
                 <div class="col-md-12 pb-4 d-flex flex-sm-column flex-md-row">
+                    @if($event->logo_thumbnail)
                     <div class="col-md-4 img-responsive">
                         <img src="{{url('storage').'/'.$event->logo_thumbnail}}" alt="image">
                     </div>
+                    @endif
                     <div class="col-md-8 d-flex flex-column justify-content-flex-start">
                         <div class="pb-2 row">
                             <label
@@ -76,7 +78,6 @@
                                 class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Area')}}</label>
                             <span class="col-md-6">{{$event->area['area_en']}}</span>
                         </div>
-
                     </div>
                 </div>
 

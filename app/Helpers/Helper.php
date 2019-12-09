@@ -200,6 +200,7 @@ function generateArtistPermitNumber()
     return $new_permit_no;
 }
 
+
 function artistStatus($status)
 {
     $classname = $status == 'active' ? 'success' : 'danger';
@@ -316,3 +317,5 @@ function translateAr($word)
     }
     return $word;
 }
+
+

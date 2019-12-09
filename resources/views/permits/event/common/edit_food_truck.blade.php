@@ -11,6 +11,7 @@
             <div class="modal-body">
                 <div class="d-flex pull-right kt-margin-b-10">
                     <button class="btn btn-sm btn--yellow" id="add_new_truck">Add New</button>
+                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal">Done</button>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
