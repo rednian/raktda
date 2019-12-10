@@ -18,7 +18,7 @@
     }
     .dataTables_wrapper tr td {
         font-size: 11px;
-    }
+    }in
 
 </style>
 <table class="table  table-hover  table-borderless table-striped border" id="block-artist">
@@ -122,12 +122,9 @@
                 {data: 'nationality',name:'nationality'},
                 {data: 'mobile_number',name:'mobile_number'},
                 {data: 'permit_status',name:'permit_status'},
-
             ],
         });
-
     });
-
 
         function fill_datatable(filter_search = '', search_artist = '')
         {
@@ -296,21 +293,248 @@
                 }
 
               if(x==4 ) {
-
                   $('#search_by_name').css({display:'none'})
                   $('#search_by_profession_tab').css({display:'-webkit-box'})
                   $('#search_by_nationality_tab').css({display:'none'})
-
-
               }
               if(x==1 || x==2 || x==3 ){
                   $('#search_by_profession_tab').css({display:'none'})
                   $('#search_by_nationality_tab').css({display:'none'})
                   $('#search_by_name').css({display:'-webkit-box'})
-
               }
             }
 
+            //Event Report JS
+
+$('#event-report-tab').click(function () {
+    table= $('#event-report').DataTable({
+        dom: 'Bfrtip',
+        "searching":false,
+        buttons: ['pageLength',
+            {
+                extend: 'pdf',
+                title: function () { return 'Event Report'; },
+                customize: function (doc) {
+                    doc.defaultStyle.fontSize = 7;
+                    doc.styles.tableHeader.fontSize = 7;
+                    doc.styles.title.fontSize = 14;
+                    doc.styles.tableHeader={'color': "Grey"};
+                }
+            },
+            {
+                extend: 'excel',
+                title: function () { return 'EVENT REPORT'; },
+            }
+        ],
+        lengthMenu: [
+            [ 10, 25, 50, 1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        processing: true,
+        language: {
+            processing: '<span>Processing</span>',
+        },
+        serverSide: true,
+        footer: true,
+        ajax: {
+            url: '{{ route('admin.event_reports.event_report')}}',
+            method: 'get',
+            data: function (d) {
+
+            }
+        },
+        columns: [
+            {data: 'event_id',name:'event_id'},
+            {data: 'reference_number',name:'reference_number'},
+            {data: 'name_en',name:'name_en'},
+            {data: 'description_en',name:'description_en'},
+            {data: 'venue_en',name:'venue_en'},
+            {data: 'address',name:'address'},
+            {data: 'company_id',name:'company_id'},
+            {data: 'issued_date',name:'issued_date'},
+            {data: 'event_type_id',name:'event_type_id'},
+            {data: 'status',name:'status'},
+            {data: 'updated_at',name:'updated_at'},
+
+
+        ],
+    });
+
+})
+
+
+        $('#application-type').change(function () {
+            console.log('application type')
+            var application_type= $('#application-type').val();
+            table= $('#event-report').DataTable({
+                dom: 'Bfrtip',
+                "searching":false,
+                buttons: ['pageLength',
+                    {
+                        extend: 'pdf',
+                        title: function () { return 'Event Report'; },
+                        customize: function (doc) {
+                            doc.defaultStyle.fontSize = 7;
+                            doc.styles.tableHeader.fontSize = 7;
+                            doc.styles.title.fontSize = 14;
+                            doc.styles.tableHeader={'color': "Grey"};
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        title: function () { return 'EVENT REPORT'; },
+                    }
+                ],
+                lengthMenu: [
+                    [ 10, 25, 50, 1 ],
+                    [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+                ],
+                processing: true,
+                language: {
+                    processing: '<span>Processing</span>',
+                },
+                serverSide: true,
+                footer: true,
+                ajax: {
+                    url: '{{ route('admin.event_reports.application_type')}}',
+                    method: 'get',
+                    data:{application_type:application_type}
+                },
+                columns: [
+                    {data: 'event_id',name:'event_id'},
+                    {data: 'reference_number',name:'reference_number'},
+                    {data: 'name_en',name:'name_en'},
+                    {data: 'description_en',name:'description_en'},
+                    {data: 'venue_en',name:'venue_en'},
+                    {data: 'address',name:'address'},
+                    {data: 'company_id',name:'company_id'},
+                    {data: 'issued_date',name:'issued_date'},
+                    {data: 'event_type_id',name:'event_type_id'},
+                    {data: 'status',name:'status'},
+                    {data: 'updated_at',name:'updated_at'},
+
+
+                ],
+            });
+
+        })
+
+        // Applied Date
+        $('#applied-date').change(function () {
+            console.log('appled date')
+            var applied_date=$('#applied-date').val();
+            table= $('#event-report').DataTable({
+                dom: 'Bfrtip',
+                "searching":false,
+                buttons: ['pageLength',
+                    {
+                        extend: 'pdf',
+                        title: function () { return 'Event Report'; },
+                        customize: function (doc) {
+                            doc.defaultStyle.fontSize = 7;
+                            doc.styles.tableHeader.fontSize = 7;
+                            doc.styles.title.fontSize = 14;
+                            doc.styles.tableHeader={'color': "Grey"};
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        title: function () { return 'EVENT REPORT'; },
+                    }
+                ],
+                lengthMenu: [
+                    [ 10, 25, 50, 1 ],
+                    [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+                ],
+                processing: true,
+                language: {
+                    processing: '<span>Processing</span>',
+                },
+                serverSide: true,
+                footer: true,
+                ajax: {
+                    url: '{{ route('admin.event_reports.applied_date')}}',
+                    method: 'post',
+                    data:{applied_date:applied_date}
+                },
+                columns: [
+                    {data: 'event_id',name:'event_id'},
+                    {data: 'reference_number',name:'reference_number'},
+                    {data: 'name_en',name:'name_en'},
+                    {data: 'description_en',name:'description_en'},
+                    {data: 'venue_en',name:'venue_en'},
+                    {data: 'address',name:'address'},
+                    {data: 'company_id',name:'company_id'},
+                    {data: 'issued_date',name:'issued_date'},
+                    {data: 'event_type_id',name:'event_type_id'},
+                    {data: 'status',name:'status'},
+                    {data: 'updated_at',name:'updated_at'},
+
+
+                ],
+            });
+
+        })
+
+    //status
+
+        $('#status').change(function () {
+            console.log('status')
+
+            var status=$('#status').val();
+
+            table= $('#event-report').DataTable({
+                dom: 'Bfrtip',
+                "searching":false,
+                buttons: ['pageLength',
+                    {
+                        extend: 'pdf',
+                        title: function () { return 'Event Report'; },
+                        customize: function (doc) {
+                            doc.defaultStyle.fontSize = 7;
+                            doc.styles.tableHeader.fontSize = 7;
+                            doc.styles.title.fontSize = 14;
+                            doc.styles.tableHeader={'color': "Grey"};
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        title: function () { return 'EVENT REPORT'; },
+                    }
+                ],
+                lengthMenu: [
+                    [ 10, 25, 50, 1 ],
+                    [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+                ],
+                processing: true,
+                language: {
+                    processing: '<span>Processing</span>',
+                },
+                serverSide: true,
+                footer: true,
+                ajax: {
+                    url: '{{ route('admin.event_reports.status')}}',
+                    method: 'post',
+                    data:{status:status}
+                },
+                columns: [
+                    {data: 'event_id',name:'event_id'},
+                    {data: 'reference_number',name:'reference_number'},
+                    {data: 'name_en',name:'name_en'},
+                    {data: 'description_en',name:'description_en'},
+                    {data: 'venue_en',name:'venue_en'},
+                    {data: 'address',name:'address'},
+                    {data: 'company_id',name:'company_id'},
+                    {data: 'issued_date',name:'issued_date'},
+                    {data: 'event_type_id',name:'event_type_id'},
+                    {data: 'status',name:'status'},
+                    {data: 'updated_at',name:'updated_at'},
+
+
+                ],
+            });
+
+        })
 
 </script>
 @endsection

@@ -150,8 +150,8 @@
 	<script>
 	
 	var tblRequirement;
-    var requiredRequirements = {{ json_encode($required) }};
-    var requirementSelected = {{ json_encode($selected) }};
+    var requiredRequirements = {!! json_encode($required) !!};
+    var requirementSelected = {!! json_encode($selected) !!};
 
     $(document).ready(function () {
 

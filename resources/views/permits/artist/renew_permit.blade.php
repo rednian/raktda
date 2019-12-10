@@ -144,6 +144,7 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('js/company/artist.js') }}"></script>
 <script>
     $.ajaxSetup({
         headers: {
@@ -252,6 +253,8 @@
     $('#submit_btn').click(function() {
         $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
         var temp_permit_id = $('#permit_id').val();
+        var noofdays = dayCount($('#issued_date').val(), $('#expired_date').val());var term;
+            if(noofdays < 30) { term = 'short'; } else { term='long';}
         $.ajax({
             type: 'POST',
             url: '{{route("artist.store")}}',
@@ -260,6 +263,7 @@
                 from: $('#issued_date').val() ,
                 to: $('#expired_date').val(),
                 loc: $('#work_location').val(),
+                term: term
             },
             success: function(data) {
                 // console.log(data);

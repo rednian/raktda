@@ -8,7 +8,7 @@ use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-class User extends Authenticatable implements Auditable
+class User extends Authenticatable implements Auditable, MustVerifyEmail
 {
     use Notifiable;
     use \OwenIt\Auditing\Auditable;

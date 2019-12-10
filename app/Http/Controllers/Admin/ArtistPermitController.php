@@ -38,7 +38,8 @@ class ArtistPermitController extends Controller
             'approved_permit'=> Permit::lastMonth(['active'])->count(),
             'rejected_permit'=> Permit::lastMonth(['rejected'])->count(),
             'cancelled_permit'=> Permit::lastMonth(['cancelled'])->count(),
-            'active_permit'=> Permit::lastMonth(['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count()
+            'active_permit'=> Permit::lastMonth(['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count(),
+            'active'=> Permit::where('permit_status', 'active')->count()
         ]);
     }
 

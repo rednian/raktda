@@ -873,7 +873,7 @@ $language_id = \Auth::user()->LanguageId;
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
                 showFileCounter: false,
-                previewHeight: '200px',
+                previewHeight: '100px',
                 previewWidth: "auto",
                 abortStr: '',
                 showDelete: true,

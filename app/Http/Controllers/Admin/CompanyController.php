@@ -23,7 +23,8 @@ class CompanyController extends Controller
 
    public function submit(Request $request, Company $company)
    {
-      dd($request->all());
+      return redirect()->back();
+      // dd($request->all());
       switch ($request->status) {
          case 'active':
             $company->update(['status'=>$request->status]);
@@ -100,8 +101,8 @@ class CompanyController extends Controller
       ->addColumn('name', function($company) use ($request){
          return $request->user()->LanguageId == 1 ? ucfirst($company->name_en) : $company->name_ar;
       })
-      ->editColumn('type', function($company){
-         return ucwords($company->type);
+      ->editColumn('email', function($company){
+         return $company->company_email;
       })
       ->addColumn('status', function($company){
          return permitStatus($company->status);

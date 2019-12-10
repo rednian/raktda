@@ -130,7 +130,7 @@
                             <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
                         </div>
                         <div class="m-t-20 m-b-40 p-b-40 text-inverse">
-                        Not a member yet? Click <a href="#" class="text-success">here</a> to register.
+                        Don't have account yet? Click <a href="{{ URL::signedRoute('company.create') }}" class="text-success">here</a> to register.
                         </div>
                         {{--<hr />--}}
                         {{--<p <center></center>lass="text-center">--}}

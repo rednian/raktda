@@ -22,11 +22,15 @@ Route::get('/live', function () {
     return Artisan::call('up');
 });
 
-Auth::routes(['register' => false]);
+Route::get('/registration', 'Company\CompanyController@create')->name('company.create')->middleware('signed');
+Route::post('/registration', 'Company\CompanyController@store')->name('company.store');
+Route::get('/registration/is_exist', 'Company\CompanyController@isexist')->name('company.isexist');
+
+Auth::routes(['register' => false, 'verify' => true ]);
 Route::post('/update_language', 'Admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
 
 
-Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
+Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
 
     Route::get('/dashboard', function () {
@@ -123,7 +127,7 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
         ->name('admin.artist_permit.checkApplication');
 
     Route::get('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@applicationDetails')
-        ->name('admin.artist_permit.applicationdetails')->middleware('lock_artist_permit');
+        ->name('admin.artist_permit.applicationdetails');
 
     Route::get('/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')
         ->name('admin.artist_permit.datatable');
@@ -155,6 +159,18 @@ Route::middleware(['admin', 'auth', 'set_lang'])->group(function(){
 
     Route::post('/artist_reports/search_artist_select', 'Admin\ReportController@onChangeSelect')
         ->name('admin.artist_permit_reports.search_artist_select');
+
+    Route::get('/event_reports/event_report', 'Admin\EventReportController@event_reports')
+        ->name('admin.event_reports.event_report');
+
+    Route::post('/event_reports/applied_date', 'Admin\EventReportController@applied_date')
+        ->name('admin.event_reports.applied_date');
+
+    Route::post('/event_reports/application_type', 'Admin\EventReportController@application_type')
+        ->name('admin.event_reports.application_type');
+
+    Route::post('/event_reports/status', 'Admin\EventReportController@status')
+        ->name('admin.event_reports.status');
 
 
 
