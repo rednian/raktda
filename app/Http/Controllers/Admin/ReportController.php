@@ -6,6 +6,7 @@ use App\Artist;
 use App\ArtistPermit;
 use App\Country;
 use App\Event;
+use App\Permit;
 use App\Profession;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,6 +24,16 @@ class ReportController extends Controller
             'permit'=>$artist,
             'country'=>$country,
             'profession'=>$profession,
+
+            'professions'=>Profession::has('artistpermit')->get(),
+            'countries'=> Country::has('artistpermit')->get(),
+            'new_request'=> Permit::has('artist')->where('permit_status', 'new')->count(),
+            'pending_request'=> Permit::has('artist')->where('permit_status', 'modified')->count(),
+            'approved_permit'=> Permit::lastMonth(['active'])->count(),
+            'rejected_permit'=> Permit::lastMonth(['rejected'])->count(),
+            'cancelled_permit'=> Permit::lastMonth(['cancelled'])->count(),
+            'active_permit'=> Permit::lastMonth(['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count()
+
 
         ]);
     }
@@ -269,5 +280,22 @@ class ReportController extends Controller
               }
           }
       }
+    }
+
+    public function artist_permit_report($id){
+
+        $artist = Artist::findOrFail($id);
+
+        $artist_permit = ArtistPermit::whereHas('permit', function($q){
+            $q->whereNotIn('permit_status', ['draft', 'edit']);
+        })
+            ->where('artist_id', $artist->artist_id)->latest()->first();
+
+
+        return view('admin.report.artistpermit.show', [
+            'page_title' => $artist_permit->fullname.' - details',
+            'artist_permit' => $artist_permit,
+            'artist'=>$artist
+        ]);
     }
 }

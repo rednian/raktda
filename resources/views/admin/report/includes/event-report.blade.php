@@ -1,4 +1,8 @@
-
+<style>
+    #event-report_wrapper .dt-buttons{
+        background-color: #edeef4;
+    }
+</style>
 <table class="table table-hover  table-borderless table-striped border" id="event-report">
     <thead>
 
@@ -11,7 +15,6 @@
                 <option value="4">30 days</option>
                 <option value="5">This Month</option>
                 <option value="6">Last Month</option>
-
             </select></th>
         <th colspan="2"><select name="application_type" id="application-type" class="form-control">
             <option value="">APPLICATION TYPE</option>
@@ -43,7 +46,6 @@
         <th>{{ __('Event Type') }}</th>
         <th>{{ __('Application Type') }}</th>
         <th>{{ __('Status') }}</th>
-        <th>{{ __('Updated At') }}</th>
     </tr>
     </thead>
 

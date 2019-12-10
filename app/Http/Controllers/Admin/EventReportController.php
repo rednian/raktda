@@ -49,9 +49,7 @@ class EventReportController extends Controller
                 ->addColumn('status', function (Event $user) {
                     return strtoupper($user->status);
                 })
-                ->addColumn('updated_at', function (Event $user) {
-                    return $user->updated_at;
-                })
+
                 ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address'])
                 ->make(true);
         }
@@ -95,9 +93,7 @@ class EventReportController extends Controller
                     ->addColumn('status', function (Event $user) {
                         return strtoupper($user->status);
                     })
-                    ->addColumn('updated_at', function (Event $user) {
-                        return $user->updated_at;
-                    })
+
                     ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address'])
                     ->make(true);
 
@@ -141,9 +137,7 @@ class EventReportController extends Controller
                     ->addColumn('status', function (Event $user) {
                         return strtoupper($user->status);
                     })
-                    ->addColumn('updated_at', function (Event $user) {
-                        return $user->updated_at;
-                    })
+
                     ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address'])
                     ->make(true);
             }
@@ -187,9 +181,7 @@ class EventReportController extends Controller
                     ->addColumn('status', function (Event $user) {
                         return strtoupper($user->status);
                     })
-                    ->addColumn('updated_at', function (Event $user) {
-                        return $user->updated_at;
-                    })
+
                     ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address'])
                     ->make(true);
 
@@ -232,9 +224,7 @@ class EventReportController extends Controller
                     ->addColumn('status', function (Event $user) {
                         return strtoupper($user->status);
                     })
-                    ->addColumn('updated_at', function (Event $user) {
-                        return $user->updated_at;
-                    })
+
                     ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address'])
                     ->make(true);
             }
@@ -277,9 +267,7 @@ class EventReportController extends Controller
                     ->addColumn('status', function (Event $user) {
                         return strtoupper($user->status);
                     })
-                    ->addColumn('updated_at', function (Event $user) {
-                        return $user->updated_at;
-                    })
+
                     ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address'])
                     ->make(true);
 
@@ -322,9 +310,7 @@ class EventReportController extends Controller
                     ->addColumn('status', function (Event $user) {
                         return strtoupper($user->status);
                     })
-                    ->addColumn('updated_at', function (Event $user) {
-                        return $user->updated_at;
-                    })
+
                     ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address'])
                     ->make(true);
             }
@@ -368,9 +354,7 @@ class EventReportController extends Controller
             ->addColumn('status', function (Event $user) {
                 return strtoupper($user->status);
             })
-            ->addColumn('updated_at', function (Event $user) {
-                return $user->updated_at;
-            })
+
             ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address'])
             ->make(true);
     }
@@ -413,9 +397,7 @@ class EventReportController extends Controller
             ->addColumn('status', function (Event $user) {
                 return strtoupper($user->status);
             })
-            ->addColumn('updated_at', function (Event $user) {
-                return $user->updated_at;
-            })
+
             ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address'])
             ->make(true);
     }
