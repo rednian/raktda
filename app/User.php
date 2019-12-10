@@ -67,8 +67,7 @@ class User extends Authenticatable implements Auditable
         return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id');
     }
 
-
-public function workschedule(){
+    public function workschedule(){
         return $this->hasOne(EmployeeWorkSchedule::class, 'user_id');
     }
 
@@ -78,6 +77,10 @@ public function workschedule(){
 
     public function scopeAreEmployees($query){
         return $query->whereType(4);
+    }
+
+    public function appointments(){
+        return $this->belongsToMany(Approval::class, 'approvers', 'user_id', 'approval_id');
     }
 }
 

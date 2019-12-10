@@ -8,7 +8,7 @@ class Approval extends Model
 {
     protected $table = 'smartrak_smartgov.approval';
     protected $primaryKey = 'approval_id';
-    protected $fillable = ['type', 'inspection_id', 'schedule_date', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['type', 'inspection_id', 'schedule_date_start', 'schedule_date_end', 'created_by', 'updated_by', 'deleted_by'];
     protected $dates = ['created_at', 'updated_at'];
 
     public $permit_type;

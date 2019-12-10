@@ -886,7 +886,7 @@
 												  						<div class="form-group form-group kt-hide">
 												  							<div class="kt-checkbox-inline">
 																				<label class="kt-checkbox">
-																					<input type="checkbox" id="site-inspection" name="inpection"> {{ __('Site Inspection required') }}
+																					<input type="checkbox" id="site-inspection" name="inspection"> {{ __('Site Inspection required') }}
 																					<span></span>
 																				</label>
 																			</div>
