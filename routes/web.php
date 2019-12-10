@@ -68,6 +68,8 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/event/{event}/truck-datatable','Admin\EventController@truckDatatable')->name('admin.event.truck.datatable');
     Route::get('/event/{event}/truck/{eventtruck}/datatable','Admin\EventController@truckRequirementDatatable')->name('admin.event.truck.requirement');
 
+    Route::get('/event/time/test', 'Admin\EventController@addAppointment')->name('admin.event.time');
+
   //---------------------------------------------------------------------------------------------------------------
   // Artist
   //---------------------------------------------------------------------------------------------------------------

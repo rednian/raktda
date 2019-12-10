@@ -9,8 +9,11 @@
 	use MaddHatter\LaravelFullcalendar\Calendar;
 	use App\Event;
 	use App\EventType;
+	use App\Holiday;
 	use App\EventTruck;
 	use App\EmployeeWorkSchedule;
+	use App\Approval;
+	use Illuminate\Database\Eloquent\Builder;
 	use Carbon\Carbon;
 	use App\Requirement;
 	use App\EventRequirement;
@@ -112,8 +115,6 @@
 			try {
 				DB::beginTransaction();
 
-				// dd($request->all());
-
 				$request['checked_at'] = Carbon::now();
 				$request['action']  =  $request->status;
 				$request['user_type']  =  'admin';
@@ -163,7 +164,6 @@
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
 					case 'need approval':
-						// dd($request->all());
 
 						// $user = User::availableInspector($event->issued_date)->get();
 						// $emp = EmployeeWorkSchedule::getSchedule()->get();
@@ -174,6 +174,11 @@
 						$event->update(['status'=>'need approval']);
 						$request['type'] = 1;
 						$comment = $event->comment()->create($request->all());
+
+						if($request->has('inspection')){
+							//CALL FUNCTION APPOINTMENT
+						}
+
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
 				}
@@ -529,5 +534,151 @@
 					$table['cancelled_count'] = Event::where('status', 'cancelled')->count();
 					return response()->json($table);
 			}
+		}
+
+		public function addAppointment($data = null){
+
+			$timeSlots = $this->SplitTime($this->roundTime(Carbon::now()->format('Y-m-d H:i:s'), 30), '04:00 PM', 60);
+			$day = Carbon::now();
+
+			$this->checkTimeAvailability($day, $timeSlots, $data);
+		}
+
+		private function checkTimeAvailability($day, $timeSlots, $permit){
+
+			$today = Carbon::now()->format('Y-m-d');
+
+			if ($day->format('Y-m-d') > $today){
+				$timeSlots = $this->SplitTime('09:00 AM', '04:00 PM', 60);
+			}
+
+			if(count($timeSlots) > 0){
+				foreach ($timeSlots as $time_key => $time) {
+
+					$start = $day->format('Y-m-d') . ' ' . $time['start'];
+					$end = $day->format('Y-m-d') . ' ' . $time['end'];
+
+					//CHECK IF TIME IS IN HOLIDAY
+					if($this->isTimeNotAvailable($start, $end)){
+						//RESET LOOP TIME SLOT
+					    $this->resetTimeSlot($time_key, $timeSlots, $day, $permit);
+					    continue;
+					}
+
+					//GET INSPECTOR THAT IS AVAILABLE THE DATE
+					if($this->availableInspector($start, $end)->count() == 0){
+						//RESET LOOP TIME SLOT
+						$this->resetTimeSlot($time_key, $timeSlots, $day, $permit);
+					    continue;
+					}
+
+					//GET AVAILABLE INSPECTORS
+					$inspectors = $this->availableInspector($start, $end)->withCount(['appointments' => function(Builder $query) use($day){
+						$query->where('schedule_date_start', '>=', Carbon::parse($day->format('Y-m-d'))->startOfDay()->toDateTimeString())
+						->where('schedule_date_end', '<=', Carbon::parse($day->format('Y-m-d'))->endOfDay()->toDateTimeString());
+					}])->orderBy('appointments_count', 'ASC')->get();
+
+					//CHECK PER INSPECTORS
+					foreach ($inspectors as $inspector) {
+
+						//CHECK APPOINTMENT DATE IF INSPECTOR IS WORKING
+						if(!$this->isInspectorWorking($inspector, $start, $end)){
+							continue;
+						}
+						
+						//COUNT APPOINTMENTS TODAY
+						$count = $this->countTodayAppointment($inspector, $day);
+
+						//CHECK IF INSPECTOR HAS LESS THAN 3 APPOINTMENTS TODAY
+						if($count < 3){
+
+							echo $inspector->NameEn . ' - ' . '('. $start . ' - ' . $end . ')';
+							
+							//ADD APPOINTMENT TO INSPECTOR
+							// $this->saveAppointment($inspector, [
+							// 	'schedule_date_start' => $start,
+							// 	'schedule_date_end' => $end,
+							// 	'inspection_id' => $permit['id'],
+							// 	'type' => $permit['type'],
+							// 	'created_by' => Auth::user()->user_id
+							// ]);
+
+							//END THE LOOP
+							break 2;
+						}
+					}
+				}
+			}else{
+				//PROCEED TO NEXT DAY
+				$day = $day->addDays(1);//ADD 1 DAY
+		    	$this->checkTimeAvailability($day, $timeSlots, $permit);
+			}
+		}
+
+		private function roundTime($timestamp, $precision = 30) {
+		  	$timestamp = strtotime($timestamp);
+		  	$precision = 60 * $precision;
+		  	return date('h:i A', round($timestamp / $precision) * $precision);
+		}
+
+		private function saveAppointment($inspector, $data){
+			try {
+				$inspector->appointments()->create($data);
+			} catch (\Exception $e) {
+				
+			}
+		}
+
+		private function countTodayAppointment($inspector, $today){
+			return $inspector->appointments()->where('schedule_date_start', '>=', Carbon::parse($today->format('Y-m-d'))->startOfDay()->toDateTimeString())->where('schedule_date_end', '<=', Carbon::parse($today->format('Y-m-d'))->endOfDay()->toDateTimeString())->count();
+		}
+
+		private function resetTimeSlot($time_key, $timeSlots, $today, $permit){
+			if ( $time_key == (count($timeSlots) - 1) ) {
+		    	$today = $today->addDays(1);//ADD 1 DAY
+		    	$this->checkTimeAvailability($today, $timeSlots, $permit);
+		    }
+		}
+
+		private function isTimeNotAvailable($timeStart, $timeEnd){
+			return Holiday::where('holiday_start', '<', $timeEnd)->where('holiday_end', '>', $timeStart)->exists();
+		}
+
+		private function SplitTime($StartTime, $EndTime, $Duration="60"){
+		    $ReturnArray = array ();// Define output
+		    $StartTime   = strtotime ($StartTime); //Get Timestamp
+		    $EndTime     = strtotime ($EndTime); //Get Timestamp
+
+		    $AddMins  = $Duration * 60;
+		    $buffer = 30 * 60;
+
+		    while ($StartTime <= $EndTime) //Run loop
+		    {
+		    	$StartTime += $buffer;
+		    	$end = $StartTime + $AddMins;
+
+		    	if($end <= $EndTime ){
+		    		$ReturnArray[] = [
+			        	'start' => date ("H:i:s", $StartTime),
+			        	'end' => date("H:i:s", $end)
+			        ];
+		    	}
+		        $StartTime += $AddMins; //Endtime check
+		    }
+		    return $ReturnArray;
+		}
+
+		private function availableInspector($startTime, $endTime){
+			return User::whereDoesntHave('appointments', function(Builder $q) use($endTime, $startTime){
+				$q->where('schedule_date_start', '<', $endTime)->where('schedule_date_end', '>', $startTime);
+			})->whereDoesntHave('leave', function(Builder $q) use($endTime, $startTime){
+				$q->where('leave_start', '<', $endTime)->where('leave_end', '>', $startTime);
+			})->where('type', 4)->whereHas('roles', function(Builder $q){
+				$q->where('roles.role_id', 4);
+			});
+		}
+
+		private function isInspectorWorking($inspector, $startTime, $endTime){
+			return $inspector->workschedule->getSchedule->getSchedule()->whereNull('is_dayoff')->where('day', Carbon::parse($startTime)->format('l'))->where('time_start', '<=', Carbon::parse($startTime)->format('H:i:s'))->where('time_end', '>=', Carbon::parse($endTime)->format('H:i:s'))->exists();
 		}
 	}
