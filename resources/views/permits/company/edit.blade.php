@@ -55,71 +55,161 @@
                                     <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
-                                                <div class="card-title" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
+                                                <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
                                                     <h6 class="kt-font-dark ">COMPANY DETAILS</h6>
                                                 </div>
                                             </div>
                                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6" style="">
                                                 <div class="card-body">
-                                                    <section class="row">
+                                                    <section class="row form-group form-group-sm">
                                                         <div class="col-md-6">
-                                                            <div class="form-group row">
-                                                                <label class="col-xl-2 col-lg-2 col-form-label">First Name</label>
-                                                                <div class="col-lg-9 col-xl-6">
-                                                                    <input class="form-control" type="text" value="Nick">
-                                                                </div>
-                                                            </div>
+                                                            <label >Company Name <span class="text-danger">*</span></label>
+                                                            <input name="name_en" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->name_en}}">
                                                         </div>
                                                         <div class="col-md-6">
-                                                            
+                                                            <label >Company Name (AR)<span class="text-danger">*</span></label>
+                                                            <input name="name_ar" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->name_ar}}">
+                                                        </div>
+                                                    </section>
+                                                    <section class="row form-group form-group-sm">
+                                                        <div class="col-md-6">
+                                                            <label >Trade License Number <span class="text-danger">*</span></label>
+                                                            <input name="trade_license" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->trade_license}}">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="row form-group form-group-sm">
+                                                                <div class="col-sm-6">
+                                                                    <label >Trade License Issued Date<span class="text-danger">*</span></label>
+                                                                    <input name="trade_license_issued_date" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->trade_license_issued_date}}">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                   <label >Trade License Expired Date<span class="text-danger">*</span></label>
+                                                                   <input name="trade_license_expired_date" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->trade_license_expired_date}}"> 
+                                                                </div>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                    </section>
+                                                    <section class="row form-group form-group-sm">
+                                                        <div class="col-md-6">
+                                                            <label >Email <span class="text-danger">*</span></label>
+                                                            <input name="company_email" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->company_email}}">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="row form-group form-group-sm">
+                                                                <div class="col-sm-6">
+                                                                    <label >Phone Number<span class="text-danger">*</span></label>
+                                                                    <input name="phone_number" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->phone_number}}">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                   <label >Website</label>
+                                                                   <input name="website" autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->website}}"> 
+                                                                </div>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                    </section>
+                                                    <section class="row form-group form-group-sm">
+                                                        <div class="col-md-6">
+                                                            <div class="row form-group form-group-sm">
+                                                                <div class="col-sm-6">
+                                                                    <label >Address<span class="text-danger">*</span></label>
+                                                                    <input name="website" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->address}}">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                   <label >Country <span class="text-danger">*</span></label>
+                                                                   <select name="country_id" class="form-control form-control-sm">
+                                                                       @if (App\Country::orderBy('name_en')->count() > 0)
+                                                                           @foreach (App\Country::orderBy('name_en')->get() as $country)
+                                                                           <option  {{ $country->country_id == $company->country_id ? 'selected': null }} value="{{$country->country_id}}">{{ucfirst($country->name_en)}}</option>
+                                                                           @endforeach
+                                                                       @endif
+                                                                   </select>
+                                                                </div>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="row form-group form-group-sm">
+                                                                <div class="col-sm-6">
+                                                                    <label >Emirate<span class="text-danger">*</span></label>
+                                                                    <select name="emirate_id"  class="form-control form-control-sm">
+                                                                       @if (App\Emirates::orderBy('name_en')->count() > 0)
+                                                                           @foreach (App\Emirates::orderBy('name_en')->get() as $emirate)
+                                                                           <option {{ $emirate->id == $company->emirate_id ? 'selected': null }} value="{{$emirate->id}}">{{ucfirst($emirate->name_en)}}</option>
+                                                                           @endforeach
+                                                                       @endif
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                   <label>Area<span class="text-danger">*</span></label>
+                                                                   <select required name="area_id" class="form-control form-control-sm">
+                                                                       @if (App\Areas::where('emirates_id', 5)->orderBy('area_en')->count() > 0)
+                                                                           @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as $area)
+                                                                           <option {{ $area->id == $company->area_id ? 'selected': null }}  value="{{$area->id}}">{{ucfirst($area->area_en)}}</option>
+                                                                           @endforeach
+                                                                       @endif
+                                                                   </select>
+                                                                </div>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                    </section>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>        
+                                    </div>
+                                    <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-10" id="accordion-contact">
+                                        <div class="card">
+                                            <div class="card-header" id="heading-contact">
+                                                <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-contact" aria-expanded="true" aria-controls="collapse-contact">
+                                                    <h6 class="kt-font-dark ">CONTACT PERSON DETAILS</h6>
+                                                </div>
+                                            </div>
+                                            <div id="collapse-contact" class="collapse show" aria-labelledby="heading-contact" data-parent="#accordion-contact" style="">
+                                                <div class="card-body">
+                                                    <section class="row form-group form-group-sm">
+                                                        <div class="col-md-6">
+                                                            <label>Name <span class="text-danger">*</span></label>
+                                                            <input autocomplete="off" required name="name_en" class="form-control form-control-sm" type="text" value="{{$company->contact->name_en}}">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label >Name (AR)<span class="text-danger">*</span></label>
+                                                            <input name="name_ar" autocomplete="off" required class="form-control form-control-sm" type="text" value="{{$company->contact->name_ar}}">
+                                                        </div>
+                                                    </section>
+                                                    <section class="row form-group form-group-sm">
+                                                        <div class="col-md-6">
+                                                            <label>Designation <span class="text-danger">*</span></label>
+                                                            <input autocomplete="off" required name="designation_en" class="form-control form-control-sm" type="text" value="{{$company->contact->designation_en}}">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label >Designation (AR)<span class="text-danger">*</span></label>
+                                                            <input name="designation_ar" autocomplete="off" required class="form-control form-control-sm" type="text" value="{{$company->contact->designation_en}}">
+                                                        </div>
+                                                    </section>
+                                                    
+                                                    
+                                                    <section class="row form-group form-group-sm">
+                                                        <div class="col-md-6">
+                                                            <label >Email Address<span class="text-danger">*</span></label>
+                                                            <input name="email" class="form-control form-control-sm" type="email" value="{{$company->contact->email}}">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label >Mobile Number <span class="text-danger">*</span></label>
+                                                            <input name="mobile_number" class="form-control form-control-sm" type="text" value="{{$company->contact->mobile_number}}">
                                                         </div>
                                                     </section>
                                                 </div>
                                             </div>
                                         </div>        
                                     </div>
-                                    
-
-                                    
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Last Name</label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <input class="form-control" type="text" value="Bold">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Company Name</label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <input class="form-control" type="text" value="Loop Inc.">
-                                            <span class="form-text text-muted">If you want your invoices addressed to a company. Leave blank to use your full name.</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Contact Phone</label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text"><i class="la la-phone"></i></span></div>
-                                                <input type="text" class="form-control" value="+35278953712" placeholder="Phone" aria-describedby="basic-addon1">
-                                            </div>
-                                            <span class="form-text text-muted">We'll never share your email with anyone else.</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Email Address</label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text"><i class="la la-at"></i></span></div>
-                                                <input type="text" class="form-control" value="nick.bold@loop.com" placeholder="Email" aria-describedby="basic-addon1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-group-last row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Company Site</label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Username" value="loop">
-                                                <div class="input-group-append"><span class="input-group-text">.com</span></div>
-                                            </div>
+                                    <div class="row ">
+                                        <div class="col-sm-12>">
+                                            
+                                            {{-- <button type="button" class="btn btn-warning btn-sm kt-font-transform-u kt-font-dark">Save as Draft</button> --}}
+                                            {{-- <button type="button" class="btn btn-maroon btn-sm kt-font-transform-u kt-font-dark">Submit Application</button> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +219,7 @@
                 </div>
                 
                 <div class="tab-pane" id="kt_user_edit_tab_2" role="tabpanel">
-                    <div class="kt-form kt-form--label-right">
+                    <div class="kt-form kt-form--label-right kt-hide">
                         <div class="kt-form__body">
                             <div class="kt-section kt-section--first">
                                 <div class="kt-section__body">

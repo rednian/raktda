@@ -154,6 +154,10 @@
                           <td class="kt-font-dark"><code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
                      </tr>
                      <tr>
+                         <td>{{ __('Expected Audience') }} :</td>
+                          <td class="kt-font-dark">{{$event->audience_number}}</td>
+                     </tr>
+                     <tr>
                          <td>{{ __('Printed Note') }} :</td>
                           <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->note_en) : $event->note_ar }}</td>
                      </tr>      
@@ -241,6 +245,18 @@
              </table>
           </div>
           <div class="tab-pane" id="kt_portlet_base_demo_2_4_tab_content" role="tabpanel">
+            <table class="table table-hover table-borderless border table-striped table-sm" id="truck-datatable">
+                <thead>
+                    <tr>
+                        <th class="no-wrap">{{ __('NAME') }}</th>
+                        <th>{{ __('REMARKS') }}</th>
+                        <th class="no-wrap">{{ __('CHECKED DATE') }}</th>
+                        <th class="no-wrap">{{ __('ACTION TAKEN') }}</th>
+                    </tr>
+                </thead>
+            </table>
+          </div>
+          <div class="tab-pane" id="kt_portlet_base_demo_4_4_tab_content" role="tabpanel">
             <table class="table table-hover table-borderless border table-striped table-sm" id="event-comment-datatable">
                 <thead>
                     <tr>

@@ -40,6 +40,7 @@
 				'cancelled_permit'=> Event::lastMonth(['cancelled'])->count(),
 				'rejected_permit'=> Event::lastMonth(['rejected'])->count(),
 				'approved_permit'=> Event::lastMonth(['approved-unpaid'])->count(),
+				'active'=> Event::whereStatus('active')->count(),
 
 			]);
 		}
@@ -410,9 +411,14 @@
 
 		public function imageDatatable(Request $request, Event $event)
 		{
-			$images = $event->eventRequirement()->where('image')->get();
-			return DataTables::of($images)
-			->make(true);
+			// return DataTables::of($even->otherUpload()->get())
+			// ->editColumn('path', function($image){
+			// 	return ''
+			// })
+			// ->editColumn('size', function($image){
+			// 	return $image->size;
+			// })
+			// ->make(true);
 		}
 
 		public function commentDatatable(Request $request, Event $event)

@@ -6,7 +6,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
         return redirect()->route('artist.index');
     })->name('company.dashboard');
 
-    Route::get('/{company}', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
+    Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
 
     // Route::get('{company_name}/dashboard', function () {
     //     return redirect()->route('artist.index');

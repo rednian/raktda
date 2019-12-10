@@ -73,7 +73,7 @@
       <section class="row">
          <div class="col-md-12">
             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="company-nav">
-               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('Company Registration') }}</a></li>
+               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Company Registration') }}</a></li>
                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-company">{{ __('Active Company') }}</a></li>
                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blaclist-company">{{ __('Blacklisted Company') }}</a></li>
             </ul>
@@ -137,7 +137,7 @@
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('PHONE NUMBER') }}</th>
-                            <th>{{ __('TYPE') }}</th>
+                            <th>{{ __('EMAIL') }}</th>
                             <th>{{ __('APPLIED DATE') }}</th>
                             <th>{{ __('STATUS') }}</th>
                         </tr>
@@ -246,7 +246,7 @@
          {data: 'reference_number'},
          {data: 'name'},
          {data: 'phone_number'},
-         {data: 'type'},
+         {data: 'email'},
          {data: 'date'},
          {data: 'status'},
          ],

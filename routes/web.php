@@ -125,7 +125,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
         ->name('admin.artist_permit.checkApplication');
 
     Route::get('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@applicationDetails')
-        ->name('admin.artist_permit.applicationdetails')->middleware('lock_artist_permit');
+        ->name('admin.artist_permit.applicationdetails');
 
     Route::get('/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')
         ->name('admin.artist_permit.datatable');

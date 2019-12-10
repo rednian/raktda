@@ -105,13 +105,13 @@
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
           role="tablist" id="artist-permit-nav">
           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-              data-target="#new-request">{{ __('New Event Requests') }}</a></li>
+              data-target="#new-request">{{ __('New Event Requests') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#pending-request"
-              data-target="#pending-request">{{ __('Pending Requests') }}</a></li>
+              data-target="#pending-request">{{ __('Pending Requests') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
               href="#processing-permit">{{ __('Processing Events') }}</a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
-              href="#active-permit">{{ __('Active Events') }}</a></li>
+              href="#active-permit">{{ __('Active Events') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab"
               href="#archive-permit">{{ __('Archive Events') }}</a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab"

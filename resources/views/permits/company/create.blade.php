@@ -213,6 +213,9 @@
                         </div>
                     </section>
                     <div class="form-group">
+                         <div class="g-recaptcha" data-sitekey="6LdnLwgUAAAAAAIb9L3PQlHQgvSCi16sYgbMIMFR"></div>
+                    </div>
+                    <div class="form-group">
                        <label>
                            <input name="agree" required type="checkbox" required=""> By clicking Register, you agree to our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>, including our <a href="#">Cookie Use</a>.
                        </label> 
@@ -229,6 +232,7 @@
             </div>
         </section>
     </div>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('assets/vendors/general/jquery/dist/jquery.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/vendors/custom/validation/js/formValidation.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/vendors/custom/validation/js/framework/bootstrap.min.js') }}" type="text/javascript"></script>
