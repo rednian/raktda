@@ -9,38 +9,46 @@
 <style>
     #active-artist_length{display: none}
 </style>
-<section class="form-row">
-	<div class="col-9">
-		<form class="form-row">
-			{{-- <div class="col-4">
-				<button type="button" id="btn-active-action" class="btn btn-warning btn-sm kt-font-transform-u">Take Action</button>
-			</div> --}}
-			<div class="col-3">
-				<select name="profession_id" id="artist-profession" class="form-control-sm form-control custom-select custom-select-sm " onchange="active_artist_table.draw()" >
-					<option selected disabled >{{ __('PROFESSION') }}</option>
-					@if ($professions->count() > 0)
-						@foreach ($professions as $profession)
-							<option value="{{ $profession->profession_id }}">{{Auth::user()->LanguageId == 1 ? ucwords($profession->name_en) : $profession->name_ar }}</option>
-						@endforeach
-					@endif
-				</select>
-			</div>
-			<div class="col-3">
-				<select  name="" id="artist-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="active_artist_table.draw()">
-					<option disabled selected>{{ __('STATUS') }}</option>
-					<option value="active">{{ __('Active Artists') }}</option>
-					<option value="blocked">{{ __('Blocked Artists') }}</option>
-				</select>
-			</div>
-			<div class="col-3">
-                <button type="button" class="btn btn-sm btn-secondary" id="artist-btn-reset">{{ __('RESET') }}</button>
-            </div>
-		</form>
-	</div>
 
-</section>
 <table class="table table-hover table-borderless table-striped border" id="active-artist">
 	 <thead>
+
+
+     <tr>
+
+     <th colspan="6"><section class="form-row">
+             <div class="col-12">
+                 <form class="form-row">
+                     {{-- <div class="col-4">
+                         <button type="button" id="btn-active-action" class="btn btn-warning btn-sm kt-font-transform-u">Take Action</button>
+                     </div> --}}
+                     <div class="col-3">
+                         <select name="profession_id" id="artist-profession" class="form-control-sm form-control custom-select custom-select-sm " onchange="active_artist_table.draw()" >
+                             <option selected disabled >{{ __('PROFESSION') }}</option>
+                             @if ($professions->count() > 0)
+                                 @foreach ($professions as $profession)
+                                     <option value="{{ $profession->profession_id }}">{{Auth::user()->LanguageId == 1 ? ucwords($profession->name_en) : $profession->name_ar }}</option>
+                                 @endforeach
+                             @endif
+                         </select>
+                     </div>
+                     <div class="col-3">
+                         <select  name="" id="artist-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="active_artist_table.draw()">
+                             <option disabled selected>{{ __('STATUS') }}</option>
+                             <option value="active">{{ __('Active Artists') }}</option>
+                             <option value="blocked">{{ __('Blocked Artists') }}</option>
+                         </select>
+                     </div>
+                     <div class="col-3">
+                         <button type="button" class="btn btn-sm btn-secondary" id="artist-btn-reset">{{ __('RESET') }}</button>
+                     </div>
+                 </form>
+             </div>
+
+         </section></th></tr>
+
+
+
 	 <tr>
 			{{-- <th></th> --}}
 			<th>{{ __('PERSON CODE') }}</th>

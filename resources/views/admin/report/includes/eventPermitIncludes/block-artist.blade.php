@@ -1,15 +1,5 @@
 <section class="form-row">
-	<div class="col-1">
-		<div>
-			<select name="length_change" id="archive-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
-			    <option value='10'>10</option>
-			    <option value='25'>25</option>
-			    <option value='50'>50</option>
-			    <option value='75'>75</option>
-			    <option value='100'>100</option>
-			</select>
-		</div>
-	</div>
+
 	<div class="col-8">
 		<section class="form-row">
 			<div class="col-4">
@@ -24,21 +14,21 @@
 			</div>
 			<div class="col-3">
 				<select name="" id="archive-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="ArtistPermit.new.table.draw()" >
-					<option selected disabled >REQUEST TYPE</option>
-					<option value="new">New Application</option>
-					<option value="amend">Amend Application</option>
-					<option value="renew">Renew Application</option>
+					<option selected disabled >{{__('REQUEST TYPE')}}</option>
+					<option value="new">{{__('New Application')}}</option>
+					<option value="amend">{{__('Amend Application')}}</option>
+					<option value="renew">{{__('Renew Application')}}</option>
 				</select>
 			</div>
 			<div class="col-3">
 				<select  name="" id="archive-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="ArtistPermit.archive.table.draw()">
-					<option disabled selected>PERMIT STATUS</option>
-					<option value="new">New</option>
-					<option value="modified">Amend</option>
+					<option disabled selected>{{__('PERMIT STATUS')}}</option>
+					<option value="new">{{__('New')}}</option>
+					<option value="modified">{{__('Amend')}}</option>
 				</select>
 			</div>
 			<div class="col-1">
-				<button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">RESET</button>
+				<button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">{{__('RESET')}}</button>
 			</div>
 		</section>
 	</div>

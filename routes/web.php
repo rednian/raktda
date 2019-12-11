@@ -170,11 +170,15 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::post('/event_reports/status', 'Admin\EventReportController@status')
         ->name('admin.event_reports.status');
 
-    Route::get('/event_reports/show/{id}', 'Admin\EventReportController@show')
+    Route::get('artist_reports/artist_permit_report/show/{id}', 'Admin\EventReportController@show')
         ->name('admin.event_reports.show');
 
-    Route::get('/artist_permit_report/show/{id}', 'Admin\ReportController@artist_permit_report')
+    Route::get('artist_reports/artist_permit_report/show/{id}', 'Admin\ReportController@artist_permit_report')
         ->name('admin.artist_permit_report.show');
+
+
+    Route::get('artist_reports/artist_permit_report/active_permit', 'Admin\ReportController@datatable')
+        ->name('admin.artist_permit_report.active_permit');
 
 
 
