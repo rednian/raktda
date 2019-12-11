@@ -177,6 +177,10 @@
 
 						if($request->has('inspection')){
 							//CALL FUNCTION APPOINTMENT
+							$this->addAppointment([
+								'id' => $event->event_id,
+								'type' => 'event'
+							]);
 						}
 
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
@@ -595,16 +599,19 @@
 							echo $inspector->NameEn . ' - ' . '('. $start . ' - ' . $end . ')';
 							
 							//ADD APPOINTMENT TO INSPECTOR
-							// $this->saveAppointment($inspector, [
-							// 	'schedule_date_start' => $start,
-							// 	'schedule_date_end' => $end,
-							// 	'inspection_id' => $permit['id'],
-							// 	'type' => $permit['type'],
-							// 	'created_by' => Auth::user()->user_id
-							// ]);
+							$this->saveAppointment($inspector, [
+								'schedule_date_start' => $start,
+								'schedule_date_end' => $end,
+								'inspection_id' => $permit['id'],
+								'type' => $permit['type'],
+								'created_by' => Auth::user()->user_id
+							]);
 
 							//END THE LOOP
 							break 2;
+						}else{
+							$this->resetTimeSlot($time_key, $timeSlots, $day, $permit);
+					    	continue;
 						}
 					}
 				}

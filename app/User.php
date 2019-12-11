@@ -79,6 +79,12 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         return $query->whereType(4);
     }
 
+    public function scopeAreInspectors($query){
+        return $query->whereType(4)->whereHas('roles', function($q){
+            $q->where('roles.role_id', 4);
+        });
+    }
+
     public function appointments(){
         return $this->belongsToMany(Approval::class, 'approvers', 'user_id', 'approval_id');
     }

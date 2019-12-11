@@ -172,6 +172,11 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::post('/event_reports/status', 'Admin\EventReportController@status')
         ->name('admin.event_reports.status');
 
+    //---------------------------------------------------------------------------------------------------------------
+    // Inspection Appointments
+    //---------------------------------------------------------------------------------------------------------------
+
+    Route::get('/inspection', 'Admin\InspectionController@index')->name('inspection.index');
 
 
 
