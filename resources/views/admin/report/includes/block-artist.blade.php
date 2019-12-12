@@ -34,7 +34,7 @@
 <table class="table  table-hover  table-borderless table-striped border" id="block-artist">
     <thead>
     <tr>
-        <th colspan="2"><select class="form-control" onchange="myFunction()" name="filter_search" id="filter_search">
+        <th colspan="2"><select class="form-control form-control-sm custom-select-sm custom-select" onchange="myFunction()" name="filter_search" id="filter_search">
                 <option>{{__('Search By')}}</option>
                     <option value="1">{{__('Person Code')}}</option>
                     <option value="2">{{__('Artist Status')}}</option>
@@ -44,11 +44,11 @@
                    </select></th>
         <th colspan="2">
             <div class="row" id="search_by_name" style="display:-webkit-box">
-                <input type="text" id="search_artist" class="form-control" name="search_artist" placeholder="Search..."><button style="" id="search_button_css" class="fa fa-search search_button"></button>
+                <input type="text" style="margin-top:3px" id="search_artist" class="form-control form-control-sm" name="search_artist" placeholder="Search..."><button  id="search_button_css" class="fa fa-search search_button"></button>
             </div>
 
             <div class="row"  id="search_by_nationality_tab" style="display:none">
-            <select type="text" id="search_by_nationality" class="form-control" style="width: 90%" name="search_artist" >
+            <select type="text"  id="search_by_nationality" class="form-control form-control-sm custom-select-sm custom-select" style="width: 110%" name="search_artist" >
                 <option value="">{{__('Select Nationality')}}</option>
 
                 @foreach($country as $key => $nationality)
@@ -58,7 +58,7 @@
             </div>
 
             <div class="row"  id="search_by_profession_tab" style="display:none">
-             <select type="text" id="search_by_profession" style="width: 90%" class="form-control" name="search_artist" >
+             <select type="text" id="search_by_profession" style="width: 63%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
                 <option value="">{{__('Select Profession')}}</option>
                 @foreach($profession as $key => $nationality)
                     <option value="{{$key}}">{{$nationality}}</option>
@@ -66,7 +66,7 @@
             </select>
             </div>
         </th>
-        <th><button style="margin-left: 20px" class="form-control" id="resetButton" >{{__('Reset')}}</button></th>
+        <th><button style="margin-left: 20px" class="btn btn-sm btn-secondary" id="resetButton" >{{__('Reset')}}</button></th>
         </tr>
     <tr style="font-size: 12px">
         <th></th>
@@ -1344,9 +1344,11 @@
                     }
                 ],
                 ajax: {
-                    url: '{{ route('admin.artist_permit.datatable') }}',
+                    url: '{{ route('admin.artist_permit_report.active_permit') }}',
                     data: function (d) {
-                        d.status = ['approved-unpaid', 'modification request', 'processing', 'need approval'];
+                        d.request_type =$('select[name="report-new-request-type"]').val();
+                            d.status =$('select[name="report-new-request-status"]').val();
+                              d.date =$('select[name="report-new-applied-date"]').val();
                     }
                 },
                 columnDefs: [

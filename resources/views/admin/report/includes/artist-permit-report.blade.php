@@ -24,7 +24,7 @@
 
             <div class="tab-content">
                 <div class="tab-pane show fade active" id="new-request" role="tabpanel">
-                    @include('admin.report.includes.eventPermitIncludes.new_request')
+                    @include('admin.report.includes.artistPermitIncludes.new_request')
                     {{--  @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
                      @else
                             @empty()
@@ -34,7 +34,7 @@
                 </div>
                 <div class="tab-pane show fade" id="pending-request" role="tabpanel">
                     {{-- @include('admin.artist_permit.includes.summary') --}}
-                    @include('admin.report.includes.eventPermitIncludes.pending-permit')
+                    @include('admin.report.includes.artistPermitIncludes.pending-permit')
                     {{--  @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
                      @else
                         @empty()
@@ -44,7 +44,7 @@
                 </div>
                 <div class="tab-pane fade" id="processing-permit" role="tabpanel">
                     {{-- @include('admin.artist_permit.includes.summary') --}}
-                    @include('admin.report.includes.eventPermitIncludes.processing')
+                    @include('admin.report.includes.artistPermitIncludes.processing')
                     {{--  @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request', 'processing', 'need approval'])->count() > 0)
                      @else
                             @empty()
@@ -54,7 +54,7 @@
                 </div>
                 <div class="tab-pane fade" id="active-permit" role="tabpanel">
                     {{-- @include('admin.artist_permit.includes.summary') --}}
-                    @include('admin.report.includes.eventPermitIncludes.approved')
+                    @include('admin.report.includes.artistPermitIncludes.approved')
                     {{--  @if(\App\Permit::whereIn('permit_status', ['active'])->count() > 0)
                      @else
                             @empty()
@@ -64,7 +64,7 @@
                 </div>
                 <div class="tab-pane fade" id="archive-permit" role="tabpanel">
 
-                    @include('admin.report.includes.eventPermitIncludes.archive')
+                    @include('admin.report.includes.artistPermitIncludes.archive')
                     {{--  @if(\App\Permit::whereIn('permit_status', ['rejected', 'expired'])->count() > 0)
                      @else
                             @empty()
@@ -73,7 +73,7 @@
                      @endif --}}
                 </div>
                 <div class="tab-pane fade" id="active-artist" role="tabpanel">
-                    @include('admin.report.includes.eventPermitIncludes.active-artist')
+                    @include('admin.report.includes.artistPermitIncludes.active-artist')
                     {{--  @if(\App\Artist::where('artist_status', 'active')->count() > 0)
                      @else
                             @empty()

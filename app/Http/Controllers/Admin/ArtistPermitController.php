@@ -88,7 +88,7 @@ class ArtistPermitController extends Controller
     public function submitApplication(Request $request, Permit $permit)
     {
 
-      
+
       try {
         DB::beginTransaction();
            $user_time = $request->session()->get('user');
@@ -123,7 +123,7 @@ class ArtistPermitController extends Controller
               //   'type' => 'artist',
               //   'created_by' => $request->user()->user_id
               // ]);
-              
+
 
               // if ($request->is_manual_schedule) {
 
@@ -162,7 +162,7 @@ class ArtistPermitController extends Controller
                   $status = $user->roles()->first()->role_id == 4 ? 'inspector' : 'manager';
 
                   $comment = $permit->comment()->where([
-                    'action' => 'pending', 
+                    'action' => 'pending',
                     'role_id' => $user->roles()->first()->role_id
                   ])->first();
 
@@ -514,7 +514,6 @@ class ArtistPermitController extends Controller
 
      	$limit = $request->length;
      	$start = $request->start;
-
       $permit = Permit::has('artist')
       ->when($request->request_type, function ($q) use ($request){
         $q->where('request_type', $request->request_type);
@@ -536,7 +535,7 @@ class ArtistPermitController extends Controller
 
       $table = Datatables::of($permit)
       ->addColumn('artist_number', function($permit){
-        $total = $permit->artistpermit()->count();  
+        $total = $permit->artistpermit()->count();
         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
         if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
         return 'Checked '.$check.' of '.$total;

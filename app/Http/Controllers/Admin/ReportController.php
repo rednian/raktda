@@ -301,7 +301,6 @@ class ReportController extends Controller
     public function dataTable(Request $request)
     {
         if($request->ajax()){
-
             $limit = $request->length;
             $start = $request->start;
 

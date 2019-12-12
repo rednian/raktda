@@ -40,7 +40,7 @@
                          </select>
                      </div>
                      <div class="col-3">
-                         <button type="button" class="btn btn-sm btn-secondary" id="artist-btn-reset">{{ __('RESET') }}</button>
+                             <button type="button" class="btn btn-sm btn-secondary" id="artist-btn-reset">{{ __('RESET') }}</button>
                      </div>
                  </form>
              </div>

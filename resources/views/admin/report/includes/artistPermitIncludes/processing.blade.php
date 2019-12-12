@@ -10,7 +10,7 @@
                          <div class="col-4">
                              <div class="input-group input-group-sm">
                                  <div class="kt-input-icon kt-input-icon--right">
-                                     <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="new-applied-date" >
+                                     <input name="report-   new-applied-date" autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="new-applied-date" >
                                      <span class="kt-input-icon__icon kt-input-icon__icon--right">
 				  				<span><i class="la la-calendar"></i></span>
 				  			</span>
@@ -18,7 +18,7 @@
                              </div>
                          </div>
                          <div class="col-3">
-                             <select name="" id="new-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="processingPermit.draw()" >
+                             <select name="report-new-request-type" id="new-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="processingPermit.draw()" >
                                  <option selected disabled >{{ __('REQUEST TYPE') }}</option>
                                  <option value="new">{{ __('New Application') }}</option>
                                  <option value="amend">{{ __('Amend Application') }}</option>
@@ -26,7 +26,7 @@
                              </select>
                          </div>
                          <div class="col-3">
-                             <select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="processingPermit.draw()">
+                             <select  name="report-new-request-status" id="new-request-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="processingPermit.draw()">
                                  <option disabled selected>{{ __('PERMIT STATUS') }}</option>
                                  <option value="new">{{ __('New') }}</option>
                                  <option value="modified">{{ __('Amend') }}</option>

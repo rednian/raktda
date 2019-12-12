@@ -7,7 +7,7 @@
     <thead>
 
     <tr>
-        <th colspan="3"><select class="form-control" name="applied_date" id="applied-date">
+        <th colspan="3"><select class="foform-control-sm form-control custom-select custom-select-sm " name="applied_date" id="applied-date">
                 <option value="">{{__('APPLIED DATE')}}</option>
                 <option value="1">{{__('Today')}}</option>
                 <option value="2">{{__('Yesterday')}}</option>
@@ -16,7 +16,7 @@
                 <option value="5">{{__('This Month')}}</option>
                 <option value="6">{{__('Last Month')}}</option>
             </select></th>
-        <th colspan="2"><select name="application_type" id="application-type" class="form-control">
+        <th colspan="2"><select name="application_type" id="application-type" class="form-control-sm form-control custom-select custom-select-sm ">
             <option value="">{{__('APPLICATION TYPE')}}</option>
             <option value="private">{{__('Private')}}</option>
             <option value="government">{{__('Government')}}</option>
@@ -25,13 +25,13 @@
         </th>
 
         <th colspan="2">
-            <select name="status" id="status" class="form-control">
+            <select name="status" id="status" class="form-control-sm form-control custom-select custom-select-sm ">
             <option value="">{{__('STATUS')}}</option>
             <option value="new">{{__('New')}}</option>
             <option value="amended">{{__('Amended')}}</option>
             </select>
         </th>
-        <th><button class="btn btn-secondary" id="reset-event-table">{{__('RESET')}}</button></th>
+        <th><button class="btn btn-sm btn-secondary" id="reset-event-table">{{__('RESET')}}</button></th>
     </tr>
 
     <tr>
