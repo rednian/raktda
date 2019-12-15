@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Event Permit Details
+            <h3 class="kt-portlet__head-title">{{__('Event Permit Details')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$event->permit_number}}
@@ -185,24 +185,27 @@
                 @endphp
                 <input type="hidden" id="liquor_id" value="{{$liquor->event_liquor_id}}">
                 <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Liquor Details</h5>
+                <div class="col-md-12 row">
+                    <span> Provided by Venue: </span>&emsp;
+                    <span class="kt-font-bold">{{$liquor->provided == 1 ? 'YES' : 'NO'}}</span>
+                </div>
+
+                @if($liquor->provided == 0)
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead class="text-center">
                             <th>{{__('Company')}}</th>
-                            <th>{{__('License No')}}</th>
-                            <th>{{__('License Expiry')}}</th>
-                            <th>{{__('Trade License')}}</th>
-                            <th>{{__('TL Expiry')}}</th>
+                            <th>{{__('Company Ar')}}</th>
+                            <th>{{__('Purchase Receipt')}}</th>
+                            <th>{{__('Liquor Service')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
                             <tr class="text-center">
-                                <td>{{getLangId() == 1 ? $liquor->company_name_en : $liquor->company_name_ar}}</td>
-                                <td>{{$liquor->license_number}}</td>
-                                <td>{{date('d-M-Y', strtotime($liquor->license_expired_date))}}</td>
-                                <td>{{$liquor->trade_license}}
-                                </td>
-                                <td>{{date('d-M-Y', strtotime($liquor->trade_license_expired_date))}}
+                                <td>{{$liquor->company_name_en}}</td>
+                                <td>{{$liquor->company_name_ar}}</td>
+                                <td>{{$liquor->purchase_receipt}}</td>
+                                <td>{{$liquor->liquor_service}}
                                 </td>
                                 <td class="text-center">
                                     <a class="btn btn-secondary"
@@ -211,111 +214,124 @@
                             </tr>
                         </tbody>
                     </table>
-                    @endif
                 </div>
-
-                <input type="hidden" class="map-input" id="address-input" value="{{$event->address}}" />
-                <input type="hidden" id="latitude" value="{{$event->latitude}}" />
-                <input type="hidden" id="longitude" value="{{$event->longitude}}" />
-                <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
-                    <div style="width: 100%; height: 100%" id="map"></div>
-                </div>
-                @if($artist)
-                {{-- {{dd($artist)}} --}}
-                <div class="pt-2 img-responsive">
-                    <h5 class="text--maroon kt-font-transform-u p-4">Artist Details</h5>
-                    <table class="table table-striped table-hover border table-borderless">
-                        <thead>
-                            <tr>
-                                <th>{{__('First Name')}}</th>
-                                <th>{{__('Last Name')}}</th>
-                                <th>{{__('Profession')}}</th>
-                                <th>{{__('Mobile Number')}}</th>
-                                <th>{{__('Status')}}</th>
-                                <th>{{__('Actions')}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($artist->artistPermit as $at)
-                            <tr>
-                                <td>{{$at->firstname_en}}</td>
-                                <td>{{$at->lastname_en}}</td>
-                                <td>{{$at->profession['name_en']}}</td>
-                                <td>{{$at->mobile_number}}</td>
-                                <td>
-                                    {{ucwords($at->artist_permit_status)}}
-                                </td>
-
-                                <td class="text-center"> <a
-                                        href="{{route('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
-                                        title="View">
-                                        <button class="btn btn-sm btn-secondary btn-elevate">View</button>
-                                    </a></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                @else
+                <div class="table-responsive">
+                    <div class="col-md-4 pb-2 row">
+                        <label
+                            class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Liquor Permit No')}}
+                        </label>
+                        <span class="col-md-6">{{$event->liquor_permit_no}}</span>
+                    </div>
                 </div>
                 @endif
+                @endif
+            </div>
 
-                @if(count($eventReq) > 0)
-                <div class="event--requirement-files pt-5">
-                    <table class="table table-hover table-borderless border table-striped">
-                        <thead class="text-center">
-                            <tr>
-                                <th class="text-left">{{__('Document Name')}}</th>
-                                <th>{{__('Issue Date')}}</th>
-                                <th>{{__('Expiry Date')}}</th>
-                                <th>{{__('View')}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($eventReq as $req)
-                            <tr>
-                                <td style="width:50%;">{{$req->requirement_name}}</td>
-                                <td class="text-center">
-                                    {{$req->pivot['issued_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['issued_date'])) : ''}}
-                                </td>
-                                <td class="text-center">
-                                    {{$req->pivot['expired_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['expired_date'])) : ''}}
-                                </td>
-                                <td class="text-center">
-                                    <a href="{{asset('storage')}}{{'/'.$req->pivot['path']}}" target="blank" ">
+            <input type="hidden" class="map-input" id="address-input" value="{{$event->address}}" />
+            <input type="hidden" id="latitude" value="{{$event->latitude}}" />
+            <input type="hidden" id="longitude" value="{{$event->longitude}}" />
+            <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
+                <div style="width: 100%; height: 100%" id="map"></div>
+            </div>
+            @if($artist)
+            {{-- {{dd($artist)}} --}}
+            <div class="pt-2 img-responsive">
+                <h5 class="text--maroon kt-font-transform-u p-4">Artist Details</h5>
+                <table class="table table-striped table-hover border table-borderless">
+                    <thead>
+                        <tr>
+                            <th>{{__('First Name')}}</th>
+                            <th>{{__('Last Name')}}</th>
+                            <th>{{__('Profession')}}</th>
+                            <th>{{__('Mobile Number')}}</th>
+                            <th>{{__('Status')}}</th>
+                            <th>{{__('Actions')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($artist->artistPermit as $at)
+                        <tr>
+                            <td>{{$at->firstname_en}}</td>
+                            <td>{{$at->lastname_en}}</td>
+                            <td>{{$at->profession['name_en']}}</td>
+                            <td>{{$at->mobile_number}}</td>
+                            <td>
+                                {{ucwords($at->artist_permit_status)}}
+                            </td>
+
+                            <td class="text-center"> <a
+                                    href="{{route('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
+                                    title="View">
+                                    <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                </a></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @endif
+
+            @if(count($eventReq) > 0)
+            <div class="event--requirement-files pt-5">
+                <table class="table table-hover table-borderless border table-striped">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="text-left">{{__('Document Name')}}</th>
+                            <th>{{__('Issue Date')}}</th>
+                            <th>{{__('Expiry Date')}}</th>
+                            <th>{{__('View')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($eventReq as $req)
+                        <tr>
+                            <td style="width:50%;">{{$req->requirement_name}}</td>
+                            <td class="text-center">
+                                {{$req->pivot['issued_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['issued_date'])) : ''}}
+                            </td>
+                            <td class="text-center">
+                                {{$req->pivot['expired_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['expired_date'])) : ''}}
+                            </td>
+                            <td class="text-center">
+                                <a href="{{asset('storage')}}{{'/'.$req->pivot['path']}}" target="blank" ">
                                     <button class=" btn btn-sm btn-secondary">View
-                                        </button></a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                    </button></a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
 
-                    @endif
-
-                </div>
+                @endif
 
             </div>
+
         </div>
     </div>
+</div>
 
-    @include('permits.event.common.view_food_truck', ['truck_req'=>$truck_req])
-    @include('permits.event.common.show_liquor', ['liquor_req'=>$liquor_req])
+@include('permits.event.common.view_food_truck', ['truck_req'=>$truck_req])
+@include('permits.event.common.show_liquor', ['liquor_req'=>$liquor_req])
 
-    @endsection
+@endsection
 
 
 
-    @section('script')
-    <script src="{{asset('js/company/map.js')}}"></script>
-    <script src="{{asset('js/company/uploadfile.js')}}"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
-        async defer></script>
+@section('script')
+<script src="{{asset('js/company/map.js')}}"></script>
+<script src="{{asset('js/company/uploadfile.js')}}"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
+    async defer></script>
 
-    <script>
-        $.ajaxSetup({
+<script>
+    $.ajaxSetup({
                         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
                     });
+
+
                 function viewThisTruck(id)
                 {
                     var url = "{{route('event.fetch_this_truck_details', ':id')}}";
@@ -339,7 +355,7 @@
                                 $('#regis_issue_date').val(moment(result.registration_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
                                 $('#regis_expiry_date').val(moment(result.registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
                                 $('#this_event_truck_id').val(result.event_truck_id);
-                                $('.ajax-file-upload-red').trigger('click');
+                                $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
                                 truckDocUpload();
                             }
                         }
@@ -360,7 +376,7 @@
                     fileName: "truck_file_"+i,
                     multiple: true,
                     downloadStr: `<i class="la la-download"></i>`,
-                    deleteStr: `<i class="la la-trash"></i>`,
+                    deleteStr: ``,
                     showFileSize: false,
                     showFileCounter: false,
                     showProgress: false,
@@ -368,9 +384,9 @@
                     returnType: "json",
                     maxFileCount: 2,
                     showPreview: false,
-                    showDelete: false,
+                    showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-default mb-2 mr-2',
                     formData: {
                         id: i , 
                         reqId: $('#truck_req_id_'+i).val()
@@ -444,7 +460,7 @@
                     fileName: "liquor_file_"+i,
                     multiple: true,
                     downloadStr: `<i class="la la-download"></i>`,
-                    deleteStr: `<i class="la la-trash"></i>`,
+                    deleteStr: ``,
                     showFileSize: false,
                     showFileCounter: false,
                     showProgress: false,
@@ -452,9 +468,9 @@
                     returnType: "json",
                     maxFileCount: 2,
                     showPreview: false,
-                    showDelete: false,
+                    showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-default mb-2 mr-2',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
                         
@@ -510,6 +526,32 @@
             }
         };
 
+        function checkLiquorVenue(id)
+        {
+            if(id == 1)
+            {
+                $('#liquor_provided_form').show();
+                $('#liquor_details_form').hide();
+                $('#liquor_upload_form').hide();
+            }else if(id == 0) {
+                $('#liquor_provided_form').hide();
+                $('#liquor_details_form').show();
+                $('#liquor_upload_form').show();
+            }
+        }
+
+
+        function changeLiquorService()
+        {
+            var service = $('#liquor_service').val();
+            if(service == 'limited')
+            {
+                $('#limited_types').show();
+            }else{
+                $('#limited_types').hide();
+            }
+        }
+
 
 
         function viewLiquor(){
@@ -521,25 +563,30 @@
                     if(data) 
                     {
                         $('#liquor_details').modal('show');
-                        $('#l_company_name_en').val(data.company_name_en);
-                        $('#l_company_name_ar').val(data.company_name_ar);
-                        $('#license_no').val(data.license_number);
-                        $('#license_no').val(data.license_number);
-                        $('#l_issue_date').val(data.license_issued_date ? moment(data.license_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY') : '');
-                        $('#l_expiry_date').val(data.license_expired_date ? moment(data.license_expired_date,'YYYY-MM-DD').format('DD-MM-YYYY') : '');
-                        $('#l_emirates').val(data.emirate_id ? JSON.parse(data.emirate_id) : '');
-                        $('#trade_license_no').val(data.trade_license);
-                        $('#tl_issue_date').val(data.trade_license_issued_date ? moment(data.trade_license_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY') : '');
-                        $('#tl_expiry_date').val(data.trade_license_expired_date ? moment(data.trade_license_expired_date , 'YYYY-MM-DD').format('DD-MM-YYYY') : '');
                         $('#event_liquor_id').val(data.event_liquor_id);
+                        $('#liquor_details .ajax-file-upload-red').trigger('click');
+                        if(data.provided == 1)
+                        {
+                            checkLiquorVenue(1);
+                            $('#liquor_permit_no').val(data.liquor_permit_no);
+                            $("input:radio[name='isLiquorVenue'][value='1']").attr('checked', true);
+                        }else {
+                            checkLiquorVenue(0);
+                            $("input:radio[name='isLiquorVenue'][value='0']").attr('checked', true)
+                            $('#l_company_name_en').val(data.company_name_en);
+                            $('#l_company_name_ar').val(data.company_name_ar);
+                            $('#purchase_receipt').val(data.purchase_receipt);
+                            $('#liquor_service').val(data.liquor_service);
+                            changeLiquorService();
+                            $('#liquor_types').val(data.liquor_types);
+                            liquorDocUpload();
+                        }
                     }
-                    $('.ajax-file-upload-red').trigger('click');
-                    liquorDocUpload();
                 }
             });
         }
 
 
  
-    </script>
-    @endsection
+</script>
+@endsection

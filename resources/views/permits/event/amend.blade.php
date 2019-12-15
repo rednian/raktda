@@ -4,6 +4,8 @@
 
 @section('content')
 
+<link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
+
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
@@ -137,163 +139,154 @@
 
             <div>
                 @if($event->is_liquor)
-                <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Liquor Details</h5>
-                <div>
-                    <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
-                        <div class="row">
-                            <div class="col-md-4 form-group form-group-xs">
-                                <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}}</label>
-                                <input type="text" class="form-control form-control-sm" name="l_company_name_en"
-                                    id="l_company_name_en" value="{{$event->liquor->company_name_en}}"
-                                    autocomplete="off" placeholder="Company Name">
-                            </div>
-                            <div class="col-md-4 form-group form-group-xs">
-                                <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}}</label>
-                                <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
-                                    value="{{$event->liquor->company_name_ar}}" id="l_company_name_ar"
-                                    autocomplete="off" placeholder="Company Name - Ar">
-                            </div>
-                            <div class="col-md-4 form-group form-group-xs">
-                                <label for="" class="col-form-label kt-font-bold">{{__('Trade License No')}}</label>
-                                <input type="text" class="form-control form-control-sm" name="trade_license_no"
-                                    value="{{$event->liquor->trade_license}}" id="trade_license_no" autocomplete="off"
-                                    placeholder="Trade License No">
-                            </div>
-                            <div class="col-md-4 form-group form-group-xs">
-                                <label for="" class="col-form-label kt-font-bold">{{__('TL Issue')}} </label>
-                                <input type="text" class="form-control form-control-sm date-picker" name="tl_issue_date"
-                                    value="{{date('d-m-Y', strtotime($event->liquor->trade_license_issued_date))}}"
-                                    data-date-end-date="+0d" id="tl_issue_date" autocomplete="off"
-                                    placeholder="DD-MM-YYYY">
-                            </div>
-                            <div class="col-md-4 form-group form-group-xs">
-                                <label for="" class="col-form-label kt-font-bold">{{__('TL Expiry')}} </label>
-                                <input type="text" class="form-control form-control-sm date-picker"
-                                    name="tl_expiry_date"
-                                    value="{{date('d-m-Y', strtotime($event->liquor->trade_license_expired_date))}}"
-                                    data-date-start-date="+0d" id="tl_expiry_date" autocomplete="off"
-                                    placeholder="DD-MM-YYYY">
-                            </div>
-
-                            <div class="col-md-4 form-group form-group-xs">
-                                <label for="" class="col-form-label kt-font-bold">{{__('License No')}}</label>
-                                <input type="text" class="form-control form-control-sm" name="license_no"
-                                    id="license_no" autocomplete="off" value="{{$event->liquor->license_number}}"
-                                    placeholder="License No">
-                            </div>
-                            <div class="col-md-4 form-group form-group-xs">
-                                <label for="" class="col-form-label kt-font-bold">{{__('License Issue')}} </label>
-                                <input type="text" class="form-control form-control-sm date-picker" name="l_issue_date"
-                                    data-date-end-date="+0d" id="l_issue_date"
-                                    value="{{date('d-m-Y', strtotime($event->liquor->license_issued_date))}}"
-                                    autocomplete="off" placeholder="DD-MM-YYYY">
-                            </div>
-                            <div class="col-md-4 form-group form-group-xs">
-                                <label for="" class="col-form-label kt-font-bold">{{__('License Expiry')}} </label>
-                                <input type="text" class="form-control form-control-sm date-picker" name="l_expiry_date"
-                                    value="{{date('d-m-Y', strtotime($event->liquor->license_expired_date))}}"
-                                    data-date-start-date="+0d" id="l_expiry_date" autocomplete="off"
-                                    placeholder="DD-MM-YYYY">
-                            </div>
-                            <div class="col-md-4 form-group form-group-xs">
-                                <label for="" class="col-form-label kt-font-bold">{{__('Emirates')}} </label>
-                                <select name="l_emirates[]" id="l_emirates" multiple
-                                    class="form-control form-control-sm">
-                                    <option value=" ">{{__('Select')}}</option>
-                                    @foreach($emirates as $em)
-                                    <option value="{{$em->id}}"
-                                        {{ in_array($em->id,json_decode($event->liquor->emirate_id)) ? 'selected' : ''}}>
-                                        {{$em->name_en}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <input type="hidden" id="event_liquor_id" value="{{$event->liquor->event_liquor_id}}">
-                        </div>
-                    </form>
+                <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Liquor Details')}}</h5>
+                <div class="col-md-12 form-group form-group-xs d-flex">
+                    <label class="col-form-label"> {{__('Provided by venue')}}
+                        ?</label>
+                    <div class="kt-radio-inline" style="margin: auto 5%;">
+                        <label class="kt-radio ">
+                            <input type="radio" name="isLiquorVenue" onclick="checkLiquorVenue(1)" value="1">
+                            {{__('Yes')}}
+                            <span></span>
+                        </label>
+                        <label class="kt-radio">
+                            <input type="radio" name="isLiquorVenue" onclick="checkLiquorVenue(0)" value="0" checked>
+                            {{__('No')}}
+                            <span></span>
+                        </label>
+                    </div>
                 </div>
-                <div class="kt-margin-t-20">
-                    <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Liquor Required Documents')}}
-                    </h5>
-                    <form id="liquor_upload_form" class="col-md-12">
-                        <input type="hidden" id="liquor_document_count" value="{{count($liquor_req)}}">
-                        @php
-                        $i = 1;
-                        @endphp
-                        @foreach($liquor_req as $req)
-                        <div class="row">
-                            <div class="col-lg-4 col-sm-12">
-                                <label
-                                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
-                                    <span id="cnd_{{$i}}"></span>
-                                </label>
-                                <p for="" class="reqName">
-                                    {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
-                                </p>
-                            </div>
-                            <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$i}}">
-                            <input type="hidden" value="{{$req->requirement_name}}" id="liqour_req_name_{{$i}}">
-                            <div class="col-lg-4 col-sm-12">
-                                <label style="visibility:hidden">hidden</label>
-                                <div id="liquoruploader_{{$i}}">{{__('Upload')}}
-                                </div>
-                            </div>
-                            <input type="hidden" id="datesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
-                            @if($req->dates_required == 1)
-                            <div class="col-lg-2 col-sm-12">
-                                <label for="" class="text--maroon kt-font-bold"
-                                    title="Issue Date">{{__('Issue Date')}}</label>
-                                <input type="text" class="form-control form-control-sm date-picker"
-                                    name="liquor_doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                    id="liquor_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
-                            </div>
-                            <div class="col-lg-2 col-sm-12">
-                                <label for="" class="text--maroon kt-font-bold"
-                                    title="Expiry Date">{{__('Expiry Date')}}</label>
-                                <input type="text" class="form-control form-control-sm date-picker"
-                                    name="liquor_doc_exp_date_{{$i}}" id="liquor_doc_exp_date_{{$i}}"
-                                    placeholder="DD-MM-YYYY" />
-                            </div>
-                            @endif
+                <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
+                    <div class="row">
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}} <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-sm" name="l_company_name_en"
+                                id="l_company_name_en" autocomplete="off" placeholder="company name">
                         </div>
-                        @php
-                        $i++;
-                        @endphp
-                        @endforeach
-                    </form>
-                </div>
-
-                @endif
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}} <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
+                                id="l_company_name_ar" dir="rtl" autocomplete="off" placeholder="company name - Ar">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Purchase Receipt No')}} <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-sm" name="purchase_receipt"
+                                id="purchase_receipt" autocomplete="off" placeholder="{{__('Purchase Receipt No')}}">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Liquor Service')}} <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-control form-control-sm" name="liquor_service" id="liquor_service"
+                                onchange="changeLiquorService()">
+                                <option value="">{{__('Select')}}</option>
+                                <option value="limited">{{__('Limited')}}</option>
+                                <option value="unlimited">{{__('Unlimited')}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs" id="limited_types">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor')}} <span
+                                    class="text-danger">*</span></label>
+                            <textarea type="text" class="form-control form-control-sm" name="liquor_types"
+                                id="liquor_types" autocomplete="off" placeholder="{{__('Types of Liquor')}}"></textarea>
+                        </div>
+                        <input type="hidden" id="event_liquor_id" value="{{$event->liquor->event_liquor_id}}">
+                    </div>
+                </form>
+                <form id="liquor_provided_form" autocomplete="off">
+                    <div class="col-md-4 form-group form-group-xs">
+                        <label for="" class="col-form-label kt-font-bold">{{__('Liquor Permit No')}} <span
+                                class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" name="liquor_permit_no"
+                            id="liquor_permit_no" autocomplete="off" placeholder="{{__('Liquor Permit No')}}">
+                    </div>
+                </form>
+            </div>
+            <div class="kt-margin-t-20" id="liquor_upload_form-div">
+                <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Liquor Required Documents')}}
+                </h5>
+                <form id="liquor_upload_form" class="col-md-12">
+                    <input type="hidden" id="liquor_document_count" value="{{count($liquor_req)}}">
+                    @php
+                    $i = 1;
+                    @endphp
+                    @foreach($liquor_req as $req)
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-12">
+                            <label
+                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                                <span id="cnd_{{$i}}"></span>
+                            </label>
+                            <p for="" class="reqName">
+                                {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                            </p>
+                        </div>
+                        <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$i}}">
+                        <input type="hidden" value="{{$req->requirement_name}}" id="liqour_req_name_{{$i}}">
+                        <div class="col-lg-4 col-sm-12">
+                            <label style="visibility:hidden">hidden</label>
+                            <div id="liquoruploader_{{$i}}">{{__('Upload')}}
+                            </div>
+                        </div>
+                        <input type="hidden" id="datesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
+                        @if($req->dates_required == 1)
+                        <div class="col-lg-2 col-sm-12">
+                            <label for="" class="text--maroon kt-font-bold"
+                                title="Issue Date">{{__('Issue Date')}}</label>
+                            <input type="text" class="form-control form-control-sm date-picker"
+                                name="liquor_doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                id="liquor_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                        </div>
+                        <div class="col-lg-2 col-sm-12">
+                            <label for="" class="text--maroon kt-font-bold"
+                                title="Expiry Date">{{__('Expiry Date')}}</label>
+                            <input type="text" class="form-control form-control-sm date-picker"
+                                name="liquor_doc_exp_date_{{$i}}" id="liquor_doc_exp_date_{{$i}}"
+                                placeholder="DD-MM-YYYY" />
+                        </div>
+                        @endif
+                    </div>
+                    @php
+                    $i++;
+                    @endphp
+                    @endforeach
+                </form>
             </div>
 
-            <input type="submit"
-                class="col-md-2 kt-margin-t-20 btn btn--yellow btn-sm kt-font-bold kt-font-transform-u float-right"
+            @endif
+        </div>
+
+        <div class="d-flex pull-right  kt-margin-t-20 justify-content-md-end justify-content-sm-center">
+            <input type="submit" class="col-md-2 btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                 id="submit_btn" value="submit">
-
         </div>
+
     </div>
+</div>
 
 
-    <div class="modal hide" id="removeModal" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{__('Remove Truck')}}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body d-flex justify-content-between">
-                    <h6 class="text--maroon">Are you sure to remove data ?</h6>
-                    <input type="hidden" id="remove_truck_id">
-                    <button class="btn btn-sm btn--yellow" onclick="deleteThisTruck()">{{__('Ok')}}</button>
-                </div>
+<div class="modal hide" id="removeModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Remove Truck')}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body d-flex justify-content-between">
+                <h6 class="text--maroon">Are you sure to remove data ?</h6>
+                <input type="hidden" id="remove_truck_id">
+                <button class="btn btn-sm btn--yellow" onclick="deleteThisTruck()">{{__('Ok')}}</button>
             </div>
         </div>
     </div>
+</div>
 
 
 
-    {{--
+{{--
 
             @if(count($eventReq) > 0)
             <div class="event--requirement-files pt-5">
@@ -310,27 +303,27 @@
                         @foreach($eventReq as $req)
                         <tr>
                             <td style="width:50%;">{{$req->requirement_name}}</td>
-    <td class="text-center">
-        {{$req->pivot['issued_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['issued_date'])) : ''}}
-    </td>
-    <td class="text-center">
-        {{$req->pivot['expired_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['expired_date'])) : ''}}
-    </td>
-    <td class="text-center">
-        <a href="{{asset('storage')}}{{'/'.$req->pivot['path']}}" target="blank" ">
+<td class="text-center">
+    {{$req->pivot['issued_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['issued_date'])) : ''}}
+</td>
+<td class="text-center">
+    {{$req->pivot['expired_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['expired_date'])) : ''}}
+</td>
+<td class="text-center">
+    <a href="{{asset('storage')}}{{'/'.$req->pivot['path']}}" target="blank" ">
                                     <button class=" btn btn-sm btn-secondary">View
-            </button></a>
-    </td>
-    </tr>
-    @endforeach
-    </tbody>
-    </table>
+        </button></a>
+</td>
+</tr>
+@endforeach
+</tbody>
+</table>
 
 </div>
 @endif
 --}}
 
-@include('permits.event.common.show_warning_modal');
+@include('permits.event.common.show_warning_modal', ['day_count' => getSettings()->event_start_after]);
 
 @include('permits.event.common.amend_food_truck', ['truck_req'=>$truck_req])
 
@@ -353,10 +346,14 @@
     var truckDocMessages = {};
     var docRules = {};
     var docMessages = {};
+    var liquorNames= {};
 
     $(document).ready(function(){
         liquorDocUpload();
         editTruck();
+
+        $('#liquor_provided_form').hide();
+        $('#limited_types').hide();
     })
 
     $('.datepicker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
@@ -401,20 +398,25 @@
 
         $('#submit_btn').click(function(){
             var hasFile = liqourDocValidation();
-            if(liquorValidator.form() && hasFile)
+            var type = $("input:radio[name='isLiquorVenue']:checked").val();
+            if(type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form())
             {
-                liquorDetails = {
-                    company_name_en: $('#l_company_name_en').val(),
-                    company_name_ar: $('#l_company_name_ar').val(),
-                    license_no: $('#license_no').val(),
-                    l_emirates: $('#l_emirates').val(),
-                    l_issue_date: $('#l_issue_date').val(),
-                    l_expiry_date: $('#l_expiry_date').val(),
-                    trade_license_no: $('#trade_license_no').val(),
-                    tl_issue_date: $('#tl_issue_date').val(),
-                    tl_expiry_date: $('#tl_expiry_date').val()
-                };
-                var liquorDocDetails = localStorage.getItem('liquordocumentDetails');
+                if(type == 0)
+                {
+                    liquorDetails = {
+                        company_name_en: $('#l_company_name_en').val(),
+                        company_name_ar: $('#l_company_name_ar').val(),
+                        purchase_receipt: $('#purchase_receipt').val(),
+                        liquor_service: $('#liquor_service').val(),
+                    };
+                    if($('#liquor_service').val() == 'limited'){
+                        liquorDetails['liquor_types'] = $('#liquor_types').val()
+                    }
+                } else {
+                    liquorDetails = {
+                        liquor_permit_no: $('#liquor_permit_no').val(),
+                    };
+                }
                 $.ajax({    
                     url:  "{{route('event.applyAmend')}}",
                     type:'POST',
@@ -423,9 +425,11 @@
                         issued_date: $('#issued_date').val(),
                         expired_date: $('#expired_date').val(),
                         time_start:  $('#time_start').val(),
+                        type: type,
                         time_end: $('#time_end').val(),
                         liquorDetails: liquorDetails,
-                        liquorDocDetails: liquorDocDetails,
+                        liquorDocDetails: JSON.stringify(liquorDocDetails),
+                        liquorNames: JSON.stringify(liquorNames),
                         event_liquor_id: $('#event_liquor_id').val()
                     },  
                     success: function (result) {
@@ -828,32 +832,30 @@
 
 
 
+       
         var liquorValidator = $('#liquor_details_form').validate({
             rules: {
                 l_company_name_en: 'required',
                 l_company_name_ar: 'required',
-                license_no: 'required',
-                l_issue_date: 'required',
-                l_expiry_date: 'required',
-                "l_emirates[]": {
-                    l_emirate: true,
-                },
-                trade_license_no: 'required',
-                tl_issue_date: 'required',
-                tl_expiry_date: 'required'
+                purchase_receipt: 'required',
+                liquor_service: 'required',
             },
             messages: {
                 l_company_name_en: '',
                 l_company_name_ar: '',
-                license_no: '',
-                l_issue_date: '',
-                l_expiry_date: '',
-                "l_emirates[]": 'must have rasalkhaimah',
-                trade_license_no: '',
-                tl_issue_date: '',
-                tl_expiry_date: ''
+                purchase_receipt: '',
+                liquor_service: '',
             }
         });
+
+        var liquorProvidedValidator = $('#liquor_provided_form').validate({
+            rules: {
+                liquor_permit_no: 'required'
+            },
+            messages: {
+                liquor_permit_no: ''
+            }
+        })
 
         function liqourDocValidation(){
             var hasFile = true;
@@ -864,6 +866,11 @@
             {
                 for (var d = 1; d <= reqCount; d++) 
                 {
+                    let children = $('#liquor-file-upload_' + d).children();
+                    let fileNames = Object.keys(children).map(function(key){
+                        return children[key].innerText != undefined ? children[key].innerText : '';
+                    });
+
                     if($('#liquor-file-upload_'+d).length) {
                         if($('#liquor-file-upload_'+d).contents().length === 0)
                         {
@@ -874,8 +881,13 @@
                             $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
                         }
                         liquorDocDetails[d] = {
-                            issue_date: $('#liquor_doc_issue_date_' + d).val(),
-                            exp_date: $('#liquor_doc_issue_date_' + d).val(),
+                            issue_date: $('#liquor_doc_issue_date_' + d).length ? $('#liquor_doc_issue_date_' + d).val() : '',
+                            exp_date: $('#liquor_doc_exp_date_' + d).length ? $('#liquor_doc_exp_date_' + d).val() : '',
+                        }
+
+                        liquorNames[d] = {
+                            reqId: $('#liqour_req_id_'+d).val(),
+                            fileNames
                         }
                     }
                 }
@@ -885,10 +897,11 @@
             } else {
                 hasFile = true;
             }
-            localStorage.setItem('liquordocumentDetails', JSON.stringify(liquorDocDetails));
+            // localStorage.setItem('liquordocumentDetails', JSON.stringify());
 
             return hasFile;
         }
+
 
 
 
@@ -992,14 +1005,66 @@
             }
         };
 
-        
- 
-        $.validator.addMethod("l_emirate", function(value, element) {
-            // return $('select[name="l_emirates[]"]').includes('5');
-            return value.includes("5");
-        },'License must be valid in Rasalkhaimah');
-    
+        function checkLiquorVenue(id)
+        {
+            if(id == 1)
+            {
+                $('#liquor_provided_form').show();
+                $('#liquor_details_form').hide();
+                $('#liquor_upload_form').hide();
+                $('#liquor_upload_form-div').hide();
+            }else if(id == 0) {
+                $('#liquor_provided_form').hide();
+                $('#liquor_details_form').show();
+                $('#liquor_upload_form').show();
+                $('#liquor_upload_form-div').show();
+            }
+        }
 
+        function changeLiquorService()
+        {
+            var service = $('#liquor_service').val();
+            if(service == 'limited')
+            {
+                $('#limited_types').show();
+            }else{
+                $('#limited_types').hide();
+            }
+        }
+
+        function editLiquor(){
+            var url = "{{route('event.fetch_liquor_details_by_event_id', ':id')}}";
+            url = url.replace(':id', $('#event_id').val());
+            $.ajax({
+                url:  url,
+                success: function (data) {
+                    if(data) 
+                    {
+                        $('#liquor_details .ajax-file-upload-red').trigger('click');
+                        $('#liquor_details').modal('show');
+                        $('#event_liquor_id').val(data.event_liquor_id);
+                        if(data.provided == 1)
+                        {
+                            checkLiquorVenue(1);
+                            $('#liquor_permit_no').val(data.liquor_permit_no);
+                            $("input:radio[name='isLiquorVenue'][value='1']").attr('checked', true);
+                        }else {
+                            checkLiquorVenue(0);
+                            $("input:radio[name='isLiquorVenue'][value='0']").attr('checked', true)
+                            $('#l_company_name_en').val(data.company_name_en);
+                            $('#l_company_name_ar').val(data.company_name_ar);
+                            $('#purchase_receipt').val(data.purchase_receipt);
+                            $('#liquor_service').val(data.liquor_service);
+                            changeLiquorService();
+                            $('#liquor_types').val(data.liquor_types);
+                            liquorDocUpload();
+                        }
+                    }
+                }
+            });
+        }
+
+        
 
 </script>
 @endsection

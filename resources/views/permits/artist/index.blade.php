@@ -269,11 +269,11 @@
             processing: true,
             serverSide: true,
             searching: true,
-            ordering: false,
+            // ordering: false,
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            // order:[[3,'desc']],
+            order:[[3,'desc']],
             ajax:'{{route("company.fetch_existing_drafts")}}',
             columns: [
                 { data: 'issued_date', name: 'issued_date' },

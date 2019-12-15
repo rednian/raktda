@@ -132,7 +132,7 @@
             <div class="modal-body">
                 <form action="{{route('event.cancel')}}" id="cancel_permit_form" method="POST" novalidate>
                     @csrf
-                    <label>Are you sure to Cancel this Permit of Ref No. <span class="text--maroon"
+                    <label>Are you sure to Cancel this Permit of <span class="text--maroon"
                             id="cancel_permit_number"></span>
                         ?</label>
                     <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..." style="resize:none;"
@@ -300,7 +300,7 @@
                 // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
                 { data: 'details', name: 'details' },
-                { data: 'download', name: 'download' },
+                { data: 'download', name: 'download',  className: "text-center" },
             ],
             columnDefs: [
                 {
@@ -309,7 +309,7 @@
                     render: function(data, type, full, meta) {
 						return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span >${full.type.name_ar}</span>`;
 					}
-                },
+                }
             ],
             language: {
                 emptyTable: "No Existing Event Permits"
@@ -364,7 +364,7 @@
 
     });
 
-    const cancel_permit = (id, refno) => {
+    const cancel_permit = (id, refno, permit_no) => {
         var url = "{{route('company.event.get_status', ':id')}}";
         url = url.replace(':id', id);
         $.ajax({
@@ -375,7 +375,12 @@
                     if(result == 'new' || result == 'active'){
                         $('#cancel_permit').modal('show');
                         $('#cancel_permit_id').val(id);
-                        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+                        if(permit_no)
+                        {
+                            $('#cancel_permit_number').html('<strong>'+permit_no+'</strong>');
+                        }else{
+                            $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+                        }
                     }else {
                             alert('Permit is already in processing');
                     }
@@ -386,6 +391,7 @@
 
     }
 
+    
     $('#cancel_permit_form').validate({
         rules: {
             cancel_reason: 'required'
@@ -408,16 +414,7 @@
 
             }
         });
-    }
-
-    $('#cancel_permit_form').validate({
-        rules: {
-            cancel_reason: 'required'
-        },
-        message: {
-            cancel_reason: 'Please fill the field'
-        }
-    });
+    }   
 
 
     const rejected_permit = id => {

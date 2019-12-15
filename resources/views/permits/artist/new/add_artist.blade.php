@@ -68,6 +68,7 @@ $language_id = Auth::user()->LanguageId;
                     <input type="hidden" id="from_date" value="{{session($user_id.'_apn_from_date')}}">
                     <input type="hidden" id="to_date" value="{{session($user_id.'_apn_to_date')}}">
                     <input type="hidden" id="location" value="{{session($user_id.'_apn_location')}}">
+                    <input type="hidden" id="location_ar" value="{{session($user_id.'_apn_location_ar')}}">
                     <input type="hidden" id="is_event"
                         value="{{session($user_id.'_apn_is_event') ? session($user_id.'_apn_is_event') : '' }}">
                     <input type="hidden" id="event_id" value="{{session($user_id.'_apn_event_id')}}">
@@ -1776,6 +1777,7 @@ $language_id = Auth::user()->LanguageId;
             var from_date  = $('#from_date').val();
             var to_date = $('#to_date').val();
             var location = $('#location').val();
+            var location_ar = $('#location_ar').val();
             var is_event = $('#is_event').val();
             var event_id = $('#event_id').val();
             var permit_id = $('#permit_id').val();
@@ -1785,6 +1787,7 @@ $language_id = Auth::user()->LanguageId;
                 from : from_date,
                 to: to_date,
                 location: location,
+                location_ar: location_ar,
                 is_event: is_event,
                 event_id: event_id
             }

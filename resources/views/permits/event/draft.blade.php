@@ -37,25 +37,28 @@
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
                                 <form id="eventdetails" action="" novalidate autocomplete="off">
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+                                    <section
+                                        class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                                        id="event-details">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
                                                 <div class="card-title show" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u kt-font-dark">Event Details</h6>
+                                                    <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark">{{__('Event
+                                                Details')}}</h6>
                                                 </div>
                                             </div>
                                             <input type="hidden" id="event_id" value="{{$event->event_id}}">
                                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
-                                                data-parent="#accordionExample5">
+                                                data-parent="#event-details">
                                                 <div class="card-body">
                                                     <div class="row">
-
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Firm Type <span class="text-danger">*</span>
+                                                                {{__('Establishment Name')}}<span
+                                                                    class="text-danger">*</span>
                                                             </label>
                                                             <select class="form-control form-control-sm"
                                                                 name="firm_type" id="firm_type"
@@ -63,11 +66,11 @@
                                                                 <option value="">{{__('Select')}}</option>
                                                                 <option value="government"
                                                                     {{$event->firm == 'government' ? 'selected' : ''}}>
-                                                                    Goverment
+                                                                    {{__('Goverment')}}
                                                                 </option>
-                                                                <option value="private"
-                                                                    {{$event->firm == 'private' ? 'selected' : ''}}>
-                                                                    Private
+                                                                <option value="corporate"
+                                                                    {{$event->firm == 'corporate' ? 'selected' : ''}}>
+                                                                    {{__('Corporate')}}
                                                                 </option>
                                                             </select>
                                                         </div>
@@ -88,6 +91,26 @@
                                                                 @endforeach
                                                             </select>
 
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs">
+                                                            <label for="owner_name"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="owner_name" id="owner_name"
+                                                                placeholder="{{__('Owner Name')}}"
+                                                                value="{{$event->owner_name}}">
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs">
+                                                            <label for="owner_name"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name - Ar')}}
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="owner_name_ar" id="owner_name_ar"
+                                                                placeholder="{{__('Owner Name - Ar')}}"
+                                                                value="{{$event->owner_name_ar}}">
                                                         </div>
 
 
@@ -128,7 +151,7 @@
                                                         <div class=" col-md-4 form-group form-group-xs ">
                                                             <label for=" description_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Description - Ar <span
+                                                                {{__('Description - Ar')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <textarea class="form-control form-control-sm"
                                                                 name="description_ar" dir="rtl" id="description_ar"
@@ -141,7 +164,7 @@
                                                         <div class=" col-md-4 form-group form-group-xs ">
                                                             <label for="no_of_audience"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Expected Audience <span
+                                                                {{__('Expected Audience')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <select class="form-control form-control-sm"
                                                                 name="no_of_audience" id="no_of_audience">
@@ -215,30 +238,31 @@
                                                             <input type="hidden" id="prev_val_isLiquor"
                                                                 value="{{$event->is_liquor}}">
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </section>
 
 
-
-
-                                        <div class="card kt-margin-t-5">
+                                    <section
+                                        class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                                        id="date-details">
+                                        <div class="card">
                                             <div class="card-header" id="headingTwo6">
                                                 <div class="card-title show" data-toggle="collapse"
                                                     data-target="#collapseTwo6" aria-expanded="false"
                                                     aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-transform-u kt-font-dark">{{__('Date Details')}}
+                                                    <h6 class="kt-font-transform-u kt-font-dark kt-font-bolder">
+                                                        {{__('Date Details')}}
                                                     </h6>
                                                 </div>
                                             </div>
 
                                             <div class="collapse show" aria-labelledby="headingTwo6"
-                                                data-parent="#accordionExample6" id="collapseTwo6">
+                                                data-parent="#date-details" id="collapseTwo6">
                                                 <div class="card-body">
                                                     <div class="row">
-
                                                         <div class="col-md-3 form-group form-group-xs ">
                                                             <label for="issued_date"
                                                                 class=" col-form-label kt-font-bold text-right">
@@ -321,178 +345,167 @@
                                                                     </span>
                                                                 </div>
                                                             </div>
-
-                                                        </div>
-
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                            <div class="card kt-margin-t-5">
-                                                <div class="card-header" id="headingTwo6">
-                                                    <div class="card-title show" data-toggle="collapse"
-                                                        data-target="#collapseTwo5" aria-expanded="false"
-                                                        aria-controls="collapseTwo6">
-                                                        <h6 class="kt-font-transform-u kt-font-dark">Location Details
-                                                        </h6>
-                                                    </div>
-                                                </div>
-
-                                                <div class="collapse show" aria-labelledby="headingTwo6"
-                                                    data-parent="#accordionExample6" id="collapseTwo5">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-md-6 form-group form-group-xs ">
-                                                                <label for="venue_en"
-                                                                    class=" col-form-label kt-font-bold text-right">
-                                                                    {{__('Venue')}} <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control form-control-sm"
-                                                                    name="venue_en" id="venue_en"
-                                                                    placeholder="{{__('Venue')}}"
-                                                                    value="{{$event->venue_en}}">
-
-                                                            </div>
-
-                                                            <div class="col-md-6 form-group form-group-xs ">
-                                                                <label for="venue_ar"
-                                                                    class=" col-form-label kt-font-bold text-right">
-                                                                    Venue - Ar <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control form-control-sm"
-                                                                    name="venue_ar" dir="rtl" id="venue_ar"
-                                                                    placeholder="Venue - Ar"
-                                                                    value="{{$event->venue_ar}}">
-                                                            </div>
-
-
-                                                            <div class="col-md-4 form-group form-group-xs ">
-                                                                <label for="emirate_id"
-                                                                    class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
-                                                                </label>
-                                                                <input type="text" class="form-control form-control-sm"
-                                                                    value="Ras Al Khaimah" readonly>
-                                                                <input type="hidden" name="emirate_id" id="emirate_id"
-                                                                    value="5">
-                                                            </div>
-
-
-                                                            <div class="col-md-4 form-group form-group-xs ">
-                                                                <label for="area_id"
-                                                                    class=" col-form-label kt-font-bold text-right">{{__('Area')}}
-                                                                </label>
-                                                                <select class="  form-control form-control-sm "
-                                                                    name="area_id" id="area_id">
-                                                                    <option value="">{{__('Select')}}</option>
-                                                                    @foreach($areas as $ar)
-                                                                    <option value="{{$ar->id}}"
-                                                                        {{$ar->id == $event->area_id ? 'selected' : ''}}>
-                                                                        {{$ar->area_en}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="col-md-4 form-group form-group-xs ">
-                                                                <label for="country_id"
-                                                                    class=" col-form-label kt-font-bold text-right">{{__('Country')}}
-                                                                </label>
-                                                                <input type="text" class="form-control form-control-sm"
-                                                                    value="United Arab Emirates" readonly>
-                                                                <input type="hidden" name="country_id" id="country_id"
-                                                                    value="232">
-                                                            </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="card kt-margin-t-5">
-                                                    <div class="card-header" id="headingTwo6">
-                                                        <div class="card-title show" data-toggle="collapse"
-                                                            data-target="#collapseTwo4" aria-expanded="false"
-                                                            aria-controls="collapseTwo6">
-                                                            <h6 class="kt-font-transform-u kt-font-dark">Map
-                                                                Details
-                                                            </h6>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="collapse show" aria-labelledby="headingTwo6"
-                                                        data-parent="#accordionExample6" id="collapseTwo4">
-                                                        <div class="card-body">
-                                                            <div class="row">
-
-                                                                <div
-                                                                    class="col-md-8 col-sm-12 form-group form-group-xs ">
-                                                                    <label for="address"
-                                                                        class=" col-form-label kt-font-bold text-right">{{__('Address')}}
-                                                                        <span class="text-danger">*</span>
-                                                                    </label>
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm map-input"
-                                                                        name="address" id="address-input"
-                                                                        placeholder="Address"
-                                                                        value="{{$event->address}}">
-                                                                </div>
-
-                                                                <div class="col-md-4 form-group form-group-xs ">
-                                                                    <label for="street"
-                                                                        class=" col-form-label kt-font-bold text-right">
-                                                                        {{__('Street')}} <span
-                                                                            class="text-danger">*</span></label>
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm"
-                                                                        name="street" id="street" placeholder="Street"
-                                                                        value="{{$event->street}}">
-                                                                </div>
-
-                                                                <input type="hidden" id="full_address"
-                                                                    name="full_address"
-                                                                    value="{{$event->full_address}}">
-
-                                                                <div class="col-md-6 form-group form-group-xs ">
-                                                                    <label for="longitude"
-                                                                        class=" col-form-label kt-font-bold text-right">
-                                                                        {{__('Longitude')}} <span
-                                                                            class="text-danger">*</span></label>
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm"
-                                                                        name="longitude" id="longitude"
-                                                                        placeholder="Longitude"
-                                                                        value="{{$event->longitude}}">
-                                                                </div>
-
-                                                                <div class="col-md-6 form-group form-group-xs ">
-                                                                    <label for="latitude"
-                                                                        class=" col-form-label kt-font-bold text-right">
-                                                                        {{__('Latitude')}} <span
-                                                                            class="text-danger">*</span></label>
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm"
-                                                                        name="latitude" id="latitude"
-                                                                        placeholder="Latitude"
-                                                                        value="{{$event->latitude}}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-
                                             </div>
                                         </div>
-                                    </div>
+                                    </section>
+
+
+                                    <section
+                                        class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                                        id="location-details">
+                                        <div class="card">
+                                            <div class="card-header" id="headingTwo6">
+                                                <div class="card-title show" data-toggle="collapse"
+                                                    data-target="#collapseTwo5" aria-expanded="false"
+                                                    aria-controls="collapseTwo6">
+                                                    <h6 class="kt-font-transform-u kt-font-dark">
+                                                        {{__('Location Details')}}
+                                                    </h6>
+                                                </div>
+                                            </div>
+
+                                            <div class="collapse show" aria-labelledby="headingTwo6"
+                                                data-parent="#accordionExample6" id="collapseTwo5">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                            <label for="venue_en"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Venue')}} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="venue_en" id="venue_en"
+                                                                placeholder="{{__('Venue')}}"
+                                                                value="{{$event->venue_en}}">
+
+                                                        </div>
+
+                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                            <label for="venue_ar"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                Venue - Ar <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="venue_ar" dir="rtl" id="venue_ar"
+                                                                placeholder="Venue - Ar" value="{{$event->venue_ar}}">
+                                                        </div>
+
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="emirate_id"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
+                                                            </label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                value="Ras Al Khaimah" readonly>
+                                                            <input type="hidden" name="emirate_id" id="emirate_id"
+                                                                value="5">
+                                                        </div>
+
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="area_id"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Area')}}
+                                                            </label>
+                                                            <select class="  form-control form-control-sm "
+                                                                name="area_id" id="area_id">
+                                                                <option value="">{{__('Select')}}</option>
+                                                                @foreach($areas as $ar)
+                                                                <option value="{{$ar->id}}"
+                                                                    {{$ar->id == $event->area_id ? 'selected' : ''}}>
+                                                                    {{$ar->area_en}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="country_id"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Country')}}
+                                                            </label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                value="United Arab Emirates" readonly>
+                                                            <input type="hidden" name="country_id" id="country_id"
+                                                                value="232">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    <section
+                                        class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                                        id="map-detials">
+
+                                        <div class="card">
+                                            <div class="card-header" id="headingTwo6">
+                                                <div class="card-title show" data-toggle="collapse"
+                                                    data-target="#collapseTwo4" aria-expanded="false"
+                                                    aria-controls="collapseTwo6">
+                                                    <h6 class="kt-font-transform-u kt-font-dark">{{__('Map
+                                                        Details')}}
+                                                    </h6>
+                                                </div>
+                                            </div>
+
+                                            <div class="collapse show" aria-labelledby="headingTwo6"
+                                                data-parent="#accordionExample6" id="collapseTwo4">
+                                                <div class="card-body">
+                                                    <div class="row">
+
+                                                        <div class="col-md-8 col-sm-12 form-group form-group-xs ">
+                                                            <label for="address"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Address')}}
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <input type="text"
+                                                                class="form-control form-control-sm map-input"
+                                                                name="address" id="address-input" placeholder="Address"
+                                                                value="{{$event->address}}">
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="street"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Street')}} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="street" id="street" placeholder="Street"
+                                                                value="{{$event->street}}">
+                                                        </div>
+
+                                                        <input type="hidden" id="full_address" name="full_address"
+                                                            value="{{$event->full_address}}">
+
+                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                            <label for="longitude"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Longitude')}} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="longitude" id="longitude" placeholder="Longitude"
+                                                                value="{{$event->longitude}}">
+                                                        </div>
+
+                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                            <label for="latitude"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Latitude')}} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="latitude" id="latitude" placeholder="Latitude"
+                                                                value="{{$event->latitude}}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="address-map-container"
+                                                    style="width:100%;height:200px;padding:15px;">
+                                                    <div style="width: 100%; height: 100%" id="map"></div>
+                                                </div>
+                                            </div>
+                                    </section>
                                 </form>
-
-                                <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
-                                    <div style="width: 100%; height: 100%" id="map"></div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -505,8 +518,22 @@
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
                                 <form id="documents_required">
-
-
+                                </form>
+                                <form id="image_upload_form">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{{__('Event
+                                            Images')}}</label>
+                                            <p class="reqName">{{__('Add multiple images of the event')}}</p>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
+                                            <div id="image_uploader">{{__('Upload')}}</div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-12"><label
+                                                class="kt-font-bold text--maroon">{{__('Description')}}</label>
+                                            <input type="text" name="description" id="description"
+                                                class="form-control form-control-sm" placeholder="Image Description">
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -576,7 +603,7 @@
     </div>
 </div>
 
-@include('permits.event.common.show_warning_modal');
+@include('permits.event.common.show_warning_modal', ['day_count' => getSettings()->event_start_after]);
 
 @include('permits.event.common.sure_to_remove');
 
@@ -614,6 +641,8 @@
     var documentsValidator = '';
     var truckDocRules = {};
     var truckDocMessages = {};
+    var liquorNames  = {};
+    var truckDocNames = {};
 
 
     $(document).ready(function(){
@@ -623,6 +652,7 @@
         $('#back_btn').css('display', 'none');
         localStorage.clear();
         getRequirementsList();
+        imageUploadFunction();
 
         $('#submit--btn-group').css('display', 'none');
         $('#add_document_btn').hide();
@@ -824,7 +854,9 @@
                 venue_ar: 'required',
                 address: 'required',
                 firm_type: 'required',
-                no_of_audience: 'required'
+                no_of_audience: 'required',
+                owner_name: 'required',
+                owner_name_ar: 'required'
             },
             messages: {
                 event_type_id: '',
@@ -850,7 +882,9 @@
                 venue_ar: '',
                 address: '',
                 firm_type: '',
-                no_of_audience: ''
+                no_of_audience: '',
+                owner_name:'',
+                owner_name_ar: ''
             },
         });
 
@@ -942,7 +976,9 @@
                     firm_type: $('#firm_type').val(),
                     isTruck: $("input:radio[name='isTruck']:checked").val(),
                     isLiquor: $("input:radio[name='isLiquor']:checked").val(),
-                    no_of_audience: $('#no_of_audience').val()
+                    no_of_audience: $('#no_of_audience').val(),
+                    owner_name: $('#owner_name').val(),
+                    owner_name_ar: $('#owner_name_ar').val()
                 };
 
                 localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
@@ -1075,7 +1111,7 @@
         function toCapitalize(word) {
             if(word)
             {
-                return word.toLowerCase().replace(/(?<= )[^\s]|^./g, a => a.toUpperCase());
+                return word.charAt(0).toUpperCase() + word.substring(1);
             }
         }
 
@@ -1096,24 +1132,28 @@
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
                          $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+
+                         if(res[i].dates_required == "1")
+                         {
+                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
+                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
+                         }
+
+                         
                          if(res[i].event_type_requirements[0].is_mandatory == 1)
                          {
-                            $('#cnd_'+j).html(' ( Required ) ');
+                            $('#cnd_'+j).html(' * ');
                             $('#cnd_'+j).removeClass('text-muted').addClass('text-danger');
                             docRules['doc_issue_date_' + j] = 'required';
                             docRules['doc_exp_date_' + j] = 'required';
                             docMessages['doc_issue_date_' + j] = '';
                             docMessages['doc_exp_date_' + j] = '';
                          }else {
-                            $('#cnd_'+j).html(' ( Optional ) ');
+                            $('#cnd_'+j).html(' ');
                             $('#cnd_'+j).removeClass('text-danger').addClass('text-muted');
                          }
                         
-                         if(res[i].dates_required == "1")
-                         {
-                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
-                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
-                         }
+                         
 
                             documentsValidator = $('#documents_required').validate({
                                     rules: docRules,
@@ -1138,17 +1178,16 @@
 
             var hasFile = docValidation();
 
-
-                if (documentsValidator.form() && hasFile) {
+                if (documentsValidator ? documentsValidator.form() && hasFile : 1) {
 
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
+                    getImagePaths();
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
                     var dn = localStorage.getItem('documentNames');
-                    var liquor_id = $('#et_liquor_id').val();
-                    var truck_ids = $('#et_truck_ids').val();
+                    var img = localStorage.getItem('imagePaths');
 
                         $.ajax({
                             url: "{{route('event.store')}}",
@@ -1157,9 +1196,9 @@
                                 eventD: ed,
                                 documentD: dd,
                                 documentN: dn,
-                                liquorId: liquor_id,
-                                truckIds: truck_ids,
                                 from: 'draft',
+                                imgPaths: img, 
+                                description: $('#description').val()
                             },
                             success: function (result) {
                                 if(result.message[0]){
@@ -1178,16 +1217,15 @@
 
             var hasFile = docValidation();
 
-                if (documentsValidator.form() && hasFile) {
+                if (documentsValidator ? documentsValidator.form() && hasFile : 1 ) {
 
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
-
+                    getImagePaths();
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
                     var dn = localStorage.getItem('documentNames');
-                    var liquor_id = $('#et_liquor_id').val();
-                    var truck_ids = $('#et_truck_ids').val();
+                    var img = localStorage.getItem('imagePaths');
 
                         $.ajax({
                             url: "{{route('company.event.update_draft')}}",
@@ -1196,9 +1234,9 @@
                                 eventD: ed,
                                 documentD: dd,
                                 documentN: dn,
-                                liquorId: liquor_id,
-                                truckIds: truck_ids,
-                                evtId: $('#event_id').val()
+                                evtId: $('#event_id').val(),
+                                imgPaths: img, 
+                                description: $('#description').val()
                             },
                             success: function (result) {
                                 if(result.message[0]){
@@ -1401,11 +1439,14 @@
 
         $('#add_new_truck').click(function(){
             $('#edit_one_food_truck').modal('show');
+            $('#truck_details_form').trigger('reset');
             $('#edit_truck_title').hide();
             $('#update_this_td').hide();
             $('#add_truck_title').show();
+            $('#this_event_truck_id').val('');
             $('#add_new_td').show();
             $('#edit_food_truck').modal('hide');
+            $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
             truckDocUpload();
         });
 
@@ -1583,42 +1624,64 @@
 
 
 
+        function checkLiquorVenue(id)
+        {
+            if(id == 1)
+            {
+                $('#liquor_provided_form').show();
+                $('#liquor_details_form').hide();
+                $('#liquor_upload_form').hide();
+            }else if(id == 0) {
+                $('#liquor_provided_form').hide();
+                $('#liquor_details_form').show();
+                $('#liquor_upload_form').show();
+            }
+        }
+
+
+        function changeLiquorService()
+        {
+            var service = $('#liquor_service').val();
+            if(service == 'limited')
+            {
+                $('#limited_types').show();
+            }else{
+                $('#limited_types').hide();
+            }
+        }
+
         function changeIsLiquor() {
-            if($('#event_liquor_id').length == 0)
+            if($('#event_liquor_id').val() == '')
             {
                 $('input[name="isLiquor"]').filter('[value=0]').prop('checked', true);
             }else {
                 $('input[name="isLiquor"]').filter('[value=1]').prop('checked', true);
             }
         }
-    
 
         var liquorValidator = $('#liquor_details_form').validate({
             rules: {
                 l_company_name_en: 'required',
                 l_company_name_ar: 'required',
-                license_no: 'required',
-                l_issue_date: 'required',
-                l_expiry_date: 'required',
-                "l_emirates[]": {
-                    l_emirate: true,
-                },
-                trade_license_no: 'required',
-                tl_issue_date: 'required',
-                tl_expiry_date: 'required'
+                purchase_receipt: 'required',
+                liquor_service: 'required',
             },
             messages: {
                 l_company_name_en: '',
                 l_company_name_ar: '',
-                license_no: '',
-                l_issue_date: '',
-                l_expiry_date: '',
-                "l_emirates[]": 'must have rasalkhaimah',
-                trade_license_no: '',
-                tl_issue_date: '',
-                tl_expiry_date: ''
+                purchase_receipt: '',
+                liquor_service: '',
             }
         });
+
+        var liquorProvidedValidator = $('#liquor_provided_form').validate({
+            rules: {
+                liquor_permit_no: 'required'
+            },
+            messages: {
+                liquor_permit_no: ''
+            }
+        })
 
         function liqourDocValidation(){
             var hasFile = true;
@@ -1629,6 +1692,11 @@
             {
                 for (var d = 1; d <= reqCount; d++) 
                 {
+                    let children = $('#liquor-file-upload_' + d).children();
+                    let fileNames = Object.keys(children).map(function(key){
+                        return children[key].innerText != undefined ? children[key].innerText : '';
+                    });
+
                     if($('#liquor-file-upload_'+d).length) {
                         if($('#liquor-file-upload_'+d).contents().length === 0)
                         {
@@ -1639,8 +1707,13 @@
                             $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
                         }
                         liquorDocDetails[d] = {
-                            issue_date: $('#liquor_doc_issue_date_' + d).val(),
-                            exp_date: $('#liquor_doc_issue_date_' + d).val(),
+                            issue_date: $('#liquor_doc_issue_date_' + d).length ? $('#liquor_doc_issue_date_' + d).val() : '',
+                            exp_date: $('#liquor_doc_exp_date_' + d).length ? $('#liquor_doc_exp_date_' + d).val() : '',
+                        }
+
+                        liquorNames[d] = {
+                            reqId: $('#liqour_req_id_'+d).val(),
+                            fileNames
                         }
                     }
                 }
@@ -1650,7 +1723,7 @@
             } else {
                 hasFile = true;
             }
-            localStorage.setItem('liquordocumentDetails', JSON.stringify(liquorDocDetails));
+            // localStorage.setItem('liquordocumentDetails', JSON.stringify());
 
             return hasFile;
         }
@@ -1683,12 +1756,25 @@
                     uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
-                        let file_path = files.filepath;
-                            let path = file_path.replace('public/','');
+                        if(files)
+                        {
+                            let file_path = files.filepath;
+                                let path = file_path.replace('public/','');
+                                window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                            );
+                        }else {
+                            let user_id = $('#user_id').val();
+                            let event_id = $('#event_id').val();
+                            let liquor_id = $('#event_liquor_id').val();
+                            let path = user_id+'/event/'+ event_id +'/liquor/' +liquor_id +'/'+reqID +'/' +files;
                             window.open(
-                        "{{url('storage')}}"+'/' + path,
-                        '_blank'
-                        );
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                            );
+                        }
+                        
                     },
                     onLoad:function(obj)
                     {
@@ -1712,9 +1798,9 @@
                                         let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
-                                        var cc = d.splice(4,5);
-                                        let docName =  cc.length > 1 ? cc.join('/') : cc ;
-                                        // let docName = d[d.length - 1];
+                                        // var cc = d.splice(4,5);
+                                        // let docName =  cc.length > 1 ? cc.join('/') : cc ;
+                                        let docName = d[d.length - 1];
                                         obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
                                         if (formatted_issue_date != NaN - NaN - NaN) {
                                             $('#liquor_doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
@@ -1734,7 +1820,7 @@
                             type: 'POST',
                             data: {path: data.filepath, ext: data.ext, id: data.id},
                             success: function (result) {
-                                console.log('success');
+                                // console.log('success');
                             }
                         });
                     }
@@ -1746,41 +1832,41 @@
         };
 
         
- 
-        $.validator.addMethod("l_emirate", function(value, element) {
-            // return $('select[name="l_emirates[]"]').includes('5');
-            return value.includes("5");
-        },'License must be valid in Rasalkhaimah');
-    
-
         $('#update_lq').click(function(){
             var hasFile = liqourDocValidation();
-            if(liquorValidator.form() && hasFile)
+            var type = $("input:radio[name='isLiquorVenue']:checked").val();
+            if(type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form())
             {
-                liquorDetails = {
-                    company_name_en: $('#l_company_name_en').val(),
-                    company_name_ar: $('#l_company_name_ar').val(),
-                    license_no: $('#license_no').val(),
-                    l_emirates: $('#l_emirates').val(),
-                    l_issue_date: $('#l_issue_date').val(),
-                    l_expiry_date: $('#l_expiry_date').val(),
-                    trade_license_no: $('#trade_license_no').val(),
-                    tl_issue_date: $('#tl_issue_date').val(),
-                    tl_expiry_date: $('#tl_expiry_date').val()
-                };
-                var liquorDocDetails = localStorage.getItem('liquordocumentDetails');
+                if(type == 0)
+                {
+                    liquorDetails = {
+                        company_name_en: $('#l_company_name_en').val(),
+                        company_name_ar: $('#l_company_name_ar').val(),
+                        purchase_receipt: $('#purchase_receipt').val(),
+                        liquor_service: $('#liquor_service').val(),
+                    };
+                    if($('#liquor_service').val() == 'limited'){
+                        liquorDetails['liquor_types'] = $('#liquor_types').val()
+                    }
+                } else {
+                    liquorDetails = {
+                        liquor_permit_no: $('#liquor_permit_no').val(),
+                    };
+                }
                 $.ajax({
                         url: "{{route('event.add_liquor')}}",
                         type: "POST",
                         data: {
                             liquorDetails: liquorDetails,
-                            liquorDocDetails: liquorDocDetails,
+                            liquorDocDetails: JSON.stringify(liquorDocDetails),
+                            liquorNames: JSON.stringify(liquorNames),
+                            type: type,
                             event_liquor_id: $('#event_liquor_id').val()
                         },  
                         success: function (result) {
                             if(result)
                             {
-                                $('#et_liquor_id').val(result.event_liquor_id);
+                                $('#event_liquor_id').val(result.event_liquor_id);
                                 $('#liquorEditBtn').show();
                             }
                         }
@@ -1789,6 +1875,7 @@
                 $('#liquor_details').modal('hide');
             }
         });
+
 
         function checkLiquor(id){
             var prev = $('#prev_val_isLiquor').val();
@@ -1802,12 +1889,10 @@
                             keyboard: false,
                             show: true
                         });
-
                 $('#sure_remove_close').attr('onclick', changeIsLiquor());
                 $('#fromSection').val('liquor');
             }
         }
-
 
     function editLiquor(){
             var url = "{{route('event.fetch_liquor_details_by_event_id', ':id')}}";
@@ -1815,22 +1900,27 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    // console.log(data)
                     if(data) 
                     {
+                        $('#liquor_details .ajax-file-upload-red').trigger('click');
                         $('#liquor_details').modal('show');
-                        $('#l_company_name_en').val(data.company_name_en);
-                        $('#l_company_name_ar').val(data.company_name_ar);
-                        $('#license_no').val(data.license_number);
-                        $('#license_no').val(data.license_number);
-                        $('#l_issue_date').val(moment(data.license_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY'));
-                        $('#l_expiry_date').val(moment(data.license_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY'));
-                        $('#l_emirates').val(JSON.parse(data.emirate_id));
-                        $('#trade_license_no').val(data.trade_license);
-                        $('#tl_issue_date').val(moment(data.trade_license_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY'));
-                        $('#tl_expiry_date').val(moment(data.trade_license_expired_date , 'YYYY-MM-DD').format('DD-MM-YYYY'));
                         $('#event_liquor_id').val(data.event_liquor_id);
-                        liquorDocUpload();
+                        if(data.provided == 1)
+                        {
+                            checkLiquorVenue(1);
+                            $('#liquor_permit_no').val(data.liquor_permit_no);
+                            $("input:radio[name='isLiquorVenue'][value='1']").attr('checked', true);
+                        }else {
+                            checkLiquorVenue(0);
+                            $("input:radio[name='isLiquorVenue'][value='0']").attr('checked', true)
+                            $('#l_company_name_en').val(data.company_name_en);
+                            $('#l_company_name_ar').val(data.company_name_ar);
+                            $('#purchase_receipt').val(data.purchase_receipt);
+                            $('#liquor_service').val(data.liquor_service);
+                            changeLiquorService();
+                            $('#liquor_types').val(data.liquor_types);
+                            liquorDocUpload();
+                        }
                     }
                 }
             });
@@ -1846,7 +1936,6 @@
                 type: 'POST',
                 data: { from: fromSection, eventId: $('#event_id').val() },
                 success: function (result) {
- 
                     $('#notSaveModal').modal('hide');
                     if(fromSection == 'truck'){
                         $('#truckEditBtn').hide();
@@ -1858,6 +1947,79 @@
        }
 
 
+       function getImagePaths() {
+            var reqCount = $('#image-file-upload > .ajax-file-upload-statusbar').length;
+            if(reqCount > 0)
+            {
+                var paths = [];
+                for (var i = 1; i <= reqCount; i++) 
+                {
+                    let src = $('#image-file-upload > .ajax-file-upload-statusbar:nth-child('+i+') img').attr('src').split('/').slice(4, ).join('/');
+                    paths.push(src);
+                }               
+                localStorage.setItem('imagePaths', JSON.stringify(paths));
+            }
+       }
+
+       
+
+       const imageUploadFunction = () => {
+            var ImageUploader = $('#image_uploader').uploadFile({
+                url: "{{route('event.uploadEventPics')}}",
+                method: "POST",
+                allowedTypes: "jpeg,jpg,png",
+                fileName: "image_file",
+                multiple: true,
+                deleteStr: `<i class="la la-trash"></i>`,
+                showFileSize: false,
+                showFileCounter: false,
+                abortStr: '',
+                showProgress: false,
+                previewHeight: '100px',
+                previewWidth: "auto",
+                returnType: "json",
+                showPreview: true,
+                showDelete: true,
+                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                onSuccess: function (files, response, xhr, pd) {
+                    pd.filename.html('');
+                },
+                onLoad: function(obj) {
+                    var url = "{{route('event.get_uploaded_eventImages', ':id')}}";
+                    url = url.replace(':id', $('#event_id').val());
+                    $.ajax({
+                            // cache: false,
+                            url: url,
+                            success: function (data) {
+                                if (data) {
+                                    let j = 1 ;
+                                    if(data[0]) {
+                                        $('#description').val(data[0].description);
+                                    }
+                                    for(data of data) {
+                                        const d = data["path"].split("/");
+                                        let docName = d[d.length - 1];
+                                        obj.createProgress('', "{{asset('storage')}}"+'/' + data["path"], '');
+                                    }
+                                }
+                            }
+                        });
+
+        
+                },
+                downloadCallback: function (files, pd) {
+                    let file_path = files;
+                    let path = file_path.replace('public/','');
+                        window.open(
+                    "{{url('storage')}}"+'/' + path,
+                    '_blank'
+                    );
+                },
+            });
+            $('#image_uploader div').attr('id', 'image-upload');
+            $('#image_uploader + div').attr('id', 'image-file-upload');
+        };
+        
 
 
 </script>

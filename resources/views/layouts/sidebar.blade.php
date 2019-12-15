@@ -30,23 +30,23 @@
                 {{-- <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{ __('Business License')}}</span>
-                    </a>
+                </a>
                 </li> --}}
                 {{-- <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{__('Business Name')}}</span>
-                    </a>
+                </a>
                 </li> --}}
-                <li class="kt-menu__item">
+                {{-- <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{__('Classification')}}</span>
-                    </a>
+                </a>
                 </li>
                 <li class="kt-menu__item">
                     <a href="javascript:void(0)" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{__('Inspection')}}</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li
                     class="kt-menu__item {{ (\Request::is('company/artist/*') || \Request::is('company/artist'))  ? 'kt-menu__item--active' : ''}}">

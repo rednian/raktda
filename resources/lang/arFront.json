@@ -88,6 +88,7 @@
     "Pay": "ادفع",
 
     "Venue": "مكان الفعالية",
+    "Venue - Ar": "مكان الفعالية",
     "Event Type": "نوع الفعالية",
     "Download": "تحميل",
     "Enter the reason here": "أدخل السبب هنا",
@@ -103,5 +104,10 @@
     "Description": "الوصف",
     "Fee": "رسوم",
     "Permit Fee": "رسوم التصريح",
-    "I Read and understand all service rules and agree to continue submitting it.": "لقد قرأت وفهمت جميع الخدمات والقوانين ووافقت عليها وأرغب بالاستنرار في تقديم الطلب"
+    "I Read and understand all service rules and agree to continue submitting it.": "لقد قرأت وفهمت جميع الخدمات والقوانين ووافقت عليها وأرغب بالاستنرار في تقديم الطلب",
+    "Establishment Name": "اسم المنشأة",
+    "Date Details": "تفاصيل التاريخ",
+    "Location Details": "تفاصيل الموقع",
+    "Owner Name": "",
+    "Owner Name - Ar": ""
 }

@@ -15,8 +15,6 @@ class Company extends Model
     protected $primaryKey = 'company_id';
     protected $fillable = [
 
-        'company_name', 'company_address', 'company_type', 'company_mobile_number', 'company_email', 'comapany_status',
-
         'name_en', 'name_er', 'logo_original', 'logo_thumbnail', 'type', 'status', 'email', 'phone_number', 'website', 'trade_license', 'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 'reference_number'
     ];
 

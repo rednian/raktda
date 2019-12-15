@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$event_details->permit_number}} - Event Permit</title>
+    <title>{{$event_details->permit_number}} - Truck Permit</title>
     <style>
         * {
             box-sizing: border-box;

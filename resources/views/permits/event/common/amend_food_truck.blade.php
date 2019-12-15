@@ -30,14 +30,14 @@
                                 id="company_name_ar" autocomplete="off" placeholder="company name - Ar">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}}</label>
+                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
+                                autocomplete="off" placeholder="food type">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Plate No')}}</label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
                                 autocomplete="off" placeholder="plate no">
-                        </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Type of Food')}}</label>
-                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
-                                autocomplete="off" placeholder="food type">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Registration Issue')}} </label>

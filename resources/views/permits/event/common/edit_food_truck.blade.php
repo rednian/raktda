@@ -5,7 +5,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{__('Edit Food Truck')}} <i class="fa fa-truck"></i>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button>
             </div>
             <div class="modal-body">
@@ -18,12 +18,12 @@
                         <thead>
                             <th>#</th>
                             <th>{{__('Company')}}</th>
+                            <th>{{__('Company - Ar')}}</th>
                             <th>{{__('Plate No')}}</th>
                             <th>{{__('Type of Food')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
-
                         </tbody>
                     </table>
                 </div>
@@ -42,7 +42,7 @@
                 </h5>
                 <h5 class="modal-title" id="add_truck_title">{{__('Add Food Truck')}}
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button>
             </div>
             <div class="modal-body">
@@ -61,16 +61,16 @@
                                 id="company_name_ar" dir="rtl" autocomplete="off" placeholder="company name - Ar">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}} <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
+                                autocomplete="off" placeholder="food type">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Plate No')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
                                 autocomplete="off" placeholder="plate no">
-                        </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Type of Food')}} <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
-                                autocomplete="off" placeholder="food type">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Registration Issue')}} <span
