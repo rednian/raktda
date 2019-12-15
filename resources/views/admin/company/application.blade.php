@@ -110,7 +110,7 @@
                   <div class="row form-group form-group-sm">
                      <div class="col-sm-6">
                         <section class="row form-group form-group-sm">
-                           <div class="col-sm-6">
+                           <div class="col-sm-6 kt-hide">
                               <label class="kt-font-dark">{{ __('Establishment Type') }} </label>
                               <div class="input-group input-group-sm">
                                <input value="{{ ucfirst($company->type) }}" name="name_ar" readonly="readonly" type="text"
@@ -125,7 +125,7 @@
                                </div>
                               </div>
                            </div>
-                           <div class="col-sm-6">
+                           <div class="col-sm-12">
                               <label class="kt-font-dark">{{ __('Phone Number') }}</label>
                               <div class="input-group input-group-sm">
                                <input value="{{ $company->phone_number }}" name="name_ar" readonly="readonly" type="text"
@@ -361,7 +361,7 @@
          <div class="card">
             <div class="card-header" id="heading-requirement">
                <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
-                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('UPLOUDED REQUIREMENTS ') }}</h6>
+                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('UPLOADED REQUIREMENTS ') }}</h6>
                </div>
              </div>
              <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement">

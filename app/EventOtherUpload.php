@@ -10,6 +10,7 @@ class EventOtherUpload extends Model
    protected $primaryKey= 'event_other_upload_id';
    protected $fillable= ['path', 'thumbnail', 'size' , 'event_id', 'created_by', 'description'];
 
+
    function event()
    {
       return $this->belongsTo(Event::class, 'event_id');

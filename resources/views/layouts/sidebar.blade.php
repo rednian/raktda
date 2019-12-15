@@ -51,13 +51,13 @@
                 <li
                     class="kt-menu__item {{ (\Request::is('company/artist/*') || \Request::is('company/artist'))  ? 'kt-menu__item--active' : ''}}">
 
-                    <a href="{{url('company/artist')}}" class="kt-menu__link">
+                    <a href="{{ Auth::user()->company->status == 'active' ? url('company/artist') : '#' }}" class="kt-menu__link">
                         <span class="kt-menu__link-text">{{__('Artist Permit')}}</span>
                     </a>
                 </li>
                 <li
                     class="kt-menu__item {{ (\Request::is('company/event/*') || \Request::is('company/event')) ? 'kt-menu__item--active' : ''}}">
-                    <a href="{{url('company/event')}}" class="kt-menu__link ">
+                    <a href="{{Auth::user()->company->status == 'active' ? url('company/event') : '#'}}" class="kt-menu__link ">
 
                         <span class="kt-menu__link-text">{{__('Event Permit')}}</span>
                     </a>

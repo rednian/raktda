@@ -8,7 +8,7 @@ use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-class User extends Authenticatable implements Auditable
+class User extends Authenticatable implements Auditable, MustVerifyEmail
 {
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
@@ -67,8 +67,7 @@ class User extends Authenticatable implements Auditable
         return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id');
     }
 
-
-public function workschedule(){
+    public function workschedule(){
         return $this->hasOne(EmployeeWorkSchedule::class, 'user_id');
     }
 
@@ -78,6 +77,16 @@ public function workschedule(){
 
     public function scopeAreEmployees($query){
         return $query->whereType(4);
+    }
+
+    public function scopeAreInspectors($query){
+        return $query->whereType(4)->whereHas('roles', function($q){
+            $q->where('roles.role_id', 4);
+        });
+    }
+
+    public function appointments(){
+        return $this->belongsToMany(Approval::class, 'approvers', 'user_id', 'approval_id');
     }
 }
 

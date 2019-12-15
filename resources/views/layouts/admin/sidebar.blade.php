@@ -45,8 +45,8 @@
                        <span class="kt-menu__link-text">{{ __('Classification') }}</span>
                    </a>
                </li>
-               <li class="kt-menu__item">
-                   <a href="javascript:void(0)" class="kt-menu__link ">
+               <li class="kt-menu__item {{ Request::is('inspection*') ? 'kt-menu__item--active': '' }}">
+                   <a href="{{ URL::signedRoute('inspection.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Inspection') }}</span>
                    </a>
                </li>
