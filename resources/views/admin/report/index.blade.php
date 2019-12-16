@@ -46,7 +46,7 @@
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
 			<div class="kt-portlet__body">
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
-						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#artist-report" data-target="#artist-report">{{ __('Artist Report') }}</a></li>
+						<li class="nav-item"><a class="nav-link active" id="artist-report-tab" data-toggle="tab" href="#artist-report" data-target="#artist-report">{{ __('Artist Report') }}</a></li>
                         <li class="nav-item"><a class="nav-link" id="event-report-tab" data-toggle="tab" href="#event-report-section" data-target="#event-report-section">{{__('Event Report') }}</a></li>
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#artist-permit-report" data-target="#artist-permit-report">{{ __('Artist Permit Report') }}</a></li>
 						<li class="nav-item "><a class="nav-link" id="inspection" data-toggle="tab" href="#inspection">{{ __('Inspection') }}</a></li>

@@ -180,6 +180,9 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('artist_reports/artist_permit_report/active_permit', 'Admin\ReportController@datatable')
         ->name('admin.artist_permit_report.active_permit');
 
+    Route::get('artist_reports/artist_permit_report/all_permit_report', 'Admin\ReportController@all_permit_report')
+        ->name('admin.artist_permit_report.all_permit_report');
+
 
 
 

@@ -1,12 +1,12 @@
 
         <div class="kt-portlet__body" style="margin-top: -40px">
             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
-                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Request Permits') }}</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Request Permits') }}</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#processing-permit">{{ __('Processing Permits') }}</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit">{{ __('Active Permits') }}</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('Archive Permits') }}</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">{{ __('Artist List') }}</a></li>
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request"  style="font-size: 11px">{{ __('NEW REQUEST PERMIT REPORT') }}</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit"  style="font-size: 11px">{{ __('ACTIVE PERMIT REPORTS') }}</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request" data-target="#pending-request"  style="font-size: 11px">{{ __('PENDING REQUEST PERMITS REPORT') }}</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#processing-permit"  style="font-size: 11px">{{ __('PROCESSING PERMITS REPORT') }}</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit"  style="font-size: 11px">{{ __('ARCHIVE PERMIT REPORT') }}</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist"  style="font-size: 11px">{{ __('ARTIST LIST') }}</a></li>
                 {{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">{{ __('Blocked Artists') }}</a></li> --}}
             </ul>
             <div class="form-row d-none" style="position: absolute; right: -80px; top: 23px; width: 30%">
@@ -91,6 +91,18 @@
                            @endempty
                     @endif --}}
                 </div>
+
+            {{--    <div class="tab-pane fade kt-hide" id="all-artist-permits" role="tabpanel">
+                    @include('admin.artist_permit.includes.summary')
+                    @include('admin.report.includes.artistPermitIncludes.all-permit-report')
+                    --}}{{-- @if(\App\Artist::where('artist_status', 'blocked')->count() > 0)
+                    @else
+                           @empty()
+                                Blocked artist is empty
+                           @endempty
+                    @endif --}}{{--
+                </div>--}}
+
             </div>
         </div>
 

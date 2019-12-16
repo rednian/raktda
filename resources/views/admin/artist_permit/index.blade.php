@@ -118,7 +118,7 @@
                   <div class="kt-widget24__info">
                     <span class="kt-widget24__title" title="Click to edit">{{ __('Action Taken') }}</span>
                     <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
-                  </div>
+                    </div>
                   <span class="kt-widget24__stats kt-font-default">{{ $active_permit }}</span>
                 </div>
               </div>

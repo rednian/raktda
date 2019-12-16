@@ -80,7 +80,10 @@
                                         </div>
                                     @else
                                         <div class="kt-widget__pic kt-widget__pic--danger kt-font-success kt-font-bold kt-font-light" >
-                                            {{ profile($artist_permit->firstname_en, $artist_permit->lastname_en) }}
+                                            {{ Auth()->user()->LanguageId==1? profile($artist_permit->firstname_en, $artist_permit->lastname_en): profile($artist_permit->firstname_ar, $artist_permit->lastname_ar) }}
+
+
+
                                         </div>
                                     @endif
 
@@ -101,7 +104,7 @@
                                         <div class="kt-widget__subhead">
 																 <span>{{ __('Current Company') }} :
                                                                     <span class="kt-font-dark kt-font-bolder">
-                                                                        {{ $artist_permit->permit()->latest()->first()->owner->company->name_en }}
+                                                                        {{Auth()->user()->LanguageId==1? $artist_permit->permit()->latest()->first()->owner->company->name_en : $artist_permit->permit()->latest()->first()->owner->company->name_ar}}
                                                                     </span>
                                                                 </span>
                                             {{--										 <a href="#"><i class="flaticon2-calendar-3"></i>PR Manager </a>--}}

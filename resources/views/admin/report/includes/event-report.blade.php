@@ -18,9 +18,9 @@
             </select></th>
         <th colspan="2"><select name="application_type" id="application-type" class="form-control-sm form-control custom-select custom-select-sm ">
             <option value="">{{__('APPLICATION TYPE')}}</option>
-            <option value="private">{{__('Private')}}</option>
+            <option value="corporate">{{__('Corporate')}}</option>
             <option value="government">{{__('Government')}}</option>
-            <option value="individual">{{__('Individual')}}</option>
+          {{--  <option value="individual">{{__('Individual')}}</option>--}}
             </select>
         </th>
 
