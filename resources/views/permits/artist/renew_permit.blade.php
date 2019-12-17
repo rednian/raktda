@@ -263,7 +263,8 @@
                 from: $('#issued_date').val() ,
                 to: $('#expired_date').val(),
                 loc: $('#work_location').val(),
-                term: term
+                term: term, 
+                fromWhere: 'renew'
             },
             success: function(data) {
                 // console.log(data);

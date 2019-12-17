@@ -8,9 +8,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi excepturi beatae natus laboriosam.
-                Assumenda, praesentium mollitia dolore commodi et aliquid repellendus doloremque iure? Quaerat,
-                suscipit.
+                {{__('You are trying to apply for artist permit which is less than ')}} {{$day_count}}
+                {{$day_count > 1 ? ' days' : ' day'}}
+                {{__(' from today your application will be subject to approval by RAKTDA')}}
             </div>
         </div>
     </div>

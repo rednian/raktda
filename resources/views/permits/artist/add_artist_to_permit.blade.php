@@ -374,8 +374,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="id_no"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Identification
-                                                                        No <span
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Identification
+                                                                        No')}} <span
                                                                             class="text-danger sh-uae">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -388,8 +388,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="sp_name"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Sponser
-                                                                        Name <span class="text-danger">*</span>
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponser
+                                                                        Name')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -620,21 +620,21 @@ $language_id = \Auth::user()->LanguageId;
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
+                                @include('permits.components.requirements')
                                 <form id="documents_required" method="post" autocomplete="off">
                                     <input type="hidden" id="artist_number_doc" value={{1}}>
                                     <input type="hidden" id="requirements_count" value={{count($requirements)}}>
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
-                                                <label class="kt-font-bold text--maroon"> Artist Photo <span
-                                                        class="text-danger">( required
-                                                        )</span></label>
+                                                <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}} <span
+                                                        class="text-danger">*</span></label>
                                                 <p for="" class="reqName " title="Artist Photo">
-                                                    Use Passport size picture with white background</p>
+                                                    {{__('Use Passport size picture with white background')}} </p>
                                             </div>
                                             <div class="col-lg-4 col-sm-12">
                                                 <label style="visibility:hidden">hidden</label>
-                                                <div id="pic_uploader">Upload
+                                                <div id="pic_uploader"> {{__('Upload')}}
                                                 </div>
                                             </div>
                                         </div>
@@ -661,7 +661,7 @@ $language_id = \Auth::user()->LanguageId;
                                                 id="req_name_{{$i}}">
                                             <div class="col-lg-4 col-sm-12">
                                                 <label style="visibility:hidden">hidden</label>
-                                                <div id="fileuploader_{{$i}}">Upload
+                                                <div id="fileuploader_{{$i}}">{{__('Upload')}}
                                                 </div>
                                             </div>
                                             <input type="hidden" id="datesRequiredCheck_{{$i}}"
@@ -669,8 +669,8 @@ $language_id = \Auth::user()->LanguageId;
                                             <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}" />
                                             @if($req->dates_required == 1)
                                             <div class="col-lg-2 col-sm-12">
-                                                <label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue
-                                                    Date</label>
+                                                <label for="" class="text--maroon kt-font-bold" title="Issue Date">{{__('Issue
+                                                    Date')}}</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_issue_date_{{$i}}" data-date-end-date="0d"
                                                     id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
@@ -679,9 +679,8 @@ $language_id = \Auth::user()->LanguageId;
                                                     value="{{$req->validity}}">
                                             </div>
                                             <div class="col-lg-2 col-sm-12">
-                                                <label for="" class="text--maroon kt-font-bold"
-                                                    title="Expiry Date">Expiry
-                                                    Date</label>
+                                                <label for="" class="text--maroon kt-font-bold" title="Expiry Date">{{__('Expiry
+                                                    Date')}}</label>
                                                 <input type="text" class="form-control form-control-sm date-picker "
                                                     name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                     id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
@@ -792,6 +791,7 @@ $language_id = \Auth::user()->LanguageId;
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                maxFileSize: 5242880,
                 showFileCounter: false,
                 abortStr: '',
                 multiple: false,
@@ -935,7 +935,6 @@ $language_id = \Auth::user()->LanguageId;
             required: true,
             dateNL: true
         },
-        sp_name: "required",
         gender: "required",
         nationality: "required",
         address: "required",
@@ -963,7 +962,6 @@ $language_id = \Auth::user()->LanguageId;
         visa_number:"",
         visa_type: "",
         visa_expiry: "",
-        sp_name: "",
         gender: "",
         nationality: "",
         address: "",
@@ -1167,19 +1165,16 @@ function checkVisaRequired(){
                     term = $('#permitTerm_'+i).val();
                     if((term == 'long' && noofdays > 30) || term == 'short')
                     {
-                        $('#cnd_'+i).html('( Required )');
+                        $('#cnd_'+i).html('*');
                         $('#cnd_'+i).addClass('text-danger');
-                        $('#cnd_'+i).removeClass('text-muted');
-                        if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                        if(nationality == '232' && $('#req_name_'+i).val().toLowerCase() == 'visa')
                         {
-                            $('#cnd_'+i).html('( Optional )');
+                            $('#cnd_'+i).html('');
                             $('#cnd_'+i).removeClass('text-danger');
-                            $('#cnd_'+i).addClass('text-muted');
                         }
                     }else{
-                        $('#cnd_'+i).html('( Optional )');
+                        $('#cnd_'+i).html('');
                         $('#cnd_'+i).removeClass('text-danger');
-                        $('#cnd_'+i).addClass('text-muted');
                     }
                 }
             }

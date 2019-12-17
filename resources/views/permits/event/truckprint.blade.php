@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$event_details->permit_number}} - Event Permit</title>
+    <title>{{$event_details->permit_number}} - Truck Permit</title>
     <style>
         * {
             box-sizing: border-box;
@@ -141,11 +141,10 @@
                 تصريح مؤقت
             </div>
             <div>
-                Temporary Permit
+                Truck Permit
             </div>
         </div>
     </header>
-
 
     <table id="license_data" border="1">
         <thead>
@@ -167,82 +166,53 @@
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3"> {{$event_details->owner_name}}<br />
-                    {{$event_details->owner_name_ar}}</td>
+                <td colspan="3"> {{$event_details->owner->NameAr}}<br />
+                    {{$event_details->owner->NameEn}}</td>
                 <td class="subhead">صاحب الترخيص <br />License owner</td>
             </tr>
         </tbody>
     </table>
 
-    <table id="permit_data" border="1">
+    @php
+    $i = 1 ;
+    @endphp
+    @foreach($truck as $truc)
+    <table border="1" id="permit_data">
         <thead>
             <tr>
-                <th colspan="2" scope="col">Permit Data</th>
-                <th colspan="2" scope="col">بيانات الترخيص</th>
+                <th colspan="2" scope="col">Food Truck {{$i}}</th>
+                <th colspan="2" scope="col"> </th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td colspan="2">{{$event_details->name_en}}</td>
-                <td>{{$event_details->name_ar}}</td>
-                <td class="subhead">اسم الفعالية<br />Event Name</td>
+                <td colspan="2">{{$truc->company_name_en}}</td>
+                <td>{{$truc->company_name_ar}}</td>
+                <td class="subhead"><br />Company Name</td>
             </tr>
             <tr>
-                <td colspan="2">{{$event_details->type['name_en']}}</td>
-                <td>{{$event_details->type['name_ar']}}</td>
-                <td class="subhead">نوع تصريح <br />Permit Type</td>
+                <td colspan="3">{{$truc->plate_number}}</td>
+                <td class="subhead">رقم التصريح<br />Plate No</td>
             </tr>
             <tr>
-                <td colspan="3">{{$event_details->permit_number}}</td>
-                <td class="subhead">رقم التصريح<br />Permit No</td>
+                <td colspan="3">{{$truc->food_type}}</td>
+                <td class="subhead">تاريخ التصريح<br /> Food Services</td>
             </tr>
             <tr>
-                <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'days' : 'day'}} </td>
-                <td>انقضاء</td>
-                <td class="subhead">فترة التصريح <br />Permit Period</td>
+                <td colspan="3">{{date('d-M-Y',strtotime($truc->registration_issued_date))}}</td>
+                <td class="subhead">تاريخ انتهاء الصلاحية <br /> Registration Issued Date</td>
             </tr>
             <tr>
-                <td colspan="3">{{$event_details->issued_date}}</td>
-                <td class="subhead">تاريخ التصريح<br /> Permit Date</td>
-            </tr>
-            <tr>
-                <td colspan="3">{{$event_details->expired_date}}</td>
-                <td class="subhead">تاريخ انتهاء الصلاحية <br /> Permit Expiry Date</td>
-            </tr>
-            <tr>
-                <td colspan="2">{{$event_details->venue_en}}</td>
-                <td>{{$event_details->venue_ar}}</td>
-                <td class="subhead">الموقع <br />Location</td>
-            </tr>
-            @if($liquor)
-            @if($liquor->provided == 1)
-            <tr>
-                <td colspan="3">{{$liquor->liquor_permit_no}}</td>
-                <td class="subhead"> <br />Liquor Permit No</td>
-            </tr>
-            @endif
-            @endif
-        </tbody>
-    </table>
-
-
-
-    @if($event_details->note_en)
-    <table id="note_data" border="1">
-        <thead>
-            <tr>
-                <th>Notes</th>
-                <th>ملحوظة</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{$event_details->note_en}}</td>
-                <td>{{$event_details->note_ar}}</td>
+                <td colspan="3">{{date('d-M-Y',strtotime($truc->registration_expired_date))}}</td>
+                <td class="subhead">تاريخ انتهاء الصلاحية <br /> Registration Expiry Date</td>
             </tr>
         </tbody>
+        @php
+        $i++;
+        @endphp
     </table>
-    @endif
+    @endforeach
+
     <table id="date_data" border="1">
         <tr>
             <td>Printing Date: </td>

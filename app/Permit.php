@@ -14,8 +14,8 @@ class Permit extends Model
     protected $table = 'smartrak_smartgov.permit';
     protected $primaryKey = 'permit_id';
     protected $fillable = [
-        'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock','lock_user_id', 'user_id', 'permit_revision_id',
-        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid', 'paid_event_fee'
+        'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
+        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid', 'paid_event_fee', 'work_location_ar'
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
 

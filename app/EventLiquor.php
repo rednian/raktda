@@ -8,7 +8,7 @@ class EventLiquor extends Model
 {
    protected $table = 'event_liquor';
    protected $primaryKey = 'event_liquor_id';
-   protected $fillable = ['company_name_ar', 'company_name_en', 'emirate_id', 'license_number', 'trade_license', 'trade_license_issued_date', 'trade_license_expired_date', 'license_issued_date', 'license_expired_date', 'event_id', 'status', 'created_by'];
+   protected $fillable = ['company_name_ar', 'company_name_en','event_id', 'status', 'created_by', 'purchase_receipt' ,'liquor_service', 'liquor_types', 'liquor_permit_no', 'provided'];
 
    public function event()
    {

@@ -515,6 +515,7 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    maxFileSize: 5242880,
                     returnType: "json",
                     showFileCounter: false,
                     duplicateErrorStr: 'No duplicate files allowed',

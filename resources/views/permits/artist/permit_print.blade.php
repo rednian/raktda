@@ -279,7 +279,7 @@
                         <h5>{{$permit_details['permit_number']}}</h5>
                     </td>
                     <td>
-                        <h5>تصريح لا</h5>
+                        <h5>رقم الإذن</h5>
                     </td>
                 </tr>
             </table>
@@ -312,14 +312,13 @@
                                     <p>{{date('d-m-Y', strtotime($permit_details['expired_date']))}}</p>
                                 </td>
                                 <td>
-                                    <h5>تاريخ الانتهاء</h5>
+                                    <h5>تاريخ الإصدار</h5>
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
             </table>
-
 
             <table class="company-details">
                 <tr>
@@ -330,7 +329,7 @@
                                     <h5>Business Name</h5>
                                 </td>
                                 <td>
-                                    <p>{{$company_details['company_name']}}</p>
+                                    <p>{{$company_details['name_en']}}</p>
                                 </td>
                             </tr>
                             <tr>
@@ -347,7 +346,7 @@
                         <table class="right--side-head">
                             <tr>
                                 <td>
-                                    <p>فندق الحمرا فورت ومنتجع الشاطئ</p>
+                                    <p>{{$company_details['name_ar']}}</p>
                                 </td>
                                 <td>
                                     <h5>الاسم التجاري</h5>
@@ -355,7 +354,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <p>فندق الحمرا فورت ومنتجع الشاطئ</p>
+                                    <p>{{$permit_details['work_location_ar']}}</p>
                                 </td>
                                 <td>
                                     <h5>مكان العمل</h5>
@@ -393,7 +392,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <h5>Person Code/ رمز الشخص </h5>
+                                            <h5>Person Code / رمز الشخص </h5>
                                         </td>
                                         <td>
                                             <h5>{{$artist_permit->artist['person_code']}}</h5>
@@ -422,7 +421,7 @@
                                             <h5>Nationality</h5>
                                         </td>
                                         <td>
-                                            <h5>جنسية</h5>
+                                            <h5>الجنسية</h5>
                                         </td>
                                     </tr>
                                     <tr>
@@ -436,7 +435,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5>Passport No/ رقم جواز السفر</h5>
+                                            <h5>Passport No / رقم جواز السفر</h5>
                                         </td>
                                         <td>
                                             <p>{{$artist_permit->passport_number}}</p>
@@ -444,7 +443,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5>UID No/بأرقام تحديد الهوية</h5>
+                                            <h5>UID No/ رقم UID</h5>
                                         </td>
                                         <td>
                                             <p>{{$artist_permit->uid_number}}</p>
@@ -452,7 +451,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5>Date of Birth/تاريخ الميلاد</h5>
+                                            <h5>Date of Birth/ تاريخ الميلاد </h5>
                                         </td>
                                         <td>
                                             <p>{{date('d-m-Y',strtotime($artist_permit->birthdate))}}</p>
@@ -463,7 +462,7 @@
                                             <h5>Profession</h5>
                                         </td>
                                         <td>
-                                            <h5>جنسية</h5>
+                                            <h5>المهنة</h5>
                                         </td>
                                     </tr>
                                     <tr>

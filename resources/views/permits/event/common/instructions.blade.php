@@ -2,18 +2,17 @@
     <div class="kt-form__section kt-form__section--first">
         <div class="kt-wizard-v3__form">
             <!--begin::Accordion-->
-            <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-
-
+            <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                id="permit-fee-details">
                 <div class="card">
                     <div class="card-header" id="headingThree6">
                         <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseThree6"
                             aria-expanded="false" aria-controls="collapseThree6">
-                            <h6 class="kt-font-transform-u"> {{__('Permit Fee')}}</h6>
+                            <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{__('Permit Fee')}}</h6>
                         </div>
                     </div>
                     <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
-                        data-parent="#accordionExample6">
+                        data-parent="#permit-fee-details">
                         <div class="card-body">
                             <table class="table table-borderless">
                                 <tr>
@@ -27,35 +26,34 @@
                                 </tr>
                                 @endforeach
                             </table>
-
-
                         </div>
                     </div>
                 </div>
+            </section>
+            <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                id="permit-instruction-details">
                 <div class="card">
                     <div class="card-header" id="headingFour6">
-                        <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseFour6"
+                        <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseFour15"
                             aria-expanded="false" aria-controls="collapseFour6">
-                            <h6 class="kt-font-transform-u">Rules and Conditions</h6>
+                            <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Rules and Conditions</h6>
                         </div>
                     </div>
-                    <div id="collapseFour6" class="collapse" aria-labelledby="headingFour6"
-                        data-parent="#accordionExample6">
+                    <div id="collapseFour15" class="collapse show" aria-labelledby="headingFour6"
+                        data-parent="#permit-instruction-details">
                         <div class="card-body">
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
                             terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                            skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                            Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
 
                         </div>
                     </div>
                 </div>
-                <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                    <input type="checkbox" id="agree" name="agree" checked disabled>
-                    {{__('I Read and understand all service rules and agree to continue submitting it.')}}
-                    <span></span>
-                </label>
-            </div>
+            </section>
+            <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
+                <input type="checkbox" id="agree" name="agree" checked disabled>
+                {{__('I Read and understand all service rules and agree to continue submitting it.')}}
+                <span></span>
+            </label>
         </div>
     </div>
 </div>

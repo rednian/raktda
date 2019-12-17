@@ -384,7 +384,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="sp_name"
                                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponser Name')}}
-                                                                        <span class="text-danger">*</span>
+
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -606,19 +606,21 @@ $language_id = Auth::user()->LanguageId;
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
+                                @include('permits.components.requirements')
                                 <form id="documents_required" method="post" autocomplete="off">
                                     <input type="hidden" id="artist_number_doc" value={{1}}>
                                     <input type="hidden" id="requirements_count" value={{count($requirements)}}>
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
-                                                <label class="kt-font-bold text--maroon"> Artist Photo</label>
-                                                <p for="" class="reqName " title="Artist Photo">
-                                                    Use Passport size picture with white background</p>
+                                                <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}}
+                                                </label>
+                                                <p for="" class="reqName " title="{{__('Artist Photo')}}">
+                                                    {{__('Use Passport size picture with white background')}} </p>
                                             </div>
                                             <div class="col-lg-4 col-sm-12">
                                                 <label style="visibility:hidden">hidden</label>
-                                                <div id="pic_uploader">Upload
+                                                <div id="pic_uploader"> {{__('Upload')}}
                                                 </div>
                                             </div>
                                         </div>
@@ -646,7 +648,7 @@ $language_id = Auth::user()->LanguageId;
                                                 id="req_name_{{$i}}">
                                             <div class="col-lg-4 col-sm-12">
                                                 <label style="visibility:hidden">hidden</label>
-                                                <div id="fileuploader_{{$i}}">Upload
+                                                <div id="fileuploader_{{$i}}"> {{__('Upload')}}
                                                 </div>
                                             </div>
                                             <input type="hidden" id="datesRequiredCheck_{{$i}}"
@@ -723,7 +725,7 @@ $language_id = Auth::user()->LanguageId;
     <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1">Person Code Search</h5>
+                <h5 class="modal-title" id="exampleModalLabel1">{{__('Person Code Search')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearPersonCode()">
                 </button>
             </div>
@@ -739,14 +741,15 @@ $language_id = Auth::user()->LanguageId;
     <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Message !</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Message')}} !</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
-                <p>please select a artist with <span class="text--maroon">SAME PROFESSION</span> ! </p>
+                <p>{{__('please select a artist with')}} <span class="text--maroon">{{__('SAME PROFESSION')}}</span> !
+                </p>
                 <button class="btn btn--yellow btn-wide kt-font-transform-u float-right"
-                    data-dismiss="modal">Close</button>
+                    data-dismiss="modal">{{__('Close')}}</button>
             </div>
         </div>
     </div>
@@ -952,7 +955,6 @@ $language_id = Auth::user()->LanguageId;
             required: true,
             dateNL: true
         },
-        sp_name: "required",
         gender: "required",
         nationality: "required",
         address: "required",
@@ -980,7 +982,6 @@ $language_id = Auth::user()->LanguageId;
         visa_type: "",
         visa_number: '',
         visa_expiry: "",
-        sp_name: "",
         gender: "",
         nationality: "",
         address: "",
@@ -1116,19 +1117,16 @@ $language_id = Auth::user()->LanguageId;
                         term = $('#permitTerm_'+i).val();
                         if((term == 'long' && noofdays > 30) || term == 'short')
                         {
-                            $('#cnd_'+i).html('( Required )');
+                            $('#cnd_'+i).html('*');
                             $('#cnd_'+i).addClass('text-danger');
-                            $('#cnd_'+i).removeClass('text-muted');
-                            if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                            if(nationality == '232' && $('#req_name_'+i).val().toLowerCase() == 'visa')
                             {
-                                $('#cnd_'+i).html('( Optional )');
+                                $('#cnd_'+i).html('');
                                 $('#cnd_'+i).removeClass('text-danger');
-                                $('#cnd_'+i).addClass('text-muted');
                             }
                         }else{
-                            $('#cnd_'+i).html('( Optional )');
+                            $('#cnd_'+i).html('');
                             $('#cnd_'+i).removeClass('text-danger');
-                            $('#cnd_'+i).addClass('text-muted');
                         }
                     }
                 }

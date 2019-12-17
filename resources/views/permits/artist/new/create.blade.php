@@ -47,7 +47,7 @@
                         <div class="kt-wizard-v3__form">
                             <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-3">
                                         <label for="permit_from"
                                             class="col-form-label col-form-label-sm ">{{__('From Date')}} <span
                                                 class="text-danger">*</span></label>
@@ -68,7 +68,7 @@
                                     </div>
                                     <input type="hidden" id="artiststartafter"
                                         value="{{getSettings()->artist_start_after}}" />
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-3">
                                         <label for="permit_to"
                                             class="col-form-label col-form-label-sm">{{__('To Date')}}<span
                                                 class="text-danger">*</span></label>
@@ -91,13 +91,22 @@
 
                                     <div class="form-group col-lg-3">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Location')}} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="Location"
-                                            name="work_loc" id="work_loc" onkeyup="checkFilled()"
+                                            {{__('Work Location')}} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm"
+                                            placeholder="{{__('Work Location')}}" name="work_loc" id="work_loc"
+                                            onkeyup="checkFilled()"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="work_loc" class="col-form-label col-form-label-sm">
+                                            {{__('Work Location - Ar')}} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm"
+                                            placeholder="{{__('Work Location - Ar')}}" name="work_loc_ar"
+                                            id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
+                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
+                                    </div>
                                     <div class="form-group col-lg-2">
-                                        <label for="" class="col-form-label col-form-label-sm">Connected Event
+                                        <label for="" class="col-form-label col-form-label-sm">{{__('Connected Event')}}
                                             ?</label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio  ">
@@ -105,7 +114,7 @@
                                                     {{count($artist_details) > 0 ? 'disabled' : ''}}
                                                     {{session($user_id.'_apn_is_event') && session($user_id.'_apn_is_event') == 1 ? 'checked' : ''}}
                                                     value="1">
-                                                Yes
+                                                {{__('Yes')}}
                                                 <input type="hidden" name="isEvent" value="1">
                                                 <span></span>
                                             </label>
@@ -113,7 +122,7 @@
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(0)"
                                                     {{count($artist_details) > 0 ? 'disabled' : ''}}
                                                     {{session($user_id.'_apn_is_event') ? session($user_id.'_apn_is_event') == 0 ? 'checked' : '' : 'checked'}}
-                                                    value="0"> No
+                                                    value="0"> {{__('No')}}
                                                 <span></span>
                                             </label>
                                         </div>
@@ -122,18 +131,20 @@
                                     <div class="form-group col-lg-3 " id="events_div"
                                         style="display:{{ session($user_id.'_apn_is_event') == 0 ? 'none': 'block'}}">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
-                                            Events <span class="text-danger">*</span></label>
+                                            {{__('Events')}} <span class="text-danger">*</span></label>
                                         <select type="text"
                                             class="form-control form-control-sm {{count($artist_details) > 0 ? 'mk-disabled' : ''}}"
-                                            name="event_id" id="event_id" onchange="checkFilled()">
+                                            name="event_id" id="event_id" onchange="check_Add_Event()">
                                             <option value=" ">Select</option>
                                             @if(count($events) > 0)
                                             @foreach($events as $event)
                                             <option value="{{$event->event_id}}"
                                                 {{session($user_id.'_apn_event_id') == $event->event_id ? 'selected' : ''}}>
-                                                {{getLangId() == 1 ? $event->name_en : $event->name_ar}}</option>
+                                                {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
+                                            </option>
                                             @endforeach
                                             @endif
+                                            <option value="add_new" class="kt-font-bold">{{__('Add New')}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -183,7 +194,7 @@
                             <a href="#"
                                 onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
                                 data-toggle="modal" data-target="#delartistmodal" title="Delete">
-                                <button class="btn btn-sm btn-secondary btn-elevate">Remove</button>
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
                             </a>
                             @endif
                         </td>
@@ -191,7 +202,7 @@
                     @endforeach
                     @else
                     <tr>
-                        <td colspan="7" class="text-center">Please Add Artists ...!</td>
+                        <td colspan="7" class="text-center">{{__('Please Add Artists')}} ...!</td>
                     </tr>
                     @endif
                 </tbody>
@@ -205,14 +216,14 @@
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
                 id="draft_btn" title="Save as Draft">
                 <i class="la la-check"></i>
-                Save As Draft
+                {{__('Save As Draft')}}
             </button>
 
             <button
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
                 id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}} title="Submit Permit">
                 <i class="la la-check"></i>
-                Submit Permit
+                {{__('Submit Permit')}}
             </button>
         </div>
 
@@ -226,7 +237,7 @@
     @include('permits.artist.modals.leave_page')
 
 
-    @include('permits.artist.modals.show_warning_modal');
+    @include('permits.artist.modals.show_warning_modal',['day_count' =>getSettings()->artist_start_after ]);
 
     @endsection
 
@@ -291,6 +302,7 @@
             var from = $('#permit_from').val();
             var to = $('#permit_to').val();
             var loc = $('#work_loc').val();
+            var loc_ar = $('#work_loc_ar').val();
             var diff = $('#noofdays').val();
             var isEvent = $("input:radio[name='isEvent']:checked").val();
             var eventId = $('#event_id').val();
@@ -305,9 +317,9 @@
                 }
             }
             var artistcount = $('#total_artist_details').val();
-            $('#add_artist').attr('disabled', loc == '' ? true : false) ;
-            $('#add_artist_sm').attr('disabled', loc == '' ? true : false) ;
-            if(from && to && loc) {
+            $('#add_artist').attr('disabled', loc == '' || loc_ar == '' ? true : false) ;
+            $('#add_artist_sm').attr('disabled', loc == '' || loc_ar == '' ? true : false) ;
+            if(from && to && loc && loc_ar) {
                 if(isEvent == 0 || (isEvent == 1 && eventId != ' '))
                 {
                     $('#add_artist').attr('disabled', false);
@@ -331,6 +343,16 @@
             }
         }
 
+        function check_Add_Event(){
+            var event_id = $('#event_id').val();
+            if(event_id == 'add_new')
+            {
+                window.location.href = "{{ route('event.create')}}";
+            }else{
+                checkFilled();
+            }
+        }
+
         function disabledThese()
         {
             $('#add_artist').attr('disabled', true);
@@ -344,6 +366,7 @@
             $('#permit_from').removeClass('mk-disabled');
             $('#permit_to').removeClass('mk-disabled');
             $('#work_loc').removeClass('mk-disabled');
+            $('#work_loc_ar').removeClass('mk-disabled');
         }
 
         function fetchEventDetails()
@@ -358,6 +381,7 @@
                         $('#permit_from').val(moment(result.issued_date,"DD-MMM-YYYY").utc().format('DD-MM-YYYY')); $('#permit_from').addClass('mk-disabled');
                         $('#permit_to').val(moment(result.expired_date,"DD-MMM-YYYY").utc().format('DD-MM-YYYY'));$('#permit_to').addClass('mk-disabled');
                         $('#work_loc').val(result.venue_en);$('#work_loc').addClass('mk-disabled');
+                        $('#work_loc_ar').val(result.venue_ar);$('#work_loc_ar').addClass('mk-disabled');
                         $('#add_artist').attr('disabled', false);
                         $('#add_artist_sm').attr('disabled', false);
                     }
@@ -369,6 +393,7 @@
             $('#permit_from').val('');$('#permit_from').removeClass('mk-disabled');
             $('#permit_to').val('');  $('#permit_to').removeClass('mk-disabled');
             $('#work_loc').val('');   $('#work_loc').removeClass('mk-disabled');
+            $('#work_loc_ar').val('');   $('#work_loc_ar').removeClass('mk-disabled');
             disabledThese();
         }
 
@@ -376,13 +401,14 @@
             var from = $('#permit_from').val();
             var to = $('#permit_to').val();
             var loc = $('#work_loc').val();
+            var loc_ar = $('#work_loc_ar').val();
             var eventId = $('#event_id').val();
             var isEvent = $("input:radio[name='isEvent']:checked").val();
             var permit_id = $('#temp_permit_id').val();
             $.ajax({
                     url:"{{route('company.storePermitDetails')}}",
                     type: "POST",
-                    data: { from: from , to:to, loc:loc, eventId:eventId, isEvent: isEvent },
+                    data: { from: from , to:to, loc:loc,loc_ar:loc_ar, eventId:eventId, isEvent: isEvent },
                     async: true,
                     success: function(result){
                         window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id;
@@ -481,6 +507,8 @@
 
         $('#submit_btn').click((e) => {
             $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            $('#draft_btn').css('pointer-events', 'none');
+            $('#submit_btn').css('pointer-events', 'none');
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
@@ -492,11 +520,11 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
+                        loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val(),
                         term: term
                     },
                     success: function(result){
-                        $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
                         window.location.href="{{route('artist.index')}}#applied";
                     }
             });
@@ -504,6 +532,8 @@
 
         $('#draft_btn').click((e) => {
             $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            $('#draft_btn').css('pointer-events', 'none');
+            $('#submit_btn').css('pointer-events', 'none');
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
                     url:"{{route('artist.add_draft')}}",
@@ -513,10 +543,10 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
+                        loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val()
                     },
                     success: function(result){
-                        $('#draft_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
                         window.location.href="{{route('artist.index')}}#draft";
                     }
                 });

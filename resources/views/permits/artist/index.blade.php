@@ -42,16 +42,16 @@
             <div class="tab-pane active" id="applied" role="tabpanel">
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th>{{__('Ref NO.')}}</th>
-                            <th>{{__('Term')}}</th>
+                            <th>{{__('Permit Term')}}</th>
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
                             <th>{{__('Location')}}</th>
-                            <th>{{__('No of Artist')}}</th>
+                            <th>{{__('Artists')}}</th>
                             <th>{{__('Status')}}</th>
                             <th>{{__('Action')}}</th>
-                            <th>{{__('Details')}}</th>
+                            <th></th>
                         </tr>
                     </thead>
                 </table>
@@ -60,16 +60,16 @@
             <div class="tab-pane" id="valid" role="tabpanel">
                 <table class="table table-striped table-borderless table-hover border" id="existing-artists-table">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th>{{__('Ref NO.')}}</th>
                             <th>{{__('Term')}}</th>
                             <th>{{__('Permit Number')}}</th>
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
                             <th>{{__('Location')}}</th>
-                            <th>{{__('No of Artist')}}</th>
+                            <th>{{__('Artists')}}</th>
                             <th>{{__('Action')}}</th>
-                            <th>{{__('Details')}}</th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -80,13 +80,13 @@
             <div class="tab-pane" id="draft" role="tabpanel">
                 <table class="table table-striped table-borderless table-hover border" id="drafts-artists-table">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
-                            <th>{{__('Location')}}</th>
+                            <th>{{__('Work Location')}}</th>
                             <th>{{__('Applied Date')}}</th>
-                            <th>{{__('Action')}}</th>
-                            <th>{{__('Details')}}</th>
+                            <th class="text-center">{{__('Action')}}</th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -214,7 +214,7 @@
                 { data: 'artist_count', name: 'artist_count' },
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
-                { data: 'details', name: 'details' },
+                { data: 'details', name: 'details' ,  className: "text-center"},
             ],
             language: {
                 emptyTable: "No Applied Artist Permits"
@@ -246,8 +246,8 @@
                 { data: 'work_location', name: 'work_location' },
                 { data: 'artist_count', name: 'artist_count' },
                 { data: 'action', name: 'action' },
-                { data: 'details', name: 'details' },
-                { data: 'download', name: 'download' },
+                { data: 'download', name: 'download' ,  className: "text-center" },
+                { data: 'details', name: 'details' ,  className: "text-center" },
             ],
             columnDefs: [
                 {
@@ -269,24 +269,23 @@
             processing: true,
             serverSide: true,
             searching: true,
-            ordering: false,
+            // ordering: false,
             // pageLength: 5,
             deferRender: true,
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            // order:[[3,'desc']],
+            order:[[3,'desc']],
             ajax:'{{route("company.fetch_existing_drafts")}}',
             columns: [
                 { data: 'issued_date', name: 'issued_date' },
                 { data: 'expired_date', name: 'expired_date' },
                 { data: 'work_location', name: 'work_location' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                { data: 'action', name: 'action' },
-                { data: 'details', name: 'details' },
+                { data: 'action', name: 'action', className: "text-center"},
+                { data: 'details', name: 'details',  className: "text-center"},
             ],
             columnDefs: [
                 {
                     targets:-3,
-                    width: '12%',
                     render: function(data, type, full, meta) {
                         return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 

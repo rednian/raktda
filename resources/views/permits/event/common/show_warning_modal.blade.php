@@ -3,14 +3,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Attention')}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi excepturi beatae natus laboriosam.
-                Assumenda, praesentium mollitia dolore commodi et aliquid repellendus doloremque iure? Quaerat,
-                suscipit.
+                {{__('You are trying to apply for event permit which is less than ')}} {{$day_count}}
+                {{$day_count > 1 ? ' days' : ' day'}}
+                {{__(' from today your application will be subject to approval by RAKTDA')}}
             </div>
         </div>
     </div>

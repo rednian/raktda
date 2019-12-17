@@ -22,15 +22,16 @@
                                 id="company_name_ar" disabled placeholder="company name - Ar">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}}</label>
+                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
+                                disabled placeholder="food type">
+                        </div>
+                        <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Plate No')}}</label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
                                 disabled placeholder="plate no">
                         </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Type of Food')}}</label>
-                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
-                                disabled placeholder="food type">
-                        </div>
+
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Registration Issue')}} </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_issue_date"
