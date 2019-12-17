@@ -347,7 +347,7 @@
 																		 		</div>
 																		 		<div class="row form-group form-group-sm">
 																					<div class="col-3">
-																						 <label class="kt-font-dark">{{ __('Food Type') }} <span class="text-danger">*</span></label>
+																						 <label class="kt-font-dark">{{ __('Service Type') }} <span class="text-danger">*</span></label>
 																						 <div class="input-group input-group-sm">
 																								<input value="{{ $truck->food_type }}" name="food_type" readonly="readonly" type="text"
 																											 class="form-control">
@@ -1410,7 +1410,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {

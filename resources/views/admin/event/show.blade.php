@@ -107,11 +107,50 @@
               </div>
             </div>
           </section>
+          <section class="row">
+            <div class="col-md-12">
+              <form class="border kt-padding-5">
+                <div class="form-group row form-group-xs">
+                  <label class="col-7 col-form-label">Show event to all Registered company Calendar</label>
+                  <div class="col-3">
+                    <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                      <label class="kt-margin-b-0">
+                        <input type="checkbox" checked="checked" name="">
+                        <span></span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group row form-group-sm">
+                  <label class="col-7 col-form-label">Show event to public website calendar</label>
+                  <div class="col-3">
+                    <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                      <label class="kt-margin-b-0">
+                        <input type="checkbox" checked="checked" name="">
+                        <span></span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group row form-group-sm">
+                  <label class="col-7 col-form-label">Do you want to cancel this event?</label>
+                  <div class="col-3">
+                    <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                      <label class="kt-margin-b-0">
+                        <input type="checkbox" checked="checked" name="">
+                        <span></span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
           <h6 class="kt-margin-t-10 kt-font-dark">{{__('Event Description')}}</h6>
           <p class="border kt-padding-5 kt-font-dark">
             {{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}
           </p>
-
+          
         </div>
         <div class="col-md-4 border">
           <div class="kt-widget kt-widget--user-profile-4">
@@ -152,6 +191,10 @@
                       <tr>
                          <td>{{ __('Permit Number') }} :</td>
                           <td class="kt-font-dark"><code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
+                     </tr>
+                     <tr>
+                         <td>{{ __('Expected Audience') }} :</td>
+                          <td class="kt-font-dark">{{$event->audience_number}}</td>
                      </tr>
                      <tr>
                          <td>{{ __('Printed Note') }} :</td>
@@ -241,6 +284,18 @@
              </table>
           </div>
           <div class="tab-pane" id="kt_portlet_base_demo_2_4_tab_content" role="tabpanel">
+            <table class="table table-hover table-borderless border table-striped table-sm" id="truck-datatable">
+                <thead>
+                    <tr>
+                        <th class="no-wrap">{{ __('NAME') }}</th>
+                        <th>{{ __('REMARKS') }}</th>
+                        <th class="no-wrap">{{ __('CHECKED DATE') }}</th>
+                        <th class="no-wrap">{{ __('ACTION TAKEN') }}</th>
+                    </tr>
+                </thead>
+            </table>
+          </div>
+          <div class="tab-pane" id="kt_portlet_base_demo_4_4_tab_content" role="tabpanel">
             <table class="table table-hover table-borderless border table-striped table-sm" id="event-comment-datatable">
                 <thead>
                     <tr>

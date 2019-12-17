@@ -181,7 +181,7 @@
 												<th>{{ __('ISSUED DATE') }}</th>
 												<th>{{ __('EXPIRED DATE') }}</th>
 												<th>{{ __('PERMIT STATUS') }}</th>
-                                                <th>{{ __('ACTION') }}</th>
+                        <th>{{ __('ACTION') }}</th>
 										 </tr>
 										 </thead>
 									</table>

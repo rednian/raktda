@@ -21,4 +21,8 @@ class Approvers extends Model
         return $this->hasMany(ApprovalReport::class, 'approver_id');
     }
 
+    public function getUser(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

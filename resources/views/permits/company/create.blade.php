@@ -14,7 +14,7 @@
     <link href="{{ asset('/assets/css/login/style.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/login/style-responsive.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/login/style-responsive.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/vendors/custom/validation/css/formValidation.min.css') }}" rel="stylesheet" id="theme" />
+    <link href="{{ asset('assets/vendors/custom/validator/css/bootstrapValidator.min.css') }}" rel="stylesheet" id="theme" />
     <link rel='apple-touch-icon' type='image/png' href="{{ asset('/img/apple-touch-icon.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
@@ -96,14 +96,25 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
+                                <label>Establishment Type <span class="text-danger">*</span></label>
+                                <select name="company_type_id" class="form-control">
+                                    <option selected disabled>Select Establishment Type</option>
+                                    @if (App\CompanyType::orderBy('name_en')->count() > 0)
+                                        @foreach (App\CompanyType::orderBy('name_en')->get() as $type)
+                                            <option value="{{$type->company_id}}">{{ucfirst($type->name_en)}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>Company Name <span class="text-danger">*</span></label>
                                 <input value="{{old('name_en')}}"  type="text" name="name_en" class="form-control" required autocomplete="off" autofocus>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group corporate">
                                 <label>Trade License Number <span class="text-danger">*</span></label>
                                 <input value="{{old('trade_lincense')}}" type="text" name="trade_lincense" class="form-control" required autocomplete="off" autofocus>
                             </div>
-                            <section class="row">
+                            <section class="row corporate">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Trade License Issued Date <span class="text-danger">*</span></label>
@@ -188,10 +199,20 @@
                                 <label>Name <span class="text-danger">*</span></label>
                                 <input value="{{old('NameEn')}}" type="text" name="NameEn" class="form-control" required autocomplete="off" autofocus>
                             </div>
-                            <div class="form-group">
-                                <label>Email <span class="text-danger">*</span></label>
-                                <input value="{{old('email')}}" type="email" required name="email" class="form-control" required autocomplete="off" autofocus>
-                            </div>
+                            <section class="row">
+                                <div class="col-md-6">
+                                   <div class="form-group">
+                                       <label>Email <span class="text-danger">*</span></label>
+                                       <input value="{{old('email')}}" type="email" required name="email" class="form-control" required autocomplete="off" autofocus>
+                                   </div> 
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Mobile Number <span class="text-danger">*</span></label>
+                                        <input value="{{old('mobile_number')}}" type="text" required name="mobile_number" class="form-control" required autocomplete="off" autofocus>
+                                    </div>
+                                </div>
+                            </section>
                             <div class="form-group">
                                 <label>Username <span class="text-danger">*</span></label>
                                 <input value="{{old('username')}}" type="text" name="username" class="form-control" required autocomplete="off" autofocus>
@@ -213,6 +234,9 @@
                         </div>
                     </section>
                     <div class="form-group">
+                         <div class="g-recaptcha" data-sitekey="6LdnLwgUAAAAAAIb9L3PQlHQgvSCi16sYgbMIMFR"></div>
+                    </div>
+                    <div class="form-group">
                        <label>
                            <input name="agree" required type="checkbox" required=""> By clicking Register, you agree to our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>, including our <a href="#">Cookie Use</a>.
                        </label> 
@@ -229,13 +253,22 @@
             </div>
         </section>
     </div>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('assets/vendors/general/jquery/dist/jquery.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/vendors/custom/validation/js/formValidation.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/vendors/custom/validation/js/framework/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/vendors/custom/validator/js/bootstrapValidator.min.js') }}" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function(){
+            $('select[name=type]').change(function(){
+                if($(this).val() != 'corporate'){
+                    $('.corporate').addClass('hide').find('input').attr('disabled', true);
+                }
+                else{
+                 $('.corporate').removeClass('hide').find('input').removeAttr('disabled', true);   
+                }
+            });
+
          $('.news-feed').backstretch([
             '{{asset('/assets/css/login/1.jpg')}}',
             '{{asset('/assets/css/login/2.jpg')}}',
@@ -247,14 +280,8 @@
          });
 
 
-  $('form').formValidation({
+  $('form').bootstrapValidator({
     message: 'This value is not valid',
-    // live: 'disabled',
-    icon: {
-       // valid: 'glyphicon glyphicon-ok',
-       // invalid: 'glyphicon glyphicon-remove',
-      // validating: 'fa fa-refresh fa-spin'
-    },
     fields: {
       username: {
         message: 'The username is not valid',
@@ -271,24 +298,24 @@
             regexp: /^[a-zA-Z][a-zA-Z0-9.]+$/,
             message: 'The username must start with letter and can only consist of alphabetical, number and dot'
           },
-          // remote: {
-          //   url: '{{ route('company.isexist') }}',
-          //   type: 'get',
-          //   data: {username: $(this).val()},
-          //   message: 'The username is already exist.',
-          //   delay: 1000
-          // }
+          remote: {
+            url: '{{ route('company.isexist') }}',
+            type: 'get',
+            data: {username: $(this).val()},
+            message: 'The username is already exist.',
+            delay: 1000
+          }
         }
       },
       email:{
         validators:{
-           // remote: {
-           //   url: '{{ route('company.isexist') }}',
-           //   type: 'get',
-           //   data: {email: $(this).val()},
-           //   message: 'The email is already exist.',
-           //   delay: 1000
-           // } 
+           remote: {
+             url: '{{ route('company.isexist') }}',
+             type: 'get',
+             data: {email: $(this).val()},
+             message: 'The email is already exist.',
+             delay: 1000
+           } 
         }
       },
       password: {
@@ -347,27 +374,6 @@
           identical: {
             field: 'password',
             message: 'The password and its confirm are not the same'
-          }
-        }
-      },
-  'accessibility[]': {
-          validators: {
-              notEmpty: {
-                  message: 'Please specify at least one language you can speak'
-              }
-            }
-          },
-      position: {
-        validators: {
-          notEmpty: {
-            message: 'The Position is required and can\'t be empty'
-          }
-        }
-      },
-      country: {
-        validators: {
-          notEmpty: {
-            message: 'The country is required and can\'t be empty'
           }
         }
       }
