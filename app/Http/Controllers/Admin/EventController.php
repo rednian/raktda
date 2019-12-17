@@ -61,7 +61,7 @@
 				}
 				$result = ['success', ucfirst($event->name_en).' has been cancelled Successfully ', 'Success'];
 			} catch (Exception $e) {
-				$result = ['error', $e->getMessage(), 'Error'];
+				$result = ['danger', $e->getMessage(), 'Error'];
 			}
 			  return response()->json(['message' => $result]);
 			}
@@ -73,7 +73,7 @@
 				$event->update(['is_display_web'=>$request->is_display_web]);
 				$result = ['success', ucfirst($event->name_en).' has will display in the website calendar ', 'Success'];
 			} catch (Exception $e) {
-				$result = ['error', $e->getMessage(), 'Error'];
+				$result = ['danger', $e->getMessage(), 'Error'];
 			}
 			 return response()->json(['message' => $result]);
 		}
@@ -86,7 +86,7 @@
 				$event->update(['is_display_all'=>$request->is_display_all]);
 				$result = ['success', ucfirst($event->name_en).' has will display in the client\'s calendar ', 'Success'];
 			} catch (Exception $e) {
-				$result = ['error', $e->getMessage(), 'Error'];
+				$result = ['danger', $e->getMessage(), 'Error'];
 			}
 			 return response()->json(['message' => $result]);
 		}
@@ -165,6 +165,8 @@
 						break;
 					case 'need approval':
 
+					dd($request->all());
+
 						// $user = User::availableInspector($event->issued_date)->get();
 						// $emp = EmployeeWorkSchedule::getSchedule()->get();
 						// dd($emp);
@@ -191,7 +193,7 @@
 				DB::commit();
 
 			} catch (Exception $e) {
-				$result = ['error', $e->getMessage(), 'Error'];
+				$result = ['danger', $e->getMessage(), 'Error'];
 				DB::rollBack();
 			}
 
@@ -474,11 +476,19 @@
 				->addColumn('establishment_name', function($event){
 					return $event->owner->type != 2 ? $event->owner->company->name_en : null;
 				})
-				->addColumn('owner', function($event) use ($user){
-					if ($user->LanguageId == 1) {
-						return ucwords($event->owner->NameEn);
-					}
-					return $event->owner->NameAr;
+				->addColumn('duration', function($event) use ($user){
+					
+                      $html = '<div class="kt-user-card-v2">';
+                      $html .= ' <div class="kt-user-card-v2__details">';
+                      // $html .= '  <span class="kt-user-card-v2__name">'.$event->issued_date.'-'.$event->expired_date.'</span>';
+                      $html .= '  <span class="kt-user-card-v2__email kt-link">'.Carbon::parse($event->issued_date)->diffInDays($event->expired_date).' Days</span>';
+                      $html .= ' </div>';
+                      $html .= '</div>';
+                      return $html;
+
+				})
+				->addColumn('owner',function(){
+
 				})
 				->addColumn('website', function($event){
 					$display = $event->is_display_web ? 'checked="checked"' : null;
@@ -530,7 +540,7 @@
 					return $html;
 
 					 })
-					->rawColumns(['status', 'action', 'show', 'website', 'created_at'])
+					->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration'])
 					 ->make(true);
 					$table = $table->getData(true);
 					$table['new_count'] = Event::where('status', 'new')->count();

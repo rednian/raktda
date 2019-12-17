@@ -347,7 +347,7 @@
 																		 		</div>
 																		 		<div class="row form-group form-group-sm">
 																					<div class="col-3">
-																						 <label class="kt-font-dark">{{ __('Food Type') }} <span class="text-danger">*</span></label>
+																						 <label class="kt-font-dark">{{ __('Service Type') }} <span class="text-danger">*</span></label>
 																						 <div class="input-group input-group-sm">
 																								<input value="{{ $truck->food_type }}" name="food_type" readonly="readonly" type="text"
 																											 class="form-control">

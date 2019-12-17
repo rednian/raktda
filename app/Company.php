@@ -14,11 +14,33 @@ class Company extends Model
     // protected $table = 'smartrak_bls.company';
     protected $primaryKey = 'company_id';
     protected $fillable = [
-
-        'name_en', 'name_er', 'logo_original', 'logo_thumbnail', 'type', 'status', 'email', 'phone_number', 'website', 'trade_license', 'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 'reference_number'
+        'name_en', 'name_ar', 'logo_original', 'logo_thumbnail', 'status', 'company_email', 'phone_number', 'website', 'trade_license', 'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 'reference_number', 'company_type_id', 'registered_date', 'registered_by'
     ];
+    
+    protected $dates = ['created_at', 'updated_at', 'application_date', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date'];
 
-    protected $dates = ['created_at', 'updated_at', 'application_date', 'issued_date', 'expired_date'];
+    public function comment()
+    {
+        return $this->hasMany(CompanyComment::class, 'company_id');
+    }
+
+
+    public function event()
+    {
+        return $this->hasManyThrough(Event::class, User::class, 'EmpClientId', 'created_by', 'company_id', 'user_id')->where('status','!=', 'draft');
+    }  
+
+    public function permit()
+    {
+        return $this->hasManyThrough(Permit::class, User::class, 'EmpClientId', 'created_by', 'company_id', 'user_id')->where('permit_status','!=', 'draft');
+    }
+
+
+    public function type()
+    {
+        return $this->belongsTo(CompanyType::class, 'company_type_id');
+    }
+
 
     public function user()
     {
@@ -42,16 +64,12 @@ class Company extends Model
 
     public function contact()
     {
-        return $this->hasOne(CompanyContact::class, 'company_id')->withDefault(['name_en'=>null, 'name_ar'=>null]);
+        return $this->hasOne(CompanyContact::class, 'company_id')->withDefault(['contact_name_en'=>null, 'contact_name_ar'=>null]);
     }
+
 
     public function requirement()
     {
         return $this->hasMany(CompanyRequirement::class, 'company_id');
-    }
-
-    public function permit()
-    {
-        return $this->hasMany(Permit::class, 'company_id');
     }
 }

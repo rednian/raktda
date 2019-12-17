@@ -268,6 +268,12 @@
     <script src="{{ asset('/assets/vendors/custom/fancybox-master/dist/jquery.fancybox.js') }}" type="text/javascript">
     </script>
     <script src="{{ asset('/assets/vendors/custom/bootbox/bootbox.all.min.js') }}" type="text/javascript"></script>
+    
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/sortable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/explorer-fas/theme.js') }}"></script>
     {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script> --}}
     <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
     <!--end::Page Vendors -->

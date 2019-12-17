@@ -11,7 +11,7 @@ class CompanyRequirement extends Model
     // protected $connection = 'bls';
     protected $table = 'company_requirement';
     protected $primaryKey = 'company_requirement_id';
-    protected $fillalble = ['company_id', 'issued_date', 'expired_date', 'path', 'requirement_id', 'page_number'];
+    protected $fillable = ['company_id', 'issued_date', 'expired_date', 'path', 'requirement_id', 'page_number'];
 
     public function requirement()
     {
