@@ -12,7 +12,7 @@
         height: 38px;
         width: 36px;
         margin-left: 6px;
-    }
+    }e
     .dataTables_wrapper {
         font-size: 12px;
     }
@@ -236,17 +236,23 @@
                         messageBottom:datetime,
                         title: function () {
                             if(filter_search==1){
-                                return 'Artist List searched by Status '; }
+                                return 'ARTISTS LIST SAECHED BY STATUS '; }
                             if(filter_search==3){
-                                return 'Artist List searched by Name '; }
+                                return 'ARTISTS LIST SEARCHED BY NAME '; }
                             if(filter_search ==4){
-                                return 'Artist List searched by Profession'; }
+                                return 'ARTISTS LIST SEARCHED NY PROFESSION'; }
 
                             if(filter_search==5){
-                                return 'Artist List searched by Nationality '; }
+                                return 'ARTISTS LIST SAERCHED BY NATIONALITY '; }
 
                             if(filter_search==6){
-                                return "Artist List searched by Artist's Permit Count"; }
+                                if(search_artist=='single') {
+                                    return "ARTISTS HAVING SINGLE PERMIT";
+                                }
+                                if(search_artist=='multiple'){
+                                    return "ARTISTS HAVING MORE THAN ONE PERMIT";
+                                }
+                            }
                             },
 
                         customize: function (doc) {
@@ -462,7 +468,7 @@
 
             if(filter_search != '' &&  search_artist != '')
             {
-                $('#block-artist').DataTable().destsely();
+                $('#block-artist').DataTable().destroy();
                 fill_datatable(filter_search, search_artist);
             }
             else
@@ -504,6 +510,7 @@
 
        function myTableRefresh()
        {
+
            var currentdate = new Date();
            var datetime = + currentdate.getDate() + "/"
                + (currentdate.getMonth()+1)  + "/"
@@ -512,7 +519,7 @@
                + currentdate.getMinutes() + ":"
                + currentdate.getSeconds();
            table= $('#block-artist').DataTable({
-               dom: 'Bfrtip',
+           dom: 'Bfrtip',
 
                "searching":false,
                buttons: ['pageLength',

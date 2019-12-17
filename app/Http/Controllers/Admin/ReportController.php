@@ -307,16 +307,13 @@ class ReportController extends Controller
                               return $user->artist_status;
                           })
                           ->addColumn('artist_name', function(Artist $user) {
-                              if($user->artistPermit){
-                                  foreach ($user->artistPermit as $artist){
-                                      return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
-                                  }
+                              foreach ($user->artistPermit as $artist){
+                                  return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
                               }
-                              return '';
                           })
                           ->addColumn('profession', function(Artist $user) {
-                              foreach ($user->artistPermit as $artist) {
-                                  $artist->profession->name_en;
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->profession->name_en;
                               }
                           })
                           ->addColumn('nationality', function(Artist $user) {
@@ -356,16 +353,14 @@ class ReportController extends Controller
                               return $user->artist_status;
                           })
                           ->addColumn('artist_name', function(Artist $user) {
-                              if($user->artistPermit){
-                                  foreach ($user->artistPermit as $artist){
-                                      return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
-                                  }
+                              foreach ($user->artistPermit as $artist){
+                                  return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
                               }
-                              return 'No Artist Name';
                           })
                           ->addColumn('profession', function(Artist $user) {
                               foreach ($user->artistPermit as $artist){
-                                $artist->profession->name_en ;                                     }
+                                  return $artist->profession->name_en;
+                              }
                           })
                           ->addColumn('nationality', function(Artist $user) {
                               foreach ($user->artistPermit as $artist){
@@ -385,7 +380,6 @@ class ReportController extends Controller
                           ->rawColumns(['person_code','artist_status','artist_name'])
                           ->make(true);
                   }
-
 
                   $artist = ArtistPermit::where('country_id',$request->search_artist)->with('artist')->with('country')->get();
                   return Datatables::of($artist)
