@@ -1,10 +1,30 @@
 <?php
 
-// function fileExtension($filename = null){
-//     $array = explode('.', $filename);
-//     return array_pop($array);
-// }
+function duration($start = null, $end = null){
+    $days = Carbon\Carbon::parse($start)->diffInDays($end);
+    return $days  >= 31 ? Carbon\Carbon::parse($start)->diffInMonths($end).' Month': $days.' Days';
+}
 
+function profileName($name = null, $type = null){
+
+    $classname = ['dark', 'success', 'danger', 'warning', 'info', 'primary'];
+    
+    $first = explode(' ', $name);
+    $first = strtoupper(substr($first[0], 0, 1));
+
+    $html = '<div class="kt-user-card-v2">'; 
+    $html .= '<div class="kt-user-card-v2__pic">'; 
+    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--'.$classname[array_rand($classname)].'"><span>'.$first.'</span></div>'; 
+    $html .= ' </div>'; 
+    $html .= ' <div class="kt-user-card-v2__details">'; 
+    $html .= '  <span class="kt-user-card-v2__name">'.ucfirst($name).'</span>'; 
+    $html .= '  <span class="kt-user-card-v2__email kt-link">'.ucfirst($type).'</span>'; 
+    $html .= ' </div>'; 
+    $html .= '</div>'; 
+
+    return $html;
+
+}
 
 function humanDate($date){
     return $date-> diffForHumans();
@@ -128,7 +148,7 @@ function permitStatus($status)
     if ($status == 'send back for amendments' || $status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended' || $status == 'pending') {
         $classname = 'warning';
     }
-    if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled') {
+    if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled' || $status == 'blocked') {
         $classname = 'danger';
     }
     if ($status == 'need approval') {
