@@ -94,6 +94,7 @@
                     </h5>
                 </div>
                 <form id="truck_upload_form" class="col-md-12">
+                    @include('permits.components.requirements')
                     <input type="hidden" id="truck_document_count" value="{{count($truck_req)}}">
                     @php
                     $i = 1;

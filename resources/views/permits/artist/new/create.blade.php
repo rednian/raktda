@@ -140,7 +140,8 @@
                                             @foreach($events as $event)
                                             <option value="{{$event->event_id}}"
                                                 {{session($user_id.'_apn_event_id') == $event->event_id ? 'selected' : ''}}>
-                                                {{getLangId() == 1 ? $event->name_en : $event->name_ar}}</option>
+                                                {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
+                                            </option>
                                             @endforeach
                                             @endif
                                             <option value="add_new" class="kt-font-bold">{{__('Add New')}}</option>
@@ -365,6 +366,7 @@
             $('#permit_from').removeClass('mk-disabled');
             $('#permit_to').removeClass('mk-disabled');
             $('#work_loc').removeClass('mk-disabled');
+            $('#work_loc_ar').removeClass('mk-disabled');
         }
 
         function fetchEventDetails()

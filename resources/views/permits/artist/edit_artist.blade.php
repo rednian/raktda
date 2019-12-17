@@ -68,6 +68,7 @@
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first ">
                                 <div class="kt-wizard-v3__form">
+                                    @include('permits.components.requirements')
                                     <form id="documents_required" method="post" autocomplete="off">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
                                         <input type="hidden" id="requirements_count" value={{count($requirements)}}>
@@ -75,13 +76,14 @@
 
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-12">
-                                                    <label class="kt-font-bold text--maroon"> Artist Photo</label>
+                                                    <label class="kt-font-bold text--maroon">
+                                                        {{__('Artist Photo')}}</label>
                                                     <p for="" class="reqName " title="Artist Photo">
-                                                        Use Passport size picture with white background</p>
+                                                        {{__('Use Passport size picture with white background')}}</p>
                                                 </div>
                                                 <div class="col-lg-4 col-sm-12">
                                                     <label style="visibility:hidden">hidden</label>
-                                                    <div id="pic_uploader">Upload
+                                                    <div id="pic_uploader">{{__('Upload')}}
                                                     </div>
                                                 </div>
 
@@ -111,7 +113,7 @@
 
                                                 <div class="col-lg-4 col-sm-12">
                                                     <label style="visibility:hidden">hidden</label>
-                                                    <div id="fileuploader_{{$i}}">Upload
+                                                    <div id="fileuploader_{{$i}}">{{__('Upload')}}
                                                     </div>
                                                 </div>
                                                 <input type="hidden" id="datesRequiredCheck_{{$i}}"
@@ -243,6 +245,7 @@
                 fileName: "doc_file_"+i,
                 // showDownload: true,
                 // showPreview: true,
+                maxFileSize: 5242880,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
@@ -401,7 +404,6 @@
                     required: true,
                     dateNL: true
                 },
-                sp_name: "required",
                 gender: "required",
                 nationality: "required",
                 address: "required",
@@ -429,7 +431,6 @@
                 visa_type: "",
                 visa_number: "",
                 visa_expiry: "",
-                sp_name: "",
                 gender: "",
                 nationality: "",
                 address: "",
@@ -643,19 +644,16 @@
                 term = $('#permitTerm_'+i).val();
                 if((term == 'long' && noofdays > 30) || term == 'short')
                 {
-                    $('#cnd_'+i).html('( Required )');
+                    $('#cnd_'+i).html('*');
                     $('#cnd_'+i).addClass('text-danger');
-                    $('#cnd_'+i).removeClass('text-muted');
-                    if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                    if(nationality == '232' && $('#req_name_'+i).val().toLowerCase() == 'visa')
                     {
-                        $('#cnd_'+i).html('( Optional )');
+                        $('#cnd_'+i).html('');
                         $('#cnd_'+i).removeClass('text-danger');
-                        $('#cnd_'+i).addClass('text-muted');
                     }
                 }else{
-                    $('#cnd_'+i).html('( Optional )');
+                    $('#cnd_'+i).html('');
                     $('#cnd_'+i).removeClass('text-danger');
-                    $('#cnd_'+i).addClass('text-muted');
                 }
             }
         }

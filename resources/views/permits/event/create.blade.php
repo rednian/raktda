@@ -192,23 +192,23 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="description_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Description')}} <span
+                                                                {{__('Event Details')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <textarea type="text" class="form-control form-control-sm"
-                                                                name="description_en" id="description_en"
-                                                                placeholder="{{__('Description')}}" rows="1"
-                                                                style="resize:none"></textarea>
+                                                                name="description_en" id="description_en" rows="3"
+                                                                placeholder="{{__('Event Details')}}"
+                                                                maxlength="255"></textarea>
                                                         </div>
 
                                                         <div class=" col-md-4 form-group form-group-xs ">
                                                             <label for=" description_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Description - Ar')}} <span
+                                                                {{__('Event Details - Ar')}} <span
                                                                     class="text-danger">*</span></label>
-                                                            <textarea class="form-control form-control-sm"
+                                                            <textarea class="form-control form-control-sm" rows="3"
                                                                 name="description_ar" dir="rtl" id="description_ar"
-                                                                placeholder="Description - Ar" rows="1"
-                                                                style="resize:none"></textarea>
+                                                                placeholder="{{__('Event Details - Ar')}}"
+                                                                maxlength="255"></textarea>
                                                         </div>
 
                                                         <div class=" col-md-4 form-group form-group-xs ">
@@ -543,7 +543,8 @@
 
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
-                            <div class="kt-wizard-v3__form">
+                            <div class="">
+                                @include('permits.components.requirements')
                                 <form id="documents_required" method="post">
 
                                 </form>
@@ -640,6 +641,8 @@
 
 
 
+
+
 @include('permits.event.common.show_warning_modal', ['day_count' => getSettings()->event_start_after]);
 
 @include('permits.event.common.sure_to_remove');
@@ -722,6 +725,7 @@
                     showProgress: false,
                     showFileCounter: false,
                     duplicateErrorStr: 'No duplicate files allowed',
+                    maxFileSize: 5242880,
                     multiple: true,
                     dragDrop: true,
                     abortStr: '',
@@ -787,6 +791,7 @@
                 showFileSize: false,
                 showFileCounter: false,
                 abortStr: '',
+                maxFileSize: 5242880,
                 showProgress: false,
                 previewHeight: '100px',
                 previewWidth: "auto",
@@ -1196,10 +1201,11 @@
                 type: "POST",
                 data: { firm: firm , id: id},
                 success: function (result) {
-                 if(result){
                     $('#documents_required').empty();
+                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count"  />');
+                 if(result){
                      var res = result;
-                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count" value="'+ res.length +'" />');
+                     $('#requirements_count').val(res.length);
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
                          $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
@@ -1544,6 +1550,7 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    maxFileSize: 5242880,
                     showFileCounter: false,
                     showProgress: false,
                     abortStr: '',
@@ -1750,6 +1757,7 @@
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
                     showFileCounter: false,
+                    maxFileSize: 5242880,
                     showProgress: false,
                     abortStr: '',
                     returnType: "json",
@@ -1960,6 +1968,7 @@
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
                 showFileCounter: false,
+                maxFileSize: 5242880,
                 abortStr: '',
                 showProgress: false,
                 previewHeight: '100px',
@@ -1984,8 +1993,6 @@
             $('#image_uploader + div').attr('id', 'image-file-upload');
         };
         
-
-
 
 
 </script>

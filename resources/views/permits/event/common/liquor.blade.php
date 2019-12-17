@@ -87,10 +87,11 @@
                     </div>
                 </form>
                 <form id="liquor_upload_form" class="col-md-12">
-                    <div class="row col-md-12 justify-content-between kt-margin-b-15 kt-margin-t-15">
+                    <div class="row col-md-12 justify-content-between kt-margin-b-5 kt-margin-t-5">
                         <h5 class="text-dark  text-underline kt-font-bold">{{__('Liquor Required Documents')}}
                         </h5>
                     </div>
+                    @include('permits.components.requirements')
                     <input type="hidden" id="liquor_document_count" value="{{count($liquor_req)}}">
                     @php
                     $i = 1;

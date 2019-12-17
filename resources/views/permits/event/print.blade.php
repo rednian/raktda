@@ -167,8 +167,8 @@
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3"> {{$event_details->owner->NameAr}}<br />
-                    {{$event_details->owner->NameEn}}</td>
+                <td colspan="3"> {{$event_details->owner_name}}<br />
+                    {{$event_details->owner_name_ar}}</td>
                 <td class="subhead">صاحب الترخيص <br />License owner</td>
             </tr>
         </tbody>
@@ -197,7 +197,7 @@
                 <td class="subhead">رقم التصريح<br />Permit No</td>
             </tr>
             <tr>
-                <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'Days' : 'Day'}} </td>
+                <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'days' : 'day'}} </td>
                 <td>انقضاء</td>
                 <td class="subhead">فترة التصريح <br />Permit Period</td>
             </tr>
@@ -214,8 +214,19 @@
                 <td>{{$event_details->venue_ar}}</td>
                 <td class="subhead">الموقع <br />Location</td>
             </tr>
+            @if($liquor)
+            @if($liquor->provided == 1)
+            <tr>
+                <td colspan="3">{{$liquor->liquor_permit_no}}</td>
+                <td class="subhead"> <br />Liquor Permit No</td>
+            </tr>
+            @endif
+            @endif
         </tbody>
     </table>
+
+
+
     @if($event_details->note_en)
     <table id="note_data" border="1">
         <thead>

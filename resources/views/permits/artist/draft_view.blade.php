@@ -136,7 +136,7 @@
                                     <input type="hidden" value="{{$artist_details[0]->event}}" id="eventdetails" />
                                     <div class="form-group col-lg-3" id="events_div">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
-                                            Events <span class="text-danger">*</span></label>
+                                            {{__('Events')}} <span class="text-danger">*</span></label>
                                         <select type="text" class="form-control form-control-sm" name="event_id"
                                             id="event_id" onchange="check_Add_Event()">
                                             <option value=" ">{{__('Select')}}</option>

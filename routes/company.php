@@ -122,9 +122,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::post('event/fetch_this_liquor_docs', 'Company\EventController@fetch_this_liquor_docs')->name('event.fetch_this_liquor_docs'); 
 
     Route::get('event/get_uploaded_eventImages/{id}', 'Company\EventController@get_uploaded_eventImages')->name('event.get_uploaded_eventImages');   
-
     
-
     Route::post('event/uploadEventPics', 'Company\EventController@uploadEventPics')->name('event.uploadEventPics');
     // Route::get('event/eventpics/{id}', 'Company\EventController@eventpics')->name('event.eventpics');
 

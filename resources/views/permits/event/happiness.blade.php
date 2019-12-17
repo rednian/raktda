@@ -184,24 +184,24 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="description_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Description')}} <span
+                                                                {{__('Event Details')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <textarea type="text" class="form-control form-control-sm"
                                                                 name="description_en" id="description_en"
-                                                                placeholder="{{__('Description')}}" rows="1"
-                                                                style="resize:none"
+                                                                placeholder="{{__('Description')}}" rows="3"
+                                                                maxlength="255"
                                                                 readonly>{{$event->description_en}}</textarea>
                                                         </div>
 
                                                         <div class=" col-md-4 form-group form-group-xs ">
                                                             <label for=" description_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Description - Ar')}} <span
+                                                                {{__('Event Details - Ar')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <textarea class="form-control form-control-sm"
                                                                 name="description_ar" dir="rtl" id="description_ar"
-                                                                placeholder="{{__('Description - Ar')}}" rows="1"
-                                                                style="resize:none"
+                                                                placeholder="{{__('Event Details - Ar')}}" rows="3"
+                                                                maxlength="255"
                                                                 readonly>{{$event->description_ar}}</textarea>
                                                         </div>
 
@@ -622,6 +622,7 @@
                                     $event_vat_total = 0;
                                     $event_grand_total = 0;
                                     $truck_fee = 0;
+                                    $liquor_fee = 0 ;
                                     $issued_date = strtotime($event->issued_date);
                                     $expired_date = strtotime($event->expired_date);
                                     $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
@@ -694,6 +695,10 @@
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    <input type="hidden" id="truck_fee" value="{{$truck_fee}}">
+                                    <input type="hidden" id="liquor_fee" value="{{$liquor_fee}}">
+                                    <input type="hidden" id="is_truck" value="{{$event->is_truck}}">
 
                                     <input type="hidden" id="event_total_amount" value="{{$event_fee_total}}">
                                     <input type="hidden" id="event_vat_total" value="{{$event_vat_total}}">
@@ -1561,10 +1566,10 @@
                          $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+(res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
                          if(res[i].event_type_requirements[0].is_mandatory == 1)
                          {
-                            $('#cnd_'+j).html(' ( Required ) ');
+                            $('#cnd_'+j).html(' * ');
                             $('#cnd_'+j).removeClass('text-muted').addClass('text-danger');
                          }else {
-                            $('#cnd_'+j).html(' ( Optional ) ');
+                            $('#cnd_'+j).html('');
                             $('#cnd_'+j).removeClass('text-danger').addClass('text-muted');
                          }
 

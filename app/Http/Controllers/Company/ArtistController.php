@@ -137,7 +137,16 @@ class ArtistController extends Controller
                     break;
             }
         })->addColumn('permit_status', function ($permit) {
-            return  $permit->permit_status;
+            $status = $permit->permit_status;
+            $ret_status = '';
+            if($status == 'amended' || $status == 'new' || $status == 'need approval' || $status == 'processing') {
+                $ret_status = 'Pending'; 
+            }else if($status == 'approved-unpaid') {
+                $ret_status = 'Approved';
+            }else {
+                $ret_status = $permit->permit_status;
+            }
+            return  $ret_status;
         })->addColumn('details', function ($permit) use ($status) {
             $from = '';
             switch ($status) {
@@ -148,9 +157,9 @@ class ArtistController extends Controller
                     $from = 'valid';
                     break;
             }
-            return '<a href="' . route('company.get_permit_details', $permit->permit_id) .  '?tab=' . $from . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
+            return '<a href="' . route('company.get_permit_details', $permit->permit_id) .  '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fa-2x"></i></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . route('company.download_permit', $permit) . '" target="_blank" title="Download"><span class="fa fa-file-download fa-2x"></i></a>';
+            return '<a href="' . route('company.download_permit', $permit) . '" target="_blank" title="Download"><i class="fa fa-file-download fa-2x"></i></a>';
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
 
@@ -347,7 +356,9 @@ class ArtistController extends Controller
 
         $events = \App\Event::where('created_by', Auth::user()->user_id);
 
-        $data_bundle['events'] = $events->whereDate('issued_date', '>=', Carbon::now())->orderBy('name_en', 'asc')->get();
+        $data_bundle['events'] = $events->orderBy('name_en', 'asc')->whereNotIn('status', ['cancelled', 'rejected', 'expired', 'draft'])->get();
+
+        //->whereDate('issued_date', '>=', Carbon::now())
 
         $data_bundle['artist_details'] = ArtistTempData::where([
             ['permit_id', $id],
@@ -1462,7 +1473,7 @@ class ArtistController extends Controller
         })->addColumn('action', function ($permit) {
             return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">View / Update</span></a>';
         })->addColumn('details', function ($permit) {
-            return '<a href="' . route('company.get_draft_details', $permit->permit_id) . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
+            return '<a href="' . route('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fa-2x"></i></a>';
         })->rawColumns(['action', 'details'])->make(true);
     }
 

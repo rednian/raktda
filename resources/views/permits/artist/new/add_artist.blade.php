@@ -421,8 +421,8 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="id_no"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">Identification
-                                                                        No <span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Identification
+                                                                        No')}} <span
                                                                             class="text-danger sh-uae">*</span></label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -436,8 +436,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="sp_name"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Sponser Name')}}<span
-                                                                            class="text-danger">*</span>
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Sponser Name')}}
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
@@ -448,11 +447,6 @@ $language_id = Auth::user()->LanguageId;
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-
-
-
-
 
                                                                 <div class=" form-group form-group-sm row">
                                                                     <label for="language"
@@ -691,88 +685,84 @@ $language_id = Auth::user()->LanguageId;
                     <!--begin: Form Wizard Step 3-->
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
-                            <div class="kt-wizard-v3__form">
-                                <form id="documents_required" method="post" autocomplete="off">
-                                    <input type="hidden" id="artist_number_doc" value={{1}}>
-                                    <input type="hidden" id="requirements_count" value={{count($requirements)}}>
-                                    <div class="kt-form__section kt-form__section--first">
+                            @include('permits.components.requirements')
+                            <form id="documents_required" method="post" autocomplete="off">
+                                <input type="hidden" id="artist_number_doc" value={{1}}>
+                                <input type="hidden" id="requirements_count" value={{count($requirements)}}>
+                                <div class="kt-form__section kt-form__section--first">
 
-                                        <div class="row">
-                                            <div class="col-lg-4 col-sm-12">
-                                                <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}} <span
-                                                        class="text-danger">( required
-                                                        )</span></label>
-                                                <p for="" class="reqName " title="Artist Photo">
-                                                    Use Passport size picture with white background</p>
-                                            </div>
-                                            <div class="col-lg-4 col-sm-12">
-                                                <label style="visibility:hidden">hidden</label>
-                                                <div id="pic_uploader">Upload
-                                                </div>
-                                            </div>
-
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-12">
+                                            <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}} <span
+                                                    class="text-danger">*</span></label>
+                                            <p for="" class="reqName " title="Artist Photo">
+                                                {{__('Use Passport size picture with white background')}}</p>
                                         </div>
-                                        @php
-                                        $i = 1;
-                                        $issued_date = strtotime(date('Y-m-d',
-                                        strtotime(session($user_id.'_apn_from_date'))));
-                                        $expired_date = strtotime(date('Y-m-d',
-                                        strtotime(session($user_id.'_apn_to_date'))));
-                                        $diff = round(abs($expired_date - $issued_date) / 60 / 60 / 24);
-                                        @endphp
-                                        <input type="hidden" id="permitNoOfDays" value="{{$diff}}" />
-                                        @foreach ($requirements as $req)
-                                        {{-- @if($req->term == 'long' && $diff > 30 || $req->term == 'short' ) --}}
-                                        <div class="row">
-                                            <div class="col-lg-4 col-sm-12">
-                                                <label
-                                                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
-                                                    <span id="cnd_{{$i}}"></span>
-                                                </label>
-                                                <p for="" class="reqName">
-                                                    {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
-                                                </p>
+                                        <div class="col-lg-4 col-sm-12">
+                                            <label style="visibility:hidden">hidden</label>
+                                            <div id="pic_uploader">{{__('Upload')}}
                                             </div>
-                                            <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
-                                            <input type="hidden" value="{{$req->requirement_name}}"
-                                                id="req_name_{{$i}}">
-
-                                            <div class="col-lg-4 col-sm-12">
-                                                <label style="visibility:hidden">hidden</label>
-                                                <div id="fileuploader_{{$i}}">Upload
-                                                </div>
-                                            </div>
-                                            <input type="hidden" id="datesRequiredCheck_{{$i}}"
-                                                value="{{$req->dates_required}}">
-                                            <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
-                                            @if($req->dates_required == 1)
-                                            <div class="col-lg-2 col-sm-12">
-                                                <label for="" class="text--maroon kt-font-bold"
-                                                    title="Issue Date">{{__('Issue Date')}}</label>
-                                                <input type="text" class="form-control form-control-sm date-picker"
-                                                    name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                    id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
-                                                    onchange="setExpiryMindate('{{$i}}')" />
-                                                <input type="hidden" id="doc_validity_{{$i}}"
-                                                    value="{{$req->validity}}">
-                                            </div>
-                                            <div class="col-lg-2 col-sm-12">
-                                                <label for="" class="text--maroon kt-font-bold"
-                                                    title="Expiry Date">{{__('Expiry Date')}}</label>
-                                                <input type="text" class="form-control form-control-sm date-picker"
-                                                    name="doc_exp_date_{{$i}}" id="doc_exp_date_{{$i}}"
-                                                    placeholder="DD-MM-YYYY" />
-                                            </div>
-                                            @endif
                                         </div>
-                                        @php
-                                        $i++;
-                                        @endphp
-                                        {{-- @endif --}}
-                                        @endforeach
 
-                                </form>
-                            </div>
+                                    </div>
+                                    @php
+                                    $i = 1;
+                                    $issued_date = strtotime(date('Y-m-d',
+                                    strtotime(session($user_id.'_apn_from_date'))));
+                                    $expired_date = strtotime(date('Y-m-d',
+                                    strtotime(session($user_id.'_apn_to_date'))));
+                                    $diff = round(abs($expired_date - $issued_date) / 60 / 60 / 24);
+                                    @endphp
+                                    <input type="hidden" id="permitNoOfDays" value="{{$diff}}" />
+                                    @foreach ($requirements as $req)
+                                    {{-- @if($req->term == 'long' && $diff > 30 || $req->term == 'short' ) --}}
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-12">
+                                            <label
+                                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                                                <span id="cnd_{{$i}}"></span>
+                                            </label>
+                                            <p for="" class="reqName">
+                                                {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                                            </p>
+                                        </div>
+                                        <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
+                                        <input type="hidden" value="{{$req->requirement_name}}" id="req_name_{{$i}}">
+
+                                        <div class="col-lg-4 col-sm-12">
+                                            <label style="visibility:hidden">hidden</label>
+                                            <div id="fileuploader_{{$i}}">{{__('Upload')}}
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                            value="{{$req->dates_required}}">
+                                        <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
+                                        @if($req->dates_required == 1)
+                                        <div class="col-lg-2 col-sm-12">
+                                            <label for="" class="text--maroon kt-font-bold"
+                                                title="Issue Date">{{__('Issue Date')}}</label>
+                                            <input type="text" class="form-control form-control-sm date-picker"
+                                                name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
+                                                onchange="setExpiryMindate('{{$i}}')" />
+                                            <input type="hidden" id="doc_validity_{{$i}}" value="{{$req->validity}}">
+                                        </div>
+                                        <div class="col-lg-2 col-sm-12">
+                                            <label for="" class="text--maroon kt-font-bold"
+                                                title="Expiry Date">{{__('Expiry Date')}}</label>
+                                            <input type="text" class="form-control form-control-sm date-picker"
+                                                name="doc_exp_date_{{$i}}" id="doc_exp_date_{{$i}}"
+                                                placeholder="DD-MM-YYYY" />
+                                        </div>
+                                        @endif
+                                    </div>
+                                    @php
+                                    $i++;
+                                    @endphp
+                                    {{-- @endif --}}
+                                    @endforeach
+
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -821,7 +811,7 @@ $language_id = Auth::user()->LanguageId;
                         <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-elevate"
                             value="Save & Continue" id="submit_btn">Save & Continue</button>
                         <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-elevate"
-                            value="Save & Add New" id="submit_add_btn">Save & Add New</button>
+                            value="Save & Add New Artist" id="submit_add_btn">Save & Add New Artist</button>
                     </div>
                 </div>
 
@@ -934,6 +924,7 @@ $language_id = Auth::user()->LanguageId;
                 allowedTypes: "jpeg,jpg,png,pdf",
                 fileName: "doc_file_" + i,
                 // showDownload: true,
+                maxFileSize: 5242880,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
@@ -1030,6 +1021,7 @@ $language_id = Auth::user()->LanguageId;
             downloadStr: `<i class="la la-download"></i>`,
             deleteStr: `<i class="la la-trash"></i>`,
             showFileSize: false,
+            maxFileSize: 5242880,
             showFileCounter: false,
             abortStr: '',
             previewHeight: '100px',
@@ -1084,7 +1076,6 @@ $language_id = Auth::user()->LanguageId;
                     required: true,
                     dateNL: true
                 },
-                sp_name: "required",
                 gender: "required",
                 nationality: "required",
                 uid_number: 'required',
@@ -1116,7 +1107,6 @@ $language_id = Auth::user()->LanguageId;
                 profession: "", 
                 dob: "",
                 permit_type: "",
-                sp_name: "",
                 gender: "",
                 nationality: "",
                 passport: '', 
@@ -1345,19 +1335,16 @@ $language_id = Auth::user()->LanguageId;
                     term = $('#permitTerm_'+i).val();
                     if((term == 'long' && noofdays > 30) || term == 'short')
                     {
-                        $('#cnd_'+i).html('( Required )');
+                        $('#cnd_'+i).html('*');
                         $('#cnd_'+i).addClass('text-danger');
-                        $('#cnd_'+i).removeClass('text-muted');
-                        if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                        if(nationality == '232' && $('#req_name_'+i).val().toLowerCase() == 'visa')
                         {
-                            $('#cnd_'+i).html('( Optional )');
+                            $('#cnd_'+i).html('');
                             $('#cnd_'+i).removeClass('text-danger');
-                            $('#cnd_'+i).addClass('text-muted');
                         }
                     }else{
-                        $('#cnd_'+i).html('( Optional )');
+                        $('#cnd_'+i).html('');
                         $('#cnd_'+i).removeClass('text-danger');
-                        $('#cnd_'+i).addClass('text-muted');
                     }
                 }
             }

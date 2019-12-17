@@ -15,13 +15,7 @@ class Company extends Model
     protected $primaryKey = 'company_id';
     protected $fillable = [
 
-<<<<<<< HEAD
         'name_en', 'name_er', 'logo_original', 'logo_thumbnail', 'type', 'status', 'email', 'phone_number', 'website', 'trade_license', 'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 'reference_number'
-=======
-        'company_name', 'company_address', 'company_type', 'company_mobile_number', 'company_email', 'comapany_status',
-
-        'name_en', 'name_er', 'logo_original', 'logo_thumbnail', 'type', 'status', 'company_email', 'phone_number', 'website', 'trade_license', 'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 'reference_number'
->>>>>>> 3f903cc39b5152fee3817cf8c3f534b9c08916dc
     ];
 
     protected $dates = ['created_at', 'updated_at', 'application_date', 'issued_date', 'expired_date'];

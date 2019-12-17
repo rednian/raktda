@@ -135,29 +135,31 @@
 
                                                     <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="description_en"
-                                                            class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Description')}} <span
+                                                            class="col-form-label kt-font-bold text-right">
+                                                            {{__('Event Details')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <textarea type="text" class="form-control form-control-sm"
                                                             name="description_en" id="description_en"
-                                                            placeholder="{{__('Description')}}" rows="1"
-                                                            style="resize:none">{{$event->description_en}}</textarea>
+                                                            placeholder="{{__('Event Details')}}" rows="3"
+                                                            maxlength="255">{{$event->description_en}}</textarea>
                                                     </div>
 
-                                                    <div class=" col-md-4 form-group form-group-xs ">
-                                                        <label for=" description_ar"
+                                                    <div class="col-md-4 form-group form-group-xs ">
+                                                        <label for="description_ar"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            Description - Ar <span class="text-danger">*</span></label>
+                                                            {{__('Event Details - Ar')}} <span
+                                                                class="text-danger">*</span></label>
                                                         <textarea class="form-control form-control-sm"
                                                             name="description_ar" dir="rtl" id="description_ar"
-                                                            placeholder="Description - Ar" rows="1"
-                                                            style="resize:none">{{$event->description_ar}}</textarea>
+                                                            placeholder="{{__('Event Details - Ar')}}" rows="3"
+                                                            maxlength="255">{{$event->description_ar}}</textarea>
                                                     </div>
 
                                                     <div class=" col-md-4 form-group form-group-xs ">
                                                         <label for="no_of_audience"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            Expected Audience <span class="text-danger">*</span></label>
+                                                            {{__('Expected Audience')}} <span
+                                                                class="text-danger">*</span></label>
                                                         <select class="form-control form-control-sm"
                                                             name="no_of_audience" id="no_of_audience">
                                                             <option value="">{{__('Select')}}</option>
@@ -178,7 +180,7 @@
 
 
                                                     <div class="col-md-4  form-group form-group-xs ">
-                                                        <label class="col-form-label"> Food truck ?</label>
+                                                        <label class="col-form-label"> {{__('Food truck')}} ?</label>
                                                         {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
                                                                 <input type="checkbox" name="isTruck" id="isTruck">
                                                                 <span></span>
@@ -503,6 +505,7 @@
                         <div class="kt-form__section kt-form__section--first ">
                             @component('permits.components.eventcomments', ['staff_comments' => $staff_comments])
                             @endcomponent
+                            @include('permits.components.requirements')
                             <input type="hidden" id="requirements_count" />
                             <form id="documents_required" novalidate>
 
@@ -661,6 +664,7 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    maxFileSize: 5242880,
                     returnType: "json",
                     showFileCounter: false,
                     duplicateErrorStr: 'No duplicate files allowed',
@@ -744,6 +748,7 @@
                 multiple: false,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                maxFileSize: 5242880,
                 showFileCounter: false,
                 abortStr: '',
                 previewHeight: '100px',
@@ -1515,6 +1520,7 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    maxFileSize: 5242880,
                     showFileCounter: false,
                     showProgress: false,
                     abortStr: '',
@@ -1729,6 +1735,7 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    maxFileSize: 5242880,
                     showFileCounter: false,
                     showProgress: false,
                     abortStr: '',
@@ -1956,6 +1963,7 @@
                 multiple: true,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                maxFileSize: 5242880,
                 showFileCounter: false,
                 abortStr: '',
                 showProgress: false,

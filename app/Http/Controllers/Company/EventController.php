@@ -24,6 +24,7 @@ use App\EventLiquor;
 use App\EventTransaction;
 use App\Transaction;
 use App\EventComment;
+use App\EventOtherUpload ;
 use Session;
 use URL;
 use App\Happiness;
@@ -406,7 +407,7 @@ class EventController extends Controller
                             Storage::move(session($userid . '_image_thumb')[$k], 'public/'.$newThumbPathLink);
                         }
             
-                        \App\EventOtherUpload::create([
+                        EventOtherUpload::create([
                             'path' => $newPathLink,
                             'thumbnail' => $newThumbPathLink,
                             'event_id' => $event_id,
@@ -461,6 +462,7 @@ class EventController extends Controller
             $input_Array['expired_date'] = $evd['expired_date'];
             $input_Array['time_start'] = $evd['time_start'];
             $input_Array['time_end'] = $evd['time_end'];
+            $input_Array['request_type'] = 'new request';
             $input_Array['reference_number'] = $this->generateReferenceNumber();
             $input_Array['created_by'] = $userid;
             $input_Array['created_at'] = Carbon::now();
@@ -678,7 +680,7 @@ class EventController extends Controller
     }
 
     public function get_uploaded_eventImages($id){
-        return \App\EventOtherUpload::where('event_id', $id)->get();
+        return EventOtherUpload::where('event_id', $id)->get();
     }
 
     public function delete_truck_details($id)
@@ -710,8 +712,10 @@ class EventController extends Controller
         $data['event'] = $event;
         $data['artist'] = $artist;
         $data['tab'] =  $request->tab;
+        $data['eventImages']  = $event->otherUpload;
         return view('permits.event.show', $data);
     }
+
 
     public function edit(Event $event)
     {
@@ -945,7 +949,7 @@ class EventController extends Controller
         $reason = $request->cancel_reason;
 
         Event::where('event_id', $event_id)->update([
-            'status' => 'cancelled',
+            'request_type' => 'cancelation request',
             'cancelled_by' => Auth::user()->user_id,
             'cancel_reason' => $reason
         ]);
@@ -988,10 +992,29 @@ class EventController extends Controller
         $data['days'] = $numberTransformer->toWords($diff);
 
         $event_permit_no = $event_details->permit_number;
+        // $pdf = PDF::loadView('permits.event.print', $data, [], [
+        //     'title' => 'Event Permit',
+        //     'default_font_size' => 10
+        // ]);
+        if($event_details->is_liquor == 1){
+            $data['liquor'] = EventLiquor::where('event_id', $id)->first();
+        }
+        if($event_details->is_truck == 1){
+            $data['truck'] = EventTruck::where('event_id', $id)->get();
+        }
+       
         $pdf = PDF::loadView('permits.event.print', $data, [], [
             'title' => 'Event Permit',
             'default_font_size' => 10
         ]);
+        $pdf->getMpdf()->AddPage();
+        if($event_details->is_liquor == 1){
+            $pdf->getMpdf()->WriteHTML(\View::make('permits.event.liquorprint')->with($data)->render());
+        }
+         $pdf->getMpdf()->AddPage();
+        if($event_details->is_truck == 1){
+            $pdf->getMpdf()->WriteHTML(\View::make('permits.event.truckprint')->with($data)->render());
+        }
         // $pdf->getMpdf()->useDefaultCSS2();
         return $pdf->stream('Event Permit-' . $event_permit_no . '.pdf');
     }
@@ -1055,8 +1078,8 @@ class EventController extends Controller
                         return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">Rejected</span>';
                     } else if ($permit->status == 'cancelled') {
                         return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">Cancelled</span>';
-                    } else if ($permit->status == 'need modification') {
-                        return '<a href="' . route('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a>';
+                    } else if ($permit->status == 'bounce back') {
+                        return '<a href="' . route('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
                     } else if ($permit->status == 'new') {
                         return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     }
@@ -1066,7 +1089,7 @@ class EventController extends Controller
                         $issued_date = strtotime($permit->issued_date);
                         $today = strtotime(date('Y-m-d 00:00:00'));
                         $diff = abs($today - $issued_date) / 60 / 60 / 24;
-                        $amend_btn = ($diff <= $amend_grace) ? '<a href="' . route('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Amend </span></a>' : '';
+                        $amend_btn = ($diff <= $amend_grace) ? '<a href="' . route('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Amend </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>' : '';
                         return $amend_btn . '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\',\''.$permit->permit_number.'\')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     } else if ($permit->status == 'expired') {
                         return '<span class="kt-badge kt-badge--primary kt-badge--inline kt-margin-r-5">Expired</span>';
@@ -1079,7 +1102,16 @@ class EventController extends Controller
                     break;
             }
         })->addColumn('permit_status', function ($permit) {
-            return  $permit->status;
+            $status = $permit->status;
+            $ret_status = '';
+            if($status == 'amended' || $status == 'new' || $status == 'need approval' || $status == 'processing') {
+                $ret_status = 'Pending'; 
+            }else if($status == 'approved-unpaid') {
+                $ret_status = 'Approved';
+            }else {
+                $ret_status = $permit->status;
+            }
+            return  $ret_status;
         })->addColumn('details', function ($permit)  use ($status) {
             $from = '';
             switch ($status) {
@@ -1093,12 +1125,12 @@ class EventController extends Controller
                     $from = 'draft';
                     break;
             }
-            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
+            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fa-2x"></i></a>';
         })->addColumn('download', function ($permit) {
             if ($permit->status == 'expired') {
                 return;
             } else {
-                return '<a href="' . route('company.event.download', $permit->event_id) . '" target="_blank" title="Download"><span class="fa fa-file-download fa-2x"></i></a>';
+                return '<a href="' . route('company.event.download', $permit->event_id) . '" target="_blank" title="Download"><i class="fa fa-file-download fa-2x"></i></a>';
             }
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
@@ -1343,7 +1375,8 @@ class EventController extends Controller
             'owner_name' => $evd['owner_name'],
             'status' => 'draft',
             'created_by' =>  $userid,
-            'reference_number' => $this->generateReferenceNumber()
+            'reference_number' => $this->generateReferenceNumber(),
+            'request_type' => 'new request'
         );
 
         $event = Event::create($input_Array);
@@ -1567,7 +1600,7 @@ class EventController extends Controller
             'is_liquor' => $evd['isLiquor'],
             'firm' => $evd['firm_type'],
             'audience_number' => $evd['no_of_audience'],
-            'owner_name' => $evd['owner_name']
+            'owner_name' => $evd['owner_name'],
         );
 
         $event = Event::where('event_id', $event_id)->update($input_Array);

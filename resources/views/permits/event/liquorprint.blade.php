@@ -141,11 +141,10 @@
                 تصريح مؤقت
             </div>
             <div>
-                Temporary Permit
+                Liquor Permit
             </div>
         </div>
     </header>
-
 
     <table id="license_data" border="1">
         <thead>
@@ -167,8 +166,8 @@
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3"> {{$event_details->owner->NameAr}}<br />
-                    {{$event_details->owner->NameEn}}</td>
+                <td colspan="3"> {{$event_details->owner_name}}<br />
+                    {{$event_details->owner_name_ar}}</td>
                 <td class="subhead">صاحب الترخيص <br />License owner</td>
             </tr>
         </tbody>
@@ -183,21 +182,26 @@
         </thead>
         <tbody>
             <tr>
-                <td colspan="2">{{$event_details->name_en}}</td>
-                <td>{{$event_details->name_ar}}</td>
-                <td class="subhead">اسم الفعالية<br />Event Name</td>
+                <td colspan="2">{{$liquor->company_name_en}}</td>
+                <td>{{$liquor->company_name_ar}}</td>
+                <td class="subhead"><br />Company Name</td>
             </tr>
             <tr>
-                <td colspan="2">{{$event_details->type['name_en']}}</td>
-                <td>{{$event_details->type['name_ar']}}</td>
-                <td class="subhead">نوع تصريح <br />Permit Type</td>
+                <td colspan="3">{{$liquor->purchase_receipt}}</td>
+                <td class="subhead"><br />Purchase Receipt</td>
             </tr>
             <tr>
-                <td colspan="3">{{$event_details->permit_number}}</td>
-                <td class="subhead">رقم التصريح<br />Permit No</td>
+                <td colspan="3">{{$liquor->liquor_service}}</td>
+                <td class="subhead"><br />Liquor Service</td>
             </tr>
+            @if($liquor->liquor_service == 'limited')
             <tr>
-                <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'Days' : 'Day'}} </td>
+                <td colspan="3">{{$event_details->liquor_types}}</td>
+                <td class="subhead"><br />Liquor Types</td>
+            </tr>
+            @endif
+            <tr>
+                <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'days' : 'day'}} </td>
                 <td>انقضاء</td>
                 <td class="subhead">فترة التصريح <br />Permit Period</td>
             </tr>
@@ -216,22 +220,7 @@
             </tr>
         </tbody>
     </table>
-    @if($event_details->note_en)
-    <table id="note_data" border="1">
-        <thead>
-            <tr>
-                <th>Notes</th>
-                <th>ملحوظة</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{$event_details->note_en}}</td>
-                <td>{{$event_details->note_ar}}</td>
-            </tr>
-        </tbody>
-    </table>
-    @endif
+
     <table id="date_data" border="1">
         <tr>
             <td>Printing Date: </td>

@@ -349,7 +349,6 @@
                                             <div class="form-group form-group-sm row">
                                                 <label for="sp_name"
                                                     class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponser Name')}}
-                                                    <span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-lg-8">
                                                     <div class="input-group input-group-sm">
@@ -360,10 +359,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
-
-
 
 
                                             <div class=" form-group form-group-sm row">

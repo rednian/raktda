@@ -278,6 +278,7 @@
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                maxFileSize: 5242880,
                 showFileCounter: false,
                 abortStr: '',
                 multiple: false,
@@ -434,7 +435,6 @@
                     required: true,
                     dateNL: true
                 },
-                sp_name: "required",
                 gender: "required",
                 nationality: "required",
                 address: "required",
@@ -462,7 +462,6 @@
                 visa_type: "",
                 visa_number: "",
                 visa_expiry: "",
-                sp_name: "",
                 gender: "",
                 nationality: "",
                 address: "",
@@ -668,19 +667,16 @@
                 term = $('#permitTerm_'+i).val();
                 if((term == 'long' && noofdays > 30) || term == 'short')
                 {
-                    $('#cnd_'+i).html('( Required )');
+                    $('#cnd_'+i).html('*');
                     $('#cnd_'+i).addClass('text-danger');
-                    $('#cnd_'+i).removeClass('text-muted');
-                    if(nationality == '232' && $('#req_id_'+i).val() == 6)
+                    if(nationality == '232' && $('#req_name_'+i).val().toLowerCase() == 'visa')
                     {
-                        $('#cnd_'+i).html('( Optional )');
+                        $('#cnd_'+i).html('');
                         $('#cnd_'+i).removeClass('text-danger');
-                        $('#cnd_'+i).addClass('text-muted');
                     }
                 }else{
-                    $('#cnd_'+i).html('( Optional )');
+                    $('#cnd_'+i).html('');
                     $('#cnd_'+i).removeClass('text-danger');
-                    $('#cnd_'+i).addClass('text-muted');
                 }
             }
         }
