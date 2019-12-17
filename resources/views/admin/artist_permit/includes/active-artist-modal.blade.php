@@ -13,11 +13,11 @@
 
                                </table>
                             </div>
-							 <section class="kt-section kt-padding-10">
+							 blo<section class="kt-section kt-padding-10">
 									<div class="kt-section__desc">
 										 @csrf
-										 <div class="form-group">
-												<label>Remarks <span class="text-danger">*</span></label>
+								.		 <div class="form-group">
+												<label><Remark></Remark>s <span class="text-danger">*</span></label>
 												<textarea id="comment" name="comment" rows="4" class="form-control-sm form-control" placeholder="Reason for blocking/unblocking the artist.."></textarea>
 										 </div>
                                         <div id="ajax-alert" style="display: none">Artist Blocked</div>

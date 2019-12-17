@@ -49,8 +49,6 @@
           window.history.back();
 
       }
-
-
           var url = "http://javarevisited.blogspot.com";
          var location= $(location).attr('href',url);
          console.log(location);
@@ -85,8 +83,7 @@
                     }
                 ],
 
-                 fnCreatedRow: function(row ,data, index){
-                 },
+
           });
 
   });

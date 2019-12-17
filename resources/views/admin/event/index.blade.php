@@ -91,7 +91,7 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Action Taken') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</a>
                 <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $active_request }}</span>
@@ -105,15 +105,15 @@
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
           role="tablist" id="artist-permit-nav">
           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-              data-target="#new-request">{{ __('New Event Requests') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
+              data-target="#new-request">{{ __('NewRequests') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#pending-request"
-              data-target="#pending-request">{{ __('Pending Requests') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
+              data-target="#pending-request">{{ __('Pending') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
               href="#processing-permit">{{ __('Processing Events') }}</a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
-              href="#active-permit">{{ __('Active Events') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
+              href="#active-permit">{{ __('Permit Action') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab"
-              href="#archive-permit">{{ __('Archive Events') }}</a></li>
+              href="#archive-permit">{{ __('History') }}</a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab"
               href="#calendar">{{ __('All Events Calendar') }}</a></li>
         </ul>
@@ -187,7 +187,7 @@
             <tr>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
-              <th>{{ __('PERMIT OWNER') }}</th>
+              <th>{{ __('PERMIT DURATION') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('APPLIED DATE') }}</th>
@@ -1026,6 +1026,7 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
+        locale:{'customRangeLabel':'From and To'},
         ranges: {
           'Today': [moment(), moment()],
           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -1062,7 +1063,7 @@
          columns: [
            {data: 'reference_number'},
            {data: 'establishment_name'},
-           {data: 'owner'},
+           {data: 'duration'},
            {data: 'event_name'},
            {data: 'type'},
            {data: 'created_at'},
