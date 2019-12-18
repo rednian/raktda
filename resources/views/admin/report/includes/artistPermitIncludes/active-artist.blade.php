@@ -15,7 +15,6 @@
 
 
      <tr>
-
      <th colspan="6"><section class="form-row">
              <div class="col-12">
                  <form class="form-row">

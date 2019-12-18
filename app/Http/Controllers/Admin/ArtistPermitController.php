@@ -473,28 +473,28 @@ class ArtistPermitController extends Controller
 		    ->editColumn('issued_date', function($permit){
 		    	if(!$permit->issued_date){ return null;}
 		    	return $permit->issued_date->format('d-M-Y');
-		    })
-		    ->editColumn('expired_date', function($permit){
+		         })
+		       ->editColumn('expired_date', function($permit){
 		    	if(!$permit->expired_date){ return null;}
 		    	return $permit->expired_date->format('d-M-Y');
-		    })
-        ->addColumn('artist_number', function($permit){
-          return $permit->artist()->count();
-        })
-		    ->addColumn('permit_status', function ($permit){
+		          })
+               ->addColumn('artist_number', function($permit){
+                return $permit->artist()->count();
+                  })
+		       ->addColumn('permit_status', function ($permit){
 		    	return permitStatus($permit->permit_status);
-		    })
-		     ->addColumn('action', function ($permit){
+		         })
+		       ->addColumn('action', function ($permit){
 		    	return '<a href="'.route('admin.artist_permit.show', $permit->permit_id).'" class="btn btn-sm btn-secondary btn-elevate">Details</a>';
-		    })
-		    ->rawColumns(['permit_status', 'action'])
-		    ->make(true);
-    }
+		         })
+		       ->rawColumns(['permit_status', 'action'])
+		       ->make(true);
+                 }
 
-    public function applicationCommentDataTable(Request $request, Permit $permit, ArtistPermit $artistpermit)
-    {
-    	$comments = $artistpermit->comments()->orderBy('created_at', 'desc')->get();
-    	return DataTables::of($comments)
+            public function applicationCommentDataTable(Request $request, Permit $permit, ArtistPermit $artistpermit)
+             {
+    	     $comments = $artistpermit->comments()->orderBy('created_at', 'desc')->get();
+    	     return DataTables::of($comments)
 		    ->addColumn('comment', function ($comments){
 		    	return ucfirst($comments->comment);
 		    })

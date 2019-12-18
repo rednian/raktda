@@ -1,4 +1,69 @@
 <style>
+    .dropdown-item{
+        color: #6d6d6d;
+    }
+    .dt-button-collection span{
+
+        color: #6d6d6d;
+    }
+    #active_artist_click:hover{
+        width: 45%;
+        border-radius: 4px;
+        background-color: #525252;
+        color: white;
+        border: none;
+        box-shadow: 0px 5px 13px -5px black;
+    }
+    #blocked_artist_click:hover{
+        width: 45%;
+        border-radius: 4px;
+        background-color: #525252;
+        color: white;
+        box-shadow: 0px 5px 13px -5px black;
+        border: none;
+    }
+    #single_permit_type_click:hover{
+        border-radius: 4px;
+        background-color: #525252;
+        color: white;
+        border: none;
+        box-shadow: 0px 5px 13px -5px black;
+    }
+    #multiple_permit_type_click:hover{
+        border-radius: 4px;
+        background-color: #525252;
+        color: white;
+        border: none;
+        box-shadow: 0px 5px 13px -5px black;
+    }
+    #active_artist_click{
+        width: 45%;
+        border-radius: 4px;
+        background-color: #a9a9a9;
+        color: white;
+        border: none;
+    }
+    #blocked_artist_click{
+        width: 45%;
+        border-radius: 4px;
+        background-color: #a9a9a9;
+        color: white;
+        border: none;
+    }
+    #single_permit_type_click{
+        border-radius: 4px;
+        background-color: #a9a9a9;
+        color: white;
+        width: 45%;
+        border: none;
+    }
+    #multiple_permit_type_click{
+        border-radius: 4px;
+        width: 48%;
+        background-color: #a9a9a9;
+        color: white;
+        border: none;
+    }
     #search_button_css {
         background: transparent;
         border: none;
@@ -22,9 +87,11 @@
     #name_search_button{
         border-radius: 4px;
         padding: 5px;
-        background: #ececec;
-        border: 1px solid #d0d0d0;
-        margin-left: 1px;
+        background-color: crimson;
+        border: navajowhite;
+        width: 37px;
+        margin-right: -9px;
+        color: white;
     }
 
     #active-artist_wrapper  .dt-buttons{
@@ -36,56 +103,140 @@
         background-color: #edeef4;
         margin-top:6px;
     }
+#navbarCollapse{
+    width: 141px;
+    background-color: #616161;
+    padding: 9.2876px;
+    box-shadow: 0px 9px 15px -6px grey;
+    border-radius: 4px;
+    margin-left: 76%;
+    position: absolute;
+    margin-top: -22%;
+}
+#collapse_button:hover{
+    background-color:#909090;
+    border: none;
+    color: white;
+    border-bottom: 2px solid black;
+    border-radius: 4px;
+    padding: 4px;
+    box-shadow: 1px 5px 7px -6px black;
+    transition-delay: 0s;
+    transition-duration: .3s;
+}
+    #collapse_button{
+        background-color: #bdbdbd;
+        border: none;
+        color: white;
+        border-bottom: 2px solid #888888;
+        border-radius: 4px;
+        padding: 4px;
+
+        transition-delay: 0s;
+        transition-duration: .3s;
+    }
+
+    #search-artist-name{
+    width: 100%;margin-left: -40px;border: 1px solid #cacaca;margin-right: 2px;
+    }
 
 </style>
 <table class="table  table-hover  table-borderless table-striped border" id="block-artist">
     <thead>
+
     <tr>
-
-        <th colspan="5">
-            <div class="row">
-                <div class="col-3" style="display: inline-flex">
-                 <input type="text" class="form-control form-control-sm" name="search-artist-name" id="search-artist-name" placeholder="Artist Name">
-                <button class="fa fa-search" id="name_search_button"></button>
-                </div>
-                <div class="col-3">
-                    <select type="text"  id="search_by_nationality" class="form-control form-control-sm custom-select-sm custom-select" style="width: 90%" name="search_artist" >
-                        <option value="">{{__('Nationality')}}</option>
-
-                        @foreach($country as $key => $nationality)
-                            <option value="{{$key}}">{{$nationality}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-3">
-                    <select type="text" id="search_by_profession" style="width: 90%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
-                        <option value="">{{__('Profession')}}</option>
-                        @foreach($profession as $key => $nationality)
-                            <option value="{{$key}}">{{$nationality}}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="coel-3">
-                    <select type="text" id="search_by_permit"  style="width: 100%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
-                        <option value=""selected="true"  >{{__('Permit Status')}}</option>
-                        <option value="single">{{__('Single')}}</option>
-                        <option value="multi">{{__('Multiple')}}</option>
-                    </select>
-                </div>
-
-            </div>
-
+        <th colspan="4">
+            <div class="btn btn-secondary btn-sm" id="active_artist_click" >{{__('Active Artists')}}</div>
+            <input type="text" value="active" id="active_artist_input" hidden>
+            <div class="btn btn-secondary btn-sm"  id="blocked_artist_click"> {{__('Blocked Artists')}}</div>
+            <input type="text" value='blocked' id="blocked_artist_input" hidden>
         </th>
-        <th colspan="2">
-            <select type="text" id="search_by_status" style="width: 90%" class="form-control form-control-sm custom-select-sm custom-select" >
-                <option value="">{{__('Status')}}</option>
-                <option value="active">Active</option>
-                <option value="blocked">Blocked</option>
+        <th colspan="3">
+            <div class="btn btn-secondary btn-sm" id="single_permit_type_click" >{{__('Artist with Single Permit')}}</div>
+            <input type="text" value="active" id="single_permit_type_input" hidden>
+            <div class="btn btn-secondary btn-sm"  id="multiple_permit_type_click"> {{__('Artists with Multiple Permits')}}</div>
+            <input type="text" value='blocked' id="multiple_permit_type_input" hidden>
+   </th>
+
+
+    </tr>
+
+    <tr>
+        <th colspan="3">
+            <div class="container">
+                <div class="row">
+                    <nav role="navigation" class="navbar navbar-default mainmenu">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button id="collapse_button"  type="button" data-target= data-toggle="collapse">
+                                <span class="fa fa-filter" style="margin-top: 2px">Filter</span>
+                            </button>
+                        </div>
+                        <!-- Collection of nav links and other content for toggling -->
+                        <div id="navbarCollapse" style="display:none">
+                            <ul id="fresponsive" class="nav navbar-nav dropdown">
+                                <li></li>
+                                <li>     <select type="text" id="search_by_gender" style="width: 100%;border: none;margin-top: 1px" class="form-control form-control-sm custom-select-sm custom-select" >
+                                        <option value="">{{__('Gender')}}</option>
+                                        @foreach($gender as $key => $genders)
+                                            <option value="{{$genders->gender_id}}">{{Auth()->user()->LanguageId==1? ucwords($genders->name_en):ucwords($genders->name_ar)}}</option>
+                                        @endforeach
+                                    </select></li>
+                                <li> <select type="text" id="search_by_age" style="width: 100%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
+                                        <option value="">{{__('Age')}}</option>
+                                        <option value="17">{{__('Minor')}}</option>
+                                        <option value="18">{{__('Adult')}}</option>
+                                    </select></li>
+                                <li> <select type="text" id="search_by_status" style="width: 100%;border: none;margin-top: 1px" class="form-control form-control-sm custom-select-sm custom-select" >
+                                        <option value="">{{__('Status')}}</option>
+                                        <option value="active">{{__('Active')}}</option>
+                                        <option value="blocked">{{__('Blocked')}}</option>
+                                    </select></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                </div>
+            </div>
+        </th>
+        <th> <div class="col-sm" style="display: inline-flex">
+                <input type="text" class="form-control form-control-sm " name="search-artist-name" id="search-artist-name" placeholder="{{__('Name')}}">
+                <button class="fa fa-search" id="name_search_button"></button>
+            </div></th>
+        <th> <select type="text"  id="search_by_nationality" class="form-control form-control-sm custom-select-sm custom-select" style="width: 90%" name="search_artist" >
+                <option value="">{{__('Nationality')}}</option>
+
+                @foreach($country as $key => $nationality)
+                    <option value="{{$nationality->country_id}}">{{Auth()->user()->LanguageId==1? $nationality->nationality_en:$nationality->nationality_ar}}</option>
+                @endforeach
+            </select></th>
+        <th>
+
+            <select type="text" id="search_by_profession" style="width: 90%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
+                <option value="">{{__('Profession')}}</option>
+                @foreach($profession as $key => $nationality)
+                    <option value="{{$nationality->profession_id}}">{{Auth()->user()->LanguageId==1? $nationality->name_en:$nationality->name_ar}}</option>
+                @endforeach
             </select>
         </th>
-        <th><button style="margin-left: 20px" class="btn btn-sm btn-secondary" id="ArtistTableresetButton" >{{__('Reset')}}</button></th>
-        </tr>
+        <th>
+         <select type="text" id="search_by_visa" style="width: 90%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
+                <option value="">{{__('Visa Type')}}</option>
+                @foreach($visas as $key => $visa)
+                    <option value="{{$visa->id}}">{{Auth()->user()->LanguageId==1? $visa->visa_type_en:$visa->visa_type_ar}}</option>
+                @endforeach
+            </select>
+            </th>
+        <th><select type="text" id="search_by_area" style="width: 90%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
+                <option value="">{{__('Area')}}</option>
+                @foreach($areas as $key => $area)
+                    <option value="{{$area->id}}">{{Auth()->user()->LanguageId==1? $area->area_en:$area->area_ar}}</option>
+                @endforeach
+            </select></th>
+    </tr>
+
+
+
     <tr style="font-size: 12px">
         <th></th>
         <th style="width: 14%">{{ __('PERSON CODE') }}</th>
@@ -103,6 +254,11 @@
 @section('script')
 <script>
         $(function myTable() {
+
+            $('#collapse_button').click(function () {
+                $('#navbarCollapse').toggle(300)
+            })
+
             var currentdate = new Date();
             var datetime = + currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/"
@@ -115,9 +271,13 @@
           dom: 'Bfrtip',
            "searching":false,
             buttons: ['pageLength',
+                'colvis',
                 {
+                    messageBottom:datetime,
                     extend: 'pdf',
-                    messageBottom: datetime,
+                    exportOptions: {
+                        columns: ':visible'
+                    },
                     title: function () {
                             return 'Artists List ';
 
@@ -200,7 +360,7 @@
         $('#name_search_button').click(function (e) {
             e.preventDefault();
             var search_artist=$('input[name="search-artist-name"]').val();
-            var filter_search=3;
+            var filter_search={{\App\ConstantValue::ARTISTNAME}};
 
             $.ajax({
                 url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
@@ -209,6 +369,49 @@
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
+                    $('#navbarCollapse').hide(400)
+                fill_datatable(filter_search, search_artist);
+            }
+            else
+            {
+                alert('Please Select Filter Option');
+            }
+        });
+
+        $('#active_artist_click').click(function (e) {
+            e.preventDefault();
+            var search_artist=$('#active_artist_input').val();
+            var filter_search={{\App\ConstantValue::STATUS}};
+
+            $.ajax({
+                url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
+                data:{filter_search:filter_search,search_artist:search_artist}
+            })
+            if(filter_search != '' &&  search_artist != '')
+            {
+                $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
+                fill_datatable(filter_search, search_artist);
+            }
+            else
+            {
+                alert('Please Select Filter Option');
+            }
+        });
+
+        $('#blocked_artist_click').click(function (e) {
+            e.preventDefault();
+            var search_artist=$('#blocked_artist_input').val();
+            var filter_search={{\App\ConstantValue::STATUS}};
+
+            $.ajax({
+                url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
+                data:{filter_search:filter_search,search_artist:search_artist}
+            })
+            if(filter_search != '' &&  search_artist != '')
+            {
+                $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             }
             else
@@ -231,9 +434,13 @@
                 dom: 'Bfrtip',
 
                 buttons: ['pageLength',
+                    'colvis',
                     {
-                        extend: 'pdf',
                         messageBottom:datetime,
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () {
                             if(filter_search==1){
                                 return 'ARTISTS LIST SAECHED BY STATUS '; }
@@ -253,7 +460,15 @@
                                     return "ARTISTS HAVING MORE THAN ONE PERMIT";
                                 }
                             }
-                            },
+                            if(filter_search==7){
+                                return 'ARTISTS LIST SEARCHED BY VISA TYPE '; }
+
+                               if(filter_search==8){
+                             return 'ARTISTS LIST SEARCHED BY AGE '; }
+
+                        if(filter_search==9){
+                      return 'ARTISTS LIST SEARCHED BY AREA '; }
+                           },
 
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -354,9 +569,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
+                        messageBottom:datetime,
                         extend: 'pdf',
-                        messageBottom: datetime,
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () {
                             return 'Artists List ';
 
@@ -441,7 +660,7 @@
             ArtistResetTable();
         })
 
-        $('#Aartist-report-tab').click(function () {
+        $('#Artist-report-tab').click(function () {
             ArtistResetTable();
         })
 
@@ -454,6 +673,7 @@
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             }
             else
@@ -463,12 +683,13 @@
         });
 
         $('#search_by_status').change(function(){
-            var filter_search = 1;
+            var filter_search = {{\App\ConstantValue::STATUS}};
             var search_artist = $('#search_by_status').val();
 
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             }
             else
@@ -477,14 +698,48 @@
             }
         });
 
+        $('#search_by_gender').change(function(){
+            var filter_search = {{\App\ConstantValue::STATUS}};
+            var search_artist = $('#search_by_gender').val();
+
+            if(filter_search != '' &&  search_artist != '')
+            {
+                $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
+                fill_datatable(filter_search, search_artist);
+            }
+            else
+            {
+                alert('Please Select Filter Option');
+            }
+        });
+
+        $('#search_by_visa').change(function(){
+            var filter_search = '{{\App\ConstantValue::VISATYPE}}';
+            var search_artist = $('#search_by_visa').val();
+
+            if(filter_search != '' &&  search_artist != '')
+            {
+                $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
+                fill_datatable(filter_search, search_artist);
+            }
+            else
+            {
+                alert('Please Select Filter Option');
+            }
+        });
+
+
         $('#search_by_profession').change(function(){
 
-            var filter_search = 4;
+            var filter_search = {{\App\ConstantValue::PROFESSION}};
             var search_artist = $('#search_by_profession').val();
 
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             }
             else
@@ -500,6 +755,7 @@
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             }
             else
@@ -523,9 +779,13 @@
 
                "searching":false,
                buttons: ['pageLength',
+                   'colvis',
                    {
                        messageBottom:datetime,
                        extend: 'pdf',
+                       exportOptions: {
+                           columns: ':visible'
+                       },
                        title: function () { return 'ARTIST REPORT'; },
                        customize: function (doc) {
                            doc.defaultStyle.fontSize = 8;
@@ -609,9 +869,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
                         messageBottom:datetime,
                         extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'All Events Report'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -720,9 +984,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
                         messageBottom:datetime,
                         extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'All Events Report'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -838,9 +1106,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
                         messageBottom:datetime,
                         extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'Events Report by Application-type'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -940,19 +1212,68 @@
         });
 
 
-        $('#search_by_permit').change(function () {
-                var filter_search = 6;
-                var search_artist = $('#search_by_permit').val();
+        $('#single_permit_type_click').click(function () {
+                var filter_search ={{\App\ConstantValue::PROFESSION}};
+                var search_artist = $('#single_permit_type_input').val();
 
                 if(filter_search != '' &&  search_artist != '')
                 {
                     $('#block-artist').DataTable().destroy();
+                    $('#navbarCollapse').hide(400)
                     fill_datatable(filter_search, search_artist);
                 }
                 else
                 {
                     alert('Please Select Filter Option');
                 }
+        })
+
+        $('#multiple_permit_type_click').click(function () {
+            var filter_search ={{\App\ConstantValue::PROFESSION}};
+            var search_artist = $('#multiple_permit_type_input').val();
+
+            if(filter_search != '' &&  search_artist != '')
+            {
+                $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
+                fill_datatable(filter_search, search_artist);
+            }
+            else
+            {
+                alert('Please Select Filter Option');
+            }
+        })
+
+        $('#search_by_age').change(function () {
+            var filter_search ={{\App\ConstantValue::AGE}};
+            var search_artist = $('#search_by_age').val();
+
+            if(filter_search != '' &&  search_artist != '')
+            {
+                $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
+                fill_datatable(filter_search, search_artist);
+            }
+            else
+            {
+                alert('Please Select Filter Option');
+            }
+        })
+
+        $('#search_by_area').change(function () {
+            var filter_search ={{\App\ConstantValue::AREA}};
+            var search_artist = $('#search_by_area').val();
+
+            if(filter_search != '' &&  search_artist != '')
+            {
+                $('#block-artist').DataTable().destroy();
+                $('#navbarCollapse').hide(400)
+                fill_datatable(filter_search, search_artist);
+            }
+            else
+            {
+                alert('Please Select Filter Option');
+            }
         })
 
 
@@ -970,8 +1291,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
-                        extend: 'pdf',messageBottom:datetime,
+                        messageBottom:datetime,
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'Event Report'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -1089,9 +1415,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
-                    {
+                    'colvis',
+                         {
                         messageBottom:datetime,
                         extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'Event Report'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -1405,9 +1735,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
                         messageBottom:datetime,
                         extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'ARTIST PERMIT REPORT'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -1615,8 +1949,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
-                        extend: 'pdf',messageBottom:datetime,
+                        messageBottom:datetime,
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'ACTIVE ARTISTS PERMIT REPORT'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -1757,8 +2096,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
-                        extend: 'pdf',messageBottom:datetime,
+                        messageBottom:datetime,
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'ARTIST PERMIT PRECESSING REPORT'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -1900,8 +2244,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
-                        extend: 'pdf',messageBottom:datetime,
+                        messageBottom:datetime,
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'ARTIST PERMIT PRECESSING REPORT'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -2046,8 +2395,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
-                        extend: 'pdf',messageBottom:datetime,
+                        messageBottom:datetime,
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'ARTIST PERMIT REJECTED REPORT'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -2191,8 +2545,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
-                        extend: 'pdf',messageBottom:datetime,
+                        messageBottom:datetime,
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'PENDING ARTIST PERMIT REPORT'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
@@ -2334,8 +2693,13 @@
                 dom: 'Bfrtip',
                 "searching":false,
                 buttons: ['pageLength',
+                    'colvis',
                     {
-                        extend: 'pdf',messageBottom:datetime,
+                        messageBottom:datetime,
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
                         title: function () { return 'ARTIST PERMIT REPORT'; },
                         customize: function (doc) {
                             doc.defaultStyle.fontSize = 8;
