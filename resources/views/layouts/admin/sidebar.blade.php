@@ -45,11 +45,6 @@
                        <span class="kt-menu__link-text">{{ __('Classification') }}</span>
                    </a>
                </li>
-               <li class="kt-menu__item {{ Request::is('inspection*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ URL::signedRoute('inspection.index') }}" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">{{ __('Inspection') }}</span>
-                   </a>
-               </li>
                @endif
                <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('permit*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.artist_permit.index') }}" class="kt-menu__link">
@@ -61,6 +56,15 @@
                        <span class="kt-menu__link-text">{{ __('Event Permit') }}</span>
                    </a>
                </li>
+
+               @if(Auth::user()->roles()->whereIn('roles.role_id', [1,3,4])->exists())
+               <li class="kt-menu__item {{ Request::is('inspection*') ? 'kt-menu__item--active': '' }}">
+                   <a href="{{ URL::signedRoute('inspection.index') }}" class="kt-menu__link ">
+                       <span class="kt-menu__link-text">{{ __('Inspection') }}</span>
+                   </a>
+               </li>
+               @endif
+
                @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
                <li class="kt-menu__item {{ Request::is('artist_reports*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.artist_permit_reports.reports') }}" class="kt-menu__link ">
