@@ -196,8 +196,11 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     //---------------------------------------------------------------------------------------------------------------
 
     Route::get('/inspection', 'Admin\InspectionController@index')->name('inspection.index');
-
-
+    Route::get('/inspection/get_schedules/', 'Admin\InspectionController@getEvents')->name('inspection.get_schedules');
+    Route::get('/inspection/get_schedules_datatable', 'Admin\InspectionController@getEventsDatatable')->name('inspection.get_schedules_datatable');
+    Route::get('/inspection/{inspection}', 'Admin\InspectionController@show')->name('inspection.show');
+    Route::get('/inspection/{inspection}/inspect', 'Admin\InspectionController@inspect')->name('inspection.inspect');
+    Route::post('/inspection/{inspection}/inspect/submit', 'Admin\InspectionController@submitInspection')->name('inspection.inspect.submit');
 
 
     //---------------------------------------------------------------------------------------------------------------

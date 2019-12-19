@@ -843,6 +843,8 @@
 												  			</div>
 												  		 </div>
 												  		 <div id="collapse-action" class="collapse show" aria-labelledby="heading-action" data-parent="#accordion-action">
+
+												  		 	@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
 												  			<div class="card-body">
 												  				<section class="row">
 												  					<div class="col-md-12">
@@ -920,6 +922,31 @@
 												  				</section>
 												  				
 												  			</div>
+												  			@endif
+
+												  			{{-- ADD BY DONSKIE --}}
+												  			@if(Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
+															<div class="card-body">
+												  				<section class="row">
+												  					<div class="col-md-12">
+												  						<div class="form-group row form-group-sm">
+  																			<div class="col-12">
+  																				<div class="kt-radio-inline">
+  																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
+  																						<input value="approved" type="radio" name="status"> Approve Application
+  																						<span></span>
+  																					</label>
+  																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
+  																						<input value="disapproved" type="radio" name="status"> Disapprove Application
+  																						<span></span>
+  																					</label>
+  																				</div>
+  																			</div>
+  																		</div>
+												  					</div>
+												  				</section>
+												  			</div>
+												  			@endif
 												  		</div>
 												  	</div>
 												  </section>
