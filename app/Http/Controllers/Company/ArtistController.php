@@ -29,6 +29,10 @@ use App\ArtistTempDocument;
 use App\PermitComment;
 use App\GeneralSetting;
 use App\Happiness;
+use App\EventTruck;
+use App\EventTransaction;
+use App\EventLiquor;
+use App\CompanyComment;
 use PDF;
 use App\Transaction;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -58,7 +62,7 @@ class ArtistController extends Controller
 
     function datatable_function($status)
     {
-        $permits = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('created_by', Auth::user()->user_id);
+        $permits = Permit::where('created_by', Auth::user()->user_id);
         if ($status == 'applied') {
             $permits->whereNotIn('permit_status', ['active', 'expired']);
         } else if ($status == 'valid') {
@@ -66,8 +70,10 @@ class ArtistController extends Controller
         }
         $permits->orderBy('created_at', 'desc')->get();
 
-        $amend_grace = GeneralSetting::first()->artist_permit_grace_period_amendment;
-        $renew_grace = GeneralSetting::first()->artist_permit_grace_period_renew;
+        $amend_grace = getSettings()->artist_permit_grace_period_amendment;
+        $renew_grace = getSettings()->artist_permit_grace_period_renew;
+
+        //with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->
 
         return Datatables::of($permits)->editColumn('issued_date', function ($permits) {
             if ($permits->issued_date) {
@@ -83,20 +89,23 @@ class ArtistController extends Controller
             }
         })->editColumn('term', function ($permits) {
             return ucwords($permits->term);
-        })->editColumn('artist_count', function ($permits) use ($status) {
-            $noofapproved = 0;
-            $total = count($permits->artistPermit);
-            foreach ($permits->artistPermit as $ap) {
-                if ($ap->artist_permit_status == 'approved') {
-                    $noofapproved++;
-                }
-            }
-            if ($status == 'valid') {
-                return 'Approved ' . $noofapproved . ' of ' . $total;
-            } else {
-                return  count($permits->artistPermit);
-            }
+        })->editColumn('permit_id', function ($permits) use ($status) {
+            // $noofapproved = 0;
+            // $total = count($permits->artistPermit);
+            // foreach ($permits->artistPermit as $ap) {
+            //     if ($ap->artist_permit_status == 'approved') {
+            //         $noofapproved++;
+            //     }
+            // }
+            // if ($status == 'valid') {
+            //     return 'Approved ' . $noofapproved . ' of ' . $total;
+            // } else {
+                return  $permits->artistPermit;
+            // }
         })->addColumn('action', function ($permit) use ($status, $amend_grace, $renew_grace) {
+            if(check_is_blocked()['status'] == 'blocked'){
+                return ;
+            }
             $approved_artist = false;
             foreach ($permit->artistPermit as $ap) {
                 if ($ap->artist_permit_status == 'approved') {
@@ -106,17 +115,30 @@ class ArtistController extends Controller
             switch ($status) {
                 case 'applied':
                     if ($permit->permit_status == 'approved-unpaid') {
+                         if($permit->event) {
+                              if($permit->event->firm == 'government')
+                              {
+                                return '<a href="' . route('company.happiness_center', $permit->permit_id) . '"  title="Happiness"><span class="kt-badge kt-badge--success kt-badge--inline">Happiness</span></a>';
+                              }
+                         }
                         return '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
                     } else if ($permit->permit_status == 'new') { //&& $permit->lock == ''
                         return '<span onClick="cancel_permit(' . $permit->permit_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     } else if ($permit->permit_status == 'modification request') {
                         $pay_btn = '';
                         if ($approved_artist) {
-                            $pay_btn = '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
+                            if($permit->event) {
+                                if($permit->event->firm == 'government')
+                                {
+                                    $pay_btn = '<a href="' . route('company.happiness_center', $permit->permit_id) . '"  title="Happiness"><span class="kt-badge kt-badge--info kt-badge--inline">Happiness</span></a>';
+                                }
+                            }else {
+                                $pay_btn = '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
+                            }
                         }
                         return '<a href="' . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a>' . $pay_btn;
                     } else if ($permit->permit_status == 'rejected') {
-                        return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">Rejected</span>';
+                        return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">Rejected</span>';
                     } else if ($permit->permit_status == 'cancelled') {
                         return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">Cancelled</span>';
                     }
@@ -132,6 +154,9 @@ class ArtistController extends Controller
                     $pn = Permit::where('permit_number', 'like', "$permit->permit_number%")->latest()->first()->permit_number;
                     if ($pn != $permit->permit_number) {
                         $renewBtn = '';
+                    }
+                    if($permit->status == 'expired'){
+                        return '<div class="alert-text">Expired</div>';
                     }
                     return  '<span class="d-flex flex-column">' . $amendBtn . $renewBtn . '</span>';
                     break;
@@ -157,10 +182,10 @@ class ArtistController extends Controller
                     $from = 'valid';
                     break;
             }
-            return '<a href="' . route('company.get_permit_details', $permit->permit_id) .  '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fa-2x"></i></a>';
+            return '<a href="' . route('company.get_permit_details', $permit->permit_id) .  '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . route('company.download_permit', $permit) . '" target="_blank" title="Download"><i class="fa fa-file-download fa-2x"></i></a>';
-        })->rawColumns(['action', 'details', 'download'])->make(true);
+            return '<a href="' . route('company.download_permit', $permit) . '" target="_blank" title="Download Permit"><i class="fa fa-file-download"></i></a>';
+        })->rawColumns(['action', 'details', 'download', 'permit_id'])->make(true);
     }
 
     public function get_permit_details($id, Request $request)
@@ -180,7 +205,6 @@ class ArtistController extends Controller
             'birthdate' => Carbon::parse($request->dob)->toDateString()
         ])->with('artist', 'artistPermitDocument', 'Nationality', 'visaType');
 
-
         if ($query->exists()) {
             $data = $query->latest()->first();
             $isArtist = true;
@@ -190,6 +214,20 @@ class ArtistController extends Controller
         }
 
         return response()->json(['isArtist' => $isArtist, 'data' => $data]);
+    }
+
+    public function check_artist_exists_in_permit(Request $request)
+    {
+        $artist_id = $request->artist_id;
+        $permit_id = $request->permit_id;
+
+        $artist_exists = ArtistTempData::where('permit_id', $permit_id)->where('artist_id', $artist_id)->exists();
+        $res = 'no';
+        if($artist_exists)
+        {
+            $res = 'yes';
+        }
+        return $res ;
     }
 
     // to add artist to permit
@@ -302,12 +340,13 @@ class ArtistController extends Controller
 
     public function cancel_permit(Request $request)
     {
+        $id = $request->input('permit_id');
+        // $crnt_status = Permit::where('permit_id',  $id)->first()->permit_status;
         $insval = array(
             'cancel_reason' => $request->input('cancel_reason'),
             'updated_by' => Auth::user()->user_id,
             'permit_status' => 'cancelled'
         );
-        $id = $request->input('permit_id');
         $result = Permit::where('permit_id', $id)->update($insval);
         $message = $result ? ['success', 'Permit Cancelled successfully ', 'Success'] : ['error', 'Error, Please Try Again', 'Error'];
         return redirect()->route('artist.index')->with('message', $message);
@@ -417,7 +456,23 @@ class ArtistController extends Controller
   
     public function get_status($id)
     {
-        return Permit::where('permit_id', $id)->first()->permit_status;
+        $permit = Permit::where('permit_id', $id)->first();
+        // return Permit::where('permit_id', $id)->first()->permit_status;
+        if(!is_null($permit->lock))
+        {
+            $to = Carbon::createFromFormat('Y-m-d H:i:s', $permit->lock);
+            $from = Carbon::now();
+
+            $diff_in_minutes = $from->diffInMinutes($to);
+
+            if($diff_in_minutes < 5){
+                
+                // $request->session()->flash('lock', $permit);
+                return response()->json(['message' => ['danger', 'Opps! Someone is currently checking the permit. Please try again later.', 'Information'] , 'lock' => 'yes']);
+            }
+        }else {
+            return response()->json(['lock' => 'no']);
+        }
     }
 
 
@@ -476,8 +531,8 @@ class ArtistController extends Controller
 
 
         $temp_id = $artistTempData->id;
-        if ($artistDetails['id']) {
-            $artistTempData->artist_id = $artistDetails['id'];
+        if ($artistDetails['artist_id']) {
+            $artistTempData->artist_id = $artistDetails['artist_id'];
         } else {
             $artistTempData->artist_id = $temp_id;
         }
@@ -511,7 +566,7 @@ class ArtistController extends Controller
             $request->session()->forget($userid . '_thumb_file');
             $request->session()->forget($userid . '_ext');
         } else {
-            $getArtistPics = ArtistPermit::where('artist_id', $artistDetails['id'])->latest()->first();
+            $getArtistPics = ArtistPermit::where('artist_id', $artistDetails['artist_id'])->latest()->first();
             $newPathLink = $getArtistPics->original;
             $newThumbPathLink = $getArtistPics->thumbnail;
         }
@@ -583,7 +638,7 @@ class ArtistController extends Controller
                 ]);
             } else {
                 if ($artistDetails['is_old_artist'] == 2) {
-                    $artistsD = ArtistPermitDocument::where('artist_permit_id', $artistDetails['ap_id'])->where('requirement_id', $l)->latest()->first();
+                    $artistsD = ArtistPermitDocument::where('artist_permit_id', $artistDetails['artist_permit_id'])->where('requirement_id', $l)->latest()->first();
                     if ($artistsD) {
                         $newPathLink = $artistsD->path;
 
@@ -780,8 +835,13 @@ class ArtistController extends Controller
                         $artistPermitId = $artistPermit->artist_permit_id;
 
                     }
+                    $org = [];
 
-                    $org = explode('/', $data->original);
+                    if($data->original)
+                    {
+                        $org = explode('/', $data->original);
+                    }
+                    
 
                     // isset($org[2]) ? $is_temp = $org[2] : '';
 
@@ -884,9 +944,11 @@ class ArtistController extends Controller
                                 'requirement_id' => $l,
                                 'artist_permit_id' => $artistPermitId
                             ]);
+
+                            Storage::delete($temp_path);
                         }
 
-                        Storage::delete($temp_path);
+                        
                     }
                 }
             }
@@ -1004,6 +1066,7 @@ class ArtistController extends Controller
             ['permit_id', $permit_id],
             ['person_code', $code],
             ['created_by', $user_id],
+            ['status' , '!=' , 1]
         ])->exists();
         $artist_d = [];
         if (!$code_exists) {
@@ -1471,9 +1534,12 @@ class ArtistController extends Controller
                 return 'None';
             }
         })->addColumn('action', function ($permit) {
+            if(check_is_blocked()['status'] == 'blocked'){
+                return ;
+            }
             return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">View / Update</span></a>';
         })->addColumn('details', function ($permit) {
-            return '<a href="' . route('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fa-2x"></i></a>';
+            return '<a href="' . route('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
         })->rawColumns(['action', 'details'])->make(true);
     }
 
@@ -1529,8 +1595,6 @@ class ArtistController extends Controller
             ['created_by', $user_id],
             ['del_status', 1],
         ])->delete();
-
-        dd($update);
 
         if ($update) {
             $this->makeSessionForgetPermitDetails();
@@ -1895,23 +1959,51 @@ class ArtistController extends Controller
                 'type'=> 'event'
             ]);
 
+            $event_id = $permit->event_id ;
+
             if($permit->event->is_truck == 1)
             {
-                $tr_amount = getSettings()->food_truck_fee * $noofdays;
+                $totaltrucks = count(EventTruck::where('event_id', $event_id)->where('paid', 0)->get());
 
-                \App\EventTransaction::create([
-                    'event_id' => $permit->event_id,
-                    'user_id' => Auth::user()->user_id,
-                    'transaction_id' => $trans->transaction_id,
-                    'amount' => $tr_amount,
-                    'vat' => 0,
-                    'type'=> 'truck',
-                    'total_trucks' => count($permit->event->truck)
-                ]);
+                if($totaltrucks > 0)
+                {
+                    $tr_amount = getSettings()->food_truck_fee * $noofdays * $totaltrucks;
+
+                    EventTransaction::create([
+                        'event_id' => $event_id,
+                        'user_id' => Auth::user()->user_id,
+                        'transaction_id' => $trans->transaction_id,
+                        'amount' => $tr_amount,
+                        'vat' => 0,
+                        'type'=> 'truck',
+                        'total_trucks' => count($permit->event->truck)
+                    ]);
+    
+                    EventTruck::where('event_id', $event_id)->update(['paid' => 1]);
+                }
+               
+            }
+
+            if($permit->event->is_liquor == 1)
+            {
+                if(($permit->event->liquor) && ($permit->event->liquor->paid == 0))
+                {
+                    $lq_amount = getSettings()->liquor_fee * $noofdays ;
+                    EventTransaction::create([
+                        'event_id' => $event_id,
+                        'transaction_id' => $trans->transaction_id,
+                        'type' => 'liquor',
+                        'amount' => $lq_amount,
+                        'vat' => 0,
+                        'user_id' => Auth::user()->user_id
+                    ]);
+    
+                    EventLiquor::where('event_id', $event_id)->update(['paid' => 1]);
+                }
+               
             }
     
         }
-
 
         $issued_date = strtotime($permit->issued_date);
         $expired_date = strtotime($permit->exprired_date);
@@ -1947,14 +2039,43 @@ class ArtistController extends Controller
 
     public function submit_happiness(Request $request)
     {
+        $permit_id = $request->permit_id ;
         $updateArray = array(
             'type' => 'artist',
-            'application_id' =>  $request->permit_id,
+            'application_id' =>  $permit_id,
             'rating' => $request->happiness,
             'remarks' => $request->remarks,
             'created_by' => Auth::user()->user_id
         );
         Happiness::create($updateArray);
+
+        $permit = Permit::where('permit_id', $permit_id)->first();
+
+        if($permit->event)
+        {
+            if($permit->event->firm == 'government')
+            {
+                $permit_number = generateArtistPermitNumber();
+
+                $issued_date = strtotime($permit->issued_date);
+                $expired_date = strtotime($permit->exprired_date);
+                $today_date = strtotime(date('Y-m-d'));
+
+                $diff = round(abs($expired_date - $issued_date) / 60 / 60 / 24);
+
+                if ($issued_date <= $today_date) {
+                    $new_issued_date = date('Y-m-d');
+                    $new_expiry_date = date('Y-m-d', strtotime($new_issued_date . ' + ' . $diff . ' days'));
+                    $permit->update(['issued_date' =>  $new_issued_date, 'expired_date' => $new_expiry_date]);
+                }
+
+                $permit->update(['permit_status' => 'active']);
+
+                if (!$permit->permit_number) {
+                    $permit->update(['permit_number' => $permit_number]);
+                }
+            }
+        }
 
         $result = ['success', 'Thank you for your Feedback', 'Success'];
         return response()->json(['message' => $result]);

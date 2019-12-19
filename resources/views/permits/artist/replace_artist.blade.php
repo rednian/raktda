@@ -59,7 +59,7 @@ $language_id = Auth::user()->LanguageId;
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u">{{__('Personal Information')}}
+                                                    <h6 class="kt-font-transform-u">{{__('Artist Details')}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -755,6 +755,10 @@ $language_id = Auth::user()->LanguageId;
     </div>
 </div>
 <!--end::Modal-->
+
+@include('permits.artist.modals.artist_in_permit');
+
+
 @endsection
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
@@ -1070,7 +1074,9 @@ $language_id = Auth::user()->LanguageId;
                         $('#next_btn').css('display', 'none'); // hide the next button
                         $('#addNew_btn').css('display', 'block'); // display the add new artist button
                         artistDetails = {
-                            id: $('#artist_id').val(),
+                            id: $('#permit_id').val(),
+                            artist_id: $('#artist_id').val(),
+                            artist_permit_id: $('#artist_permit_id').val(),
                             code: $('#code').val(),
                             fname_en: $('#fname_en').val(),
                             fname_ar:  $('#fname_ar').val(),
@@ -1404,12 +1410,35 @@ $language_id = Auth::user()->LanguageId;
                 apd = ad.artist_permit[i];
                 $('#artist_id').val(ad.artist_id);
                 $('#code').val(ad.person_code);
+                setDataIntoArtistDetails(apd);
             }else if(from == 2){
-                apd = ad;
-                $('#artist_id').val(ad.artist.artist_id);
-                $('#code').val(ad.artist.person_code);
+                $.ajax({
+                    url: "{{route('artist.check_artist_exists_in_permit')}}",
+                    type: "POST",
+                    async: false,
+                    data: {
+                        permit_id:$('#permit_id').val(),
+                        artist_id: ad.artist.artist_id
+                    },
+                    success: function (result) {
+                        if(result.trim() == 'yes')
+                        {
+                            $('#artist_in_permit_exists').modal('show');
+                            clearPersonCode();
+                            return ;
+                        }else {
+                            apd = ad;
+                            $('#artist_id').val(ad.artist.artist_id);
+                            $('#code').val(ad.artist.person_code);
+                            setDataIntoArtistDetails(apd);
+                        }
+                    }
+                });
             }
+        }
 
+        function setDataIntoArtistDetails(apd)
+        {
             $('#is_old_artist').val(2);
 
             var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
@@ -1467,7 +1496,6 @@ $language_id = Auth::user()->LanguageId;
             $('#artist_exists').modal('hide');
             // $('#artist_details').validate();
         }
-
 
 
         function checkforArtist(){

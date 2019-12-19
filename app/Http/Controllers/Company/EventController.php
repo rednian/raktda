@@ -949,7 +949,7 @@ class EventController extends Controller
         $reason = $request->cancel_reason;
 
         Event::where('event_id', $event_id)->update([
-            'request_type' => 'cancelation request',
+            'request_type' => 'cancelled',
             'cancelled_by' => Auth::user()->user_id,
             'cancel_reason' => $reason
         ]);
@@ -1007,13 +1007,23 @@ class EventController extends Controller
             'title' => 'Event Permit',
             'default_font_size' => 10
         ]);
-        $pdf->getMpdf()->AddPage();
-        if($event_details->is_liquor == 1){
-            $pdf->getMpdf()->WriteHTML(\View::make('permits.event.liquorprint')->with($data)->render());
-        }
-         $pdf->getMpdf()->AddPage();
+        
         if($event_details->is_truck == 1){
-            $pdf->getMpdf()->WriteHTML(\View::make('permits.event.truckprint')->with($data)->render());
+            if(count($event_details->truck) > 0)
+            {
+                $pdf->getMpdf()->AddPage();
+                $pdf->getMpdf()->WriteHTML(\View::make('permits.event.truckprint')->with($data)->render());
+            }
+        }
+        if($event_details->is_liquor == 1){
+            if($event_details->liquor)
+            {
+                if($event_details->liquor->provided != null || $event_details->liquor->provided != 1)
+                {
+                    $pdf->getMpdf()->AddPage();
+                    $pdf->getMpdf()->WriteHTML(\View::make('permits.event.liquorprint')->with($data)->render());
+                }
+            }
         }
         // $pdf->getMpdf()->useDefaultCSS2();
         return $pdf->stream('Event Permit-' . $event_permit_no . '.pdf');
@@ -1037,7 +1047,7 @@ class EventController extends Controller
 
     function datatable_function($status)
     {
-        $permits = Event::with('type')->orderBy('created_at', 'desc')->where('created_by', Auth::user()->user_id);
+        $permits = Event::orderBy('created_at', 'desc')->where('created_by', Auth::user()->user_id);
 
         if ($status == 'applied') {
             $permits->whereNotIn('status', ['active', 'draft', 'expired']);
@@ -1047,15 +1057,15 @@ class EventController extends Controller
             $permits->where('status', 'draft');
         }
 
-        $permits->get();
+        $permits->latest();
 
-        $amend_grace = \App\GeneralSetting::first()->event_grace_period_amendment;
+        $amend_grace = getSettings()->event_grace_period_amendment;
 
         return Datatables::of($permits)->editColumn('created_at', function ($permits) {
             if ($permits->created_at) {
                 return  $permits->created_at;
             }
-        })->editColumn('issued_date', function ($permits) {
+        })->editColumn('issued_date', function ($permits) {     
             if ($permits->issued_date) {
                 return  Carbon::parse($permits->issued_date)->format('d-M-Y');
             } else {
@@ -1068,14 +1078,17 @@ class EventController extends Controller
                 return 'None';
             }
         })->addColumn('action', function ($permit) use ($status, $amend_grace) {
+            if(check_is_blocked()['status'] == 'blocked'){
+                return ;
+            }
             switch ($status) {
                 case 'applied':
                     if ($permit->firm == 'government' && $permit->status == 'approved-unpaid') {
-                        return '<a href="' . route('event.happiness', $permit->event_id) . '"  title="Happiness"><span class="kt-badge kt-badge--info kt-badge--inline">Happiness</span></a>';
+                        return '<a href="' . route('event.happiness', $permit->event_id) . '"  title="Happiness"><span class="kt-badge kt-badge--success kt-badge--inline">Happiness</span></a>';
                     }else if ($permit->status == 'approved-unpaid') {
                         return '<a href="' . route('company.event.payment', $permit->event_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
                     } else if ($permit->status == 'rejected') {
-                        return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">Rejected</span>';
+                        return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">Rejected</span>';
                     } else if ($permit->status == 'cancelled') {
                         return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">Cancelled</span>';
                     } else if ($permit->status == 'bounce back') {
@@ -1089,18 +1102,20 @@ class EventController extends Controller
                         $issued_date = strtotime($permit->issued_date);
                         $today = strtotime(date('Y-m-d 00:00:00'));
                         $diff = abs($today - $issued_date) / 60 / 60 / 24;
-                        $amend_btn = ($diff <= $amend_grace) ? '<a href="' . route('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Amend </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>' : '';
-                        return $amend_btn . '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\',\''.$permit->permit_number.'\')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
+                        $amend_btn = ($diff <= $amend_grace) ? '<a href="' . route('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-l-15">Amend </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-pull-right"><i class="fa fa-user-plus"></i></a><br />' : '';
+                        return $amend_btn . '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\',\''.$permit->permit_number.'\')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline" title="Cancel Permit">Cancel</span>';
                     } else if ($permit->status == 'expired') {
-                        return '<span class="kt-badge kt-badge--primary kt-badge--inline kt-margin-r-5">Expired</span>';
+                        return '<div class="alert-text">Expired</div>';
                     }
                     break;
-                case 'draft':
+                case 'draft':   
                     if ($permit->status == 'draft') {
                         return '<a href="' . route('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View / Update</span></a>';
                     }
                     break;
             }
+        })->addColumn('type_name', function($permit) {
+            return getLangId() == 1 ? $permit->type->name_en : $permit->type->name_ar ; 
         })->addColumn('permit_status', function ($permit) {
             $status = $permit->status;
             $ret_status = '';
@@ -1125,12 +1140,12 @@ class EventController extends Controller
                     $from = 'draft';
                     break;
             }
-            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fa-2x"></i></a>';
+            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
         })->addColumn('download', function ($permit) {
             if ($permit->status == 'expired') {
                 return;
             } else {
-                return '<a href="' . route('company.event.download', $permit->event_id) . '" target="_blank" title="Download"><i class="fa fa-file-download fa-2x"></i></a>';
+                return '<a href="' . route('company.event.download', $permit->event_id) . '" target="_blank" title="Download Permit"><i class="fa fa-file-download"></i></a>';
             }
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
@@ -1160,7 +1175,8 @@ class EventController extends Controller
                 'expired_date' => Carbon::parse($request->expired_date)->toDateString(),
                 'time_start' => $request->time_start,
                 'time_end' => $request->time_end,
-                'status' => 'amended'
+                'status' => 'amended', 
+                'request_type' => 'amend'
             ]
         );
 
@@ -1815,7 +1831,7 @@ class EventController extends Controller
         $total = $request->total;
         $paidArtistFee = $request->paidArtistFee;
         $truck_fee = $request->truck_fee;
-        $is_truck = $request->isTruck;
+        $liquor_fee = $request->liquor_fee;
 
         $trnx_id = Transaction::create([
             'reference_number' => getTransactionReferNumber(),
@@ -1823,8 +1839,6 @@ class EventController extends Controller
             'created_by' => Auth::user()->user_id,
             'transaction_date' => Carbon::now()->format('Y-m-d')
         ]);
-
-       
         
         if ($trnx_id)
         {
@@ -1838,16 +1852,34 @@ class EventController extends Controller
                 'user_id' => Auth::user()->user_id
             ]);
 
-            if($is_truck == 1)
+            if($truck_fee > 0)
             {
+                $totaltrucks = count(EventTruck::where('event_id', $event_id)->where('paid', 0)->get());
                 EventTransaction::create([
                     'event_id' => $event_id,
                     'transaction_id' => $trnx_id->transaction_id,
                     'type' => 'truck',
                     'amount' => $truck_fee,
+                    'total_trucks' => $totaltrucks,
+                    'vat' => 0,
+                    'user_id' => Auth::user()->user_id,
+                ]);
+
+                EventTruck::where('event_id', $event_id)->update(['paid' => 1]);
+            }
+
+            if($liquor_fee > 0)
+            {
+                EventTransaction::create([
+                    'event_id' => $event_id,
+                    'transaction_id' => $trnx_id->transaction_id,
+                    'type' => 'liquor',
+                    'amount' => $liquor_fee,
                     'vat' => 0,
                     'user_id' => Auth::user()->user_id
                 ]);
+
+                EventLiquor::where('event_id', $event_id)->update(['paid' => 1]);
             }
 
             Event::where('event_id', $event_id)->update([

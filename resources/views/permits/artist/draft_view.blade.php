@@ -104,7 +104,7 @@
                                         <input type="text" class="form-control form-control-sm"
                                             placeholder="Work Location" name="work_loc" id="work_loc"
                                             onkeyup="checkFilled()"
-                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
+                                            value="{{count($artist_details) > 0 ? getLangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
 
                                     <div class="form-group col-lg-3">
@@ -144,10 +144,11 @@
                                             @foreach($events as $event)
                                             <option value="{{$event->event_id}}"
                                                 {{$artist_details[0]->event ? $artist_details[0]->event->event_id == $event->event_id ? 'selected' : '' : ''}}>
-                                                {{getLangId() == 1 ? $event->name_en : $event->name_ar}}</option>
+                                                {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
+                                            </option>
                                             @endforeach
                                             @endif
-                                            <option value="add_new" class="kt-font-bold">Add New</option>
+                                            <option value="add_new" class="kt-font-bolder">{{__('Add New')}}</option>
                                         </select>
                                     </div>
                                 </div>

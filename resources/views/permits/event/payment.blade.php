@@ -102,7 +102,7 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Establishment Name')}} <span
+                                                                {{__('Establishment Type')}} <span
                                                                     class="text-danger">*</span>
                                                             </label>
                                                             <select class="form-control form-control-sm"
@@ -152,7 +152,7 @@
                                                                 class=" col-form-label kt-font-bold text-right">{{__('Owner Name - Ar')}}
                                                                 <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name_ar" id="owner_name_ar"
+                                                                name="owner_name_ar" id="owner_name_ar" dir="rtl"
                                                                 placeholder="{{__('Owner Name - Ar')}}"
                                                                 value="{{$event->owner_name_ar}}" readonly>
                                                         </div>
@@ -592,6 +592,8 @@
                         </div>
                     </div>
 
+
+
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
                             <div class="kt-wizard-v3__form">
@@ -613,18 +615,20 @@
                                         </div>
                                     </div>
                                     {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
+
                                     @php
+                                    $issued_date = strtotime($event->issued_date);
+                                    $expired_date = strtotime($event->expired_date);
+                                    $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
                                     $event_fee_total = 0;
                                     $event_vat_total = 0;
                                     $event_grand_total = 0;
                                     $truck_fee = 0;
                                     $liquor_fee = 0;
-                                    $issued_date = strtotime($event->issued_date);
-                                    $expired_date = strtotime($event->expired_date);
-                                    $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
                                     @endphp
                                     <div class="table-responsive">
                                         <table class="table table-borderless table-hover border table-striped">
+                                            @if($event->request_type != 'amend')
                                             <thead>
                                                 <tr>
                                                     <th>{{__('Event Name')}}</th>
@@ -634,7 +638,18 @@
                                                     <th class="text-right">{{__('Total')}} (AED) </th>
                                                 </tr>
                                             </thead>
+                                            @else
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">#</th>
+                                                    <th class="text-right">{{__('Fee')}} (AED)</th>
+                                                    <th class="text-right">{{__('VAT')}} (5%)</th>
+                                                    <th class="text-right">{{__('Total')}} (AED) </th>
+                                                </tr>
+                                            </thead>
+                                            @endif
                                             <tbody>
+                                                @if($event->request_type != 'amend')
                                                 <tr>
                                                     <td class="text-left">
                                                         {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
@@ -660,21 +675,27 @@
                                                         {{number_format($event_total, 2)}}
                                                     </td>
                                                 </tr>
+                                                @endif
                                                 @if($event->is_truck == 1)
+                                                @if(isset($event->truck) && count($event->truck->where('paid', 0)) > 0)
                                                 <tr>
-                                                    <td colspan="2">{{__('Truck Fee')}} </td>
                                                     @php
+                                                    $nooftrucks = count($event->truck->where('paid', 0));
                                                     $per_truck_fee = getSettings()->food_truck_fee;
-                                                    $truck_fee += $noofdays * $per_truck_fee;
+                                                    $truck_fee += $noofdays * $per_truck_fee * $nooftrucks;
                                                     $event_fee_total += $truck_fee;
                                                     $event_grand_total += $truck_fee;
                                                     @endphp
+                                                    <td colspan="2">{{__('Truck Fee')}}
+                                                        {{$nooftrucks ? ' X '.$nooftrucks : 0}}</td>
                                                     <td class="text-right">{{number_format($truck_fee, 2)}}</td>
                                                     <td class="text-right">0</td>
                                                     <td class="text-right">{{number_format($truck_fee, 2)}}</td>
                                                 </tr>
                                                 @endif
-                                                @if($event->is_liquor == 1)
+                                                @endif
+                                                @if($event->is_liquor == 1 && isset($event->liquor) &&
+                                                $event->liquor->provided == 0 && $event->liquor->paid == 0)
                                                 <tr>
                                                     <td colspan="2">{{__('Liquor')}} </td>
                                                     @php
@@ -694,7 +715,6 @@
 
                                     <input type="hidden" id="truck_fee" value="{{$truck_fee}}">
                                     <input type="hidden" id="liquor_fee" value="{{$liquor_fee}}">
-                                    <input type="hidden" id="is_truck" value="{{$event->is_truck}}">
 
                                     <input type="hidden" id="event_total_amount" value="{{$event_fee_total}}">
                                     <input type="hidden" id="event_vat_total" value="{{$event_vat_total}}">
@@ -732,7 +752,8 @@
                                                         {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
                                                     </td>
                                                     @php
-                                                    $artist_fee = $ap->profession['amount'] * $noofdays;
+                                                    $noofmonths = ceil($noofdays ? $noofdays : 1 / 30) ;
+                                                    $artist_fee = $ap->profession['amount'] * $noofmonths;
                                                     $artist_vat = $artist_fee * 0.05;
                                                     $artist_total = $artist_fee + $artist_vat;
                                                     $artist_fee_total += $artist_fee;
@@ -755,7 +776,7 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="2" class="kt-font-bold">
-                                                        Total
+                                                        {{__('Total')}}
                                                     </td>
                                                     <td class="kt-font-bold text-right">
                                                         {{number_format($artist_fee_total,2)}}
@@ -1087,7 +1108,7 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button></td></tr>');
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button></td></tr>');
 
                         }
                     }
@@ -1676,8 +1697,8 @@
                         event_id:$('#event_id').val(),
                         amount: $('#amount').val(),
                         vat: $('#vat').val(),
-                        isTruck: $('#is_truck').val(),
                         truck_fee: $('#truck_fee').val(),
+                        liquor_fee: $('#liquor_fee').val(),
                         total: $('#total').val(),
                         paidArtistFee: paidArtistFee
                     },

@@ -57,8 +57,9 @@
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->expiry_date))}}</span>&emsp;&emsp;
                 <input type="hidden" id="expired_date" value="{{$artist_details[0]->expiry_date}}">
-                <span class="kt-font-dark">{{__('Location')}}:</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+                <span class="kt-font-dark">{{__('Work Location')}}:</span>&emsp;
+                <span
+                    class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
                 <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
             </div>
         </div>
@@ -93,22 +94,22 @@
                         </td>
                         <td class="d-flex justify-content-center">
                             <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
-                                title="Edit">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">Edit</button>
+                                title="{{__('Edit')}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Edit')}}</button>
                             </a>
                             {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
                             title="View">
                             <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
                             </a> --}}
                             <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
-                                title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                title="{{__('View')}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
-                                data-toggle="modal" data-target="#delartistmodal" title="Remove">
-                                <button class="btn btn-sm btn-secondary btn-elevate">Remove</button>
+                                data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
                             </a>
                             @endif
                         </td>
@@ -263,6 +264,7 @@
                 from: $('#issued_date').val() ,
                 to: $('#expired_date').val(),
                 loc: $('#work_location').val(),
+                
                 term: term, 
                 fromWhere: 'renew'
             },

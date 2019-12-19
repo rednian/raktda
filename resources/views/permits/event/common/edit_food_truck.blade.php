@@ -3,15 +3,16 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{__('Edit Food Truck')}} <i class="fa fa-truck"></i>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck List')}}&emsp;<i
+                        class="fa fa-truck"></i>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button>
             </div>
             <div class="modal-body">
                 <div class="d-flex pull-right kt-margin-b-10">
-                    <button class="btn btn-sm btn--yellow" id="add_new_truck">Add New</button>
-                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal">Done</button>
+                    <button class="btn btn-sm btn--yellow" id="add_new_truck">{{__('Add New')}}</button>
+                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal">{{__('Done')}}</button>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
@@ -20,7 +21,7 @@
                             <th>{{__('Company')}}</th>
                             <th>{{__('Company - Ar')}}</th>
                             <th>{{__('Plate No')}}</th>
-                            <th>{{__('Type of Food')}}</th>
+                            <th>{{__('Food Services')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
@@ -142,7 +143,7 @@
                 </form>
                 <small id="truck_warning_text" class="text-center text-danger "></small>
                 <div class="d-flex justify-content-between kt-margin-t-10">
-                    <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">Back</button>
+                    <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">{{__('Back')}}</button>
                     <button class="btn btn-sm btn--maroon" id="update_this_td">{{__('Update')}}</button>
                     <button class="btn btn-sm btn--maroon" id="add_new_td">{{__('Add')}}</button>
                 </div>

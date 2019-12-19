@@ -13,7 +13,7 @@
                         <div class="card-header" id="headingOne6">
                             <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseOne6"
                                 aria-expanded="true" aria-controls="collapseOne6">
-                                <h6 class="kt-font-transform-u">{{__('Personal Information')}}</h6>
+                                <h6 class="kt-font-transform-u">{{__('Artist Details')}}</h6>
                             </div>
                         </div>
                         <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"

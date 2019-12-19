@@ -49,12 +49,13 @@
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
                 <span class="kt-font-dark">{{__('To Date')}}:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                <span class="kt-font-dark">{{__('Location')}}:</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+                <span class="kt-font-dark">{{__('Work Location')}}:</span>&emsp;
+                <span
+                    class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
                 <span class="kt-font-dark">{{__('Ref No.')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
                 @if($permit_details->event)
-                <span>Connected to Event :</span>&emsp;
+                <span>{{__('Connected to Event')}} :</span>&emsp;
                 <span
                     class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>
                 @endif
@@ -99,13 +100,13 @@
                             </a> --}}
                             <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
                                 title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
                                 data-toggle="modal" data-target="#delartistmodal" title="Remove">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">Remove</button>
+                                <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Remove')}}</button>
                             </a>
                             @endif
 
