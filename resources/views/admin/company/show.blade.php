@@ -18,6 +18,125 @@
                             <div class="kt-widget__media kt-hidden">
                               <img src="./assets/media/users/100_1.jpg" alt="image">
                             </div>
+                            <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden-">
+                              MP
+                            </div>
+                            <div class="kt-widget__content">
+                              <div class="kt-widget__head">
+                                <a href="#" class="kt-widget__username">
+                                  Matt Pears
+                                </a>
+                                <div class="kt-widget__action">
+                                  <button type="button" class="btn btn-label-success btn-sm btn-upper">ask</button>&nbsp;
+                                  <button type="button" class="btn btn-brand btn-sm btn-upper">hire</button>
+                                </div>
+                              </div>
+                              <div class="kt-widget__subhead">
+                                <a href="#"><i class="flaticon2-new-email"></i>matt@stream.com</a>
+                                <a href="#"><i class="flaticon2-calendar-3"></i>Designer</a>
+                                <a href="#"><i class="flaticon2-placeholder"></i>America</a>
+                              </div>
+                              <div class="kt-widget__info">
+                                <div class="kt-widget__desc">
+                                  I distinguish three main text objektive could be merely to inform people.<br>
+                                  A second could be persuade people.You want people to bay objective
+                                </div>
+                                <div class="kt-widget__progress">
+                                  <div class="kt-widget__text">
+                                    Progress
+                                  </div>
+                                  <div class="progress" style="height: 5px;width: 100%;">
+                                    <div class="progress-bar kt-bg-danger" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <div class="kt-widget__stats">
+                                    53%
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="kt-widget__bottom">
+                            <div class="kt-widget__item">
+                              <div class="kt-widget__icon">
+                                <i class="flaticon-piggy-bank"></i>
+                              </div>
+                              <div class="kt-widget__details">
+                                <span class="kt-widget__title">Earnings</span>
+                                <span class="kt-widget__value"><span>$</span>145,200</span>
+                              </div>
+                            </div>
+                            <div class="kt-widget__item">
+                              <div class="kt-widget__icon">
+                                <i class="flaticon-confetti"></i>
+                              </div>
+                              <div class="kt-widget__details">
+                                <span class="kt-widget__title">Expenses</span>
+                                <span class="kt-widget__value"><span>$</span>274,230</span>
+                              </div>
+                            </div>
+                            <div class="kt-widget__item">
+                              <div class="kt-widget__icon">
+                                <i class="flaticon-pie-chart"></i>
+                              </div>
+                              <div class="kt-widget__details">
+                                <span class="kt-widget__title">Net</span>
+                                <span class="kt-widget__value"><span>$</span>461,120</span>
+                              </div>
+                            </div>
+                            <div class="kt-widget__item">
+                              <div class="kt-widget__icon">
+                                <i class="flaticon-file-2"></i>
+                              </div>
+                              <div class="kt-widget__details">
+                                <span class="kt-widget__title">45 Tasks</span>
+                                <a href="#" class="kt-widget__value kt-font-brand">View</a>
+                              </div>
+                            </div>
+                            <div class="kt-widget__item">
+                              <div class="kt-widget__icon">
+                                <i class="flaticon-chat-1"></i>
+                              </div>
+                              <div class="kt-widget__details">
+                                <span class="kt-widget__title">968 Comments</span>
+                                <a href="#" class="kt-widget__value kt-font-brand">View</a>
+                              </div>
+                            </div>
+                            <div class="kt-widget__item">
+                              <div class="kt-widget__icon">
+                                <i class="flaticon-network"></i>
+                              </div>
+                              <div class="kt-widget__details">
+                                <div class="kt-section__content kt-section__content--solid">
+                                  <div class="kt-badge kt-badge__pics">
+                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer">
+                                      <img src="./assets/media/users/100_7.jpg" alt="image">
+                                    </a>
+                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Alison Brandy">
+                                      <img src="./assets/media/users/100_3.jpg" alt="image">
+                                    </a>
+                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Selina Cranson">
+                                      <img src="./assets/media/users/100_2.jpg" alt="image">
+                                    </a>
+                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Luke Walls">
+                                      <img src="./assets/media/users/100_13.jpg" alt="image">
+                                    </a>
+                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Micheal York">
+                                      <img src="./assets/media/users/100_4.jpg" alt="image">
+                                    </a>
+                                    <a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
+                                      +12
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+      <div class="kt-widget kt-widget--user-profile-3">
+                          <div class="kt-widget__top">
+                            <div class="kt-widget__media kt-hidden">
+                              <img src="./assets/media/users/100_1.jpg" alt="image">
+                            </div>
                             <div class="kt-widget__pic kt-widget__pic--brand kt-font-brand kt-font-boldest kt-hidden-">
                               SF
                             </div>
