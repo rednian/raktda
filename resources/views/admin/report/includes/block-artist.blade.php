@@ -59,7 +59,7 @@
     }
     #multiple_permit_type_click{
         border-radius: 4px;
-        width: 48%;
+        width: 54%;
         background-color: #a9a9a9;
         color: white;
         border: none;
@@ -156,7 +156,8 @@
             <input type="text" value="active" id="single_permit_type_input" hidden>
             <div class="btn btn-secondary btn-sm"  id="multiple_permit_type_click"> {{__('Artists with Multiple Permits')}}</div>
             <input type="text" value='blocked' id="multiple_permit_type_input" hidden>
-   </th>
+       </th>
+        <th><button id="ArtistTableresetButton" class="btn btn-sm btn-secondary">Reset</button></th>
 
 
     </tr>
@@ -238,7 +239,6 @@
 
 
     <tr style="font-size: 12px">
-        <th></th>
         <th style="width: 14%">{{ __('PERSON CODE') }}</th>
         <th style="width: 14%">{{ __('ARTIST STATUS') }}</th>
         <th>{{ __('ARTIST NAME') }}</th>
@@ -246,15 +246,82 @@
         <th>{{ __('NATIONALITY') }}</th>
         <th style="width: 14%">{{ __('MOBILE NUMBER') }}</th>
         <th>{{ __('ACTIVE PERMIT') }}</th>
+        <th></th>
     </tr>
     </thead>
 </table>
 
+@foreach($artistPermit as $key =>$artists)
 
+<div class="modal fade" id="artist_modal_{{$artists->artist_id}}" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0c5460;">
+                <h5 class="modal-title" id="exampleModalLabel" style="margin-left:36%;color: white">
+                    {{
+                      Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en .' Report' : $artists->firstname_ar . ' ' . $artists->lastname_ar.' Report'                 }}
+               </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+<table class="table table-hover" style="font-size: 11px" id="printTable_{{$artists->artist_id}}">
+    <thead>
+    <tr style="font-size: 12px">
+        <th style="width: 14%">{{ __('NAME') }}</th>
+        <th style="width: 14%">{{ __('PERMIT NUMBER') }}</th>
+        <th>{{ __('REFERENCE NUMBER') }}</th>
+        <th>{{ __('ISSUED') }}</th>
+        <th>{{ __('EXPIRY') }}</th>
+        <th style="width: 14%">{{ __('STATUS') }}</th>
+        <th>{{ __('COMPANY') }}</th>
+        <th></th>
+    </tr>
+    </thead>
+   <?php
+     $artistWithThisId=\App\Artist::where('artist_id',$artists->artist_id)->has('artistPermit')->with('artistPermit')->with('permit')->has('permit')->first();
+    ?>
+    <tbody>
+
+    @foreach($artistWithThisId->permit as $permit)
+
+        <tr>
+            <td>{{ Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en  : $artists->firstname_ar . ' ' . $artists->lastname_ar}}
+            <td>{{$permit->permit_number}}</td>
+            <td>{{$permit->reference_number}}</td>
+            <td>{{$permit->issued_date}}</td>
+            <td>{{$permit->expired_date}}</td>
+            <td>{{$permit->permit_status}}</td>
+            <td>{{$permit->company->name_en}}</td>
+        </tr>
+
+
+    @endforeach
+    <tr><td colspan="2" style="color: grey">Total Permits : <span style="color: black">{{$artistWithThisId->permit->count()}}</span></td></tr>
+
+    </tbody>
+</table>
+            </div>
+            <div class="modal-footer" id="modal_footer{{$artists->artist_id}}{{$artists->artist_id}}">
+                <button class="btn btn-success" id="{{$artists->artist_id}}" onclick="printContent({{$artists->artist_id}})">Print</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endforeach
 @section('script')
 <script>
+   /*     function printContent(id){
+            $('#modal_footer').css({'display':'none'})
+            newWin= window.open("");
+            newWin.document.write(print.outerHTML);
+            newWin.print();
+            newWin.close();
+        }*/
         $(function myTable() {
-
             $('#collapse_button').click(function () {
                 $('#navbarCollapse').toggle(300)
             })
@@ -346,7 +413,6 @@
             },
 
             columns: [
-                {data: 'artist_id',name:'artist_id'},
                 {data: 'person_code',name:'person_code'},
                 {data: 'artist_status',name:'artist_status'},
                 {data: 'artist_name',name:'artist_name'},
@@ -354,9 +420,14 @@
                 {data: 'nationality',name:'nationality'},
                 {data: 'mobile_number',name:'mobile_number'},
                 {data: 'permit_status',name:'permit_status'},
-            ],
+                {data: 'artist_id',name:'artist_id'},
+
+           ],
+
         });
     });
+
+
         $('#name_search_button').click(function (e) {
             e.preventDefault();
             var search_artist=$('input[name="search-artist-name"]').val();

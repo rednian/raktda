@@ -27,8 +27,7 @@ class ReportController extends Controller
         $areas=Areas::has('artistPermit')->get();
         $visa=VisaType::has('artistPermit')->get();
         $gender=Gender::has('artistPermit')->get();
-
-
+        $artistPermit=ArtistPermit::with('artist')->get();
 
         return view('admin.report.index', [
             'page_title'=> 'Reports Dashboard',
@@ -38,6 +37,7 @@ class ReportController extends Controller
             'areas'=>$areas,
             'gender'=>$gender,
             'visas'=>$visa,
+            'artistPermit'=>$artistPermit,
 
             'professions'=>Profession::has('artistpermit')->get(),
             'countries'=> Country::has('artistpermit')->get(),
@@ -54,9 +54,7 @@ class ReportController extends Controller
 
     public function artist_reports(){
         return Datatables::of(Artist::with('artistPermit'))
-            ->addColumn('artist_id', function(Artist $user) {
-                return '';
-            })
+
             ->addColumn('person_code', function(Artist $user) {
                 return $user->person_code;
             })
@@ -90,8 +88,18 @@ class ReportController extends Controller
                 foreach ($user->artistPermit as $artist){
                     return $artist->permit->permit_status;
                 }
+
             })
-            ->rawColumns(['person_code','artist_status','artist_name'])
+            ->addColumn('artist_id', function(Artist $user) {
+                $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
+
+                return "<button type='button' class='btn btn-primary'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+  View</button>
+
+";
+            })
+
+            ->rawColumns(['person_code','artist_status','artist_name','artist_id'])
             ->make(true);
         }
 
