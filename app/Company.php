@@ -15,11 +15,8 @@ class Company extends Model
         'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 
         'reference_number', 'company_type_id', 'registered_date', 'registered_by', 'company_description_ar','company_description_en'
     ];
-<<<<<<< HEAD
     
     protected $dates = ['created_at', 'updated_at', 'application_date', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date'];
-=======
-    protected $dates = ['created_at', 'updated_at', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date', 'application_date'];
 
     // public function setTradeLicenseIssuedDate($date)
     // {
@@ -37,7 +34,6 @@ class Company extends Model
     }
 
 
->>>>>>> c3f99834bc1951788db8753f7eb6f6d14251181f
 
     public function comment()
     {
