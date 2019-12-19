@@ -3,7 +3,7 @@
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
     <div class="kt-portlet__head kt-portlet__head--sm">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}}</h3>
+            <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} -{{__('DETAILS')}}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
             <a href="{{ route('admin.company.index') }}#active-company" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
@@ -13,6 +13,118 @@
          </div>
     </div>
     <div class="kt-portlet__body kt-padding-t-5">
+      <div class="kt-widget kt-widget--user-profile-3">
+            <div class="kt-widget__top">
+              <div class="kt-widget__media kt-hidden">
+                <img src="./assets/media/users/100_1.jpg" alt="image">
+              </div>
+              <div class="kt-widget__pic kt-widget__pic--dark kt-font-dark kt-font-boldest kt-font-light">
+                @php
+                  $name = explode(' ', $company->name_en);
+                $first = $name[0];
+                @endphp
+                {{strtoupper(substr($first, 0, 1))}}
+              </div>
+              <div class="kt-widget__content">
+                <div class="kt-widget__head">
+                  <a href="#" class="kt-widget__username">
+                  {{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}}
+                  </a>
+                </div>
+                <section class="row">
+                  <div class="col-md-4">
+                    <div class="kt-widget__subhead">
+                      <a href="#"><i class="flaticon2-new-email"></i>{{$company->company_email}}</a><br>
+                      <a href="#"><i class="flaticon2-calendar-3"></i>Designer</a><br>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                  
+                  </div>
+                  <div class="col-md-4">
+                    
+                  </div>
+                </section>
+                <div class="kt-widget__subhead">
+                      <a href="#"><i class="flaticon2-placeholder"></i>
+                        {{ucfirst($company->address)}} 
+                        {{ucfirst($company->area->area_en)}} 
+                        {{ucfirst($company->emirate->name_en)}}
+                        {{ucfirst($company->country->name_en)}}
+                      </a>
+                    </div>
+                
+                
+                <div class="kt-widget__info">
+                  <div class="kt-widget__desc">
+                     {{Auth::user()->Language == 1 ? $company->company_description_en : $company->company_description_ar }}
+                  </div>
+                  {{-- <div class="kt-widget__progress">
+                    <div class="kt-widget__text">
+                      Progress
+                    </div>
+                    <div class="progress" style="height: 5px;width: 100%;">
+                      <div class="progress-bar kt-bg-danger" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="kt-widget__stats">
+                      53%
+                    </div>
+                  </div> --}}
+                </div>
+              </div>
+            </div>
+            <div class="kt-widget__bottom">
+              <div class="kt-widget__item">
+                <div class="kt-widget__icon">
+                  <i class="flaticon-event-calendar-symbol"></i>
+                </div>
+                <div class="kt-widget__details">
+                  <span class="kt-widget__title">{{__('ACTIVE EVENTS')}}</span>
+                  <span class="kt-widget__value"><span>{{$company->event()->whereStatus('active')->count()}}</span>
+                </div>
+              </div>
+              <div class="kt-widget__item">
+                <div class="kt-widget__icon">
+                  <i class="flaticon-file-2"></i>
+                </div>
+                <div class="kt-widget__details">
+                  <span class="kt-widget__title">{{__('ACTIVE ARTIST PERMITS')}}</span>
+                  <span class="kt-widget__value kt-font-brand">{{$company->permit()->where('permit_status','active')->count()}}</span>
+                </div>
+              </div>
+              
+              
+            </div>
+          </div>
+      <section class="row">
+        <div class="col-md-12">
+          <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
+            <div class="card">
+              <div class="card-header" id="headingOne6">
+                <div class="card-title" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
+                  {{__('')}}
+                </div>
+              </div>
+              <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6" style="">
+                <div class="card-body">
+              
+                </div>
+              </div>
+            </div>
+          </div>
+          <form action="" class="form">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="">Remarks <span class="text-danger">*</span></label>
+                <textarea name="comment_en" class="form-control form-control-sm" rows="4" autocomplete="off"></textarea> 
+              </div>
+              <div class="col-md-6"></div>
+            </div>
+          </form>
+        </div>
+      </section>
+      
+      
         <section class="row">
             <div class="col-lg-12">
                <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-2x" role="tablist">

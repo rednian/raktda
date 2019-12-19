@@ -8,6 +8,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified']], function 
 
     Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
     Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');
+    Route::get('/{company}/details-requirement', 'Company\CompanyController@requirementDatatable')->name('company.requirement.datatable');
 
     // Route::get('{company_name}/dashboard', function () {
     //     return redirect()->route('artist.index');

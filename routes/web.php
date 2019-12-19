@@ -69,6 +69,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/event/{event}/comment-datatable','Admin\EventController@commentDatatable')->name('admin.event.comment');
     Route::get('/event/{event}/liquor-datatable','Admin\EventController@liquorRequirementDatatable')->name('admin.event.liquor.requirement');
     Route::get('/event/{event}/truck-datatable','Admin\EventController@truckDatatable')->name('admin.event.truck.datatable');
+    Route::get('/event/{event}/image-datatable','Admin\EventController@imageDatatable')->name('admin.event.images.datatable');
     Route::get('/event/{event}/truck/{eventtruck}/datatable','Admin\EventController@truckRequirementDatatable')->name('admin.event.truck.requirement');
 
     Route::get('/event/time/test', 'Admin\EventController@addAppointment')->name('admin.event.time');
@@ -130,7 +131,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
         ->name('admin.artist_permit.checkApplication');
 
     Route::get('/artist_permit/{permit}/application', 'Admin\ArtistPermitController@applicationDetails')
-        ->name('admin.artist_permit.applicationdetails');
+        ->name('admin.artist_permit.applicationdetails')->middleware('lock_artist_permit');
 
     Route::get('/artist_permit/datatable', 'Admin\ArtistPermitController@datatable')
         ->name('admin.artist_permit.datatable');
@@ -166,22 +167,41 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/event_reports/event_report', 'Admin\EventReportController@event_reports')
         ->name('admin.event_reports.event_report');
 
-    Route::post('/event_reports/applied_date', 'Admin\EventReportController@applied_date')
+    Route::get('/event_reports/applied_date', 'Admin\EventReportController@applied_date')
         ->name('admin.event_reports.applied_date');
 
-    Route::post('/event_reports/application_type', 'Admin\EventReportController@application_type')
+    Route::get('/event_reports/application_type', 'Admin\EventReportController@application_type')
         ->name('admin.event_reports.application_type');
 
     Route::post('/event_reports/status', 'Admin\EventReportController@status')
         ->name('admin.event_reports.status');
+
+    Route::get('artist_reports/artist_permit_report/show/{id}', 'Admin\EventReportController@show')
+        ->name('admin.event_reports.show');
+
+    Route::get('artist_reports/artist_permit_report/show/{id}', 'Admin\ReportController@artist_permit_report')
+        ->name('admin.artist_permit_report.show');
+
+
+    Route::get('artist_reports/artist_permit_report/active_permit', 'Admin\ReportController@datatable')
+        ->name('admin.artist_permit_report.active_permit');
+
+    Route::get('artist_reports/artist_permit_report/all_permit_report', 'Admin\ReportController@all_permit_report')
+        ->name('admin.artist_permit_report.all_permit_report');
+
+
+
 
     //---------------------------------------------------------------------------------------------------------------
     // Inspection Appointments
     //---------------------------------------------------------------------------------------------------------------
 
     Route::get('/inspection', 'Admin\InspectionController@index')->name('inspection.index');
-
-
+    Route::get('/inspection/get_schedules/', 'Admin\InspectionController@getEvents')->name('inspection.get_schedules');
+    Route::get('/inspection/get_schedules_datatable', 'Admin\InspectionController@getEventsDatatable')->name('inspection.get_schedules_datatable');
+    Route::get('/inspection/{inspection}', 'Admin\InspectionController@show')->name('inspection.show');
+    Route::get('/inspection/{inspection}/inspect', 'Admin\InspectionController@inspect')->name('inspection.inspect');
+    Route::post('/inspection/{inspection}/inspect/submit', 'Admin\InspectionController@submitInspection')->name('inspection.inspect.submit');
 
 
     //---------------------------------------------------------------------------------------------------------------

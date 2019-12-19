@@ -79,6 +79,11 @@
                   <span class="kt-badge kt-badge--outline kt-badge--info">{{$new_company}}</span>
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#processing-request" data-target="#processing-request">
+                  {{ __('Processing Registration') }}
+                </a>
+              </li>
                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-company">
                {{ __('Company List') }}
              </a></li>
@@ -146,12 +151,31 @@
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('ESTABLISHMENT TYPE') }}</th>
                             <th>{{ __('AREA') }}</th>
-                            <th>{{ __('APPLIED DATE') }}</th>
+                            <th>{{ __('SUBMITTED DATE') }}</th>
                             <th>{{ __('STATUS') }}</th>
                         </tr>
                     </thead>
                </table>
                </section>
+                 <section  class="tab-pane show fade" id="processing-request" role="tabpanel">
+                     <table class="table table-hover table-borderless table- border table-sm table-striped" id="processing-table">
+                       <thead>
+                           <tr>
+                               <th></th>
+                               <th>{{ __('REFERENCE NO.') }}</th>
+                               <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                               <th>{{ __('PHONE NUMBER') }}</th>
+                               <th>{{ __('EMAIL') }}</th>
+                               <th>{{ __('COMPANY ADDRESS') }}</th>
+                               <th>{{ __('WEBSITE') }}</th>
+                               <th>{{ __('TRADE LICENSE EXPIRATION DATE') }}</th>
+                               <th>{{ __('TRADE LICENSE ISSUED DATE') }}</th>
+                               <th>{{ __('TRADE LICENSE EXPIRED DATE') }}</th>
+                               <th>{{ __('BOUNCE BACK REASON') }}</th>
+                           </tr>
+                       </thead>
+                  </table>
+                 </section>
                <section  class="tab-pane show fade" id="active-company" role="tabpanel">
                      <section class="form-row">
                       <div class="col-1">
@@ -242,8 +266,57 @@
    $(document).ready(function(){
       hasUrl()
       newCompany();
-      company();
+   
+
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var current_tab = $(e.target).attr('href');
+
+        if('#new-request' == current_tab ){  newCompany(); }
+        if('#processing-request' == current_tab ){ processing();   }
+        if('#active-company' == current_tab ){  company(); }
+      });
+
    });
+
+   function processing(){
+    company_table =  $('table#processing-table').DataTable({
+      // dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+      //       "<'row'<'col-sm-12'tr>>" +
+      //       "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ajax: {
+           url: '{{ route('admin.company.datatable') }}',
+           data: function(d){
+              var status =  $('#active-permit-status').val();
+              d.status =  ['back'];
+              // d.type = $('#active-applicant-type').val();
+              // d.area = $('#active-company-area').val();
+           }
+        },
+        responsive: true,
+        columnDefs:[
+           {targets: '_all', className:'no-wrap'}
+        ],
+        columns:[
+        {render: function(){ return null; }},
+        {data: 'reference_number'},
+        {data: 'profile'},
+        {data: 'phone_number'},
+        {data: 'company_email'},
+        {data: 'address'},
+        {data: 'website'},
+        {data: 'trade_expired_date'},
+        {data: 'issued_date'},
+        {data: 'expired_date'},
+        {data: 'reason'},
+        ],
+        createdRow: function(row, data, index){
+
+           $('td:not(:first-child)',row).click(function(e){ location.href = data.link; });
+        }
+     });
+  }
+
+
 
    function company(){
     company_table =  $('table#company-table').DataTable({
@@ -254,11 +327,12 @@
            url: '{{ route('admin.company.datatable') }}',
            data: function(d){
               var status =  $('#active-permit-status').val();
-              d.status = status ? [status] : ['blocked', 'active'];
+              d.status = status ? [status] : ['blocked', 'active', 'rejected'];
               d.type = $('#active-applicant-type').val();
               d.area = $('#active-company-area').val();
            }
         },
+        'order': [[1, 'desc']],
         responsive: true,
         columnDefs:[
            {targets: '_all', className:'no-wrap'}

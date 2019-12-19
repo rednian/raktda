@@ -1,4 +1,4 @@
-    @extends('layouts.admin.admin-app')
+      @extends('layouts.admin.admin-app')
 @section('style')
 <style>
   .widget-toolbar{ cursor: pointer; }
@@ -116,9 +116,9 @@
               <div class="kt-widget24 kt-widget24--solid">
                 <div class="kt-widget24__details">
                   <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('Action Taken') }}</span>
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</span>
                     <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
-                  </div>
+                    </div>
                   <span class="kt-widget24__stats kt-font-default">{{ $active_permit }}</span>
                 </div>
               </div>
@@ -127,9 +127,9 @@
         </section>
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
 						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#processing-permit">{{ __('Processing Permits') }}</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit">{{ __('Completed Permits') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit">{{ __('Permit Action') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }} </a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">{{ __('Artist List') }}</a></li>
 						{{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">{{ __('Blocked Artists') }}</a></li> --}}
@@ -323,356 +323,126 @@
     });
   });
 
-  function blockArtistTable() {
-    $('button#unblock-artist-button').click(function () {
 
-      var rows_selected = block_artist_table.column(0).checkboxes.selected();
-      artist_id=[]
-      $.each(rows_selected, function(index, rowId) { artist_id.push(rowId); })
-      if(artist_id.length>0){
-        $.ajax({
-          type: 'post',
-          url: " {{route('admin.checked_list')}}",
-          data: {id:artist_id},
-          success: function (data) {
-            var html=$('#unblock_checked_list').html('<tr><th>Sn</th><th>Name</th><th>Person Code</th></tr>');
-            $.each(data, function(key,val) {
-              var value=key+1;
-              $(html).append( '<tr><td>'+value+'</td><td>' +val.firstname_en + ' '+  val.lastname_en + '</td><td>'+val.person_code+'</td></tr>' );
-            });
-          }
+  function activeArtistTable() {
+
+     active_artist_table = $('table#active-artist').DataTable({
+      dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ajax: {
+           url: '{{ route('admin.artist.datatable') }}',
+           data: function (d) {
+              d.artist_status = $('#artist-permit-status').val();
+              d.profession_id = $('select[name=profession_id]').val();
+              d.country_id = $('select[name=country_id]').val();
+           }
+        },
+        columnDefs: [
+           {targets: [0, 1, 4, 5], className: 'no-wrap'},
+        //    {
+        //       targets:0,
+        //       orderable: false,
+        //       checkboxes: {
+        //          selectRow: true
+        //       }
+        //    }
+        ],
+        // select: {
+        //    style: 'multi'
+        // },
+        // order: [[1, 'asc']],
+        columns: [
+            // {data: 'artist_id'},
+           {data: 'person_code'},
+           {data: 'name'},
+           {data: 'profession'},
+           {data: 'nationality'},
+           {data: 'mobile_number'},
+           {data: 'active_permit'},
+           {data: 'artist_status'},
+        ],
+        createdRow: function (row, data, index) {
+           $('#active-artist-modal').on('shown.bs.modal', function () {
+           });
+
+           $(row).click(function () {
+							location.href = '{{url('/permit/artist/')}}/'+data.artist_id+'?tab='+hash;
         });
-      }
 
-      if (rows_selected.length > 0) {
-        $('#block_artist_number').html(rows_selected.length+'  Artist Seleted').css({'color':'green'})
-        $('#block-artist-alert').addClass('d-none');
-        $('#block-artist-modal').modal('show');
-        $('#unblock_artist').click('submit', function(e) {
-                          e.preventDefault();
-                          artist_id=[]
-                          $.each(rows_selected, function(index, rowId) {
-                              artist_id.push(rowId);
-                          })
+          }
+     });
 
-                          var remarks=$('#unblock_comment').val();
+
+     //clear fillte button
+     $('#artist-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); active_artist_table.draw();});
+
+     active_artist_table.page.len($('#artist-length-change').val());
+     $('#artist-length-change').change(function(){ active_artist_table.page.len( $(this).val() ).draw(); });
+
+     var search = $.fn.dataTable.util.throttle(function(v){ active_artist_table.search(v).draw(); }, 500);
+     $('input#search-artist-request').keyup(function(){ search($(this).val()); });
+
+
+     $('div.toolbar-active').html('<button type="button" id="btn-active-action" class="btn btn-warning btn-sm kt-font-transform-u">Block Artist</button>');
+     $('div.toolbar-active-1').html($('#active-profession-container'));
+     $('div.toolbar-active-2').html($('#active-nationality-container'));
+
+     $('button#btn-active-action').click(function () {
+          var rows_selected = active_artist_table.column(0).checkboxes.selected();
+         artist_id=[]
+         $.each(rows_selected, function(index, rowId) {
+             artist_id.push(rowId);
+         })
+         if(artist_id.length>0){
+             $.ajax({
+                 type: 'post',
+                 url: " {{route('admin.checked_list')}}",
+                 data: {id:artist_id},
+                 success: function (data) {
+                   var html=$('#checked_list').html('<tr><th>Sn</th><th>Name</th><th>Person Code</th></tr>')
+                     $.each(data, function(key,val) {
+                        var value=key+1;
+                         $(html).append( '<tr><td>'+value+'</td><td>' +val.firstname_en + ' '+  val.lastname_en + '</td><td>'+val.person_code+'</td></tr>' );
+                     });
+                 }
+             });
+
+         }
+           if (rows_selected.length > 0) {
+           $('#active-artist-alert').addClass('d-none');
+           $('#active-artist-modal').modal('show');
+
+               $('#block_artist').click('submit', function(e) {
+                       e.preventDefault();
+                        artist_id=[]
+                       $.each(rows_selected, function(index, rowId) {
+                           artist_id.push(rowId);
+                       })
                           if(artist_id.length>0){
+
+                            var remarks=$('#comment').val();
                               $.ajax({
                                   type: 'post',
-                                  url: " {{route('admin.artist_unblock')}}",
+                                  url: " {{route('admin.artist_block')}}",
                                   data: {id:artist_id,remarks},
                                   success: function (data) {
-                                      $("#delete-ajax-alert").show(500).css({ 'background-color': '#fff2f2','color': 'red','padding': '9px','border-radius': '7px','text-align': 'center'});
-                                      setTimeout(function() { $("#delete-ajax-alert").hide();
-                                          $('#block-artist-modal').modal('hide');
-                                      },2000);
-                                      $('table#block-artist').DataTable().ajax.reload(null, false);
+                                              $("#ajax-alert").show(500).css({ 'background-color': '#fff2f2','color': 'red','padding': '9px','border-radius': '7px','text-align': 'center'});
+                                              setTimeout(function() { $("#ajax-alert").hide();
+                                              $('#active-artist-modal').modal('hide');
+                                               },2000);
+                                              $('table#active-artist').DataTable().ajax.reload(null, false);
                                       ;
                                   }
                               });
+
                           }
-                      })
-                  } else {
-                      $('#active-artist-alert').removeClass('d-none');
-                  }
-          });
-
-
-        block_artist_table=  $('table#block-artist').DataTable({
-          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            ajax: {
-               url: '{{ route('admin.artist.datatable') }}',
-               data: function (d) {
-                  d.artist_status = 'blocked';
-               }
-            },
-            columnDefs: [
-               {targets: [0, 4, 5, 6], className: 'no-wrap'},
-                {
-                    targets:0,
-                    orderable: false,
-                    checkboxes: {
-                        selectRow: true
-                    }
-                }
-            ],
-             select: {
-                 style: 'multi'
-             },
-
-            columns : [
-               {data: 'artist_id'},
-               {data: 'person_code'},
-               {data: 'name'},
-               {data: 'profession'},
-               {data: 'nationality'},
-               {data: 'mobile_number'},
-               {data: 'active_permit'},
-            ],
-            createdRow: function (row, data, index) {
-            }
-         });
-      }
-      function activeArtistTable() {
-
-         active_artist_table = $('table#active-artist').DataTable({
-          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            ajax: {
-               url: '{{ route('admin.artist.datatable') }}',
-               data: function (d) {
-                  d.artist_status = $('#artist-permit-status').val();
-                  d.profession_id = $('select[name=profession_id]').val();
-                  d.country_id = $('select[name=country_id]').val();
-               }
-            },
-            columnDefs: [
-               {targets: [0, 1, 4, 5], className: 'no-wrap'},
-            //    {
-            //       targets:0,
-            //       orderable: false,
-            //       checkboxes: {
-            //          selectRow: true
-            //       }
-            //    }
-            ],
-            // select: {
-            //    style: 'multi'
-            // },
-            // order: [[1, 'asc']],
-            columns: [
-                // {data: 'artist_id'},
-               {data: 'person_code'},
-               {data: 'name'},
-               {data: 'profession'},
-               {data: 'nationality'},
-               {data: 'mobile_number'},
-               {data: 'active_permit'},
-               {data: 'artist_status'},
-            ],
-            createdRow: function (row, data, index) {
-               $('#active-artist-modal').on('shown.bs.modal', function () {
-               });
-
-               $(row).click(function () {
-									location.href = '{{url('/permit/artist/')}}/'+data.artist_id+'?tab='+hash;
-            });
-
-              }
-         });
-
-
-         //clear fillte button
-         $('#artist-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); active_artist_table.draw();});
-
-         active_artist_table.page.len($('#artist-length-change').val());
-         $('#artist-length-change').change(function(){ active_artist_table.page.len( $(this).val() ).draw(); });
-
-         var search = $.fn.dataTable.util.throttle(function(v){ active_artist_table.search(v).draw(); }, 500);
-         $('input#search-artist-request').keyup(function(){ search($(this).val()); });
-
-
-         $('div.toolbar-active').html('<button type="button" id="btn-active-action" class="btn btn-warning btn-sm kt-font-transform-u">Block Artist</button>');
-         $('div.toolbar-active-1').html($('#active-profession-container'));
-         $('div.toolbar-active-2').html($('#active-nationality-container'));
-
-         $('button#btn-active-action').click(function () {
-              var rows_selected = active_artist_table.column(0).checkboxes.selected();
-             artist_id=[]
-             $.each(rows_selected, function(index, rowId) {
-                 artist_id.push(rowId);
-             })
-             if(artist_id.length>0){
-                 $.ajax({
-                     type: 'post',
-                     url: " {{route('admin.checked_list')}}",
-                     data: {id:artist_id},
-                     success: function (data) {
-                       var html=$('#checked_list').html('<tr><th>Sn</th><th>Name</th><th>Person Code</th></tr>')
-                         $.each(data, function(key,val) {
-                            var value=key+1;
-                             $(html).append( '<tr><td>'+value+'</td><td>' +val.firstname_en + ' '+  val.lastname_en + '</td><td>'+val.person_code+'</td></tr>' );
-                         });
-                     }
-                 });
-
-             }
-               if (rows_selected.length > 0) {
-               $('#active-artist-alert').addClass('d-none');
-               $('#active-artist-modal').modal('show');
-
-                   $('#block_artist').click('submit', function(e) {
-                           e.preventDefault();
-                            artist_id=[]
-                           $.each(rows_selected, function(index, rowId) {
-                               artist_id.push(rowId);
-                           })
-                              if(artist_id.length>0){
-
-                                var remarks=$('#comment').val();
-                                  $.ajax({
-                                      type: 'post',
-                                      url: " {{route('admin.artist_block')}}",
-                                      data: {id:artist_id,remarks},
-                                      success: function (data) {
-                                                  $("#ajax-alert").show(500).css({ 'background-color': '#fff2f2','color': 'red','padding': '9px','border-radius': '7px','text-align': 'center'});
-                                                  setTimeout(function() { $("#ajax-alert").hide();
-                                                  $('#active-artist-modal').modal('hide');
-                                                   },2000);
-                                                  $('table#active-artist').DataTable().ajax.reload(null, false);
-                                          ;
-                                      }
-                                  });
-
-                              }
-                       })
-            } else {
-               $('#active-artist-alert').removeClass('d-none');
-            }
-         });
-      }
-
-
-      function approvedTable() {
-
-        var start = moment().subtract(29, 'days');
-        var end = moment();
-        var selected_date = [];
-
-        $('input#active-applied-date').daterangepicker({
-          autoUpdateInput: false,
-          buttonClasses: 'btn',
-          applyClass: 'btn-warning btn-sm btn-elevate',
-          cancelClass: 'btn-secondary btn-sm btn-elevate',
-          startDate: start,
-          endDate: end,
-          maxDate: new Date,
-          ranges: {
-            '{{ __('Today') }}': [moment(), moment()],
-            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
-            '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
-            '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
-            '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          }
-        }, function (start, end, label) {
-          $('input#active-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
-        }).on('apply.daterangepicker', function(e, d){
-         new_selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
-         activePermit.draw();
-        });
-
-        activePermit = $('table#artist-permit-approved').DataTable({
-          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            ajax: {
-               url: '{{ route('admin.artist_permit.datatable')}}',
-               data: function (d) {
-                  d.status = ['active'];
-               }
-            },
-            columnDefs: [
-               {targets: [0, 6], className: 'no-wrap'},
-               {targets: 5, sortable: false},
-            ],
-            columns: [
-               {data: 'reference_number'},
-               {data: 'permit_number'},
-               {data: 'company_name'},
-               {data: 'applied_date'},
-               {data: 'artist_number'},
-               {data: 'request_type'},
-               {data: 'action'},
-            ],
-
-            createdRow: function (row, data, index) {
-              $(row).click(function () {
-                 location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#active-permit';
-              });
-            }
-         });
-
-        //clear fillte button
-        $('#active-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); activePermit.draw();});
-
-        activePermit.page.len($('#acive-length-change').val());
-        $('#active-length-change').change(function(){ activePermit.page.len( $(this).val() ).draw(); });
-
-        var search = $.fn.dataTable.util.throttle(function(v){ activePermit.search(v).draw(); }, 500);
-        $('input#search-active-request').keyup(function(){ search($(this).val()); });
-      }
-
-      function processingTable() {
-        var start = moment().subtract(29, 'days');
-        var end = moment();
-        var selected_date = [];
-
-        $('input#processing-applied-date').daterangepicker({
-          autoUpdateInput: false,
-          buttonClasses: 'btn',
-          applyClass: 'btn-warning btn-sm btn-elevate',
-          cancelClass: 'btn-secondary btn-sm btn-elevate',
-          startDate: start,
-          endDate: end,
-          maxDate: new Date,
-          ranges: {
-            '{{ __('Today') }}': [moment(), moment()],
-            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
-            '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
-            '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
-            '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          }
-        }, function (start, end, label) {
-          $('input#processing-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
-        }).on('apply.daterangepicker', function(e, d){
-         selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
-         processingPermit.draw();
-        });
-
-         processingPermit = $('table#artist-permit-processing').DataTable({
-          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            ajax: {
-               url: '{{ route('admin.artist_permit.datatable') }}',
-               data: function (d) {
-                  d.status = ['approved-unpaid', 'modification request', 'processing', 'need approval'];
-               }
-            },
-            columnDefs: [
-               {targets: [0, 4, 5], className: 'no-wrap'},
-            ],
-            columns: [
-               {data: 'reference_number'},
-               {data: 'company_name'},
-               {data: 'applied_date'},
-               {data: 'artist_number'},
-               // { data: 'company_type'},
-               {data: 'request_type'},
-               {data: 'permit_status'},
-            ],
-
-            createdRow: function (row, data, index) {
-               $(row).click(function () {
-                  location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#processing-permit';
-               });
-            }
-         });
-
-         //clear fillte button
-         $('#processing-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); processingPermit.draw();});
-
-         processingPermit.page.len($('#processing-length-change').val());
-         $('#processing-length-change').change(function(){ processingPermit.page.len( $(this).val() ).draw(); });
-
-         var search = $.fn.dataTable.util.throttle(function(v){ processingPermit.search(v).draw(); }, 500);
-         $('input#search-processing-request').keyup(function(){ search($(this).val()); });
-      }
+                   })
+        } else {
+           $('#active-artist-alert').removeClass('d-none');
+        }
+     });
+  }
 
 
 
@@ -690,6 +460,7 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
+        locale:{'customRangeLabel':'Custom From & To'},
         ranges: {
           '{{ __('Today') }}': [moment(), moment()],
           '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -727,6 +498,7 @@
            {data: 'reference_number'},
            {data: 'company_name'},
            {data: 'applied_date'},
+           {data: 'duration'},
            {data: 'artist_number'},
            {data: 'request_type'},
            {data: 'permit_status'},
@@ -750,6 +522,150 @@
 
      }
 
+    function approvedTable() {
+
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+        var selected_date = [];
+
+        $('input#active-applied-date').daterangepicker({
+          autoUpdateInput: false,
+          buttonClasses: 'btn',
+          applyClass: 'btn-warning btn-sm btn-elevate',
+          cancelClass: 'btn-secondary btn-sm btn-elevate',
+          startDate: start,
+          endDate: end,
+          maxDate: new Date,
+          locale:{'customRangeLabel':'Custom From & To'},
+          ranges: {
+            '{{ __('Today') }}': [moment(), moment()],
+            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+            '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+            '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+            '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          }
+        }, function (start, end, label) {
+          $('input#active-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        }).on('apply.daterangepicker', function(e, d){
+         new_selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+         activePermit.draw();
+        });
+
+        activePermit = $('table#artist-permit-approved').DataTable({
+          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            ajax: {
+               url: '{{ route('admin.artist_permit.datatable')}}',
+               data: function (d) {
+                  d.status = ['active'];
+               }
+            },
+            columnDefs: [
+               {targets: '_all', className: 'no-wrap'},
+               {targets: 5, sortable: false},
+            ],
+            columns: [
+               {data: 'reference_number'},
+               {data: 'permit_number'},
+               {data: 'company_name'},
+               {data: 'applied_date'},
+               {data: 'duration'},
+               {data: 'artist_number'},
+               {data: 'request_type'},
+               {data: 'action'},
+            ],
+
+            createdRow: function (row, data, index) {
+              $(row).click(function () {
+                 location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#active-permit';
+              });
+            }
+         });
+
+        //clear fillte button
+        $('#active-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); activePermit.draw();});
+
+        activePermit.page.len($('#acive-length-change').val());
+        $('#active-length-change').change(function(){ activePermit.page.len( $(this).val() ).draw(); });
+
+        var search = $.fn.dataTable.util.throttle(function(v){ activePermit.search(v).draw(); }, 500);
+        $('input#search-active-request').keyup(function(){ search($(this).val()); });
+    }
+
+
+    function processingTable() {
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+        var selected_date = [];
+
+        $('input#processing-applied-date').daterangepicker({
+          autoUpdateInput: false,
+          buttonClasses: 'btn',
+          applyClass: 'btn-warning btn-sm btn-elevate',
+          cancelClass: 'btn-secondary btn-sm btn-elevate',
+          startDate: start,
+          endDate: end,
+          maxDate: new Date,
+          locale:{'customRangeLabel':'Custom From & To'},
+          ranges: {
+            '{{ __('Today') }}': [moment(), moment()],
+            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+            '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+            '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+            '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          }
+        }, function (start, end, label) {
+          $('input#processing-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        }).on('apply.daterangepicker', function(e, d){
+         selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+         processingPermit.draw();
+        });
+
+         processingPermit = $('table#artist-permit-processing').DataTable({
+          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            ajax: {
+               url: '{{ route('admin.artist_permit.datatable') }}',
+               data: function (d) {
+                  d.status = ['approved-unpaid', 'modification request', 'processing', 'need approval'];
+               }
+            },
+            columnDefs: [
+               {targets: [0, 4, 5], className: 'no-wrap'},
+            ],
+            columns: [
+               {data: 'reference_number'},
+               {data: 'company_name'},
+               {data: 'applied_date'},
+               {data: 'duration'},
+               {data: 'artist_number'},
+               // { data: 'company_type'},
+               {data: 'request_type'},
+               {data: 'permit_status'},
+            ],
+
+            createdRow: function (row, data, index) {
+               $(row).click(function () {
+                  location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#processing-permit';
+               });
+            }
+         });
+
+         //clear fillte button
+         $('#processing-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); processingPermit.draw();});
+
+         processingPermit.page.len($('#processing-length-change').val());
+         $('#processing-length-change').change(function(){ processingPermit.page.len( $(this).val() ).draw(); });
+
+         var search = $.fn.dataTable.util.throttle(function(v){ processingPermit.search(v).draw(); }, 500);
+         $('input#search-processing-request').keyup(function(){ search($(this).val()); });
+      }
+
+
      function pendingRequest() {
 
        var start = moment().subtract(29, 'days');
@@ -764,6 +680,7 @@
          startDate: start,
          endDate: end,
          maxDate: new Date,
+         locale:{'customRangeLabel':'Custom From & To'},
          ranges: {
            '{{ __('Today') }}': [moment(), moment()],
            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -801,8 +718,8 @@
            {data: 'company_name'},
            {data: 'artist_number'},
            {data: 'applied_date'},
+           {data: 'duration'},
            {data: 'request_type'},
-           {data: 'permit_status'}
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
@@ -835,6 +752,7 @@
          startDate: start,
          endDate: end,
          maxDate: new Date,
+       locale:{'customRangeLabel':'Custom From & To'},
          ranges: {
            '{{ __('Today') }}': [moment(), moment()],
            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -872,9 +790,9 @@
            {data: 'reference_number'},
            {data: 'company_name'},
            {data: 'artist_number'},
-           {data: 'request_type'},
            {data: 'applied_date'},
-           {data: 'permit_status'}
+           {data: 'duration'},
+           {data: 'request_type'},
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {

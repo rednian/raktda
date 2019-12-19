@@ -67,8 +67,7 @@
 
 		public function show(Request $request, Artist $artist)
 		{
-		
-			$artist_permit = ArtistPermit::whereHas('permit', function($q){
+		    $artist_permit = ArtistPermit::whereHas('permit', function($q){
 				$q->whereNotIn('permit_status', ['draft', 'edit']);
 			})
 			->where('artist_id', $artist->artist_id)->latest()->first();
@@ -83,8 +82,6 @@
 		public function datatable(Request $request)
 		{
 			if ($request->ajax()) {
-
-
 				$artist = Artist::has('artistpermit.profession')
 				->whereHas('permit', function($q){
 					$q->whereNotIn('permit_status',['draft', 'edit']);

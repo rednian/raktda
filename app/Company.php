@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Auth;
@@ -9,15 +8,36 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     //use SoftDeletes;
-    // protected $connection = 'bls';
     protected $table = 'company';
-    // protected $table = 'smartrak_bls.company';
     protected $primaryKey = 'company_id';
     protected $fillable = [
-        'name_en', 'name_ar', 'logo_original', 'logo_thumbnail', 'status', 'company_email', 'phone_number', 'website', 'trade_license', 'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 'reference_number', 'company_type_id', 'registered_date', 'registered_by'
+        'name_en', 'name_ar', 'logo_original', 'logo_thumbnail', 'status', 'company_email', 'phone_number', 'website', 'trade_license', 
+        'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 
+        'reference_number', 'company_type_id', 'registered_date', 'registered_by', 'company_description_ar','company_description_en'
     ];
+<<<<<<< HEAD
     
     protected $dates = ['created_at', 'updated_at', 'application_date', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date'];
+=======
+    protected $dates = ['created_at', 'updated_at', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date', 'application_date'];
+
+    // public function setTradeLicenseIssuedDate($date)
+    // {
+    //     $this->attributes['trade_license_issued_date'] = Carbon::createFromFormat('Y-m-d g:i A', $date)->format('Y-m-d H:i:s');
+    // } 
+
+    // public function setTradeLicenseExpiredDate($date)
+    // {
+    //     $this->attributes['trade_license_expired_date'] = Carbon::createFromFormat('Y-m-d g:i A', $date)->format('Y-m-d H:i:s');
+    // }
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+    }
+
+
+>>>>>>> c3f99834bc1951788db8753f7eb6f6d14251181f
 
     public function comment()
     {

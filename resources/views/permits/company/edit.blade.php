@@ -56,6 +56,7 @@
                             <div class="kt-section kt-section--first">
                                 <div class="kt-section__body">
                                     <form name="edit_company" action="{{ route('company.update', $company->company_id) }}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                                       {{-- @method('PUT') --}}
                                         @csrf
                                        <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
                                            <div class="card">
@@ -131,7 +132,7 @@
                                                                <div class="row form-group form-group-sm">
                                                                    <div class="col-sm-6">
                                                                        <label >Address<span class="text-danger">*</span></label>
-                                                                       <input name="website" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->address}}">
+                                                                       <input name="address" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->address}}">
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                       <label >Country <span class="text-danger">*</span></label>
@@ -170,6 +171,16 @@
                                                                    </div>
                                                                </div>
                                                               
+                                                           </div>
+                                                       </section>
+                                                       <section class="row form-group form-group-sm">
+                                                           <div class="col-md-6">
+                                                               <label>Establishment Details<span class="text-danger">*</span></label>
+                                                               <textarea rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_en">{{$company->company_description_en}}</textarea>
+                                                           </div>
+                                                           <div class="col-md-6">
+                                                               <label >Establishment Details (AR)<span class="text-danger">*</span></label>
+                                                               <textarea rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_ar">{{$company->company_description_ar}}</textarea>
                                                            </div>
                                                        </section>
                                                        
@@ -230,6 +241,7 @@
                                                                        <input autocomplete="off" name="emirate_id_issued_date" class="date-picker start form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-F-Y') : null }}">
                                                                    </div>
                                                                    <div class="col-sm-6">
+                                                                    <input type="hidden" name="reference_number" value="123456789">
                                                                        <label>{{__('Emirates ID EXpired Date')}} <span class="text-danger">*</span></label>
                                                                        <input autocomplete="off" name="emirate_id_expired_date" class="date-picker end form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-F-Y') :  null }}">
                                                                    </div>
@@ -247,59 +259,71 @@
                                                        <h6 class="kt-font-dark "><span class="kt-font-transform-u">Requirement</span> <small>Please upload the required documents.</small></h6>
                                                    </div>
                                                </div>
-                                               <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement" style="">
+                                               <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement" style="font-language-override: ">
                                                    <div class="card-body">
-                                                       @if ($requirements = App\Requirement::where('requirement_type', 'company')->get())
+                                                    {{-- <div class="alert alert-secondary kt-padding-t-5 kt-padding-b-5" role="alert">
+                                                        <div class="alert-icon"><i class="flaticon-exclamation-2"></i></div>
+                                                        <div class="alert-text kt-font-dark">
+                                                          <h6 class="alert-heading kt-margin-b-0">Note :</h6>
+                                                          <p class="text-danger">
+                                                            Uploaded file will be removed if replace with new upload.
+                                                          </p>
+                                                          <hr class="kt-margin-5">
+                                                          <ul>
+                                                            <li>maximum file size 5MB</li>
+                                                          </ul>
+                                                        </div>
+                                                      </div> --}}
+                                                      <table class="table table-borderless border table-hover" id="requirement-datatable">
+                                                        <thead>
+                                                          <tr>
+                                                            <th>{{__('REQUIREMENT NAME')}}</th>
+                                                            <th>{{__('FILE SIZE')}}</th>
+                                                            <th>{{__('ISSUED DATE')}}</th>
+                                                            <th>{{__('EXPIRED DATE')}}</th>
+                                                          </tr>
+                                                        </thead>
+                                                      </table>
+                                                      {{--  @if ($requirements = App\Requirement::where('requirement_type', 'company')->get())
                                                            @foreach ($requirements as $key => $requirement)
                                                              <div class="form-group-sm form-group row">
+
                                                                <div class="col-sm-6">
-                                                                   <label> Document Name <span class="text-danger">*</span></label>
-                                                                   <input name="file[{{$requirement->requirement_id}}][name]" value="{{Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar}}" type="text" readonly autocomplete="off" class="form-control-sm form-control">
+                                                                   <label>{{Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar}} <span class="text-danger">*</span></label>
+                                                                   <input name="file[{{$requirement->requirement_id}}][name]" value="{{$requirement->requirement_name}}"  type="hidden" readonly>
+                                                                   <input onchange="readUrl(this);" name="file[{{$requirement->requirement_id}}][file][]"  type="file" autocomplete="off" class="form-control-sm form-control" multiple>
                                                                </div>
+
                                                                <div class="col-sm-2">
                                                                    <label>Issued Date <span class="text-danger {{$requirement->dates_required ? null: 'kt-hide'}} ">*</span></label>
                                                                    <input {{$requirement->dates_required ? 'required': 'null'}} type="text" name="file[{{$requirement->requirement_id}}][issued_date]" class="date-picker start form-control-sm form-control" autocomplete="off">
                                                                </div>
+
                                                                <div class="col-sm-2">
                                                                    <label>Expired Date <span class="text-danger {{$requirement->dates_required ? null: 'kt-hide'}} ">*</span></label>
                                                                    <input {{$requirement->dates_required ? 'required': 'null'}}  type="text" name="file[{{$requirement->requirement_id}}][expired_date]" class="date-picker end form-control-sm form-control" autocomplete="off">
                                                                </div>
-                                                             </div>
-                                                             <div class="form-group-sm form-group row kt-margin-b-30">
-                                                               <div class="col-sm-12">
-                                                                  <div class="file-loading">
-                                                                    <input name="file[{{$requirement->requirement_id}}][file][]" id="file-{{$key}}d" class="file" type="file" multiple >
-                                                                 </div>
-                                                                 {{--  @section('script')
-                                                                  <script>
-                                                                    
-                                                                    //      $("#file-{{$key}}d").fileinput({
-                                                                    //     theme: 'fas',
-                                                                    //     showUpload: false,
-                                                                    //     showCaption: false,
-                                                                    //     browseClass: "btn btn-primary btn-lg",
-                                                                    //     fileType: "any",
-                                                                    //     previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-                                                                    //     overwriteInitial: false,
-                                                                    //     initialPreviewAsData: true,
-                                                                    //     initialPreview: [
-                                                                    //         "http://lorempixel.com/1920/1080/transport/1",
-                                                                    //         "http://lorempixel.com/1920/1080/transport/2",
-                                                                    //         "http://lorempixel.com/1920/1080/transport/3"
-                                                                    //     ],
-                                                                    //     initialPreviewConfig: [
-                                                                    //         {caption: "transport-1.jpg", size: 329892, width: "120px", url: "{$url}", key: 1},
-                                                                    //         {caption: "transport-2.jpg", size: 872378, width: "120px", url: "{$url}", key: 2},
-                                                                    //         {caption: "transport-3.jpg", size: 632762, width: "120px", url: "{$url}", key: 3}
-                                                                    //     ]
-                                                                    // });
 
-                                                                  </script>
-                                                                  @stop  --}}
+                                                             </div>
+
+                                                             <div class="form-group row">
+                                                               <div class="col-12">
+                                                                 <table>
+                                                                   <tr>
+                                                                     <td></td>
+                                                                     <td><button class="btn btn-danger btn-sm">remove</button></td>
+                                                                     <td>
+                                                                      @foreach ($requirement->company as $file)
+                                                                       <span>{{$file->path}}</span>
+                                                                      @endforeach
+                                                                     </td>
+                                                                   </tr>
+                                                                 </table>
                                                                </div>
                                                              </div>
+                                                             
                                                            @endforeach
-                                                       @endif
+                                                       @endif --}}
                                                        
                                                    </div>
                                                    
@@ -309,14 +333,13 @@
                                        </div>
                                        <div class="form-group row kt-margin-t-10">
 
-                                        <div class="file-loading">
-                                            <label>Preview File Icon</label>
-                                            <input id="file-3" type="file" multiple>
-                                        </div>
                                         
-                                           <div class="col-sm-12>">
-                                               <button type="submit" name="submit" value="draft" class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark">Save as Draft</button>
-                                               <button type="submit" name="submit" value="submit" class="btn btn-warning btn-sm kt-font-transform-u kt-font-dark">Submit Application</button>
+                                        
+                                           <div class="col-sm-12">
+                                            @if ($company->status == 'draft')
+                                               <button style="padding: 0.5rem 1rem;" type="submit" name="submit" value="draft" class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark">Save as Draft</button>
+                                            @endif
+                                               <button type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">Submit Application</button>
                                            </div>
                                        </div>
                                     </form>
@@ -437,9 +460,13 @@
 @endsection
 @section('script')
 <script>
+  var files = [];
+  var filenames = [];
+
     $(document).ready(function(){
 
       datePicker();
+      requirementDatatable();
 
    
       $('select[name=company_type_id]').change(function(){
@@ -456,7 +483,45 @@
 
 
 
+
     });
+
+
+    function requirementDatatable(){
+      $('#requirement-datatable').DataTable({
+        ajax:{
+          url: '{{ route('company.requirement.datatable', $company->company_id) }}'
+        }
+        ,
+      });
+    }
+
+    function readUrl(input) {
+      if(input.files.length > 0){
+         $.each(input.files, function(i, v){
+          var reader = new FileReader();
+          reader.readAsDataURL(v);
+          files.push({ file: v});
+          reader.onload = function(e){
+            files.push(e.target.result);
+          };
+         });
+      }
+      // if (input.files && input.files[0]) {
+
+      //   for (var i = 0; i < input.files.length; i++) {
+      //     var reader = new FileReader();
+      //     reader.readAsDataURL(input.files[i]);
+
+      //     reader.onload = function (e) {
+      //       var url = e.target.result
+
+      //       files.push(url);
+      //       // showImages();
+      //     };
+      //   }
+      // }
+    }
 
 
     function datePicker(){

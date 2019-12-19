@@ -89,7 +89,7 @@ class ArtistPermitController extends Controller
     public function submitApplication(Request $request, Permit $permit)
     {
 
-      
+
       try {
         DB::beginTransaction();
            $user_time = $request->session()->get('user');
@@ -124,7 +124,7 @@ class ArtistPermitController extends Controller
               //   'type' => 'artist',
               //   'created_by' => $request->user()->user_id
               // ]);
-              
+
 
               // if ($request->is_manual_schedule) {
 
@@ -163,7 +163,7 @@ class ArtistPermitController extends Controller
                   $status = $user->roles()->first()->role_id == 4 ? 'inspector' : 'manager';
 
                   $comment = $permit->comment()->where([
-                    'action' => 'pending', 
+                    'action' => 'pending',
                     'role_id' => $user->roles()->first()->role_id
                   ])->first();
 
@@ -252,7 +252,7 @@ class ArtistPermitController extends Controller
 
       } catch (Exception $e) {
          DB::rollBack();
-         $result = ['error', $e->getMessage(), 'Error'];
+         $result = ['danger', $e->getMessage(), 'Error'];
       }
 
        return redirect()->route('admin.artist_permit.applicationdetails', $permit->permit_id)->with(['message'=>$result]);
@@ -515,7 +515,6 @@ class ArtistPermitController extends Controller
 
      	$limit = $request->length;
      	$start = $request->start;
-
       $permit = Permit::has('artist')
       ->when($request->request_type, function ($q) use ($request){
         $q->where('request_type', $request->request_type);
@@ -537,7 +536,7 @@ class ArtistPermitController extends Controller
 
       $table = Datatables::of($permit)
       ->addColumn('artist_number', function($permit){
-        $total = $permit->artistpermit()->count();  
+        $total = $permit->artistpermit()->count();
         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
         if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
         return 'Checked '.$check.' of '.$total;
@@ -550,6 +549,12 @@ class ArtistPermitController extends Controller
       ->editColumn('permit_start', function($permit){
         if(!$permit->issued_date) return null;
         return $permit->issued_date->format('d-M-Y');
+      })
+      ->addColumn('duration', function($permit){
+        $date = Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
+        $date = $date !=  0 ? $date : 1;
+        $day = $date > 1 ? ' Days': ' Day';
+        return $date.$day;
       })
       ->addColumn('company_name', function($permit) use ($request){
           return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : $permit->owner->company->name_ar;

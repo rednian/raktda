@@ -28,7 +28,7 @@ class CheckLockArtistPermit
             if($diff_in_minutes < 5 && $permit->lock_user_id != $request->user()->user_id){
                 
                 // $request->session()->flash('lock', $permit);
-                return redirect()->back()->with('message', ['error', 'Opps! Someone is currently checking the permit. Please try again later.', 'Information']);
+                return redirect()->back()->with('message', ['danger', 'Opps! Someone is currently checking the permit. Please try again later.', 'Information']);
             }
         }
 
