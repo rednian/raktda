@@ -67,8 +67,8 @@
             </span>
         </th>
         <th>{{ __('APPLIED DATE') }}</th>
+        <th>{{ __('PERMIT DURATION') }}</th>
         <th>{{ __('REQUEST TYPE') }}</th>
-        <th>{{ __('PERMIT STATUS') }}</th>
      </tr>
      </thead>
 </table>

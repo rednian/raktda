@@ -436,7 +436,7 @@
                           <span></span>
                        </label>
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-                          <input value="bounce back" type="radio" name="status"> Bounce Back for Ammendments
+                          <input value="back" type="radio" name="status"> Bounce Back for Ammendments
                           <span></span>
                        </label>
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">

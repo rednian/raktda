@@ -33,14 +33,28 @@
     <div class="kt-portlet__body kt-padding-t-5">
       @include('admin.event.includes.existing-notification')
       <section class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type ')}} </span>: 
             {{Auth::user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
           </p>
 
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-20">{{__('Start Date')}}</span>: {{ date('d-F-Y', strtotime($event->issued_date)) }}</p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-25">{{__('End Date ')}}</span>: {{ date('d-F-Y', strtotime($event->expired_date)) }}</p>
+          <p class="kt-margin-b-0 kt-font-dark">
+            <span class="kt-font-bold kt-margin-r-20">{{__('Start Date')}}</span>: 
+            {{ date('d-F-Y', strtotime($event->issued_date)) }}
+          </p>
+          <p class="kt-margin-b-0 kt-font-dark">
+            <span class="kt-font-bold kt-margin-r-25">{{__('End Date ')}}</span>: 
+            {{ date('d-F-Y', strtotime($event->expired_date)) }}
+          </p>
+          <p class="kt-margin-b-0 kt-font-dark">
+            <span class="kt-font-bold kt-margin-r-25">{{__('Duration ')}}</span>: 
+            @php
+              $date = Carbon\Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
+              $day = $date > 1 ? ' Days' :' Day';
+            @endphp
+            {{ $date.$day }}
+          </p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-50">{{__('Time ')}}</span>:  {{ $event->time_start }} -- {{ $event->time_end }}</p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-40">{{__('Venue ')}}</span>: 
             {{  Auth::user()->LanguageId == 1 ? ucfirst($event->venue_en) :  $event->venue_ar }}
@@ -152,7 +166,7 @@
           </p>
           
         </div>
-        <div class="col-md-4 border">
+        <div class="col-md-5 border">
           <div class="kt-widget kt-widget--user-profile-4">
               <div class="kt-widget__head kt-margin-t-5">
                 <div class="kt-widget__media kt-margin-b-5">
@@ -195,6 +209,14 @@
                      <tr>
                          <td>{{ __('Expected Audience') }} :</td>
                           <td class="kt-font-dark">{{$event->audience_number}}</td>
+                     </tr>
+                     <tr>
+                         <td>{{ __('Approved By') }} :</td>
+                          <td class="kt-font-dark"></td>
+                     </tr>
+                     <tr>
+                         <td>{{ __('Approved Date') }} :</td>
+                          <td class="kt-font-dark"></td>
                      </tr>
                      <tr>
                          <td>{{ __('Printed Note') }} :</td>

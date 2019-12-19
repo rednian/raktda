@@ -46,7 +46,7 @@ class CompanyController extends Controller
       	      	
       	      	$result = ['success', ucfirst($company->name_en).'has been successfully checked & approved .', 'Success'];
       	      break;
-      	   case 'bounce back':
+      	   case 'back':
       	      $company->update(['status'=>$request->status]);
 
       	      $company->comment()->create($request->all());
@@ -295,15 +295,16 @@ class CompanyController extends Controller
       ->when($request->area, function($q) use ($request){
          $q->where('area_id', $request->area);
       })
-      ->orderBy('application_date','DESC')
-      ->orderBy('status')
+      ->orderBy('updated_at', 'desc')
+      ->orderBy('name_en')
       ->get();
+      // ->latest();
 
       return DataTables::of($company)
       ->addColumn('trade_expired_date', function($company){
-         if ($company->type->name_en == 'corporate') {
+         // if ($company->type->name_en == 'corporate') {
 	         // return '<span class="text-underline" title="'.$company->trade_license_expired_date->format('l, d-F-Y').'">'.humanDate($company->trade_license_expired_date).'</span>';
-         }
+         // }
          return '-';
       })
       ->addColumn('profile', function($company) use ($request){
@@ -345,7 +346,15 @@ class CompanyController extends Controller
          return URL::signedRoute('admin.company.application', ['company' => $company->company_id]);
       })
       ->addColumn('date', function($company){
-         return '<span class="text-underline" title="'.$company->application_date->format('h:i A, l | d-F-Y').'">'.humanDate($company->application_date).'</span>';
+         return '<span class="text-underline" title="'.$company->updated_at->format('h:i A, l | d-F-Y').'">'.humanDate($company->updated_at).'</span>';
+      })
+      ->addColumn('reason', function($company) use ($request){
+        $comment = null;
+        if ($company->comment()->exists()) {
+          $comment = $company->comment()->latest()->first();
+          $comment = $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar;
+        }
+        return $comment;
       })
       ->rawColumns(['date', 'status', 'profile', 'trade_expired_date', 'website'])
       ->make(true);

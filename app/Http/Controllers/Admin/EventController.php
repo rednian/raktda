@@ -139,7 +139,14 @@
 						$result = ['success', ucfirst($event->name_en).'Rejected Successfully', 'Success'];
 						break;
 					case 'approved-unpaid':
-						$event->update(['status'=>$request->status, 'note_en'=>$request->note_en, 'note_ar'=>$request->note_ar]);
+					$request['approved_by']  =  $request->user()->user_id;
+					$request['approved_date']  =  Carbon::now();
+						$event->update([
+							'status'=>$request->status, 
+							'note_en'=>$request->note_en, 
+							'note_ar'=>$request->note_ar,
+							 'approved_by'=>$request->user()->user_id
+							]);
 						$request['type'] = $type = 1;
 						$event->comment()->create($request->all());
 						$result = ['success', ucfirst($event->name_en).' Approved Successfully', 'Success'];
@@ -484,14 +491,17 @@
 
 		public function imageDatatable(Request $request, Event $event)
 		{
-			// return DataTables::of($even->otherUpload()->get())
-			// ->editColumn('path', function($image){
-			// 	return ''
-			// })
-			// ->editColumn('size', function($image){
-			// 	return $image->size;
-			// })
-			// ->make(true);
+			return DataTables::of($even->otherUpload()->get())
+			->editColumn('path', function($image){
+				return '';
+			})
+			->editColumn('size', function($image){
+				return $image->size;
+			})
+			->editColumn('description', function($image){
+				return $image->size;
+			})
+			->make(true);
 		}
 
 		public function commentDatatable(Request $request, Event $event)
@@ -536,8 +546,7 @@
 			        });
 				})
 				->whereNotIn('status', ['draft'])
-				// ->orderBy('created_at')
-				->latest();
+				->orderBy('updated_at');
 
 				$table =  DataTables::of($events)
 				->addColumn('establishment_name', function($event){
