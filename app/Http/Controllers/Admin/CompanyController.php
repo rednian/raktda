@@ -63,7 +63,7 @@ class CompanyController extends Controller
 
       } catch (Exception $e) {
       	$result = ['danger', $e->getMessage(), 'Error'];
-		DB::rollBack();
+		    DB::rollBack();
       	
       }
 
@@ -72,11 +72,35 @@ class CompanyController extends Controller
    }
 
 
+
+   public function changeStatus(Request $request, Company $company)
+   {
+    try {
+      DB::beginTransaction();
+      $company->update(['status'=>$request->status]);
+      $request['user_id'] = $request->user()->user_id;
+      $request['action'] = $request->status;
+      $company->comment()->create($request->all());
+       $result = ['success', ucfirst($company->name_en).' has been '.$request->status.' successfully.', 'Success'];
+      DB::commit();
+    } catch (Exception $e) {
+      $result = ['danger', $e->getMessage(), 'Error'];
+      DB::rollBack();
+      
+    }
+    return redirect()->back()->with('message', $result);
+   }
+
+
+
    public function commentDatatable(Request $request, Company $company)
    {
    	return DataTables::of($company->comment()->latest())
-   	->addColumn('name', function(){
+   	->addColumn('name', function($comment) use ($request){
 
+      $name = $request->user()->LanguageId == 1 ? ucfirst($comment->user->NameEn) : $comment->user->NameAr;
+      $role = $request->user()->LanguageId == 1 ? ucfirst($comment->user->roles()->first()->NameEn) : $comment->user->roles()->first()->NameAr;
+      return profileName($name, $role);
    	})
    	->addColumn('remark', function($comment) use ($request){
    		return $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar; 
@@ -87,7 +111,7 @@ class CompanyController extends Controller
    	->addColumn('date', function($comment){
    		return '<span title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
    	})
-   	->rawColumns(['date'])
+   	->rawColumns(['date', 'name'])
    	->make(true);
    }
 
@@ -130,6 +154,16 @@ class CompanyController extends Controller
       })
        ->editColumn('expired_date', function($companyRequirement){
           return $companyRequirement->expired_date ? date('d-F-Y', strtotime($companyRequirement->expired_date)) : '-'; 
+      })
+      ->make(true);
+   }
+
+   public function artistpermitDatatable(Request $request, Company $company)
+   {
+      $permit = $company->has('permit')->orderBy('expired_date', 'desc')->get();
+      return DataTables::of($permit)
+      ->addColumn('artist_number', function($permit){
+        return $permit->artistpermit()->count();
       })
       ->make(true);
    }

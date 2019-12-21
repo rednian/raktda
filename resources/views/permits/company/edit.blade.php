@@ -1,10 +1,13 @@
 @extends('layouts.app')
 @section('style')
-<link rel="stylesheet" type="text/css" href="{{ asset('/assets/vendors/custom/fileupload/css/fileinput.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('/assets/vendors/custom/fileupload//themes/explorer-fas/theme.css') }}">
-<style>
-    
-</style>
+ <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/custom/jquery.filer/css/jquery.filer.css') }}">
+ <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/custom/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css') }}">
+ <style>
+   .jFiler-items-default .jFiler-item {
+    padding: 8px;
+    margin-bottom: 5px;
+}
+ </style>
 @stop
 @section('content')
 <div class="kt-portlet kt-portlet--tabs">
@@ -261,6 +264,28 @@
                                                </div>
                                                <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement" style="font-language-override: ">
                                                    <div class="card-body">
+                                                    @if ($requirements = App\Requirement::where('requirement_type', 'company')->get())
+                                                      @foreach ($requirements as $requirement)
+                                                        <section class="row form-group form-group-xs">
+                                                          <div class="col-md-6">
+                                                            <label for="">
+                                                              {{Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->$requirement->requirement_name_ar}}
+                                                              <span class="text-danger">*</span>
+                                                            </label>
+                                                            <input name="file[]" type="file" multiple class="form-control filer_input form-control-sm">
+                                                          </div>
+                                                          <div class="col-md-3">
+                                                            <label for="">Issued Date</label>
+                                                            <input name="file[]" type="text" class="form-control form-control-sm">
+                                                          </div>
+                                                          <div class="col-md-3">
+                                                            <label for="">Expired Date</label>
+                                                            <input name="file[]" type="text" class="form-control form-control-sm">
+                                                          </div>
+                                                        </section>
+                                                      @endforeach
+                                                    @endif
+                                                    
                                                     {{-- <div class="alert alert-secondary kt-padding-t-5 kt-padding-b-5" role="alert">
                                                         <div class="alert-icon"><i class="flaticon-exclamation-2"></i></div>
                                                         <div class="alert-text kt-font-dark">
@@ -274,7 +299,7 @@
                                                           </ul>
                                                         </div>
                                                       </div> --}}
-                                                      <table class="table table-borderless border table-hover" id="requirement-datatable">
+                                                      {{-- <table class="table table-borderless border table-hover" id="requirement-datatable">
                                                         <thead>
                                                           <tr>
                                                             <th>{{__('REQUIREMENT NAME')}}</th>
@@ -283,7 +308,7 @@
                                                             <th>{{__('EXPIRED DATE')}}</th>
                                                           </tr>
                                                         </thead>
-                                                      </table>
+                                                      </table> --}}
                                                       {{--  @if ($requirements = App\Requirement::where('requirement_type', 'company')->get())
                                                            @foreach ($requirements as $key => $requirement)
                                                              <div class="form-group-sm form-group row">
@@ -459,14 +484,24 @@
 </div>
 @endsection
 @section('script')
+<script src="{{ asset('assets/vendors/custom/jquery.filer/js/jquery.filer.js') }}"></script>
 <script>
   var files = [];
   var filenames = [];
 
     $(document).ready(function(){
 
+      $('.filer_input').filer({
+        showThumbs: true,
+        limit: 5,
+        fileMaxSize: 5,
+        addMore: true,
+        allowDuplicates: false,
+        extensions: ['pdf', 'jpg', 'png'],
+
+      });
+
       datePicker();
-      requirementDatatable();
 
    
       $('select[name=company_type_id]').change(function(){
@@ -487,14 +522,6 @@
     });
 
 
-    function requirementDatatable(){
-      $('#requirement-datatable').DataTable({
-        ajax:{
-          url: '{{ route('company.requirement.datatable', $company->company_id) }}'
-        }
-        ,
-      });
-    }
 
     function readUrl(input) {
       if(input.files.length > 0){

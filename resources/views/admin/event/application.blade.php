@@ -158,7 +158,7 @@
 																<div class="col-md-6">
 																	<label class="kt-font-dark">{{ __('Event Name (AR)') }} <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
-																		<input value="{{ ucfirst($event->name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
+																		<input dir="rtl" value="{{ ucfirst($event->name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append">
 																			<span class="input-group-text">
 																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -189,7 +189,7 @@
 																<div class="col-md-6">
 																	<label class="kt-font-dark">{{ __('Owner Name (AR)') }} <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
-																		<input value="{{ ucfirst($event->owner_name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
+																		<input dir="rtl" value="{{ ucfirst($event->owner_name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append">
 																			<span class="input-group-text">
 																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -219,7 +219,7 @@
 																<div class="col-md-6">
 																	 <label class="kt-font-dark">{{ __('Event Details (AR)') }} <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
-																	 	<textarea name="description_ar" rowspan="3" class="form-control" readonly>{{ ucfirst($event->description_ar) }}</textarea>
+																	 	<textarea dir="rtl" name="description_ar" rowspan="3" class="form-control" readonly>{{ ucfirst($event->description_ar) }}</textarea>
 																		<div class="input-group-append">
 																			<span class="input-group-text">
 																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -384,7 +384,7 @@
 																					<div class="col-6">
 																						<label class="kt-font-dark">{{ __('Company Name (AR)') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
-																							<input value="{{ $truck->company_name_ar }}" name="company_name_ar" readonly="readonly" type="text"
+																							<input dir="rtl" value="{{ $truck->company_name_ar }}" name="company_name_ar" readonly="readonly" type="text"
 																											 class="form-control">
 																								<div class="input-group-append">
 																									<span class="input-group-text">
@@ -511,7 +511,7 @@
 																			<div class="col-6">
 																				 <label class="kt-font-dark">{{ __('Establishment Name (AR)') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
-																						<input value="{{ $event->liquor->company_name_ar }}" name="expired_date" readonly="readonly" type="text"
+																						<input dir="rtl" value="{{ $event->liquor->company_name_ar }}" name="expired_date" readonly="readonly" type="text"
 																									 class="form-control">
 																						<div class="input-group-append">
 																							 <span class="input-group-text">
@@ -633,7 +633,7 @@
 																			<div class="col-6">
 																				 <label class="kt-font-dark">{{ __('Venue (AR)') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
-																						<input value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
+																						<input dir="rtl" value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
 																									 class="form-control">
 																						<div class="input-group-append">
 																							 <span class="input-group-text">
@@ -787,32 +787,6 @@
 											<div class="col kt-margin-t-20 kt-margin-b-20">
 												@include('admin.event.includes.existing-notification')
 												 @include('admin.artist_permit.includes.comment')
-												 @if ($event->truck()->count() > 0)
-												 		<div class="accordion accordion-solid accordion-toggle-plus" id="accordion-truck">
-												 		<div class="card border">
-												 			<div class="card-header" id="heading-truck">
-												 				<div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-truck" aria-expanded="true" aria-controls="collapse-truck">
-												 					<span class="kt-font-dark kt-font-bold">{{__('FOOD TRUCK REQUIREMENTS')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span></span>
-												 				</div>
-												 			</div>
-												 			<div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck">
-												 				<div class="card-body">
-												 					<table class="table table-hover table-borderless table-sm border table-striped" id="truck-table">
-												 						<thead>
-												 							<tr>
-												 								 <th>#</th>
-												 								 <th>{{ __('COMPANY NAME') }}</th>
-												 								 <th>{{ __('FOOD TYPE') }}</th>
-												 								 <th>{{ __('PLATE NUMBER') }}</th>
-												 								 <th>{{ __('ACTION') }}</th>
-												 							</tr>
-												 						</thead>
-												 					 </table>
-												 				</div>
-												 			</div>
-												 		</div>
-												 	</div>
-												 @endif
 											 <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x " role="tablist">
 											 	<li class="nav-item">
 											 		<a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content" role="tab">
@@ -826,13 +800,23 @@
 											 			</a>
 											 		</li>
 											 	@endif
-											 	@if ($event->otherUpload()->count() > 0)
+
+											 	@if ($event->truck()->count() > 0)
+											 		<li class="nav-item">
+											 			<a class="nav-link" data-toggle="tab" href="#food-truck-tab" role="tab">
+											 				{{__('FOOD TRUCK REQUIREMENTS')}}
+											 				<span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span></span>
+											 			</a>
+											 		</li>
+											 	@endif
+											 	
+											 	{{-- @if ($event->otherUpload()->count() > 0) --}}
 											 	<li class="nav-item">
 											 		<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_3_3_tab_content" role="tab">
 											 			{{__('UPLOADED IMAGES')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
 											 		</a>
 											 	</li>
-											 	@endif
+											 	{{-- @endif --}}
 											 </ul>
 											 <div class="tab-content">
  												<div class="tab-pane active" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
@@ -843,6 +827,19 @@
  																 <th>{{ __('FILES') }}</th>
  																 <th>{{ __('ISSUED DATE') }}</th>
  																 <th>{{ __('EXPIRED DATE') }}</th>
+ 																 <th>{{ __('ACTION') }}</th>
+ 															</tr>
+ 														</thead>
+ 													 </table>
+ 												</div>
+ 												<div class="tab-pane" id="food-truck-tab" role="tabpanel">
+ 													<table class="table table-hover table-borderless table-sm border table-striped" id="truck-table">
+ 														<thead>
+ 															<tr>
+ 																 <th>#</th>
+ 																 <th>{{ __('COMPANY NAME') }}</th>
+ 																 <th>{{ __('FOOD TYPE') }}</th>
+ 																 <th>{{ __('PLATE NUMBER') }}</th>
  																 <th>{{ __('ACTION') }}</th>
  															</tr>
  														</thead>
@@ -1178,11 +1175,15 @@
        requirementTable();
        liqourRequirement();
        truck();
+       imageTable();
      });
 
      function imageTable(){
      	$('table#image-table').DataTable({
-     		ajax: ''
+     		ajax: '{{ route('admin.event.images.datatable', $event->event_id) }}',
+     		columns:[
+     		{data: 'path'}
+     		]
      	});
      }
 
@@ -1489,7 +1490,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {

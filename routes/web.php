@@ -43,6 +43,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/company_registration', 'Admin\CompanyController@index')->name('admin.company.index');
     Route::get('/company_registration/{company}', 'Admin\CompanyController@show')->name('admin.company.show');
     Route::post('/company_registration/{company}', 'Admin\CompanyController@submit')->name('admin.company.submit');
+    Route::post('/company_registration/{company}/change-status', 'Admin\CompanyController@changeStatus')->name('admin.company.changestatus');
     Route::get('/company_registration/{company}/application', 'Admin\CompanyController@application')->name('admin.company.application');
     Route::get('/company_registration/{company}/application-datatable', 'Admin\CompanyController@applicationDatatable')->name('admin.company.application.datatable');
     Route::get('/company_registration/{company}/event-datatable', 'Admin\CompanyController@eventDatatable')->name('admin.company.event.datatable');

@@ -73,8 +73,68 @@
                 </div>
               </div>
             </div>
-            <div class="kt-widget__bottom">
-              <div class="kt-widget__item">
+            <section class="row kt-margin-t-10">
+              <div class="col-md-12">
+                @if ($company->status == 'blocked')
+                 <div class="alert alert-outline-danger fade show kt-padding-t-0 kt-padding-b-0" role="alert">
+                   <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
+                   <div class="alert-text">This company is currently blocked. 
+                     <span title="{{$company->comment()->latest()->first()->created_at->format('l h:i A | d-F-Y')}}" class="text-underline">{{ humanDate($company->comment()->latest()->first()->created_at) }}</span><br>
+                     <span>{{__('Please see the ACTION HISTORY for the remarks...')}}</span>
+                   </div>
+                   <div class="alert-close">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                       <span aria-hidden="true"><i class="la la-close"></i></span>
+                     </button>
+                   </div>
+                 </div>
+                @endif
+                
+                <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
+                  <div class="card border">
+                    <div class="card-header " id="headingOne6">
+                      <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
+                        @if ($company->status == 'active')
+                          {{__('BLOCK ESTABLISHMENT')}}
+                          @else
+                          {{__('UNBLOCK ESTABLISHMENT')}}
+                        @endif
+                      </div>
+                    </div>
+                    <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6" style="">
+                      <div class="card-body kt-padding-b-0">
+                        <form action="{{ route('admin.company.changestatus', $company->company_id) }}" method="post" class="form" id="frm-status">
+                          @csrf
+                          <div class="form-group row form-group-sm">
+                            <div class="col-md-6">
+                              <label for="">Remarks <span class="text-danger">*</span></label>
+                              <textarea required name="comment_en" maxlength="255" class="form-control form-control-sm" rows="4" autocomplete="off"></textarea> 
+                            </div>
+                            <div class="col-md-6">
+                              <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                              <textarea required name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="4" autocomplete="off"></textarea> 
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col">
+                              @if ($company->status == 'active')
+                                <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="blocked">{{__('SUBMIT')}}</button>
+                                @else
+                                <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">{{__('SUBMIT')}}</button>
+                              @endif
+                             
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </section>
+            <div class="kt-widget__bottom kt-margin-t-10">
+              <div class="kt-widget__item kt-padding-t-5">
                 <div class="kt-widget__icon">
                   <i class="flaticon-event-calendar-symbol"></i>
                 </div>
@@ -83,7 +143,7 @@
                   <span class="kt-widget__value"><span>{{$company->event()->whereStatus('active')->count()}}</span>
                 </div>
               </div>
-              <div class="kt-widget__item">
+              <div class="kt-widget__item kt-padding-t-5">
                 <div class="kt-widget__icon">
                   <i class="flaticon-file-2"></i>
                 </div>
@@ -96,33 +156,7 @@
               
             </div>
           </div>
-      <section class="row">
-        <div class="col-md-12">
-          <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-            <div class="card">
-              <div class="card-header" id="headingOne6">
-                <div class="card-title" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
-                  {{__('')}}
-                </div>
-              </div>
-              <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6" style="">
-                <div class="card-body">
-              
-                </div>
-              </div>
-            </div>
-          </div>
-          <form action="" class="form">
-            <div class="form-group row">
-              <div class="col-md-6">
-                <label for="">Remarks <span class="text-danger">*</span></label>
-                <textarea name="comment_en" class="form-control form-control-sm" rows="4" autocomplete="off"></textarea> 
-              </div>
-              <div class="col-md-6"></div>
-            </div>
-          </form>
-        </div>
-      </section>
+      
       
       
         <section class="row">
@@ -131,27 +165,30 @@
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#event-tab" role="tab">
                         <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                        {{__('Event Permits')}}
+                        {{__('EVENT PERMITS')}}
+                         <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->event()->count()}}</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_5_tab_content" role="tab">
-                        {{__('Artist Permit')}}
+                    <a class="nav-link" data-toggle="tab" href="#artist-permit-tab" role="tab">
+                        {{__('ARTIST PERMIT')}}
+                     <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->permit()->count()}}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#artist-tab" role="tab">
-                        {{__('Artist List')}}
+                        {{__('ARTIST LIST')}}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_4_5_tab_content" role="tab">
-                        {{__('Upload Requirements')}}
+                        {{__('UPLOADED REQUIREMENTS')}}
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_5_5_tab_content" role="tab">
-                        {{__('Checked & Action History')}}
+                    <a class="nav-link" data-toggle="tab" href="#action-history" role="tab">
+                        {{__('ACTION HISTORY')}}
+                        <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->comment()->count()}}</span>
                     </a>
                 </li>
             </ul> 
@@ -179,8 +216,27 @@
                        </thead>
                    </table>
                 </div>
-                <div class="tab-pane" id="kt_portlet_base_demo_2_5_tab_content" role="tabpanel">
-                    It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                <div class="tab-pane" id="artist-permit-tab" role="tabpanel">
+                   <table class="table table-borderless table-striped table-hover border table-sm" id="artist-permit-table">
+                       <thead>
+                           <tr>
+                               <th></th>
+                               <th>{{__('REFERENCE NO.')}}</th>
+                               <th>{{__('DURATION.')}}</th>
+                               <th>{{__('APPLICATION TYPE')}}</th>
+                               <th>{{__('STATUS')}}</th>
+                               <th>{{__('VENUE')}}</th>
+                               <th>{{__('LOCATION')}}</th>
+                               <th>{{__('START')}}</th>
+                               <th>{{__('PERMIT NO.')}}</th>
+                               <th>{{__('END')}}</th>
+                               <th>{{__('TIME')}}</th>
+                               <th>{{__('FOOD TRUCK')}}</th>
+                               <th>{{__('HAS LIQUOR')}}</th>
+                               <th>{{__('NUMBER OF ARTIST')}}</th>
+                           </tr>
+                       </thead>
+                   </table>
                 </div>
                 <div class="tab-pane" id="artist-tab" role="tabpanel">
                     <table class="table table-borderless table-striped table-hover border table-sm" id="artist-table">
@@ -207,6 +263,18 @@
                         </thead>
                     </table>
                 </div>
+                <div class="tab-pane" id="action-history" role="tabpanel">
+                    <table class="table table-borderless table-striped table-hover table-sm border" id="action-table">
+                        <thead>
+                            <tr>
+                                <th>{{__('NAME')}}</th>
+                                <th>{{__('REMARKS')}}</th>
+                                <th>{{__('ACTION')}}</th>
+                                <th>{{__('DATE')}}</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
             </div>
         </section>
@@ -219,10 +287,28 @@
 <script type="text/javascript">
     var event = {};
     $(document).ready(function(){
-        hasUrl();
+      $('form#frm-status').validate();
+        // hasUrl();
         eventList();
         artist();
+        actionTable();
+
     });
+
+    function actionTable(){
+      $('#action-table').DataTable({
+        ajax: '{{ route('admin.company.comment.datatable', $company->company_id) }}',
+        columnDefs:[
+          {targets: '_all', className: 'no-wrap'}
+        ],
+        columns:[
+        {data: 'name'},
+        {data: 'remark'},
+        {data: 'action'},
+        {data: 'date'},
+        ]
+      });
+    }
 
     function artist(){
         event =  $('table#artist-table').DataTable({
