@@ -185,7 +185,7 @@
 								</button>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
 									<button type="submit" name="artist_permit_status" value="approved" class="dropdown-item">Approve Artist</button>
-									<button type="submit" name="artist_permit_status" value="disapproved" class="dropdown-item">Disapprove Artist</button>
+									<button type="submit" name="artist_permit_status" value="rejected" class="dropdown-item">Reject Artist</button>
 								</div>
 							</div>
 						</div>

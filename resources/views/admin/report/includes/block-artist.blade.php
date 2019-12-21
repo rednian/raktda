@@ -2,66 +2,76 @@
     .dropdown-item{
         color: #6d6d6d;
     }
+body{
+    font-family: arial;
+}
     .dt-button-collection span{
-
         color: #6d6d6d;
     }
     #active_artist_click:hover{
         width: 45%;
         border-radius: 4px;
-        background-color: #525252;
-        color: white;
+        background-color: #e4ae00;
+        color: #484848;
+        font-weight: 500;
         border: none;
         box-shadow: 0px 5px 13px -5px black;
     }
     #blocked_artist_click:hover{
         width: 45%;
         border-radius: 4px;
-        background-color: #525252;
-        color: white;
+        background-color: #e4ae00;
+        color: #484848;
+        font-weight: 500;
         box-shadow: 0px 5px 13px -5px black;
         border: none;
     }
     #single_permit_type_click:hover{
         border-radius: 4px;
-        background-color: #525252;
-        color: white;
+        background-color: #e4ae00;
+        color: #484848;
         border: none;
+        font-weight: 500;
         box-shadow: 0px 5px 13px -5px black;
     }
     #multiple_permit_type_click:hover{
         border-radius: 4px;
-        background-color: #525252;
-        color: white;
+        background-color: #e4ae00;
+        color: #484848;
         border: none;
+        font-weight: 500;
         box-shadow: 0px 5px 13px -5px black;
     }
     #active_artist_click{
         width: 45%;
         border-radius: 4px;
-        background-color: #a9a9a9;
-        color: white;
+        background-color: #f7b100;
+        color: #484848;
         border: none;
+        font-weight: 500;
     }
     #blocked_artist_click{
         width: 45%;
         border-radius: 4px;
-        background-color: #a9a9a9;
-        color: white;
+        background-color: #f7b100;
+        color: #484848;
         border: none;
+        font-weight: 500;
     }
     #single_permit_type_click{
         border-radius: 4px;
-        background-color: #a9a9a9;
-        color: white;
+        background-color: #f7b100;
+        color:#484848;
         width: 45%;
         border: none;
+        font-weight: 500;
     }
     #multiple_permit_type_click{
         border-radius: 4px;
         width: 54%;
-        background-color: #a9a9a9;
-        color: white;
+        font-weight: 500;
+        background-color: #f7b100;
+        color: #484848;
         border: none;
     }
     #search_button_css {
@@ -87,7 +97,7 @@
     #name_search_button{
         border-radius: 4px;
         padding: 5px;
-        background-color: crimson;
+        background-color: #b45454;
         border: navajowhite;
         width: 37px;
         margin-right: -9px;
@@ -114,7 +124,7 @@
     margin-top: -22%;
 }
 #collapse_button:hover{
-    background-color:#909090;
+    background-color:#bd3535;
     border: none;
     color: white;
     border-bottom: 2px solid black;
@@ -125,10 +135,10 @@
     transition-duration: .3s;
 }
     #collapse_button{
-        background-color: #bdbdbd;
+        background-color: #bb4444;
         border: none;
         color: white;
-        border-bottom: 2px solid #888888;
+        border-bottom: 2px solid white;
         border-radius: 4px;
         padding: 4px;
 
@@ -152,9 +162,9 @@
             <input type="text" value='blocked' id="blocked_artist_input" hidden>
         </th>
         <th colspan="3">
-            <div class="btn btn-secondary btn-sm" id="single_permit_type_click" >{{__('Artist with Single Permit')}}</div>
+            <div class="btn btn-secondary btn-sm" id="single_permit_type_click" >{{__('Single Permit')}}</div>
             <input type="text" value="active" id="single_permit_type_input" hidden>
-            <div class="btn btn-secondary btn-sm"  id="multiple_permit_type_click"> {{__('Artists with Multiple Permits')}}</div>
+            <div class="btn btn-secondary btn-sm"  id="multiple_permit_type_click"> {{__('Multiple Permits')}}</div>
             <input type="text" value='blocked' id="multiple_permit_type_input" hidden>
        </th>
         <th><button id="ArtistTableresetButton" class="btn btn-sm btn-secondary">Reset</button></th>
@@ -164,13 +174,13 @@
 
     <tr>
         <th colspan="3">
-            <div class="container">
+            <div class="container" style="font-family: Arial">
                 <div class="row">
                     <nav role="navigation" class="navbar navbar-default mainmenu">
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header">
                             <button id="collapse_button"  type="button" data-target= data-toggle="collapse">
-                                <span class="fa fa-filter" style="margin-top: 2px">Filter</span>
+                                <span><i class="fas fa-filter"></i> Filter</span>
                             </button>
                         </div>
                         <!-- Collection of nav links and other content for toggling -->
@@ -213,7 +223,7 @@
             </select></th>
         <th>
 
-            <select type="text" id="search_by_profession" style="width: 90%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
+            <select type="text" id="search_by_profession" style="width: 99px" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
                 <option value="">{{__('Profession')}}</option>
                 @foreach($profession as $key => $nationality)
                     <option value="{{$nationality->profession_id}}">{{Auth()->user()->LanguageId==1? $nationality->name_en:$nationality->name_ar}}</option>
@@ -221,14 +231,14 @@
             </select>
         </th>
         <th>
-         <select type="text" id="search_by_visa" style="width: 90%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
+         <select type="text" id="search_by_visa" style="width:97px" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
                 <option value="">{{__('Visa Type')}}</option>
                 @foreach($visas as $key => $visa)
                     <option value="{{$visa->id}}">{{Auth()->user()->LanguageId==1? $visa->visa_type_en:$visa->visa_type_ar}}</option>
                 @endforeach
             </select>
             </th>
-        <th><select type="text" id="search_by_area" style="width: 90%" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
+        <th><select type="text" id="search_by_area" style="width:68px" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
                 <option value="">{{__('Area')}}</option>
                 @foreach($areas as $key => $area)
                     <option value="{{$area->id}}">{{Auth()->user()->LanguageId==1? $area->area_en:$area->area_ar}}</option>
@@ -252,58 +262,114 @@
 </table>
 
 @foreach($artistPermit as $key =>$artists)
+    <?php
+    $artistWithThisId=\App\ArtistPermit::where('artist_permit_id',$artists->artist_permit_id)->first();
+    ?>
 
 <div class="modal fade" id="artist_modal_{{$artists->artist_id}}" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #0c5460;">
-                <h5 class="modal-title" id="exampleModalLabel" style="margin-left:36%;color: white">
+        <div class="modal-content" style="font-family: Arial">
+            <div class="modal-header" style="background-color: #f7b100;">
+                <h5 class="modal-title hover_title__{{$artists->artist_id}}" id="exampleModalLabel" style="margin-left:36%;color: white">
                     {{
-                      Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en .' Report' : $artists->firstname_ar . ' ' . $artists->lastname_ar.' Report'                 }}
+                      Auth()->user()->LanguageId == 1 ? $artists->firstname_en . " " . $artists->lastname_en ."'s Report" : $artists->firstname_ar . " " . $artists->lastname_ar."s' Report"                 }}
                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-<table class="table table-hover" style="font-size: 11px" id="printTable_{{$artists->artist_id}}">
+                  <div class="container" id="tableToPrint_{{$artists->artist_id}}">
+                 <table class="table table-bordered" id="artistTableHide_{{$artists->artist_id}}" style="font-family:arial;display: none;font-size: 11px">
+
+                     <tr>
+                         <td colspan="6" ><img style=" width: 150px;float: left;height: 50px;"  src="{{ asset('img/print_govt_logo.png') }}" alt=""></td>
+                         <td colspan="5" ><img style="  width: 150px;float: right;height: 50px;" src="{{ asset('img/print_tda_logo.png') }}" alt=""></td>
+                     </tr>
+
+                    <tr><th colspan="11" style="background-color: rgba(162,19,0,0.87);color:white">
+                            {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en."'s Details"  : $artists->firstname_ar. " ".$artistWithThisId->lastname_ar."'s Details'"}}
+                        </th>
+                    </tr>
+                    <tr style="font-size: 10px">
+                        <th>CODE</th>
+                        <th>NAME</th>
+                        <th>PROFESSION</th>
+                        <th>NATIONALITY</th>
+                        <th>STATUS</th>
+                        <th>COMPANY</th>
+                        <th>E-MAIL</th>
+                        <th>VISA NO</th>
+                        <th>PASSPORT NO</th>
+                        <th>PASSPORT EXPIRE</th>
+                        <th>AREA</th>
+
+                    </tr>
+                    <tr>
+
+                        <td>{{$artistWithThisId->artist->person_code}}</td>
+                        <td>
+                     {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en : $artists->firstname_ar}}
+                        </td>
+                        <td>{{Auth()->user()->LanguageId == 1 ? $artistWithThisId->profession->name_en:$artistWithThisId->artistPermit->profession->name_ar}}</td>
+                        <td>{{Auth()->user()->LanguageId == 1 ? $artistWithThisId->country->nationality_en:$artistWithThisId->artistPermit->country->nationality_ar}}</td>
+                        <td>{{$artistWithThisId->artist->artist_status}}</td>
+                        <td>{{$artistWithThisId->permit->company->name_en}}</td>
+                        <td>{{$artistWithThisId->email}}</td>
+                        <td>{{$artistWithThisId->visa_number}}</td>
+                        <td>{{$artistWithThisId->passport_number}}</td>
+                        <td>{{$artistWithThisId->passport_expire_date->diffForHumans()}}</td>
+                        <td>{{$artistWithThisId->area->area_en}}</td>
+
+
+                    </tr>
+                </table>
+
+
+<table class="table table-hover" style="font-size: 11px;margin-top:3%;font-family:Arial" id="printTable_{{$artists->artist_id}}">
     <thead>
-    <tr style="font-size: 12px">
-        <th style="width: 14%">{{ __('NAME') }}</th>
-        <th style="width: 14%">{{ __('PERMIT NUMBER') }}</th>
-        <th>{{ __('REFERENCE NUMBER') }}</th>
-        <th>{{ __('ISSUED') }}</th>
-        <th>{{ __('EXPIRY') }}</th>
-        <th style="width: 14%">{{ __('STATUS') }}</th>
-        <th>{{ __('COMPANY') }}</th>
+    <tr><th colspan="8"  style="background-color: #bf4b4b;color: white;text-align: center">
+            {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en."'s Permit Details" : $artists->firstname_ar." "."'s Permit Details"}}
+        </th></tr>
+    <tr style="">
+        <th style="width: 14% ;font-weight: bold;font-size: 10px">{{ __('NAME') }}</th>
+        <th style="width: 14%; font-weight: bold;font-size: 10px">{{ __('PERMIT No.') }}</th>
+        <th style=" font-weight: bold;font-size: 10px">{{ __('REFERENCE No.') }}</th>
+        <th style=" font-weight: bold;font-size: 10px">{{ __('ISSUED') }}</th>
+        <th style=" font-weight: bold;font-size: 10px">{{ __('EXPIRY') }}</th>
+        <th style="width: 14%;font-weight: bold;font-size: 10px">{{ __('STATUS') }}</th>
+        <th style=" font-weight: bold;font-size: 10px">{{ __('COMPANY') }}</th>
         <th></th>
     </tr>
     </thead>
-   <?php
-     $artistWithThisId=\App\Artist::where('artist_id',$artists->artist_id)->has('artistPermit')->with('artistPermit')->with('permit')->has('permit')->first();
-    ?>
+
     <tbody>
 
-    @foreach($artistWithThisId->permit as $permit)
+    <?php
+        $permits=\App\Artist::where('artist_id',$artistWithThisId->artist_id)->with('permit')->first();
+
+    ?>
+    @foreach($permits->permit as $permit)
 
         <tr>
             <td>{{ Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en  : $artists->firstname_ar . ' ' . $artists->lastname_ar}}
             <td>{{$permit->permit_number}}</td>
             <td>{{$permit->reference_number}}</td>
-            <td>{{$permit->issued_date}}</td>
-            <td>{{$permit->expired_date}}</td>
+            <td>{{$permit->issued_date->diffForHumans()}}</td>
+            <td>{{$permit->expired_date->diffForHumans()}}</td>
             <td>{{$permit->permit_status}}</td>
             <td>{{$permit->company->name_en}}</td>
         </tr>
 
 
     @endforeach
-    <tr><td colspan="2" style="color: grey">Total Permits : <span style="color: black">{{$artistWithThisId->permit->count()}}</span></td></tr>
+    <tr><td colspan="2" style="color: grey">Total Permits : <span style="color: black">{{$permits->permit->count()}}</span></td></tr>
 
     </tbody>
 </table>
             </div>
-            <div class="modal-footer" id="modal_footer{{$artists->artist_id}}{{$artists->artist_id}}">
+            </div>
+            <div class="modal-footer" id="modal_footer{{$artists->artist_id}}">
                 <button class="btn btn-success" id="{{$artists->artist_id}}" onclick="printContent({{$artists->artist_id}})">Print</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
@@ -314,13 +380,19 @@
 @endforeach
 @section('script')
 <script>
-   /*     function printContent(id){
-            $('#modal_footer').css({'display':'none'})
-            newWin= window.open("");
-            newWin.document.write(print.outerHTML);
-            newWin.print();
-            newWin.close();
-        }*/
+        function printContent(id) {
+
+                var artistTableHide = '#artistTableHide_' + id;
+                var tableToPrint = 'tableToPrint_' + id;
+
+                $(artistTableHide).css({'display': 'block','text-align':'center'})
+                var divToPrint = document.getElementById(tableToPrint);
+                newWin = window.open("");
+                newWin.document.write(divToPrint.outerHTML);
+                newWin.print();
+                newWin.close();
+            }
+
         $(function myTable() {
             $('#collapse_button').click(function () {
                 $('#navbarCollapse').toggle(300)
@@ -615,7 +687,7 @@
                     data:{filter_search:filter_search, search_artist:search_artist}
                 },
                 columns: [
-                    {data: 'artist_id',name:'artist_id'},
+
                     {data: 'person_code',name:'person_code'},
                     {data: 'artist_status',name:'artist_status'},
                     {data: 'artist_name',name:'artist_name'},
@@ -623,6 +695,7 @@
                     {data: 'nationality',name:'nationality'},
                     {data: 'mobile_number',name:'mobile_number'},
                     {data: 'permit_status',name:'permit_status'},
+                    {data: 'artist_id',name:'artist_id'},
                 ]
             });
         }
@@ -715,7 +788,7 @@
                 },
 
                 columns: [
-                    {data: 'artist_id',name:'artist_id'},
+
                     {data: 'person_code',name:'person_code'},
                     {data: 'artist_status',name:'artist_status'},
                     {data: 'artist_name',name:'artist_name'},
@@ -723,6 +796,7 @@
                     {data: 'nationality',name:'nationality'},
                     {data: 'mobile_number',name:'mobile_number'},
                     {data: 'permit_status',name:'permit_status'},
+                    {data: 'artist_id',name:'artist_id'},
                 ],
             });
         }
@@ -911,7 +985,7 @@
                },
 
                columns: [
-                   {data: 'artist_id',name:'artist_id'},
+
                    {data: 'person_code',name:'person_code'},
                    {data: 'artist_status',name:'artist_status'},
                    {data: 'artist_name',name:'artist_name'},
@@ -919,6 +993,7 @@
                    {data: 'nationality',name:'nationality'},
                    {data: 'mobile_number',name:'mobile_number'},
                    {data: 'permit_status',name:'permit_status'},
+                   {data: 'artist_id',name:'artist_id'},
 
                ],
 
@@ -1284,7 +1359,7 @@
 
 
         $('#single_permit_type_click').click(function () {
-                var filter_search ={{\App\ConstantValue::PROFESSION}};
+                var filter_search ={{\App\ConstantValue::NUMBER_OF_PERMIT}};
                 var search_artist = $('#single_permit_type_input').val();
 
                 if(filter_search != '' &&  search_artist != '')
@@ -1300,7 +1375,7 @@
         })
 
         $('#multiple_permit_type_click').click(function () {
-            var filter_search ={{\App\ConstantValue::PROFESSION}};
+            var filter_search ={{\App\ConstantValue::NUMBER_OF_PERMIT}};
             var search_artist = $('#multiple_permit_type_input').val();
 
             if(filter_search != '' &&  search_artist != '')
@@ -1367,7 +1442,8 @@
                         messageBottom:datetime,
                         extend: 'pdf',
                         exportOptions: {
-                            columns: ':visible'
+                            columns: ':visible',
+
                         },
                         title: function () { return 'Event Report'; },
                         customize: function (doc) {
@@ -1782,13 +1858,14 @@
                 },
 
                 columns : [
-                    {data: 'artist_id'},
+
                     {data: 'person_code'},
                     {data: 'name'},
                     {data: 'profession'},
                     {data: 'nationality'},
                     {data: 'mobile_number'},
                     {data: 'active_permit'},
+                    {data: 'artist_id'},
                 ],
                 createdRow: function (row, data, index) {
                 }

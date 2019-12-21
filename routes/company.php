@@ -1,12 +1,14 @@
 <?php
 
 
-Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
+Route::group(['middleware' => ['auth', 'set_lang_front', 'verified']], function () {
     Route::get('/dashboard', function () {
         return redirect()->route('artist.index');
     })->name('company.dashboard');
 
-    Route::get('/{company}', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
+    Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
+    Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');
+    Route::get('/{company}/details-requirement', 'Company\CompanyController@requirementDatatable')->name('company.requirement.datatable');
 
     // Route::get('{company_name}/dashboard', function () {
     //     return redirect()->route('artist.index');
@@ -93,11 +95,9 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::post('event/deleteTruckUploadedfile', 'Company\EventController@deleteTruckUploadedfile')->name('event.deleteTruckUploadedfile');
     Route::post('event/deleteLiquorFile', 'Company\EventController@deleteLiquorFile')->name('event.deleteLiquorFile');
     Route::get('event/amend/{event}', 'Company\EventController@amend')->name('event.amend');
-    Route::get('event/eventpics/{event}', 'Company\EventController@eventpics')->name('event.eventpics');
     Route::post('event/amend', 'Company\EventController@applyAmend')->name('event.applyAmend');
     Route::post('event/uploadLogo', 'Company\EventController@uploadLogo')->name('event.uploadLogo');
     Route::get('event/get_uploaded_logo/{id}', 'Company\EventController@get_uploaded_logo')->name('event.get_uploaded_logo');
-    Route::post('event/uploadEventPics', 'Company\EventController@uploadEventPics')->name('event.uploadEventPics');
     Route::post('event/uploadTruck', 'Company\EventController@uploadTruck')->name('event.uploadTruck');
     Route::post('event/uploadLiquor', 'Company\EventController@uploadLiquor')->name('event.uploadLiquor');
     Route::get('event/add_artist/{id?}', 'Company\EventController@add_artist')->name('event.add_artist');
@@ -107,13 +107,13 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
     Route::get('event/get_liquor_files_uploaded/{id}', 'Company\EventController@get_liquor_files_uploaded')->name('event.get_liquor_files_uploaded');
     Route::post('event/add_update_truck', 'Company\EventController@add_update_truck')->name('event.add_update_truck');
     Route::post('event/add_liquor', 'Company\EventController@add_liquor')->name('event.add_liquor');
-
     Route::post('event/fetch_liquor_details', 'Company\EventController@fetch_liquor_details')->name('event.fetch_liquor_details');
     Route::get('event/fetch_liquor_details_by_event_id/{id}', 'Company\EventController@fetch_liquor_details_by_event_id')->name('event.fetch_liquor_details_by_event_id');
     
     Route::post('event/fetch_truck_details', 'Company\EventController@fetch_truck_details')->name('event.fetch_truck_details');
     Route::get('event/fetch_truck_details_by_event_id/{id}', 'Company\EventController@fetch_truck_details_by_event_id')->name('event.fetch_truck_details_by_event_id');
 
+    Route::get('event/deleteEventPic/{id}', 'Company\EventController@deleteEventPic')->name('event.deleteEventPic');
 
     Route::get('event/delete_truck_details/{id}', 'Company\EventController@delete_truck_details')->name('event.delete_truck_details');
 
@@ -121,7 +121,12 @@ Route::group(['middleware' => ['auth', 'set_lang_front']], function () {
 
     Route::get('event/fetch_this_truck_details/{id}', 'Company\EventController@fetch_this_truck_details')->name('event.fetch_this_truck_details');
     Route::post('event/fetch_this_truck_docs', 'Company\EventController@fetch_this_truck_docs')->name('event.fetch_this_truck_docs');
-    Route::post('event/fetch_this_liquor_docs', 'Company\EventController@fetch_this_liquor_docs')->name('event.fetch_this_liquor_docs');   
+    Route::post('event/fetch_this_liquor_docs', 'Company\EventController@fetch_this_liquor_docs')->name('event.fetch_this_liquor_docs'); 
+
+    Route::get('event/get_uploaded_eventImages/{id}', 'Company\EventController@get_uploaded_eventImages')->name('event.get_uploaded_eventImages');   
+    
+    Route::post('event/uploadEventPics', 'Company\EventController@uploadEventPics')->name('event.uploadEventPics');
+    // Route::get('event/eventpics/{id}', 'Company\EventController@eventpics')->name('event.eventpics');
 
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 });

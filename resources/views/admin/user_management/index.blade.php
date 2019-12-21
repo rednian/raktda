@@ -11,33 +11,101 @@
 	 <section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 			<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 				 <div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Employee Management') }}</h3>
+						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('User Management') }}</h3>
 				 </div>
 			</div>
 			<div class="kt-portlet__body kt-padding-t-0">
-				<ul id="main-tab" class="nav nav-tabs  nav-tabs-line nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
+
+				<ul class="nav nav-tabs  nav-tabs-line nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
 		            <li class="nav-item">
-		               <a class="nav-link active" data-toggle="tab" href="#employee" role="tab">{{ __('Employees') }}</a>
+		               <a class="nav-link active" data-toggle="tab" href="#employee_management" role="tab">{{ __('Employee') }}</a>
 		            </li>
 		            <li class="nav-item">
-		               <a class="nav-link" data-toggle="tab" href="#leave" role="tab">{{ __('Time Off') }}</a>
-		            </li>
-		            <li class="nav-item">
-		               <a class="nav-link" data-toggle="tab" href="#holiday" role="tab">{{ __('Holiday') }}</a>
+		               <a class="nav-link" data-toggle="tab" href="#government_management" role="tab">{{ __('Government Entities') }}</a>
 		            </li>
 		        </ul>
 		        <div class="tab-content">
-            		<div class="tab-pane active" id="employee" role="tabpanel">
-            			<section class="row">
+					<div class="tab-pane active" id="employee_management" role="tabpanel">
+						<ul id="main-tab" class="nav nav-tabs  nav-tabs-line nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
+				            <li class="nav-item">
+				               <a class="nav-link active" data-toggle="tab" href="#employee" role="tab">{{ __('Employees') }}</a>
+				            </li>
+				            <li class="nav-item">
+				               <a class="nav-link" data-toggle="tab" href="#leave" role="tab">{{ __('Time Off') }}</a>
+				            </li>
+				            <li class="nav-item">
+				               <a class="nav-link" data-toggle="tab" href="#holiday" role="tab">{{ __('Holiday') }}</a>
+				            </li>
+				        </ul>
+				        <div class="tab-content">
+		            		<div class="tab-pane active" id="employee" role="tabpanel">
+		            			<section class="row">
+					                <div class="col-12">
+										<a href="{{ URL::signedRoute('user_management.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('ADD EMPLOYEE') }}</a>
+					                </div>
+					             </section>
+						         <table class="table table-borderless table-striped table-hover border" id="tblUser">
+									 <thead>
+									 <tr>
+											<th>{{ __('EMPLOYEE') }}</th>
+											<th>{{ __('ROLE') }}</th>
+											<th>{{ __('DATE ADDED') }}</th>
+											<th>{{ __('STATUS') }}</th>
+											<th>{{ __('ACTIONS') }}</th>
+									 </tr>
+									 </thead>
+								</table>
+						    </div>
+		            		<div class="tab-pane" id="leave" role="tabpanel">
+								<section class="row">
+									<div class="col-sm-4">
+					                    <div class="form-group">
+					                        <select required name="user_id" id="kt_select2_1" class="form-control" style="width:100%">
+					                        	<option value=""></option>
+					                        	@foreach(App\User::areEmployees()->orderBy('NameEn')->get() as $emp)
+												<option data-url="{{ URL::signedRoute('user_management.leave.get', ['user' => $emp->user_id]) }}" value="{{ $emp->user_id }}">{{ Auth::user()->LanguageId == 1 ? $emp->NameEn : $emp->NameAr }}</option>
+					                        	@endforeach
+					                        </select>
+					                    </div>
+					                </div>
+					                <div class="col-sm-2">
+					                    <button type="button" id="btnShowAllLeaves" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u">{{ __('All') }}</button>
+					                </div>
+					                 <div class="col-sm-6">
+					                    <a href="{{ URL::signedRoute('user_management.leave.add', ['user' => null]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW TIME OFF') }}</a>
+					                 </div>
+					            </section>
+					            <section class="row">
+					                <div class="col-12">
+					                    <div id="leave_calendar"></div>
+					                </div>
+					            </section>
+		            		</div>
+		            		<div class="tab-pane" id="holiday" role="tabpanel">
+								<section class="row">
+					                 <div class="col-12">
+					                    <a href="{{ URL::signedRoute('user_management.holiday.add') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Add Holiday') }}</a>
+					                 </div>
+					             </section>
+					             <section class="row">
+					                  <div class="col-12">
+					                    <div id="holiday_calendar"></div>
+					                  </div>
+					             </section>
+		            		</div>
+		            	</div>
+					</div>
+					<div class="tab-pane active" id="government_management" role="tabpanel">
+						<section class="row">
 			                <div class="col-12">
-								<a href="{{ URL::signedRoute('user_management.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('ADD EMPLOYEE') }}</a>
+								<a href="{{ URL::signedRoute('user_management.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('ADD USER') }}</a>
 			                </div>
 			             </section>
 				         <table class="table table-borderless table-striped table-hover border" id="tblUser">
 							 <thead>
 							 <tr>
-									<th>{{ __('EMPLOYEE') }}</th>
-									<th>{{ __('DEPARTMENT') }}</th>
+									<th>{{ __('NAME') }}</th>
+									<th></th>
 									<th>{{ __('ROLE') }}</th>
 									<th>{{ __('DATE ADDED') }}</th>
 									<th>{{ __('STATUS') }}</th>
@@ -45,45 +113,8 @@
 							 </tr>
 							 </thead>
 						</table>
-				    </div>
-            		<div class="tab-pane" id="leave" role="tabpanel">
-						<section class="row">
-							<div class="col-sm-4">
-			                    <div class="form-group">
-			                        <select required name="user_id" id="kt_select2_1" class="form-control" style="width:100%">
-			                        	<option value=""></option>
-			                        	@foreach(App\User::areEmployees()->orderBy('NameEn')->get() as $emp)
-										<option data-url="{{ URL::signedRoute('user_management.leave.get', ['user' => $emp->user_id]) }}" value="{{ $emp->user_id }}">{{ Auth::user()->LanguageId == 1 ? $emp->NameEn : $emp->NameAr }}</option>
-			                        	@endforeach
-			                        </select>
-			                    </div>
-			                </div>
-			                <div class="col-sm-2">
-			                    <button type="button" id="btnShowAllLeaves" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u">{{ __('All') }}</button>
-			                </div>
-			                 <div class="col-sm-6">
-			                    <a href="{{ URL::signedRoute('user_management.leave.add', ['user' => null]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW TIME OFF') }}</a>
-			                 </div>
-			            </section>
-			            <section class="row">
-			                <div class="col-12">
-			                    <div id="leave_calendar"></div>
-			                </div>
-			            </section>
-            		</div>
-            		<div class="tab-pane" id="holiday" role="tabpanel">
-						<section class="row">
-			                 <div class="col-12">
-			                    <a href="{{ URL::signedRoute('user_management.holiday.add') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Add Holiday') }}</a>
-			                 </div>
-			             </section>
-			             <section class="row">
-			                  <div class="col-12">
-			                    <div id="holiday_calendar"></div>
-			                  </div>
-			             </section>
-            		</div>
-            	</div>
+					</div>
+		        </div>
 				
 			</div>
 	 </section>
@@ -148,6 +179,7 @@
 	                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
 	                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
 	                      }
+	                      
 	                  }
 	              }
 	          });
@@ -244,7 +276,6 @@
 	           	// ],
 	           	columns: [
 	           		{ data: 'name', name: 'name' },
-	           		{ data: 'department', name: 'department' },
 	           		{ data: 'role', name: 'role' },
 	           		{ data: 'CreatedAt', name: 'CreatedAt' },
 	           		{ data: 'status', name: 'status' },

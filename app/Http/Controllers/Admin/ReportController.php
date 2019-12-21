@@ -27,7 +27,7 @@ class ReportController extends Controller
         $areas=Areas::has('artistPermit')->get();
         $visa=VisaType::has('artistPermit')->get();
         $gender=Gender::has('artistPermit')->get();
-        $artistPermit=ArtistPermit::with('artist')->get();
+        $artistPermit=ArtistPermit::with('artist')->with('country')->with('profession')->get();
 
         return view('admin.report.index', [
             'page_title'=> 'Reports Dashboard',
@@ -93,10 +93,8 @@ class ReportController extends Controller
             ->addColumn('artist_id', function(Artist $user) {
                 $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
 
-                return "<button type='button' class='btn btn-primary'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
-  View</button>
-
-";
+                return "<button type='button' class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                 View</button>";
             })
 
             ->rawColumns(['person_code','artist_status','artist_name','artist_id'])
@@ -113,9 +111,7 @@ class ReportController extends Controller
                   $artist = Artist::with('artistPermit')->has('permit')->where('artist_status','LIKE', "%{$request->search_artist}%")->get();
 
                   return Datatables::of($artist)
-                      ->addColumn('artist_id', function(Artist $user) {
-                          return '1';
-                      })
+
                       ->addColumn('person_code', function(Artist $user) {
                           return $user->person_code;
                       })
@@ -147,6 +143,14 @@ class ReportController extends Controller
                               return $artist->permit->permit_status;
                           }
                       })
+
+                      ->addColumn('artist_id', function(Artist $user) {
+                          $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
+
+                          return "<button type='button' class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                            View</button>";
+                      })
+
                       ->rawColumns(['artist_id','person_code','artist_status','artist_name'])
                       ->make(true);
               }
@@ -203,9 +207,7 @@ class ReportController extends Controller
                   })->get();
 
                   return Datatables::of($artist)
-                      ->addColumn('artist_id', function(Artist $user) {
-                          return '';
-                      })
+
                       ->addColumn('person_code', function(Artist $user) {
                           return $user->person_code;
                       })
@@ -237,7 +239,13 @@ class ReportController extends Controller
                               return $artist->permit->permit_status;
                           }
                       })
-                      ->rawColumns(['person_code','artist_status','artist_name'])
+                      ->addColumn('artist_id', function(Artist $user) {
+                          $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
+
+                          return "<button type='button' class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                 View</button>";
+                      })
+                      ->rawColumns(['person_code','artist_status','artist_name','artist_id'])
                       ->make(true);
               }
 
@@ -246,9 +254,7 @@ class ReportController extends Controller
                   $artist = ArtistPermit::with('artist')->with('profession')->where('profession_id',$request->search_artist)->get();
 
                   return Datatables::of($artist)
-                      ->addColumn('artist_id', function(ArtistPermit $user) {
-                          return '';
-                      })
+
                       ->addColumn('person_code', function(ArtistPermit $user) {
                           return $user->artist->person_code;
                       })
@@ -271,16 +277,20 @@ class ReportController extends Controller
                       ->addColumn('permit_status', function(ArtistPermit $user) {
                               return $user->permit->permit_status;
                       })
-                      ->rawColumns(['person_code','artist_status','artist_name'])
+                      ->addColumn('artist_id', function(ArtistPermit $user) {
+                          $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
+
+                          return "<button type='button' class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                 View</button>";
+                      })
+                      ->rawColumns(['person_code','artist_status','artist_name','artist_id'])
                       ->make(true);
               }
               if ($request->filter_search==ConstantValue::NATIONALITY){
                   $artist = ArtistPermit::where('country_id',$request->search_artist)->with('artist')->with('country')->get();
 
                   return Datatables::of($artist)
-                      ->addColumn('artist_id', function(ArtistPermit $user) {
-                          return '';
-                      })
+
                       ->addColumn('person_code', function(ArtistPermit $user) {
                           return $user->artist->person_code;
                       })
@@ -302,12 +312,18 @@ class ReportController extends Controller
                       ->addColumn('permit_status', function(ArtistPermit $user) {
                           return $user->permit->permit_status;
                       })
-                      ->rawColumns(['person_code','artist_status','artist_name'])
+                      ->addColumn('artist_id', function(ArtistPermit $user) {
+                          $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
+
+                          return "<button type='button' class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                 View</button>";
+                      })
+                      ->rawColumns(['person_code','artist_status','artist_name','artist_id'])
                       ->make(true);
               }
-
                $single = [];
                $multiple=[];
+
               if ($request->filter_search==ConstantValue::NUMBER_OF_PERMIT){
                   if($request->search_artist=='single') {
                       $artists = Artist::has('permit')->with('permit')->with('artistPermit')->get();
@@ -462,7 +478,13 @@ class ReportController extends Controller
                       ->addColumn('permit_status', function(ArtistPermit $user) {
                           return $user->permit->permit_status;
                       })
-                      ->rawColumns(['person_code','artist_status','artist_name'])
+                      ->addColumn('artist_id', function(ArtistPermit $user) {
+                          $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
+                          return "<button type='button' class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                             View</button>";
+                      })
+
+                      ->rawColumns(['person_code','artist_status','artist_name','artist_id'])
                       ->make(true);
               }
 
@@ -471,9 +493,7 @@ class ReportController extends Controller
                   if ($request->search_artist == 17) {
                   $artist = ArtistPermit::with('artist')->with('country')->where('birthdate', '>', date('Y-m-d', strtotime('-18 years')))->get();
                       return Datatables::of($artist)
-                          ->addColumn('artist_id', function (ArtistPermit $user) {
-                              return '';
-                          })
+
                           ->addColumn('person_code', function (ArtistPermit $user) {
                               return $user->artist->person_code;
                           })
@@ -495,15 +515,19 @@ class ReportController extends Controller
                           ->addColumn('permit_status', function (ArtistPermit $user) {
                               return $user->permit->permit_status;
                           })
-                          ->rawColumns(['person_code', 'artist_status', 'artist_name'])
+                          ->addColumn('artist_id', function(ArtistPermit $user) {
+                              $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
+                              return "<button type='button' class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                             View</button>";
+                          })
+
+                          ->rawColumns(['person_code', 'artist_status', 'artist_name','artist_id'])
                           ->make(true);
                   }
                   if($request->search_artist==18){
                       $artist = ArtistPermit::with('artist')->with('country')->where('birthdate', '<=', date('Y-m-d', strtotime('-18 years')))->get();
                       return Datatables::of($artist)
-                          ->addColumn('artist_id', function (ArtistPermit $user) {
-                              return '';
-                          })
+
                           ->addColumn('person_code', function (ArtistPermit $user) {
                               return $user->artist->person_code;
                           })
@@ -525,7 +549,14 @@ class ReportController extends Controller
                           ->addColumn('permit_status', function (ArtistPermit $user) {
                               return $user->permit->permit_status;
                           })
-                          ->rawColumns(['person_code', 'artist_status', 'artist_name'])
+
+                          ->addColumn('artist_id', function(ArtistPermit $user) {
+                              $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
+                              return "<button type='button' class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                             View</button>";
+                          })
+
+                          ->rawColumns(['person_code', 'artist_status', 'artist_name','artist_id'])
                           ->make(true);
                   }
 
@@ -536,9 +567,7 @@ class ReportController extends Controller
                   $artist = ArtistPermit::where('area_id',$request->search_artist)->with('artist')->with('country')->get();
 
                   return Datatables::of($artist)
-                      ->addColumn('artist_id', function(ArtistPermit $user) {
-                          return '';
-                      })
+
                       ->addColumn('person_code', function(ArtistPermit $user) {
                           return $user->artist->person_code;
                       })
@@ -560,7 +589,13 @@ class ReportController extends Controller
                       ->addColumn('permit_status', function(ArtistPermit $user) {
                           return $user->permit->permit_status;
                       })
-                      ->rawColumns(['person_code','artist_status','artist_name'])
+                      ->addColumn('artist_id', function(ArtistPermit $user) {
+                          $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
+                          return "<button type='button' class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                             View</button>";
+                      })
+
+                      ->rawColumns(['person_code','artist_status','artist_name','artist_id'])
                       ->make(true);
               }
 

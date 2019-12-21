@@ -57,7 +57,7 @@
                         <div class="kt-wizard-v3__form">
                             <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-3">
                                         <label for="permit_from"
                                             class="col-form-label col-form-label-sm">{{__('From Date')}} <span
                                                 class="text-danger">*</span></label>
@@ -78,7 +78,7 @@
                                     </div>
                                     <input type="hidden" id="artiststartafter"
                                         value="{{getSettings()->artist_start_after}}">
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-3">
                                         <label for="permit_to"
                                             class="col-form-label col-form-label-sm">{{__('To Date')}}<span
                                                 class="text-danger">*</span></label>
@@ -99,7 +99,7 @@
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="work_loc"
-                                            class="col-form-label col-form-label-sm">{{__('Location')}}<span
+                                            class="col-form-label col-form-label-sm">{{__('Work Location')}}<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm"
                                             placeholder="Work Location" name="work_loc" id="work_loc"
@@ -107,20 +107,28 @@
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
 
+                                    <div class="form-group col-lg-3">
+                                        <label for="work_loc" class="col-form-label col-form-label-sm">
+                                            {{__('Work Location - Ar')}} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm"
+                                            placeholder="{{__('Work Location - Ar')}}" name="work_loc_ar"
+                                            id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
+                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
+                                    </div>
                                     {{-- {{dd($artist_details[0])}} --}}
                                     <div class="form-group col-lg-2">
-                                        <label for="" class="col-form-label col-form-label-sm">Connected Event
+                                        <label for="" class="col-form-label col-form-label-sm">{{__('Connected Event')}}
                                             ?</label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(1)" value="1"
-                                                    {{$artist_details[0]->event ? 'checked' : ''}}> Yes
+                                                    {{$artist_details[0]->event ? 'checked' : ''}}> {{__('Yes')}}
                                                 <span></span>
                                             </label>
                                             <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(0)"
                                                     {{$artist_details[0]->event ? '' : 'checked'}} value="0">
-                                                No
+                                                {{__('No')}}
                                                 <span></span>
                                             </label>
                                         </div>
@@ -128,10 +136,10 @@
                                     <input type="hidden" value="{{$artist_details[0]->event}}" id="eventdetails" />
                                     <div class="form-group col-lg-3" id="events_div">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
-                                            Events <span class="text-danger">*</span></label>
+                                            {{__('Events')}} <span class="text-danger">*</span></label>
                                         <select type="text" class="form-control form-control-sm" name="event_id"
-                                            id="event_id" onchange="checkFilled()">
-                                            <option value=" ">Select</option>
+                                            id="event_id" onchange="check_Add_Event()">
+                                            <option value=" ">{{__('Select')}}</option>
                                             @if(count($events) > 0)
                                             @foreach($events as $event)
                                             <option value="{{$event->event_id}}"
@@ -139,6 +147,7 @@
                                                 {{getLangId() == 1 ? $event->name_en : $event->name_ar}}</option>
                                             @endforeach
                                             @endif
+                                            <option value="add_new" class="kt-font-bold">Add New</option>
                                         </select>
                                     </div>
                                 </div>
@@ -199,7 +208,7 @@
                     @endforeach
                     @else
                     <tr>
-                        <td colspan="7" class="text-center">Please Add Artists ...!</td>
+                        <td colspan="7" class="text-center">{{__('Please Add Artists')}} ...!</td>
                     </tr>
                     @endif
                 </tbody>
@@ -235,7 +244,7 @@
         <div class="modal-dialog " role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Remove Artist</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{__('Remove Artist')}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -259,7 +268,7 @@
 
     @include('permits.artist.modals.leave_page')
 
-    @include('permits.artist.modals.show_warning_modal');
+    @include('permits.artist.modals.show_warning_modal', ['day_count' =>getSettings()->artist_start_after ]);
 
     @endsection
 
@@ -327,12 +336,13 @@
             var from = $('#permit_from').val();
             var to = $('#permit_to').val();
             var loc = $('#work_loc').val();
+            var loc_ar = $('#work_loc_ar').val();
             var isEvent = $("input:radio[name='isEvent']:checked").val();
             var eventId = $('#event_id').val();
             var artistcount = $('#total_artist_details').val();
-            $('#add_artist').attr('disabled', loc == '' ? true : false) ;
-            $('#add_artist_sm').attr('disabled', loc == '' ? true : false) ;
-            if(from && to && loc) {
+            $('#add_artist').attr('disabled', loc == '' || loc_ar == '' ? true : false) ;
+            $('#add_artist_sm').attr('disabled', loc == '' || loc_ar == '' ? true : false) ;
+            if(from && to && loc && loc_ar) {
                 if(isEvent == 0 || (isEvent == 1 && eventId != ' '))
                 {
                     $('#add_artist').attr('disabled', false);
@@ -468,9 +478,21 @@
             });
         }
 
+        function check_Add_Event(){
+            var event_id = $('#event_id').val();
+            if(event_id == 'add_new')
+            {
+                window.location.href = "{{ route('event.create')}}";
+            }else{
+                checkFilled();
+            }
+        }
+
 
         $('#submit_btn').click((e) => {
             $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            $('#submit_btn').css('pointer-events', 'none');
+            $('#draft_btn').css('pointer-events', 'none');
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
@@ -482,6 +504,7 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
+                        loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val(),
                         term: term
                     },
@@ -493,6 +516,8 @@
 
         $('#draft_btn').click((e) => {
             $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            $('#submit_btn').css('pointer-events', 'none');
+            $('#draft_btn').css('pointer-events', 'none');
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
                     url:"{{route('artist.add_draft')}}",
@@ -502,6 +527,7 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
+                        loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val()
                     },
                     success: function(result){

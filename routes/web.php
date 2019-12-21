@@ -45,6 +45,9 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::post('/company_registration/{company}', 'Admin\CompanyController@submit')->name('admin.company.submit');
     Route::get('/company_registration/{company}/application', 'Admin\CompanyController@application')->name('admin.company.application');
     Route::get('/company_registration/{company}/application-datatable', 'Admin\CompanyController@applicationDatatable')->name('admin.company.application.datatable');
+    Route::get('/company_registration/{company}/event-datatable', 'Admin\CompanyController@eventDatatable')->name('admin.company.event.datatable');
+    Route::get('/company_registration/{company}/artist-datatable', 'Admin\CompanyController@artistDatatable')->name('admin.company.artist.datatable');
+    Route::get('/company_registration/{company}/comment-datatable', 'Admin\CompanyController@commentDatatable')->name('admin.company.comment.datatable');
 
   //---------------------------------------------------------------------------------------------------------------
   // Event Permit
@@ -66,7 +69,10 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/event/{event}/comment-datatable','Admin\EventController@commentDatatable')->name('admin.event.comment');
     Route::get('/event/{event}/liquor-datatable','Admin\EventController@liquorRequirementDatatable')->name('admin.event.liquor.requirement');
     Route::get('/event/{event}/truck-datatable','Admin\EventController@truckDatatable')->name('admin.event.truck.datatable');
+    Route::get('/event/{event}/image-datatable','Admin\EventController@imageDatatable')->name('admin.event.images.datatable');
     Route::get('/event/{event}/truck/{eventtruck}/datatable','Admin\EventController@truckRequirementDatatable')->name('admin.event.truck.requirement');
+
+    Route::get('/event/time/test', 'Admin\EventController@addAppointment')->name('admin.event.time');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist
@@ -186,7 +192,16 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
 
 
+    //---------------------------------------------------------------------------------------------------------------
+    // Inspection Appointments
+    //---------------------------------------------------------------------------------------------------------------
 
+    Route::get('/inspection', 'Admin\InspectionController@index')->name('inspection.index');
+    Route::get('/inspection/get_schedules/', 'Admin\InspectionController@getEvents')->name('inspection.get_schedules');
+    Route::get('/inspection/get_schedules_datatable', 'Admin\InspectionController@getEventsDatatable')->name('inspection.get_schedules_datatable');
+    Route::get('/inspection/{inspection}', 'Admin\InspectionController@show')->name('inspection.show');
+    Route::get('/inspection/{inspection}/inspect', 'Admin\InspectionController@inspect')->name('inspection.inspect');
+    Route::post('/inspection/{inspection}/inspect/submit', 'Admin\InspectionController@submitInspection')->name('inspection.inspect.submit');
 
 
     //---------------------------------------------------------------------------------------------------------------

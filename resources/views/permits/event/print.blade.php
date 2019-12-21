@@ -156,18 +156,19 @@
         </thead>
         <tbody>
             <tr>
-                <td>{{$event_details->owner->company->company_trade_license}}</td>
+                <td>{{$event_details->owner->company->trade_license}}</td>
                 <td class="subhead">رقم الرخصة <br />License Number</td>
-                <td>الحمرا مارينا <br />{{$event_details->owner->company->company_name}}</td>
-                <td class="subhead">اسم المؤسسة <br />Name of Establishment</td>
+                <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}</td>
+                <td class="subhead">اسم المؤسسة<br />Name of Establishment</td>
             </tr>
             <tr>
-                <td colspan="3">{{date('d-M-Y',strtotime($event_details->owner->company->license_expiry_date))}}</td>
+                <td colspan="3">{{date('d-M-Y',strtotime($event_details->owner->company->trade_license_expired_date))}}
+                </td>
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3"> {{$event_details->owner->NameAr}}<br />
-                    {{$event_details->owner->NameEn}}</td>
+                <td colspan="3"> {{$event_details->owner_name}}<br />
+                    {{$event_details->owner_name_ar}}</td>
                 <td class="subhead">صاحب الترخيص <br />License owner</td>
             </tr>
         </tbody>
@@ -184,7 +185,7 @@
             <tr>
                 <td colspan="2">{{$event_details->name_en}}</td>
                 <td>{{$event_details->name_ar}}</td>
-                <td class="subhead">اسم الحدث <br />Event Name</td>
+                <td class="subhead">اسم الفعالية<br />Event Name</td>
             </tr>
             <tr>
                 <td colspan="2">{{$event_details->type['name_en']}}</td>
@@ -193,10 +194,10 @@
             </tr>
             <tr>
                 <td colspan="3">{{$event_details->permit_number}}</td>
-                <td class="subhead">تصريح لا <br />Permit No</td>
+                <td class="subhead">رقم التصريح<br />Permit No</td>
             </tr>
             <tr>
-                <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'Days' : 'Day'}} </td>
+                <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'days' : 'day'}} </td>
                 <td>انقضاء</td>
                 <td class="subhead">فترة التصريح <br />Permit Period</td>
             </tr>
@@ -211,15 +212,26 @@
             <tr>
                 <td colspan="2">{{$event_details->venue_en}}</td>
                 <td>{{$event_details->venue_ar}}</td>
-                <td class="subhead">موقعك <br />Location</td>
+                <td class="subhead">الموقع <br />Location</td>
             </tr>
+            @if($liquor)
+            @if($liquor->provided == 1)
+            <tr>
+                <td colspan="3">{{$liquor->liquor_permit_no}}</td>
+                <td class="subhead"> <br />Liquor Permit No</td>
+            </tr>
+            @endif
+            @endif
         </tbody>
     </table>
+
+
+
     @if($event_details->note_en)
     <table id="note_data" border="1">
         <thead>
             <tr>
-                <th>Note</th>
+                <th>Notes</th>
                 <th>ملحوظة</th>
             </tr>
         </thead>

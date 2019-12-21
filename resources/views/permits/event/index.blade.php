@@ -47,16 +47,16 @@
             <div class="tab-pane show fade active" id="applied" role="tabpanel">
                 <table class="table table-striped table-hover table-borderless border" id="applied-events-table">
                     <thead>
-                        <tr>
-                            <th style="width:10%;">{{__('Ref NO.')}}</th>
-                            <th>{{__('Type')}}</th>
+                        <tr class="kt-font-transform-u">
+                            <th class="kt-font-transform-u">{{__('Reference NO.')}}</th>
+                            <th>{{__('Event Type')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To')}} </th>
                             <th>{{__('Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
                             <th class="text-center">{{__('Status')}}</th>
                             <th>{{__('Action')}}</th>
-                            <th>{{__('Details')}}</th>
+                            <th></th>
                         </tr>
                     </thead>
                 </table>
@@ -65,16 +65,16 @@
             <div class="tab-pane fade" id="valid" role="tabpanel">
                 <table class="table table-striped table-borderless border" id="existing-events-table">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th>{{__('Permit No')}}</th>
-                            <th>{{__('Type')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To')}} </th>
                             <th>{{__('Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
                             <th>{{__('Action')}}</th>
-                            <th>{{__('Details')}}</th>
                             <th>{{__('Download')}}</th>
+                            <th></th>
+
                         </tr>
                     </thead>
 
@@ -92,15 +92,15 @@
             <div class="tab-pane fade" id="draft" role="tabpanel">
                 <table class="table table-striped table-borderless border" id="drafts-events-table">
                     <thead>
-                        <tr>
-                            <th>{{__('Type')}}</th>
+                        <tr class="kt-font-transform-u">
+                            <th>{{__('Event Type')}}</th>
                             <th>{{__('From')}} </th>
                             <th>{{__('To')}} </th>
                             <th>{{__('Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
                             <th>{{__('Applied Date')}}</th>
                             <th>{{__('Action')}}</th>
-                            <th>{{__('Details')}}</th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -132,7 +132,7 @@
             <div class="modal-body">
                 <form action="{{route('event.cancel')}}" id="cancel_permit_form" method="POST" novalidate>
                     @csrf
-                    <label>Are you sure to Cancel this Permit of Ref No. <span class="text--maroon"
+                    <label>{{__('Are you sure to Cancel this Permit of')}} <span class="text--maroon"
                             id="cancel_permit_number"></span>
                         ?</label>
                     <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..." style="resize:none;"
@@ -156,7 +156,7 @@
         <div class="modal-content">
             <div class="modal-header">
 
-                <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Cancelled Reason')}}</h5>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
@@ -177,7 +177,7 @@
     <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Rejected Reason</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Rejected Reason')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -245,7 +245,7 @@
                 // { data: 'venue_en', name: 'venue_en' },          
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action' },
-                { data: 'details', name: 'details' },
+                { data: 'details', name: 'details' ,  className: "text-center"},
             ],
             columnDefs: [
                 {
@@ -290,8 +290,7 @@
             },
             columns: [
                 { data: 'permit_number', name: 'permit_number' },
-                { data: 'type.name_en', name: 'type.name_en' },
-                
+                // { data: 'type.name_en', name: 'type.name_en' },
                 { data: 'issued_date', name: 'issue_date' },
                 { data: 'expired_date', name: 'expire_date' },
                 { data: 'name_en', name: 'name_en' },
@@ -299,17 +298,16 @@
                
                 // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
-                { data: 'details', name: 'details' },
-                { data: 'download', name: 'download' },
+                { data: 'download', name: 'download',  className: "text-center" },
+                { data: 'details', name: 'details' ,  className: "text-center"},
             ],
             columnDefs: [
-                {
-                    targets:1,
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span >${full.type.name_ar}</span>`;
-					}
-                },
+                // {
+                //     targets:1,
+                //     render: function(data, type, full, meta) {
+				// 		return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span >${full.type.name_ar}</span>`;
+				// 	}
+                // }
             ],
             language: {
                 emptyTable: "No Existing Event Permits"
@@ -334,7 +332,7 @@
                 { data: 'venue_en', name: 'venue_en' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' },
-                { data: 'details', name: 'details' },
+                { data: 'details', name: 'details' ,  className: "text-center"},
             ],
             columnDefs: [
                 {
@@ -364,7 +362,7 @@
 
     });
 
-    const cancel_permit = (id, refno) => {
+    const cancel_permit = (id, refno, permit_no) => {
         var url = "{{route('company.event.get_status', ':id')}}";
         url = url.replace(':id', id);
         $.ajax({
@@ -375,7 +373,12 @@
                     if(result == 'new' || result == 'active'){
                         $('#cancel_permit').modal('show');
                         $('#cancel_permit_id').val(id);
-                        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+                        if(permit_no)
+                        {
+                            $('#cancel_permit_number').html('<strong>'+permit_no+'</strong>');
+                        }else{
+                            $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
+                        }
                     }else {
                             alert('Permit is already in processing');
                     }
@@ -386,6 +389,7 @@
 
     }
 
+    
     $('#cancel_permit_form').validate({
         rules: {
             cancel_reason: 'required'
@@ -408,16 +412,7 @@
 
             }
         });
-    }
-
-    $('#cancel_permit_form').validate({
-        rules: {
-            cancel_reason: 'required'
-        },
-        message: {
-            cancel_reason: 'Please fill the field'
-        }
-    });
+    }   
 
 
     const rejected_permit = id => {

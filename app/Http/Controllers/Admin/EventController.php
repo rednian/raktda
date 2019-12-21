@@ -9,8 +9,11 @@
 	use MaddHatter\LaravelFullcalendar\Calendar;
 	use App\Event;
 	use App\EventType;
+	use App\Holiday;
 	use App\EventTruck;
 	use App\EmployeeWorkSchedule;
+	use App\Approval;
+	use Illuminate\Database\Eloquent\Builder;
 	use Carbon\Carbon;
 	use App\Requirement;
 	use App\EventRequirement;
@@ -19,10 +22,12 @@
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
 	use Yajra\DataTables\Facades\DataTables;
+	use App\ScheduleTypeDayTime;
+	use App\EmployeeCustomSchedule;
 
 	class EventController extends Controller
 	{
-		public function index()
+		public function index(Request $request)
 		{
 			$event = Event::whereDate('expired_date', '<', Carbon::now())->where('status', 'active')->update(['status'=>'expired']);
 
@@ -30,8 +35,9 @@
 					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
 				})->count();
 
+			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
 
-			return view('admin.event.index', [
+			return view($view, [
 				'page_title' => 'Event Permit',
 				'types'=> EventType::all(),
 				'new_request'=>Event::where('status', 'new')->count(),
@@ -40,6 +46,7 @@
 				'cancelled_permit'=> Event::lastMonth(['cancelled'])->count(),
 				'rejected_permit'=> Event::lastMonth(['rejected'])->count(),
 				'approved_permit'=> Event::lastMonth(['approved-unpaid'])->count(),
+				'active'=> Event::whereStatus('active')->count(),
 
 			]);
 		}
@@ -57,7 +64,7 @@
 				}
 				$result = ['success', ucfirst($event->name_en).' has been cancelled Successfully ', 'Success'];
 			} catch (Exception $e) {
-				$result = ['error', $e->getMessage(), 'Error'];
+				$result = ['danger', $e->getMessage(), 'Error'];
 			}
 			  return response()->json(['message' => $result]);
 			}
@@ -69,7 +76,7 @@
 				$event->update(['is_display_web'=>$request->is_display_web]);
 				$result = ['success', ucfirst($event->name_en).' has will display in the website calendar ', 'Success'];
 			} catch (Exception $e) {
-				$result = ['error', $e->getMessage(), 'Error'];
+				$result = ['danger', $e->getMessage(), 'Error'];
 			}
 			 return response()->json(['message' => $result]);
 		}
@@ -82,7 +89,7 @@
 				$event->update(['is_display_all'=>$request->is_display_all]);
 				$result = ['success', ucfirst($event->name_en).' has will display in the client\'s calendar ', 'Success'];
 			} catch (Exception $e) {
-				$result = ['error', $e->getMessage(), 'Error'];
+				$result = ['danger', $e->getMessage(), 'Error'];
 			}
 			 return response()->json(['message' => $result]);
 		}
@@ -108,15 +115,16 @@
 
 		public function submit(Request $request, Event $event)
 		{
+			// dd($request->all());	
 			try {
 				DB::beginTransaction();
-
-				// dd($request->all());
 
 				$request['checked_at'] = Carbon::now();
 				$request['action']  =  $request->status;
 				$request['user_type']  =  'admin';
 				$request['user_id']  =  $request->user()->user_id;
+				$request['role_id'] = $request->user()->roles()->first()->role_id;
+
 				$event->check()->where('event_id', $event->event_id)->delete();
 				$event->check()->create($request->all());
 
@@ -131,7 +139,14 @@
 						$result = ['success', ucfirst($event->name_en).'Rejected Successfully', 'Success'];
 						break;
 					case 'approved-unpaid':
-						$event->update(['status'=>$request->status, 'note_en'=>$request->note_en, 'note_ar'=>$request->note_ar]);
+					$request['approved_by']  =  $request->user()->user_id;
+					$request['approved_date']  =  Carbon::now();
+						$event->update([
+							'status'=>$request->status, 
+							'note_en'=>$request->note_en, 
+							'note_ar'=>$request->note_ar,
+							 'approved_by'=>$request->user()->user_id
+							]);
 						$request['type'] = $type = 1;
 						$event->comment()->create($request->all());
 						$result = ['success', ucfirst($event->name_en).' Approved Successfully', 'Success'];
@@ -162,18 +177,84 @@
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
 					case 'need approval':
-						// dd($request->all());
+
+					dd($request->all());
 
 						// $user = User::availableInspector($event->issued_date)->get();
 						// $emp = EmployeeWorkSchedule::getSchedule()->get();
 						// dd($emp);
+						// dd($user);
 
-							// dd($user);
+						//ADD EVENT COMMENT
+
+
 
 						$event->update(['status'=>'need approval']);
 						$request['type'] = 1;
 						$comment = $event->comment()->create($request->all());
+
+						//COMMENT INSPECTOR AND MANAGER 
+						if($request->has('approver')){
+							if(!$request->has('inspection')){
+								foreach ($request->approver as $role_id) {
+									$event->comment()->create([
+										'action' => 'pending',
+										'role_id' => $role_id,
+										'user_type' => 'admin',
+										'type' => 0
+									]);
+								}
+							}else{
+								if(in_array(5, $request->approver)){
+									$event->comment()->create([
+										'action' => 'pending',
+										'role_id' => 5,
+										'user_type' => 'admin',
+										'type' => 0
+									]);
+								}
+							}
+						}
+
+						if($request->has('inspection')){
+							//SAVE APPOINTMENT
+							$this->addAppointment([
+								'id' => $event->event_id,
+								'type' => 'event'
+							]);
+						}
+
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
+						break;
+
+					case 'approved' :
+
+						$comment = $event->comment()->where([
+		                    'action' => 'pending', 
+		                    'role_id' => $request->user()->roles()->first()->role_id
+		                ])->first();
+
+                  		$comment->update([
+                  			'action' => $request->action,
+                  			'comment' => $request->comment,
+                  			'user_id' => $request->user()->user_id
+                  		]);
+                  		$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
+						break;
+
+					case 'disapproved' :
+
+						$comment = $event->comment()->where([
+		                    'action' => 'pending', 
+		                    'role_id' => $request->user()->roles()->first()->role_id
+		                ])->first();
+
+                  		$comment->update([
+                  			'action' => $request->action,
+                  			'comment' => $request->comment,
+                  			'user_id' => $request->user()->user_id
+                  		]);
+                  		$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
 				}
 
@@ -181,7 +262,7 @@
 				DB::commit();
 
 			} catch (Exception $e) {
-				$result = ['error', $e->getMessage(), 'Error'];
+				$result = ['danger', $e->getMessage(), 'Error'];
 				DB::rollBack();
 			}
 
@@ -213,7 +294,7 @@
 			    'default_font_size' => 10
 			]);
 			return $pdf->stream('Event-Permit.pdf');
-		}
+		} 
 
 
 		public function application(Request $request, Event $event)
@@ -410,8 +491,16 @@
 
 		public function imageDatatable(Request $request, Event $event)
 		{
-			$images = $event->eventRequirement()->where('image')->get();
-			return DataTables::of($images)
+			return DataTables::of($even->otherUpload()->get())
+			->editColumn('path', function($image){
+				return '';
+			})
+			->editColumn('size', function($image){
+				return $image->size;
+			})
+			->editColumn('description', function($image){
+				return $image->size;
+			})
 			->make(true);
 		}
 
@@ -451,19 +540,31 @@
 				->when($request->status, function($q) use ($request){
 					$q->whereIn('status', $request->status);
 				})
+				->when($request->approval, function($q) use($request){
+					$q->whereHas('comment', function($q1) use($request){
+			          	$q1->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id);
+			        });
+				})
 				->whereNotIn('status', ['draft'])
-				// ->orderBy('created_at')
-				->latest();
+				->orderBy('updated_at');
 
 				$table =  DataTables::of($events)
 				->addColumn('establishment_name', function($event){
 					return $event->owner->type != 2 ? $event->owner->company->name_en : null;
 				})
-				->addColumn('owner', function($event) use ($user){
-					if ($user->LanguageId == 1) {
-						return ucwords($event->owner->NameEn);
-					}
-					return $event->owner->NameAr;
+				->addColumn('duration', function($event) use ($user){
+					
+                      $html = '<div class="kt-user-card-v2">';
+                      $html .= ' <div class="kt-user-card-v2__details">';
+                      // $html .= '  <span class="kt-user-card-v2__name">'.$event->issued_date.'-'.$event->expired_date.'</span>';
+                      $html .= '  <span class="kt-user-card-v2__email kt-link">'.Carbon::parse($event->issued_date)->diffInDays($event->expired_date).' Days</span>';
+                      $html .= ' </div>';
+                      $html .= '</div>';
+                      return $html;
+
+				})
+				->addColumn('owner',function(){
+
 				})
 				->addColumn('website', function($event){
 					$display = $event->is_display_web ? 'checked="checked"' : null;
@@ -515,7 +616,7 @@
 					return $html;
 
 					 })
-					->rawColumns(['status', 'action', 'show', 'website', 'created_at'])
+					->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration'])
 					 ->make(true);
 					$table = $table->getData(true);
 					$table['new_count'] = Event::where('status', 'new')->count();
@@ -524,4 +625,171 @@
 					return response()->json($table);
 			}
 		}
+
+		public function addAppointment($data = null){
+
+			// $timeSlots = $this->SplitTime($this->roundTime(Carbon::now()->format('Y-m-d H:i:s'), 30), '05:00 PM', 60);
+			$timeSlots = $this->SplitTime('09:00 AM', '05:00 PM', 60);
+			// $day = Carbon::now();
+			$day = Carbon::now()->addDays(1);
+			$this->checkTimeAvailability($day, $timeSlots, $data);
+
+		}
+
+		private function checkTimeAvailability($day, $timeSlots, $permit){
+
+			// $today = Carbon::now()->format('Y-m-d');
+			$today = Carbon::now()->addDays(1)->format('Y-m-d');
+
+			if ($day->format('Y-m-d') > $today){
+				$timeSlots = $this->SplitTime('09:00 AM', '05:00 PM', 60);
+			}
+
+			if(count($timeSlots) > 0){
+				
+				foreach ($timeSlots as $time_key => $time) {
+
+					$start = $day->format('Y-m-d') . ' ' . $time['start'];
+					$end = $day->format('Y-m-d') . ' ' . $time['end'];
+
+					//CHECK IF TIME IS IN HOLIDAY
+					if($this->isTimeNotAvailable($start, $end)){
+						//RESET LOOP TIME SLOT
+					    $this->resetTimeSlot($time_key, $timeSlots, $day, $permit);
+					    continue;
+					}
+
+					//GET INSPECTOR THAT IS AVAILABLE THE DATE
+					if($this->availableInspector($start, $end)->count() == 0){
+						//RESET LOOP TIME SLOT
+						$this->resetTimeSlot($time_key, $timeSlots, $day, $permit);
+					    continue;
+					}
+
+					//GET AVAILABLE INSPECTORS
+					$inspectors = $this->availableInspector($start, $end)
+					->withCount('appointments')
+					// ->withCount(['appointments' => function(Builder $query) use($day){
+					// 	$query->where('schedule_date_start', '>=', Carbon::parse($day->format('Y-m-d'))->startOfDay()->toDateTimeString())
+					// 	->where('schedule_date_end', '<=', Carbon::parse($day->format('Y-m-d'))->endOfDay()->toDateTimeString());
+					// }])
+					->orderBy('appointments_count', 'ASC')->get();
+
+					//CHECK PER INSPECTORS
+					foreach ($inspectors as $keyInspector => $inspector) {
+
+						//CHECK APPOINTMENT DATE IF INSPECTOR IS WORKING
+						if(!$this->isInspectorWorking($inspector, $start, $end)){
+
+							if ( $time_key == (count($timeSlots) - 1) && (count($inspectors)-1) == $keyInspector) {
+
+						    	$day = $day->addDays(1);//ADD 1 DAY
+		    					$this->checkTimeAvailability($day, $timeSlots, $permit);
+						    }
+						}
+
+						//COUNT APPOINTMENTS TODAY
+						$count = $this->countTodayAppointment($inspector, $day);
+
+						//CHECK IF INSPECTOR HAS LESS THAN 3 APPOINTMENTS TODAY
+						if($count < 3){
+							
+							//ADD APPOINTMENT TO INSPECTOR
+							$this->saveAppointment($inspector, [
+								'schedule_date_start' => $start,
+								'schedule_date_end' => $end,
+								'inspection_id' => $permit['id'],
+								'type' => $permit['type'],
+								'created_by' => Auth::user()->user_id,
+								'approval_status' => 'new'
+							]);
+
+							//END THE LOOP
+							break 2;
+						}else{
+							$this->resetTimeSlot($time_key, $timeSlots, $day, $permit);
+					    	continue;
+						}
+					}
+				}
+			}else{
+				//PROCEED TO NEXT DAY
+				$day = $day->addDays(1);//ADD 1 DAY
+		    	$this->checkTimeAvailability($day, $timeSlots, $permit);
+			}
+		}
+
+		private function roundTime($timestamp, $precision = 30) {
+		  	$timestamp = strtotime($timestamp);
+		  	$precision = 60 * $precision;
+		  	return date('h:i A', round($timestamp / $precision) * $precision);
+		}
+
+		private function saveAppointment($inspector, $data){
+			try {
+				$inspector->appointments()->create($data);
+			} catch (\Exception $e) {
+				
+			}
+		}
+
+		private function countTodayAppointment($inspector, $today){
+			return $inspector->appointments()->where('schedule_date_start', '>=', Carbon::parse($today->format('Y-m-d'))->startOfDay()->toDateTimeString())->where('schedule_date_end', '<=', Carbon::parse($today->format('Y-m-d'))->endOfDay()->toDateTimeString())->count();
+		}
+
+		private function resetTimeSlot($time_key, $timeSlots, $today, $permit){
+			if ( $time_key == (count($timeSlots) - 1) ) {
+		    	$today = $today->addDays(1);//ADD 1 DAY
+		    	$this->checkTimeAvailability($today, $timeSlots, $permit);
+		    }
+		}
+
+		private function isTimeNotAvailable($timeStart, $timeEnd){
+			return Holiday::where('holiday_start', '<', $timeEnd)->where('holiday_end', '>', $timeStart)->exists();
+		}
+
+		private function SplitTime($StartTime, $EndTime, $Duration="60"){
+		    $ReturnArray = array ();// Define output
+		    $StartTime   = strtotime ($StartTime); //Get Timestamp
+		    $EndTime     = strtotime ($EndTime); //Get Timestamp
+
+		    $AddMins  = $Duration * 60;
+		    $buffer = 30 * 60;
+
+		    while ($StartTime <= $EndTime) //Run loop
+		    {
+		    	$StartTime += $buffer;
+		    	$end = $StartTime + $AddMins;
+
+		    	if($end <= $EndTime ){
+		    		$ReturnArray[] = [
+			        	'start' => date ("H:i:s", $StartTime),
+			        	'end' => date("H:i:s", $end)
+			        ];
+		    	}
+		        $StartTime += $AddMins; //Endtime check
+		    }
+		    return $ReturnArray;
+		}
+
+		private function availableInspector($startTime, $endTime){
+			return User::whereDoesntHave('appointments', function(Builder $q) use($endTime, $startTime){
+				$q->where('schedule_date_start', '<', $endTime)->where('schedule_date_end', '>', $startTime);
+			})->whereDoesntHave('leave', function(Builder $q) use($endTime, $startTime){
+				$q->where('leave_start', '<', $endTime)->where('leave_end', '>', $startTime);
+			})->where('type', 4)->whereHas('roles', function(Builder $q){
+				$q->where('roles.role_id', 4);
+			});
+		}
+
+		private function isInspectorWorking($inspector, $startTime, $endTime){
+			return $inspector->workschedule->getSchedule->getSchedule()->whereNull('is_dayoff')->where('day', Carbon::parse($startTime)->format('l'))->where('time_start', '<=', Carbon::parse($startTime)->format('H:i:s'))->where('time_end', '>=', Carbon::parse($endTime)->format('H:i:s'))->exists();
+		}
+
+		// public function isTimeAvailable($type, $startTime, $endTime){
+		// 	if($type == 'system'){
+		// 		return ScheduleTypeDayTime::whereNull('is_dayoff')->where('day', Carbon::parse($startTime)->format('l'))->where('time_start', '<=', Carbon::parse($startTime)->format('H:i:s'))->where('time_end', '>=', Carbon::parse($endTime)->format('H:i:s'))->exists();
+		// 	}
+
+		// }
 	}

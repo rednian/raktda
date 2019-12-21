@@ -16,6 +16,11 @@ class Requirement extends Model implements Auditable
 
     protected $fillable = ['requirement_name', 'requirement_name_ar', 'dates_required', 'requirement_description', 'requirement_description_ar', 'term', 'requirement_type', 'status', 'created_by', 'updated_by', 'deleted_by', 'validity', 'type'];
 
+    public function company()
+    {
+        return $this->hasMany(CompanyRequirement::class, 'requirement_id');
+    }
+
     public function eventLiquorTruck()
     {
         return $this->hasMany(EventLiquorTruckRequirement::class, 'requirement_id');

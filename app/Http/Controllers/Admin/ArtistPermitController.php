@@ -38,7 +38,8 @@ class ArtistPermitController extends Controller
             'approved_permit'=> Permit::lastMonth(['active'])->count(),
             'rejected_permit'=> Permit::lastMonth(['rejected'])->count(),
             'cancelled_permit'=> Permit::lastMonth(['cancelled'])->count(),
-            'active_permit'=> Permit::lastMonth(['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count()
+            'active_permit'=> Permit::lastMonth(['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count(),
+            'active'=> Permit::where('permit_status', 'active')->count()
         ]);
     }
 
@@ -251,7 +252,7 @@ class ArtistPermitController extends Controller
 
       } catch (Exception $e) {
          DB::rollBack();
-         $result = ['error', $e->getMessage(), 'Error'];
+         $result = ['danger', $e->getMessage(), 'Error'];
       }
 
        return redirect()->route('admin.artist_permit.applicationdetails', $permit->permit_id)->with(['message'=>$result]);
@@ -548,6 +549,12 @@ class ArtistPermitController extends Controller
       ->editColumn('permit_start', function($permit){
         if(!$permit->issued_date) return null;
         return $permit->issued_date->format('d-M-Y');
+      })
+      ->addColumn('duration', function($permit){
+        $date = Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
+        $date = $date !=  0 ? $date : 1;
+        $day = $date > 1 ? ' Days': ' Day';
+        return $date.$day;
       })
       ->addColumn('company_name', function($permit) use ($request){
           return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : $permit->owner->company->name_ar;

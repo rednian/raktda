@@ -142,12 +142,8 @@
             </div>
         </div>
     </div>
-    <!-- end:: Page -->
-    <!--[html-partial:include:{"file":"partials\/_offcanvas-quick-actions.html"}]/-->
-    <!--[html-partial:include:{"file":"partials\/_layout-scrolltop.html"}]/-->
-    <!--[html-partial:include:{"file":"partials\/_layout-toolbar.html"}]/-->
-    <!--[html-partial:include:{"file":"partials\/_layout-demo-panel.html"}]/-->
-    <!--[html-partial:include:{"file":"partials\/_layout-chat.html"}]/-->
+    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
+
 
     <script>
 
@@ -164,8 +160,9 @@
     </script>
     <script src="{{ asset('/assets/vendors/general/perfect-scrollbar/dist/perfect-scrollbar.js') }}"
         type="text/javascript"></script>
-    <script src="{{ asset('/assets/vendors/general/sticky-js/dist/sticky.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/assets/vendors/general/wnumb/wNumb.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/assets/vendors/general/sticky-js/dist/sticky.min.js') }}" type="text/javascript">
+    </script>
+    {{-- <script src="{{ asset('/assets/vendors/general/wnumb/wNumb.js') }}" type="text/javascript"></script> --}}
     <!--end:: Global Mandatory Vendors -->
 
     <!--begin:: Global Optional Vendors -->
@@ -198,8 +195,10 @@
     <script src="{{ asset('/assets/vendors/custom/js/vendors/bootstrap-switch.init.js') }}" type="text/javascript">
     </script>
     <script src="{{ asset('/assets/vendors/general/select2/dist/js/select2.full.js') }}" type="text/javascript">
+
     </script>
-    <script src="{{ asset('/assets/vendors/general/ion-rangeslider/js/ion.rangeSlider.js') }}" type="text/javascript">
+    {{-- <script src="{{ asset('/assets/vendors/general/ion-rangeslider/js/ion.rangeSlider.js') }}"
+    type="text/javascript"> --}}
     </script>
     <script src="{{ asset('/assets/vendors/general/typeahead.js/dist/typeahead.bundle.js') }}" type="text/javascript">
     </script>
@@ -269,6 +268,12 @@
     <script src="{{ asset('/assets/vendors/custom/fancybox-master/dist/jquery.fancybox.js') }}" type="text/javascript">
     </script>
     <script src="{{ asset('/assets/vendors/custom/bootbox/bootbox.all.min.js') }}" type="text/javascript"></script>
+    
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/sortable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/explorer-fas/theme.js') }}"></script>
     {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script> --}}
     <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
     <!--end::Page Vendors -->

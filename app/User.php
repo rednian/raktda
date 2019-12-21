@@ -19,7 +19,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     protected $table = 'smartrak_smartgov.user';
     protected $primaryKey = 'user_id';
     protected $fillable = [
-        'NameAr', 'NameEn', 'username', 'password', 'type', 'IsActive', 'CreatedBy', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number'
+        'NameAr', 'NameEn', 'username', 'password', 'type', 'IsActive', 'CreatedBy', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number', 'email_verified_at'
     ];
     // protected $auditInclude = [
     //     'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'
@@ -46,6 +46,8 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         })
         ->whereType(4);
     }
+    
+
     public function approver()
     {
         return $this->hasMany(Approvers::class, 'user_id');
@@ -67,8 +69,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id');
     }
 
-
-public function workschedule(){
+    public function workschedule(){
         return $this->hasOne(EmployeeWorkSchedule::class, 'user_id');
     }
 
@@ -78,6 +79,16 @@ public function workschedule(){
 
     public function scopeAreEmployees($query){
         return $query->whereType(4);
+    }
+
+    public function scopeAreInspectors($query){
+        return $query->whereType(4)->whereHas('roles', function($q){
+            $q->where('roles.role_id', 4);
+        });
+    }
+
+    public function appointments(){
+        return $this->belongsToMany(Approval::class, 'approvers', 'user_id', 'approval_id');
     }
 }
 

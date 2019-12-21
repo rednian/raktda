@@ -47,9 +47,9 @@
                         <div class="kt-wizard-v3__form">
                             <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
-                                    <div class="form-group col-lg-2">
-                                        <label for="permit_from" class="col-form-label col-form-label-sm ">From
-                                            Date <span class="text-danger">*</span></label>
+                                    <div class="form-group col-lg-3">
+                                        <label for="permit_from" class="col-form-label col-form-label-sm ">{{__('From
+                                            Date')}} <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <div class="kt-input-icon kt-input-icon--right">
                                                 <input type="text" class="form-control form-control-sm mk-disabled"
@@ -64,9 +64,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-2">
-                                        <label for="permit_to" class="col-form-label col-form-label-sm">To
-                                            Date <span class="text-danger">*</span></label>
+                                    <div class="form-group col-lg-3">
+                                        <label for="permit_to" class="col-form-label col-form-label-sm">{{__('To
+                                            Date')}} <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <div class="kt-input-icon kt-input-icon--right">
                                                 <input type="text" class="form-control form-control-sm mk-disabled"
@@ -84,22 +84,29 @@
 
                                     <div class="form-group col-lg-3">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            Location <span class="text-danger">*</span></label>
+                                            {{__('Work Location ')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm mk-disabled"
                                             placeholder="Location" name="work_loc" id="work_loc"
-                                            value="{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}" />
+                                            value="{{$event->venue_en}}" />
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="work_loc" class="col-form-label col-form-label-sm">
+                                            {{__('Work Location - Ar')}} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm mk-disabled"
+                                            placeholder="{{__('Work Location - Ar')}}" name="work_loc_ar"
+                                            id="work_loc_ar" dir="rtl" value="{{$event->venue_ar}}" />
                                     </div>
                                     <div class="form-group col-lg-2">
-                                        <label for="" class="col-form-label col-form-label-sm">Connected Event
+                                        <label for="" class="col-form-label col-form-label-sm">{{__('Connected Event')}}
                                             ?</label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" checked value="1">
-                                                Yes
+                                                {{__('Yes')}}
                                                 <span></span>
                                             </label>
                                             <label class="kt-radio ">
-                                                <input type="radio" name="isEvent" value="0" disabled> No
+                                                <input type="radio" name="isEvent" value="0" disabled> {{__('No')}}
                                                 <span></span>
                                             </label>
                                         </div>
@@ -107,12 +114,13 @@
 
                                     <div class="form-group col-lg-3">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
-                                            Events <span class="text-danger">*</span></label>
+                                            {{__('Events')}} <span class="text-danger">*</span></label>
                                         <select type="text" class="form-control form-control-sm mk-disabled"
                                             name="event_id" id="event_id">
                                             <option value=" ">Select</option>
                                             <option value="{{$event->event_id}}" selected>
-                                                {{getLangId() == 1 ? $event->name_en : $event->name_ar}}</option>
+                                                {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -309,6 +317,7 @@
                         from: $('#permit_from').val() ,
                         to: $('#permit_to').val(),
                         loc: $('#work_loc').val(),
+                        loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val(),
                         term: term
                     },

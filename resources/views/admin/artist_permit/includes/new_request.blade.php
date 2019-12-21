@@ -66,9 +66,9 @@
 				  data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
 			</span>
 		</th>
-		<th>{{ __('REQUEST TYPE') }}</th>
 		<th>{{ __('APPLIED DATE') }}</th>
-		<th>{{ __('PERMIT STATUS') }}</th>
+		<th>{{ __('PERMIT DURATION') }}</th>
+		<th>{{ __('REQUEST TYPE') }}</th>
 	 </tr>
 	 </thead>
 </table>

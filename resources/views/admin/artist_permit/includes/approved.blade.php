@@ -59,6 +59,7 @@
 			<th>{{ __('REFERENCE NO.') }}</th>
 			<th>{{ __('PERMIT NO.') }}</th>
 			<th>{{ __('ESTABLISHMENT NAME') }}</th>
+			<th>{{ __('PERMIT DURATION') }}</th>
 			<th>{{ __('APPLIED DATE') }}</th>
 			<th>{{ __('NO. OF ARTIST') }}
 				 <span data-content="The number of artist that already checked"

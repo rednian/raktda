@@ -4,73 +4,76 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{__('Liquor Details')}} <i
-                        class="fa fa-glass-cheers"></i></h5>
+                        class="fa fa-glass-cheers"></i>
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
+                <div class="col-md-12 form-group form-group-xs d-flex">
+                    <label class="col-form-label"> {{__('Provided by venue')}}
+                        ?</label>
+                    {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
+                                <input type="checkbox" name="isTruck" id="isTruck">
+                                <span></span>
+                            </label> --}}
+                    <div class="kt-radio-inline" style="margin: auto 5%;">
+                        <label class="kt-radio ">
+                            <input type="radio" name="isLiquorVenue" disabled value="1">
+                            {{__('Yes')}}
+                            <span></span>
+                        </label>
+                        <label class="kt-radio">
+                            <input type="radio" name="isLiquorVenue" disabled value="0" checked>
+                            {{__('No')}}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
                 <form class="col-md-12" id="liquor_details_form" novalidate>
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}} <span
+                                    class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_en"
                                 id="l_company_name_en" disabled placeholder="company name">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}} <span
+                                    class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
-                                id="l_company_name_ar" disabled placeholder="company name - Ar">
+                                id="l_company_name_ar" dir="rtl" disabled placeholder="company name - Ar">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Trade License No')}}</label>
-                            <input type="text" class="form-control form-control-sm" name="trade_license_no"
-                                id="trade_license_no" disabled placeholder="Trade license no">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Purchase Receipt No')}} <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-sm" name="purchase_receipt"
+                                id="purchase_receipt" disabled placeholder="{{__('Purchase Receipt No')}}">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('TL Issue')}} </label>
-                            <input type="text" class="form-control form-control-sm date-picker" name="tl_issue_date"
-                                data-date-end-date="+0d" id="tl_issue_date" disabled placeholder="DD-MM-YYYY">
-                        </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('TL Expiry')}} </label>
-                            <input type="text" class="form-control form-control-sm date-picker" name="tl_expiry_date"
-                                data-date-start-date="+0d" id="tl_expiry_date" disabled placeholder="DD-MM-YYYY">
-                        </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('License No')}}</label>
-                            <input type="text" class="form-control form-control-sm" name="license_no" id="license_no"
-                                disabled placeholder="license no">
-                        </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('License Issue')}} </label>
-                            <input type="text" class="form-control form-control-sm date-picker" name="l_issue_date"
-                                data-date-end-date="+0d" id="l_issue_date" disabled placeholder="DD-MM-YYYY">
-                        </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('License Expiry')}} </label>
-                            <input type="text" class="form-control form-control-sm date-picker" name="l_expiry_date"
-                                data-date-start-date="+0d" id="l_expiry_date" disabled placeholder="DD-MM-YYYY">
-                        </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Emirates')}} </label>
-                            <select name="l_emirates[]" id="l_emirates" multiple disabled
-                                class="form-control form-control-sm">
-                                <option value=" ">{{__('Select')}}</option>
-                                @foreach($emirates as $em)
-                                <option value="{{$em->id}}">{{$em->name_en}}</option>
-                                @endforeach
+                            <label for="" class="col-form-label kt-font-bold">{{__('Liquor Service')}} <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-control form-control-sm" name="liquor_service" id="liquor_service"
+                                disabled onchange="changeLiquorService()">
+                                <option value="">{{__('Select')}}</option>
+                                <option value="limited">{{__('Limited')}}</option>
+                                <option value="unlimited">{{__('Unlimited')}}</option>
                             </select>
                         </div>
-
-
+                        <div class="col-md-4 form-group form-group-xs" id="limited_types">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor')}} <span
+                                    class="text-danger">*</span></label>
+                            <textarea type="text" class="form-control form-control-sm" name="liquor_types"
+                                id="liquor_types" disabled placeholder="{{__('Types of Liquor')}}"></textarea>
+                        </div>
                         <input type="hidden" id="event_liquor_id">
                     </div>
                 </form>
-                <div class="row col-md-12 justify-content-between kt-margin-b-15 kt-margin-t-15">
-                    <h5 class="text-dark  text-underline kt-font-bold">{{__('Liquor Required Documents')}}
-                    </h5>
-                </div>
                 <form id="liquor_upload_form" class="col-md-12">
+                    <div class="row col-md-12 justify-content-between kt-margin-b-15 kt-margin-t-15">
+                        <h5 class="text-dark  text-underline kt-font-bold">{{__('Liquor Required Documents')}}
+                        </h5>
+                    </div>
                     <input type="hidden" id="liquor_document_count" value="{{count($liquor_req)}}">
                     @php
                     $i = 1;
@@ -115,6 +118,14 @@
                     $i++;
                     @endphp
                     @endforeach
+                </form>
+                <form id="liquor_provided_form" disabled>
+                    <div class="col-md-4 form-group form-group-xs">
+                        <label for="" class="col-form-label kt-font-bold">{{__('Liquor Permit No')}} <span
+                                class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" name="liquor_permit_no"
+                            id="liquor_permit_no" disabled placeholder="{{__('Liquor Permit No')}}">
+                    </div>
                 </form>
             </div>
         </div>

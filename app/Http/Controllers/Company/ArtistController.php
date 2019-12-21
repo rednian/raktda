@@ -39,6 +39,7 @@ class ArtistController extends Controller
     public function index()
     {
         Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
+        ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
         Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
         return view('permits.artist.index');
     }
@@ -107,7 +108,7 @@ class ArtistController extends Controller
                     if ($permit->permit_status == 'approved-unpaid') {
                         return '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
                     } else if ($permit->permit_status == 'new') { //&& $permit->lock == ''
-                        return '<a href="' . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><span onClick="cancel_permit(' . $permit->permit_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
+                        return '<span onClick="cancel_permit(' . $permit->permit_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     } else if ($permit->permit_status == 'modification request') {
                         $pay_btn = '';
                         if ($approved_artist) {
@@ -136,7 +137,16 @@ class ArtistController extends Controller
                     break;
             }
         })->addColumn('permit_status', function ($permit) {
-            return  $permit->permit_status;
+            $status = $permit->permit_status;
+            $ret_status = '';
+            if($status == 'amended' || $status == 'new' || $status == 'need approval' || $status == 'processing') {
+                $ret_status = 'Pending'; 
+            }else if($status == 'approved-unpaid') {
+                $ret_status = 'Approved';
+            }else {
+                $ret_status = $permit->permit_status;
+            }
+            return  $ret_status;
         })->addColumn('details', function ($permit) use ($status) {
             $from = '';
             switch ($status) {
@@ -147,9 +157,9 @@ class ArtistController extends Controller
                     $from = 'valid';
                     break;
             }
-            return '<a href="' . route('company.get_permit_details', $permit->permit_id) .  '?tab=' . $from . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
+            return '<a href="' . route('company.get_permit_details', $permit->permit_id) .  '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fa-2x"></i></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . route('company.download_permit', $permit) . '" target="_blank" title="Download"><span class="fa fa-file-download fa-2x"></i></a>';
+            return '<a href="' . route('company.download_permit', $permit) . '" target="_blank" title="Download"><i class="fa fa-file-download fa-2x"></i></a>';
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
 
@@ -248,6 +258,7 @@ class ArtistController extends Controller
         session([$user_id . '_apn_from_date' => $request->from]);
         session([$user_id . '_apn_to_date' => $request->to]);
         session([$user_id . '_apn_location' => $request->loc]);
+        session([$user_id . '_apn_location_ar' => $request->loc_ar]);
         session([$user_id . '_apn_is_event' => $request->isEvent]);
         if ($request->isEvent == 1) {
             session([$user_id . '_apn_event_id' => $request->eventId]);
@@ -259,7 +270,7 @@ class ArtistController extends Controller
     function makeSessionForgetPermitDetails()
     {
         $user_id = Auth::user()->user_id;
-        session()->forget([$user_id . '_apn_from_date', $user_id . '_apn_to_date', $user_id . '_apn_location', $user_id . '_apn_is_event', $user_id . '_apn_event_id']);
+        session()->forget([$user_id . '_apn_from_date', $user_id . '_apn_to_date', $user_id . '_apn_location', $user_id . '_apn_location_ar',$user_id . '_apn_is_event', $user_id . '_apn_event_id']);
     }
 
 
@@ -323,7 +334,7 @@ class ArtistController extends Controller
         $add_permit_url = url('company/artist/new/' . $id);
 
         if ($add_permit_url != $last_page && $last_page != $add_artist_url && !$view_artist_url_check && !$edit_artist_url_check) {
-            ArtistTempData::where('permit_id', 1)->where('created_by', Auth::user()->user_id)->delete();
+            ArtistTempData::where('permit_id', 1)->where('status', '!=', 5)->where('created_by', Auth::user()->user_id)->delete();
             $this->makeSessionForgetPermitDetails();
             if ($existTemp) {
                 $id = (int) $existTemp->permit_id + 1;
@@ -345,7 +356,9 @@ class ArtistController extends Controller
 
         $events = \App\Event::where('created_by', Auth::user()->user_id);
 
-        $data_bundle['events'] = $events->whereDate('issued_date', '>=', Carbon::now())->orderBy('name_en', 'asc')->get();
+        $data_bundle['events'] = $events->orderBy('name_en', 'asc')->whereNotIn('status', ['cancelled', 'rejected', 'expired', 'draft'])->get();
+
+        //->whereDate('issued_date', '>=', Carbon::now())
 
         $data_bundle['artist_details'] = ArtistTempData::where([
             ['permit_id', $id],
@@ -451,6 +464,7 @@ class ArtistController extends Controller
             'issue_date' => $permitDetails['from'] ? Carbon::parse($permitDetails['from'])->toDateString() : '',
             'expiry_date' => $permitDetails['to'] ? Carbon::parse($permitDetails['to'])->toDateString() : '',
             'work_location' => $permitDetails['location'],
+            'work_location_ar' => $permitDetails['location_ar'],
             'company_id' => Auth::user()->type == 1 ? Auth::user()->EmpClientId : '',
             'created_by' => Auth::user()->user_id,
             'created_at' => Carbon::now()->toDateTimeString()
@@ -633,6 +647,7 @@ class ArtistController extends Controller
 
     public function store(Request $request)
     {
+        
         $temp_permit_id = $request->temp_permit_id;
         $user_id = Auth::user()->user_id;
         $date_time = date('d_m_Y_H_i_s');
@@ -646,19 +661,23 @@ class ArtistController extends Controller
         $artists_total = count($artist_temp_data);
 
         $work_location = $request->loc;
+        $work_location_ar = $request->loc_ar;
         $issue_date = Carbon::parse($request->from)->toDateString();
         $expiry_date = Carbon::parse($request->to)->toDateString();
 
-
+       
         $new_refer_no = $this->generateArtistReferenceNumber();
         $permit = '';
-        $from = ($artists_total > 0) ? $artist_temp_data[0]->process : '';
-
+        $from = '';
+        if(isset($request->fromWhere)){
+            $from = $request->fromWhere ;
+        }
 
         if ($artists_total > 0) {
 
             $permit = Permit::create([
                 'work_location' => $work_location,
+                'work_location_ar' => $work_location_ar,
                 'issued_date' => $issue_date,
                 'expired_date' => $expiry_date,
                 'reference_number' => $new_refer_no,
@@ -673,6 +692,8 @@ class ArtistController extends Controller
             if (isset($request->event_id)) {
                 $permit->event_id = $request->event_id;
             }
+
+
 
             $temp_ids = [];
 
@@ -719,6 +740,7 @@ class ArtistController extends Controller
                         'birthdate' => $data->birthdate,
                     );
 
+
                     if ($data->artist_permit_id) {
                         if ($from == 'renew') {
                             $artistPermit =   ArtistPermit::create($updateArray);
@@ -733,25 +755,30 @@ class ArtistController extends Controller
                         }
                         $artistID = $data->artist_id;
                         $artist_temp_document = ArtistTempDocument::where('artist_permit_id', $data->artist_permit_id)->get();
+
                     } else {
-                        $artistPermit =   ArtistPermit::create($updateArray);
+                        
                         if ($data->is_old_artist == 1) {
-                            $a = Artist::create([
+                            $artistTable = Artist::create([
                                 'artist_status' => 'active',
                                 'person_code' => $this->generatePersonCode(),
                                 'created_at' => $currentDateTime,
                                 'created_by' => $user_id
                             ]);
-                            $artist_id = $a->artist_id;
+                           
+                            $artist_id = $artistTable->artist_id;
+                           
                         } else {
                             $artist_id = $data->artist_id;
                         }
-                        $artistPermit->permit_id = $permit->permit_id;
-                        $artistPermit->artist_id = $artist_id;
-                        $artistPermit->created_at = $currentDateTime;
-                        $artistPermit->created_by =  $user_id;
+                        $updateArray['permit_id'] = $permit->permit_id;
+                        $updateArray['artist_id'] = $artist_id;
+                        $updateArray['created_at'] =  $currentDateTime;
+                        $updateArray['created_by'] =  $user_id;
+                        $artistPermit =  ArtistPermit::create($updateArray);
                         $artistID = $artist_id;
                         $artistPermitId = $artistPermit->artist_permit_id;
+
                     }
 
                     $org = explode('/', $data->original);
@@ -907,24 +934,24 @@ class ArtistController extends Controller
         if ($last_person_code == null) {
             $code = 2000;
         } else {
-            $code = $last_person_code + 1;
+            $code = (int)$last_person_code + 1;
         }
 
-        // call the same function if the barcode exists already
-        if ($this->personCodeExists($code)) {
-            return $this->generatePersonCode();
-        }
+        // // call the same function if the barcode exists already
+        // if ($this->personCodeExists($code)) {
+        //     return $this->generatePersonCode();
+        // }
 
         // otherwise, it's valid and can be used
         return $code;
     }
 
-    function personCodeExists($code)
-    {
-        // query the database and return a boolean
-        // for instance, it might look like this in Laravel
-        return Artist::where('person_code', $code)->exists();
-    }
+    // function personCodeExists($code)
+    // {
+    //     // query the database and return a boolean
+    //     // for instance, it might look like this in Laravel
+    //     return Artist::where('person_code', $code)->exists();
+    // }
 
 
     // fetch files uploaded
@@ -1446,7 +1473,7 @@ class ArtistController extends Controller
         })->addColumn('action', function ($permit) {
             return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">View / Update</span></a>';
         })->addColumn('details', function ($permit) {
-            return '<a href="' . route('company.get_draft_details', $permit->permit_id) . '" title="View Details"><span class="kt-badge kt-badge--dark kt-badge--inline">Details</span></a>';
+            return '<a href="' . route('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fa-2x"></i></a>';
         })->rawColumns(['action', 'details'])->make(true);
     }
 
@@ -1484,7 +1511,8 @@ class ArtistController extends Controller
             'status' => 5,
             'issue_date' => Carbon::parse($request->from)->toDateString(),
             'expiry_date' => Carbon::parse($request->to)->toDateString(),
-            'work_location' => $request->loc
+            'work_location' => $request->loc,
+            'work_location_ar' => $request->loc_ar,
         );
 
         if (isset($request->event_id)) {
@@ -1501,6 +1529,8 @@ class ArtistController extends Controller
             ['created_by', $user_id],
             ['del_status', 1],
         ])->delete();
+
+        dd($update);
 
         if ($update) {
             $this->makeSessionForgetPermitDetails();

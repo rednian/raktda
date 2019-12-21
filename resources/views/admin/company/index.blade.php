@@ -73,9 +73,20 @@
       <section class="row">
          <div class="col-md-12">
             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="company-nav">
-               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('Company Registration') }}</a></li>
-               <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-company">{{ __('Active Company') }}</a></li>
-               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blaclist-company">{{ __('Blacklisted Company') }}</a></li>
+               <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">
+                  {{ __('New Registration') }}
+                  <span class="kt-badge kt-badge--outline kt-badge--info">{{$new_company}}</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#processing-request" data-target="#processing-request">
+                  {{ __('Processing Registration') }}
+                </a>
+              </li>
+               <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-company">
+               {{ __('Company List') }}
+             </a></li>
             </ul>
          </div>
       </section>
@@ -97,22 +108,24 @@
                    </div>
                    <div class="col-8">
                      <form class="form-row">
-                       <div class="col-4">
-                           <div class="input-group input-group-sm">
-                               <div class="kt-input-icon kt-input-icon--right">
-                                 <input autocomplete="off" type="text" class="form-control form-control-sm" placeholder="{{ __('APPLIED DATE') }}" id="new-applied-date" >
-                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                   <span><i class="la la-calendar"></i></span>
-                                 </span>
-                               </div>
-                         </div>
+                       <div class="col-3">
+                         <select name="company_id" id="new-company-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="new_company.draw()" >
+                           <option selected disabled >{{ __('ESTABLISHMENT TYPE') }}</option>
+                          @if ($types->count() >0 )
+                            @foreach ($types as $type)
+                             <option value="{{$type->company_type_id}}">{{ ucfirst(Auth::user()->LanguageId == 1 ? $type->name_en : $type->name_ar ) }}</option>
+                            @endforeach
+                          @endif
+                         </select>
                        </div>
                        <div class="col-3">
-                         <select name="" id="new-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="new_company.draw()" >
-                           <option selected disabled >{{ __('ESTABLISHMENT TYPE') }}</option>
-                           <option value="private">{{ __('Private') }}</option>
-                           <option value="government">{{ __('Government') }}</option>
-                           {{-- <option value="individual">{{ __('Individual') }}</option> --}}
+                         <select name="area_id" id="new-company-area" class="form-control-sm form-control custom-select custom-select-sm " onchange="new_company.draw()" >
+                           <option selected disabled >{{ __('AREA') }}</option>
+                          @if ($areas->count() >0 )
+                            @foreach ($areas as $area)
+                             <option value="{{$area->id}}">{{ ucfirst(Auth::user()->LanguageId == 1 ? $area->area_en : $area->area_ar ) }}</option>
+                            @endforeach
+                          @endif
                          </select>
                        </div>
                        <div class="col-2">
@@ -136,14 +149,33 @@
                         <tr>
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                            <th>{{ __('PHONE NUMBER') }}</th>
-                            <th>{{ __('TYPE') }}</th>
-                            <th>{{ __('APPLIED DATE') }}</th>
+                            <th>{{ __('ESTABLISHMENT TYPE') }}</th>
+                            <th>{{ __('AREA') }}</th>
+                            <th>{{ __('SUBMITTED DATE') }}</th>
                             <th>{{ __('STATUS') }}</th>
                         </tr>
                     </thead>
                </table>
                </section>
+                 <section  class="tab-pane show fade" id="processing-request" role="tabpanel">
+                     <table class="table table-hover table-borderless table- border table-sm table-striped" id="processing-table">
+                       <thead>
+                           <tr>
+                               <th></th>
+                               <th>{{ __('REFERENCE NO.') }}</th>
+                               <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                               <th>{{ __('PHONE NUMBER') }}</th>
+                               <th>{{ __('EMAIL') }}</th>
+                               <th>{{ __('COMPANY ADDRESS') }}</th>
+                               <th>{{ __('WEBSITE') }}</th>
+                               <th>{{ __('TRADE LICENSE EXPIRATION DATE') }}</th>
+                               <th>{{ __('TRADE LICENSE ISSUED DATE') }}</th>
+                               <th>{{ __('TRADE LICENSE EXPIRED DATE') }}</th>
+                               <th>{{ __('BOUNCE BACK REASON') }}</th>
+                           </tr>
+                       </thead>
+                  </table>
+                 </section>
                <section  class="tab-pane show fade" id="active-company" role="tabpanel">
                      <section class="form-row">
                       <div class="col-1">
@@ -159,40 +191,43 @@
                       </div>
                       <div class="col-8">
                         <form class="form-row">
-                          <div class="col-4">
-                              <div class="input-group input-group-sm">
-                                  <div class="kt-input-icon kt-input-icon--right">
-                                    <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="active-applied-date" >
-                                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                      <span><i class="la la-calendar"></i></span>
-                                    </span>
-                                  </div>
-                            </div>
-                          </div>
+                          
                           <div class="col-3">
-                            <select name="" id="new-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()" >
-                              <option selected disabled >{{ __('APPLICATION TYPE') }}</option>
-                              <option value="private">{{ __('Private') }}</option>
-                              <option value="government">{{ __('Government') }}</option>
-                              <option value="individual">{{ __('Individual') }}</option>
+                            <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="company_table.draw()" >
+                              <option selected disabled >{{ __('ESTABLISHMENT TYPE') }}</option>
+                              @if ($types->count() >0 )
+                                @foreach ($types as $type)
+                                 <option value="{{$type->company_type_id}}">{{ ucfirst(Auth::user()->LanguageId == 1 ? $type->name_en : $type->name_ar ) }}</option>
+                                @endforeach
+                              @endif
                             </select>
                           </div>
                           <div class="col-3">
-                            <select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
+                            <select  name="" id="active-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="company_table.draw()">
                               <option disabled selected>{{ __('STATUS') }}</option>
-                              <option value="new">{{ __('New') }}</option>
-                              <option value="amended">{{ __('Amended') }}</option>
+                              <option value="active">{{ __('Active') }}</option>
+                              <option value="blocked">{{ __('Blocked') }}</option>
                             </select>
                           </div>
+                          <div class="col-3">
+                         <select name="area_id" id="active-company-area" class="form-control-sm form-control custom-select custom-select-sm " onchange="company_table.draw()" >
+                           <option selected disabled >{{ __('AREA') }}</option>
+                          @if ($areas = App\Areas::where('emirates_id', 5)->get() )
+                            @foreach ($areas as $area)
+                             <option value="{{$area->id}}">{{ ucfirst(Auth::user()->LanguageId == 1 ? $area->area_en : $area->area_ar ) }}</option>
+                            @endforeach
+                          @endif
+                         </select>
+                       </div>
                           <div class="col-2">
-                            <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">{{ __('RESET') }}</button>
+                            <button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">{{ __('RESET') }}</button>
                           </div>
                         </form>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group form-group-sm">
                           <div class="kt-input-icon kt-input-icon--right">
-                            <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-new-request">
+                            <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-active-request">
                             <span class="kt-input-icon__icon kt-input-icon__icon--right">
                               <span><i class="la la-search"></i></span>
                             </span>
@@ -200,14 +235,20 @@
                         </div>
                       </div>
                   </section>
-                  <table class="table table-hover table-borderless table- border table-striped" id="active-company-table">
+                  <table class="table table-hover table-borderless table- border table-sm table-striped" id="company-table">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('PHONE NUMBER') }}</th>
-                            <th>{{ __('TYPE') }}</th>
-                            <th>{{ __('APPLIED DATE') }}</th>
+                            <th>{{ __('TRADE LICENSE EXPIRATION DATE') }}</th>
+                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('EMAIL') }}</th>
+                            <th>{{ __('COMPANY ADDRESS') }}</th>
+                            <th>{{ __('WEBSITE') }}</th>
+                            <th>{{ __('TRADE LICENSE ISSUED DATE') }}</th>
+                            <th>{{ __('TRADE LICENSE EXPIRED DATE') }}</th>
                         </tr>
                     </thead>
                </table>
@@ -221,14 +262,116 @@
 @section('script')
 <script>
    var new_company = {};
+   var company_table = {};
    $(document).ready(function(){
       hasUrl()
       newCompany();
+   
+
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var current_tab = $(e.target).attr('href');
+
+        if('#new-request' == current_tab ){  newCompany(); }
+        if('#processing-request' == current_tab ){ processing();   }
+        if('#active-company' == current_tab ){  company(); }
+      });
+
    });
+
+   function processing(){
+    company_table =  $('table#processing-table').DataTable({
+      // dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+      //       "<'row'<'col-sm-12'tr>>" +
+      //       "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ajax: {
+           url: '{{ route('admin.company.datatable') }}',
+           data: function(d){
+              var status =  $('#active-permit-status').val();
+              d.status =  ['back'];
+              // d.type = $('#active-applicant-type').val();
+              // d.area = $('#active-company-area').val();
+           }
+        },
+        responsive: true,
+        columnDefs:[
+           {targets: '_all', className:'no-wrap'}
+        ],
+        columns:[
+        {render: function(){ return null; }},
+        {data: 'reference_number'},
+        {data: 'profile'},
+        {data: 'phone_number'},
+        {data: 'company_email'},
+        {data: 'address'},
+        {data: 'website'},
+        {data: 'trade_expired_date'},
+        {data: 'issued_date'},
+        {data: 'expired_date'},
+        {data: 'reason'},
+        ],
+        createdRow: function(row, data, index){
+
+           $('td:not(:first-child)',row).click(function(e){ location.href = data.link; });
+        }
+     });
+  }
+
+
+
+   function company(){
+    company_table =  $('table#company-table').DataTable({
+      dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ajax: {
+           url: '{{ route('admin.company.datatable') }}',
+           data: function(d){
+              var status =  $('#active-permit-status').val();
+              d.status = status ? [status] : ['blocked', 'active', 'rejected'];
+              d.type = $('#active-applicant-type').val();
+              d.area = $('#active-company-area').val();
+           }
+        },
+        'order': [[1, 'desc']],
+        responsive: true,
+        columnDefs:[
+           {targets: '_all', className:'no-wrap'}
+        ],
+        columns:[
+        {render: function(){ return null; }},
+        {data: 'reference_number'},
+        {data: 'profile'},
+        {data: 'phone_number'},
+        {data: 'trade_expired_date'},
+        {data: 'status'},
+        {data: 'company_email'},
+        {data: 'address'},
+        {data: 'website'},
+        {data: 'issued_date'},
+        {data: 'expired_date'},
+        ],
+        createdRow: function(row, data, index){
+
+           $('td:not(:first-child)',row).click(function(e){ location.href = data.link; });
+        }
+     });
+
+
+      //clear fillte button
+       $('#active-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); company_table.draw();});
+      //custom pagelength
+      company_table.page.len($('#active-length-change').val());
+      $('#active-length-change').change(function(){ company_table.page.len( $(this).val() ).draw(); });
+      //custom search
+      
+      var search = $.fn.dataTable.util.throttle(function(v){ company_table.search(v).draw(); });
+      $('input#search-active-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
+
+   }
    
    function newCompany(){
 
-     new_company=  $('table#new-company-request').DataTable({
+     new_company =  $('table#new-company-request').DataTable({
          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
                "<'row'<'col-sm-12'tr>>" +
                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -236,7 +379,8 @@
             url: '{{ route('admin.company.datatable') }}',
             data: function(d){
                d.status = ['new', 'pending'];
-               d.type = $('#new-applicant-type').val();
+               d.type = $('#new-company-type').val();
+               d.area = $('#new-company-area').val();
             }
          },
          columnDefs:[
@@ -245,14 +389,14 @@
          columns:[
          {data: 'reference_number'},
          {data: 'name'},
-         {data: 'phone_number'},
          {data: 'type'},
+         {data: 'area'},
          {data: 'date'},
          {data: 'status'},
          ],
          createdRow: function(row, data, index){
             $(row).click(function(e){
-               location.href = '{{ url('/company_registration') }}/'+data.company_id+'/application';
+               location.href = data.application_link;
             });
          }
       });

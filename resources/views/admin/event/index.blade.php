@@ -91,7 +91,7 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Action Taken') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</a>
                 <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $active_request }}</span>
@@ -105,15 +105,15 @@
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
           role="tablist" id="artist-permit-nav">
           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-              data-target="#new-request">{{ __('New Event Requests') }}</a></li>
+              data-target="#new-request">{{ __('New Requests') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#pending-request"
-              data-target="#pending-request">{{ __('Pending Requests') }}</a></li>
+              data-target="#pending-request">{{ __('Pending Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
               href="#processing-permit">{{ __('Processing Events') }}</a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
-              href="#active-permit">{{ __('Active Events') }}</a></li>
+              href="#active-permit">{{ __('Permit Action') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab"
-              href="#archive-permit">{{ __('Archive Events') }}</a></li>
+              href="#archive-permit">{{ __('History') }}</a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab"
               href="#calendar">{{ __('All Events Calendar') }}</a></li>
         </ul>
@@ -152,9 +152,8 @@
                 <select name="" id="new-applicant-type"
                   class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()">
                   <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
-                  <option value="private">{{ __('Private') }}</option>
+                  <option value="corporate">{{ __('Corporate') }}</option>
                   <option value="government">{{ __('Government') }}</option>
-                  <option value="individual">{{ __('Individual') }}</option>
                 </select>
               </div>
               <div class="col-3">
@@ -187,7 +186,7 @@
             <tr>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
-              <th>{{ __('PERMIT OWNER') }}</th>
+              <th>{{ __('PERMIT DURATION') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('APPLIED DATE') }}</th>
@@ -228,17 +227,8 @@
                 <select name="" id="pending-applicant-type"
                   class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()">
                   <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
-                  <option value="private">{{ __('Private') }}</option>
+                  <option value="corporate">{{ __('Corporate') }}</option>
                   <option value="government">{{ __('Government') }}</option>
-                  <option value="individual">{{ __('Individual') }}</option>
-                </select>
-              </div>
-              <div class="col-3">
-                <select name="" id="pending-permit-status"
-                  class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
-                  <option disabled selected>{{ __('STATUS') }}</option>
-                  <option value="new">{{ __('New') }}</option>
-                  <option value="amended">{{ __('Amended') }}</option>
                 </select>
               </div>
               <div class="col-2">
@@ -263,7 +253,7 @@
             <tr>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
-              <th>{{ __('PERMIT OWNER') }}</th>
+              <th>{{ __('PERMIT DURATION') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('APPLIED DATE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
@@ -306,9 +296,8 @@
                   class="form-control-sm form-control custom-select custom-select-sm "
                   onchange="eventProcessingTable.draw()">
                   <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
-                  <option value="private">{{ __('Private') }}</option>
+                  <option value="corporate">{{ __('corporate') }}</option>
                   <option value="government">{{ __('Government') }}</option>
-                  <option value="individual">{{ __('Individual') }}</option>
                 </select>
               </div>
               <div class="col-3">
@@ -316,7 +305,6 @@
                   class=" form-control form-control-sm custom-select-sm custom-select"
                   onchange="eventProcessingTable.draw()">
                   <option disabled selected>{{ __('STATUS') }}</option>
-                  <option value="processing">{{ __('Processing') }}</option>
                   <option value="approved-unpaid">{{ __('Approved-unpaid') }}</option>
                   <option value="need-approval">{{ __('Need Approval') }}</option>
                 </select>
@@ -344,7 +332,7 @@
             <tr>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
-              <th>{{ __('PERMIT OWNER') }}</th>
+              <th>{{ __('PERMIT DURATION') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('APPLIED DATE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
@@ -385,9 +373,8 @@
       <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm "
         onchange="eventActiveTable.draw()">
         <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
-        <option value="private">{{ __('Private') }}</option>
+        <option value="corporate">{{ __('Corporate') }}</option>
         <option value="government">{{ __('Government') }}</option>
-        <option value="individual">{{ __('Individual') }}</option>
       </select>
     </div>
     {{-- <div class="col-3">
@@ -418,15 +405,15 @@
   <thead>
     <tr>
       <!-- <th></th> -->
+      <th>{{ __('ACTION') }}</th>
       <th>{{ __('REFERENCE NO.') }}</th>
       <th>{{ __('ESTABLISHMENT NAME') }}</th>
-      <th>{{ __('PERMIT OWNER') }}</th>
+      <th>{{ __('PERMIT DURATION') }}</th>
       <th>{{ __('EVENT NAME') }}</th>
       <!-- <th>{{ __('PERMIT START') }}</th> -->
       <th>{{ __('APPLICATION TYPE') }}</th>
-      <th>{{ __('SHOW TO ALL') }}</th>
-      <th>{{ __('WEBSITE') }}</th>
-      <th>{{ __('ACTION') }}</th>
+      <th>{{ __('SHOW TO USER CALENDAR') }}</th>
+      <th>{{ __('SHOW TO WEBSITE CALENDAR') }}</th>
     </tr>
   </thead>
 </table>
@@ -461,15 +448,15 @@
           <select name="" id="archive-applicant-type"
             class="form-control-sm form-control custom-select custom-select-sm " onchange="eventArchiveTable.draw()">
             <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
-            <option value="private">{{ __('Private') }}</option>
+            <option value="corporate">{{ __('Corporate') }}</option>
             <option value="government">{{ __('Government') }}</option>
-            <option value="individual">{{ __('Individual') }}</option>
           </select>
         </div>
         <div class="col-3">
           <select name="" id="archive-permit-status"
             class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventArchiveTable.draw()">
             <option disabled selected>{{ __('STATUS') }}</option>
+            <option value="cancelled">{{ __('Cancelled') }}</option>
             <option value="expired">{{ __('Expired') }}</option>
             <option value="rejected">{{ __('Rejected') }}</option>
           </select>
@@ -497,7 +484,7 @@
       <tr>
         <th>{{ __('REFERENCE NO.') }}</th>
         <th>{{ __('ESTABLISHMENT NAME') }}</th>
-        <th>{{ __('PERMIT OWNER') }}</th>
+        <th>{{ __('PERMIT DURATION') }}</th>
         <th>{{ __('EVENT NAME') }}</th>
         {{-- <th>APPLIED DATE</th> --}}
         <th>{{ __('APPLICATION TYPE') }}</th>
@@ -631,6 +618,7 @@
         if('#active-permit' == current_tab ){ active(); }
         if('#archive-permit' == current_tab){ archive(); }
       });
+      
      });
 
      function calendar(){
@@ -708,7 +696,7 @@
         columns: [
           {data: 'reference_number'},
           {data: 'establishment_name'},
-          {data: 'owner'},
+          {data: 'duration'},
           {data: 'event_name'},
           {data: 'type'},
           // {data: 'start'},
@@ -752,6 +740,7 @@
         cancelClass: 'btn-secondary btn-sm btn-elevate',
         startDate: start,
         endDate: end,
+       locale:{'customRangeLabel':'Custom From and To'},
         // maxDate: new Date,
         ranges: {
           'Today': [moment(), moment()],
@@ -773,6 +762,7 @@
         dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        responsive:true,
         ajax: {
           url: '{{ route('admin.event.datatable') }}',
           data: function (d) {
@@ -781,20 +771,20 @@
           }
         },
         columnDefs: [
-          {targets: [5,6], className: 'no-wrap'}
+          {targets: '_all', className: 'no-wrap'}
         ],
         columns: [
           // {data: 'event_id'},
+          {data: 'action'},
           {data: 'reference_number'},
           // {data: 'permit_number'},
           {data: 'establishment_name'},
-          {data: 'owner'},
+          {data: 'duration'},
           {data: 'event_name'},
-          // {data: 'start'},
           {data: 'type'},
           {data: 'show'},
+          // {data: 'start'},
           {data: 'website'},
-          {data: 'action'},
         ],
         createdRow: function (row, data, index) {
 
@@ -879,6 +869,7 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
+       locale:{'customRangeLabel':'Custom From and To'},
         ranges: {
           'Today': [moment(), moment()],
           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -913,7 +904,7 @@
         columns: [
           {data: 'reference_number'},
           {data: 'establishment_name'},
-          {data: 'owner'},
+          {data: 'duration'},
           {data: 'event_name'},
           {data: 'created_at'},
           {data: 'type'},
@@ -951,6 +942,7 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
+        locale:{'customRangeLabel':'Custom From and To'},
         ranges: {
           'Today': [moment(), moment()],
           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -987,7 +979,7 @@
          columns: [
            {data: 'reference_number'},
            {data: 'establishment_name'},
-           {data: 'owner'},
+           {data: 'duration'},
            {data: 'event_name'},
            {data: 'created_at'},
            {data: 'type'},
@@ -1026,6 +1018,7 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
+        locale:{'customRangeLabel':'Custom From and To'},
         ranges: {
           'Today': [moment(), moment()],
           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -1062,7 +1055,7 @@
          columns: [
            {data: 'reference_number'},
            {data: 'establishment_name'},
-           {data: 'owner'},
+           {data: 'duration'},
            {data: 'event_name'},
            {data: 'type'},
            {data: 'created_at'},
