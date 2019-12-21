@@ -11,10 +11,10 @@
 	<section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 		<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 			 <div class="kt-portlet__head-label">
-					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('ADD NEW EMPLOYEE') }}</h3>
+					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ $type == 'g' ? __('ADD GOVERNMENT USER') : __('ADD NEW EMPLOYEE') }}</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
-					<a href="{{ URL::signedRoute('user_management.index') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
+					<a href="{{ URL::signedRoute('user_management.index') . ( $type == 'g' ? '#government_management' : '#employee_management') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
 						 {{ __('BACK TO LIST') }}
 					</a>
@@ -84,20 +84,29 @@
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Name (AR)') }}
 				                        	<span class="text-danger">*</span>
 				                        </label>
-				                        <input value="" type="text" name="NameAr" required class="form-control form-control-sm">
+				                        <input dir="rtl" value="" type="text" name="NameAr" required class="form-control form-control-sm">
 				                    </div>
 				                </div>
 				            </section>
 
 				            <section class="row kt-margin-t-10">
-				                <div class="col-sm-6">
+
+				            	@if($type == 'g')
+								<div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Department') }}
 				                            <span class="text-danger">*</span>
 				                        </label>
-				                        <input value="" type="text" name="department" class="form-control form-control-sm">
+				                        <select required name="government_id" class="form-control form-control-sm">
+				                        	<option value=""></option>
+				                        	@foreach(App\Government::orderBy('government_name_en')->get() as $dep)
+											<option value="{{ $dep->government_id }}">{{ Auth::user()->LanguageId == 1 ? $dep->government_name_en : $dep->government_name_ar }}</option>
+				                        	@endforeach
+				                        </select>
 				                    </div>
 				                </div>
+				            	@endif
+				                
 				                <div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Designation') }}
@@ -143,6 +152,7 @@
 						<div class="card-body">
 							
 							<section class="row kt-margin-t-10">
+								@if(is_null($type))
 								<div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('User Role') }}
@@ -151,11 +161,16 @@
 				                        <select name="role_id" class="form-control form-control-sm">
 				                        	<option value=""></option>
 				                        	@foreach(App\Roles::where('type', 0)->get() as $role)
+				                        	@if($role->role_id != 6)
 											<option value="{{ $role->role_id }}">{{ Auth::user()->LanguageId == 1 ? ucwords($role->NameEn) : $role->NameAr }}</option>
+											@endif
 				                        	@endforeach
 				                        </select>
 				                    </div>
 				                </div>
+				                @else
+				                <input type="hidden" name="role_id" value="6">
+				                @endif
 				                <div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Username') }}
