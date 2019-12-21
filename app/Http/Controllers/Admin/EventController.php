@@ -394,6 +394,36 @@
 			->make(true);
 		}
 
+
+		public function artistDatatable(Request $request, Event $event)
+		{
+			return DataTables::of($event->permit->artistpermit()->get())
+			->addColumn('name', function($artist) use ($request){
+				$fname = $request->user()->LanguageId == 1 ? ucfirst($artist->firstname_en) : $artist->firstname_ar; 
+				$lastname = $request->user()->LanguageId == 1 ? ucfirst($artist->lastname_en) : $artist->lastname_ar;
+				return profileName($fname.' '.$lastname, $artist->artist->artist_status); 
+			})
+			->addColumn('profession', function($artist) use ($request){
+				return $request->user()->LanguageId == 1 ? ucfirst($artist->profession->name_en) : $artist->profession->name_ar;
+			})
+			->addColumn('person_code', function($artist){
+				return $artist->artist->person_code;
+			})
+			->editColumn('birthdate', function($artist){
+				return $artist->birthdate->format('d-F-Y');
+			})
+			->addColumn('age', function($artist){
+				return $artist->birthdate->age;
+			})
+			->editColumn('mobile_number', function($artist){
+				return $artist->mobile_number;
+			})
+			->rawColumns(['name'])
+			->make(true);
+
+		}
+
+
 		public function truckDatatable(Request $request, Event $event)
 		{
 			return DataTables::of($event->truck()->get())
@@ -402,6 +432,12 @@
 			})
 			->addColumn('type', function($truck) use ($request){
 				return $request->user()->LanguageId == 1 ? $truck->food_type : $truck->food_type;
+			})
+			->addColumn('issued_date', function($truck){
+				return date('d-F-Y', strtotime($truck->registration_issued_date));
+			})
+			->addColumn('expired_date', function($truck){
+				return date('d-F-Y', strtotime($truck->registration_expired_date));
 			})
 			->editColumn('plate_number', function ($truck){
 				return $truck->plate_number;

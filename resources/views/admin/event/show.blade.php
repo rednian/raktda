@@ -122,7 +122,7 @@
           </section>
 
           {{-- <h6 class="kt-font-dark kt-margin-t-10">Event Map Location</h6> --}}
-          <iframe class="border kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 310px; width: 100%; margin-top: 1%; border-style: none;" >
+          <iframe class="border kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 350px; width: 100%; margin-top: 1%; border-style: none;" >
           </iframe>
         </div>
         <div class="col-md-5 border">
@@ -191,6 +191,37 @@
                          <td>{{ __('Printed Note') }} :</td>
                           <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->note_en) : $event->note_ar }}</td>
                      </tr>      
+                 </table>
+                 <hr>
+                 <h6 class="kt-font-dark">{{__('Liqour Information')}}</h6>
+                 <table class="table table-sm table-hover table-borderless table-display">
+                   <tr>
+                    <tr>
+                      <td width="55%">{{__('Company Name')}} :</td>
+                      <td>{{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}</td>
+                    </tr>
+                     <td>{{__('Provided By Venue ?')}} : </td>
+                     <td>{{$event->provided ? 'YES' : 'NO'}}</td>
+                     @if ($event->provided)
+                       <tr>
+                         <td>{{__('Liquor Permit Number: ')}}</td>
+                         <td>{{$event->liquor->liquor_permit_no}}</td>
+                       </tr>
+                       @else
+                       <tr>
+                         <td>{{__('Liquor Service')}} :</td>
+                         <td>{{$event->liquor->liquor_service}}</td>
+                       </tr>
+                       <tr>
+                         <td>{{__('Liquor Types')}} :</td>
+                         <td>{{$event->liquor->liquor_type}}</td>
+                       </tr>
+                       <tr>
+                         <td>{{__('Purchase Receipt')}} :</td>
+                         <td>{{$event->liquor->purchase_receipt}}</td>
+                       </tr>
+                     @endif
+                   </tr>
                  </table>
                  <div class="d-flex justify-content-center">
                   @if ($event->transaction()->exists())
@@ -310,21 +341,34 @@
       
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_1_4_tab_content" role="tab">
+            <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#event-tab" role="tab">
               <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{ __('EVENT REQUIREMENTS') }}
               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->eventRequirement()->count()}}</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_2_4_tab_content" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK INFORMATION') }} 
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span>
+            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#truck-tab" role="tab">
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK DETAILS') }}
+               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span> 
             </a>
           </li>
+          <li class="nav-item kt-hide">
+            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#liquor-tab" role="tab">
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('LIQUOR DETAILS') }} 
+             
+            </a>
+          </li>
+
           <li class="nav-item">
-            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_3_4_tab_content" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ARTIST INFORMATION') }} 
-              {{-- <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span> --}}
+            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#artist-tab" role="tab">
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ARTIST PERMIT DETAILS') }}
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->permit->artistpermit()->count()}}</span> 
+            </a>  
+          </li>
+          <li class="nav-item">
+            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#images-tab" role="tab">
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('IMAGES') }} 
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span> 
             </a>
           </li>
           <li class="nav-item">
@@ -336,7 +380,7 @@
           
         </ul>
         <div class="tab-content">
-          <div class="tab-pane active" id="kt_portlet_base_demo_1_4_tab_content" role="tabpanel">
+          <div class="tab-pane active" id="event-tab" role="tabpanel">
              <table class="table border borderless table-hover table-" id="requirement-table">
               <thead>
                 <tr>
@@ -348,13 +392,56 @@
               </thead>
              </table>
           </div>
+          <div class="tab-pane" id="truck-tab" role="tabpanel">
+             <table class="table border borderless table-hover table-sm" id="truck-table">
+              <thead>
+                <tr>
+                   <th>{{ __('TRUCK NAME') }}</th>
+                   <th>{{ __('COMPANY NAME') }}</th>
+                   <th>{{ __('SERVICE TYPE') }}</th>
+                   <th>{{ __('PLATE NUMBER') }}</th>
+                   <th>{{ __('REGISTRATION ISSUED DATE') }}</th> 
+                   <th>{{ __('REGISTRATION EXPIRED DATE') }}</th> 
+                   <th>{{ __('ACTION') }}</th> 
+                </tr>
+              </thead>
+             </table>
+          </div>
+           <div class="tab-pane" id="liquor-tab" role="tabpanel">
+              <table class="table table-borderless "></table>
+           </div>
+          <div class="tab-pane " id="artist-tab" role="tabpanel">
+             <table class="table border borderless table-hover table-" id="artist-table">
+              <thead>
+                <tr>
+                   <th></th>
+                   <th>{{ __('NAME') }}</th>
+                   <th>{{ __('PROFESSION') }}</th>
+                   <th>{{ __('PERSON CODE') }}</th>
+                   <th>{{ __('BIRTHDATE') }}</th>
+                   <th>{{ __('AGE') }}</th>
+                   <th>{{ __('MOBILE NUMBER') }}</th>
+                   <th>{{ __('EMAIL') }}</th>
+                </tr>
+              </thead>
+             </table>
+          </div>
+          <div class="tab-pane" id="images-tab" role="tabpanel">
+           <table class="table border borderless table-hover" id="image-table">
+              <thead>
+                <tr>
+                  <th>{{ __('FILES') }}</th>
+                </tr>
+              </thead>
+             </table>
+          </div>
           <div class="tab-pane" id="kt_portlet_base_demo_2_4_tab_content" role="tabpanel">
-            <table class="table table-hover table-borderless border table-striped table-sm" id="truck-datatable">
+            <table class="table table-hover table-borderless border table-striped table-sm" id="truck-table">
                 <thead>
                     <tr>
                         <th class="no-wrap">{{ __('NAME') }}</th>
                         <th>{{ __('REMARKS') }}</th>
-                        <th class="no-wrap">{{ __('CHECKED DATE') }}</th>
+                        <th class="no-wrap">{{ __('DATE') }}</th>
                         <th class="no-wrap">{{ __('ACTION TAKEN') }}</th>
                     </tr>
                 </thead>
@@ -378,6 +465,34 @@
         
     </div>
 </div>
+
+<div class="modal fade" id="truck-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-borderless table-hover table-striped  border" id="truck-requirement-table">
+            <thead>
+              <tr>
+                 <th>{{ __('REQUIREMENT NAME') }}</th>
+                 <th>{{ __('FILES') }}</th>
+                 <th>{{ __('ISSUED DATE') }}</th>
+                 <th>{{ __('EXPIRED DATE') }}</th>
+                 <th>{{ __('ACTION') }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 @section('script')
 <script>
@@ -387,8 +502,109 @@
 
      eventComment();
      requirementTable();
+     imageTable();
+     artist();
+     truckTable();
      $('form#frm-status').validate();
   });
+
+  function artist(){
+    $('#artist-table').DataTable({
+      ajax: '{{ route('admin.event.artist', $event->event_id) }}',
+      columnDefs:[
+        {targets: '_all', className: 'no-wrap'},
+      ],
+      responsive: true,
+      columns:[
+        {render: function(data){ return null}},
+        {data: 'name'},
+        {data: 'profession'},
+        {data: 'person_code'},
+        {data: 'birthdate'},
+        {data: 'age'},
+        {data: 'mobile_number'},
+        {data: 'email'},
+      ]
+    });
+  }
+
+  function truckTable(){
+    $('table#truck-table').DataTable({
+      ajax: '{{ route('admin.event.truck.datatable', $event->event_id) }}',
+      columnDefs:[
+      {targets:'_all', className:'no-wrap'},
+      ],
+      responsive:true,
+      columns: [
+      {
+        render: function(data, row, full, meta){
+          return 'Food Truck No. '+full.DT_RowIndex;
+        }
+      },
+      {data: 'name'},
+      {data: 'type'},
+      {data: 'plate_number'},
+      {data: 'issued_date'},
+      {data: 'expired_date'},
+      {data: 'action'},
+      ],
+      createdRow: function(row, data, index){
+        $('.btn-document', row).click(function(){
+          $('#truck-modal').modal('show');
+          $('#title').html('Food Truck No. '+data.DT_RowIndex);
+          truckRequirement(data);
+        });
+      }
+    });
+   }
+
+
+  function truckRequirement(data){
+      $('table#truck-requirement-table').DataTable({
+        ajax: '{{ url('/event') }}/'+'{{$event->event_id}}'+'/truck/'+data.event_truck_id+'/datatable',
+        columnDefs:[
+          {targets:[1,2,3,4], className:'no-wrap'},
+          ],
+          "order": [[ 0, 'asc' ]],
+            rowGroup: {
+              startRender: function ( rows, group ) {
+               var row_data = rows.data()[0];
+               return $('<tr/>').append( '<td >'+group+'</td>' )
+                          .append( '<td>'+rows.count()+'</td>' )
+                          .append( '<td>'+row_data.issued_date+'</td>' )
+                                .append( '<td>'+row_data.expired_date+'</td>' )
+                                .append( '<td></td>' )
+                                .append( '<tr/>' );
+                },
+             dataSrc: 'name'
+          },
+          columns:[
+            {data: 'files'},
+            {render: function(data){ return null}},
+            {render: function(data){ return null}},
+            {render: function(data){ return null}},
+            {
+             render: function (row, type, full, meta) {
+               var html = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">';
+               html += '<input type="checkbox" class="step-2" data-step="2">';
+               html += '<span></span>';
+               html += '</label>';
+               return html;
+             }
+           }
+         ],
+
+      });
+     }
+
+     function imageTable(){
+      $('table#image-table').DataTable({
+        ajax: '{{ route('admin.event.images.datatable', $event->event_id) }}',
+        columns:[
+        {data: 'path'}
+        ]
+      });
+     }
 
   function requirementTable(){
     $('table#requirement-table').DataTable({

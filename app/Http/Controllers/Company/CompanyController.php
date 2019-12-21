@@ -43,6 +43,10 @@ class CompanyController extends Controller
 
    public function update(Request $request, Company $company)
    {
+
+    if ($company->status == 'rejected') {
+      return redirect()->back();
+    }
       try {
 
          DB::beginTransaction();
@@ -60,9 +64,20 @@ class CompanyController extends Controller
          switch ($request->submit) {
            case 'draft':
                $company->update($request->all());
+                 $result = ['success', 'Your work successfully saved', 'Success'];
              break;
           case 'submitted':
 
+            if (Company::exists()) {
+               $last_reference = Company::orderBy('company_id', 'desc')->first()->reference_number;
+               $reference_number = explode('-', $last_reference);
+               // dd($reference_number);
+               $reference_number = $reference_number[2]+1 ;
+               $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 6, 0);
+             }
+             else{
+              $reference_number = 'EST-'.date('Y').'-000001';
+             } 
 
             $company = Company::find($company->company_id);
             $company->company_type_id = $request->company_type_id;
@@ -80,10 +95,16 @@ class CompanyController extends Controller
             $company->company_description_ar = $request->company_description_ar;
             $company->name_en = $request->name_en;
             $company->name_ar = $request->name_ar;
-            // $company->reference_number = $this->generateTransactionCode();
+
+            if (empty($company->reference_number)) {
+            $company->reference_number = $reference_number;
+            }
+
             $company->status =  $company->application_date ? 'pending': 'new';
             $company->application_date = $company->application_date ? $company->application_date : Carbon::now();
             $company->save();
+
+            $result = ['success', 'Your Company Registration successfully submitted', 'Success'];
 
             break;
          }
@@ -109,34 +130,32 @@ class CompanyController extends Controller
 
 
 
-         // if ($request->has('file')) {
-         //    $name = explode(' ', $company->name_en);
-         //    $name = implode('_', $name);
-         //    $path = 'public/'.$name;
+         if ($request->has('file')) {
+            $path = 'public/'.$company->company_id;
 
-         //    $company->requirement()->delete();
-         //    Storage::deleteDirectory($path);
-         //    foreach ($request->file as $requirement_id => $upload) {
-         //          $requirement_name = explode(' ', $upload['name']);
-         //          $requirement_name = strtolower(implode('_', $requirement_name));
+            $company->requirement()->delete();
+            Storage::deleteDirectory($path);
+            foreach ($request->file as $requirement_id => $upload) {
+                  $requirement_name = explode(' ', $upload['name']);
+                  $requirement_name = strtolower(implode('_', $requirement_name));
 
-         //       if (!empty($upload['file'])) {
-         //       foreach ($upload['file'] as $index => $file) {
-         //          $filename = $requirement_name.'_'.$index.'.'.$file->getClientOriginalExtension();
-         //          Storage::putFileAs($path, $file, $filename);
-         //          $company->requirement()->create([
-         //             'page_number'=>$index+1, 
-         //             'issued_date'=>$upload['issued_date'],
-         //             'expired_date'=>$upload['expired_date'],
-         //             'requirement_id'=>$requirement_id,
-         //             'path'=>$path.'/'.$requirement_name.'_'.$index.'.'.$file->getClientOriginalExtension(),
-         //          ]);
+               if (!empty($upload['file'])) {
+               foreach ($upload['file'] as $index => $file) {
+                  $filename = $requirement_name.'_'.$index.'.'.$file->getClientOriginalExtension();
+                  Storage::putFileAs($path, $file, $filename);
+                  $company->requirement()->create([
+                     'page_number'=>$index+1, 
+                     'issued_date'=>$upload['issued_date'],
+                     'expired_date'=>$upload['expired_date'],
+                     'requirement_id'=>$requirement_id,
+                     'path'=>$path.'/'.$requirement_name.'_'.$index.'.'.$file->getClientOriginalExtension(),
+                  ]);
 
-         //       }
-         //       }
+               }
+               }
          
-         //    }
-         // }
+            }
+         }
 
          DB::commit();
       } catch (Exception $e) {
@@ -144,7 +163,7 @@ class CompanyController extends Controller
          $result = ['danger', $e->getMessage(), 'Error'];
       }
 
-      return redirect()->back();
+      return redirect()->back()->with('message', $result);
              
       
    }

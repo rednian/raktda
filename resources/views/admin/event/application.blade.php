@@ -838,7 +838,7 @@
  															<tr>
  																 <th>#</th>
  																 <th>{{ __('COMPANY NAME') }}</th>
- 																 <th>{{ __('FOOD TYPE') }}</th>
+ 																 <th>{{ __('SERVICE TYPE') }}</th>
  																 <th>{{ __('PLATE NUMBER') }}</th>
  																 <th>{{ __('ACTION') }}</th>
  															</tr>

@@ -58,6 +58,44 @@
                         <div class="kt-form__body">
                             <div class="kt-section kt-section--first">
                                 <div class="kt-section__body">
+                                  
+                                  @if ($company->status == 'back' || $company->status == 'rejected' )
+                                    <div class="alert alert-danger kt-padding-t-5 kt-padding-b-5" role="alert">
+                                        <div class="alert-text">
+                                          <h4 class="alert-heading">Oppss! Got Issues.</h4>
+                                          <p title="{{$company->comment()->latest()->first()->created_at->format('l h:i A | d-F-Y')}}" class="mb-0 text-underline">{{ humanDate($company->comment()->latest()->first()->created_at) }}
+                                          
+                                          @if ($company->status == 'rejected')
+                                             <span class="pull-right">Your application is rejected and can no longer proceed. Please create a new account and make sure all the details are correct!</span>
+                                           @endif 
+
+                                          </p>
+                                          <hr>
+                                          <p>{{ucfirst(Auth::user()->LanguageId == 1 ? $company->comment()->latest()->first()->comment_en :  $company->comment()->latest()->first()->comment_ar )}}</p>
+                                        </div>
+                                      </div>
+                                  @endif
+                                  @if ($company->status == 'active' || $company->event()->count() < 0 || $company->permit()->count() < 0)
+                                    <div class="alert alert-success" role="alert">
+                                       <div class="alert-text">
+                                         <h4 class="alert-heading">Congratulation your establishment successfully registered!</h4>
+                                         <p>You can now create an <a href="{{ route('event.create') }}" class="btn btn-sm btn--maroon">EVENT PERMIT</a> or  <a href="{{ route('artist.create') }}" class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
+                                         {{-- <hr> --}}
+                                         {{-- <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p> --}}
+                                       </div>
+                                     </div>
+                                  @endif
+
+                                  @if ($company->status == 'new' || $company->status == 'pending')
+                                    <div class="alert alert-success" role="alert">
+                                       <div class="alert-text">
+                                         <h4 class="alert-heading">Registration submitted successfully!</h4>
+                                         <p>Your registration will be check by RAKTDA during working days. Please wait 2 to 3 days.</p>
+                                         {{-- <hr> --}}
+                                         {{-- <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p> --}}
+                                       </div>
+                                     </div>
+                                    @else
                                     <form name="edit_company" action="{{ route('company.update', $company->company_id) }}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                                        {{-- @method('PUT') --}}
                                         @csrf
@@ -73,23 +111,36 @@
                                                        <section required class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label >Establistment Type <span class="text-danger">*</span></label>
-                                                               <select name="company_type_id" class="form-control form-control-sm">
-                                                                   @if (App\CompanyType::orderBy('name_en')->count() > 0)
-                                                                       @foreach (App\CompanyType::orderBy('name_en')->get() as $type)
-                                                                           <option {{$company->company_type_id == $type->company_type_id ? 'selected': null }} value="{{$type->company_type_id}}">{{ucfirst($type->name_en)}}</option>
-                                                                       @endforeach
-                                                                   @endif
-                                                               </select>
+                                                               @if ($company->status == 'active' || $company->status == 'blocked')
+                                                               <input value="{{Auth::user()->LanguageId == 1 ?   ucfirst($company->type->name_en) : $company->type->name_ar}}" type="text" class="form-control form-control-sm" autocomplete="off" disabled>
+                                                                 @else
+                                                                 <select name="company_type_id" class="form-control form-control-sm">
+                                                                     @if (App\CompanyType::orderBy('name_en')->count() > 0)
+                                                                         @foreach (App\CompanyType::orderBy('name_en')->get() as $type)
+                                                                             <option {{$company->company_type_id == $type->company_type_id ? 'selected': null }} value="{{$type->company_type_id}}">{{ucfirst($type->name_en)}}</option>
+                                                                         @endforeach
+                                                                     @endif
+                                                                 </select>
+                                                               @endif
+                                                               
                                                            </div>
                                                        </section>
                                                        <section class="row form-group form-group-sm">
+                                                        @php
+                                                          if ($company->status == 'active' || $company->status == 'blocked') {
+                                                            $disabled = 'disabled';
+                                                          }
+                                                          else{
+                                                            $disabled = null;
+                                                          }
+                                                        @endphp
                                                            <div class="col-md-6">
                                                                <label >Establishment Name <span class="text-danger">*</span></label>
-                                                               <input name="name_en" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->name_en}}">
+                                                               <input {{$disabled}}  name="name_en" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->name_en}}">
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label >Establishment Name (AR)<span class="text-danger">*</span></label>
-                                                               <input dir="rtl" name="name_ar" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->name_ar}}">
+                                                               <input {{$disabled}} dir="rtl" name="name_ar" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->name_ar}}">
                                                            </div>
                                                        </section>
                                                        <section id="trade-license-container" class="row form-group form-group-sm license {{ $company->company_type_id == 1 ? 'kt-hide': null }}">
@@ -272,84 +323,21 @@
                                                               {{Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->$requirement->requirement_name_ar}}
                                                               <span class="text-danger">*</span>
                                                             </label>
-                                                            <input name="file[]" type="file" multiple class="form-control filer_input form-control-sm">
+                                                            <input name="file[{{$requirement->requirement_id}}][name]" value="{{$requirement->requirement_name}}"  type="hidden" readonly>
+                                                            <input name="file[{{$requirement->requirement_id}}][file][]" type="file" multiple class="form-control filer_input form-control-sm">
                                                           </div>
                                                           <div class="col-md-3">
                                                             <label for="">Issued Date</label>
-                                                            <input name="file[]" type="text" class="form-control form-control-sm">
+                                                            <input name="file[{{$requirement->requirement_id}}][issued_date]" type="text" class="date-picker start form-control form-control-sm">
                                                           </div>
                                                           <div class="col-md-3">
                                                             <label for="">Expired Date</label>
-                                                            <input name="file[]" type="text" class="form-control form-control-sm">
+                                                            <input name="file[{{$requirement->requirement_id}}][expired_date]" type="text" class="date-picker end form-control form-control-sm">
                                                           </div>
                                                         </section>
                                                       @endforeach
                                                     @endif
-                                                    
-                                                    {{-- <div class="alert alert-secondary kt-padding-t-5 kt-padding-b-5" role="alert">
-                                                        <div class="alert-icon"><i class="flaticon-exclamation-2"></i></div>
-                                                        <div class="alert-text kt-font-dark">
-                                                          <h6 class="alert-heading kt-margin-b-0">Note :</h6>
-                                                          <p class="text-danger">
-                                                            Uploaded file will be removed if replace with new upload.
-                                                          </p>
-                                                          <hr class="kt-margin-5">
-                                                          <ul>
-                                                            <li>maximum file size 5MB</li>
-                                                          </ul>
-                                                        </div>
-                                                      </div> --}}
-                                                      {{-- <table class="table table-borderless border table-hover" id="requirement-datatable">
-                                                        <thead>
-                                                          <tr>
-                                                            <th>{{__('REQUIREMENT NAME')}}</th>
-                                                            <th>{{__('FILE SIZE')}}</th>
-                                                            <th>{{__('ISSUED DATE')}}</th>
-                                                            <th>{{__('EXPIRED DATE')}}</th>
-                                                          </tr>
-                                                        </thead>
-                                                      </table> --}}
-                                                      {{--  @if ($requirements = App\Requirement::where('requirement_type', 'company')->get())
-                                                           @foreach ($requirements as $key => $requirement)
-                                                             <div class="form-group-sm form-group row">
-
-                                                               <div class="col-sm-6">
-                                                                   <label>{{Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar}} <span class="text-danger">*</span></label>
-                                                                   <input name="file[{{$requirement->requirement_id}}][name]" value="{{$requirement->requirement_name}}"  type="hidden" readonly>
-                                                                   <input onchange="readUrl(this);" name="file[{{$requirement->requirement_id}}][file][]"  type="file" autocomplete="off" class="form-control-sm form-control" multiple>
-                                                               </div>
-
-                                                               <div class="col-sm-2">
-                                                                   <label>Issued Date <span class="text-danger {{$requirement->dates_required ? null: 'kt-hide'}} ">*</span></label>
-                                                                   <input {{$requirement->dates_required ? 'required': 'null'}} type="text" name="file[{{$requirement->requirement_id}}][issued_date]" class="date-picker start form-control-sm form-control" autocomplete="off">
-                                                               </div>
-
-                                                               <div class="col-sm-2">
-                                                                   <label>Expired Date <span class="text-danger {{$requirement->dates_required ? null: 'kt-hide'}} ">*</span></label>
-                                                                   <input {{$requirement->dates_required ? 'required': 'null'}}  type="text" name="file[{{$requirement->requirement_id}}][expired_date]" class="date-picker end form-control-sm form-control" autocomplete="off">
-                                                               </div>
-
-                                                             </div>
-
-                                                             <div class="form-group row">
-                                                               <div class="col-12">
-                                                                 <table>
-                                                                   <tr>
-                                                                     <td></td>
-                                                                     <td><button class="btn btn-danger btn-sm">remove</button></td>
-                                                                     <td>
-                                                                      @foreach ($requirement->company as $file)
-                                                                       <span>{{$file->path}}</span>
-                                                                      @endforeach
-                                                                     </td>
-                                                                   </tr>
-                                                                 </table>
-                                                               </div>
-                                                             </div>
-                                                             
-                                                           @endforeach
-                                                       @endif --}}
-                                                       
+                                                  
                                                    </div>
                                                    
                                                </div>
@@ -364,11 +352,14 @@
                                             @if ($company->status == 'draft')
                                                <button style="padding: 0.5rem 1rem;" type="submit" name="submit" value="draft" class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark">Save as Draft</button>
                                             @endif
-                                               <button type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">Submit Application</button>
+                                               <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">Submit Application</button>
                                            </div>
                                        </div>
                                     </form>
-                                   
+                                  @endif
+
+                             
+                                 
                                     
                                 </div>
                             </div>
@@ -495,7 +486,7 @@
         showThumbs: true,
         limit: 5,
         fileMaxSize: 5,
-        addMore: true,
+        addMore: false,
         allowDuplicates: false,
         extensions: ['pdf', 'jpg', 'png'],
 
