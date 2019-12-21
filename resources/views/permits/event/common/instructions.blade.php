@@ -36,7 +36,8 @@
                     <div class="card-header" id="headingFour6">
                         <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseFour15"
                             aria-expanded="false" aria-controls="collapseFour6">
-                            <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">Rules and Conditions</h6>
+                            <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{__('Rules and Conditions')}}
+                            </h6>
                         </div>
                     </div>
                     <div id="collapseFour15" class="collapse show" aria-labelledby="headingFour6"
@@ -44,7 +45,6 @@
                         <div class="card-body">
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
                             terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-
                         </div>
                     </div>
                 </div>

@@ -40,7 +40,7 @@ class Event extends Model
 
     public function liquor()
     {
-        return $this->hasOne(EventLiquor::class, 'event_id')->withDefault(['company_name_en'=>null, 'company_name_ar'=>null]);
+        return $this->hasOne(EventLiquor::class, 'event_id')->withDefault(['company_name_en'=>null, 'company_name_ar'=>null, 'provided'=> null]);
     }
 
     public function truck()

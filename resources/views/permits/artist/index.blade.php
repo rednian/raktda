@@ -4,6 +4,14 @@
 
 @section('content')
 
+@if(check_is_blocked()['status'] == 'rejected')
+@include('permits.artist.common.company-reject')
+@endif
+
+@if(check_is_blocked()['status'] == 'blocked')
+@include('permits.artist.common.company-block')
+@endif
+
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
     <div class="kt-portlet__body kt-padding-t-5">
@@ -21,6 +29,7 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#draft">{{__('Artist Permit Drafts')}}</a>
                     </li>
+                    @if(check_is_blocked()['status'] != 'blocked' && check_is_blocked()['status'] != 'rejected')
                     <span class="nav-item"
                         style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ url('company/artist/new/1')}}">
@@ -33,6 +42,7 @@
                             </button>
                         </a>
                     </span>
+                    @endif
                 </ul>
             </div>
         </section>
@@ -50,7 +60,7 @@
                             <th>{{__('Location')}}</th>
                             <th>{{__('Artists')}}</th>
                             <th>{{__('Status')}}</th>
-                            <th>{{__('Action')}}</th>
+                            <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -68,7 +78,7 @@
                             <th>{{__('To Date')}}</th>
                             <th>{{__('Location')}}</th>
                             <th>{{__('Artists')}}</th>
-                            <th>{{__('Action')}}</th>
+                            <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -84,7 +94,7 @@
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
                             <th>{{__('Work Location')}}</th>
-                            <th>{{__('Applied Date')}}</th>
+                            <th>{{__('Added On')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                         </tr>
@@ -201,6 +211,9 @@
             serverSide: true,
             searching: true,
             ordering: false,
+            search: {
+                caseInsensitive: false
+            },
             // pageLength: 5,
             // order:[[5,'desc']],
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
@@ -208,13 +221,23 @@
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
                 { data: 'term', name: 'term' },
-                { data: 'issued_date', name: 'issue_date' },
-                { data: 'expired_date', name: 'expire_date' },
+                { data: 'issued_date', name: 'issued_date' },
+                { data: 'expired_date', name: 'expired_date' },
                 { data: 'work_location', name: 'work_location' },
-                { data: 'artist_count', name: 'artist_count' },
+                { data: 'permit_id', name: 'permit_id' },
                 { data: 'permit_status', name: 'permit_status' },
-                { data: 'action', name: 'action' },
+                { data: 'action', name: 'action',  className: "text-center" },
                 { data: 'details', name: 'details' ,  className: "text-center"},
+            ],
+            columnDefs: [
+                {
+                    targets:5,
+                    className:'text-center',
+                    render: function(data, type, full, meta) {
+                        var artistPermit = JSON.parse(data);  
+						return artistPermit.length;
+					}
+                }
             ],
             language: {
                 emptyTable: "No Applied Artist Permits"
@@ -234,6 +257,9 @@
             ordering: false,
             // pageLength: 5,
             deferRender: true,
+            search: {
+                caseInsensitive: false
+            },
             // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
             // order:[[6,'desc']],
             ajax:'{{route("company.fetch_existing_artists")}}',
@@ -241,15 +267,30 @@
                 { data: 'reference_number', name: 'reference_number' },
                 { data: 'term', name: 'term' },
                 { data: 'permit_number', name: 'permit_number' },
-                { data: 'issued_date', name: 'issue_date' },
-                { data: 'expired_date', name: 'expire_date' },
+                { data: 'issued_date', name: 'issued_date' },
+                { data: 'expired_date', name: 'expired_date' },
                 { data: 'work_location', name: 'work_location' },
-                { data: 'artist_count', name: 'artist_count' },
-                { data: 'action', name: 'action' },
+                { data: 'permit_id', name: 'permit_id' },
+                { data: 'action', name: 'action' ,  className: "text-center"},
                 { data: 'download', name: 'download' ,  className: "text-center" },
                 { data: 'details', name: 'details' ,  className: "text-center" },
             ],
             columnDefs: [
+                {
+                    targets:-4,
+                    className:'text-center',
+                    render: function(data, type, full, meta) {
+                        var artistPermit = JSON.parse(data);  
+                        var total = artistPermit.length;
+                        var noofapproved = 0 ;
+                        for (var i = 0 ;i < total; i++) {
+                            if (artistPermit[i].artist_permit_status == 'approved') {
+                                noofapproved++;
+                            }
+                        }
+                        return 'Approved ' + noofapproved + ' of ' + total;
+                    }
+                },
                 {
                     targets:-1,
                     width: '5%',
@@ -269,6 +310,9 @@
             processing: true,
             serverSide: true,
             searching: true,
+            search: {
+                caseInsensitive: false
+            },
             // ordering: false,
             // pageLength: 5,
             deferRender: true,
@@ -300,22 +344,17 @@
 
     });
 
-    const cancel_permit = (id, refno) => {
+    const cancel_permit = (id,  refno) => {
         var url = "{{route('company.artist.get_status', ':id')}}";
         url = url.replace(':id', id);
         $.ajax({
             url: url,
             success: function(result){
-               result = result.replace(/\s/g, '');
-                if(result != '') {
-                    if(result == 'new'){
-                        $('#cancel_permit').modal('show');
-                        $('#cancel_permit_id').val(id);
-                        $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
-                    }else {
-                        alert('Permit is already in processing');
-                    }
-
+                console.log(result)
+                if(result['lock'] == 'no'){
+                    $('#cancel_permit').modal('show');
+                    $('#cancel_permit_id').val(id);
+                    $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
                 }
             }
         });

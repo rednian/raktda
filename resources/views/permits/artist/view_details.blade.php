@@ -35,8 +35,9 @@
             <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
             <span>{{__('To Date')}}:</span>&emsp;
             <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-            <span>{{__('Location')}}:</span>&emsp;
-            <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+            <span>{{__('Work Location')}}:</span>&emsp;
+            <span
+                class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
             <span>{{__('Ref NO.')}}</span>&emsp;
             <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
             @if($permit_details->event)
@@ -56,7 +57,7 @@
                         <th>{{__('Mobile Number')}}</th>
                         {{-- <th>@lang('words.email')</th> --}}
                         <th>{{__('Status')}}</th>
-                        <th>{{__('Action')}}</th>
+                        <th class="text-center">{{__('Action')}}</th>
                     </tr>
                 </thead>
                 {{-- {{dd($permit_details)}} --}}

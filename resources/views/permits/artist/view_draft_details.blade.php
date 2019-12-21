@@ -32,8 +32,9 @@
                 <span>{{__('To Date')}}:</span>&emsp;
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($draft_details[0]->expiry_date))}}</span>&emsp;&emsp;
-                <span>{{__('Location')}}:</span>&emsp;
-                <span class="kt-font-info">{{$draft_details[0]->work_location}}</span>&emsp;&emsp;
+                <span>{{__('Work Location')}}:</span>&emsp;
+                <span class="kt-font-info">
+                    {{getLangId() == 1 ? ucwords($draft_details[0]->work_location) : $draft_details[0]->work_location_ar}}</span>&emsp;&emsp;
                 @if($draft_details[0]->event)
                 <span>{{__('Connected to Event')}} :</span>&emsp;
                 <span
@@ -52,7 +53,7 @@
                         <th>{{__('Profession')}}</th>
                         <th>{{__('Mobile Number')}}</th>
                         <th>{{__('Status')}}</th>
-                        <th>{{__('Action')}}</th>
+                        <th class="text-center">{{__('Action')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,7 +71,7 @@
                         title="View">
                         <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                         </a></td> --}}
-                        <td>
+                        <td class="text-center">
                             <a href="{{route('temp_artist_details.view' , [ 'id' => $atd->id , 'from' => 'view-draft'])}}"
                                 title="View">
                                 <button class="btn btn-sm btn-secondary btn-elevate">View</button>

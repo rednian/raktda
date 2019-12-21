@@ -338,4 +338,17 @@ function translateAr($word)
     return $word;
 }
 
+function check_is_blocked()
+{
+    $companyID  = Auth::user()->EmpClientId;
+    $data['status'] = 'active';$data['comments'] = [];
+    if($companyID){
+        $data['status'] = Auth::user()->company->status;
+    }
+    if($data['status'] == 'blocked'){
+        $data['comments'] = \App\CompanyComment::where('company_id', $companyID)->latest()->first();
+    }
+    return $data ;
+}
+
 

@@ -14,8 +14,9 @@
                         <thead>
                             <th>#</th>
                             <th>{{__('Company')}}</th>
+                            <th>{{__('Company - Ar')}}</th>
                             <th>{{__('Plate No')}}</th>
-                            <th>{{__('Type of Food')}}</th>
+                            <th>{{__('Food Services')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
@@ -128,7 +129,7 @@
                 </form>
                 <small id="truck_warning_text" class="text-center text-danger "></small>
                 <div class="d-flex justify-content-between kt-margin-t-10">
-                    <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">Back</button>
+                    <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">{{__('Back')}}</button>
                 </div>
             </div>
         </div>

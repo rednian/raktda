@@ -568,7 +568,7 @@
                             var k = s + 1 ;
                            $('#food_truck_list').append('<tr class="text-center"><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td>'+ moment(result[s].registration_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY')+'</td><td>'+ moment(result[s].registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="editThisTruck('+result[s].event_truck_id+', '+k+')">Edit</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
-                           if(result.length > 1){
+                           if(result[s].paid == 0){
                                $('#append_'+s+'').append('<a class="btn btn-secondary" data-target="#removeModal" data-toggle="modal">Remove</a>');
                                $('#remove_truck_id').val(result[s].event_truck_id);
                            }

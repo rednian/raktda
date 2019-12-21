@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$event_details->permit_number}} - Liquor Permit</title>
+    <title>{{$event_details->permit_number}} - Event Permit</title>
     <style>
         * {
             box-sizing: border-box;
@@ -166,13 +166,14 @@
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3"> {{$event_details->owner_name}}<br />
-                    {{$event_details->owner_name_ar}}</td>
+                <td colspan="3">{{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}
+                </td>
                 <td class="subhead">صاحب الترخيص <br />License owner</td>
             </tr>
         </tbody>
     </table>
 
+    @if($liquor->provided != 1)
     <table id="permit_data" border="1">
         <thead>
             <tr>
@@ -196,7 +197,7 @@
             </tr>
             @if($liquor->liquor_service == 'limited')
             <tr>
-                <td colspan="3">{{$event_details->liquor_types}}</td>
+                <td colspan="3">{{$liquor->liquor_types}}</td>
                 <td class="subhead"><br />Liquor Types</td>
             </tr>
             @endif
@@ -220,7 +221,7 @@
             </tr>
         </tbody>
     </table>
-
+    @endif
     <table id="date_data" border="1">
         <tr>
             <td>Printing Date: </td>

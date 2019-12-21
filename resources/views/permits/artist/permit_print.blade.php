@@ -446,7 +446,8 @@
                                             <h5>UID No/ رقم UID</h5>
                                         </td>
                                         <td>
-                                            <p>{{$artist_permit->uid_number}}</p>
+                                            <p>{{!empty($artist_permit->country) && $artist_permit->country->country_code == 'UAE' ?  $artist_permit->identification_number : $artist_permit->uid_number}}
+                                            </p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -488,6 +489,7 @@
             @endforeach
         </table>
     </div>
+
     <htmlpagefooter name="page-footer">
         <footer>
             <div class="seal--space">

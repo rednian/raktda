@@ -6,9 +6,8 @@
         <div class="alert-text">
             <div class="kt-scroll" data-scroll="true" style="max-height: 100px">
                 <ul>
-                    <li>{{__('File size should be less than 5MB')}}</li>
-                    <li>{{__('For Logo or Image, Upload jpg,png')}} </li>
-                    <li>{{__('For Documents, Upload pdf,jpg,png,doc')}} </li>
+                    {{__('Your Company Registration is Rejected !')}}
+                    {{__('Please Contact RakTDA Administrator')}}
                 </ul>
             </div>
         </div>

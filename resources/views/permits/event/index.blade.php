@@ -4,6 +4,14 @@
 
 @section('content')
 
+@if(check_is_blocked()['status'] == 'rejected')
+@include('permits.artist.common.company-reject')
+@endif
+
+@if(check_is_blocked()['status'] == 'blocked')
+@include('permits.artist.common.company-block')
+@endif
+
 <input type="hidden" id="lang_id" value="{{getLangId()}}">
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
@@ -25,6 +33,7 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#draft">{{__('Event Permit Drafts')}}</a>
                     </li>
+                    @if(check_is_blocked()['status'] != 'blocked' && check_is_blocked()['status'] != 'rejected')
                     <span class="nav-item"
                         style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ route('event.create')}}">
@@ -37,6 +46,7 @@
                             </button>
                         </a>
                     </span>
+                    @endif
                 </ul>
 
 
@@ -55,7 +65,7 @@
                             <th>{{__('Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
                             <th class="text-center">{{__('Status')}}</th>
-                            <th>{{__('Action')}}</th>
+                            <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -67,12 +77,13 @@
                     <thead>
                         <tr class="kt-font-transform-u">
                             <th>{{__('Permit No')}}</th>
+                            <th>{{__('Event Type')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To')}} </th>
                             <th>{{__('Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
-                            <th>{{__('Action')}}</th>
-                            <th>{{__('Download')}}</th>
+                            <th class="text-center">{{__('Action')}}</th>
+                            <th></th>
                             <th></th>
 
                         </tr>
@@ -98,8 +109,8 @@
                             <th>{{__('To')}} </th>
                             <th>{{__('Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
-                            <th>{{__('Applied Date')}}</th>
-                            <th>{{__('Action')}}</th>
+                            <th>{{__('Added On')}}</th>
+                            <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -238,23 +249,16 @@
             ajax:'{{route("company.event.fetch_applied")}}',
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
-                { data: 'type.name_en', name: 'type.name_en' },
-                { data: 'issued_date', name: 'issue_date' },
-                { data: 'expired_date', name: 'expire_date' },
+                { data: 'type_name', name: 'type_name' },
+                { data: 'issued_date', name: 'issued_date' },
+                { data: 'expired_date', name: 'expired_date' },
                 { data: 'name_en', name: 'name_en' },
                 // { data: 'venue_en', name: 'venue_en' },          
                 { data: 'permit_status', name: 'permit_status' },
-                { data: 'action', name: 'action' },
+                { data: 'action', name: 'action' ,  className: "text-center"},
                 { data: 'details', name: 'details' ,  className: "text-center"},
             ],
             columnDefs: [
-                {
-                    targets:1,
-                    className: 'dt-body-nowrap dt-head-nowrap',
-                    render: function(data, type, full, meta) {
-						return  $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span>${full.type.name_ar}</span>`;
-					}
-                },
                 // {
                 //     targets:4,
                 //     className: 'dt-body-nowrap dt-head-nowrap',
@@ -290,24 +294,23 @@
             },
             columns: [
                 { data: 'permit_number', name: 'permit_number' },
-                // { data: 'type.name_en', name: 'type.name_en' },
-                { data: 'issued_date', name: 'issue_date' },
-                { data: 'expired_date', name: 'expire_date' },
+                { data: 'type_name', name: 'type_name' },
+                { data: 'issued_date', name: 'issued_date' },
+                { data: 'expired_date', name: 'expired_date' },
                 { data: 'name_en', name: 'name_en' },
                 // { data: 'venue_en', name: 'venue_en' },
-               
                 // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                { data: 'action', name: 'action' },
+                { data: 'action', name: 'action',  className: "text-center" },
                 { data: 'download', name: 'download',  className: "text-center" },
                 { data: 'details', name: 'details' ,  className: "text-center"},
             ],
             columnDefs: [
-                // {
-                //     targets:1,
-                //     render: function(data, type, full, meta) {
-				// 		return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span >${full.type.name_ar}</span>`;
-				// 	}
-                // }
+                {
+                    targets:1,
+                    render: function(data, type, full, meta) {
+						return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span >${full.type.name_ar}</span>`;
+					}
+                }
             ],
             language: {
                 emptyTable: "No Existing Event Permits"
@@ -331,7 +334,7 @@
                 { data: 'name_en', name: 'name_en' },
                 { data: 'venue_en', name: 'venue_en' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                { data: 'action', name: 'action' },
+                { data: 'action', name: 'action' ,  className: "text-center"},
                 { data: 'details', name: 'details' ,  className: "text-center"},
             ],
             columnDefs: [
@@ -439,6 +442,9 @@
 
           var calendar = new FullCalendar.Calendar(calendarEl, {
               plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+              @if(Auth::user()->LanguageId != 1)
+                locale: 'ar',
+                @endif
               isRTL: KTUtil.isRTL(),
               header: {
                   left: 'prev,next today',
@@ -460,7 +466,7 @@
               },
               defaultView: 'dayGridMonth',
               // defaultDate: TODAY,
-              editable: true,
+              editable: false,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
               events: {

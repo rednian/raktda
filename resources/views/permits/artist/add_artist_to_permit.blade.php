@@ -64,7 +64,7 @@ $language_id = \Auth::user()->LanguageId;
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u">{{__('Personal Information')}}</h6>
+                                                    <h6 class="kt-font-transform-u">{{__('Artist Details')}}</h6>
                                                 </div>
                                             </div>
                                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -741,7 +741,7 @@ $language_id = \Auth::user()->LanguageId;
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Person Code Search</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Person Code Search')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearPersonCode()">
                 </button>
             </div>
@@ -750,6 +750,9 @@ $language_id = \Auth::user()->LanguageId;
         </div>
     </div>
 </div>
+
+@include('permits.artist.modals.artist_in_permit');
+
 @endsection
 @section('script')
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
@@ -1293,7 +1296,6 @@ function checkVisaRequired(){
                         permit_id: permit_id
                     },
                     success: function (data) {
-
                     $('#artist_exists').modal({
                         backdrop: 'static',
                         keyboard: false,
@@ -1359,12 +1361,36 @@ function checkVisaRequired(){
                 apd = ad.artist_permit[i];
                 $('#artist_id').val(ad.artist_id);
                 $('#code').val(ad.person_code);
+                setDataIntoArtistDetails(apd);
             }else if(from == 2){
-                apd = ad;
-                $('#artist_id').val(ad.artist.artist_id);
-                $('#code').val(ad.artist.person_code);
+                $.ajax({
+                    url: "{{route('artist.check_artist_exists_in_permit')}}",
+                    type: "POST",
+                    async: false,
+                    data: {
+                        permit_id:$('#permit_id').val(),
+                        artist_id: ad.artist.artist_id
+                    },
+                    success: function (result) {
+                        if(result.trim() == 'yes')
+                        {
+                            $('#artist_in_permit_exists').modal('show');
+                            clearPersonCode();
+                            return ;
+                        }else {
+                            apd = ad;
+                            $('#artist_id').val(ad.artist.artist_id);
+                            $('#code').val(ad.artist.person_code);
+                            setDataIntoArtistDetails(apd);
+                        }
+                    }
+                });
             }
 
+        }
+
+        function setDataIntoArtistDetails(apd)
+        {
             $('#is_old_artist').val(2);
 
             var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');

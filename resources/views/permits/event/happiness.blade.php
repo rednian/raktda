@@ -102,7 +102,7 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Establishment Name')}} <span
+                                                                {{__('Establishment Type')}} <span
                                                                     class="text-danger">*</span>
                                                             </label>
                                                             <select class="form-control form-control-sm"
@@ -152,7 +152,7 @@
                                                                 class=" col-form-label kt-font-bold text-right">{{__('Owner Name - Ar')}}
                                                                 <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name_ar" id="owner_name_ar"
+                                                                name="owner_name_ar" id="owner_name_ar" dir="rtl"
                                                                 placeholder="{{__('Owner Name - Ar')}}"
                                                                 value="{{$event->owner_name_ar}}" readonly>
                                                         </div>
@@ -1370,7 +1370,7 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
                         
                         }

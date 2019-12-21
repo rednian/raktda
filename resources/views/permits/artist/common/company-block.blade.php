@@ -6,9 +6,11 @@
         <div class="alert-text">
             <div class="kt-scroll" data-scroll="true" style="max-height: 100px">
                 <ul>
-                    <li>{{__('File size should be less than 5MB')}}</li>
-                    <li>{{__('For Logo or Image, Upload jpg,png')}} </li>
-                    <li>{{__('For Documents, Upload pdf,jpg,png,doc')}} </li>
+                    {{__('Your Company is blocked ! The Reason is')}}
+                    {{getLangId() == 1 ? check_is_blocked()['comments']->comment_en : check_is_blocked()['comments']->comment_ar}}
+                    . <br />
+                    {{__('You are not allowed to take any action. Only view is allowed')}}<br />
+                    {{__('Please Contact RakTDA Administrator')}}
                 </ul>
             </div>
         </div>

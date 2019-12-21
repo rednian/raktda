@@ -27,10 +27,10 @@
                             <form id="happiness_center" autocomplete="off" novalidate>
                                 <div class="d-flex justify-content-around happiness--center">
                                     <input type="hidden" id="sel_value">
-                                    <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 1)">
+                                    <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id,3)">
                                         <!--<a href="/company/artist_permits"> -->
-                                        <!-- <img src="./assets/img/happiness.svg" alt="" id="happy_btn"> -->
-                                        <?php echo file_get_contents('./img/happiness.svg'); ?>
+                                        <!-- <img src="./assets/img/sad.svg" alt="" id="sad_btn"> -->
+                                        <?php echo file_get_contents('./img/sad.svg'); ?>
                                         <!--</a> -->
                                     </div>
                                     <div id="notbad" style="cursor:pointer" onclick="makeSelected(this.id,2)">
@@ -39,10 +39,10 @@
                                         <?php echo file_get_contents('./img/notbad.svg'); ?>
                                         <!--</a> -->
                                     </div>
-                                    <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id,3)">
+                                    <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 1)">
                                         <!--<a href="/company/artist_permits"> -->
-                                        <!-- <img src="./assets/img/sad.svg" alt="" id="sad_btn"> -->
-                                        <?php echo file_get_contents('./img/sad.svg'); ?>
+                                        <!-- <img src="./assets/img/happiness.svg" alt="" id="happy_btn"> -->
+                                        <?php echo file_get_contents('./img/happiness.svg'); ?>
                                         <!--</a> -->
                                     </div>
                                     <input type="hidden" id="permit_id" value={{$id}}>
