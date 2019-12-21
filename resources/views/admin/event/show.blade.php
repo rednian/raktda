@@ -31,10 +31,11 @@
          </div>
     </div>
     <div class="kt-portlet__body kt-padding-t-5">
-      @include('admin.event.includes.existing-notification')
+      {{-- @include('admin.event.includes.existing-notification') --}}
       <section class="row">
         <div class="col-md-7">
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
+          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Owner')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->owner_name) : $event->owner_name_ar }}</p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type ')}} </span>: 
             {{Auth::user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
           </p>
@@ -60,9 +61,7 @@
             {{  Auth::user()->LanguageId == 1 ? ucfirst($event->venue_en) :  $event->venue_ar }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-30">{{__('Address ')}}</span>: {{ $event->full_address }}</p>
-          {{-- <h6 class="kt-font-dark kt-margin-t-10">Event Map Location</h6> --}}
-          <iframe class="border kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 310px; width: 100%; margin-top: 1%; border-style: none;" >
-          </iframe>
+          <hr class="">
           <section class="kt-widget kt-widget--user-profile-3">
             <div class="kt-widget__bottom kt-margin-0" style="border:none;">
               <div class="kt-widget__item kt-padding-t-5">
@@ -88,7 +87,7 @@
                   <i class="flaticon-web"></i>
                 </div>
                 <div class="kt-widget__details">
-                  <span class="kt-widget__title">{{{__('IMAGES UPLOADED')}}}</span>
+                  <span class="kt-widget__title">{{{__('IMAGES')}}}</span>
                   <a href="#" class="kt-widget__value">{{$event->otherUpload()->count()}}</a>
                 </div>
               </div>
@@ -121,50 +120,10 @@
               </div>
             </div>
           </section>
-          <section class="row">
-            <div class="col-md-12">
-              <form class="border kt-padding-5">
-                <div class="form-group row form-group-xs">
-                  <label class="col-7 col-form-label">Show event to all Registered company Calendar</label>
-                  <div class="col-3">
-                    <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
-                      <label class="kt-margin-b-0">
-                        <input type="checkbox" checked="checked" name="">
-                        <span></span>
-                      </label>
-                    </span>
-                  </div>
-                </div>
-                <div class="form-group row form-group-sm">
-                  <label class="col-7 col-form-label">Show event to public website calendar</label>
-                  <div class="col-3">
-                    <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
-                      <label class="kt-margin-b-0">
-                        <input type="checkbox" checked="checked" name="">
-                        <span></span>
-                      </label>
-                    </span>
-                  </div>
-                </div>
-                <div class="form-group row form-group-sm">
-                  <label class="col-7 col-form-label">Do you want to cancel this event?</label>
-                  <div class="col-3">
-                    <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
-                      <label class="kt-margin-b-0">
-                        <input type="checkbox" checked="checked" name="">
-                        <span></span>
-                      </label>
-                    </span>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </section>
-          <h6 class="kt-margin-t-10 kt-font-dark">{{__('Event Description')}}</h6>
-          <p class="border kt-padding-5 kt-font-dark">
-            {{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}
-          </p>
-          
+
+          {{-- <h6 class="kt-font-dark kt-margin-t-10">Event Map Location</h6> --}}
+          <iframe class="border kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 310px; width: 100%; margin-top: 1%; border-style: none;" >
+          </iframe>
         </div>
         <div class="col-md-5 border">
           <div class="kt-widget kt-widget--user-profile-4">
@@ -188,6 +147,16 @@
                       {!! permitStatus($event->status)!!}                      
                     </div>
                   </div>
+                  @if ($event->status == 'cancelled')
+                   <div class="kt-widget__section">
+                    <h6 class="kt-font-dark">{{ __('Cancel Reason') }}   <small title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}" class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small></h6>
+
+                    <hr class="kt-margin-b-0 kt-margin-t-0">
+                    <p>
+                      {{ucfirst($event->cancel_reason)}}
+                    </p>
+                   </div>
+                  @endif
                 </div>
               </div>
               <div class="kt-widget__body kt-margin-t-5">
@@ -227,9 +196,7 @@
                   @if ($event->transaction()->exists())
                    <button type="button" class="btn btn-secondary btn-sm kt-margin-r-5">Download</button>
                   @endif
-                  @if ($event->status == 'active')
-                   <button type="button" class="btn btn-maroon btn-sm">Cancel Event</button>
-                  @endif
+                  
                  </div>
                  <hr>
                   <h6 class="kt-font-dark">{{ __('Establishment Information') }}</h6>
@@ -265,6 +232,82 @@
             </div>
         </div>
       </section>
+
+      <section class="row">
+        <div class="col-md-7">
+          <div class="form-group form-group-sm">
+            <label class="kt-font-dark kt-font-transform-u">{{__('Event Details')}}</label>
+            <textarea style="resize: both;" readonly rows="4" class="form-control">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}</textarea>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <form class=" kt-padding-5 kt-margin-t-10">
+            <div class="form-group row form-group-sm">
+              <label class="col-10 col-form-label">Show event to all Registered company Calendar</label>
+              <div class="col-2">
+                <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                  <label class="kt-margin-b-0">
+                    <input type="checkbox" checked="checked" name="">
+                    <span></span>
+                  </label>
+                </span>
+              </div>
+            </div>
+            <div class="form-group row form-group-sm">
+              <label class="col-10 col-form-label">Show event to public website calendar</label>
+              <div class="col-2">
+                <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                  <label class="kt-margin-b-0">
+                    <input type="checkbox" checked="checked" name="">
+                    <span></span>
+                  </label>
+                </span>
+              </div>
+            </div>
+            
+          </form>
+        </div>
+      </section>
+      @if ($event->status == 'active')
+        <section class="row">
+          <div class="col-md-12">
+            <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
+                <div class="card border">
+                  <div class="card-header " id="headingOne6">
+                    <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6">
+                        {{__('CANCEL EVENT')}}
+                    </div>
+                  </div>
+                  <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6">
+                    <div class="card-body kt-padding-b-0">
+                      <form action="{{ route('admin.event.cancel', $event->event_id) }}" method="post" class="form" id="frm-status">
+                        @csrf
+                        <div class="form-group row form-group-sm">
+                          <div class="col-md-6">
+                            <label for="">Remarks <span class="text-danger">*</span></label>
+                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                          <div class="col-md-6">
+                            <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col">
+                            <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="cancelled">SUBMIT</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          
+        </section>
+      @endif
+      
+      
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist">
           <li class="nav-item">
             <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_1_4_tab_content" role="tab">
@@ -323,7 +366,7 @@
                     <tr>
                         <th class="no-wrap">{{ __('NAME') }}</th>
                         <th>{{ __('REMARKS') }}</th>
-                        <th class="no-wrap">{{ __('CHECKED DATE') }}</th>
+                        <th class="no-wrap">{{ __('DATE') }}</th>
                         <th class="no-wrap">{{ __('ACTION TAKEN') }}</th>
                     </tr>
                 </thead>
@@ -344,6 +387,7 @@
 
      eventComment();
      requirementTable();
+     $('form#frm-status').validate();
   });
 
   function requirementTable(){
@@ -384,6 +428,8 @@
       ajax:{
         url: '{{ route('admin.event.comment', $event->event_id) }}',
       },
+      columnDefs:[{target:'_all', className: 'no-wrap'}],
+      responsive: true,
       columns: [
       {data: 'name'},
       {data: 'comment'},

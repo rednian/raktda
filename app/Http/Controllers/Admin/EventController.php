@@ -56,8 +56,10 @@
 
 			if ($event) {
 			try {
-				$event->update(['cancel_reason'=> $request->comment ,'status'=>'cancelled']);
+				$event->update(['cancel_reason'=> $request->comment ,'status'=>'cancelled', 'cancel_date'=>Carbon::now()]);
+				$request['action'] = $request->status;
 				$event->comment()->create(array_merge($request->all(), ['user_id'=>$request->user()->user_id]));
+
 				if($event->permit()->count() > 0){
 					$event->permit->update(['permit_status'=>'cancelled', 'cancel_reason'=> $request->comment]);
 					$event->permit->comment()->create(array_merge($request->all(), ['user_id'=>$request->user()->user_id]));
@@ -66,7 +68,7 @@
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
 			}
-			  return response()->json(['message' => $result]);
+			  return redirect()->back()->with('message',$result);
 			}
 		}
 
@@ -178,7 +180,7 @@
 						break;
 					case 'need approval':
 
-					dd($request->all());
+					// dd($request->all());
 
 						// $user = User::availableInspector($event->issued_date)->get();
 						// $emp = EmployeeWorkSchedule::getSchedule()->get();
@@ -216,13 +218,13 @@
 							}
 						}
 
-						if($request->has('inspection')){
-							//SAVE APPOINTMENT
-							$this->addAppointment([
-								'id' => $event->event_id,
-								'type' => 'event'
-							]);
-						}
+						// if($request->has('inspection')){
+						// 	//SAVE APPOINTMENT
+						// 	$this->addAppointment([
+						// 		'id' => $event->event_id,
+						// 		'type' => 'event'
+						// 	]);
+						// }
 
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
@@ -491,9 +493,13 @@
 
 		public function imageDatatable(Request $request, Event $event)
 		{
-			return DataTables::of($even->otherUpload()->get())
+			return DataTables::of($event->otherUpload()->get())
 			->editColumn('path', function($image){
-				return '';
+
+				$html = '<a href="'.$image->path.'" data-type="image" data-type="ajax" data-fancybox>';
+				$html .= '<img  src="'.$image->thumbnail.'" class="img img-responsive img-thumbnail center-block" style="max-height: 260px;">';
+				$html .= '</a>';
+				return $html;
 			})
 			->editColumn('size', function($image){
 				return $image->size;
@@ -501,6 +507,7 @@
 			->editColumn('description', function($image){
 				return $image->size;
 			})
+			->rawColumns(['path'])
 			->make(true);
 		}
 
@@ -511,20 +518,20 @@
 
 				return DataTables::of($comments)
 				->addColumn('name', function($comment){
-					$role = $comment->user_type == 'admin' ? $comment->user->roles()->first()->NameEn : 'Client';
-					return defaults($comment->user->NameEn, $role);
+					// $role = $comment->user_type == 'admin' ? $comment->user->roles()->first()->NameEn : 'Client';
+					return defaults($comment->user->NameEn, $comment->user->roles()->first()->NameEn);
 				})
 				->editColumn('comment', function($comment){
 					return ucfirst($comment->comment);
 				})
 				->addColumn('date', function($comment){
-					// dd($comment->created_at->);
-					return $comment->created_at->format('d-M-Y h:i A');
+					return '<span class="text-underline" title="'.$comment->created_at->format('l h:i A |d-F-Y').'">'.humanDate($comment->created_at).'</span>';
+					return ;
 				})
 				->addColumn('action_taken', function($comment){
 					return ucwords($comment->action);
 				})
-				->rawColumns(['name'])
+				->rawColumns(['name', 'date'])
 				->make(true);
 			}
 		}

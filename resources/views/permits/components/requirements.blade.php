@@ -4,12 +4,11 @@
             <i class="flaticon-warning"></i>
         </div>
         <div class="alert-text">
-            <h5 class="alert-text">Upload Instructions</h5>
             <div class="kt-scroll" data-scroll="true" style="max-height: 100px">
                 <ul>
-                    <li>File size should be less than 5MB</li>
-                    <li>For Logo or Image, Upload jpg,png </li>
-                    <li>For Documents Upload, pdf,jpg,png,doc </li>
+                    <li>{{__('File size should be less than 5MB')}}</li>
+                    <li>{{__('For Logo or Image, Upload jpg,png')}} </li>
+                    <li>{{__('For Documents, Upload pdf,jpg,png,doc')}} </li>
                 </ul>
             </div>
         </div>

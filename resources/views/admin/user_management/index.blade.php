@@ -2,9 +2,19 @@
 @section('style')
 <link rel="stylesheet" href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}">
 <style>
-  .fc-unthemed .fc-event .fc-title, .fc-unthemed .fc-event-dot .fc-title { color: #fff; }
-  .fc-unthemed .fc-event .fc-time, .fc-unthemed .fc-event-dot .fc-time { color: #fff; }
-   .widget-toolbar{ cursor: pointer; }
+	.fc-unthemed .fc-event .fc-title,
+	.fc-unthemed .fc-event-dot .fc-title {
+		color: #fff;
+	}
+
+	.fc-unthemed .fc-event .fc-time,
+	.fc-unthemed .fc-event-dot .fc-time {
+		color: #fff;
+	}
+
+	.widget-toolbar {
+		cursor: pointer;
+	}
 </style>
 @stop
 @section('content')
@@ -115,14 +125,31 @@
 						</table>
 					</div>
 		        </div>
-				
+
 			</div>
-	 </section>
+			<div class="tab-pane" id="holiday" role="tabpanel">
+				<section class="row">
+					<div class="col-12">
+						<a href="{{ URL::signedRoute('user_management.holiday.add') }}"
+							class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Add Holiday') }}</a>
+					</div>
+				</section>
+				<section class="row">
+					<div class="col-12">
+						<div id="holiday_calendar"></div>
+					</div>
+				</section>
+			</div>
+		</div>
+
+	</div>
+</section>
 @stop
 @section('script')
 	<script>
 		var tblUser;
 		var tblUserGov;
+
 		$(document).ready(function(){
 
 			$('#kt_select2_1, #kt_select2_1_validate').select2({
@@ -358,5 +385,5 @@
 	           	}
 			});
 		});
-	</script>
+</script>
 @stop

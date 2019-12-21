@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified']], function 
     Route::post('artist/check_artist/exists', 'Company\ArtistController@check_artist_exists')->name('artist.check_artist_exists');
     Route::post('artist/fetch_event_details', 'Company\ArtistController@fetch_event_details')->name('artist.fetch_event_details');
     Route::get('artist/checkVisaRequired/{id}', 'Company\ArtistController@checkVisaRequired')->name('artist.checkVisaRequired');
-
+    Route::post('artist/check_artist_exists_in_permit', 'Company\ArtistController@check_artist_exists_in_permit')->name('artist.check_artist_exists_in_permit');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');

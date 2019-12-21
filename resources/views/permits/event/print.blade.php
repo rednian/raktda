@@ -167,8 +167,7 @@
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3"> {{$event_details->owner_name}}<br />
-                    {{$event_details->owner_name_ar}}</td>
+                <td colspan="3"> {{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}</td>
                 <td class="subhead">صاحب الترخيص <br />License owner</td>
             </tr>
         </tbody>
@@ -249,15 +248,14 @@
             <td>{{date('d/m/Y')}}</td>
         </tr>
     </table>
-
     <div id="dept_name">
         <h2>إدارة التراخيص السياحية وضمان الجودة</h2>
         <h3>Department of Tourism Licensing & Quality Assurance</h3>
     </div>
-
     <footer>
         <div>
-            Department of Tourism Licensing & Quality Assurance - RAKTDA - Al Marjan Island - RAK - UAE, PO BOX 29798
+            Department of Tourism Licensing & Quality Assurance - RAKTDA - Al Marjan Island - RAK - UAE, PO BOX
+            29798
         </div>
         <div>
             T +97172338998, F +97172338118

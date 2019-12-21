@@ -37,7 +37,6 @@
     <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
 
-
     <div class="kt-portlet__body">
         <div class="kt-container">
             <section class="row">
@@ -51,7 +50,8 @@
                         <tr class="kt-margin-b-0 kt-font-dark">
                             <td class="kt-font-bold kt-margin-r-15">{{__('Event Type')}}</td>
                             <td>:</td>
-                            <td>{{getLangId() == 1 ? ucwords($event->type->name_en) : $event->type->name_ar}}</td>
+                            <td>{{!empty($event->type) ? getLangId() == 1 ? ucwords($event->type->name_en) : $event->type->name_ar : ''}}
+                            </td>
                         </tr>
                     </table>
 
@@ -90,6 +90,9 @@
                                 </div>
                             </div>
                         </div>
+
+                        <input type="hidden" id="event_id" value="{{$event->event_id}}">
+
                         <div class="kt-widget__body kt-margin-t-5">
                             <hr>
                             <table class="table table-sm table-hover table-borderless table-display">
@@ -577,6 +580,7 @@
                         $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
                         $('#liquor_details .ajax-file-upload-red').trigger('click');
+                        console.log(data);
                         if(data.provided == 1)
                         {
                             checkLiquorVenue(1);

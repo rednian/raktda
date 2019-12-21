@@ -95,7 +95,7 @@
                                         <input type="text" class="form-control form-control-sm"
                                             placeholder="{{__('Work Location')}}" name="work_loc" id="work_loc"
                                             onkeyup="checkFilled()"
-                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
+                                            value="{{count($artist_details) > 0 ? getlangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
@@ -144,7 +144,7 @@
                                             </option>
                                             @endforeach
                                             @endif
-                                            <option value="add_new" class="kt-font-bold">{{__('Add New')}}</option>
+                                            <option value="add_new" class="kt-font-bolder">{{__('Add New')}}</option>
                                         </select>
                                     </div>
                                 </div>

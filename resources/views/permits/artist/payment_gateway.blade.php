@@ -40,12 +40,13 @@
                         <span class="kt-font-dark">{{__('To Date')}}:</span>&emsp;
                         <span
                             class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                        <span class="kt-font-dark">{{__('Location')}}:</span>&emsp;
-                        <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+                        <span class="kt-font-dark">{{__('Work Location')}}:</span>&emsp;
+                        <span
+                            class="kt-font-info">{{getlangId() == 1 ? $permit_details->work_location : $permit_details->work_location_ar}}</span>&emsp;&emsp;
                         <span class="kt-font-dark">{{__('Ref No.')}}:</span>&emsp;
                         <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
                         @if($permit_details->event)
-                        <span>Connected to Event :</span>&emsp;
+                        <span>{{__('Connected to Event')}} :</span>&emsp;
                         <span
                             class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>&emsp;&emsp;
                         @endif
@@ -79,7 +80,7 @@
                         <tbody>
 
                             @foreach($permit_details->artistPermit as $ap)
-                            @if($ap->artist_permit_status == 'approved')
+                            @if($ap->artist_permit_status == 'approved' && $ap->is_paid == 0)
                             <tr>
                                 <td>{{getLangId() == 1 ? $ap['firstname_en'] .' '.$ap['lastname_en'] : $ap['lastname_ar'] .' '. $ap['firstname_ar']}}
                                 </td>
@@ -87,7 +88,8 @@
                                     {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
                                 </td>
                                 @php
-                                $artist_fee = $ap->profession['amount'] * $noofdays;
+                                $noofmonths = ceil($noofdays ? $noofdays : 1 / 30) ;
+                                $artist_fee = $ap->profession['amount'] * $noofmonths;
                                 $artist_vat = $artist_fee * 0.05;
                                 $artist_total = $artist_fee + $artist_vat;
                                 $artist_total_fee += $artist_fee;
@@ -106,7 +108,32 @@
                             </tr>
                             @endif
                             @endforeach
+                            {{-- @if($permit_details->request_type == 'amend')
+                            <tr>
+                                <td colspan="2">{{__('Amendment Fee')}}
+                            </td>
+                            @php
+                            $amend_fee = getSettings()->artist_amendment_fee ;
+                            $artist_total += $amend_fee;
+                            $artist_amend_vat = $amend_fee * 0.05;
+                            $artist_vat_total += $artist_vat;
+                            $artist_amend_total += $amend_fee + $artist_vat_total;
+                            $artist_g_total += $artist_amend_total;
+                            @endphp
+                            <td class="text-right">
+                                {{number_format($amend_fee,2)}}
+                            </td>
+                            <td class="text-right">
+                                {{number_format($artist_amend_vat,2)}}
+                            </td>
+                            <td class="text-right">
+                                {{number_format($artist_amend_total, 2)}}
+                            </td>
+                            </tr>
+                            @endif --}}
                         </tbody>
+
+
                         <tfoot>
                             <tr>
                                 <td colspan="2" class="kt-font-bold">
@@ -130,15 +157,16 @@
                 <input type="hidden" id="artist_total_fee" value="{{$artist_total_fee}}">
                 <input type="hidden" id="artist_vat_total" value="{{$artist_vat_total}}">
                 <input type="hidden" id="artist_g_total" value="{{$artist_g_total}}">
-
                 @php
                 $event_fee_total = 0;
                 $event_vat_total = 0;
                 $event_grand_total = 0;
+                $liquor_fee = 0 ;
+                $truck_fee = 0;
                 $event = $permit_details->event;
                 @endphp
 
-                @if($event && $event->paid != 1)
+                @if($event && $event->paid != 1 && $permit_details->request_type != 'amend')
                 <div class="table-responsive" id="event_details_table" style="display:none;">
                     <table class="table table-borderless table-hover border table-striped">
                         <thead>
@@ -178,17 +206,32 @@
                             </tr>
                             @if($event->is_truck == 1)
                             <tr>
-                                <td colspan="2">{{__('Truck Fee')}} x <b>{{count($event->truck)}}</b> </td>
                                 @php
                                 $per_truck_fee = getSettings()->food_truck_fee;
-                                $no_of_trucks = count($event->truck);
-                                $truck_fee = $noofdays * $per_truck_fee * $no_of_trucks;
+                                $no_of_trucks = count($event->truck->where('paid', 0));
+                                $truck_fee += $noofdays * $per_truck_fee * $no_of_trucks;
                                 $event_fee_total += $truck_fee;
                                 $event_grand_total += $truck_fee;
                                 @endphp
+                                <td colspan="2">{{__('Truck Fee')}} x <b>{{$no_of_trucks}}</b> </td>
                                 <td class="text-right">{{number_format($truck_fee, 2)}}</td>
                                 <td class="text-right">0</td>
                                 <td class="text-right">{{number_format($truck_fee, 2)}}</td>
+                            </tr>
+                            @endif
+                            @if($event->is_liquor == 1 && isset($event->liquor) &&
+                            $event->liquor->provided == 0)
+                            <tr>
+                                <td colspan="2">{{__('Liquor')}} </td>
+                                @php
+                                $per_liquor_fee = getSettings()->liquor_fee;
+                                $liquor_fee += $noofdays * $per_liquor_fee;
+                                $event_fee_total += $liquor_fee;
+                                $event_grand_total += $liquor_fee;
+                                @endphp
+                                <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
+                                <td class="text-right">0</td>
+                                <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
                             </tr>
                             @endif
                         </tbody>
