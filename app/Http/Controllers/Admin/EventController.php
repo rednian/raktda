@@ -412,7 +412,17 @@
 
 		public function artistDatatable(Request $request, Event $event)
 		{
-			return DataTables::of($event->permit->artistpermit()->get())
+		
+			if (!is_null($event->permit)) {
+				$permit = $event->permit->artistPermit()->get();
+			}
+			else{
+				$permit = [];
+			}
+
+
+
+			return DataTables::of($permit)
 			->addColumn('name', function($artist) use ($request){
 				$fname = $request->user()->LanguageId == 1 ? ucfirst($artist->firstname_en) : $artist->firstname_ar; 
 				$lastname = $request->user()->LanguageId == 1 ? ucfirst($artist->lastname_en) : $artist->lastname_ar;
@@ -443,7 +453,7 @@
 		{
 			return DataTables::of($event->truck()->get())
 			->addColumn('name', function($truck) use ($request){
-				return $request->user()->LanguageId == 1 ?  $truck->company_name_en : $truck->company_name_ar;
+				return $request->user()->LanguageId == 1 ?  ucfirst($truck->company_name_en) : $truck->company_name_ar;
 			})
 			->addColumn('type', function($truck) use ($request){
 				return $request->user()->LanguageId == 1 ? $truck->food_type : $truck->food_type;
@@ -453,9 +463,6 @@
 			})
 			->addColumn('expired_date', function($truck){
 				return date('d-F-Y', strtotime($truck->registration_expired_date));
-			})
-			->editColumn('plate_number', function ($truck){
-				return $truck->plate_number;
 			})
 			->addColumn('action', function($truck){
             return '<button type="button" class="btn btn-sm btn-secondary btn-document kt-font-transform-u">Documents <span class="kt-badge kt-badge--outline kt-badge--info">'.$truck->upload()->count().'</span></button>';

@@ -15,10 +15,13 @@ class Event extends Model
     protected $casts = ['is_display_web' => 'boolean', 'is_display_all' => 'boolean'];
     protected $fillable = [
         'name_en', 'no_of_trucks', 'name_ar', 'street', 'logo_thumbnail', 'logo_original', 'reference_number', 'issued_date', 'expired_date', 'time_start', 'time_end', 'permit_number', 'venue_en', 'venue_ar', 'description_en', 'description_ar', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_display_web', 'is_display_all', 'last_check_by', 'lock', 'created_by', 'note_en', 'note_ar', 'cancelled_by', 'cancel_reason', 'latitude', 'longitude', 'full_address', 'firm', 'is_liquor', 'is_truck', 'audience_number', 'paid', 'paid_artist_fee', 'owner_name','owner_name_ar', 'request_type', 'cancel_date'
-// =======
-//         'name_en', 'no_of_trucks', 'name_ar', 'street', 'logo_thumbnail', 'logo_original', 'reference_number', 'issued_date', 'expired_date', 'time_start', 'time_end', 'permit_number', 'venue_en', 'venue_ar', 'description_en', 'description_ar', 'country_id', 'event_type_id', 'area_id', 'emirate_id', 'status', 'address', 'is_display_web', 'is_display_all', 'last_check_by', 'lock', 'created_by', 'note_en', 'note_ar', 'cancelled_by', 'cancel_reason', 'latitude', 'longitude', 'full_address', 'firm', 'is_liquor', 'is_truck', 'audience_number', 'paid', 'paid_artist_fee', 'owner_name','owner_name_ar','approved_by', 'approved_date'
-// >>>>>>> Stashed changes
     ];
+
+    // public function artistPermit()
+    // {
+    //       return $this->hasManyThrough(ArtistPermit::class, Permit::class, 'event_id', 'permit_id', 'event_id', 'permit_id');
+    // }
+
 
     public function approved()
     {

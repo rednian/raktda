@@ -410,7 +410,7 @@
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#artist-tab" role="tab">
               <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ARTIST PERMIT DETAILS') }}
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->permit->artistpermit()->count()}}</span> 
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{!is_null($event->permit) ? $event->permit->artistPermit()->count() : 0}}</span> 
             </a>  
           </li>
           <li class="nav-item">
@@ -456,7 +456,7 @@
              </table>
           </div>
            <div class="tab-pane" id="liquor-tab" role="tabpanel">
-              <table class="table table-borderless "></table>
+              {{-- <table class="table table-borderless "></table> --}}
            </div>
           <div class="tab-pane " id="artist-tab" role="tabpanel">
              <table class="table border borderless table-hover table-" id="artist-table">

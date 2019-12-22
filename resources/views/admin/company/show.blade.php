@@ -89,47 +89,49 @@
                    </div>
                  </div>
                 @endif
+                @if ($company->status == 'active' || $company->status == 'blocked')
+                 <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
+                   <div class="card border">
+                     <div class="card-header " id="headingOne6">
+                       <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
+                         @if ($company->status == 'active')
+                           {{__('BLOCK ESTABLISHMENT')}}
+                           @else
+                           {{__('UNBLOCK ESTABLISHMENT')}}
+                         @endif
+                       </div>
+                     </div>
+                     <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6" style="">
+                       <div class="card-body kt-padding-b-0">
+                         <form action="{{ route('admin.company.changestatus', $company->company_id) }}" method="post" class="form" id="frm-status">
+                           @csrf
+                           <div class="form-group row form-group-sm">
+                             <div class="col-md-6">
+                               <label for="">Remarks <span class="text-danger">*</span></label>
+                               <textarea required name="comment_en" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                             </div>
+                             <div class="col-md-6">
+                               <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                               <textarea required name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                             </div>
+                           </div>
+                           <div class="form-group row">
+                             <div class="col">
+                               @if ($company->status == 'active')
+                                 <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="blocked">{{__('SUBMIT')}}</button>
+                                 @else
+                                 <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">{{__('SUBMIT')}}</button>
+                               @endif
+                              
+                             </div>
+                           </div>
+                         </form>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+                @endif
                 
-                <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
-                  <div class="card border">
-                    <div class="card-header " id="headingOne6">
-                      <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
-                        @if ($company->status == 'active')
-                          {{__('BLOCK ESTABLISHMENT')}}
-                          @else
-                          {{__('UNBLOCK ESTABLISHMENT')}}
-                        @endif
-                      </div>
-                    </div>
-                    <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6" style="">
-                      <div class="card-body kt-padding-b-0">
-                        <form action="{{ route('admin.company.changestatus', $company->company_id) }}" method="post" class="form" id="frm-status">
-                          @csrf
-                          <div class="form-group row form-group-sm">
-                            <div class="col-md-6">
-                              <label for="">Remarks <span class="text-danger">*</span></label>
-                              <textarea required name="comment_en" maxlength="255" class="form-control form-control-sm" rows="4" autocomplete="off"></textarea> 
-                            </div>
-                            <div class="col-md-6">
-                              <label for="">Remarks (AR)<span class="text-danger">*</span></label>
-                              <textarea required name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="4" autocomplete="off"></textarea> 
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <div class="col">
-                              @if ($company->status == 'active')
-                                <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="blocked">{{__('SUBMIT')}}</button>
-                                @else
-                                <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">{{__('SUBMIT')}}</button>
-                              @endif
-                             
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 
               </div>
             </section>
@@ -295,12 +297,20 @@
 
     });
 
+    function artistPermit(){
+      $('table#artist-permit-table').DataTable({
+        ajax: '{{ route('admin.company.artistpemit.datatable', $company->company_id) }}',
+        
+      });
+    }
+
     function actionTable(){
       $('#action-table').DataTable({
         ajax: '{{ route('admin.company.comment.datatable', $company->company_id) }}',
         columnDefs:[
           {targets: '_all', className: 'no-wrap'}
         ],
+        responsive: true,
         columns:[
         {data: 'name'},
         {data: 'remark'},
