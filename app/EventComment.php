@@ -8,7 +8,7 @@ class EventComment extends Model
 {
 	protected $table = 'smartrak_smartgov.event_comment';
 	protected $primaryKey = 'event_comment_id';
-	protected $fillable = ['event_id', 'user_id', 'type', 'comment', 'comment_ar', 'action', 'user_type', 'role_id'];
+	protected $fillable = ['event_id', 'user_id', 'type', 'comment', 'comment_ar', 'action', 'user_type', 'role_id', 'government_id'];
 	protected $dates = ['created_at', 'updated_at'];
 
 
@@ -30,6 +30,14 @@ class EventComment extends Model
 	public function approve()
 	{
 		return $this->hasOne(EventApprover::class, 'event_comment_id');
+	}
+
+	public function government(){
+		return $this->belongsTo(Government::class, 'government_id');
+	}
+
+	public function role(){
+		return $this->belongsTo(Roles::class, 'role_id');
 	}
 
 }

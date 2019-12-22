@@ -271,6 +271,7 @@
             <textarea style="resize: both;" readonly rows="4" class="form-control">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}</textarea>
           </div>
         </div>
+        @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
         <div class="col-md-5">
           <form class=" kt-padding-5 kt-margin-t-10">
             <div class="form-group row form-group-sm">
@@ -295,9 +296,9 @@
                 </span>
               </div>
             </div>
-            
           </form>
         </div>
+        @endif
       </section>
       @if ($event->status == 'active')
         <section class="row">
@@ -334,10 +335,57 @@
                 </div>
               </div>
           </div>
-          
         </section>
       @endif
       
+      {{-- EVENT APPROVAL BY INSPECTOR, MANAGER AND GOVERNMENT --}}
+      @if(Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+      <section class="row">
+          <div class="col-md-12">
+            <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample7">
+                <div class="card border">
+                  <div class="card-header " id="headingOne7">
+                    <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne7">
+                        {{__('TAKE ACTION')}}
+                    </div>
+                  </div>
+                  <div id="collapseOne7" class="collapse show" aria-labelledby="headingOne7" data-parent="#accordionExample7">
+                    <div class="card-body kt-padding-b-0">
+                      <form action="{{ route('admin.event.savecomment', $event->event_id) }}" method="post" class="form" id="frm-savecomment">
+                        @csrf
+                        <div class="form-group row form-group-sm">
+                            <div class="col-md-6">
+                                <label for="">Action <span class="text-danger">*</span></label>
+                                <select required="" name="action" class="form-control form-control-sm">
+                                    <option value=""></option>
+                                    <option value="approved">Approved</option>
+                                    <option value="disapproved">Disapproved</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-group-sm">
+                          <div class="col-md-6">
+                            <label for="">Remarks <span class="text-danger">*</span></label>
+                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                          <div class="col-md-6">
+                            <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col">
+                            <button type="submit" class="btn btn-sm btn-maroon kt-transform-u">SUBMIT</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </section>
+      @endif
       
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist">
           <li class="nav-item">
@@ -435,7 +483,6 @@
               </thead>
              </table>
           </div>
-          
           <div class="tab-pane" id="kt_portlet_base_demo_4_4_tab_content" role="tabpanel">
             <table class="table table-hover table-borderless border table-striped table-sm" id="event-comment-datatable">
                 <thead>
@@ -448,10 +495,7 @@
                 </thead>
             </table>
           </div>
-          
         </div>
-        
-        
     </div>
 </div>
 
@@ -489,12 +533,15 @@
   var comment_table = {}; 
   $(document).ready(function(){
 
+    $('form#frm-status').validate();
+    $('form#frm-savecomment').validate();
+
      eventComment();
      requirementTable();
      imageTable();
      artist();
      truckTable();
-     $('form#frm-status').validate();
+     
   });
 
   function artist(){

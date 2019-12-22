@@ -23,10 +23,10 @@
     
     <section class="row">
       <div class="col-md-12">
-        <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
+        <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger"
           role="tablist" id="artist-permit-nav">
           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-              data-target="#new-request">{{ __('Need Approval') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
+              data-target="#new-request">{{ __('Need Approval') }}</a></li>
           
         </ul>
       </div>
@@ -226,6 +226,9 @@
              d.type = $('select#new-applicant-type').val();
              d.date = $('#new-applied-date').val()  ? selected_date : null;
              d.approval = 1;
+             @if(Auth::user()->roles()->first()->role_id == 6)
+             d.gov = 1;
+             @endif
            }
          },
 
@@ -243,7 +246,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/event') }}/' + data.event_id + '/application';
+             location.href = '{{ url('/event') }}/' + data.event_id;
            });
          },
           initComplete: function(setting, json){

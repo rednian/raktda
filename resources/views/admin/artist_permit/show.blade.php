@@ -107,11 +107,16 @@
                                                                 </div>
                                                                 <div class="kt-user-card-v2__details">
                                                                     <span class="kt-user-card-v2__name">{{ ucwords($comment->user->NameEn) }}</span>
-                                                                    <a href="#" class="kt-user-card-v2__email kt-link">{{ ucfirst($comment->role->NameEn) }}</a>
+                                                                    <a href="#" class="kt-user-card-v2__email kt-link">{{ $comment->role_id != 6 ? ucfirst($comment->role->NameEn) : (Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar) }}</a>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>{{ ucfirst($comment->comment) }}</td>
+                                                        <td>
+                                                            {{ ucfirst($comment->comment) }}
+                                                            @if($comment->exempt_payment)
+                                                              <br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>
+                                                            @endif
+                                                        </td>
                                                         <td>{{ $comment->created_at->format('d-M-Y') }}</td>
                                                         <td>{{ ucfirst($comment->action) }}</td>
                                                     </tr>

@@ -706,7 +706,7 @@
           data: function (d) {
              // var status = $('select#pending-permit-status').val();
              d.request_type = $('select#pending-request-type').val();
-             d.status =  ['modified', 'checked-inspector', 'checked-manager'];//ADDED BY DONSKIE
+             d.status =  ['modified', 'checked'];//ADDED BY DONSKIE
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
          },

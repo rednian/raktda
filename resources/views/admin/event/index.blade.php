@@ -967,7 +967,7 @@
            data: function (d) {
 
             // var status = $('select#new-permit-status').val();
-             d.status = ['amended'];
+             d.status = ['amended', 'checked'];
              d.type = $('select#pending-applicant-type').val();
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
