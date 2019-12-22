@@ -19,7 +19,7 @@ class CompanyController extends Controller
    {
       $new_company = Company::where('status', 'new')->count();
 
-      return view('admin.company.index',[
+      return view('admin.company.index',[ 
          'page_title'=> 'Company',
          'new_company'=> Company::where('status', 'new')->count(),
          'approved'=> Company::where('status', 'active')->count(),
@@ -109,7 +109,7 @@ class CompanyController extends Controller
    		return ucfirst($comment->action);
    	})
    	->addColumn('date', function($comment){
-   		return '<span title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
+   		return '<span  title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
    	})
    	->rawColumns(['date', 'name'])
    	->make(true);
@@ -118,6 +118,7 @@ class CompanyController extends Controller
 
    public function application(Request $request, Company $company)
    {
+     if (!$request->hasValidSignature()) { abort(401); }
       return view('admin.company.application', [
          'company'=>$company,
          'page_title'=> ucfirst($request->user()->LanguageId == 1 ? $company->name_en : $company->name_ar).' | application'
@@ -128,6 +129,9 @@ class CompanyController extends Controller
 
    public function show(Request $request, Company $company)
    {
+    
+    if (!$request->hasValidSignature()) { abort(401); }
+
       return view('admin.company.show', [
          'company'=>$company,
          'page_title'=> ucfirst($request->user()->LanguageId == 1 ? $company->name_en : $company->name_ar)

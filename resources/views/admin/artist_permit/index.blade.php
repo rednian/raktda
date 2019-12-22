@@ -506,7 +506,7 @@
 
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#archive-permit';
+             location.href = data.show_link+'?tab=#archive-permit';
            });
          }
        });
@@ -579,7 +579,7 @@
 
             createdRow: function (row, data, index) {
               $(row).click(function () {
-                 location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#active-permit';
+                 location.href = data.show_link+'?tab=#active-permit';
               });
             }
          });
@@ -650,7 +650,7 @@
 
             createdRow: function (row, data, index) {
                $(row).click(function () {
-                  location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#processing-permit';
+                  location.href = data.show_link+'?tab=#processing-permit';
                });
             }
          });
@@ -723,7 +723,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
+             location.href = data.application_link;
            });
          },
        });
@@ -796,7 +796,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
+             location.href = data.application_link;
            });
          },
          initComplete: function(setting, json){

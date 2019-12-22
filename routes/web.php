@@ -49,6 +49,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/company_registration/{company}/event-datatable', 'Admin\CompanyController@eventDatatable')->name('admin.company.event.datatable');
     Route::get('/company_registration/{company}/artist-datatable', 'Admin\CompanyController@artistDatatable')->name('admin.company.artist.datatable');
     Route::get('/company_registration/{company}/comment-datatable', 'Admin\CompanyController@commentDatatable')->name('admin.company.comment.datatable');
+    Route::get('/company_registration/{company}/artist-permit-datatable', 'Admin\CompanyController@artistPermitDatatable')->name('admin.company.artistpemit.datatable');
 
   //---------------------------------------------------------------------------------------------------------------
   // Event Permit

@@ -18,6 +18,7 @@ use App\ArtistPermitComment;
 use App\PermitComment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\Facades\DataTables;
 
 class ArtistPermitController extends Controller
@@ -66,12 +67,14 @@ class ArtistPermitController extends Controller
 
     public function show(Permit $permit)
     {
+       if (!$request->hasValidSignature()) { abort(401); }
     	return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no]);
     }
 
     public function applicationDetails(Request $request, Permit $permit)
     {
-        if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
+       if (!$request->hasValidSignature()) { abort(401); }
+      if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
 
         //UPDATE LOCK ARTIST PERMIT
         $permit->update([
@@ -532,7 +535,7 @@ class ArtistPermitController extends Controller
           $q->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id);
         });
       })
-      ->latest();
+      ->get();
 
       $table = Datatables::of($permit)
       ->addColumn('artist_number', function($permit){
@@ -541,7 +544,7 @@ class ArtistPermitController extends Controller
         if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
         return 'Checked '.$check.' of '.$total;
       })
-        ->editColumn('permit_status', function($permit){ return permitStatus($permit->permit_status); })
+      ->editColumn('permit_status', function($permit){ return permitStatus($permit->permit_status); })
 	    ->editColumn('reference_number', function($permit){ return '<span class="kt-font-bold">'.$permit->reference_number.'</span>'; })
 	    ->addColumn('applied_date', function($permit){
         return '<span class="text-underline" title="'.$permit->created_at->format('l d-M-Y h:i A').'">'.humanDate($permit->created_at).'</span>';
@@ -558,6 +561,12 @@ class ArtistPermitController extends Controller
       })
       ->addColumn('company_name', function($permit) use ($request){
           return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : $permit->owner->company->name_ar;
+      })
+      ->addColumn('application_link', function($permit){
+        return URL::signedRoute('admin.artist_permit.applicationdetails', ['permit' => $permit->permit_id]);
+      })
+      ->addColumn('show_link', function($permit){
+        return URL::signedRoute('admin.artist_permit.show', ['permit' => $permit->permit_id]);
       })
       ->addColumn('company_type', function($permit){
             return;
