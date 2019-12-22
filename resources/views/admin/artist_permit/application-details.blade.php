@@ -75,7 +75,7 @@
                               <br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>
                               @endif
                             </td>
-                            <td>{{ ucfirst($comment->role->NameEn) }}</td>
+                            <td>{{ $comment->role_id != 6 ? ucfirst($comment->role->NameEn) : (Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar) }}</td>
                             <td>{{ $comment->checked_date }}</td>
                             <td>{{ ucfirst($comment->action) }}</td>
                         </tr>
@@ -227,9 +227,31 @@
     }
   });
 
-  $('div.toolbar').html($('#action-container'));
+      $('div.toolbar').html($('#action-container'));
 
-     $('input[name=bypass_payment][type=checkbox]').prop('checked', false);
+      $('input[name=bypass_payment][type=checkbox]').prop('checked', false);
+
+      $('#chk-government').on('change', function(){
+          if(this.checked) {
+              $('#selectDepartment').removeClass('kt-hide');
+              $('#selectDepartment #select-department').removeAttr('disabled', true);
+          }else{
+              $('#selectDepartment').addClass('kt-hide');
+              $('#selectDepartment #select-department').attr('disabled', true);
+              $('#selectDepartment #select-department').val('').trigger('change');
+          }
+      });
+
+      var depselect = $('select#select-department');
+      depselect.select2({
+           minimumResultsForSearch: 'Infinity',
+           maximumSelectionLength: 2,
+           placeholder: 'Select Government Department',
+           autoWidth: true,
+           width: '100%',
+           allowClear: true,
+           tags: true
+      });
 
   });
 
@@ -319,7 +341,9 @@
   }
 
   function existingPermit(data) {
+
      $('form#frm-existing-permit').find('a[href]').attr('href', '{{ url('/artist_permit/') }}/'+data.permit_id+'/application/'+data.artist_permit_id);
+
      $('form#frm-existing-permit').validate({
         rules: {
            comment: {
@@ -340,21 +364,22 @@
 				   artist.ajax().reload();
 				}
      });
-     
   }
 
   function submitAction() {
-     $('select[name=action]').change(function () {
+      $('select[name=action]').change(function () {
         if ($(this).val() == 'need approval') {
            $('#approver').removeClass('d-none');
            $('#chk-inspector').removeAttr('disabled', true).attr('checked', true);
            $('#-chk-manager').removeAttr('disabled', true).removeAttr('checked', true);
+           $('#chk-government').removeAttr('disabled', true).removeAttr('checked', true);
         } else {
            $('#approver').addClass('d-none');
            $('#chk-inspector').attr('disabled', true).attr('checked', true);
            $('#-chk-manager').attr('disabled', true).removeAttr('checked', true);
+           $('#chk-government').attr('disabled', true).removeAttr('checked', true);
         }
-     });
+      });
   }
 
   function documents(data){

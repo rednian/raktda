@@ -26,7 +26,7 @@ class ArtistPermitController extends Controller
     {
       $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
 
-      $view = $request->user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
+      $view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
 
 	    return view($view, [
             'page_title'=> 'Artist Permit Dashboard',
@@ -34,7 +34,7 @@ class ArtistPermitController extends Controller
             'professions'=>Profession::has('artistpermit')->get(),
             'countries'=> Country::has('artistpermit')->get(),
             'new_request'=> Permit::has('artist')->where('permit_status', 'new')->count(),
-            'pending_request'=> Permit::has('artist')->where('permit_status', 'modified')->count(),
+            'pending_request'=> Permit::has('artist')->whereIn('permit_status', ['modified', 'checked'])->count(),
             'approved_permit'=> Permit::lastMonth(['active'])->count(),
             'rejected_permit'=> Permit::lastMonth(['rejected'])->count(),
             'cancelled_permit'=> Permit::lastMonth(['cancelled'])->count(),
@@ -88,8 +88,6 @@ class ArtistPermitController extends Controller
 
     public function submitApplication(Request $request, Permit $permit)
     {
-
-
       try {
         DB::beginTransaction();
            $user_time = $request->session()->get('user');
@@ -110,62 +108,60 @@ class ArtistPermitController extends Controller
               case 'rejected';
                 $request['type'] = 1;
                  $permit->comment()->create($request->all());
+                 $permit->update(['permit_status'=>$request->action]);
               break;
               case 'send_back':
                 $request['type'] = 1;
                 $request['action'] = 'modification request';
-               $permit->comment()->create($request->all());
+                $permit->comment()->create($request->all());
+                $permit->update(['permit_status'=>$request->action]);
               break;
               case 'need approval':
-
-
-              //ADD TO APPROVALS
-              // $approval = $permit->getPermitApproval()->create([
-              //   'type' => 'artist',
-              //   'created_by' => $request->user()->user_id
-              // ]);
-
-
-              // if ($request->is_manual_schedule) {
-
-                // $user = User::availableInspector($permit->issued_date)->first();
-
-
-
-                // $approval->approver()->create(['user_id'=>$user->user_id]);
-              // }
-
-
-
-
-              // $approval = $permit->approval()->create(['type'=>'artist', 'inspection_id'=>$permit->permit_id, 'schedule_date'=>'']);
-
-
-              // dd($user);
 
                $request['type'] = 1;
 
                $permit->comment()->create($request->all());
                if($request->role){
-                foreach ($request->role as $role_id) {
-                  $permit->comment()->create([
-                    'action'=>'pending',
-                    'role_id'=>$role_id,
-                    'user_id'=> null,
-                    'comment'=> null,
-                  ]);
-                }
+                  foreach ($request->role as $role_id) {
+                    if($role_id != 6){
+                        $permit->comment()->create([
+                          'action'=>'pending',
+                          'role_id'=>$role_id,
+                          'user_id'=> null,
+                          'comment'=> null,
+                        ]);
+                    }else{//IF GOVERNMENT APPROVAL -> LOOP SELECTED GOVT DEPT
+                        if($request->has('department')){
+                            foreach ($request->department as $dep) {
+                                $permit->comment()->create([
+                                  'action'=>'pending',
+                                  'role_id'=>$role_id,
+                                  'user_id'=> null,
+                                  'comment'=> null,
+                                  'government_id' => $dep
+                                ]);
+                            }
+                        }
+                    }
+                  }
                }
+               $permit->update(['permit_status'=>$request->action]);
               break;
               //INSPECTOR AND MANAGER APPROVAL
-              case 'checked':
-
-                  $status = $user->roles()->first()->role_id == 4 ? 'inspector' : 'manager';
+              case 'approved':
 
                   $comment = $permit->comment()->where([
                     'action' => 'pending',
-                    'role_id' => $user->roles()->first()->role_id
+                    'role_id' => $user->roles()->first()->role_id,
                   ])->first();
+
+                  if(!is_null($user->government_id)){
+                      $comment = $permit->comment()->where([
+                        'action' => 'pending',
+                        'role_id' => $user->roles()->first()->role_id,
+                        'government_id' => $user->government_id
+                      ])->first();
+                  }
 
                   $comment->update($request->except(['_token', 'bypass_payment']));
 
@@ -185,16 +181,55 @@ class ArtistPermitController extends Controller
                       $permit->save();
                   }
 
-                  //CHANGE THE STATUS THAT WILL IDENTIFY IF IT IS FROM INSPECTOR OR MANAGER
-                  $request['action'] = 'checked-'.$status;
+                  //CHECK IF I AM THE LAST APPROVER
+                  if($permit->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
+                      $permit->update(['permit_status'=>'checked']);
+                  }
 
               break;
+              case 'disapproved':
 
+                  $comment = $permit->comment()->where([
+                    'action' => 'pending',
+                    'role_id' => $user->roles()->first()->role_id
+                  ])->first();
+
+                  if(!is_null($user->government_id)){
+                      $comment = $permit->comment()->where([
+                        'action' => 'pending',
+                        'role_id' => $user->roles()->first()->role_id,
+                        'government_id' => $user->government_id
+                      ])->first();
+                  }
+
+                  $comment->update($request->except(['_token', 'bypass_payment']));
+
+                  //RESET LOCK TO NONE
+                  $permit->update([
+                    'lock' => null,
+                    'lock_user_id' => null
+                  ]);
+
+                  if($request->has('bypass_payment')){
+
+                      $comment->exempt_payment = 1;
+                      $comment->save();
+
+                      $permit->exempt_payment = 1;
+                      $permit->exempt_by = $request->user()->user_id;
+                      $permit->save();
+                  }
+
+                  //CHECK IF I AM THE LAST APPROVER
+                  if($permit->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
+                      $permit->update(['permit_status'=>'checked']);
+                  }
+
+              break;
            }
-             $permit->update(['permit_status'=>$request->action]);
 
         DB::commit();
-	      $result = ['success', ' Permit has been rejected successfully ', 'Success'];
+	      $result = ['success', ' Success!', 'Success'];
       } catch (\Exception $e) {
       	DB::rollBack();
 	      $result = ['error', $e->getMessage(), 'Error'];
@@ -529,7 +564,9 @@ class ArtistPermitController extends Controller
       })
       ->when($request->approval, function($q) use($request){
         $q->whereHas('comment', function($q) use($request){
-          $q->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id);
+          $q->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->when($request->gov, function($q) use($request){
+            $q->where('government_id', $request->user()->government_id);
+          });
         });
       })
       ->latest();
@@ -585,7 +622,7 @@ class ArtistPermitController extends Controller
 	         ->make(true);
            $table = $table->getData(true);
            $table['new_count'] = Permit::has('artist')->where('permit_status', 'new')->count();
-           $table['pending_count'] = Permit::has('artist')->where('permit_status', 'modified')->count();
+           $table['pending_count'] = Permit::has('artist')->whereIn('permit_status', ['modified', 'checked'])->count();
            $table['cancelled_count'] = Permit::has('artist')->where('permit_status', 'cancelled')->count();
 
            return response()->json($table);

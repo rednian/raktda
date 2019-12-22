@@ -17,4 +17,8 @@ class Government extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function getUsers(){
+    	return $this->hasMany(User::class, 'government_id');
+    }
 }

@@ -35,13 +35,13 @@
 					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
 				})->count();
 
-			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
+			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
 
 			return view($view, [
 				'page_title' => 'Event Permit',
 				'types'=> EventType::all(),
 				'new_request'=>Event::where('status', 'new')->count(),
-				'pending_request'=>Event::where('status', 'amended')->count(),
+				'pending_request'=>Event::whereIn('status', ['amended', 'checked'])->count(),
 				'active_request'=> $event,
 				'cancelled_permit'=> Event::lastMonth(['cancelled'])->count(),
 				'rejected_permit'=> Event::lastMonth(['rejected'])->count(),
@@ -199,12 +199,27 @@
 						if($request->has('approver')){
 							if(!$request->has('inspection')){
 								foreach ($request->approver as $role_id) {
-									$event->comment()->create([
-										'action' => 'pending',
-										'role_id' => $role_id,
-										'user_type' => 'admin',
-										'type' => 0
-									]);
+									
+									if($role_id == 6){
+										if($request->has('department')){
+											foreach ($request->department as $dep) {
+												$event->comment()->create([
+													'action' => 'pending',
+													'role_id' => $role_id,
+													'user_type' => 'admin',
+													'type' => 0,
+													'government_id' => $dep
+												]);
+											}
+										}
+									}else{
+										$event->comment()->create([
+											'action' => 'pending',
+											'role_id' => $role_id,
+											'user_type' => 'admin',
+											'type' => 0
+										]);
+									}
 								}
 							}else{
 								if(in_array(5, $request->approver)){
@@ -553,9 +568,19 @@
 				$comments = $event->comment()->latest();
 
 				return DataTables::of($comments)
-				->addColumn('name', function($comment){
-					// $role = $comment->user_type == 'admin' ? $comment->user->roles()->first()->NameEn : 'Client';
-					return defaults($comment->user->NameEn, $comment->user->roles()->first()->NameEn);
+				->addColumn('name', function($comment) use($request){
+					$role_name = $comment->role->NameEn;
+
+					if(!is_null($comment->government_id)){
+						$role_name = $request->LanguageId == 1 ? $comment->government->government_name_en : $comment->government->government_name_ar;
+					}
+
+					if(is_null($comment->user_id)){
+						
+						return profileName($role_name, '');
+					}
+
+					return profileName($comment->user->NameEn, $role_name);
 				})
 				->editColumn('comment', function($comment){
 					return ucfirst($comment->comment);
@@ -572,6 +597,44 @@
 			}
 		}
 
+		public function saveEventComment(Event $event, Request $request){
+			DB::beginTransaction();
+			try {
+				$comment = $event->comment()->where([
+		            'action' => 'pending',
+		            'role_id' => $request->user()->roles()->first()->role_id,
+		        ])->first();
+
+		        if(!is_null($request->user()->government_id)){
+		            $comment = $event->comment()->where([
+		                'action' => 'pending',
+		                'role_id' => $request->user()->roles()->first()->role_id,
+		                'government_id' => $request->user()->government_id
+		            ])->first();
+		        }
+				
+				$comment->update([
+          			'action' => $request->action,
+          			'comment' => $request->comment,
+          			'comment_ar' => $request->comment_ar,
+          			'user_id' => $request->user()->user_id
+          		]);
+
+          		//CHECK IF I AM THE LAST APPROVER
+                if($event->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
+                    $event->update(['status'=>'checked']);
+                }
+
+          		$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
+          		DB::commit();
+
+			} catch (\Exception $e) {
+				$result = ['danger', $e->getMessage(), 'Error'];
+				DB::rollBack();
+			}
+			return redirect()->route('admin.event.index')->with('message',$result);
+		}
+
 		public function dataTable(Request $request)
 		{
 			if ($request->ajax()) {
@@ -585,7 +648,9 @@
 				})
 				->when($request->approval, function($q) use($request){
 					$q->whereHas('comment', function($q1) use($request){
-			          	$q1->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id);
+			          	$q1->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->when($request->gov, function($q) use($request){
+			          		$q->where('government_id', $request->user()->government_id);
+			          	});
 			        });
 				})
 				->whereNotIn('status', ['draft'])
@@ -663,7 +728,7 @@
 					 ->make(true);
 					$table = $table->getData(true);
 					$table['new_count'] = Event::where('status', 'new')->count();
-					$table['pending_count'] = Event::where('status', 'amended')->count();
+					$table['pending_count'] = Event::whereIn('status', ['amended', 'checked'])->count();
 					$table['cancelled_count'] = Event::where('status', 'cancelled')->count();
 					return response()->json($table);
 			}

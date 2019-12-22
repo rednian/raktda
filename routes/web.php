@@ -75,6 +75,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/event/{event}/artist/datatable','Admin\EventController@artistDatatable')->name('admin.event.artist');
 
     Route::get('/event/time/test', 'Admin\EventController@addAppointment')->name('admin.event.time');
+    Route::post('/event/{event}/savecomment', 'Admin\EventController@saveEventComment')->name('admin.event.savecomment');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist

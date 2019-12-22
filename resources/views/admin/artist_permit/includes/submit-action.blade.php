@@ -18,10 +18,10 @@
 							 $disaaproved_artist = $permit->artistpermit()->where('artist_permit_status', 'approved')->count();
 							 ?>
 							<div class="form-group form-group-xs row">
-								<label class="col-sm-2 col-form-label {{ Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'd-none' : '' }}">Action <span class="text-danger">*</span></label>
+								<label class="col-sm-2 col-form-label">Action <span class="text-danger">*</span></label>
 								<div class="col-sm-8">
-									<select name="action" class="form-control-sm form-control custom-select {{ Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'd-none' : '' }}">
-										@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
+									<select name="action" class="form-control-sm form-control custom-select">
+										@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 										<option disabled selected>-Select Action-</option>
 										 @if($all_artist == $disaaproved_artist ){
 													<option value="approved-unpaid">Approve Application & Notify client for payment</option>
@@ -31,7 +31,9 @@
 										<option value="need approval">Need higher Approval</option>
 										<option value="rejected">Reject Application & Notify client</option>
 										@else
-										<option selected value="checked"></option>
+										<option disabled selected>-Select Action-</option>
+										<option value="approved">Approved</option>
+										<option value="disapproved">Disapproved</option>
 										@endif
 									</select>
 								</div>
@@ -50,9 +52,26 @@
 											Manager
 											<span></span>
 										</label>
+										<label class="kt-checkbox">
+											<input disabled id="chk-government" type="checkbox" name="role[]" value="{{ $roles->where('NameEn','government')->first()->role_id }}">
+											Government
+											<span></span>
+										</label>
 									</div>
 								</div>
 							</div>
+							<div class="form-group form-group-xs row kt-hide" id="selectDepartment">
+	  							 <label class="col-sm-2 col-form-label">{{ __('Gov\'t Department') }} <span class="text-danger">*</span></label>
+								<div class="col-sm-8">
+									<select disabled required id="select-department" name="department[]" multiple="multiple" id="" class="form-control">
+										@if(App\Government::has('getUsers')->count() > 0)
+										@foreach(App\Government::has('getUsers')->get() as $gov)
+										<option value="{{ $gov->government_id }}">{{ Auth::user()->LanguageId == 1 ? ucwords($gov->government_name_en) : $gov->government_name_ar }}</option>
+										@endforeach
+										@endif
+		  							 </select>
+								</div>
+	  						</div>
 							<div class="form-group row">
 								<label class="col-sm-2 col-form-label">Notes</label>
 								<div class="col-sm-8">

@@ -918,7 +918,7 @@
   																		</div>
 												  					</div>
 
-												  					<div class="col-md-4">
+												  					<div class="col-md-6">
 												  						<div class="form-group form-group kt-hide">
 												  							<label for="" class="kt-font-dark">{{ __('Approvers') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
@@ -938,6 +938,18 @@
 																					<span></span>
 																				</label>
 																			</div>
+												  						</div>
+												  					</div>
+												  					<div class="col-md-6">
+												  						<div class="form-group form-group kt-hide">
+												  							<label for="" class="kt-font-dark">{{ __('Government Department') }} <span class="text-danger">*</span></label>
+												  							<select disabled required id="select-department" name="department[]" multiple="multiple" id="" class="form-control">
+																				@if(App\Government::has('getUsers')->count() > 0)
+																				@foreach(App\Government::has('getUsers')->get() as $gov)
+																				<option value="{{ $gov->government_id }}">{{ Auth::user()->LanguageId == 1 ? ucwords($gov->government_name_en) : $gov->government_name_ar }}</option>
+																				@endforeach
+																				@endif
+												  							 </select>
 												  						</div>
 												  					</div>
 												  				</section>
@@ -1409,6 +1421,7 @@
      	});
 
      	var approver = $('select#select-approver');
+     	var departmentsSelect2 = $('select#select-department');
 
      	approver.change(function(){
      		var val = $(this).val();
@@ -1417,18 +1430,38 @@
      		}	
      		else{
      			$('input#site-inspection').parents('.form-group').addClass('kt-hide');	
+     			$('input#site-inspection').removeAttr('checked', true);
+     			$('input#site-inspection').prop('checked', false);
+     		}
+
+     		if(val.indexOf('6') > -1){
+     			$('select#select-department').val('').trigger('change');
+     			$('select#select-department').parents('.form-group').removeClass('kt-hide');
+     			$('select#select-department').removeAttr('disabled', true);
+     		}	
+     		else{
+     			$('select#select-department').parents('.form-group').addClass('kt-hide');
+     			$('select#select-department').attr('disabled', true);
      		}
      	});
 
      	approver.select2({
 		 minimumResultsForSearch: 'Infinity',
-		 maximumSelectionLength: 2,
 		 placeholder: 'Select Approver',
 		 autoWidth: true,
 		 width: '100%',
 		 allowClear: true,
 		 tags: true
        });
+
+     	departmentsSelect2.select2({
+		 minimumResultsForSearch: 'Infinity',
+		 placeholder: 'Select Government Department',
+		 autoWidth: true,
+		 width: '100%',
+		 allowClear: true,
+		 tags: true
+       	});
 
      	$('input[name=status][type=radio]').change(function(){
      		if($(this).val() == 'need modification'){
@@ -1452,7 +1485,12 @@
      			 approver.parents('.form-group').removeClass('kt-hide').find('select').removeAttr('disabled', true); 
      		}
      		else{
-     			 approver.parents('.form-group').addClass('kt-hide').find('select').attr('disabled', true); 
+     			approver.parents('.form-group').addClass('kt-hide').find('select').attr('disabled', true); 
+     			$('input#site-inspection').parents('.form-group').addClass('kt-hide');
+				$('select#select-department').val('').trigger('change');
+				$('select#select-approver').val('').trigger('change');
+				$('select#select-department').parents('.form-group').addClass('kt-hide');
+     			$('select#select-department').attr('disabled', true);
      		}
      	});
 
@@ -1490,7 +1528,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {

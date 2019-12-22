@@ -200,6 +200,9 @@
              d.status = ['need approval', 'checked-inspector', 'checked-manager'];
              d.date = $('#new-applied-date').val()  ? selected_date : null; 
              d.approval = 1;
+             @if(Auth::user()->roles()->first()->role_id == 6)
+             d.gov = 1;
+             @endif
            }
          },
          // order: [[ 3, "desc" ]],
