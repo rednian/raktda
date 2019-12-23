@@ -551,8 +551,7 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="addi_loc_info"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Additional Location Info')}} <span
-                                                                    class="text-danger">*</span></label>
+                                                                {{__('Additional Location Info')}}</label>
                                                             <textarea class="form-control form-control-sm"
                                                                 name="addi_loc_info" id="addi_loc_info" rows="2"
                                                                 placeholder="{{__('Additional Location Info')}}">

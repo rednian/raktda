@@ -548,13 +548,17 @@
             return hasFile;
         }
 
-        for(var i = 1; i <= $('#truck_document_count').val(); i++)
-        {
-            docRules['truck_doc_issue_date_'+i] = 'required';
-            docRules['truck_doc_exp_date_'+i] = 'required';
-            docMessages['truck_doc_issue_date_'+i] = '';
-            docMessages['truck_doc_exp_date_'+i] = '';
-        }
+        
+        // truckDocRules = {};
+        // truckDocMessages = {};
+
+        // for(var i = 1; i <= $('#truck_document_count').val(); i++)
+        // {
+        //     docRules['truck_doc_issue_date_'+i] = 'required';
+        //     docRules['truck_doc_exp_date_'+i] = 'required';
+        //     docMessages['truck_doc_issue_date_'+i] = '';
+        //     docMessages['truck_doc_exp_date_'+i] = '';
+        // }
         
         function go_back_truck_list()
         {

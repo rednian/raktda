@@ -125,7 +125,7 @@ class ArtistController extends Controller
                          }
                         return '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
                     } else if ($permit->permit_status == 'new') { //&& $permit->lock == ''
-                        return '<span onClick="cancel_permit(' . $permit->permit_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
+                       
                     } else if ($permit->permit_status == 'modification request') {
                         $pay_btn = '';
                         if ($approved_artist) {
@@ -1558,7 +1558,7 @@ class ArtistController extends Controller
             if(check_is_blocked()['status'] == 'blocked'){
                 return ;
             }
-            return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">View / Update</span></a>';
+            return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a><span onClick="cancel_permit(' . $permit->permit_id . ',\'' . $permit->reference_number . '\')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
         })->addColumn('details', function ($permit) {
             return '<a href="' . route('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
         })->rawColumns(['action', 'details'])->make(true);

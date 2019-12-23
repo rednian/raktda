@@ -456,7 +456,8 @@ class EventController extends Controller
             'firm' => $evd['firm_type'],
             'audience_number' => $evd['no_of_audience'],
             'owner_name' => $evd['owner_name'],
-            'owner_name_ar' => $evd['owner_name_ar']
+            'owner_name_ar' => $evd['owner_name_ar'],
+            'addi_loc_info' => $evd['addi_loc_info']
         );
 
         if ($from == 'new') {
@@ -815,7 +816,8 @@ class EventController extends Controller
             'firm' => $evd['firm_type'],
             'is_truck' => $evd['isTruck'],
             'is_liquor' => $evd['isLiquor'],
-            'audience_number' => $evd['no_of_audience']
+            'audience_number' => $evd['no_of_audience'],
+            'addi_loc_info' => $evd['addi_loc_info']
         );
 
         $old_status = Event::where('event_id', $event_id)->first()->status;
@@ -1118,7 +1120,7 @@ class EventController extends Controller
                     } else if ($permit->status == 'bounce back') {
                         return '<a href="' . route('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
                     } else if ($permit->status == 'new') {
-                        return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
+                        // return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     }
                     break;
                 case 'valid':
@@ -1134,7 +1136,8 @@ class EventController extends Controller
                     break;
                 case 'draft':   
                     if ($permit->status == 'draft') {
-                        return '<a href="' . route('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View / Update</span></a>';
+                        return '<a href="' . route('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>';
+                        return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     }
                     break;
             }
@@ -1642,6 +1645,7 @@ class EventController extends Controller
             'firm' => $evd['firm_type'],
             'audience_number' => $evd['no_of_audience'],
             'owner_name' => $evd['owner_name'],
+            'addi_loc_info' => $evd['addi_loc_info']
         );
 
         $event = Event::where('event_id', $event_id)->update($input_Array);

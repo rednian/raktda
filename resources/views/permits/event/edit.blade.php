@@ -268,8 +268,7 @@
                                                             <div class="kt-input-icon kt-input-icon--right">
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="issued_date" id="issued_date"
-                                                                    placeholder="{{__('From Date')}}"
-                                                                    onchange="givWarn()"
+                                                                    placeholder="DD-MM-YYYY" onchange="givWarn()"
                                                                     value="{{date('d-m-Y',strtotime($event->issued_date))}}" />
                                                                 <span
                                                                     class="kt-input-icon__icon kt-input-icon__icon--right">
@@ -311,7 +310,7 @@
                                                             <div class="kt-input-icon kt-input-icon--right">
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="expired_date" id="expired_date"
-                                                                    placeholder="{{__('To Date')}}"
+                                                                    placeholder="DD-MM-YYYY"
                                                                     value="{{date('d-m-Y',strtotime($event->expired_date))}}">
                                                                 <span
                                                                     class="kt-input-icon__icon kt-input-icon__icon--right">
@@ -495,8 +494,7 @@
                                                     <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="addi_loc_info"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Additional Location Info')}} <span
-                                                                class="text-danger">*</span></label>
+                                                            {{__('Additional Location Info')}} </label>
                                                         <textarea class="form-control form-control-sm"
                                                             name="addi_loc_info" id="addi_loc_info" rows="2"
                                                             placeholder="{{__('Additional Location Info')}}">
@@ -946,6 +944,7 @@
                     no_of_audience: $('#no_of_audience').val(),
                     owner_name: $('#owner_name').val(),
                     owner_name_ar: $('#owner_name_ar').val(),
+                    addi_loc_info: $('#addi_loc_info').val()
             };
             localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
         }
@@ -1343,13 +1342,17 @@
             return hasFile;
         }
 
-        for(var i = 1; i <= $('#truck_document_count').val(); i++)
-        {
-            docRules['truck_doc_issue_date_'+i] = 'required';
-            docRules['truck_doc_exp_date_'+i] = 'required';
-            docMessages['truck_doc_issue_date_'+i] = '';
-            docMessages['truck_doc_exp_date_'+i] = '';
-        }
+        
+        // truckDocRules = {};
+        // truckDocMessages = {};
+
+        // for(var i = 1; i <= $('#truck_document_count').val(); i++)
+        // {
+        //     docRules['truck_doc_issue_date_'+i] = 'required';
+        //     docRules['truck_doc_exp_date_'+i] = 'required';
+        //     docMessages['truck_doc_issue_date_'+i] = '';
+        //     docMessages['truck_doc_exp_date_'+i] = '';
+        // }
         
         function go_back_truck_list()
         {
