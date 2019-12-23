@@ -109,7 +109,7 @@ class CompanyController extends Controller
    		return ucfirst($comment->action);
    	})
    	->addColumn('date', function($comment){
-   		return '<span  title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
+   		return '<span class="text-underline"  title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
    	})
    	->rawColumns(['date', 'name'])
    	->make(true);
@@ -165,11 +165,46 @@ class CompanyController extends Controller
 
    public function artistpermitDatatable(Request $request, Company $company)
    {
-      $permit = $company->has('permit')->orderBy('expired_date', 'desc')->get();
+      $permit = $company->permit()->orderBy('expired_date', 'desc')->get();
+      $user = $request->user()->LanguageId;
+
       return DataTables::of($permit)
       ->addColumn('artist_number', function($permit){
-        return $permit->artistpermit()->count();
+        $total = $permit->artistPermit()->count();
+        $approved = $permit->artistPermit()->where('artist_permit_status', 'approved')->count();
+        return $approved.' approved of '.$total;
       })
+      ->addColumn('location', function($permit) use ($user){
+        return $user == 1 ? ucfirst($permit->work_location) : $permit->work_location_ar;
+      })
+      ->addColumn('status', function($permit){
+        return ucfirst(permitStatus($permit->permit_status));
+      })
+      ->addColumn('link', function($permit){
+        return URL::signedRoute('admin.artist_permit.show', ['permit' => $permit->permit_id]);
+      })
+      ->addColumn('duration', function($permit){
+        $date = Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
+        $date = $date !=  0 ? $date : 1;
+        $day = $date > 1 ? ' Days': ' Day';
+        return $date.$day;
+      })
+      ->addColumn('term', function($permit){
+        return ucfirst($permit->term);
+      })
+      ->addColumn('request_type', function($permit){
+        return ucfirst($permit->request_type);
+      })
+      ->editColumn('issued_date', function($permit){
+        return $permit->issued_date->format('d-F-Y');
+      })
+      ->editColumn('expired_date', function($permit){
+         return $permit->expired_date->format('d-F-Y');
+      })
+      ->addColumn('has_event', function($permit){
+        return $permit->event()->exists() ? 'YES' : 'NO';
+      })
+      ->rawColumns(['status'])
       ->make(true);
    }
 

@@ -62,10 +62,14 @@
                                   @if ($company->status == 'back' || $company->status == 'rejected' )
                                     <div class="alert alert-danger kt-padding-t-5 kt-padding-b-5" role="alert">
                                         <div class="alert-text">
-                                          <h4 class="alert-heading">Sorry your application was rejected.</h4>
+                                           @if ($company->status == 'back')
+                                           <h4 class="alert-heading">Check the comment below.</h4>
+                                           @endif
+                                          
                                        
                                           @if ($company->status == 'rejected')
-                                             <span class="pull-right">Your application is rejected and can no longer proceed. Please contact RAKTDA.</span>
+                                             <h4 class="alert-heading">Sorry your application was rejected.</h4>
+                                             <span>Your application is rejected and can no longer proceed. Please contact RAKTDA.</span>
                                            @endif 
 
                                           </p>
@@ -88,7 +92,7 @@
                                   @if ($company->status == 'new' || $company->status == 'pending')
                                     <div class="alert alert-success" role="alert">
                                        <div class="alert-text">
-                                         <h4 class="alert-heading">Registration submitted successfully!</h4>
+                                         <h4 class="alert-heading">Registration successfully submitted!</h4>
                                          <p>Your registration will be check by RAKTDA and notify you as soon as possible.</p>
                                          {{-- <hr> --}}
                                          {{-- <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p> --}}
