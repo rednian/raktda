@@ -12,11 +12,6 @@ class EventComment extends Model
 	protected $dates = ['created_at', 'updated_at'];
 
 
-	public function role()
-	{
-		return $this->belongsTo(Roles::class, 'role_id');
-	}
-
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'user_id');

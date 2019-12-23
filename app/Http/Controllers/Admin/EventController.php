@@ -3,7 +3,7 @@
 
 	use App\Notifications\EventNotification;
 	use DB;
-	use niklasravnsborg\LaravelPdf\Pdf;
+	use PDF;
 	use Auth;
 	use App\User;
 	use MaddHatter\LaravelFullcalendar\Calendar;
@@ -117,7 +117,6 @@
 
 		public function submit(Request $request, Event $event)
 		{
-			// dd($request->all());	
 			try {
 				DB::beginTransaction();
 
@@ -306,11 +305,36 @@
 			$data['diff'] = $diff;
 			$data['days'] = $numberTransformer->toWords($diff);
 
+			if($event->liquor()->exists()){
+			    $data['liquor'] = $event->liquor;
+			}
+			if($event->truck()->exists()){
+			    $data['truck'] = $event->truck()->get();
+			}
+			
 			$pdf = PDF::loadView('permits.event.print', $data, [], [
 			    'title' => 'Event Permit',
 			    'default_font_size' => 10
 			]);
-			return $pdf->stream('Event-Permit.pdf');
+			
+			if($event->truck()->exists()){
+				$pdf->getMpdf()->AddPage();
+				$pdf->getMpdf()->WriteHTML(\View::make('permits.event.truckprint')->with($data)->render());
+			}
+
+			if($event->liquor()->exists()){
+				if($event->liquor->provided != null || $event->liquor->provided != 1)
+				{
+				    $pdf->getMpdf()->AddPage();
+				    $pdf->getMpdf()->WriteHTML(\View::make('permits.event.liquorprint')->with($data)->render());
+				}
+			}
+
+			// $pdf = PDF::loadView('permits.event.print', $data, [], [
+			//     'title' => 'Event Permit',
+			//     'default_font_size' => 10
+			// ]);
+			 return $pdf->stream('Event-Permit.pdf');
 		} 
 
 

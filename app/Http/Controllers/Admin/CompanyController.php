@@ -148,7 +148,8 @@ class CompanyController extends Controller
 
       return DataTables::of($requirements)
       ->addColumn('name',  function($companyRequirement) use ($request){
-         return $request->user()->LanguageId == 1 ?  ucfirst($companyRequirement->requirement->requirement_name) : $companyRequirement->requirement->requirement_name_ar;
+         $name =  $request->user()->LanguageId == 1 ?  ucfirst($companyRequirement->requirement->requirement_name) : $companyRequirement->requirement->requirement_name_ar;
+         return '<a href="'.asset('/storage/'.$companyRequirement->path).'" data-caption="'.ucfirst($name).'" data-fancybox="gallery"  data-fancybox>'.ucfirst($name).'</a>';
       })
       ->addColumn('count', function($companyRequirement) use ($array, $counter){
        

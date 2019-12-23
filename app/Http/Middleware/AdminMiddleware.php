@@ -21,6 +21,8 @@ class AdminMiddleware
             }
         }
 
+    
+
         // if(Auth::check() && $request->user()->type == 4 && $request->user()->roles()->where('roles.role_id', 4)->exists()){
         // 	return redirect()->route('inspector.dashboard');
         // }

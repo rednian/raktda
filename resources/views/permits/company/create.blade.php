@@ -91,7 +91,7 @@
                     @csrf
                     <section class="panel panel-default">
                         <div class="panel-heading">
-                            Company Information
+                            Establishment Information
                             <h5 class="panel-title"></h5>
                         </div>
                         <div class="panel-body">
@@ -101,13 +101,13 @@
                                     <option selected disabled>Select Establishment Type</option>
                                     @if (App\CompanyType::orderBy('name_en')->count() > 0)
                                         @foreach (App\CompanyType::orderBy('name_en')->get() as $type)
-                                            <option value="{{$type->company_id}}">{{ucfirst($type->name_en)}}</option>
+                                            <option value="{{$type->company_type_id}}">{{ucfirst($type->name_en)}}</option>
                                         @endforeach
                                     @endif
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Company Name <span class="text-danger">*</span></label>
+                                <label>Establishment Name <span class="text-danger">*</span></label>
                                 <input value="{{old('name_en')}}"  type="text" name="name_en" class="form-control" required autocomplete="off" autofocus>
                             </div>
                             <div class="form-group corporate">
@@ -221,13 +221,13 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Password <span class="text-danger">*</span></label>
-                                        <input type="text" name="password" class="form-control" required autocomplete="off" autofocus>
+                                        <input type="password" name="password" class="form-control" required autocomplete="off" autofocus>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Confirm Password <span class="text-danger">*</span></label>
-                                        <input type="text" name="confirmPassword" class="form-control" required autocomplete="off" autofocus>
+                                        <input type="password" name="confirmPassword" class="form-control" required autocomplete="off" autofocus>
                                     </div>
                                 </div>
                             </section>
@@ -260,8 +260,9 @@
     <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function(){
-            $('select[name=type]').change(function(){
-                if($(this).val() != 'corporate'){
+            $('select[name=company_type_id]').change(function(){
+                console.log($(this).val());
+                if($(this).val() == 1){
                     $('.corporate').addClass('hide').find('input').attr('disabled', true);
                 }
                 else{

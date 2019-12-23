@@ -62,11 +62,10 @@
                                   @if ($company->status == 'back' || $company->status == 'rejected' )
                                     <div class="alert alert-danger kt-padding-t-5 kt-padding-b-5" role="alert">
                                         <div class="alert-text">
-                                          <h4 class="alert-heading">Oppss! Got Issues.</h4>
-                                          <p title="{{$company->comment()->latest()->first()->created_at->format('l h:i A | d-F-Y')}}" class="mb-0 text-underline">{{ humanDate($company->comment()->latest()->first()->created_at) }}
-                                          
+                                          <h4 class="alert-heading">Sorry your application was rejected.</h4>
+                                       
                                           @if ($company->status == 'rejected')
-                                             <span class="pull-right">Your application is rejected and can no longer proceed. Please create a new account and make sure all the details are correct!</span>
+                                             <span class="pull-right">Your application is rejected and can no longer proceed. Please contact RAKTDA.</span>
                                            @endif 
 
                                           </p>
@@ -78,8 +77,8 @@
                                   @if ($company->status == 'active' || $company->event()->count() < 0 || $company->permit()->count() < 0)
                                     <div class="alert alert-success" role="alert">
                                        <div class="alert-text">
-                                         <h4 class="alert-heading">Congratulation your establishment successfully registered!</h4>
-                                         <p>You can now create an <a href="{{ route('event.create') }}" class="btn btn-sm btn--maroon">EVENT PERMIT</a> or  <a href="{{ route('artist.create') }}" class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
+                                         <h4 class="alert-heading">Congratulation your establishment is registered successfully!</h4>
+                                         <p>You can now apply an <a href="{{ route('event.create') }}" class="btn btn-sm btn-maroon">EVENT PERMIT</a> or  <a href="{{ route('artist.create') }}" class="btn btn-sm btn-maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
                                          {{-- <hr> --}}
                                          {{-- <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p> --}}
                                        </div>
@@ -90,7 +89,7 @@
                                     <div class="alert alert-success" role="alert">
                                        <div class="alert-text">
                                          <h4 class="alert-heading">Registration submitted successfully!</h4>
-                                         <p>Your registration will be check by RAKTDA during working days. Please wait 2 to 3 days.</p>
+                                         <p>Your registration will be check by RAKTDA and notify you as soon as possible.</p>
                                          {{-- <hr> --}}
                                          {{-- <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p> --}}
                                        </div>
@@ -186,11 +185,11 @@
                                                                <div class="row form-group form-group-sm">
                                                                    <div class="col-sm-6">
                                                                        <label >Address<span class="text-danger">*</span></label>
-                                                                       <input name="address" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->address}}">
+                                                                       <input name="address" required autocomplete="off"  class="form-control" type="text" value="{{$company->address}}">
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                       <label >Country <span class="text-danger">*</span></label>
-                                                                      <select name="country_id" class="form-control form-control-sm">
+                                                                      <select name="country_id" class="form-control form-control-sm select2">
                                                                           @if (App\Country::orderBy('name_en')->count() > 0)
                                                                               @foreach (App\Country::orderBy('name_en')->get() as $country)
                                                                               <option  {{ $country->country_id == $company->country_id ? 'selected': null }} value="{{$country->country_id}}">{{ucfirst($country->name_en)}}</option>
@@ -205,7 +204,7 @@
                                                                <div class="row form-group form-group-sm">
                                                                    <div class="col-sm-6">
                                                                        <label >Emirate<span class="text-danger">*</span></label>
-                                                                       <select name="emirate_id"  class="form-control form-control-sm">
+                                                                       <select name="emirate_id"  class="select2 form-control form-control-sm">
                                                                           @if (App\Emirates::orderBy('name_en')->count() > 0)
                                                                               @foreach (App\Emirates::orderBy('name_en')->get() as $emirate)
                                                                               <option {{ $emirate->id == $company->emirate_id ? 'selected': null }} value="{{$emirate->id}}">{{ucfirst($emirate->name_en)}}</option>
@@ -215,7 +214,7 @@
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                       <label>Area<span class="text-danger">*</span></label>
-                                                                      <select required name="area_id" class="form-control form-control-sm">
+                                                                      <select required name="area_id" class="select2 form-control form-control-sm">
                                                                           @if (App\Areas::where('emirates_id', 5)->orderBy('area_en')->count() > 0)
                                                                               @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as $area)
                                                                               <option {{ $area->id == $company->area_id ? 'selected': null }}  value="{{$area->id}}">{{ucfirst($area->area_en)}}</option>
@@ -234,7 +233,7 @@
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label >Establishment Details (AR)<span class="text-danger">*</span></label>
-                                                               <textarea rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_ar">{{$company->company_description_ar}}</textarea>
+                                                               <textarea dir="rtl" rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_ar">{{$company->company_description_ar}}</textarea>
                                                            </div>
                                                        </section>
                                                        
@@ -276,23 +275,23 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>{{__('Email Address')}} <span class="text-danger">*</span></label>
-                                                               <input name="email" class="form-control form-control-sm" type="email" value="{{$company->contact->email}}">
+                                                               <input autocomplete="off" name="email" class="form-control form-control-sm" type="email" value="{{$company->contact->email}}">
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label>{{__('Mobile Number')}} <span class="text-danger">*</span></label>
-                                                               <input name="mobile_number" class="form-control form-control-sm" type="text" value="{{$company->contact->mobile_number}}">
+                                                               <input autocomplete="off" name="mobile_number" class="form-control form-control-sm" type="text" value="{{$company->contact->mobile_number}}">
                                                            </div>
                                                        </section>
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>{{__('Emirates ID')}} <span class="text-danger">*</span></label>
-                                                               <input name="emirate_identication" class="form-control form-control-sm" type="text" value="{{$company->contact->emirate_identication}}">
+                                                               <input autocomplete="off" name="emirate_identication" class="form-control form-control-sm" type="text" value="{{$company->contact->emirate_identication}}">
                                                            </div>
                                                            <div class="col-md-6">
                                                                <div class="form-group row">
                                                                    <div class="col-sm-6">
                                                                        <label>{{__('Emirates ID Issued Date')}} <span class="text-danger">*</span></label>
-                                                                       <input autocomplete="off" name="emirate_id_issued_date" class="date-picker start form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-F-Y') : null }}">
+                                                                       <input autocomplete="off" autocomplete="off" name="emirate_id_issued_date" class="date-picker start form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-F-Y') : null }}">
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                     <input type="hidden" name="reference_number" value="123456789">
@@ -352,7 +351,7 @@
                                             @if ($company->status == 'draft')
                                                <button style="padding: 0.5rem 1rem;" type="submit" name="submit" value="draft" class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark">Save as Draft</button>
                                             @endif
-                                               <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">Submit Application</button>
+                                               <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn-maroon btn-sm kt-font-transform-u">{{ $company->application ? 'Update Application' : 'Submit Application'}}</button>
                                            </div>
                                        </div>
                                     </form>
@@ -481,6 +480,17 @@
   var filenames = [];
 
     $(document).ready(function(){
+
+           //  approver.select2({
+           // minimumResultsForSearch: 'Infinity',
+           // placeholder: 'Select Approver',
+           // autoWidth: true,
+           // width: '100%',
+           // allowClear: true,
+           // tags: true
+           //   });
+
+      $('.select2').select2();
 
       $('.filer_input').filer({
         showThumbs: true,

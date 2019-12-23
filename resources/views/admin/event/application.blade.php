@@ -414,7 +414,7 @@
 																						 </div>
 																					</div>
 																					<div class="col-3">
-																						<label class="kt-font-dark">{{ __('Plate Number') }} <span class="text-danger">*</span></label>
+																						<label class="kt-font-dark">{{ __('Traffic Plate Number') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
 																							<input value="{{ $truck->plate_number }}" name="plate_number" readonly="readonly" type="text"
 																											 class="form-control">
@@ -765,6 +765,12 @@
 																	</div>
 																</div>
 															</div>
+															<div class="row form-group form-group-sm">
+																<div class="col-md-12">
+																	<label for="">{{__('Additional Location Information')}}</label>
+																	<textarea rows="2" class="form-control form-control-sm">{{ucfirst($event->additional_location_info)}}</textarea>
+																</div>
+															</div>
 															<section class="row">
 																<div class="col">
 																 <iframe class="border kt-padding-5" width='100%' height='100%' id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 310px; padding: 1px; width: 100%; margin-top: 1%; border-style: none;" >
@@ -839,7 +845,7 @@
  																 <th>#</th>
  																 <th>{{ __('COMPANY NAME') }}</th>
  																 <th>{{ __('SERVICE TYPE') }}</th>
- 																 <th>{{ __('PLATE NUMBER') }}</th>
+ 																 <th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
  																 <th>{{ __('ACTION') }}</th>
  															</tr>
  														</thead>

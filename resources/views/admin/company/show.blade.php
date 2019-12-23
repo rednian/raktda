@@ -222,20 +222,14 @@
                    <table class="table table-borderless table-striped table-hover border table-sm" id="artist-permit-table">
                        <thead>
                            <tr>
-                               <th></th>
+                               {{-- <th></th> --}}
                                <th>{{__('REFERENCE NO.')}}</th>
-                               <th>{{__('DURATION.')}}</th>
-                               <th>{{__('APPLICATION TYPE')}}</th>
-                               <th>{{__('STATUS')}}</th>
-                               <th>{{__('VENUE')}}</th>
-                               <th>{{__('LOCATION')}}</th>
-                               <th>{{__('START')}}</th>
+                               <th>{{__('DURATION')}}</th>
+                               <th>{{__('REQUEST TYPE')}}</th>
                                <th>{{__('PERMIT NO.')}}</th>
-                               <th>{{__('END')}}</th>
-                               <th>{{__('TIME')}}</th>
-                               <th>{{__('FOOD TRUCK')}}</th>
-                               <th>{{__('HAS LIQUOR')}}</th>
                                <th>{{__('NUMBER OF ARTIST')}}</th>
+                               <th>{{__('STATUS')}}</th>
+                               <th>{{__('WORK LOCATION')}}</th>
                            </tr>
                        </thead>
                    </table>
