@@ -22,7 +22,26 @@ use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\Facades\DataTables;
 
 class ArtistPermitController extends Controller
-{
+{   
+
+    public function __construct(){
+        $this->middleware('signed')->except([
+            'search',
+            'download',
+            'submitApplication',
+            'checkActivePermit',
+            'artistChecklist',
+            'approverDataTable',
+            'artistChecklistDocument',
+            'artistPermitHistory',
+            'applicationDataTable',
+            'permitHistory',
+            'applicationCommentDataTable',
+            'datatable',
+            'artistDataTable'
+        ]);
+    }
+
     public function index(Request $request)
     {
       $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
@@ -67,13 +86,12 @@ class ArtistPermitController extends Controller
 
     public function show(Permit $permit)
     {
-       if (!$request->hasValidSignature()) { abort(401); }
-    	return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no]);
+    	 return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no]);
     }
 
     public function applicationDetails(Request $request, Permit $permit)
     {
-       if (!$request->hasValidSignature()) { abort(401); }
+       
       if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
 
         //UPDATE LOCK ARTIST PERMIT
@@ -237,7 +255,7 @@ class ArtistPermitController extends Controller
       	DB::rollBack();
 	      $result = ['error', $e->getMessage(), 'Error'];
       }
-	    return redirect()->route('admin.artist_permit.index')->with('message', $result);
+	    return redirect(URL::signedRoute('admin.artist_permit.index'))->with('message', $result);
     }
 
     public function checkActivePermit(Request $request, Permit $permit, Artist $artist)
@@ -293,7 +311,7 @@ class ArtistPermitController extends Controller
          $result = ['danger', $e->getMessage(), 'Error'];
       }
 
-       return redirect()->route('admin.artist_permit.applicationdetails', $permit->permit_id)->with(['message'=>$result]);
+       return redirect(URL::signedRoute('admin.artist_permit.applicationdetails', $permit->permit_id))->with(['message'=>$result]);
     }
 
     public function checkApplication(Request $request,Permit $permit,  ArtistPermit $artistpermit)
@@ -489,6 +507,12 @@ class ArtistPermitController extends Controller
             $html .= '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">'.$artist_permit->comments()->count().'</span></button>';
             return $html;
           })
+          ->addColumn('show_link', function($artist_permit) use($permit){
+            return URL::signedRoute('admin.artist_permit.checkApplication', ['permit' => $permit->permit_id, 'artistpermit' => $artist_permit->artist_permit_id]);
+          })
+          ->addColumn('artist_link', function($artist_permit){
+            return URL::signedRoute('admin.artist.show', $artist_permit->artist_id);
+          })
 			    ->rawColumns(['artist_status', 'existing_permit', 'action'])
 			    ->make(true);
         }
@@ -524,7 +548,7 @@ class ArtistPermitController extends Controller
 		    	return permitStatus($permit->permit_status);
 		    })
 		     ->addColumn('action', function ($permit){
-		    	return '<a href="'.route('admin.artist_permit.show', $permit->permit_id).'" class="btn btn-sm btn-secondary btn-elevate">Details</a>';
+		    	return '<a href="'. URL::signedRoute('admin.artist_permit.show', $permit->permit_id) . '" class="btn btn-sm btn-secondary btn-elevate">Details</a>';
 		    })
 		    ->rawColumns(['permit_status', 'action'])
 		    ->make(true);

@@ -157,6 +157,15 @@ function permitStatus($status)
     if ($status == 'modification request') {
         $status = 'need modification';
     }
+    if ($status == 'checked'){
+        $classname = 'success';
+    }
+    if($status == 'approved'){
+        $classname = 'success';
+    }
+    if($status == 'disapproved'){
+        $classname = 'danger';
+    }
 
     return '<span class="kt-badge kt-badge--' . $classname . ' kt-badge--inline">' . ucwords($status) . '</span>';
 }

@@ -8,6 +8,7 @@
 	use App\ArtistAction;
 	use App\ArtistPermit;
     use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\URL;
     use Yajra\DataTables\Facades\DataTables;
     use function foo\func;
 	use Illuminate\Http\Request;
@@ -15,6 +16,18 @@
 
 	class ArtistController extends Controller
 	{
+		public function __construct(){
+	        $this->middleware('signed')->except([
+	            'artist_block',
+				'artist_unblock',
+				'updateStatus',
+				'datatable',
+				'statusHistory',
+				'permithistory',
+				'history',
+				'checked_list',
+	        ]);
+	    }
 		public function artist_block(Request $request){
 			$data=$request->all();
 		    foreach ($data['id'] as $artist_id) {
@@ -29,7 +42,6 @@
              }
          }
             return response()->json();
-
 		}
 
         public function artist_unblock(Request $request){
@@ -127,7 +139,9 @@
 					 ->addColumn('artist_status', function($artist){
 					 	return artistStatus($artist->artist_status);
 					 })
-
+					 ->addColumn('show_link', function($artist){
+					 	return URL::signedRoute('admin.artist.show', $artist->artist_id);
+					 })
 					 ->rawColumns(['name', 'nationality', 'artist_status'])
 					 // ->setTotalRecords($totalRecords)
 					 ->make(true);

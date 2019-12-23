@@ -24,9 +24,43 @@
 	use Yajra\DataTables\Facades\DataTables;
 	use App\ScheduleTypeDayTime;
 	use App\EmployeeCustomSchedule;
+	use Illuminate\Support\Facades\URL;
 
 	class EventController extends Controller
 	{
+		public function __construct(){
+			$this->middleware('signed')->except([
+	            'cancel',
+				'showWeb',
+				'showAll',
+				'calendar',
+				'submit',
+				'updateLock',
+				'download',
+				'uploadedRequirement',
+				'addRequirementDatatable',
+				'artistDatatable',
+				'truckDatatable',
+				'truckRequirementDatatable',
+				'liquorRequirementDatatable',
+				'applicationDatatable',
+				'imageDatatable',
+				'commentDatatable',
+				'saveEventComment',
+				'dataTable',
+				'addAppointment',
+				'checkTimeAvailability',
+				'roundTime',
+				'saveAppointment',
+				'countTodayAppointment',
+				'resetTimeSlot',
+				'isTimeNotAvailable',
+				'SplitTime',
+				'availableInspector',
+				'isInspectorWorking',
+	        ]);
+		}
+	    
 		public function index(Request $request)
 		{
 			$event = Event::whereDate('expired_date', '<', Carbon::now())->where('status', 'active')->update(['status'=>'expired']);
@@ -105,7 +139,7 @@
 					'start'=> date('Y-m-d', strtotime($event->issued_date)).' '.date('H:m', strtotime($event->time_start)),
 					'end'=> date('Y-m-d', strtotime($event->expired_date)).' '.date('H:m', strtotime( $event->time_end)),
 					'id'=>$event->event_id,
-					'url'=> route('admin.event.show', $event->event_id).'?tab=event-calendar',
+					'url'=> URL::signedRoute('admin.event.show', $event->event_id),
 					'description'=> 'Venue : '.$venue = $request->user()->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
 					'backgroundColor'=> $event->type->color,
 					'textColor' => '#fff !important',
@@ -283,7 +317,7 @@
 				DB::rollBack();
 			}
 
-			return redirect('/event#new-request')->with('message',$result);
+			return redirect(URL::signedRoute('admin.event.index') . '#new-request')->with('message', $result);
 		}
 
 		public function updateLock(Request $request, Event $event)
@@ -572,18 +606,16 @@
 		public function commentDatatable(Request $request, Event $event)
 		{
 			if ($request->ajax()) {
-				$comments = $event->comment()->latest();
+				$comments = $event->comment()->where('action', '!=' ,'pending')->latest();
 
 				return DataTables::of($comments)
 				->addColumn('name', function($comment) use($request){
 					$role_name = $comment->role->NameEn;
-
 					if(!is_null($comment->government_id)){
 						$role_name = $request->LanguageId == 1 ? $comment->government->government_name_en : $comment->government->government_name_ar;
 					}
 
 					if(is_null($comment->user_id)){
-						
 						return profileName($role_name, '');
 					}
 
@@ -610,14 +642,14 @@
 				$comment = $event->comment()->where([
 		            'action' => 'pending',
 		            'role_id' => $request->user()->roles()->first()->role_id,
-		        ])->first();
+		        ])->latest()->first();
 
 		        if(!is_null($request->user()->government_id)){
 		            $comment = $event->comment()->where([
 		                'action' => 'pending',
 		                'role_id' => $request->user()->roles()->first()->role_id,
 		                'government_id' => $request->user()->government_id
-		            ])->first();
+		            ])->latest()->first();
 		        }
 				
 				$comment->update([
@@ -639,7 +671,7 @@
 				$result = ['danger', $e->getMessage(), 'Error'];
 				DB::rollBack();
 			}
-			return redirect()->route('admin.event.index')->with('message',$result);
+			return redirect(URL::signedRoute('admin.event.index'))->with('message',$result);
 		}
 
 		public function dataTable(Request $request)
@@ -659,6 +691,13 @@
 			          		$q->where('government_id', $request->user()->government_id);
 			          	});
 			        });
+				})
+				->when($request->checked, function($q) use($request){
+					$q->whereHas('comment', function($q) use($request){
+						$q->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->whereNotNull('user_id')->when($request->gov, function($q) use($request){
+			          		$q->where('government_id', $request->user()->government_id);
+			          	});;
+					});
 				})
 				->whereNotIn('status', ['draft'])
 				->orderBy('updated_at');
@@ -719,8 +758,8 @@
 					$html  .= '	</button>';
 					if ($event->status != 'cancelled' || $event->status != 'rejected') {
 						$html  .= '		<div class="dropdown-menu dropdown-menu-right">';
-						$html  .= '	<a class="dropdown-item" href="'.route('admin.event.show', $event->event_id).'"><i class="la la-calendar-check-o"></i>Event Details</a>';
-						$html  .= '				<a class="dropdown-item" target="_blank" href="'.route('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
+						$html  .= '	<a class="dropdown-item" href="'. URL::signedRoute('admin.event.show', $event->event_id) . '"><i class="la la-calendar-check-o"></i>Event Details</a>';
+						$html  .= '				<a class="dropdown-item" target="_blank" href="'. URL::signedRoute('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
 						$html  .= '				<div class="dropdown-divider"></div>';
 						$html  .= '					<a href="javascript:void(0)" class="dropdown-item cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
 						$html  .= '					</div>';
@@ -730,14 +769,43 @@
 
 					return $html;
 
-					 })
-					->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration'])
-					 ->make(true);
-					$table = $table->getData(true);
-					$table['new_count'] = Event::where('status', 'new')->count();
-					$table['pending_count'] = Event::whereIn('status', ['amended', 'checked'])->count();
-					$table['cancelled_count'] = Event::where('status', 'cancelled')->count();
-					return response()->json($table);
+				 })
+				->addColumn('application_link', function($event){
+					return URL::signedRoute('admin.event.application', $event->event_id);
+				})
+				->addColumn('show_link', function($event){
+					return URL::signedRoute('admin.event.show', $event->event_id);
+				})
+				->addColumn('checked_date', function($event) use($user){
+					if($event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()){
+						return $event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()->updated_at;
+					}
+					return '';
+				})
+				->addColumn('checked_by', function($event) use($user){
+					if($event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()){
+						if(!is_null($event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()->user)){
+							return $event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()->user->NameEn;
+						}
+					}
+					return '';
+				})
+				->addColumn('checked_status', function($event) use($user){
+					if($event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()){
+						if(!is_null($event->comment)){
+							$status = $event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()->action;
+							return permitStatus($status);
+						}
+					}
+					return '';
+				})
+				->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration', 'checked_status'])
+				 ->make(true);
+				$table = $table->getData(true);
+				$table['new_count'] = Event::where('status', 'new')->count();
+				$table['pending_count'] = Event::whereIn('status', ['amended', 'checked'])->count();
+				$table['cancelled_count'] = Event::where('status', 'cancelled')->count();
+				return response()->json($table);
 			}
 		}
 

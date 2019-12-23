@@ -13,7 +13,7 @@
             <h3 class="kt-portlet__head-title kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->name_en) : ucfirst($event->name_ar) }} - {{ __('DETAILS') }}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
-            <a href="{{ route('admin.event.index') }}#{{ $tab }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
+            <a href="{{ URL::signedRoute('admin.event.index') }}#{{ $tab }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
                  <i class="la la-arrow-left"></i>
                  {{ __('BACK TO PERMIT LIST') }}
             </a>
@@ -31,8 +31,127 @@
          </div>
     </div>
     <div class="kt-portlet__body kt-padding-t-5">
+
+      @if ($event->status == 'active')
+        <section class="row kt-margin-t-10">
+          <div class="col-md-12">
+            <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
+                <div class="card border">
+                  <div class="card-header " id="headingOne6">
+                    <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6">
+                        {{__('CANCEL EVENT')}}
+                    </div>
+                  </div>
+                  <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6">
+                    <div class="card-body kt-padding-b-0">
+                      <form action="{{ route('admin.event.cancel', $event->event_id) }}" method="post" class="form" id="frm-status">
+                        @csrf
+                        <div class="form-group row form-group-sm">
+                          <div class="col-md-6">
+                            <label for="">Remarks <span class="text-danger">*</span></label>
+                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                          <div class="col-md-6">
+                            <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col">
+                            <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="cancelled">SUBMIT</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </section>
+      @endif
+      
+      {{-- EVENT APPROVAL BY INSPECTOR, MANAGER AND GOVERNMENT --}}
+      @if(Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+      @if($event->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
+      @php 
+        $action = $event->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first();
+      @endphp
+      <div class="alert alert-outline-danger fade show" role="alert" style="margin-bottom:0px">
+        <div class="alert-text">
+          <h6 class="alert-heading text-danger kt-font-transform-u">{{ __('Last Action Taken') }}</h6>
+          <table class="table table-hover table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>{{ __('Checked By') }}</th>
+                <th>{{ __('Checked Date') }}</th>
+                <th>{{ __('Remarks') }}</th>
+                <th class="text-right">{{ __('Action') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ $action->user->NameEn }}</td>
+                <td>{{ $action->updated_at }}</td>
+                <td>{{ $action->comment }}</td>
+                <td class="text-right">{!! permitStatus($action->action) !!}</td>
+              </tr>
+            </tbody>
+          </table>
+           <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_4_4_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
+           </a>
+        </div>
+      </div>
+      @endif
+      @if($event->comment()->where('action', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
+      <section class="row kt-margin-t-10">
+          <div class="col-md-12">
+            <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample7">
+                <div class="card border">
+                  <div class="card-header " id="headingOne7">
+                    <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne7">
+                        {{__('TAKE ACTION')}}
+                    </div>
+                  </div>
+                  <div id="collapseOne7" class="collapse show" aria-labelledby="headingOne7" data-parent="#accordionExample7">
+                    <div class="card-body kt-padding-b-0">
+                      <form action="{{ route('admin.event.savecomment', $event->event_id) }}" method="post" class="form" id="frm-savecomment">
+                        @csrf
+                        <div class="form-group row form-group-sm">
+                            <div class="col-md-6">
+                                <label for="">Action <span class="text-danger">*</span></label>
+                                <select required="" name="action" class="form-control form-control-sm">
+                                    <option value=""></option>
+                                    <option value="approved">Approved</option>
+                                    <option value="disapproved">Disapproved</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-group-sm">
+                          <div class="col-md-6">
+                            <label for="">Remarks <span class="text-danger">*</span></label>
+                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                          <div class="col-md-6">
+                            <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col">
+                            <button type="button" id="btnCheckedPermit" class="btn btn-sm btn-maroon kt-transform-u">SUBMIT</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </section>
+      @endif
+      @endif
       {{-- @include('admin.event.includes.existing-notification') --}}
-      <section class="row">
+      <section class="row kt-margin-t-10">
         <div class="col-md-7">
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Owner')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->owner_name) : $event->owner_name_ar }}</p>
@@ -125,141 +244,143 @@
           <iframe class="border kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 350px; width: 100%; margin-top: 1%; border-style: none;" >
           </iframe>
         </div>
-        <div class="col-md-5 border">
-          <div class="kt-widget kt-widget--user-profile-4">
-              <div class="kt-widget__head kt-margin-t-5">
-                <div class="kt-widget__media kt-margin-b-5">
-                  @if ($event->thumbnail)
-                    <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}" class="kt-widget__img img-circle" alt="image">
-                    @else
-                    <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
-                      @php
-                        $name = explode(' ', $event->name_en);
-                        $name = strtoupper(substr($name[0], 0, 1));
-                      @endphp
-                      {{$name}}
+        <div class="col-md-5">
+            <div class="border kt-padding-10">
+                <div class="kt-widget kt-widget--user-profile-4">
+                  <div class="kt-widget__head kt-margin-t-5">
+                    <div class="kt-widget__media kt-margin-b-5">
+                      @if ($event->thumbnail)
+                        <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}" class="kt-widget__img img-circle" alt="image">
+                        @else
+                        <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
+                          @php
+                            $name = explode(' ', $event->name_en);
+                            $name = strtoupper(substr($name[0], 0, 1));
+                          @endphp
+                          {{$name}}
+                        </div>
+                      @endif
                     </div>
-                  @endif
-                </div>
-                <div class="kt-widget__content">
-                  <div class="kt-widget__section">
-                    <div class="kt-widget__button">
-                      {!! permitStatus($event->status)!!}                      
+                    <div class="kt-widget__content">
+                      <div class="kt-widget__section">
+                        <div class="kt-widget__button">
+                          {!! permitStatus($event->status)!!}                      
+                        </div>
+                      </div>
+                      @if ($event->status == 'cancelled')
+                       <div class="kt-widget__section">
+                        <h6 class="kt-font-dark">{{ __('Cancel Reason') }}   <small title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}" class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small></h6>
+
+                        <hr class="kt-margin-b-0 kt-margin-t-0">
+                        <p>
+                          {{ucfirst($event->cancel_reason)}}
+                        </p>
+                       </div>
+                      @endif
                     </div>
                   </div>
-                  @if ($event->status == 'cancelled')
-                   <div class="kt-widget__section">
-                    <h6 class="kt-font-dark">{{ __('Cancel Reason') }}   <small title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}" class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small></h6>
-
-                    <hr class="kt-margin-b-0 kt-margin-t-0">
-                    <p>
-                      {{ucfirst($event->cancel_reason)}}
-                    </p>
-                   </div>
-                  @endif
-                </div>
-              </div>
-              <div class="kt-widget__body kt-margin-t-5">
-                <hr>
-                 <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
-                 <table class="table table-sm table-hover table-borderless table-display">
-                  <tr>
-                      <td>{{ __('Applied Date') }} : </td>
-                      <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
-                  </tr>
-                     <tr>
-                         <td>{{ __('Reference No.') }} :</td>
-                         <td class="kt-font-dark"><code style="font-size:;">{{ $event->reference_number }}</code></td>
-                     </tr>
+                  <div class="kt-widget__body kt-margin-t-5">
+                    <hr>
+                     <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
+                     <table class="table table-sm table-hover table-borderless table-display">
                       <tr>
-                         <td>{{ __('Permit Number') }} :</td>
-                          <td class="kt-font-dark"><code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
-                     </tr>
-                     <tr>
-                         <td>{{ __('Expected Audience') }} :</td>
-                          <td class="kt-font-dark">{{$event->audience_number}}</td>
-                     </tr>
-                     <tr>
-                         <td>{{ __('Approved By') }} :</td>
-                          <td class="kt-font-dark"></td>
-                     </tr>
-                     <tr>
-                         <td>{{ __('Approved Date') }} :</td>
-                          <td class="kt-font-dark"></td>
-                     </tr>
-                     <tr>
-                         <td>{{ __('Printed Note') }} :</td>
-                          <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->note_en) : $event->note_ar }}</td>
-                     </tr>      
-                 </table>
-                 <hr>
-                 <h6 class="kt-font-dark">{{__('Liqour Information')}}</h6>
-                 <table class="table table-sm table-hover table-borderless table-display">
-                   <tr>
-                    <tr>
-                      <td width="55%">{{__('Company Name')}} :</td>
-                      <td>{{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}</td>
-                    </tr>
-                     <td>{{__('Provided By Venue ?')}} : </td>
-                     <td>{{$event->provided ? 'YES' : 'NO'}}</td>
-                     @if ($event->provided)
+                          <td>{{ __('Applied Date') }} : </td>
+                          <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
+                      </tr>
+                         <tr>
+                             <td>{{ __('Reference No.') }} :</td>
+                             <td class="kt-font-dark"><code style="font-size:;">{{ $event->reference_number }}</code></td>
+                         </tr>
+                          <tr>
+                             <td>{{ __('Permit Number') }} :</td>
+                              <td class="kt-font-dark"><code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
+                         </tr>
+                         <tr>
+                             <td>{{ __('Expected Audience') }} :</td>
+                              <td class="kt-font-dark">{{$event->audience_number}}</td>
+                         </tr>
+                         <tr>
+                             <td>{{ __('Approved By') }} :</td>
+                              <td class="kt-font-dark"></td>
+                         </tr>
+                         <tr>
+                             <td>{{ __('Approved Date') }} :</td>
+                              <td class="kt-font-dark"></td>
+                         </tr>
+                         <tr>
+                             <td>{{ __('Printed Note') }} :</td>
+                              <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->note_en) : $event->note_ar }}</td>
+                         </tr>      
+                     </table>
+                     <hr>
+                     <h6 class="kt-font-dark">{{__('Liqour Information')}}</h6>
+                     <table class="table table-sm table-hover table-borderless table-display">
                        <tr>
-                         <td>{{__('Liquor Permit Number: ')}}</td>
-                         <td>{{$event->liquor->liquor_permit_no}}</td>
-                       </tr>
-                       @else
-                       <tr>
-                         <td>{{__('Liquor Service')}} :</td>
-                         <td>{{$event->liquor->liquor_service}}</td>
-                       </tr>
-                       <tr>
-                         <td>{{__('Liquor Types')}} :</td>
-                         <td>{{$event->liquor->liquor_type}}</td>
-                       </tr>
-                       <tr>
-                         <td>{{__('Purchase Receipt')}} :</td>
-                         <td>{{$event->liquor->purchase_receipt}}</td>
-                       </tr>
-                     @endif
-                   </tr>
-                 </table>
-                 <div class="d-flex justify-content-center">
-                  @if ($event->transaction()->exists())
-                   <button type="button" class="btn btn-secondary btn-sm kt-margin-r-5">Download</button>
-                  @endif
-                  
-                 </div>
-                 <hr>
-                  <h6 class="kt-font-dark">{{ __('Establishment Information') }}</h6>
-                  @if ($event->owner->company()->exists())
-                    <table class="table table-borderless table-sm table-display">
                         <tr>
-                            <td><span style="font-size: large;" class="flaticon-home"></span> : </td>
-                            <td>{{ ucwords(Auth::user()->LanguageId == 1 ? ucfirst($event->owner->company->name_en) : $event->owner->company->name_ar ) }}</td>
+                          <td width="55%">{{__('Company Name')}} :</td>
+                          <td>{{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}</td>
                         </tr>
-                        <tr>
-                            <td><span style="font-size: large;" class="flaticon-email"></span> : </td>
-                            <td>{{ $event->owner->company->company_email }}</td>
-                        </tr>
-                        <tr>
-                            <td><span style="font-size: large;" class="la la-phone"></span> : </td>
-                            <td>{{ $event->owner->company->phone_number }}</td>
-                        </tr>
-                        <tr>
-                           <td><span style="font-size: large;" class="flaticon-placeholder-3"></span> :</td>
-                           @if (Auth::user()->LanguageId == 1)
-                            <td>{{ $event->owner->company->addres }} {{ $event->owner->company->area->area_en}} {{ $event->owner->company->emirate->name_en}} {{ $event->owner->company->country->name_en}}</td>
-                            @else
-                            <td>{{ $event->owner->company->addres }} {{ ucfirst($event->owner->company->area->area_ar)}} {{ ucfirst($event->owner->company->emirate->name_ar)}} {{ ucfirst($event->owner->company->country->name_ar)}}</td>
-                           @endif
-                        </tr>
-                    </table>
-                    @else
-                    @empty
-                     {{ __('Establishment Information is not required for this Event Owner.') }}
-                    @endempty
-                  @endif
-              </div>
+                         <td>{{__('Provided By Venue ?')}} : </td>
+                         <td>{{$event->provided ? 'YES' : 'NO'}}</td>
+                         @if ($event->provided)
+                           <tr>
+                             <td>{{__('Liquor Permit Number: ')}}</td>
+                             <td>{{$event->liquor->liquor_permit_no}}</td>
+                           </tr>
+                           @else
+                           <tr>
+                             <td>{{__('Liquor Service')}} :</td>
+                             <td>{{$event->liquor->liquor_service}}</td>
+                           </tr>
+                           <tr>
+                             <td>{{__('Liquor Types')}} :</td>
+                             <td>{{$event->liquor->liquor_type}}</td>
+                           </tr>
+                           <tr>
+                             <td>{{__('Purchase Receipt')}} :</td>
+                             <td>{{$event->liquor->purchase_receipt}}</td>
+                           </tr>
+                         @endif
+                       </tr>
+                     </table>
+                     <div class="d-flex justify-content-center">
+                      @if ($event->transaction()->exists())
+                       <button type="button" class="btn btn-secondary btn-sm kt-margin-r-5">Download</button>
+                      @endif
+                      
+                     </div>
+                     <hr>
+                      <h6 class="kt-font-dark">{{ __('Establishment Information') }}</h6>
+                      @if ($event->owner->company()->exists())
+                        <table class="table table-borderless table-sm table-display">
+                            <tr>
+                                <td><span style="font-size: large;" class="flaticon-home"></span> : </td>
+                                <td>{{ ucwords(Auth::user()->LanguageId == 1 ? ucfirst($event->owner->company->name_en) : $event->owner->company->name_ar ) }}</td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-size: large;" class="flaticon-email"></span> : </td>
+                                <td>{{ $event->owner->company->company_email }}</td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-size: large;" class="la la-phone"></span> : </td>
+                                <td>{{ $event->owner->company->phone_number }}</td>
+                            </tr>
+                            <tr>
+                               <td><span style="font-size: large;" class="flaticon-placeholder-3"></span> :</td>
+                               @if (Auth::user()->LanguageId == 1)
+                                <td>{{ $event->owner->company->addres }} {{ $event->owner->company->area->area_en}} {{ $event->owner->company->emirate->name_en}} {{ $event->owner->company->country->name_en}}</td>
+                                @else
+                                <td>{{ $event->owner->company->addres }} {{ ucfirst($event->owner->company->area->area_ar)}} {{ ucfirst($event->owner->company->emirate->name_ar)}} {{ ucfirst($event->owner->company->country->name_ar)}}</td>
+                               @endif
+                            </tr>
+                        </table>
+                        @else
+                        @empty
+                         {{ __('Establishment Information is not required for this Event Owner.') }}
+                        @endempty
+                      @endif
+                  </div>
+                </div>
             </div>
         </div>
       </section>
@@ -300,94 +421,8 @@
         </div>
         @endif
       </section>
-      @if ($event->status == 'active')
-        <section class="row">
-          <div class="col-md-12">
-            <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
-                <div class="card border">
-                  <div class="card-header " id="headingOne6">
-                    <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6">
-                        {{__('CANCEL EVENT')}}
-                    </div>
-                  </div>
-                  <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6">
-                    <div class="card-body kt-padding-b-0">
-                      <form action="{{ route('admin.event.cancel', $event->event_id) }}" method="post" class="form" id="frm-status">
-                        @csrf
-                        <div class="form-group row form-group-sm">
-                          <div class="col-md-6">
-                            <label for="">Remarks <span class="text-danger">*</span></label>
-                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
-                          </div>
-                          <div class="col-md-6">
-                            <label for="">Remarks (AR)<span class="text-danger">*</span></label>
-                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col">
-                            <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="cancelled">SUBMIT</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
-        </section>
-      @endif
       
-      {{-- EVENT APPROVAL BY INSPECTOR, MANAGER AND GOVERNMENT --}}
-      @if(Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
-      <section class="row">
-          <div class="col-md-12">
-            <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample7">
-                <div class="card border">
-                  <div class="card-header " id="headingOne7">
-                    <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne7">
-                        {{__('TAKE ACTION')}}
-                    </div>
-                  </div>
-                  <div id="collapseOne7" class="collapse show" aria-labelledby="headingOne7" data-parent="#accordionExample7">
-                    <div class="card-body kt-padding-b-0">
-                      <form action="{{ route('admin.event.savecomment', $event->event_id) }}" method="post" class="form" id="frm-savecomment">
-                        @csrf
-                        <div class="form-group row form-group-sm">
-                            <div class="col-md-6">
-                                <label for="">Action <span class="text-danger">*</span></label>
-                                <select required="" name="action" class="form-control form-control-sm">
-                                    <option value=""></option>
-                                    <option value="approved">Approved</option>
-                                    <option value="disapproved">Disapproved</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row form-group-sm">
-                          <div class="col-md-6">
-                            <label for="">Remarks <span class="text-danger">*</span></label>
-                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
-                          </div>
-                          <div class="col-md-6">
-                            <label for="">Remarks (AR)<span class="text-danger">*</span></label>
-                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col">
-                            <button type="submit" class="btn btn-sm btn-maroon kt-transform-u">SUBMIT</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
-      </section>
-      @endif
-      
-        <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist">
+        <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist" id="tabDetails">
           <li class="nav-item">
             <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#event-tab" role="tab">
               <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{ __('EVENT REQUIREMENTS') }}
@@ -422,7 +457,7 @@
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_4_4_tab_content" role="tab">
               <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ACTION HISTORY') }} 
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->comment()->count()}}</span>
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->comment()->where('action', '!=', 'pending')->count()}}</span>
             </a>
           </li>
           
@@ -541,6 +576,14 @@
      imageTable();
      artist();
      truckTable();
+
+     $('#btnCheckedPermit').click(function(){
+        bootbox.confirm('{{ __('Are you sure you want submit') }}', function(result){
+          if(result){
+              $('#frm-savecomment').trigger('submit');
+          }
+        });
+     });
      
   });
 
