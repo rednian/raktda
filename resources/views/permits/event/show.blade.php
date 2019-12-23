@@ -58,7 +58,7 @@
                     <iframe class="border kt-padding-5" id='mapcanvas'
                         src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'
                         style="height: 310px; width: 100%; margin-top: 1%; border-style: none;"></iframe>
-                    <h6 class="kt-margin-t-10 kt-font-dark">{{__('Event Description')}}</h6>
+                    <h6 class="kt-margin-t-10 kt-font-dark">{{__('Event Details')}}</h6>
                     <p class="border kt-padding-5 kt-font-dark">
                         {{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}
                     </p>
@@ -149,16 +149,15 @@
             <div>
                 @if($event->is_truck && count($event->truck) > 0)
                 <div class="d-flex kt-margin-b-10 justify-content-between">
-                    <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Truck Details')}}</h5>
+                    <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Food Truck Details')}}</h5>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead class="kt-font-transform-u">
-                            <th>{{__('Company')}}</th>
-                            <th>{{__('Company - Ar')}}</th>
-                            <th>{{__('Type of Food')}}</th>
-                            <th>{{__('Plate No')}}</th>
-                            <th class="text-center"> {{__('Registration Exp')}}</th>
+                            <th>{{__('Company (EN)')}}</th>
+                            <th>{{__('Company (AR)')}}</th>
+                            <th>{{__('Food Services')}}</th>
+                            <th>{{__('Traffic Plate No')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
@@ -170,8 +169,8 @@
                                 <td>{{$truck->plate_number}}</td>
                                 {{-- <td>{{date('d-M-Y', strtotime($truck->registration_issued_date))}}
                                 </td> --}}
-                                <td class="text-center">{{date('d-M-Y', strtotime($truck->registration_expired_date))}}
-                                </td>
+                                {{-- <td class="text-center">{{date('d-M-Y', strtotime($truck->registration_expired_date))}}
+                                </td> --}}
                                 <td class="text-center">
                                     <a class="btn btn-secondary"
                                         onclick="viewThisTruck({{$truck->event_truck_id}})">View</a>
@@ -198,8 +197,8 @@
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead class="kt-font-transform-u">
-                            <th>{{__('Company')}}</th>
-                            <th>{{__('Company Ar')}}</th>
+                            <th>{{__('Company (EN)')}}</th>
+                            <th>{{__('Company (AR)')}}</th>
                             <th>{{__('Purchase Receipt')}}</th>
                             <th>{{__('Liquor Service')}}</th>
                             <th></th>
@@ -213,7 +212,7 @@
                                 </td>
                                 <td class="text-center">
                                     <a class="btn btn-secondary"
-                                        onclick="viewLiquor('{{$liquor->event_liquor_id}}')">View</a>
+                                        onclick="viewLiquor('{{$liquor->event_liquor_id}}')">{{__('View')}}</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -263,7 +262,7 @@
                             <td class="text-center"> <a
                                     href="{{route('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
                                     title="View">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                                 </a></td>
                         </tr>
                         @endforeach
@@ -296,7 +295,7 @@
                             </td>
                             <td class="text-center">
                                 <a href="{{asset('storage')}}{{'/'.$req->pivot['path']}}" target="blank" ">
-                                    <button class=" btn btn-sm btn-secondary">View
+                                    <button class=" btn btn-sm btn-secondary">{{__('View')}}
                                     </button></a>
                             </td>
                         </tr>
@@ -318,18 +317,27 @@
                 @foreach($eventImages->reverse() as $upload)
                 <div class="col-md-3 my-4">
                     <div class="container">
-                        <div class="img-box" style="border:1px solid #ccc;padding:5px;border-radius:5px;">
-                            <img src="{{url('storage').'/'.$upload->thumbnail}}" alt="Image"
-                                style="width:100%; height:auto;">
-                        </div>
-                    </div>
+                        <a href="{{url('storage').'/'.$upload->thumbnail}}" target="_blank">
+                            <div class="img-box" style="border:1px solid #ccc;padding:5px;border-radius:5px;">
+                                <img src="{{url('storage').'/'.$upload->thumbnail}}" alt="Image"
+                                    style="width:100%; height:auto;">
+                            </div>
+                        </a>
+                        {{-- <div style="position: absolute;left:50%; top: 50%;transform: translate(-50%, -50%);">
+                            <span> <a href="{{url('storage').'/'.$upload->thumbnail}}" target="_blank"><i
+                            class="fa fa-eye text-info"></i></a>
+                        </span>&emsp;
+                        <span> <a href="{{url('storage').'/'.$upload->thumbnail}}" download><i
+                                    class="fa fa-download text-success"></i></a> </span>
+                    </div> --}}
                 </div>
-                @endforeach
             </div>
-            @endif
-
+            @endforeach
         </div>
+        @endif
+
     </div>
+</div>
 </div>
 
 @include('permits.event.common.view_food_truck', ['truck_req'=>$truck_req])

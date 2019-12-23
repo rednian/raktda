@@ -53,7 +53,8 @@ $language_id = Auth::user()->LanguageId;
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
                                 <form id="artist_details" novalidate autocomplete="off">
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -422,7 +423,8 @@ $language_id = Auth::user()->LanguageId;
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample7">
                                         <div class="card">
                                             <div class="card-header" id="headingTwo6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -503,7 +505,8 @@ $language_id = Auth::user()->LanguageId;
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample8">
                                         <div class="card">
                                             <div class="card-header" id="headingTwo7">
                                                 <div class="card-title collapsed" data-toggle="collapse"

@@ -33,16 +33,16 @@
                 <form class="col-md-12" id="liquor_details_form" novalidate>
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (EN)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_en"
-                                id="l_company_name_en" disabled placeholder="company name">
+                                id="l_company_name_en" disabled placeholder="{{__('Company Name (EN)')}}">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (AR)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
-                                id="l_company_name_ar" dir="rtl" disabled placeholder="company name - Ar">
+                                id="l_company_name_ar" dir="rtl" disabled placeholder="company name (AR)">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Purchase Receipt No')}} <span

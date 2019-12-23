@@ -57,14 +57,16 @@ $language_id = \Auth::user()->LanguageId;
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
                                 <form id="artist_details" novalidate autocomplete="off">
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample5">
 
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u">{{__('Artist Details')}}</h6>
+                                                    <h6 class="kt-font-transform-u kt-font-bolder">
+                                                        {{__('Artist Details')}}</h6>
                                                 </div>
                                             </div>
                                             <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -427,13 +429,15 @@ $language_id = \Auth::user()->LanguageId;
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample7">
                                         <div class="card">
                                             <div class="card-header" id="headingTwo6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseTwo6" aria-expanded="false"
                                                     aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-transform-u">{{__('Contact Information')}}
+                                                    <h6 class="kt-font-transform-u kt-font-bolder">
+                                                        {{__('Contact Information')}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -511,13 +515,15 @@ $language_id = \Auth::user()->LanguageId;
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample8">
                                         <div class="card">
                                             <div class="card-header" id="headingTwo7">
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseTwo7" aria-expanded="false"
                                                     aria-controls="collapseTwo7">
-                                                    <h6 class="kt-font-transform-u">{{__('Address Information')}}
+                                                    <h6 class="kt-font-transform-u kt-font-bolder">
+                                                        {{__('Address Information')}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -699,7 +705,7 @@ $language_id = \Auth::user()->LanguageId;
                 <div class="kt-form__actions">
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
-                        Previous
+                        {{__('Previous')}}
                     </div>
                     @php
                     if($from == 'amend'){
@@ -712,16 +718,16 @@ $language_id = \Auth::user()->LanguageId;
                     @endphp
                     <a href="{{url('company/artist/permit/'.$route_back)}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                            Back
+                            {{__('Back')}}
                         </div>
                     </a>
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn"
                         style="display:none;">
-                        Add Artist
+                        {{__('Add Artist')}}
                     </div>
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
-                        Next Step
+                        {{__('Next Step')}}
                     </div>
                 </div>
             </div>

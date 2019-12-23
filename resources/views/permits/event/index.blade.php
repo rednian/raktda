@@ -451,9 +451,10 @@
                   center: 'title',
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
-              height: 'auto',
+            //   height: 'auto',
               allDaySlot: true,
-              contentHeight: 450,
+              height: 800,
+            contentHeight: 750,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
@@ -471,22 +472,23 @@
               navLinks: true,
               events: {
                   url: '{{ route('company.event.calendar') }}',
-                  textColor: '#fff'
+                  textColor: '#000'
               },
               eventRender: function(info) {
-                  var element = $(info.el);
-                  if (info.event.extendedProps && info.event.extendedProps.description) {
-                      if (element.hasClass('fc-day-grid-event')) {
-                          element.data('content', info.event.extendedProps.description);
-                          element.data('placement', 'top');
-                          KTApp.initPopover(element);
-                      } else if (element.hasClass('fc-time-grid-event')) {
-                          element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
-                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      }
-                  }
-              }
+                    var element = $(info.el);
+
+                    if (info.event.extendedProps && info.event.extendedProps.description) {
+                        if (element.hasClass('fc-day-grid-event')) {
+                            element.data('content', info.event.extendedProps.description);
+                            element.data('placement', 'top');
+                            KTApp.initPopover(element);
+                        } else if (element.hasClass('fc-time-grid-event')) {
+                            element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>'); 
+                        } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                            element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>'); 
+                        }
+                    } 
+                }
           });
           calendar.render();
      }

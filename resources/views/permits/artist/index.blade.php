@@ -147,7 +147,7 @@
             <div class="modal-dialog " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{__('Cancelled Reason')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -166,7 +166,7 @@
             <div class="modal-dialog " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Rejected Reason</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{__('Rejected Reason')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>

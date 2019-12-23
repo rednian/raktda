@@ -8,7 +8,7 @@
             @include('permits.components.artist_comments')
             @endif --}}
             <form id="artist_details" novalidate autocomplete="off">
-                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+                <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample5">
                     <div class="card">
                         <div class="card-header" id="headingOne6">
                             <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseOne6"
@@ -335,13 +335,13 @@
 
                                             <div class="form-group form-group-sm row">
                                                 <label for="id_no"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Identification
-                                                    No <span class="text-danger sh-uae">*</span></label>
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Identification
+                                                    No')}} <span class="text-danger sh-uae">*</span></label>
                                                 <div class="col-lg-8">
                                                     <div class="input-group input-group-sm">
                                                         <input type="text" class="form-control form-control-sm "
-                                                            name="id_no" id="id_no" placeholder="Identification No."
-                                                            value="{{$artist_details->emirates_id}}">
+                                                            name="id_no" id="id_no" placeholder="{{__('Identification
+                                                            No')}}" value="{{$artist_details->emirates_id}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -395,7 +395,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
+                <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample7">
 
                     <div class="card">
                         <div class="card-header" id="headingTwo6">
@@ -482,7 +482,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
+                <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample8">
 
                     <div class="card">
                         <div class="card-header" id="headingTwo7">

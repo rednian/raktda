@@ -2,6 +2,13 @@
 
 namespace App\Http\Controllers\Company;
 
+use Auth;
+use DB;
+use Session;
+use URL;
+use PDF;
+use Storage;
+
 use Illuminate\Http\Request;
 use App\EventType;
 use App\Country;
@@ -11,12 +18,10 @@ use App\Event;
 use App\Requirement;
 use App\EventRequirement;
 use App\EventTypeRequirement;
-use Auth;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
-use PDF;
 use App\Company;
 use App\EventLiquorTruckRequirement;
 use App\EventTruck;
@@ -24,11 +29,8 @@ use App\EventLiquor;
 use App\EventTransaction;
 use App\Transaction;
 use App\EventComment;
-use App\EventOtherUpload ;
-use Session;
-use URL;
+use App\EventOtherUpload ;;
 use App\Happiness;
-use Storage;
 use NumberToWords\NumberToWords;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -713,6 +715,9 @@ class EventController extends Controller
         $data['artist'] = $artist;
         $data['tab'] =  $request->tab;
         $data['eventImages']  = $event->otherUpload;
+        if (! $event) {
+           return abort(401);
+        }
         return view('permits.event.show', $data);
     }
 
@@ -726,7 +731,9 @@ class EventController extends Controller
         $data['emirates'] = Emirates::all()->sortBy('name_en');
         $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
         $data['event'] = $event;
-
+        if (! $event) {
+            abort(401);
+        }
         if ($event->status == 'processing') {
             return redirect('company/event');
         }
@@ -752,8 +759,14 @@ class EventController extends Controller
     public function calendarFn()
     {
         $user = Auth::user();
-        $events = Event::whereIn('status', ['active', 'expired'])->where('created_by', Auth::user()->user_id)->orWhere('is_display_all', 1)->get();
+        $allEvents = Event::where('is_display_all', 1);
+        $events = Event::whereIn('status', ['active', 'expired'])->where('created_by', Auth::user()->user_id)->union($allEvents)->get();
+
         $events = $events->map(function ($event) use ($user) {
+            $input = array("fc-event-danger", "fc-event-success", "fc-event-primary", "fc-event-light","fc-event-danger", "fc-event-brand");
+            $arr = array("fc-event-solid-primary",  "fc-event-solid-warning", "fc-event-solid-success");
+            $rand_keys = array_rand($input, 2);
+            $rand_keys_d = array_rand($arr, 2);
             return [    
                 'title' => $user->LanguageId == 1 ? ucwords($event->name_en) : $event->name_ar,
                 'start' => date('Y-m-d', strtotime($event->issued_date)) . 'T' . date('H:i:s', strtotime($event->time_start)),
@@ -761,8 +774,9 @@ class EventController extends Controller
                 'id' => $event->event_id,
                 'url' => route('event.show', $event->event_id) . '?tab=calendar',
                 'description' => 'Venue : ' . $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
-                'backgroundColor' => '#ffcccb !important',
-                'textColor' => '#fff !important',
+                // 'backgroundColor' => '#1dbb9e !important',
+                // 'textColor' => '#fff !important',
+                'className' => $input[$rand_keys[0]] .' '.$arr[$rand_keys_d[0]]
             ];
         });
         return response()->json($events);
@@ -933,7 +947,6 @@ class EventController extends Controller
             }
         }
 
-
         if ($event) {
             $result = ['success', 'Event Permit Updated Successfully', 'Success'];
         } else {
@@ -945,16 +958,24 @@ class EventController extends Controller
 
     public function cancel(Request $request)
     {
-        $event_id = $request->permit_id;
-        $reason = $request->cancel_reason;
+        try {
+            DB::beginTransaction();
+            $event_id = $request->permit_id;
+            $reason = $request->cancel_reason;
 
-        Event::where('event_id', $event_id)->update([
-            'request_type' => 'cancelled',
-            'cancelled_by' => Auth::user()->user_id,
-            'cancel_reason' => $reason
-        ]);
-
-        return redirect()->route('event.index');
+            Event::where('event_id', $event_id)->update([
+                'cancel_date' => Carbon::now(),
+                'status' => 'cancelled',
+                'cancelled_by' => Auth::user()->user_id,
+                'cancel_reason' => $reason
+            ]);
+            DB::commit();
+            $result = ['success', ' Permit Cancelled successfully ', 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+        return redirect()->route('event.index')->with('message', $result);
     }
 
     public function get_status($id)
@@ -980,6 +1001,9 @@ class EventController extends Controller
     public function download($id)
     {
         $event_details = Event::with('type', 'country')->where('event_id', $id)->first();
+        if(is_null($event_details)){
+            return abort(401);
+        }
         $data['event_details'] = $event_details;
         $from = Event::where('event_id', $id)->first()->issued_date;
         $to = Event::where('event_id', $id)->first()->expired_date;
@@ -1140,12 +1164,12 @@ class EventController extends Controller
                     $from = 'draft';
                     break;
             }
-            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
+            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
             if ($permit->status == 'expired') {
                 return;
             } else {
-                return '<a href="' . route('company.event.download', $permit->event_id) . '" target="_blank" title="Download Permit"><i class="fa fa-file-download"></i></a>';
+                return '<a href="' . route('company.event.download', $permit->event_id) . '" target="_blank" title="Download Permit"><i class="fa fa-file-download fs-16"></i></a>';
             }
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
@@ -1389,6 +1413,7 @@ class EventController extends Controller
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_type_id'],
             'owner_name' => $evd['owner_name'],
+            'company_id' => Auth::user()->EmpClientId,
             'status' => 'draft',
             'created_by' =>  $userid,
             'reference_number' => $this->generateReferenceNumber(),

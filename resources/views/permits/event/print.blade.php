@@ -195,11 +195,11 @@
                 <td colspan="3">{{$event_details->permit_number}}</td>
                 <td class="subhead">رقم التصريح<br />Permit No</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'days' : 'day'}} </td>
-                <td>انقضاء</td>
-                <td class="subhead">فترة التصريح <br />Permit Period</td>
-            </tr>
+            <td>انقضاء</td>
+            <td class="subhead">فترة التصريح <br />Permit Period</td>
+            </tr> --}}
             <tr>
                 <td colspan="3">{{$event_details->issued_date}}</td>
                 <td class="subhead">تاريخ التصريح<br /> Permit Date</td>

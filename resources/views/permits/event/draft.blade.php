@@ -64,15 +64,38 @@
                                                                 name="firm_type" id="firm_type"
                                                                 onchange="getRequirementsList()">
                                                                 <option value="">{{__('Select')}}</option>
-                                                                <option value="government"
-                                                                    {{$event->firm == 'government' ? 'selected' : ''}}>
-                                                                    {{__('Goverment')}}
-                                                                </option>
+
                                                                 <option value="corporate"
                                                                     {{$event->firm == 'corporate' ? 'selected' : ''}}>
                                                                     {{__('Corporate')}}
                                                                 </option>
+                                                                <option value="government"
+                                                                    {{$event->firm == 'government' ? 'selected' : ''}}>
+                                                                    {{__('Goverment')}}
+                                                                </option>
                                                             </select>
+                                                        </div>
+
+
+
+                                                        <div class="col-md-4 form-group form-group-xs">
+                                                            <label for="owner_name"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name (EN)')}}
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="owner_name" id="owner_name"
+                                                                placeholder="{{__('Owner Name (EN)')}}"
+                                                                value="{{$event->owner_name}}">
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs">
+                                                            <label for="owner_name"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name - Ar')}}
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="owner_name_ar" id="owner_name_ar" dir="rtl"
+                                                                placeholder="{{__('Owner Name - Ar')}}"
+                                                                value="{{$event->owner_name_ar}}">
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-xs ">
@@ -93,73 +116,27 @@
 
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="owner_name"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name" id="owner_name"
-                                                                placeholder="{{__('Owner Name')}}"
-                                                                value="{{$event->owner_name}}">
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="owner_name"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name - Ar')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name_ar" id="owner_name_ar" dir="rtl"
-                                                                placeholder="{{__('Owner Name - Ar')}}"
-                                                                value="{{$event->owner_name_ar}}">
-                                                        </div>
-
 
                                                         <div class="col-md-4 form-group form-group-xs">
                                                             <label for="name_en"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name (EN)')}}
                                                                 <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="name_en" id="name_en"
-                                                                placeholder="{{__('Event Name')}}"
+                                                                placeholder="{{__('Event Name (EN)')}}"
                                                                 value="{{$event->name_en}}">
                                                         </div>
 
                                                         <div class=" col-md-4 form-group form-group-xs">
                                                             <label for="name_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Name - Ar')}} <span
+                                                                {{__('Event Name (AR)')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm "
                                                                 name="name_ar" dir="rtl" id="name_ar"
-                                                                placeholder="{{__('Event Name - Ar')}}"
+                                                                placeholder="{{__('Event Name (AR)')}}"
                                                                 value="{{$event->name_ar}}">
                                                         </div>
-
-
-
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="description_en"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Details')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <textarea type="text" class="form-control form-control-sm"
-                                                                name="description_en" id="description_en"
-                                                                placeholder="{{__('Event Details')}}" rows="3"
-                                                                maxlength="255">{{$event->description_en}}</textarea>
-                                                        </div>
-
-                                                        <div class=" col-md-4 form-group form-group-xs ">
-                                                            <label for=" description_ar"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Details - Ar')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <textarea class="form-control form-control-sm"
-                                                                name="description_ar" dir="rtl" id="description_ar"
-                                                                placeholder="{{__('Event Details - Ar')}}" rows="3"
-                                                                maxlength="255">{{$event->description_ar}}</textarea>
-                                                        </div>
-
-
 
                                                         <div class=" col-md-4 form-group form-group-xs ">
                                                             <label for="no_of_audience"
@@ -183,6 +160,34 @@
                                                                     1000 & above</option>
                                                             </select>
                                                         </div>
+
+
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="description_en"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Event Details (EN)')}} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea type="text" class="form-control form-control-sm"
+                                                                name="description_en" id="description_en"
+                                                                placeholder="{{__('Event Details (EN)')}}" rows="3"
+                                                                maxlength="255">{{$event->description_en}}</textarea>
+                                                        </div>
+
+                                                        <div class=" col-md-4 form-group form-group-xs ">
+                                                            <label for=" description_ar"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Event Details (AR)')}} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea class="form-control form-control-sm"
+                                                                name="description_ar" dir="rtl" id="description_ar"
+                                                                placeholder="{{__('Event Details (AR)')}}" rows="3"
+                                                                maxlength="255">{{$event->description_ar}}</textarea>
+                                                        </div>
+
+
+
+
 
 
                                                         <div class="col-md-4  form-group form-group-xs ">
@@ -374,11 +379,11 @@
                                                         <div class="col-md-6 form-group form-group-xs ">
                                                             <label for="venue_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Venue')}} <span
+                                                                {{__('Venue (EN)')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="venue_en" id="venue_en"
-                                                                placeholder="{{__('Venue')}}"
+                                                                placeholder="{{__('Venue (EN)')}}"
                                                                 value="{{$event->venue_en}}">
 
                                                         </div>
@@ -386,10 +391,12 @@
                                                         <div class="col-md-6 form-group form-group-xs ">
                                                             <label for="venue_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                Venue - Ar <span class="text-danger">*</span></label>
+                                                                {{__(' Venue (AR)')}}<span
+                                                                    class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="venue_ar" dir="rtl" id="venue_ar"
-                                                                placeholder="Venue - Ar" value="{{$event->venue_ar}}">
+                                                                placeholder="{{__(' Venue (AR)')}}"
+                                                                value="{{$event->venue_ar}}">
                                                         </div>
 
 
@@ -478,7 +485,7 @@
                                                         <input type="hidden" id="full_address" name="full_address"
                                                             value="{{$event->full_address}}">
 
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="longitude"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Longitude')}} <span
@@ -488,7 +495,7 @@
                                                                 value="{{$event->longitude}}">
                                                         </div>
 
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="latitude"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Latitude')}} <span
@@ -496,6 +503,18 @@
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="latitude" id="latitude" placeholder="Latitude"
                                                                 value="{{$event->latitude}}">
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="addi_loc_info"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Additional Location Info')}} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea class="form-control form-control-sm"
+                                                                name="addi_loc_info" id="addi_loc_info" rows="2"
+                                                                placeholder="{{__('Additional Location Info')}}">
+                                                                {{$event->additional_location_info}}
+                                                            </textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -521,17 +540,12 @@
                             </form>
                             <form id="image_upload_form">
                                 <div class="row">
-                                    <div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{{__('Event
-                                            Images')}}</label>
-                                        <p class="reqName">{{__('Add multiple images of the event')}}</p>
+                                    <div class="col-lg-4 col-sm-12"><label
+                                            class="kt-font-bold text--maroon">{{__('Images')}}</label>
+                                        <p class="reqName">{{__('Add multiple images')}}</p>
                                     </div>
                                     <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
                                         <div id="image_uploader">{{__('Upload')}}</div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-12"><label
-                                            class="kt-font-bold text--maroon">{{__('Description')}}</label>
-                                        <input type="text" name="description" id="description"
-                                            class="form-control form-control-sm" placeholder="Image Description">
                                     </div>
                                 </div>
                             </form>
@@ -1402,7 +1416,7 @@
                     if(result) 
                     {
                         editTruck();
-                        $('#disp_mess').html('<h5 class="text-danger py-2">Truck Details Deleted successfully</h5>');
+                        $('#disp_mess').html('<h5 class="text-danger py-2">Food Truck Details Deleted successfully</h5>');
                         setTimeout(function(){ $('#disp_mess').html('');}, 2000)
                     }
                 }
@@ -1481,7 +1495,7 @@
                                 editTruck();
                                 $('#edit_one_food_truck').modal('hide');
                                 $('#edit_food_truck').modal('show');
-                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details Added successfully</h5>');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
                         }
@@ -1520,7 +1534,7 @@
                                 editTruck();
                                 $('#edit_food_truck').modal('show');
                                 $('#edit_one_food_truck').modal('hide');
-                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details updated successfully</h5>');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
                         }

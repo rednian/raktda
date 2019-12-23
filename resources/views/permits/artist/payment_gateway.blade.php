@@ -11,7 +11,7 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
                 <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title"> Payment Gateway</h3>
+                    <h3 class="kt-portlet__head-title"> {{__('Payment Gateway')}}</h3>
                 </div>
 
                 <div class="kt-portlet__head-toolbar">
@@ -19,7 +19,7 @@
                         <a href="{{url('company/artist/make_payment').'/'.$permit_details->permit_id}}" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                             ">
                             <i class="la la-arrow-left"></i>
-                            Back
+                            {{__('Back')}}
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
@@ -285,8 +285,12 @@
 
 
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
-                        id="pay_btn">{{__('PAY')}}</button>
+                    {{-- <a href="{{route('artist.gateway', ['id' => $permit_details->permit_id ])}}"><button
+                        class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
+                        id="pay_btn">{{__('PAY')}}</button></a>
+                    --}}
+                    <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
+                        onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
                 </div>
 
             </div>
@@ -299,7 +303,47 @@
 @endsection
 
 @section('script')
+{{-- <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/form/version/54/merchant/NRSINFOWAYSL/session.js">
+</script> --}}
+<script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js"
+    data-error="errorCallback" data-cancel="cancelCallback">
+</script>
+
 <script>
+    function errorCallback(error) {
+            console.log(JSON.stringify(error));
+    }
+    function cancelCallback() {
+            console.log('Payment cancelled');
+    }
+
+    // var rand = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+    // var sessionID = rand ;
+
+    Checkout.configure({
+        merchant: 'NRSINFOWAYSL',
+        order: {
+            amount: function() {
+                //Dynamic calculation of amount
+                return 784;
+            },
+            currency: 'AED',
+            description: 'Event Payment',
+            id: '123'
+        },
+        interaction: {
+            operation: 'AUTHORIZE', // set this field to 'PURCHASE' for Hosted Checkout to perform a Pay Operation.
+            merchant: {
+                name: 'nrsdev',
+                address: {
+                    line1: '200 Sample St',
+                    line2: '1234 Example Town'            
+                }    
+            }
+        }
+    });
+
     $(document).ready(function(){
         $('#event_details_table').hide();
         var artistTotalFee = $('#artist_total_fee').val();
@@ -345,33 +389,36 @@
         }
     }
 
-    $('#pay_btn').click((e) => {
-                var paidEventFee = 0;
-                if($('#isEventPay').prop("checked")){
-                    paidEventFee = 1;
-                }
-                $.ajax({
-                    url: "{{route('company.payment')}}",
-                    type: "POST",
-                    data: {
-                        permit_id:$('#permit_id').val(),
-                        amount: $('#amount').val(),
-                        vat: $('#vat').val(),
-                        total: $('#total').val(),
-                        noofdays: $('#noofdays').val(),
-                        paidEventFee: paidEventFee
-                    },
-                    success: function (result) {
-                        var toUrl = "{{route('company.happiness_center', ':id')}}";
-                        toUrl = toUrl.replace(':id', $('#permit_id').val());
-                        if(result.message[0]){
-                            window.location.href = toUrl;
-                        }
+        function getPermitCallback(resultIndicator, sessionVersion){
+            console.log(resultIndicator);
+            console.log(sessionVersion);
+            Checkout.session.id = sessionVersion;
+            return ;
+            var paidEventFee = 0;
+            if($('#isEventPay').prop("checked")){
+                paidEventFee = 1;
+            }
+            $.ajax({
+                url: "{{route('company.payment')}}",
+                type: "POST",
+                data: {
+                    permit_id:$('#permit_id').val(),
+                    amount: $('#amount').val(),
+                    vat: $('#vat').val(),
+                    total: $('#total').val(),
+                    noofdays: $('#noofdays').val(),
+                    paidEventFee: paidEventFee
+                },
+                success: function (result) {
+                    var toUrl = "{{route('company.happiness_center', ':id')}}";
+                    toUrl = toUrl.replace(':id', $('#permit_id').val());
+                    if(result.message[0]){
+                        window.location.href = toUrl;
                     }
-                });
-                
-
-        });
+                }
+            });
+        }
 
 </script>
+
 @endsection

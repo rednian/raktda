@@ -50,22 +50,22 @@
                 <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (EN)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_en"
-                                id="l_company_name_en" autocomplete="off" placeholder="company name">
+                                id="l_company_name_en" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (AR)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
-                                id="l_company_name_ar" dir="rtl" autocomplete="off" placeholder="company name - Ar">
+                                id="l_company_name_ar" dir="rtl" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Purchase Receipt No')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="purchase_receipt"
-                                id="purchase_receipt" autocomplete="off" placeholder="{{__('Purchase Receipt No')}}">
+                                id="purchase_receipt" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Liquor Service')}} <span
@@ -81,7 +81,7 @@
                             <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor')}} <span
                                     class="text-danger">*</span></label>
                             <textarea type="text" class="form-control form-control-sm" name="liquor_types"
-                                id="liquor_types" autocomplete="off" placeholder="{{__('Types of Liquor')}}"></textarea>
+                                id="liquor_types" autocomplete="off"></textarea>
                         </div>
                         <input type="hidden" id="event_liquor_id">
                     </div>
