@@ -6,7 +6,7 @@
 						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Artist Permit Details</h3>
 				 </div>
 				 <div class="kt-portlet__head-toolbar">
-						<a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
+						<a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
 							 <i class="la la-arrow-left"></i>
 							 Back to permit list
 						</a>
@@ -24,7 +24,7 @@
 			</div>
 			<div class="kt-portlet__body kt-padding-t-5">
         @if ($permit->event()->count() > 0)
-        <a href="{{ route('admin.event.show', $permit->event->event_id) }}">
+        <a href="{{ URL::signedRoute('admin.event.show', $permit->event->event_id) }}">
           <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
             <div class="alert-text">This permit is connected to <span class="text-success kt-font-bold kt-font-transform-u">{{ $permit->event->name_en }}</span> event with reference number <span class="kt-font-danger">{{ $permit->event->reference_number }}</span>
               {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
@@ -293,7 +293,7 @@
            {
               render: function (type, data, full, meta) {
                  var url = '{{ url('/permit/artist') }}/' + full.artist_id;
-                 return '<a class="underlined kt-font-dark kt-font-bold" href="' + url + '">' + full.fullname + '</a>';
+                 return '<a class="underlined kt-font-dark kt-font-bold" href="' + full.artist_link + '">' + full.fullname + '</a>';
               }
            },
            {
@@ -325,7 +325,7 @@
            $(row).click(function () {
               var url = '{{ url('/artist_permit') }}/' + data.permit_id + '/application/' + data.artist_permit_id;
               if (!data.existing_permit) {
-                 location.href = url;
+                 location.href = data.show_link;
               } else {
 								 $('#existing-permit-alert').removeClass('d-none').find('.alert-text').html(data.existing_permit);
 								 $('#check-existing-permit-modal').find('a').attr('href', url);

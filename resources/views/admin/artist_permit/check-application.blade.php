@@ -21,7 +21,7 @@
 			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ strtoupper($artist_permit->artist->fullName) }}</span></h3>
 		</div>
 		<div class="kt-portlet__head-toolbar">
-			<a href="{{ route('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-secondary btn-elevate kt-margin-r-4 kt-font-transform-u">
+			<a href="{{ URL::signedRoute('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-secondary btn-elevate kt-margin-r-4 kt-font-transform-u">
 				<i class="la la-arrow-left"></i>
 				Back to permit details
 			</a>
@@ -30,9 +30,9 @@
 					<i class="flaticon-more"></i>
 				</button>
 				<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-					<a class="dropdown-item kt-font-transform-u" href="{{ route('admin.artist_permit.index') }}">Artist Permit list</a>
+					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist_permit.index') }}">Artist Permit list</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item kt-font-transform-u" href="{{ route('admin.artist.show', $artist_permit->artist_id) }}">Artist Information</a>
+					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist.show', $artist_permit->artist_id) }}">Artist Information</a>
 					<a class="dropdown-item kt-font-transform-u" href="javascript:void(0)">Company Information</a>
 				</div>
 			</div>

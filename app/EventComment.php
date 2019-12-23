@@ -11,7 +11,6 @@ class EventComment extends Model
 	protected $fillable = ['event_id', 'user_id', 'type', 'comment', 'comment_ar', 'action', 'user_type', 'role_id', 'government_id'];
 	protected $dates = ['created_at', 'updated_at'];
 
-
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'user_id');

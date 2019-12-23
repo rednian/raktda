@@ -219,7 +219,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
+             location.href = data.show_link;
            });
          },
          initComplete: function(setting, json){

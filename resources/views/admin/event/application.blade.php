@@ -15,7 +15,7 @@
 			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ ucwords($event->name_en) }} - {{ __('APPLICATION') }}</span></h3>
 		</div>
 		<div class="kt-portlet__head-toolbar">
-			<a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-outline-secondary kt-margin-r-4 kt-font-transform-u">
+			<a href="{{ URL::signedRoute('admin.event.index') }}" class="btn btn-sm btn-outline-secondary kt-margin-r-4 kt-font-transform-u">
 				<i class="la la-arrow-left"></i>{{ __('BACK TO EVENT LIST') }}
 			</a>
 			<div class="dropdown dropdown-inline">
@@ -66,18 +66,18 @@
 					 						@include('admin.artist_permit.includes.comment')
 					 						@if ($existing_event->count() > 0)
 					 							<div class="alert alert-outline-danger fade show" role="alert">
-					 							<div class="alert-text">
-					 								<h6 class="alert-heading text-danger kt-font-transform-u">Important</h6>
-													<p>The venue of this event has {{ $existing_event->count() }} active event.</p>
-													<hr>
-													 <button type="button" data-target="#event-exist-modal" data-toggle="modal"
-														 class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">Show Event Calendar
-													 </button>
-													 <button type="button" class="btn btn-sm btn-secondary  kt-font-transform-u" data-dismiss="alert" aria-label="Close">Close
-													 </button>
-												</div>
+						 							<div class="alert-text">
+						 								<h6 class="alert-heading text-danger kt-font-transform-u">Important</h6>
+														<p>The venue of this event has {{ $existing_event->count() }} active event.</p>
+														<hr>
+														 <button type="button" data-target="#event-exist-modal" data-toggle="modal"
+															 class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">Show Event Calendar
+														 </button>
+														 <button type="button" class="btn btn-sm btn-secondary  kt-font-transform-u" data-dismiss="alert" aria-label="Close">Close
+														 </button>
+													</div>
 
-											 </div>
+												 </div>
 					 						@endif
 											 <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border" id="accordion-detail">
 												<div class="card">

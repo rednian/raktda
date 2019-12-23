@@ -43,20 +43,20 @@
 								<div class="col-sm-8">
 									<div class="kt-checkbox-inline">
 										<label class="kt-checkbox">
-											<input disabled id="chk-inspector" checked type="checkbox" name="role[]"
+											<input required disabled id="chk-inspector" checked type="checkbox" name="role[]"
 														 value="{{ $roles->where('NameEn','inspector')->first()->role_id }}"> Inspector
 											<span></span>
 										</label>
 										<label class="kt-checkbox">
-											<input disabled id="-chk-manager" type="checkbox" name="role[]" value="{{ $roles->where('NameEn','manager')->first()->role_id }}">
+											<input required disabled id="-chk-manager" type="checkbox" name="role[]" value="{{ $roles->where('NameEn','manager')->first()->role_id }}">
 											Manager
 											<span></span>
 										</label>
-										<label class="kt-checkbox">
+										{{-- <label class="kt-checkbox">
 											<input disabled id="chk-government" type="checkbox" name="role[]" value="{{ $roles->where('NameEn','government')->first()->role_id }}">
 											Government
 											<span></span>
-										</label>
+										</label> --}}
 									</div>
 								</div>
 							</div>
@@ -73,9 +73,9 @@
 								</div>
 	  						</div>
 							<div class="form-group row">
-								<label class="col-sm-2 col-form-label">Notes</label>
+								<label class="col-sm-2 col-form-label">Notes <span class="text-danger">*</span></label>
 								<div class="col-sm-8">
-									<textarea name="comment" rows="4" class="form-control-sm form-control"></textarea>
+									<textarea required name="comment" rows="4" class="form-control-sm form-control"></textarea>
 								</div>
 							</div>
 							@if(Auth::user()->roles()->whereIn('roles.role_id', [5])->exists())

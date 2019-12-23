@@ -6,7 +6,7 @@
             <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('ARTIST PERMIT DETAILS') }}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
-            <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate kt-font-transform-u">
+            <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate kt-font-transform-u">
                 <i class="la la-arrow-left"></i>{{ __('BACK TO PERMIT LIST') }}
             </a>
             <div class="dropdown dropdown-inline">
@@ -205,7 +205,7 @@
              {
                 render: function (type, data, full, meta) {
                    var url = '{{ url('/permit/artist') }}/' + full.artist_id;
-                   return '<a class="underlined kt-font-dark kt-font-bold" href="' + url + '">' + full.fullname + '</a>';
+                   return '<a class="underlined kt-font-dark kt-font-bold" href="' + full.artist_link + '">' + full.fullname + '</a>';
                 }
              },
              {

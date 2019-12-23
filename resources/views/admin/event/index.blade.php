@@ -709,7 +709,7 @@
           });
           $('.btn-download', row).click(function(e) { e.stopPropagation(); });
           $(row).click(function () {
-            location.href = '{{ url('/event') }}/' + data.event_id+'?tab=archive-permit';
+            location.href = data.show_link;
           });
         },
         initComplete: function(){
@@ -913,7 +913,7 @@
         ],
         createdRow: function (row, data, index) {
           $(row).click(function () {
-            location.href = '{{ url('/event') }}/' + data.event_id+'?tab=processing-permit';
+            location.href = data.show_link;
           });
         }
       });
@@ -988,7 +988,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/event') }}/' + data.event_id + '/application';
+             location.href = data.application_link;
            });
          }
        });
@@ -1063,7 +1063,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/event') }}/' + data.event_id + '/application';
+             location.href = data.application_link;
            });
          },
           initComplete: function(setting, json){
