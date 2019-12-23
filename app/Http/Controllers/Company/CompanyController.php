@@ -38,7 +38,7 @@ class CompanyController extends Controller
 
    public function edit(Request $request, Company $company)
    {
-       return view('permits.company.edit', ['company'=>$company]); 
+       return view('permits.company.edit', ['company'=>$company, 'page_title'=> '']); 
    }
 
    public function update(Request $request, Company $company)
@@ -69,14 +69,14 @@ class CompanyController extends Controller
           case 'submitted':
 
             if (Company::exists()) {
-               $last_reference = Company::orderBy('company_id', 'desc')->first()->reference_number;
+               $last_reference = Company::where('company_id', '!=', $company->company_id)->orderBy('company_id', 'desc')->first()->reference_number;
                $reference_number = explode('-', $last_reference);
                // dd($reference_number);
                $reference_number = $reference_number[2]+1 ;
-               $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 6, 0);
+               $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 6, 0, STR_PAD_LEFT);
              }
              else{
-              $reference_number = 'EST-'.date('Y').'-000001';
+              $reference_number = 'EST-'.date('Y').'-00001';
              } 
 
             $company = Company::find($company->company_id);
@@ -104,21 +104,22 @@ class CompanyController extends Controller
             $company->application_date = $company->application_date ? $company->application_date : Carbon::now();
             $company->save();
 
-            $result = ['success', 'Your Company Registration successfully submitted', 'Success'];
+            $result = ['success', '', 'Success'];
 
             break;
          }
 
 
 
-         if($company->contact->exists()){
+         if($company->contact()->exists()){
+             
              $company->contact()->update([
                  'contact_name_en'=>$request->contact_name_en,
                  'contact_name_ar'=>$request->contact_name_ar,
                  'designation_en'=>$request->designation_en,
                  'designation_ar'=>$request->designation_ar,
                  'emirate_id_expired_date'=> date('Y-m-d', strtotime($request->emirate_id_expired_date)),
-                 'emirate_id_issued_date'=>date('Y-m-d', strtotime($request->emirate_id_issued_date)),
+                 'emirate_id_issued_date'=> date('Y-m-d', strtotime($request->emirate_id_issued_date)),
                  'emirate_identication'=>$request->emirate_identication,
                  'email'=>$request->email,
                  'mobile_number'=>$request->mobile_number,
@@ -127,6 +128,7 @@ class CompanyController extends Controller
          else{
              $company->contact()->create($request->all());
          }
+
 
 
 
@@ -142,6 +144,7 @@ class CompanyController extends Controller
                if (!empty($upload['file'])) {
                foreach ($upload['file'] as $index => $file) {
                   $filename = $requirement_name.'_'.$index.'.'.$file->getClientOriginalExtension();
+       
                   Storage::putFileAs($path, $file, $filename);
                   $company->requirement()->create([
                      'page_number'=>$index+1, 

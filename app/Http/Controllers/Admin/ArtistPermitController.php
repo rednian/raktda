@@ -69,7 +69,7 @@ class ArtistPermitController extends Controller
         return response()->json($permit);
     }
 
-    public function download(Permit $permit)
+    public function download(Request $request, Permit $permit)
     {
       $data['company_details'] = $permit->owner->user_id;
       $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'nationality')->get();
@@ -84,7 +84,7 @@ class ArtistPermitController extends Controller
       return $pdf->stream('Permit-' . $permitNumber . '.pdf');
     }
 
-    public function show(Permit $permit)
+    public function show(Request $request, Permit $permit)
     {
     	 return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no]);
     }

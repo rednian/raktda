@@ -396,7 +396,7 @@
         <div class="col-md-5">
           <form class=" kt-padding-5 kt-margin-t-10">
             <div class="form-group row form-group-sm">
-              <label class="col-10 col-form-label">Show event to all Registered company Calendar</label>
+              <label class="col-10 col-form-label">Show event to all registered company calendar</label>
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
@@ -482,7 +482,7 @@
                    <th>{{ __('TRUCK NAME') }}</th>
                    <th>{{ __('COMPANY NAME') }}</th>
                    <th>{{ __('SERVICE TYPE') }}</th>
-                   <th>{{ __('PLATE NUMBER') }}</th>
+                   <th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
                    <th>{{ __('REGISTRATION ISSUED DATE') }}</th> 
                    <th>{{ __('REGISTRATION EXPIRED DATE') }}</th> 
                    <th>{{ __('ACTION') }}</th> 
