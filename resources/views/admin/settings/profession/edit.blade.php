@@ -80,7 +80,7 @@
             <section class="row kt-margin-t-10">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">{{ __('Amount') }}
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Profession Fee') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input value="{{ $profession->amount }}" type="text" name="amount" required class="form-control form-control-sm">

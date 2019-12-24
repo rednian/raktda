@@ -3,10 +3,10 @@
 <section class="kt-portlet kt-portlet--head-sm">
    <div class="kt-portlet__head kt-portlet__head--sm kt-padding-l-15 kt-padding-r-15">
       <div class="kt-portlet__head-label">
-         <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST PROFILE') }}</span></h3></div>
+         <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST DETAILS') }}</span></h3></div>
          <div class="kt-portlet__head-toolbar">
             <button id="clickme" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
-               <i class="la la-arrow-left"></i>{{ __('BACK TO Previous') }}
+               <i class="la la-arrow-left"></i>{{ __('BACK') }}
             </button>
          </div>
       </div>
@@ -29,9 +29,9 @@
                       </span>
                       <div class="kt-widget__button">
                         @if ($artist->artist_status == 'active')
-                        <span class="btn btn-label-success btn-sm">{{ucfirst($artist->artist_status)}}</span>
+                        <span class="btn btn-label-success btn-sm">{{ __(ucfirst($artist->artist_status)) }}</span>
                         @else
-                        <span class="btn btn-label-danger btn-sm">{{ucfirst($artist->artist_status)}}</span>
+                        <span class="btn btn-label-danger btn-sm">{{ __(ucfirst($artist->artist_status)) }}</span>
                         @endif
                       </div>
                       {{-- <div class="kt-widget__action">
@@ -51,25 +51,25 @@
                 <div class="kt-widget__body kt-padding-l-5 kt-padding-r-5">
                   <h6 class="kt-font-dark kt-font-bold ">{{__('Artist Details')}}</h6>
                   <hr class="kt-margin-b-5  kt-margin-t-0">
-                 <span>Person Code : {{$artist->person_code }}</span><br> 
-                 <span>Age : {{$artistpermit->birthdate->age }}</span><br>
-                 <span>Birthdate : {{$artistpermit->birthdate->format('d-F-Y')}}</span><br>
-                 <span>Gender : {{$artistpermit->gender->name_en}}</span><br>
-                 <span>Religion : {{$artistpermit->religion->name_en}}</span><br>
+                 <span>{{ __('Person Code') }} : {{$artist->person_code }}</span><br> 
+                 <span>{{ __('Age') }} : {{$artistpermit->birthdate->age }}</span><br>
+                 <span>{{ __('Birthdate') }} : {{$artistpermit->birthdate->format('d-F-Y')}}</span><br>
+                 <span>{{ __('Gender') }} : {{$artistpermit->gender->name_en}}</span><br>
+                 <span>{{ __('Religion') }} : {{$artistpermit->religion->name_en}}</span><br>
                  <span>Identification Number : {{$artistpermit->identification_number}}</span><br>
-                 <span>UID Number : {{$artistpermit->uid_number ? $artistpermit->uid_number : 'N/A'}}</span><br>
-                 <span>UID Number : {{$artistpermit->uid_expire_date ? $artistpermit->uid_expire_date->format('d-F-Y') : '-'}}</span><br>
-                 <span>Visa Type : {{$artistpermit->visaType->name_en ? ucfirst($artistpermit->visaType->name_en) : 'N/A'}}</span><br>
-                 <span>Visa Number : {{$artistpermit->visa_number ? $artistpermit->visa_number : '-' }}</span><br>
-                 <span>Passport Number : {{$artistpermit->passport_number ? $artistpermit->passport_number : '-' }}</span><br>
-                 <span>Passport Expired Date : {{$artistpermit->passport_expire_date ? $artistpermit->passport_expire_date->format('d-F-Y') : '-' }}</span><br>
+                 <span>{{ __('UID No.') }} : {{$artistpermit->uid_number ? $artistpermit->uid_number : 'N/A'}}</span><br>
+                 <span>{{ __('UID Expiry Date') }} : {{$artistpermit->uid_expire_date ? $artistpermit->uid_expire_date->format('d-F-Y') : '-'}}</span><br>
+                 <span>{{ __('Visa Type') }} : {{$artistpermit->visaType->name_en ? ucfirst($artistpermit->visaType->name_en) : 'N/A'}}</span><br>
+                 <span>{{ __('Visa No.') }} : {{$artistpermit->visa_number ? $artistpermit->visa_number : '-' }}</span><br>
+                 <span>{{ __('Passport No.') }} : {{$artistpermit->passport_number ? $artistpermit->passport_number : '-' }}</span><br>
+                 <span>{{ __('Passport Expiry Date') }} : {{$artistpermit->passport_expire_date ? $artistpermit->passport_expire_date->format('d-F-Y') : '-' }}</span><br>
                  
-                 <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Contact Details')}}</h6>
+                 <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Contact Information')}}</h6>
                  <hr class="kt-margin-b-5  kt-margin-t-0">
-                 <span>Email : {{$artistpermit->email }}</span><br>
-                 <span>Mobile Number : {{$artistpermit->mobile_number }}</span><br>
-                 <span>Phone Number : {{$artistpermit->phone_number }}</span><br>
-                 <span>Fax Number : {{$artistpermit->fax_number }}</span><br>
+                 <span>{{ __('Email') }} : {{$artistpermit->email }}</span><br>
+                 <span>{{ __('Mobile Number') }} : {{$artistpermit->mobile_number }}</span><br>
+                 <span>{{ __('Phone Number') }} : {{$artistpermit->phone_number }}</span><br>
+                 <span>{{ __('Fax Number') }} : {{$artistpermit->fax_number }}</span><br>
                  
                  <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Address Details')}}</h6>
                  <hr class="kt-margin-b-5  kt-margin-t-0">
@@ -82,7 +82,7 @@
                  <span>{{$address.' '.$area.' '.$emirate.' '.$country}}</span><br>
                   <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Sponsor Details')}}</h6>
                   <hr class="kt-margin-b-5  kt-margin-t-0">
-                  <span>Name : {{ucwords($artistpermit->sponsor_name_en) }}</span><br>
+                  <span>{{ __('Name') }} : {{ucwords($artistpermit->sponsor_name_en) }}</span><br>
               </div>
           </div>
         </div>
@@ -92,9 +92,9 @@
                     <div class="card-header " id="headingOne6">
                       <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6">
                         @if ($artist->artist_status == 'active')
-                        BLOCK ARTIST
+                        {{ __('BLOCK ARTIST') }}
                         @else
-                        UNBLOCK ARTIST
+                        {{ __('UNBLOCK ARTIST') }}
                         @endif
                         </div>
                     </div>
@@ -104,20 +104,20 @@
                           @csrf
                          <div class="form-group row form-group-sm">
                             <div class="col-md-6">
-                              <label for="">Remarks <span class="text-danger">*</span></label>
+                              <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
                               <textarea required="" name="remarks" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                             </div>
                             <div class="col-md-6">
-                              <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                              <label for="">{{ __('Remarks (AR)') }}<span class="text-danger">*</span></label>
                               <textarea required="" name="remarks_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                             </div>
                           </div>
                           <div class="form-group row">
                             <div class="col">
                               @if ($artist->artist_status == 'active')
-                              <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="blocked">SUBMIT</button>
+                              <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="blocked">{{ __('SUBMIT') }}</button>
                               @else
-                              <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">SUBMIT</button>
+                              <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">{{ __('SUBMIT') }}</button>
                               @endif
                             </div>
                           </div>
@@ -159,7 +159,7 @@
                                         <tr>
                                          <th>{{ __('NAME') }}</th>
                                          <th>{{ __('REMARKS') }}</th>
-                                         <th>{{ __('DATE') }}</th>
+                                         <th>{{ __('DATE ADDED') }}</th>
                                          <th>{{ __('ACTION TAKEN') }}</th>
                                         </tr>
                                         </thead>
@@ -252,7 +252,7 @@
             {render: function(){ return null; }},
             {
              render: function(type, row, full, meta){
-                 return '<button class="btn btn-secondary btn-sm btn-document">Documents</button>';
+                 return '<button class="btn btn-secondary btn-sm btn-document">{{ __('Documents') }}</button>';
              }
             },
              {data: 'reference_number'},
