@@ -180,28 +180,29 @@
                                                                 value="{{$event->name_ar}}" readonly>
                                                         </div>
 
-                                                        <div class=" col-md-4 form-group form-group-xs ">
-                                                            <label for="no_of_audience"
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Expected Audience')}} <span
-                                                                    class="text-danger">*</span></label>
+                                                                {{__('Event Sub Type')}}
+                                                                @if($event->event_type_sub_id)
+                                                                <span class="text-danger">*</span>
+                                                                @endif
+                                                            </label>
                                                             <select class="form-control form-control-sm"
-                                                                name="no_of_audience" id="no_of_audience" disabled>
+                                                                name="event_sub_type_id" id="event_sub_type_id"
+                                                                disabled>
+                                                                @if($event->event_type_sub_id)
+                                                                <option value="{{$event->event_type_sub_id}}" selected>
+                                                                    {{getLangId() == 1 ? ucwords($event->subType->sub_name_en) : $event->subType->sub_name_ar}}
+                                                                </option>
+                                                                @else
                                                                 <option value="">{{__('Select')}}</option>
-                                                                <option value="0-100"
-                                                                    {{$event->audience_number == '0-100' ? 'selected': ''}}>
-                                                                    0-100</option>
-                                                                <option value="100-500"
-                                                                    {{$event->audience_number == '100-500' ? 'selected': ''}}>
-                                                                    100-500</option>
-                                                                <option value="500-1000"
-                                                                    {{$event->audience_number == '500-1000' ? 'selected': ''}}>
-                                                                    500-1000</option>
-                                                                <option value="1000&above"
-                                                                    {{$event->audience_number == '1000&above' ? 'selected': ''}}>
-                                                                    1000 & above</option>
+                                                                @endif
                                                             </select>
                                                         </div>
+
+
 
 
 
@@ -228,6 +229,30 @@
                                                                 maxlength="255"
                                                                 readonly>{{$event->description_ar}}</textarea>
                                                         </div>
+
+                                                        <div class=" col-md-4 form-group form-group-xs ">
+                                                            <label for="no_of_audience"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Expected Audience')}} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="no_of_audience" id="no_of_audience" disabled>
+                                                                <option value="">{{__('Select')}}</option>
+                                                                <option value="0-100"
+                                                                    {{$event->audience_number == '0-100' ? 'selected': ''}}>
+                                                                    0-100</option>
+                                                                <option value="100-500"
+                                                                    {{$event->audience_number == '100-500' ? 'selected': ''}}>
+                                                                    100-500</option>
+                                                                <option value="500-1000"
+                                                                    {{$event->audience_number == '500-1000' ? 'selected': ''}}>
+                                                                    500-1000</option>
+                                                                <option value="1000&above"
+                                                                    {{$event->audience_number == '1000&above' ? 'selected': ''}}>
+                                                                    1000 & above</option>
+                                                            </select>
+                                                        </div>
+
 
 
                                                         <div class="col-md-4  form-group form-group-xs ">
@@ -554,8 +579,7 @@
                                                                 {{__('Additional Location Info')}}</label>
                                                             <textarea class="form-control form-control-sm"
                                                                 name="addi_loc_info" id="addi_loc_info" rows="2"
-                                                                placeholder="{{__('Additional Location Info')}}">
-                                                                {{$event->additional_location_info}}
+                                                                readonly>{{$event->additional_location_info}}
                                                             </textarea>
                                                         </div>
 
@@ -858,7 +882,8 @@
                                     <div>
                                         <label for="" class="kt-margin-t-20 kt-font-dark">{{__('Comments')}} :</label>
                                         <textarea name="remarks" id="remarks" class="form-control form-control-sm "
-                                            rows="5" placeholder=" Please enter your valueable feedback..."></textarea>
+                                            rows="5"
+                                            placeholder="{{__('Please enter your valueable feedback')}}"></textarea>
                                     </div>
                                 </form>
                             </div>
@@ -1477,7 +1502,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);
@@ -1613,7 +1638,7 @@
                      var j =  parseInt($('#requirements_count').val()) + 1 ;
                      if(j != NaN){
                      for(var i = 0; i < res.length; i++){
-                         $('#addi_documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name.toUpperCase()+'<span class="text-danger"> ( required )</span></label><p for="" class="reqName">'+(res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#addi_documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name.toUpperCase()+'<span class="text-danger"> * </span></label><p for="" class="reqName">'+(res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
@@ -1704,7 +1729,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);

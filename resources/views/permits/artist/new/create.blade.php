@@ -185,17 +185,17 @@
                             <td>{{$ad->artist_permit_status}}</td>
                             <td class="d-flex justify-content-center">
                                 <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
-                                    title="Edit">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">Edit</button>
+                                    title="{{__('Edit')}}">
+                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
                                 </a>
                                 <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'new'])}}"
-                                    title="View">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                    title="{{__('View')}}">
+                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
                                     onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
-                                    data-toggle="modal" data-target="#delartistmodal" title="Delete">
+                                    data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
                                 </a>
                                 @endif
@@ -217,14 +217,14 @@
         <div class="d-flex justify-content-between">
             <button
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
-                id="draft_btn" title="Save as Draft">
+                id="draft_btn" title="{{__('Save As Draft')}}">
                 <i class="la la-check"></i>
                 {{__('Save As Draft')}}
             </button>
 
             <button
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
-                id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}} title="Submit Permit">
+                id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}} title="{{__('Submit Permit')}}">
                 <i class="la la-check"></i>
                 {{__('Submit Permit')}}
             </button>
@@ -501,7 +501,7 @@
                     {
                         $('#artist_details').modal('show');
                         var code = data.person_code ? data.person_code : '';
-                        $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+ data.visa_type.visa_type_en + '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
+                        $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>  <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+ data.visa_type.visa_type_en + '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
 
                     }
                 }

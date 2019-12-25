@@ -269,7 +269,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name - Ar')}}
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name (AR)')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -277,13 +277,13 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text" dir="rtl"
                                                                                 class="form-control form-control-sm"
                                                                                 name="fname_ar" id="fname_ar"
-                                                                                placeholder="{{__('First Name - Ar')}}">
+                                                                                placeholder="{{__('First Name (AR)')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="lname_ar"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name - Ar')}}
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name (AR)')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -291,7 +291,7 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text" dir="rtl"
                                                                                 class="form-control form-control-sm "
                                                                                 name="lname_ar" id="lname_ar"
-                                                                                placeholder="{{__('Last Name - Ar')}} ">
+                                                                                placeholder="{{__('Last Name (AR)')}} ">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -355,7 +355,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_expiry"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Visa Expiry')}}
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Visa Expiry Date')}}
                                                                         <span class="text-danger hd-uae hd-eu">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -1565,6 +1565,7 @@ $language_id = Auth::user()->LanguageId;
             });
             if(documentsValidator.form() && hasFile){
                 $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+                $('#submit_btn').css('pointer-events','none');
             var artist_permit_id = $('#artist_permit_id').val();
             var permit_id = $('#permit_id').val();
             var ad = localStorage.getItem('artistDetails');

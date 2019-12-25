@@ -1,13 +1,17 @@
 <?php
+//if comapany is not yet active 
+Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function(){
+  Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
+  Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');  
+});
 
 
-Route::group(['middleware' => ['auth', 'set_lang_front', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_status']], function () {
     Route::get('/dashboard', function () {
         return redirect()->route('artist.index');
     })->name('company.dashboard');
 
-    Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
-    Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');
+   
     Route::get('/{company}/details-requirement', 'Company\CompanyController@requirementDatatable')->name('company.requirement.datatable');
 
     // Route::get('{company_name}/dashboard', function () {
@@ -71,6 +75,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified']], function 
     Route::get('artist/gateway/{id}', function(){
         return view('permits.artist.gateway');
     })->name('artist.gateway');
+    Route::post('artist/draft/delete', 'Company\ArtistController@delete_draft')->name('artist.delete_draft');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
@@ -129,7 +134,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified']], function 
     Route::get('event/get_uploaded_eventImages/{id}', 'Company\EventController@get_uploaded_eventImages')->name('event.get_uploaded_eventImages');   
     
     Route::post('event/uploadEventPics', 'Company\EventController@uploadEventPics')->name('event.uploadEventPics');
+    Route::post('event/draft/delete', 'Company\EventController@delete_draft')->name('event.delete_draft');
     // Route::get('event/eventpics/{id}', 'Company\EventController@eventpics')->name('event.eventpics');
-
+    Route::get('event/get_event_sub_types/{id}', 'Company\EventController@get_event_sub_types')->name('event.get_event_sub_types');
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 });

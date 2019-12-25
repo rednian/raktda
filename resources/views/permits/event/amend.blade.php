@@ -41,37 +41,40 @@
     <div class="kt-portlet__body">
 
         <div class="kt-container">
-            <div class="event--view-head">
-                <div class="col-md-4 pb-4 row">
+            <div class="row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Reference No.')}}</label>
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Reference No.')}}</label>
                     <span class="col-md-6">{{$event->reference_number}}</span>
                 </div>
-                <div class="col-md-4 pb-4 row">
-                    <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Event Name (EN)')}}</label>
-                    <span class="col-md-6">{{$event->name_en}}</span>
-                </div>
-                <div class="col-md-4 pb-4 row">
-                    <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Event Name (AR)')}}</label>
-                    <span class="col-md-6">{{$event->name_ar}}</span>
-                </div>
-                <div class="col-md-4 pb-4 row">
-                    <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Venue (EN)')}}
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Est. Type')}}
                     </label>
-                    <span class="col-md-6">{{$event->venue_en}}</span>
+                    <span class="col-md-6">{{$event->firm}}</span>
                 </div>
-                <div class="col-md-4 pb-4 row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Venue (AR)')}}
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Event Name')}}</label>
+                    <span class="col-md-6">{{getLangId() == 1 ? $event->name_en : $event->name_ar}}</span>
+                </div>
+                <div class="col-md-4 pb-1 row">
+                    <label
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Event Type')}}</label>
+                    <span class="col-md-6">{{getLangId() == 1 ? $event->type->name_en : $event->type->name_ar}}</span>
+                </div>
+
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Venue')}}
                     </label>
-                    <span class="col-md-6">{{$event->venue_ar}}</span>
+                    <span class="col-md-6">{{getLangId() == 1 ?  $event->venue_en : $event->venue_ar}}</span>
                 </div>
-                <div class="col-md-4 pb-4 row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('From Date')}}
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Area')}}</label>
+                    <span class="col-md-6">{{$event->area['area_en']}}</span>
+                </div>
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('From Date')}}
                     </label>
                     <input type="text" class="col-md-6 form-control form-control-sm datepicker" name="issued_date"
                         id="issued_date" value="{{date('d-m-Y', strtotime($event->issued_date))}}"
@@ -84,45 +87,43 @@
                 @endphp
                 <input type="hidden" id="days" value="{{$diff}}">
                 <input type="hidden" id="event_id" name="event_id" value="{{$event->event_id}}">
-                <div class="col-md-4 pb-4 row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u pr-4">{{__('To Date')}}
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c pr-4">{{__('To Date')}}
                     </label>
                     <input type="text" class="col-md-6 form-control form-control-sm datepicker" name="disp_expired_date"
                         id="disp_expired_date" value="{{date('d-m-Y', strtotime($event->expired_date))}}" disabled />
                     <input type="hidden" name="expired_date" id="expired_date"
                         value="{{date('d-m-Y', strtotime($event->expired_date))}}" />
                 </div>
-                <div class="col-md-4 pb-4 row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Area')}}</label>
-                    <span class="col-md-6">{{$event->area['area_en']}}</span>
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Emirate')}}</label>
+                    <span class="col-md-6">{{$event->emirate['name_en']}}</span>
                 </div>
-                <div class="col-md-4 pb-4 row">
-                    <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Start Time')}}
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Start Time')}}
                     </label>
                     <input type="text" class="col-md-6 form-control form-control-sm" name="time_start" id="time_start"
                         value="{{$event->time_start}}" />
                 </div>
-                <div class="col-md-4 pb-4 row">
-                    <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('End Time')}}
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('End Time')}}
                     </label>
                     <input type="text" class="col-md-6 form-control form-control-sm" name="time_end" id="time_end"
                         value="{{$event->time_end}}" />
                 </div>
-                <div class="col-md-4 pb-4 row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Emirate')}}</label>
-                    <span class="col-md-6">{{$event->emirate['name_en']}}</span>
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Area')}}</label>
+                    <span class="col-md-6">{{$event->area['area_en']}}</span>
                 </div>
 
             </div>
 
             <div>
                 @if($event->is_truck)
-                <div class="d-flex kt-margin-b-10 justify-content-between">
+                <div class="d-flex kt-margin-b-10 justify-content-between kt-margin-t-15">
                     <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Food Truck Details')}}</h5>
                     <button class="btn btn-sm btn-default" id="add_new_truck">{{__('Add New Food Truck')}}</button>
                 </div>
@@ -805,7 +806,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);
@@ -987,7 +988,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);

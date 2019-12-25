@@ -21,14 +21,14 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (EN)')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" autocomplete="off" placeholder="{{__('Company Name (EN)')}}">
+                                id="company_name_en" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (AR)')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" autocomplete="off" placeholder="{{__('Company Name (AR)')}}">
+                                id="company_name_ar" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}}</label>

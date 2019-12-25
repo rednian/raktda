@@ -15,7 +15,7 @@
                         data-parent="#accordionExample6">
                         <div class="card-body">
 
-                            <table class="table table-borderless">
+                            <table class="table table-borderless table-sm">
                                 <tr>
                                     <th>{{__('Document Name')}}</th>
                                     <th>{{__('Description')}}</th>
@@ -43,18 +43,18 @@
                             <h6 class="kt-font-transform-u kt-font-bolder"> {{__('Permit Fee')}}</h6>
                         </div>
                     </div>
-                    <div id="collapseThree6" class="collapse" aria-labelledby="headingThree6"
+                    <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
                         data-parent="#accordionExample61">
                         <div class="card-body">
-                            <table class="table table-borderless">
+                            <table class="table table-borderless table-sm">
                                 <tr>
                                     <th>{{__('Profession')}}</th>
-                                    <th class="text-right">{{__('Fee')}} (AED)</th>
+                                    <th>{{__('Fee')}} (AED)</th>
                                 </tr>
                                 @foreach($profession as $pt)
                                 <tr>
                                     <td>{{getLangId() == 1 ? $pt->name_en : $pt->name_ar}}</td>
-                                    <td class="text-right">{{number_format($pt->amount,2)}}</td>
+                                    <td>{{number_format($pt->amount,2)}}</td>
                                 </tr>
                                 @endforeach
                             </table>

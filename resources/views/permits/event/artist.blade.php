@@ -47,7 +47,7 @@
                         <div class="kt-wizard-v3__form">
                             <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-2">
                                         <label for="permit_from" class="col-form-label col-form-label-sm ">{{__('From
                                             Date')}} <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
@@ -64,7 +64,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-2">
                                         <label for="permit_to" class="col-form-label col-form-label-sm">{{__('To
                                             Date')}} <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">

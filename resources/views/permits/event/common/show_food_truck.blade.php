@@ -13,8 +13,8 @@
                     <table class="table table-borderless border table-striped">
                         <thead>
                             <th>#</th>
-                            <th>{{__('Company')}}</th>
-                            <th>{{__('Company - Ar')}}</th>
+                            <th>{{__('Establishment Name (EN)')}}</th>
+                            <th>{{__('Establishment Name (AR)')}}</th>
                             <th>{{__('Plate No')}}</th>
                             <th>{{__('Food Services')}}</th>
                             <th></th>
@@ -44,14 +44,14 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (EN)')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" disabled placeholder="{{__('Company Name (EN)')}}">
+                                id="company_name_en" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (AR)')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" disabled placeholder="{{__('Company Name (AR)')}}">
+                                id="company_name_ar" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}}</label>

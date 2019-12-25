@@ -43,11 +43,13 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/company_registration', 'Admin\CompanyController@index')->name('admin.company.index');
     Route::get('/company_registration/{company}', 'Admin\CompanyController@show')->name('admin.company.show');
     Route::post('/company_registration/{company}', 'Admin\CompanyController@submit')->name('admin.company.submit');
+    Route::post('/company_registration/{company}/change-status', 'Admin\CompanyController@changeStatus')->name('admin.company.changestatus');
     Route::get('/company_registration/{company}/application', 'Admin\CompanyController@application')->name('admin.company.application');
     Route::get('/company_registration/{company}/application-datatable', 'Admin\CompanyController@applicationDatatable')->name('admin.company.application.datatable');
     Route::get('/company_registration/{company}/event-datatable', 'Admin\CompanyController@eventDatatable')->name('admin.company.event.datatable');
     Route::get('/company_registration/{company}/artist-datatable', 'Admin\CompanyController@artistDatatable')->name('admin.company.artist.datatable');
     Route::get('/company_registration/{company}/comment-datatable', 'Admin\CompanyController@commentDatatable')->name('admin.company.comment.datatable');
+    Route::get('/company_registration/{company}/artist-permit-datatable', 'Admin\CompanyController@artistPermitDatatable')->name('admin.company.artistpemit.datatable');
 
   //---------------------------------------------------------------------------------------------------------------
   // Event Permit
@@ -71,8 +73,10 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/event/{event}/truck-datatable','Admin\EventController@truckDatatable')->name('admin.event.truck.datatable');
     Route::get('/event/{event}/image-datatable','Admin\EventController@imageDatatable')->name('admin.event.images.datatable');
     Route::get('/event/{event}/truck/{eventtruck}/datatable','Admin\EventController@truckRequirementDatatable')->name('admin.event.truck.requirement');
+    Route::get('/event/{event}/artist/datatable','Admin\EventController@artistDatatable')->name('admin.event.artist');
 
     Route::get('/event/time/test', 'Admin\EventController@addAppointment')->name('admin.event.time');
+    Route::post('/event/{event}/savecomment', 'Admin\EventController@saveEventComment')->name('admin.event.savecomment');
 
   //---------------------------------------------------------------------------------------------------------------
   // Artist

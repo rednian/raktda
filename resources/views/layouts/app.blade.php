@@ -122,6 +122,8 @@
     </div>
     <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
+    <input type="hidden" id="getLangid" value="{{getLangId()}}">
+
     <script src="{{ asset('/js/mandatory.js') }}"></script>
     <script src="{{ asset('/js/plugins.js') }}"></script>
     <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
@@ -143,6 +145,20 @@
 @yield('script')
 <script type="text/javascript">
     $(document).ready(function(){
+
+        @if (Session::has('message'))
+        $.notify({
+            title: '{{Session::get('message')[2]}}',
+            message: '{{Session::get('message')[1]}}',
+        },{
+            type:'{{Session::get('message')[0]}}',
+            animate: {
+                enter: 'animated zoomIn',
+                exit: 'animated zoomOut'
+            },
+        });
+        @endif
+        
             $('span[data-lang=en]').click(function(){
               getLang(1);
             });

@@ -285,12 +285,13 @@
 
 
                 <div class="d-flex justify-content-end">
-                    {{-- <a href="{{route('artist.gateway', ['id' => $permit_details->permit_id ])}}"><button
-                        class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
-                        id="pay_btn">{{__('PAY')}}</button></a>
-                    --}}
-                    <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                        onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
+                    <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
+                        id="pay_btn">{{__('PAY')}}</button>
+
+                    {{-- <a href="{{route('artist.gateway', ['id' => $permit_details->permit_id ])}}"></a> --}}
+
+                    {{-- <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
+                        onclick="Checkout.showLightbox()">{{__('PAY')}}</button> --}}
                 </div>
 
             </div>
@@ -303,47 +304,8 @@
 @endsection
 
 @section('script')
-{{-- <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/form/version/54/merchant/NRSINFOWAYSL/session.js">
-</script> --}}
-<script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js"
-    data-error="errorCallback" data-cancel="cancelCallback">
-</script>
 
 <script>
-    function errorCallback(error) {
-            console.log(JSON.stringify(error));
-    }
-    function cancelCallback() {
-            console.log('Payment cancelled');
-    }
-
-    // var rand = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-    // var sessionID = rand ;
-
-    Checkout.configure({
-        merchant: 'NRSINFOWAYSL',
-        order: {
-            amount: function() {
-                //Dynamic calculation of amount
-                return 784;
-            },
-            currency: 'AED',
-            description: 'Event Payment',
-            id: '123'
-        },
-        interaction: {
-            operation: 'AUTHORIZE', // set this field to 'PURCHASE' for Hosted Checkout to perform a Pay Operation.
-            merchant: {
-                name: 'nrsdev',
-                address: {
-                    line1: '200 Sample St',
-                    line2: '1234 Example Town'            
-                }    
-            }
-        }
-    });
-
     $(document).ready(function(){
         $('#event_details_table').hide();
         var artistTotalFee = $('#artist_total_fee').val();
@@ -358,66 +320,64 @@
     });
 
 
-    function check_permit(){
-        var ischecked = $('#isEventPay').prop('checked');
-        var artistTotalFee = $('#artist_total_fee').val();
-        var artistVatTotal = $('#artist_vat_total').val();
-        var artistGTotal = $('#artist_g_total').val();
-        var eventFeeTotal = $('#event_fee_total').val();
-        var eventVatTotal = $('#event_vat_total').val();
-        var eventGrandTotal = $('#event_grand_total').val();
-        var totalFee = parseInt(artistTotalFee) + parseInt(eventFeeTotal);
-        var totalVat = parseInt(artistVatTotal) + parseInt(eventVatTotal);
-        var total = parseInt(artistGTotal) + parseInt(eventGrandTotal);
-        if(ischecked)
-        {
-            $('#event_details_table').show();
-            $('#total_amt').html(totalFee.toFixed(2));
-            $('#total_vat').html(totalVat.toFixed(2));
-            $('#grand_total').html(total.toFixed(2));
-            $('#amount').val(totalFee);
-            $('#vat').val(totalVat);
-            $('#total').val(total);
-        }else{
-            $('#event_details_table').hide();
-            $('#total_amt').html(parseInt(artistTotalFee).toFixed(2));
-            $('#total_vat').html(parseInt(artistVatTotal).toFixed(2));
-            $('#grand_total').html(parseInt(artistGTotal).toFixed(2));
-            $('#amount').val(artistTotalFee);
-            $('#vat').val(artistVatTotal);
-            $('#total').val(artistGTotal);
-        }
-    }
+function check_permit(){
+    var ischecked = $('#isEventPay').prop('checked');
+    var artistTotalFee = $('#artist_total_fee').val();
+    var artistVatTotal = $('#artist_vat_total').val();
+    var artistGTotal = $('#artist_g_total').val();
+    var eventFeeTotal = $('#event_fee_total').val();
+    var eventVatTotal = $('#event_vat_total').val();
+    var eventGrandTotal = $('#event_grand_total').val();
+    var totalFee = parseInt(artistTotalFee) + parseInt(eventFeeTotal);
+    var totalVat = parseInt(artistVatTotal) + parseInt(eventVatTotal);
+    var total = parseInt(artistGTotal) + parseInt(eventGrandTotal);
+if(ischecked)
+{
+$('#event_details_table').show();
+$('#total_amt').html(totalFee.toFixed(2));
+$('#total_vat').html(totalVat.toFixed(2));
+$('#grand_total').html(total.toFixed(2));
+$('#amount').val(totalFee);
+$('#vat').val(totalVat);
+$('#total').val(total);
+}else{
+$('#event_details_table').hide();
+$('#total_amt').html(parseInt(artistTotalFee).toFixed(2));
+$('#total_vat').html(parseInt(artistVatTotal).toFixed(2));
+$('#grand_total').html(parseInt(artistGTotal).toFixed(2));
+$('#amount').val(artistTotalFee);
+$('#vat').val(artistVatTotal);
+$('#total').val(artistGTotal);
+}
+}
 
-        function getPermitCallback(resultIndicator, sessionVersion){
-            console.log(resultIndicator);
-            console.log(sessionVersion);
-            Checkout.session.id = sessionVersion;
-            return ;
-            var paidEventFee = 0;
-            if($('#isEventPay').prop("checked")){
-                paidEventFee = 1;
-            }
-            $.ajax({
-                url: "{{route('company.payment')}}",
-                type: "POST",
-                data: {
-                    permit_id:$('#permit_id').val(),
-                    amount: $('#amount').val(),
-                    vat: $('#vat').val(),
-                    total: $('#total').val(),
-                    noofdays: $('#noofdays').val(),
-                    paidEventFee: paidEventFee
-                },
-                success: function (result) {
-                    var toUrl = "{{route('company.happiness_center', ':id')}}";
-                    toUrl = toUrl.replace(':id', $('#permit_id').val());
-                    if(result.message[0]){
-                        window.location.href = toUrl;
-                    }
-                }
-            });
+$('#pay_btn').click(function(){
+    var paidEventFee = 0;
+    if($('#isEventPay').prop("checked")){
+        paidEventFee = 1;
+    }
+    $.ajax({
+        url: "{{route('company.payment')}}",
+        type: "POST",
+        data: {
+        permit_id:$('#permit_id').val(),
+        amount: $('#amount').val(),
+        vat: $('#vat').val(),
+        total: $('#total').val(),
+        noofdays: $('#noofdays').val(),
+        paidEventFee: paidEventFee
+        },
+        success: function (result) {
+        var toUrl = "{{route('company.happiness_center', ':id')}}";
+        toUrl = toUrl.replace(':id', $('#permit_id').val());
+        if(result.message[0]){
+        window.location.href = toUrl;
         }
+        }
+    });
+});
+
+
 
 </script>
 

@@ -151,11 +151,12 @@
                                                 </label>
                                                 <select class="form-control form-control-sm" name="event_type_id"
                                                     id="event_type_id" placeholder="Type"
-                                                    onchange="getRequirementsList()">
+                                                    onchange="getRequirementsList();setSubTypes()">
                                                     <option value="">{{__('Select')}}</option>
                                                     @foreach ($event_types as $pt)
                                                     <option value="{{$pt->event_type_id}}">
-                                                        {{ucwords($pt->name_en)}}</option>
+                                                        {{ getLangId() == 1 ? ucwords($pt->name_en) : $pt->name_ar}}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -176,22 +177,22 @@
                                                     dir="rtl" id="name_ar" maxlength="255">
                                             </div>
 
-
-                                            <div class=" col-md-4 form-group form-group-xs ">
-                                                <label for="no_of_audience"
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="event_type_id"
                                                     class=" col-form-label kt-font-bold text-right">
-                                                    {{__('Expected Audience')}} <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-control form-control-sm" name="no_of_audience"
-                                                    id="no_of_audience">
+                                                    {{__('Event Sub Type')}} <span class="text-danger"
+                                                        id="event_sub_type_req"></span>
+                                                </label>
+                                                <select class="form-control form-control-sm" name="event_sub_type_id"
+                                                    id="event_sub_type_id">
                                                     <option value="">{{__('Select')}}</option>
-                                                    <option value="0-100">0-100</option>
-                                                    <option value="100-500">100-500</option>
-                                                    <option value="500-1000">500-1000</option>
-                                                    <option value="1000&above">1000 & above</option>
+                                                    {{-- @foreach ($event_sub_types as $pt)
+                                                    <option value="{{$pt->event_type_sub_id}}">
+                                                    {{getLangId() == 1 ? ucwords($pt->sub_name_en) : $pt->sub_name_ar}}
+                                                    </option>
+                                                    @endforeach --}}
                                                 </select>
                                             </div>
-
 
 
 
@@ -213,6 +214,21 @@
                                                 <textarea class="form-control form-control-sm" rows="3"
                                                     name="description_ar" dir="rtl" id="description_ar"
                                                     maxlength="255"></textarea>
+                                            </div>
+
+                                            <div class=" col-md-4 form-group form-group-xs ">
+                                                <label for="no_of_audience"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Expected Audience')}} <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-control form-control-sm" name="no_of_audience"
+                                                    id="no_of_audience">
+                                                    <option value="">{{__('Select')}}</option>
+                                                    <option value="0-100">0-100</option>
+                                                    <option value="100-500">100-500</option>
+                                                    <option value="500-1000">500-1000</option>
+                                                    <option value="1000&above">1000 & above</option>
+                                                </select>
                                             </div>
 
 
@@ -801,7 +817,7 @@
                 firm_type: 'required',
                 no_of_audience: 'required',
                 owner_name: 'required',
-                owner_name_ar: 'required'
+                owner_name_ar: 'required',
             },
             messages: {
                 event_type_id: '',
@@ -823,7 +839,7 @@
                 firm_type: '',
                 no_of_audience:'',
                 owner_name:'',
-                owner_name_ar: ''
+                owner_name_ar: '',
             },
         });
 
@@ -909,7 +925,8 @@
                     no_of_audience: $('#no_of_audience').val(),
                     owner_name: $('#owner_name').val(),
                     owner_name_ar: $('#owner_name_ar').val(),
-                    addi_loc_info: $('#addi_loc_info').val()
+                    addi_loc_info: $('#addi_loc_info').val(),
+                    event_sub_type_id: $('#event_sub_type_id').val()
                 };
 
                 localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
@@ -1046,9 +1063,8 @@
         };
 
         function call_this_to_submit(isArtist = null){
-            console.log(documentsValidator);
             var hasFile = docValidation();
-                if (documentsValidator != null ? documentsValidator.form() && hasFile : 1) {
+                if (documentsValidator ? documentsValidator.form() : '' &&  hasFile ) {
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
                     $('#submit--btn-group').css('pointer-events', 'none');
                     var ed = localStorage.getItem('eventdetails');
@@ -1096,7 +1112,7 @@
 
         $('#draft_btn').click((e) => {
             var hasFile = docValidation();
-                if (documentsValidator ? documentsValidator.form() && hasFile : 1) {
+                if (documentsValidator != '' ? documentsValidator.form() : 1 && hasFile) {
 
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
@@ -1148,6 +1164,36 @@
                     // alert('It will take 10 days to process the permit');
                     $('#showwarning').modal('show');
                 }
+            }
+        }
+
+        function setSubTypes()
+        {
+            var langId = $('#getLangid').val();
+            var et = $('#event_type_id').val();
+            if(et)
+            {
+                var url = "{{route('event.get_event_sub_types', ':id')}}";
+                url = url.replace(':id', et);
+                $.ajax({
+                url: url ,
+                success: function (result) {
+                        $('#event_sub_type_id').empty();
+                        $('#event_sub_type_id').append('<option value="">{{__('Select')}}</option>');
+                        if(result.length > 0){
+                            for(var  i = 0; i< result.length;i++)
+                            {
+                                $('#event_sub_type_id').append('<option value="'+result[i].event_type_sub_id+'">'+(langId == 1 ? toCapitalize(result[i].sub_name_en) : result[i].sub_name_ar)+'</option>');
+                            }
+                            $('select[name="event_sub_type_id"]').rules('add', { required: true, messages: {required:''}});
+                            $('#event_sub_type_req').html('*');
+                        }else 
+                        {
+                            $('select[name="event_sub_type_id"]').rules("remove"), "required";$('#event_sub_type_id').removeClass('is-invalid');
+                            $('#event_sub_type_req').html('');
+                        }
+                    }
+                });
             }
         }
 
@@ -1563,7 +1609,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);
@@ -1778,7 +1824,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);

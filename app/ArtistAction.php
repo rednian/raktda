@@ -9,7 +9,7 @@ class ArtistAction extends Model
 	protected  $connection = 'mysql';
 	protected $table = 'smartrak_smartgov.artist_action';
 	protected $primaryKey = 'artist_action_id';
-	protected $fillable = ['artist_id', 'user_id', 'remarks', 'action'];
+	protected $fillable = ['artist_id', 'user_id', 'remarks','remarks_ar', 'action'];
 	protected $dates = ['created_at', 'updated_at'];
 
 	public function user()

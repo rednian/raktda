@@ -101,7 +101,7 @@
                                                         </label>
                                                         <select class="form-control form-control-sm"
                                                             name="event_type_id" id="event_type_id" placeholder="Type"
-                                                            onchange="getRequirementsList()">
+                                                            onchange="getRequirementsList();setSubTypes()">
                                                             <option value="">{{__('Select')}}</option>
                                                             @foreach ($event_types as $pt)
                                                             <option value="{{$pt->event_type_id}}"
@@ -133,27 +133,23 @@
                                                             value="{{$event->name_ar}}">
                                                     </div>
 
+                                                    <input type="hidden" id="sel_event_sub_type"
+                                                        value="{{$event->event_type_sub_id}}">
 
-                                                    <div class=" col-md-4 form-group form-group-xs ">
-                                                        <label for="no_of_audience"
+                                                    <div class="col-md-4 form-group form-group-xs ">
+                                                        <label for="event_type_id"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Expected Audience')}} <span
-                                                                class="text-danger">*</span></label>
+                                                            {{__('Event Sub Type')}} <span class="text-danger"
+                                                                id="event_sub_type_req"></span>
+                                                        </label>
                                                         <select class="form-control form-control-sm"
-                                                            name="no_of_audience" id="no_of_audience">
+                                                            name="event_sub_type_id" id="event_sub_type_id">
                                                             <option value="">{{__('Select')}}</option>
-                                                            <option value="0-100"
-                                                                {{$event->audience_number == '0-100' ? 'selected': ''}}>
-                                                                0-100</option>
-                                                            <option value="100-500"
-                                                                {{$event->audience_number == '100-500' ? 'selected': ''}}>
-                                                                100-500</option>
-                                                            <option value="500-1000"
-                                                                {{$event->audience_number == '500-1000' ? 'selected': ''}}>
-                                                                500-1000</option>
-                                                            <option value="1000&above"
-                                                                {{$event->audience_number == '1000&above' ? 'selected': ''}}>
-                                                                1000 & above</option>
+                                                            {{-- @foreach ($event_sub_types as $pt)
+                                                                <option value="{{$pt->event_type_sub_id}}">
+                                                            {{getLangId() == 1 ? ucwords($pt->sub_name_en) : $pt->sub_name_ar}}
+                                                            </option>
+                                                            @endforeach --}}
                                                         </select>
                                                     </div>
 
@@ -179,6 +175,30 @@
                                                             placeholder="{{__('Event Details (AR)')}}" rows="3"
                                                             maxlength="255">{{$event->description_ar}}</textarea>
                                                     </div>
+
+                                                    <div class=" col-md-4 form-group form-group-xs ">
+                                                        <label for="no_of_audience"
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            {{__('Expected Audience')}} <span
+                                                                class="text-danger">*</span></label>
+                                                        <select class="form-control form-control-sm"
+                                                            name="no_of_audience" id="no_of_audience">
+                                                            <option value="">{{__('Select')}}</option>
+                                                            <option value="0-100"
+                                                                {{$event->audience_number == '0-100' ? 'selected': ''}}>
+                                                                0-100</option>
+                                                            <option value="100-500"
+                                                                {{$event->audience_number == '100-500' ? 'selected': ''}}>
+                                                                100-500</option>
+                                                            <option value="500-1000"
+                                                                {{$event->audience_number == '500-1000' ? 'selected': ''}}>
+                                                                500-1000</option>
+                                                            <option value="1000&above"
+                                                                {{$event->audience_number == '1000&above' ? 'selected': ''}}>
+                                                                1000 & above</option>
+                                                        </select>
+                                                    </div>
+
 
 
 
@@ -496,9 +516,7 @@
                                                             class=" col-form-label kt-font-bold text-right">
                                                             {{__('Additional Location Info')}} </label>
                                                         <textarea class="form-control form-control-sm"
-                                                            name="addi_loc_info" id="addi_loc_info" rows="2"
-                                                            placeholder="{{__('Additional Location Info')}}">
-                                                            {{$event->additional_location_info}}
+                                                            name="addi_loc_info" id="addi_loc_info" rows="2">{{$event->additional_location_info ? $event->additional_location_info : ''}}
                                                         </textarea>
                                                     </div>
 
@@ -653,6 +671,9 @@
         uploadFunction();
         picUploadFunction();
         imageUploadFunction();
+
+        setSubTypes($('#event_type_id').val());
+
         $('#submit_btn').css('display', 'none');
 
         var isTruck = $('#prev_val_isTruck').val();
@@ -823,7 +844,8 @@
                 firm_type: 'required',
                 no_of_audience: 'required',
                 owner_name: 'required',
-                owner_name_ar: 'required'
+                owner_name_ar: 'required',
+                event_sub_type_id: 'required'
             },
             messages: {
                 event_type_id: '',
@@ -851,7 +873,8 @@
                 firm_type: '',
                 no_of_audience: '',
                 owner_name:'',
-                owner_name_ar: ''
+                owner_name_ar: '',
+                event_sub_type_id: ''
             },
         });
 
@@ -944,7 +967,8 @@
                     no_of_audience: $('#no_of_audience').val(),
                     owner_name: $('#owner_name').val(),
                     owner_name_ar: $('#owner_name_ar').val(),
-                    addi_loc_info: $('#addi_loc_info').val()
+                    addi_loc_info: $('#addi_loc_info').val(),
+                    event_sub_type_id: $('#event_sub_type_id').val()
             };
             localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
         }
@@ -1188,7 +1212,7 @@
 
             var hasFile = docValidation();
 
-                if (documentsValidator ? documentsValidator.form() && hasFile : 1) {
+                if (documentsValidator != '' ? documentsValidator.form() : 1 && hasFile) {
 
                     $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
                     $('#submit_btn').css('pointer-events', 'none');
@@ -1596,7 +1620,7 @@
                                     if(j <= 2 ){
                                     let id = obj[0].id;
                                     let number = id.split("_");
-                                    let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                    let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                     let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                     const d = data["path"].split("/");
                                     // var cc = d.splice(4,5);
@@ -2035,7 +2059,39 @@
             $('#image_uploader + div').attr('id', 'image-file-upload');
         };
       
-
+        function setSubTypes()
+        {
+            var langId = $('#getLangid').val();
+            var et = $('#event_type_id').val();
+            var sub_id = $('#sel_event_sub_type').val();
+            if(et)
+            {
+                var url = "{{route('event.get_event_sub_types', ':id')}}";
+                url = url.replace(':id', et);
+                $.ajax({
+                url: url ,
+                success: function (result) {
+                         $('#event_sub_type_id').empty();
+                         $('#event_sub_type_id').append('<option value="">{{__('Select')}}</option>');
+                        if(result.length > 0){
+                            for(var  i = 0; i< result.length;i++)
+                            {
+                                $('#event_sub_type_id').append('<option value="'+result[i].event_type_sub_id+'" >'+(langId == 1 ? toCapitalize(result[i].sub_name_en) : result[i].sub_name_ar)+'</option>');
+                                if(result[i].event_type_sub_id == sub_id){
+                                    $('#event_sub_type_id option[value='+result[i].event_type_sub_id+']').attr('selected', 'selected');
+                                }
+                            }   
+                            $('select[name="event_sub_type_id"]').rules('add', { required: true, messages: {required:''}});
+                            $('#event_sub_type_req').html('*');
+                        }else 
+                        {
+                            $('select[name="event_sub_type_id"]').rules("remove"), "required";$('#event_sub_type_id').removeClass('is-invalid');
+                            $('#event_sub_type_req').html('');
+                        }
+                    }
+                });
+            }
+        }
         
 </script>
 

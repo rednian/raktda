@@ -6,8 +6,7 @@
         <div class="alert-text">
             <div class="kt-scroll" data-scroll="true" style="max-height: 100px">
                 <ul>
-                    {{__('Your Company Registration is Rejected !')}}
-                    {{__('Please Contact RakTDA Administrator')}}
+                    {{__('Your Company Registration is Rejected! Please Contact TDA Administrator')}}
                 </ul>
             </div>
         </div>
