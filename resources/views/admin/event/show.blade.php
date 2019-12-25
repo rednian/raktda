@@ -313,14 +313,14 @@
                          </tr>      
                      </table>
                      <hr>
-                     <h6 class="kt-font-dark">{{__('Liqour Information')}}</h6>
+                     <h6 class="kt-font-dark">{{__('Liquor Details')}}</h6>
                      <table class="table table-sm table-hover table-borderless table-display">
                        <tr>
                         <tr>
-                          <td width="55%">{{__('Company Name')}} :</td>
+                          <td width="55%">{{__('Establishment Name')}} :</td>
                           <td>{{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}</td>
                         </tr>
-                         <td>{{__('Provided By Venue ?')}} : </td>
+                         <td>{{__('Provided by venue')}} : </td>
                          <td>{{$event->provided ? 'YES' : 'NO'}}</td>
                          @if ($event->provided)
                            <tr>
@@ -337,7 +337,7 @@
                              <td>{{$event->liquor->liquor_type}}</td>
                            </tr>
                            <tr>
-                             <td>{{__('Purchase Receipt')}} :</td>
+                             <td>{{__('Purchase Receipt Number')}} :</td>
                              <td>{{$event->liquor->purchase_receipt}}</td>
                            </tr>
                          @endif
@@ -350,7 +350,7 @@
                       
                      </div>
                      <hr>
-                      <h6 class="kt-font-dark">{{ __('Establishment Information') }}</h6>
+                      <h6 class="kt-font-dark">{{ __('Establishment Details') }}</h6>
                       @if ($event->owner->company()->exists())
                         <table class="table table-borderless table-sm table-display">
                             <tr>
@@ -431,7 +431,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#truck-tab" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK DETAILS') }}
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK INFORMATION') }}
                <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span> 
             </a>
           </li>
@@ -456,7 +456,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_4_4_tab_content" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ACTION HISTORY') }} 
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('CHECKED HISTORY') }} 
               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->comment()->where('action', '!=', 'pending')->count()}}</span>
             </a>
           </li>
@@ -479,12 +479,12 @@
              <table class="table border borderless table-hover table-sm" id="truck-table">
               <thead>
                 <tr>
-                   <th>{{ __('TRUCK NAME') }}</th>
-                   <th>{{ __('COMPANY NAME') }}</th>
+                   <th>{{ __('NAME') }}</th>
+                   <th>{{ __('ESTABLISHMENT NAME') }}</th>
                    <th>{{ __('SERVICE TYPE') }}</th>
                    <th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
-                   <th>{{ __('REGISTRATION ISSUED DATE') }}</th> 
-                   <th>{{ __('REGISTRATION EXPIRED DATE') }}</th> 
+                   <th>{{ __('ISSUED DATE') }}</th> 
+                   <th>{{ __('REGISTRATION EXPIRY DATE') }}</th> 
                    <th>{{ __('ACTION') }}</th> 
                 </tr>
               </thead>
@@ -549,7 +549,7 @@
                  <th>{{ __('REQUIREMENT NAME') }}</th>
                  <th>{{ __('FILES') }}</th>
                  <th>{{ __('ISSUED DATE') }}</th>
-                 <th>{{ __('EXPIRED DATE') }}</th>
+                 <th>{{ __('EXPIRY DATE') }}</th>
                  <th>{{ __('ACTION') }}</th>
               </tr>
             </thead>
