@@ -12,18 +12,18 @@
 <section id="app-wizard" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
 	<div class="kt-portlet__head kt-portlet__head--sm">
 		<div class="kt-portlet__head-label">
-			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ ucwords($event->name_en) }} - {{ __('APPLICATION') }}</span></h3>
+			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ Auth::user()->LanguageId == 1 ? ucwords($event->name_en) : $event->name_ar }}</span></h3>
 		</div>
 		<div class="kt-portlet__head-toolbar">
 			<a href="{{ URL::signedRoute('admin.event.index') }}" class="btn btn-sm btn-outline-secondary kt-margin-r-4 kt-font-transform-u">
-				<i class="la la-arrow-left"></i>{{ __('BACK TO EVENT LIST') }}
+				<i class="la la-arrow-left"></i>{{ __('BACK') }}
 			</a>
 			<div class="dropdown dropdown-inline">
 				<button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-elevate btn-icon btn-sm btn-icon-sm">
 					<i class="flaticon-more"></i>
 				</button>
 				<div x-placement="bottom-end" class="dropdown-menu dropdown-menu-right">
-					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">{{ __('COMPANY INFORMATION') }}</a>
+					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">{{ __('ESTABLISHMENT DETAILS') }}</a>
 				</div>
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 					<div class="kt-wizard-v3__nav-items">
 						<a href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="current" class="kt-wizard-v3__nav-item">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span>{{ __('EVENT INFORMATION') }}</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span>{{ __('EVENT DETAILS') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
@@ -47,7 +47,7 @@
 						</a>
 						 <a href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending" class="kt-wizard-v3__nav-item">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span> {{ __('EVENT APPROVER') }}</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span> {{ __('SUBMIT') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						 </a>
@@ -83,7 +83,7 @@
 												<div class="card">
 													<div class="card-header" id="heading-detail">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-detail" aria-expanded="true" aria-controls="collapse-detail">
-															<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('EVENT INFORMATION') }}</h6>
+															<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('EVENT DETAILS') }}</h6>
 														</div>
 													 </div>
 													 <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
@@ -265,7 +265,7 @@
 																<div class="card-body">
 																	 <div class="row form-group form-group-sm">
 																	 	<div class="col-6">
-																	 		 <label class="kt-font-dark">{{ __('Duration') }} <span class="text-danger">*</span></label>
+																	 		 <label class="kt-font-dark">{{ __('Event Duration') }} <span class="text-danger">*</span></label>
 																	 		 <div class="input-group input-group-sm">
 																	 		 	@php
 																	 		 	  $date = Carbon\Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
@@ -286,7 +286,7 @@
 																	 </div>
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label class="kt-font-dark">{{ __('Date Start') }} <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('Start Date') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ date('d-F-Y', strtotime($event->issued_date)) }}" name="issued_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -301,7 +301,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">{{ __('Date End') }} <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('End Date') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->expired_date }}" name="expired_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -733,14 +733,14 @@
 												<div class="card">
 													<div class="card-header" id="heading-map">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-map" aria-expanded="true" aria-controls="collapse-map">
-														<h6 class="kt-font-transform-u kt-font-dark kt-font-bolder">map details</h6>
+														<h6 class="kt-font-transform-u kt-font-dark kt-font-bolder">{{ __('MAP DETAILS') }}</h6>
 														</div>
 													</div>
 													<div id="collapse-map" class="collapse show" aria-labelledby="heading-map" data-parent="#accordion-map" style="">
 														<div class="card-body">
 															<div class="row">
 																<div class="col-sm-6">
-																	<label class="kt-font-dark">Map Full Address <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">{{ __('Address') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
 																		<input value="{{$event->full_address}}" name="" readonly="readonly" type="text" class="form-control" > 
 																		<div class="input-group-append">
@@ -754,7 +754,7 @@
 																	</div>
 																</div>
 																<div class="col-sm-3">
-																	<label class="kt-font-dark">Latitude <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">{{ __('Latitude') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
 																		<input value="{{$event->latitude}}" name="" readonly="readonly" type="text" class="form-control" > 
 																		<div class="input-group-append">
@@ -768,7 +768,7 @@
 																	</div>
 																</div>
 																<div class="col-sm-3">
-																	<label class="kt-font-dark">Latitude <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">{{ __('Longitude') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
 																		<input value="{{$event->longitude}}" name="" readonly="readonly" type="text" class="form-control" > 
 																		<div class="input-group-append">
@@ -836,7 +836,7 @@
 											 	{{-- @if ($event->otherUpload()->count() > 0) --}}
 											 	<li class="nav-item">
 											 		<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_3_3_tab_content" role="tab">
-											 			{{__('UPLOADED IMAGES')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
+											 			{{__('IMAGE UPLOADED')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
 											 		</a>
 											 	</li>
 											 	{{-- @endif --}}
@@ -849,7 +849,7 @@
  																 <th>{{ __('REQUIREMENT NAME') }}</th>
  																 <th>{{ __('FILES') }}</th>
  																 <th>{{ __('ISSUED DATE') }}</th>
- 																 <th>{{ __('EXPIRED DATE') }}</th>
+ 																 <th>{{ __('EXPIRY DATE') }}</th>
  																 <th>{{ __('ACTION') }}</th>
  															</tr>
  														</thead>
@@ -860,7 +860,7 @@
  														<thead>
  															<tr>
  																 <th>#</th>
- 																 <th>{{ __('COMPANY NAME') }}</th>
+ 																 <th>{{ __('ESTABLISHMENT NAME') }}</th>
  																 <th>{{ __('SERVICE TYPE') }}</th>
  																 <th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
  																 <th>{{ __('ACTION') }}</th>
@@ -876,7 +876,7 @@
  																 <th>{{ __('REQUIREMENT NAME') }}</th>
  																 <th>{{ __('FILES') }}</th>
  																 <th>{{ __('ISSUED DATE') }}</th>
- 																 <th>{{ __('EXPIRED DATE') }}</th>
+ 																 <th>{{ __('EXPIRY DATE') }}</th>
  																 <th>{{ __('ACTION') }}</th>
  															</tr>
  														</thead>
@@ -921,19 +921,19 @@
   																			<div class="col-12">
   																				<div class="kt-radio-inline">
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="approved-unpaid" type="radio" name="status"> Approve Application
+  																						<input value="approved-unpaid" type="radio" name="status"> {{ __('Approve Application') }}
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="need modification" type="radio" name="status"> Send Back for Amendment
+  																						<input value="need modification" type="radio" name="status"> {{ __('Bounce Back for Ammendments') }}
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="need approval" type="radio" name="status"> Need Approval
+  																						<input value="need approval" type="radio" name="status"> {{ __('Need Approval') }}
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="rejected" type="radio" name="status"> Reject Application
+  																						<input value="rejected" type="radio" name="status"> {{ __('Reject Application') }}
   																						<span></span>
   																					</label>
   																				</div>
@@ -957,7 +957,7 @@
 												  						<div class="form-group form-group kt-hide">
 												  							<div class="kt-checkbox-inline">
 																				<label class="kt-checkbox">
-																					<input type="checkbox" id="site-inspection" name="inspection"> {{ __('Site Inspection required') }}
+																					<input type="checkbox" id="site-inspection" name="inspection"> {{ __('Site Inspection Required') }}
 																					<span></span>
 																				</label>
 																			</div>
@@ -965,7 +965,7 @@
 												  					</div>
 												  					<div class="col-md-6">
 												  						<div class="form-group form-group kt-hide">
-												  							<label for="" class="kt-font-dark">{{ __('Government Department') }} <span class="text-danger">*</span></label>
+												  							<label for="" class="kt-font-dark">{{ __('Government Entities') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-department" name="department[]" multiple="multiple" id="" class="form-control">
 																				@if(App\Government::has('getUsers')->count() > 0)
 																				@foreach(App\Government::has('getUsers')->get() as $gov)
@@ -1014,11 +1014,11 @@
   																			<div class="col-12">
   																				<div class="kt-radio-inline">
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="approved" type="radio" name="status"> Approve Application
+  																						<input value="approved" type="radio" name="status"> {{ __('Approve Application') }}
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="disapproved" type="radio" name="status"> Disapprove Application
+  																						<input value="rejected" type="radio" name="status"> {{ __('Reject Application') }}
   																						<span></span>
   																					</label>
   																				</div>
@@ -1035,7 +1035,7 @@
 												  	<div class="card">
 												  		<div class="card-header" id="heading-requirements">
 												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
-												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('Additional Requirements') }}</span>
+												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('ADDITIONAL REQUIREMENTS') }}</span>
 												  					<small class="text-muted">{{ __('Select Additional Requirements from the list or add new requirement') }}</small>
 												  				</h6>
 												  			</div>
@@ -1092,7 +1092,7 @@
 								 <th>{{ __('REQUIREMENT NAME') }}</th>
 								 <th>{{ __('FILES') }}</th>
 								 <th>{{ __('ISSUED DATE') }}</th>
-								 <th>{{ __('EXPIRED DATE') }}</th>
+								 <th>{{ __('EXPIRY DATE') }}</th>
 								 <th>{{ __('ACTION') }}</th>
 							</tr>
 						</thead>
@@ -1243,23 +1243,23 @@
 
      	var counter = 0;
 
-     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">{{ __('Add New Requirement') }}</button>');
+     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">{{ __('ADD NEW REQUIREMENT') }}</button>');
      	 $('#btn-add').on( 'click', function () {
      	 	var html = '<section class="row">';
      	 		html += '	<div class="col-sm-4">'
      	 		html += '		<div class="form-group form-group-xs">';
-     	 		html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="requirement name">';
+     	 		html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="{{ __('Requirement Name') }}">';
      	 		html += '		</div>';
      	 		html += '	</div>';
      	 		html += ' <div class="col-sm-4">';
      	 		html += ' 	<div  class="form-group form-group-xs">';
-     	 		html += '		<input placeholder="description" type="text" name="requirements['+counter+'][description]" class="form-control form-control-sm" >';
+     	 		html += '		<input placeholder="{{ __('Description') }}" type="text" name="requirements['+counter+'][description]" class="form-control form-control-sm" >';
      	 		html += ' 	</div>';
      	 		html += ' </div>';
      	 		html += '	<div class="col-sm-4">';
      	 		html + '		<div class="form-group form-group-xs">';
      	 		html += '			<div class="kt-checkbox--inline kt-forn-dark">';
-     	 		html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> Issued date & Expired date required?<span></span></label>';
+     	 		html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> {{ __('Requires Date Validation') }}<span></span></label>';
      	 		html += '			</div>';
      	 		html += '		</div>';
      	 		html += '	</div>';

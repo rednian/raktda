@@ -163,11 +163,11 @@ function permitStatus($status)
     if($status == 'approved'){
         $classname = 'success';
     }
-    if($status == 'disapproved'){
+    if($status == 'rejected'){
         $classname = 'danger';
     }
 
-    return '<span class="kt-badge kt-badge--' . $classname . ' kt-badge--inline">' . ucwords($status) . '</span>';
+    return '<span class="kt-badge kt-badge--' . $classname . ' kt-badge--inline">' . __(ucwords($status)) . '</span>';
 }
 
 function getTransactionReferNumber()

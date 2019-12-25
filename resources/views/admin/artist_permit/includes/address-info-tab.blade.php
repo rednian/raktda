@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header" id="heading-contact">
             <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-contact" aria-expanded="true" aria-controls="collapse-contact">
-                <h6 class="kt-font-dark kt-font-transform-u">contact information</h6>
+                <h6 class="kt-font-dark kt-font-transform-u">{{ __('Contact Information') }}</h6>
             </div>
         </div>
         <div id="collapse-contact" class="collapse show" aria-labelledby="heading-contact" data-parent="#accordion-contact" style="">
@@ -11,7 +11,7 @@
                     <div class="col-6">
                         <section class="kt-form kt-form--label-right">
                             <div class="form-group form-group-sm row">
-                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Mobile Number <span class="text-danger">*</span></label>
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Mobile Number') }} <span class="text-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
                                         <input value="{{ $artist_permit->mobile_number }}" type="text" readonly class="form-control form-control-sm">
@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                             <div class="form-group form-group-sm row">
-                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Fax Number</label>
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Fax Number') }}</label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
                                         <input value="{{ $artist_permit->fax_number }}" type="text" readonly class="form-control form-control-sm">
@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                             <div class="form-group form-group-sm row">
-                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Sponsor Name <span
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Sponsor Name') }} <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
@@ -64,7 +64,7 @@
                     <div class="col-6">
                         <section class="kt-form kt-form--label-right">
                             <div class="form-group form-group-sm row">
-                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Phone Number <span
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Phone Number') }} <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                             <div class="form-group form-group-sm row">
-                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Email Address <span class="text-danger">*</span></label>
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Email Address') }} <span class="text-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
                                         <input value="{{ $artist_permit->email }}" type="text" readonly class="form-control form-control-sm">

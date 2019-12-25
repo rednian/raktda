@@ -9,7 +9,7 @@ use Yajra\DataTables\DataTables;
 
 class ProfessionController extends Controller
 {
-	public function datatable()
+	public function datatable(Request $request)
 	{
 		$user = Auth::user();
 		$professions = Profession::orderBy('name_en');
@@ -18,8 +18,11 @@ class ProfessionController extends Controller
 		->addColumn('profession_name', function($args) use ($user){
 		 	return $user->LanguageId == 1 ? ucwords($args->name_en) : ucwords($args->name_ar);
 		})
-		->editColumn('is_multiple', function($profession){
-			return $profession->is_multiple ? 'Yes' : 'No';
+		->editColumn('is_multiple', function($profession) use($request){
+			if($request->user()->LanguageId == 1){
+				return $profession->is_multiple ? 'Yes' : 'No';
+			}
+			return $profession->is_multiple ? __('Yes') : __('No');
 		})
 		->editColumn('amount', function($args){
 		 	return number_format($args->amount, 2).' AED';
@@ -31,7 +34,7 @@ class ProfessionController extends Controller
 			return $user->LanguageId == 1 ? ucwords($args->createdBy->NameEn) : ucwords($args->createdBy->NameAr);
 		})
 		->addColumn('actions', function($args){
-			return '<button data-url="' . route('settings.profession.destroy', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">Delete</button> <button data-url="' . route('settings.profession.edit', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">Edit</button>';
+			return '<button data-url="' . route('settings.profession.destroy', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">'.__('Delete').'</button> <button data-url="' . route('settings.profession.edit', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">'.__('Edit').'</button>';
 		})
 		->rawColumns(['actions'])
 		->make(true);
@@ -61,7 +64,7 @@ class ProfessionController extends Controller
 	public function store(Request $request){
 		try{
 			$profession = Profession::create(array_merge($request->all(), ['created_by', Auth::user()->user_id] ));
-			$result = ['success', 'New profession has been added', 'Success'];
+			$result = ['success', __('New profession has been added'), 'Success'];
 
 			if($request->submit_type == 'continue'){
 				return redirect('settings#profession')->with('message', $result);
@@ -80,7 +83,7 @@ class ProfessionController extends Controller
 	public function update(Profession $profession, Request $request){
 		try{
 			$profession->update(array_merge($request->all(), ['udpated_by', Auth::user()->user_id] ));
-			$result = ['success', 'Profession has been saved successfully', 'Success'];
+			$result = ['success', __('Profession has been saved successfully'), 'Success'];
 
 			if($request->submit_type == 'continue'){
 				return redirect('settings#profession')->with('message', $result);
@@ -95,7 +98,7 @@ class ProfessionController extends Controller
 	public function destroy(Profession $profession, Request $request){
 		try{
 			$profession->delete();
-			$result = ['success', 'Profession has been deleted', 'Success'];
+			$result = ['success', __('Profession has been deleted'), 'Success'];
 		}catch(Exception $e){
 			$result = ['error', $e->getMessage(), 'Error'];
 		}

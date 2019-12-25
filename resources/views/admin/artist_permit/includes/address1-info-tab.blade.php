@@ -2,14 +2,14 @@
     <div class="card">
         <div class="card-header" id="heading-addres1">
             <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-addres1" aria-expanded="true" aria-controls="collapse-addres1">
-                <h6 class="kt-font-dark kt-font-transform-u">address information</h6>
+                <h6 class="kt-font-dark kt-font-transform-u">{{ __('Address Information') }}</h6>
             </div>
         </div>
         <div id="collapse-addres1" class="collapse show" aria-labelledby="heading-addres1" data-parent="#accordion-addres1" style="">
             <section class="card-body">
                 <div class="kt-form kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
-                                                                    <label for="example-search-input" class="col-2 col-form-label kt-font-dark">Address <span
+                                                                    <label for="example-search-input" class="col-2 col-form-label kt-font-dark">{{ __('Address') }} <span
                                                                             class="text-danger">*</span></label>
                                                                     <div class="col-10">
                                                                         <div class="input-group input-group-sm">
@@ -28,7 +28,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
-                                                                    <label for="example-search-input" class="col-2 col-form-label kt-font-dark">P.O. Box </label>
+                                                                    <label for="example-search-input" class="col-2 col-form-label kt-font-dark">{{ __('P.O. Box') }} </label>
                                                                     <div class="col-10">
                                                                         <div class="input-group input-group-sm">
                                                                             <input value="{{ ucwords($artist_permit->po_box) }}" type="text" readonly
@@ -48,7 +48,7 @@
                                                                 <section class="row">
                                                                     <div class="col-6">
                                                                         <div class="form-group form-group-sm row">
-                                                                            <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Area</label>
+                                                                            <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Area') }}</label>
                                                                             <div class="col-8">
                                                                                 <div class="input-group input-group-sm">
                                                                                     <input value="{{ ucwords($artist_permit->area->area_en) }}" type="text" readonly
@@ -68,7 +68,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         <div class="form-group form-group-sm row">
-                                                                            <label for="example-search-input" class="col-4 col-form-label kt-font-dark">Emirate</label>
+                                                                            <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Emirate') }}</label>
                                                                             <div class="col-8">
                                                                                 <div class="input-group input-group-sm">
                                                                                     <input value="{{ ucwords($artist_permit->emirate->name_en) }}" type="text" readonly
