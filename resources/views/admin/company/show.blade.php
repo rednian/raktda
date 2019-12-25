@@ -8,7 +8,7 @@
         <div class="kt-portlet__head-toolbar">
             <a href="{{ route('admin.company.index') }}#active-company" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
                  <i class="la la-arrow-left"></i>
-                 BACK TO Company LIST
+                 BACK
             </a>
          </div>
     </div>
@@ -263,7 +263,7 @@
                   <table class="table table-borderless table-striped table-hover border" id="requirement-table">
                      <thead>
                         <tr>
-                           <th>#</th>
+                           {{-- <th>#</th> --}}
                            <th>{{__('REQUIREMENT NAME')}}</th>
                            <th>{{__('ISSUED DATE')}}</th>
                            <th>{{__('EXPIRED DATE')}}</th>
@@ -321,7 +321,7 @@
             url: '{{ route('admin.company.application.datatable', $company->company_id) }}'
          },
          columns: [
-         {data: 'count'},
+         // {data: 'count'},
          {data: 'name'},
          {data: 'issued_date'},
          {data: 'expired_date'}

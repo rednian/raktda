@@ -642,12 +642,7 @@ class ArtistPermitController extends Controller
 	         	return ucwords($permit->request_type).' Application';
 	         })
            ->addColumn('action', function($permit){
-            // $html = ' <div class="dropdown dropdown-inline">';
-            // $html .= '   <button type="button" class="btn btn-secondary btn-elevate-hover btn-icon btn-sm btn-icon-md btn-circle" data-toggle="dropdown" >';
-            // $html .= '     <i class="flaticon-more-1"></i>';
-            // $html .= '     </button>';
-            //       <div class="dropdown-menu dropdown-menu-right"> <a class="dropdown-item" href="http://raktda.test/event/1"><i class="la la-calendar-check-o"></i>Event Details</a>        <a class="dropdown-item" target="_blank" href="http://raktda.test/event/1/download"><i class="la la-download"></i>Download Permit</a>       <div class="dropdown-divider"></div>          <a href="javascript:void(0)" class="dropdown-item cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>         </div>          </div>
-            return '<button class="btn btn-outline-danger btn-sm kt-margin-r-5">' . __('Cancel') . '</button><a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-outline-success">' . __('Download') . '</a>';
+            return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary">' . __('Download') . '</a>';
            })
            ->addColumn('inspection_url', function($permit){
             return route('tasks.artist_permit.details', $permit->permit_id);

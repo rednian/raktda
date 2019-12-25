@@ -23,7 +23,7 @@
 					<i class="flaticon-more"></i>
 				</button>
 				<div x-placement="bottom-end" class="dropdown-menu dropdown-menu-right">
-					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">{{ __('ESTABLISHMENT DETAILS') }}</a>
+					<a href="{{ URL::signedRoute('admin.company.show', $event->owner->company->company_id)}}" class="dropdown-item kt-font-transform-u">{{ __('ESTABLISHMENT DETAILS') }}</a>
 				</div>
 			</div>
 		</div>
@@ -1551,7 +1551,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {

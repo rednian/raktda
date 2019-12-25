@@ -39,7 +39,7 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending ') }}</a>
                 <small class="kt-widget24__desc">{{ __('All Request') }}</small>
               </div>
               <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
@@ -52,8 +52,8 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Cancelled') }}</a>
-                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Cancelled ') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
               <span id="cancelled-count" class="kt-widget24__stats kt-font-default">{{ $cancelled_permit }}</span>
             </div>
@@ -65,8 +65,8 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</a>
-                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved ') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
             </div>
@@ -78,8 +78,8 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Rejected') }}</a>
-                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Rejected ') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $rejected_permit }}</span>
             </div>
@@ -92,7 +92,7 @@
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
                 <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</a>
-                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
+                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $active_request }}</span>
             </div>
@@ -105,7 +105,7 @@
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
           role="tablist" id="artist-permit-nav">
           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-              data-target="#new-request">{{ __('New Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
+              data-target="#new-request">{{ __('New Requests') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#pending-request"
               data-target="#pending-request">{{ __('Pending Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
@@ -502,7 +502,7 @@
           <div class="card-header" id="heading-address">
             <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse"
               data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
-              <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT LEGEND') }}</h6>
+              <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT TYPE LEGEND') }}</h6>
             </div>
           </div>
           <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
@@ -630,9 +630,6 @@
           var calendarEl = document.getElementById('event-calendar');
 
           var calendar = new FullCalendar.Calendar(calendarEl, {
-              @if(Auth::user()->LanguageId != 1)
-                locale: 'ar',
-              @endif
               plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
               isRTL: KTUtil.isRTL(),
               header: {

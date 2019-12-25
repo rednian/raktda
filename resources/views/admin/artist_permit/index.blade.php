@@ -578,6 +578,10 @@
             ],
 
             createdRow: function (row, data, index) {
+              $('.btn-download', row).click(function(){
+
+              });
+              
               $(row).click(function () {
                  location.href = data.show_link;
               });
