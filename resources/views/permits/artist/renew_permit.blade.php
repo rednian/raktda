@@ -57,9 +57,12 @@
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->expiry_date))}}</span>&emsp;&emsp;
                 <input type="hidden" id="expired_date" value="{{$artist_details[0]->expiry_date}}">
-                <span class="kt-font-dark">{{__('Location')}}:</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+                <span class="kt-font-dark">{{__('Work Location')}}:</span>&emsp;
+                <span
+                    class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
                 <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
+                <input type="hidden" id="work_location_ar" value="{{$permit_details->work_location_ar}}">
+
             </div>
         </div>
 
@@ -93,22 +96,22 @@
                         </td>
                         <td class="d-flex justify-content-center">
                             <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
-                                title="Edit">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">Edit</button>
+                                title="{{__('Edit')}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Edit')}}</button>
                             </a>
                             {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
                             title="View">
                             <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
                             </a> --}}
                             <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
-                                title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                title="{{__('View')}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
-                                data-toggle="modal" data-target="#delartistmodal" title="Remove">
-                                <button class="btn btn-sm btn-secondary btn-elevate">Remove</button>
+                                data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
                             </a>
                             @endif
                         </td>
@@ -243,7 +246,7 @@
             {
                 $('#artist_details').modal('show');
                 var code = data.person_code ? data.person_code : '';
-                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  ( data.nationality ? data.nationality.nationality_en : '' ) + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
+                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>  <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  ( data.nationality ? data.nationality.nationality_en : '' ) + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
 
             }
             }
@@ -252,6 +255,7 @@
 
     $('#submit_btn').click(function() {
         $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+        $('#submit_btn').css('pointer-events', 'none');
         var temp_permit_id = $('#permit_id').val();
         var noofdays = dayCount($('#issued_date').val(), $('#expired_date').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
@@ -263,6 +267,7 @@
                 from: $('#issued_date').val() ,
                 to: $('#expired_date').val(),
                 loc: $('#work_location').val(),
+                loc_ar: $('#work_location_ar').val(),
                 term: term, 
                 fromWhere: 'renew'
             },

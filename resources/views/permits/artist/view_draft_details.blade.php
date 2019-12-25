@@ -32,8 +32,9 @@
                 <span>{{__('To Date')}}:</span>&emsp;
                 <span
                     class="kt-font-info">{{date('d-M-Y',strtotime($draft_details[0]->expiry_date))}}</span>&emsp;&emsp;
-                <span>{{__('Location')}}:</span>&emsp;
-                <span class="kt-font-info">{{$draft_details[0]->work_location}}</span>&emsp;&emsp;
+                <span>{{__('Work Location')}}:</span>&emsp;
+                <span class="kt-font-info">
+                    {{getLangId() == 1 ? ucwords($draft_details[0]->work_location) : $draft_details[0]->work_location_ar}}</span>&emsp;&emsp;
                 @if($draft_details[0]->event)
                 <span>{{__('Connected to Event')}} :</span>&emsp;
                 <span
@@ -52,7 +53,7 @@
                         <th>{{__('Profession')}}</th>
                         <th>{{__('Mobile Number')}}</th>
                         <th>{{__('Status')}}</th>
-                        <th>{{__('Action')}}</th>
+                        <th class="text-center">{{__('Action')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,7 +71,7 @@
                         title="View">
                         <button class="btn btn-sm btn-secondary btn-elevate">View</button>
                         </a></td> --}}
-                        <td>
+                        <td class="text-center">
                             <a href="{{route('temp_artist_details.view' , [ 'id' => $atd->id , 'from' => 'view-draft'])}}"
                                 title="View">
                                 <button class="btn btn-sm btn-secondary btn-elevate">View</button>
@@ -134,7 +135,7 @@
                 if (data) {
                     $('#artist_details').modal('show');
                     var code = data.person_code ? data.person_code != 0 ? data.person_code : '' : '';
-                    $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>First Name</th> <td >' + data.firstname_en + '</td>   <th>Last Name</th> <td>' + data.lastname_en + '</td> </tr> <tr> <th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>   <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td> </tr><th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td><th>Gender</th> <td >' + ( data.gender == 1 ? 'male' : 'female')  + '</td>  </tr> <tr> <th>Email</th> <td>' + data.email + '</td> <th>Profession</th> <td >' + data.profession.name_en + '</td>  </tr> <tr> <th>Passport</th> <td >' + data.passport_number + '</td> <th>Passport Expiry</th> <td >' + moment(data.passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY') + '</td> </tr> <tr> <th>UID Number</th> <td >' + data.uid_number + '</td><th>UID Expiry</th> <td >' +  moment(data.uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY') + '</td>  </tr><tr> <th>DOB</th> <td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr></table>');
+                    $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>First Name</th> <td >' + data.firstname_en + '</td>   <th>Last Name</th> <td>' + data.lastname_en + '</td> </tr> <tr> <th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>   <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td> </tr><th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td><th>Gender</th> <td >' + ( data.gender == 1 ? 'male' : 'female')  + '</td>  </tr> <tr> <th>Email</th> <td>' + data.email + '</td> <th>Profession</th> <td >' + data.profession.name_en + '</td>  </tr> <tr> <th>Passport</th> <td >' + data.passport_number + '</td> <th>Passport Expiry</th> <td >' + moment(data.passport_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY') + '</td> </tr> <tr> <th>UID Number</th> <td >' + data.uid_number + '</td><th>UID Expiry</th> <td >' +  moment(data.uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY') + '</td>  </tr><tr> <th>DOB</th> <td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr></table>');
 
                 }
             }

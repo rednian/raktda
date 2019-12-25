@@ -2,6 +2,7 @@
 namespace App;
 
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,24 +16,23 @@ class Company extends Model
         'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 
         'reference_number', 'company_type_id', 'registered_date', 'registered_by', 'company_description_ar','company_description_en'
     ];
-    protected $dates = ['created_at', 'updated_at', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date', 'application_date'];
+    
+    protected $dates = ['created_at', 'updated_at', 'application_date', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date'];
 
-    // public function setTradeLicenseIssuedDate($date)
-    // {
-    //     $this->attributes['trade_license_issued_date'] = Carbon::createFromFormat('Y-m-d g:i A', $date)->format('Y-m-d H:i:s');
-    // } 
-
-    // public function setTradeLicenseExpiredDate($date)
-    // {
-    //     $this->attributes['trade_license_expired_date'] = Carbon::createFromFormat('Y-m-d g:i A', $date)->format('Y-m-d H:i:s');
-    // }
-
-    public function __construct(array $attributes = [])
+    public function registeredBy()
     {
-        parent::__construct($attributes);
+        return $this->belongsTo(User::class, 'registered_by', 'user_id');
     }
 
+    public function setTradeLicenseIssuedDateAttribute($date)
+    {
+        $this->attributes['trade_license_issued_date'] = Carbon::parse($date)->format('Y-m-d');
+    } 
 
+    public function setTradeLicenseExpiredDateAttribute($date)
+    {
+        $this->attributes['trade_license_expired_date'] = Carbon::parse($date)->format('Y-m-d');
+    }
 
     public function comment()
     {

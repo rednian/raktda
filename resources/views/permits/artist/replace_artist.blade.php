@@ -53,13 +53,14 @@ $language_id = Auth::user()->LanguageId;
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
                                 <form id="artist_details" novalidate autocomplete="off">
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
                                                     data-target="#collapseOne6" aria-expanded="true"
                                                     aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-transform-u">{{__('Personal Information')}}
+                                                    <h6 class="kt-font-transform-u">{{__('Artist Details')}}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -268,7 +269,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name - Ar')}}
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name (AR)')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -276,13 +277,13 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text" dir="rtl"
                                                                                 class="form-control form-control-sm"
                                                                                 name="fname_ar" id="fname_ar"
-                                                                                placeholder="{{__('First Name - Ar')}}">
+                                                                                placeholder="{{__('First Name (AR)')}}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="lname_ar"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name - Ar')}}
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name (AR)')}}
                                                                         <span class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -290,7 +291,7 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text" dir="rtl"
                                                                                 class="form-control form-control-sm "
                                                                                 name="lname_ar" id="lname_ar"
-                                                                                placeholder="{{__('Last Name - Ar')}} ">
+                                                                                placeholder="{{__('Last Name (AR)')}} ">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -354,7 +355,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_expiry"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Visa Expiry')}}
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Visa Expiry Date')}}
                                                                         <span class="text-danger hd-uae hd-eu">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -422,7 +423,8 @@ $language_id = Auth::user()->LanguageId;
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample7">
                                         <div class="card">
                                             <div class="card-header" id="headingTwo6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -503,7 +505,8 @@ $language_id = Auth::user()->LanguageId;
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample8">
                                         <div class="card">
                                             <div class="card-header" id="headingTwo7">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -755,6 +758,10 @@ $language_id = Auth::user()->LanguageId;
     </div>
 </div>
 <!--end::Modal-->
+
+@include('permits.artist.modals.artist_in_permit');
+
+
 @endsection
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
@@ -1070,7 +1077,9 @@ $language_id = Auth::user()->LanguageId;
                         $('#next_btn').css('display', 'none'); // hide the next button
                         $('#addNew_btn').css('display', 'block'); // display the add new artist button
                         artistDetails = {
-                            id: $('#artist_id').val(),
+                            id: $('#permit_id').val(),
+                            artist_id: $('#artist_id').val(),
+                            artist_permit_id: $('#artist_permit_id').val(),
                             code: $('#code').val(),
                             fname_en: $('#fname_en').val(),
                             fname_ar:  $('#fname_ar').val(),
@@ -1404,12 +1413,35 @@ $language_id = Auth::user()->LanguageId;
                 apd = ad.artist_permit[i];
                 $('#artist_id').val(ad.artist_id);
                 $('#code').val(ad.person_code);
+                setDataIntoArtistDetails(apd);
             }else if(from == 2){
-                apd = ad;
-                $('#artist_id').val(ad.artist.artist_id);
-                $('#code').val(ad.artist.person_code);
+                $.ajax({
+                    url: "{{route('artist.check_artist_exists_in_permit')}}",
+                    type: "POST",
+                    async: false,
+                    data: {
+                        permit_id:$('#permit_id').val(),
+                        artist_id: ad.artist.artist_id
+                    },
+                    success: function (result) {
+                        if(result.trim() == 'yes')
+                        {
+                            $('#artist_in_permit_exists').modal('show');
+                            clearPersonCode();
+                            return ;
+                        }else {
+                            apd = ad;
+                            $('#artist_id').val(ad.artist.artist_id);
+                            $('#code').val(ad.artist.person_code);
+                            setDataIntoArtistDetails(apd);
+                        }
+                    }
+                });
             }
+        }
 
+        function setDataIntoArtistDetails(apd)
+        {
             $('#is_old_artist').val(2);
 
             var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
@@ -1467,7 +1499,6 @@ $language_id = Auth::user()->LanguageId;
             $('#artist_exists').modal('hide');
             // $('#artist_details').validate();
         }
-
 
 
         function checkforArtist(){
@@ -1534,6 +1565,7 @@ $language_id = Auth::user()->LanguageId;
             });
             if(documentsValidator.form() && hasFile){
                 $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+                $('#submit_btn').css('pointer-events','none');
             var artist_permit_id = $('#artist_permit_id').val();
             var permit_id = $('#permit_id').val();
             var ad = localStorage.getItem('artistDetails');

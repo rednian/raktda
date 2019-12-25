@@ -85,7 +85,7 @@ class InspectionController extends Controller
       })->orderBy('approval_id', 'DESC');
 
       return Datatables::of($data)->addColumn('ref_no', function($event){
-          return $event->type == 'event' ? $event->permit->reference_number : '';
+          return $event->type == 'event' ? ( !is_null($event->permit) ? $event->permit->reference_number : '' ) : '';
       })->editColumn('type', function($event){
           return ucwords($event->type);
       })->addColumn('inspectors', function($event){
@@ -107,10 +107,13 @@ class InspectionController extends Controller
           return $event->type == 'event' && $event->permit->owner->type != 2 ? $event->permit->owner->company->name_en : null;
       })
       ->addColumn('owner', function($event) use ($request){
-          if ($request->user()->LanguageId == 1) {
-            return ucwords($event->permit->owner->NameEn);
+          if(!is_null($event->permit)){
+            if ($request->user()->LanguageId == 1) {
+              return ucwords($event->permit->owner->NameEn);
+            }
+            return $event->permit->owner->NameAr;
           }
-          return $event->permit->owner->NameAr;
+          return '';
       })
       ->make(true);
   }

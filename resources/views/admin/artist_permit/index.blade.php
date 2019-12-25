@@ -51,7 +51,7 @@
               <div class="kt-widget24 kt-widget24--solid">
                 <div class="kt-widget24__details">
                   <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('New ') }}</span>
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('New') }}</span>
                     <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                   </div>
                   <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
@@ -367,7 +367,7 @@
            });
 
            $(row).click(function () {
-							location.href = '{{url('/permit/artist/')}}/'+data.artist_id+'?tab='+hash;
+							location.href = data.show_link;
         });
 
           }
@@ -506,7 +506,7 @@
 
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#archive-permit';
+             location.href = data.show_link;
            });
          }
        });
@@ -578,8 +578,12 @@
             ],
 
             createdRow: function (row, data, index) {
+              $('.btn-download', row).click(function(){
+
+              });
+              
               $(row).click(function () {
-                 location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#active-permit';
+                 location.href = data.show_link;
               });
             }
          });
@@ -650,7 +654,7 @@
 
             createdRow: function (row, data, index) {
                $(row).click(function () {
-                  location.href = '{{ url('/artist_permit') }}/' + data.permit_id+'?tab=#processing-permit';
+                  location.href = data.show_link
                });
             }
          });
@@ -706,7 +710,7 @@
           data: function (d) {
              // var status = $('select#pending-permit-status').val();
              d.request_type = $('select#pending-request-type').val();
-             d.status =  ['modified', 'checked-inspector', 'checked-manager'];//ADDED BY DONSKIE
+             d.status =  ['modified', 'checked'];//ADDED BY DONSKIE
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
          },
@@ -723,7 +727,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
+             location.href = data.application_link;
            });
          },
        });
@@ -796,7 +800,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
+             location.href = data.application_link;
            });
          },
          initComplete: function(setting, json){

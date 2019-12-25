@@ -7,7 +7,7 @@
                     <i class="flaticon-warning"></i>
                 </div>
                 <div class="alert-text">
-                    <h5 class="alert-text">List of corrections needed</h5>
+                    <h5 class="alert-text">{{__('List of corrections needed')}}</h5>
                     <div class="kt-scroll" data-scroll="true" style="max-height: 100px">
                         <ol type="a">
                             @foreach ($staff_comments as $sc)

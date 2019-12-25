@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanyContact extends Model
@@ -12,14 +12,15 @@ class CompanyContact extends Model
 
    protected $dates = ['emirate_id_issued_date', 'emirate_id_expired_date'];
 
-    public function setEmirateIdIssuedDate($date)
+
+    public function setEmirateIdIssuedDateAttribute($date)
     {
-        $this->attributes['emirate_id_issued_date'] =Carbon::parse($date)->format('Y-m-d');
+        $this->attributes['emirate_id_issued_date'] =  Carbon::parse($date)->format('Y-m-d');
     }
 
-     public function setEmirateIdIExpiredDate($date)
+     public function setEmirateIdExpiredDateAttribute($date)
     {
-        $this->attributes['emirate_id_expired_date'] = Carbon::parse($date)->format('Y-m-d');
+        $this->attributes['emirate_id_expired_date'] =  Carbon::parse($date)->format('Y-m-d');
     }  
 
    public function company()

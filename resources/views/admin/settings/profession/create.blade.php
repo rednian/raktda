@@ -80,7 +80,7 @@
             <section class="row kt-margin-t-10">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">{{ __('Amount') }}
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Profession Fee') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input value="" type="text" name="amount" required class="form-control form-control-sm">
@@ -104,6 +104,22 @@
 @stop
 @section('script')
 	<script>
+
+	/*
+ * Translated default messages for the jQuery validation plugin.
+ * Locale: AR (Arabic; العربية)
+ */
+	
+
+	// $.tools.validator.localize("fi", {
+	//     '*'          : 'Virheellinen arvo',
+	//     ':email'     : 'Virheellinen s&auml;hk&ouml;postiosoite',
+	//     ':number'    : 'Arvon on oltava numeerinen',
+	//     ':url'       : 'Virheellinen URL',
+	//     '[max]'      : 'Arvon on oltava pienempi, kuin $1',
+	//     '[min]'      : 'Arvon on oltava suurempi, kuin $1',
+	//     '[required]' : 'Kent&auml;n arvo on annettava'
+	// });
 
     $(document).ready(function () {
 

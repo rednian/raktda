@@ -13,9 +13,10 @@
                     <table class="table table-borderless border table-striped">
                         <thead>
                             <th>#</th>
-                            <th>{{__('Company')}}</th>
+                            <th>{{__('Establishment Name (EN)')}}</th>
+                            <th>{{__('Establishment Name (AR)')}}</th>
                             <th>{{__('Plate No')}}</th>
-                            <th>{{__('Type of Food')}}</th>
+                            <th>{{__('Food Services')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
@@ -43,33 +44,35 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" disabled placeholder="company name">
+                                id="company_name_en" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" disabled placeholder="company name - Ar">
+                                id="company_name_ar" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}}</label>
-                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
-                                disabled placeholder="food type">
+                            <textarea class="form-control form-control-sm" name="food_type" id="food_type" disabled
+                                placeholder="food type" rows="2"></textarea>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Plate No')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Traffic Plate No')}}</label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
-                                disabled placeholder="plate no">
+                                disabled placeholder="{{__('Traffic Plate No')}}">
                         </div>
 
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Issue')}} </label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}
+                            </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_issue_date"
                                 data-date-end-date="+0d" id="regis_issue_date" disabled placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Expiry')}} </label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Expiry Date')}}
+                            </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_expiry_date"
                                 data-date-start-date="+0d" id="regis_expiry_date" disabled placeholder="DD-MM-YYYY">
                         </div>
@@ -128,7 +131,7 @@
                 </form>
                 <small id="truck_warning_text" class="text-center text-danger "></small>
                 <div class="d-flex justify-content-between kt-margin-t-10">
-                    <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">Back</button>
+                    <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">{{__('Back')}}</button>
                 </div>
             </div>
         </div>

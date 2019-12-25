@@ -709,7 +709,7 @@
           });
           $('.btn-download', row).click(function(e) { e.stopPropagation(); });
           $(row).click(function () {
-            location.href = '{{ url('/event') }}/' + data.event_id+'?tab=archive-permit';
+            location.href = data.show_link;
           });
         },
         initComplete: function(){
@@ -740,15 +740,15 @@
         cancelClass: 'btn-secondary btn-sm btn-elevate',
         startDate: start,
         endDate: end,
-       locale:{'customRangeLabel':'Custom From and To'},
+       locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         // maxDate: new Date,
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#active-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
@@ -869,14 +869,14 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
-       locale:{'customRangeLabel':'Custom From and To'},
+       locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#processing-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
@@ -913,7 +913,7 @@
         ],
         createdRow: function (row, data, index) {
           $(row).click(function () {
-            location.href = '{{ url('/event') }}/' + data.event_id+'?tab=processing-permit';
+            location.href = data.show_link;
           });
         }
       });
@@ -942,14 +942,14 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
-        locale:{'customRangeLabel':'Custom From and To'},
+        locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#pending-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
@@ -967,7 +967,7 @@
            data: function (d) {
 
             // var status = $('select#new-permit-status').val();
-             d.status = ['amended'];
+             d.status = ['amended', 'checked'];
              d.type = $('select#pending-applicant-type').val();
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
@@ -988,7 +988,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/event') }}/' + data.event_id + '/application';
+             location.href = data.application_link;
            });
          }
        });
@@ -1018,14 +1018,14 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
-        locale:{'customRangeLabel':'Custom From and To'},
+        locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
@@ -1063,7 +1063,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/event') }}/' + data.event_id + '/application';
+             location.href = data.application_link;
            });
          },
           initComplete: function(setting, json){

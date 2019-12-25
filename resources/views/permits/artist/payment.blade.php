@@ -40,8 +40,9 @@
                         <span>{{__('To Date')}}:</span>&emsp;
                         <span
                             class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                        <span>{{__('Location')}}:</span>&emsp;
-                        <span class="kt-font-info">{{ucwords($permit_details->work_location)}}</span>&emsp;&emsp;
+                        <span>{{__('Work Location')}}:</span>&emsp;
+                        <span
+                            class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
                         <span>{{__('Ref No.')}}:</span>&emsp;
                         <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
                         @if($permit_details->event)
@@ -172,7 +173,7 @@
                 {
                     $('#artist_details').modal('show');
                     var code = data.artist.person_code ? data.artist.person_code : '';
-                    $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td >' + code + '</td><th>Profession</th> <td>' + ( data.profession  ?  data.profession.name_en : '' )+ '</td></tr><tr><th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td> </tr><tr><th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td> </tr> <tr> <th> Nationality </th> <td >' + data.nationality.nationality_en + '</td> <th>Email</th> <td>' + data.email + '</td>  </tr> <tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Exp</th> <td >' +moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr></table>');
+                    $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr> <th>Code</th> <td >' + code + '</td><th>Profession</th> <td>' + ( data.profession  ?  data.profession.name_en : '' )+ '</td></tr><tr><th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td> </tr><tr><th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>  <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td> </tr> <tr> <th> Nationality </th> <td >' + data.nationality.nationality_en + '</td> <th>Email</th> <td>' + data.email + '</td>  </tr> <tr> <th>Passsport</th> <td >' + data.passport_number + '</td> <th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Exp</th> <td >' +moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr></table>');
 
                 }
                 }

@@ -157,8 +157,17 @@ function permitStatus($status)
     if ($status == 'modification request') {
         $status = 'need modification';
     }
+    if ($status == 'checked'){
+        $classname = 'success';
+    }
+    if($status == 'approved'){
+        $classname = 'success';
+    }
+    if($status == 'rejected'){
+        $classname = 'danger';
+    }
 
-    return '<span class="kt-badge kt-badge--' . $classname . ' kt-badge--inline">' . ucwords($status) . '</span>';
+    return '<span class="kt-badge kt-badge--' . $classname . ' kt-badge--inline">' . __(ucwords($status)) . '</span>';
 }
 
 function getTransactionReferNumber()
@@ -182,12 +191,12 @@ function getTransactionReferNumber()
 
 function generateEventPermitNumber()
 {
-    $last_permit_d = \App\Event::where('permit_number', 'not like', '%-%')->latest()->first();
+    $last_permit_d = \App\Event::max('permit_number');
 
-    if (!isset($last_permit_d->permit_number)) {
+    if (!isset($last_permit_d)) {
         $new_permit_no = sprintf("EP%04d",  1);
     } else {
-        $last_pn = $last_permit_d->permit_number;
+        $last_pn = $last_permit_d;
         $n = substr($last_pn, 2);
         $f = substr($n, 0, 1);
         $l = substr($n, -1, 1);
@@ -197,17 +206,18 @@ function generateEventPermitNumber()
         }
         $new_permit_no = sprintf("EP%0" . $x . "d", $n + 1);
     }
+
     return $new_permit_no;
 }
 
 function generateArtistPermitNumber()
 {
-    $last_permit_d = \App\Permit::orderBy('created_at', 'desc')->where('permit_number', 'not like', '%-%')->first();
+    $last_permit_d = \App\Permit::where('permit_number', 'not like', '%-%')->max('permit_number');
 
-    if (!isset($last_permit_d->permit_number)) {
+    if (!isset($last_permit_d)) {
         $new_permit_no = sprintf("AP%04d",  1);
     } else {
-        $last_pn = $last_permit_d->permit_number;
+        $last_pn = $last_permit_d;
         $n = substr($last_pn, 2);
         $f = substr($n, 0, 1);
         $l = substr($n, -1, 1);
@@ -336,6 +346,19 @@ function translateAr($word)
         }
     }
     return $word;
+}
+
+function check_is_blocked()
+{
+    $companyID  = Auth::user()->EmpClientId;
+    $data['status'] = 'active';$data['comments'] = [];
+    if($companyID){
+        $data['status'] = Auth::user()->company->status;
+    }
+    if($data['status'] == 'blocked'){
+        $data['comments'] = \App\CompanyComment::where('company_id', $companyID)->latest()->first();
+    }
+    return $data ;
 }
 
 

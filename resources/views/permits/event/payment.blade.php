@@ -102,22 +102,45 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Establishment Name')}} <span
+                                                                {{__('Establishment Type')}} <span
                                                                     class="text-danger">*</span>
                                                             </label>
                                                             <select class="form-control form-control-sm"
                                                                 name="firm_type" id="firm_type" disabled>
                                                                 <option value="">{{__('Select')}}</option>
-                                                                <option value="government"
-                                                                    {{$event->firm == 'government' ? 'selected' : ''}}>
-                                                                    {{__('Goverment')}}
-                                                                </option>
+
                                                                 <option value="corporate"
                                                                     {{$event->firm == 'corporate' ? 'selected' : ''}}>
                                                                     {{__('Corporate')}}
                                                                 </option>
+                                                                <option value="government"
+                                                                    {{$event->firm == 'government' ? 'selected' : ''}}>
+                                                                    {{__('Goverment')}}
+                                                                </option>
                                                             </select>
                                                         </div>
+
+
+                                                        <div class="col-md-4 form-group form-group-xs">
+                                                            <label for="owner_name"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name (EN)')}}
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="owner_name" id="owner_name"
+                                                                placeholder="{{__('Owner Name (EN)')}}"
+                                                                value="{{$event->owner_name}}" readonly>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs">
+                                                            <label for="owner_name"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name (AR)')}}
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="owner_name_ar" id="owner_name_ar" dir="rtl"
+                                                                placeholder="{{__('Owner Name (AR)')}}"
+                                                                value="{{$event->owner_name_ar}}" readonly>
+                                                        </div>
+
 
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
@@ -137,47 +160,48 @@
 
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="owner_name"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name" id="owner_name"
-                                                                placeholder="{{__('Owner Name')}}"
-                                                                value="{{$event->owner_name}}" readonly>
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="owner_name"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name - Ar')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name_ar" id="owner_name_ar"
-                                                                placeholder="{{__('Owner Name - Ar')}}"
-                                                                value="{{$event->owner_name_ar}}" readonly>
-                                                        </div>
-
 
 
                                                         <div class="col-md-4 form-group form-group-xs">
                                                             <label for="name_en"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}<span
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name (EN)')}}<span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="name_en" id="name_en"
-                                                                placeholder="{{__('Event Name')}}"
+                                                                placeholder="{{__('Event Name (EN)')}}"
                                                                 value="{{$event->name_en}}" readonly>
                                                         </div>
 
                                                         <div class=" col-md-4 form-group form-group-xs">
                                                             <label for="name_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Name - Ar')}}<span
+                                                                {{__('Event Name (AR)')}}<span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm "
                                                                 name="name_ar" dir="rtl" id="name_ar"
-                                                                placeholder="{{__('Event Name - Ar')}}"
+                                                                placeholder="{{__('Event Name (AR)')}}"
                                                                 value="{{$event->name_ar}}" readonly>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="event_type_id"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Event Sub Type')}}
+                                                                @if($event->event_type_sub_id)
+                                                                <span class="text-danger">*</span>
+                                                                @endif
+                                                            </label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="event_sub_type_id" id="event_sub_type_id"
+                                                                disabled>
+                                                                @if($event->event_type_sub_id)
+                                                                <option value="{{$event->event_type_sub_id}}" selected>
+                                                                    {{getLangId() == 1 ? ucwords($event->subType->sub_name_en) : $event->subType->sub_name_ar}}
+                                                                </option>
+                                                                @else
+                                                                <option value="">{{__('Select')}}</option>
+                                                                @endif
+                                                            </select>
                                                         </div>
 
 
@@ -185,11 +209,11 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="description_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Details ')}}<span
+                                                                {{__('Event Details (EN)')}}<span
                                                                     class="text-danger">*</span></label>
                                                             <textarea type="text" class="form-control form-control-sm"
                                                                 name="description_en" id="description_en"
-                                                                placeholder="{{__('Event Details')}}" rows="3"
+                                                                placeholder="{{__('Event Details (EN)')}}" rows="3"
                                                                 maxlength="255"
                                                                 readonly>{{$event->description_en}}</textarea>
                                                         </div>
@@ -197,11 +221,11 @@
                                                         <div class=" col-md-4 form-group form-group-xs ">
                                                             <label for=" description_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Details - Ar')}} <span
+                                                                {{__('Event Details (AR)')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <textarea class="form-control form-control-sm"
                                                                 name="description_ar" dir="rtl" id="description_ar"
-                                                                placeholder="{{__('Event Details - Ar')}}" rows="3"
+                                                                placeholder="{{__('Event Details (AR)')}}" rows="3"
                                                                 maxlength="255"
                                                                 readonly>{{$event->description_ar}}</textarea>
                                                         </div>
@@ -216,18 +240,20 @@
                                                                 <option value="">{{__('Select')}}</option>
                                                                 <option value="0-100"
                                                                     {{$event->audience_number == '0-100' ? 'selected': ''}}>
-                                                                    0-100</option>
+                                                                    {{__('0-100')}}</option>
                                                                 <option value="100-500"
                                                                     {{$event->audience_number == '100-500' ? 'selected': ''}}>
-                                                                    100-500</option>
+                                                                    {{__('100-500')}}</option>
                                                                 <option value="500-1000"
                                                                     {{$event->audience_number == '500-1000' ? 'selected': ''}}>
-                                                                    500-1000</option>
+                                                                    {{__('500-1000')}}</option>
                                                                 <option value="1000&above"
                                                                     {{$event->audience_number == '1000&above' ? 'selected': ''}}>
-                                                                    1000 & above</option>
+                                                                    {{__('1000 & above')}}</option>
                                                             </select>
                                                         </div>
+
+
 
 
                                                         <div class="col-md-4  form-group form-group-xs ">
@@ -422,11 +448,11 @@
                                                         <div class="col-md-6 form-group form-group-xs ">
                                                             <label for="venue_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Venue')}} <span
+                                                                {{__('Venue (EN)')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="venue_en" id="venue_en"
-                                                                placeholder="{{__('Venue')}}"
+                                                                placeholder="{{__('Venue (EN)')}}"
                                                                 value="{{$event->venue_en}}" readonly>
 
                                                         </div>
@@ -434,11 +460,11 @@
                                                         <div class="col-md-6 form-group form-group-xs ">
                                                             <label for="venue_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Venue - Ar')}} <span
+                                                                {{__('Venue (AR)')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="venue_ar" dir="rtl" id="venue_ar"
-                                                                placeholder="Venue - Ar" value="{{$event->venue_ar}}"
+                                                                placeholder="Venue (AR)" value="{{$event->venue_ar}}"
                                                                 readonly>
                                                         </div>
 
@@ -527,7 +553,7 @@
                                                                 value="{{$event->street}}" readonly>
                                                         </div>
 
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="longitude"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Longitude')}}<span
@@ -537,7 +563,7 @@
                                                                 value="{{$event->longitude}}" readonly>
                                                         </div>
 
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="latitude"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Latitude')}} <span
@@ -546,6 +572,17 @@
                                                                 name="latitude" id="latitude" placeholder="Latitude"
                                                                 value="{{$event->latitude}}" readonly>
                                                         </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="addi_loc_info"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Additional Location Info')}} </label>
+                                                            <textarea class="form-control form-control-sm"
+                                                                name="addi_loc_info" id="addi_loc_info" rows="2"
+                                                                readonly>{{$event->additional_location_info}}
+                                                            </textarea>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                                 <div id="address-map-container"
@@ -574,23 +611,20 @@
                                 </form>
                                 <form id="image_upload_form">
                                     <div class="row">
-                                        <div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{{__('Event
-                                            Images')}}</label>
-                                            <p class="reqName">{{__('Add multiple images of the event')}}</p>
+                                        <div class="col-lg-4 col-sm-12"><label
+                                                class="kt-font-bold text--maroon">{{__('Images')}}</label>
+                                            <p class="reqName">{{__('Add multiple images')}}</p>
                                         </div>
                                         <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
                                             <div id="image_uploader">{{__('Upload')}}</div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12"><label
-                                                class="kt-font-bold text--maroon">{{__('Description')}}</label>
-                                            <input type="text" name="description" id="description"
-                                                class="form-control form-control-sm" placeholder="Image Description">
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
+
+
 
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
@@ -613,18 +647,20 @@
                                         </div>
                                     </div>
                                     {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
+
                                     @php
+                                    $issued_date = strtotime($event->issued_date);
+                                    $expired_date = strtotime($event->expired_date);
+                                    $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
                                     $event_fee_total = 0;
                                     $event_vat_total = 0;
                                     $event_grand_total = 0;
                                     $truck_fee = 0;
                                     $liquor_fee = 0;
-                                    $issued_date = strtotime($event->issued_date);
-                                    $expired_date = strtotime($event->expired_date);
-                                    $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
                                     @endphp
                                     <div class="table-responsive">
                                         <table class="table table-borderless table-hover border table-striped">
+                                            @if($event->request_type != 'amend')
                                             <thead>
                                                 <tr>
                                                     <th>{{__('Event Name')}}</th>
@@ -634,7 +670,18 @@
                                                     <th class="text-right">{{__('Total')}} (AED) </th>
                                                 </tr>
                                             </thead>
+                                            @else
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">#</th>
+                                                    <th class="text-right">{{__('Fee')}} (AED)</th>
+                                                    <th class="text-right">{{__('VAT')}} (5%)</th>
+                                                    <th class="text-right">{{__('Total')}} (AED) </th>
+                                                </tr>
+                                            </thead>
+                                            @endif
                                             <tbody>
+                                                @if($event->request_type != 'amend')
                                                 <tr>
                                                     <td class="text-left">
                                                         {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
@@ -660,21 +707,27 @@
                                                         {{number_format($event_total, 2)}}
                                                     </td>
                                                 </tr>
+                                                @endif
                                                 @if($event->is_truck == 1)
+                                                @if(isset($event->truck) && count($event->truck->where('paid', 0)) > 0)
                                                 <tr>
-                                                    <td colspan="2">{{__('Truck Fee')}} </td>
                                                     @php
+                                                    $nooftrucks = count($event->truck->where('paid', 0));
                                                     $per_truck_fee = getSettings()->food_truck_fee;
-                                                    $truck_fee += $noofdays * $per_truck_fee;
+                                                    $truck_fee += $noofdays * $per_truck_fee * $nooftrucks;
                                                     $event_fee_total += $truck_fee;
                                                     $event_grand_total += $truck_fee;
                                                     @endphp
+                                                    <td colspan="2">{{__('Truck Fee')}}
+                                                        {{$nooftrucks ? ' X '.$nooftrucks : 0}}</td>
                                                     <td class="text-right">{{number_format($truck_fee, 2)}}</td>
                                                     <td class="text-right">0</td>
                                                     <td class="text-right">{{number_format($truck_fee, 2)}}</td>
                                                 </tr>
                                                 @endif
-                                                @if($event->is_liquor == 1)
+                                                @endif
+                                                @if($event->is_liquor == 1 && isset($event->liquor) &&
+                                                $event->liquor->provided == 0 && $event->liquor->paid == 0)
                                                 <tr>
                                                     <td colspan="2">{{__('Liquor')}} </td>
                                                     @php
@@ -694,7 +747,6 @@
 
                                     <input type="hidden" id="truck_fee" value="{{$truck_fee}}">
                                     <input type="hidden" id="liquor_fee" value="{{$liquor_fee}}">
-                                    <input type="hidden" id="is_truck" value="{{$event->is_truck}}">
 
                                     <input type="hidden" id="event_total_amount" value="{{$event_fee_total}}">
                                     <input type="hidden" id="event_vat_total" value="{{$event_vat_total}}">
@@ -732,7 +784,8 @@
                                                         {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
                                                     </td>
                                                     @php
-                                                    $artist_fee = $ap->profession['amount'] * $noofdays;
+                                                    $noofmonths = ceil($noofdays ? $noofdays : 1 / 30) ;
+                                                    $artist_fee = $ap->profession['amount'] * $noofmonths;
                                                     $artist_vat = $artist_fee * 0.05;
                                                     $artist_total = $artist_fee + $artist_vat;
                                                     $artist_fee_total += $artist_fee;
@@ -755,7 +808,7 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="2" class="kt-font-bold">
-                                                        Total
+                                                        {{__('Total')}}
                                                     </td>
                                                     <td class="kt-font-bold text-right">
                                                         {{number_format($artist_fee_total,2)}}
@@ -1046,7 +1099,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);
@@ -1087,7 +1140,7 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button></td></tr>');
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button></td></tr>');
 
                         }
                     }
@@ -1449,12 +1502,12 @@
                 type: 'POST',
                 data: {id: id, firm: firm},
                 success: function (result) {
+                    $('#documents_required').empty();
+                    var res = result;
+                     $('#requirements_count').val(res.length);
                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                  if(result){
-                    $('#documents_required').empty();
-                     var res = result;
-                     $('#requirements_count').val(res.length);
-                     
+
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
                          $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' ) +'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
@@ -1573,7 +1626,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);
@@ -1676,8 +1729,8 @@
                         event_id:$('#event_id').val(),
                         amount: $('#amount').val(),
                         vat: $('#vat').val(),
-                        isTruck: $('#is_truck').val(),
                         truck_fee: $('#truck_fee').val(),
+                        liquor_fee: $('#liquor_fee').val(),
                         total: $('#total').val(),
                         paidArtistFee: paidArtistFee
                     },

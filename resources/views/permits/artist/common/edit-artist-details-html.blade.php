@@ -1,19 +1,21 @@
 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
     <div class="kt-form__section kt-form__section--first">
+        @if($from == 'edit')
         @component('permits.components.artist_permit_comments', ['staff_comments' =>
         $staff_comments])
         @endcomponent
+        @endif
         <div class="kt-wizard-v3__form">
             {{-- @if($from == 'edit')
             @include('permits.components.artist_comments')
             @endif --}}
             <form id="artist_details" novalidate autocomplete="off">
-                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+                <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample5">
                     <div class="card">
                         <div class="card-header" id="headingOne6">
                             <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseOne6"
                                 aria-expanded="true" aria-controls="collapseOne6">
-                                <h6 class="kt-font-transform-u">{{__('Personal Information')}}</h6>
+                                <h6 class="kt-font-transform-u">{{__('Artist Details')}}</h6>
                             </div>
                         </div>
                         <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -227,7 +229,7 @@
 
                                             <div class="form-group form-group-sm row">
                                                 <label for="fname_ar"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name - Ar')}}
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name (AR)')}}
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-lg-8">
@@ -235,21 +237,21 @@
                                                         <input type="text"
                                                             class="form-control form-control-sm text-left text-lg-right "
                                                             name="fname_ar" id="fname_ar"
-                                                            placeholder="{{__('First Name - Ar')}} "
+                                                            placeholder="{{__('First Name (AR)')}} "
                                                             value="{{$artist_details->firstname_ar}}">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group form-group-sm row">
                                                 <label for="lname_ar"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name - Ar')}}
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name (AR)')}}
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-lg-8">
                                                     <div class="input-group input-group-sm">
                                                         <input type="text" dir="rtl"
                                                             class="form-control form-control-sm" name="lname_ar"
-                                                            id="lname_ar" placeholder="{{__('Last Name - Ar')}}"
+                                                            id="lname_ar" placeholder="{{__('Last Name (AR)')}}"
                                                             value="{{$artist_details->lastname_ar}}">
                                                     </div>
                                                 </div>
@@ -319,7 +321,7 @@
 
                                             <div class="form-group form-group-sm row">
                                                 <label for="visa_expiry"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Visa Expiry')}}
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Visa Expiry Date')}}
                                                     <span class="text-danger hd-uae hd-eu">*</span>
                                                 </label>
                                                 <div class="col-lg-8">
@@ -335,13 +337,13 @@
 
                                             <div class="form-group form-group-sm row">
                                                 <label for="id_no"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">Identification
-                                                    No <span class="text-danger sh-uae">*</span></label>
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Identification
+                                                    No')}} <span class="text-danger sh-uae">*</span></label>
                                                 <div class="col-lg-8">
                                                     <div class="input-group input-group-sm">
                                                         <input type="text" class="form-control form-control-sm "
-                                                            name="id_no" id="id_no" placeholder="Identification No."
-                                                            value="{{$artist_details->emirates_id}}">
+                                                            name="id_no" id="id_no" placeholder="{{__('Identification
+                                                            No')}}" value="{{$artist_details->emirates_id}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -395,7 +397,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
+                <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample7">
 
                     <div class="card">
                         <div class="card-header" id="headingTwo6">
@@ -482,7 +484,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
+                <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample8">
 
                     <div class="card">
                         <div class="card-header" id="headingTwo7">
@@ -532,12 +534,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </section>
                                     </div>
                                     <div class="col-6">
                                         <section class="kt-form--label-right">
-
                                             <div class="form-group form-group-sm row">
                                                 <label for="email"
                                                     class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('PO Box')}}

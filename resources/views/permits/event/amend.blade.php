@@ -41,25 +41,40 @@
     <div class="kt-portlet__body">
 
         <div class="kt-container">
-            <div class="event--view-head">
-                <div class="col-md-4 pb-4 row">
+            <div class="row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Ref No.')}}</label>
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Reference No.')}}</label>
                     <span class="col-md-6">{{$event->reference_number}}</span>
                 </div>
-                <div class="col-md-4 pb-4 row">
-                    <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Event Name')}}</label>
-                    <span class="col-md-6">{{$event->name_en}}</span>
-                </div>
-                <div class="col-md-4 pb-4 row">
-                    <label class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Venue')}}
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Est. Type')}}
                     </label>
-                    <span class="col-md-6">{{$event->venue_en}}</span>
+                    <span class="col-md-6">{{$event->firm}}</span>
                 </div>
-                <div class="col-md-4 pb-4 row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Issued Date')}}
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Event Name')}}</label>
+                    <span class="col-md-6">{{getLangId() == 1 ? $event->name_en : $event->name_ar}}</span>
+                </div>
+                <div class="col-md-4 pb-1 row">
+                    <label
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Event Type')}}</label>
+                    <span class="col-md-6">{{getLangId() == 1 ? $event->type->name_en : $event->type->name_ar}}</span>
+                </div>
+
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Venue')}}
+                    </label>
+                    <span class="col-md-6">{{getLangId() == 1 ?  $event->venue_en : $event->venue_ar}}</span>
+                </div>
+                <div class="col-md-4 pb-1 row">
+                    <label
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Area')}}</label>
+                    <span class="col-md-6">{{$event->area['area_en']}}</span>
+                </div>
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('From Date')}}
                     </label>
                     <input type="text" class="col-md-6 form-control form-control-sm datepicker" name="issued_date"
                         id="issued_date" value="{{date('d-m-Y', strtotime($event->issued_date))}}"
@@ -72,57 +87,54 @@
                 @endphp
                 <input type="hidden" id="days" value="{{$diff}}">
                 <input type="hidden" id="event_id" name="event_id" value="{{$event->event_id}}">
-                <div class="col-md-4 pb-4 row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u pr-4">{{__('Expired Date')}}
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c pr-4">{{__('To Date')}}
                     </label>
                     <input type="text" class="col-md-6 form-control form-control-sm datepicker" name="disp_expired_date"
                         id="disp_expired_date" value="{{date('d-m-Y', strtotime($event->expired_date))}}" disabled />
                     <input type="hidden" name="expired_date" id="expired_date"
                         value="{{date('d-m-Y', strtotime($event->expired_date))}}" />
                 </div>
-                <div class="col-md-4 pb-4 row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Area')}}</label>
-                    <span class="col-md-6">{{$event->area['area_en']}}</span>
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Emirate')}}</label>
+                    <span class="col-md-6">{{$event->emirate['name_en']}}</span>
                 </div>
-                <div class="col-md-4 pb-4 row">
-                    <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Start Time')}}
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Start Time')}}
                     </label>
                     <input type="text" class="col-md-6 form-control form-control-sm" name="time_start" id="time_start"
                         value="{{$event->time_start}}" />
                 </div>
-                <div class="col-md-4 pb-4 row">
-                    <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('End Time')}}
+                <div class="col-md-4 pb-1 row">
+                    <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('End Time')}}
                     </label>
                     <input type="text" class="col-md-6 form-control form-control-sm" name="time_end" id="time_end"
                         value="{{$event->time_end}}" />
                 </div>
-                <div class="col-md-4 pb-4 row">
+                <div class="col-md-4 pb-1 row">
                     <label
-                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Emirate')}}</label>
-                    <span class="col-md-6">{{$event->emirate['name_en']}}</span>
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Area')}}</label>
+                    <span class="col-md-6">{{$event->area['area_en']}}</span>
                 </div>
 
             </div>
 
             <div>
                 @if($event->is_truck)
-                <div class="d-flex kt-margin-b-10 justify-content-between">
-                    <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Truck Details</h5>
-                    <button class="btn btn-sm btn-default" id="add_new_truck">Add New Truck</button>
+                <div class="d-flex kt-margin-b-10 justify-content-between kt-margin-t-15">
+                    <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Food Truck Details')}}</h5>
+                    <button class="btn btn-sm btn-default" id="add_new_truck">{{__('Add New Food Truck')}}</button>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead class="text-center">
                             <th>#</th>
-                            <th>{{__('Company')}}</th>
-                            <th>{{__('Plate No')}}</th>
-                            <th>{{__('Type of Food')}}</th>
-                            <th>{{__('Reg Issued')}}</th>
-                            <th>{{__('Reg Expired')}}</th>
+                            <th>{{__('Company (EN)')}}</th>
+                            <th>{{__('Company (AR)')}}</th>
+                            <th>{{__('Food Services')}}</th>
+                            <th>{{__('Traffic Plate No')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
@@ -159,16 +171,17 @@
                 <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (EN)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_en"
-                                id="l_company_name_en" autocomplete="off" placeholder="company name">
+                                id="l_company_name_en" autocomplete="off" placeholder="{{__('Company Name (EN)')}}">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (AR)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
-                                id="l_company_name_ar" dir="rtl" autocomplete="off" placeholder="company name - Ar">
+                                id="l_company_name_ar" dir="rtl" autocomplete="off"
+                                placeholder="{{__('Company Name (AR)')}}">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Purchase Receipt No')}} <span
@@ -260,7 +273,7 @@
 
         <div class="d-flex pull-right  kt-margin-t-20 justify-content-md-end justify-content-sm-center">
             <input type="submit" class="col-md-2 btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
-                id="submit_btn" value="submit">
+                id="submit_btn" value="{{__('submit')}}">
         </div>
 
     </div>
@@ -276,7 +289,7 @@
                 </button>
             </div>
             <div class="modal-body d-flex justify-content-between">
-                <h6 class="text--maroon">Are you sure to remove data ?</h6>
+                <h6 class="text--maroon">{{__('Are you sure to remove data')}} ?</h6>
                 <input type="hidden" id="remove_truck_id">
                 <button class="btn btn-sm btn--yellow" onclick="deleteThisTruck()">{{__('Ok')}}</button>
             </div>
@@ -536,13 +549,17 @@
             return hasFile;
         }
 
-        for(var i = 1; i <= $('#truck_document_count').val(); i++)
-        {
-            docRules['truck_doc_issue_date_'+i] = 'required';
-            docRules['truck_doc_exp_date_'+i] = 'required';
-            docMessages['truck_doc_issue_date_'+i] = '';
-            docMessages['truck_doc_exp_date_'+i] = '';
-        }
+        
+        // truckDocRules = {};
+        // truckDocMessages = {};
+
+        // for(var i = 1; i <= $('#truck_document_count').val(); i++)
+        // {
+        //     docRules['truck_doc_issue_date_'+i] = 'required';
+        //     docRules['truck_doc_exp_date_'+i] = 'required';
+        //     docMessages['truck_doc_issue_date_'+i] = '';
+        //     docMessages['truck_doc_exp_date_'+i] = '';
+        // }
         
         function go_back_truck_list()
         {
@@ -566,9 +583,9 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr class="text-center"><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td>'+ moment(result[s].registration_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY')+'</td><td>'+ moment(result[s].registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="editThisTruck('+result[s].event_truck_id+', '+k+')">Edit</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
+                           $('#food_truck_list').append('<tr class="text-center"><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].food_type+'</td><td>'+ result[s].plate_number+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="editThisTruck('+result[s].event_truck_id+', '+k+')">Edit</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
-                           if(result.length > 1){
+                           if(result[s].paid == 0){
                                $('#append_'+s+'').append('<a class="btn btn-secondary" data-target="#removeModal" data-toggle="modal">Remove</a>');
                                $('#remove_truck_id').val(result[s].event_truck_id);
                            }
@@ -593,7 +610,7 @@
                     {
                         editTruck();
                         $('#removeModal').modal('hide');
-                        $('#disp_mess').html('<h5 class="text-danger py-2">Truck Details Deleted successfully</h5>');
+                        $('#disp_mess').html('<h5 class="text-danger py-2">Food Truck Details Deleted successfully</h5>');
                         setTimeout(function(){ $('#disp_mess').html('');}, 2000)
                     }
                 }
@@ -672,7 +689,7 @@
                                 editTruck();
                                 $('#edit_one_food_truck').modal('hide');
                                 $('#edit_food_truck').modal('show');
-                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details Added successfully</h5>');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
                         }
@@ -712,7 +729,7 @@
                                 editTruck();
                                 $('#edit_food_truck').modal('show');
                                 $('#edit_one_food_truck').modal('hide');
-                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details updated successfully</h5>');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
                         }
@@ -789,7 +806,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);
@@ -971,7 +988,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);

@@ -3,18 +3,18 @@
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border">
     <div class="kt-portlet__head kt-portlet__head--sm">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('ARTIST PERMIT DETAILS') }}</h3>
+            <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Artist Permit') }}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
-            <a href="{{ route('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate kt-font-transform-u">
-                <i class="la la-arrow-left"></i>{{ __('BACK TO PERMIT LIST') }}
+            <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate kt-font-transform-u">
+                <i class="la la-arrow-left"></i>{{ __('BACK') }}
             </a>
             <div class="dropdown dropdown-inline">
                 <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="flaticon-more"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                    <a class="dropdown-item kt-font-trasnform-u" href="#">{{ __('Company Details') }}</a>
+                    <a class="dropdown-item kt-font-trasnform-u" href="#">{{ __('Establishment Details') }}</a>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_2_tab_content" role="tab" aria-selected="false">
-                       {{ __('CHECKED & APPROVAL HISTORY') }}
+                       {{ __('CHECKED HISTORY') }}
                     </a>
                 </li>
                 <li class="nav-item">
@@ -80,7 +80,7 @@
                                     <div class="card-header" id="headingThree5">
                                          <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse"
                                                     data-target="#collapseThree5" aria-expanded="true" aria-controls="collapseThree5">
-                                                <h6 class="kt-font-dark kt-font-transform-u">{{ __('Checked & Approval History') }}</h6>
+                                                <h6 class="kt-font-dark kt-font-transform-u">{{ __('CHECKED HISTORY') }}</h6>
                                          </div>
                                     </div>
                                     <div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
@@ -107,11 +107,16 @@
                                                                 </div>
                                                                 <div class="kt-user-card-v2__details">
                                                                     <span class="kt-user-card-v2__name">{{ ucwords($comment->user->NameEn) }}</span>
-                                                                    <a href="#" class="kt-user-card-v2__email kt-link">{{ ucfirst($comment->role->NameEn) }}</a>
+                                                                    <a href="#" class="kt-user-card-v2__email kt-link">{{ $comment->role_id != 6 ? ucfirst($comment->role->NameEn) : (Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar) }}</a>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>{{ ucfirst($comment->comment) }}</td>
+                                                        <td>
+                                                            {{ ucfirst($comment->comment) }}
+                                                            @if($comment->exempt_payment)
+                                                              <br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>
+                                                            @endif
+                                                        </td>
                                                         <td>{{ $comment->created_at->format('d-M-Y') }}</td>
                                                         <td>{{ ucfirst($comment->action) }}</td>
                                                     </tr>
@@ -129,7 +134,7 @@
                                  <tr>
                                         <th>{{ __('APPLIED DATE') }}</th>
                                         <th>{{ __('ISSUED DATE') }}</th>
-                                        <th>{{ __('EXPIRED DATE') }}</th>
+                                        <th>{{ __('EXPIRY DATE') }}</th>
                                         <th>{{ __('NO. OF ARTIST') }}</th>
                                         <th>{{ __('REQUEST TYPE') }}</th>
                                         <th>{{ __('PERMIT STATUS') }}</th>
@@ -200,7 +205,7 @@
              {
                 render: function (type, data, full, meta) {
                    var url = '{{ url('/permit/artist') }}/' + full.artist_id;
-                   return '<a class="underlined kt-font-dark kt-font-bold" href="' + url + '">' + full.fullname + '</a>';
+                   return '<a class="underlined kt-font-dark kt-font-bold" href="' + full.artist_link + '">' + full.fullname + '</a>';
                 }
              },
              {

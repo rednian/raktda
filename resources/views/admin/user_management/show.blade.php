@@ -11,10 +11,10 @@
    <section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
       <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
          <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Employee Information') }}</h3>
+            <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ is_null($user->government_id) ? __('Employee Information') : __('User Information') }}</h3>
          </div>
          <div class="kt-portlet__head-toolbar">
-          <a href="{{ URL::signedRoute('user_management.index') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u">
+          <a href="{{ URL::signedRoute('user_management.index') . ( is_null($user->government_id) ? '#employee_management' : '#government_management' ) }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u">
              <i class="la la-arrow-left"></i>
              {{ __('BACK TO LIST') }}
           </a>
@@ -25,6 +25,7 @@
             <li class="nav-item">
                <a class="nav-link active" data-toggle="tab" href="#personal" role="tab">{{ __('Personal Details') }}</a>
             </li>
+            @if(is_null($user->government_id))
             <li class="nav-item">
                <a class="nav-link" data-toggle="tab" href="#work_schedule" role="tab">{{ __('Weekly Work Schedule') }}</a>
             </li>
@@ -34,6 +35,7 @@
             <li class="nav-item">
                <a class="nav-link" data-toggle="tab" href="#appointments" role="tab">{{ __('Appointments') }}</a>
             </li>
+            @endif
          </ul>
          <div class="tab-content">
             <div class="tab-pane active" id="personal" role="tabpanel">
@@ -72,20 +74,27 @@
                                       <label for="example-search-input" class="kt-font-dark">{{ __('Name (AR)') }}
                                         <span class="text-danger">*</span>
                                       </label>
-                                      <input value="{{ $user->NameAr }}" type="text" name="NameAr" required class="form-control form-control-sm">
+                                      <input dir="rtl" value="{{ $user->NameAr }}" type="text" name="NameAr" required class="form-control form-control-sm">
                                   </div>
                               </div>
                           </section>
 
                           <section class="row kt-margin-t-10">
+                              @if(!is_null($user->government_id))
                               <div class="col-sm-6">
                                   <div class="form-group form-group-sm">
                                       <label for="example-search-input" class="kt-font-dark">{{ __('Department') }}
                                           <span class="text-danger">*</span>
                                       </label>
-                                      <input value="{{ $user->department }}" type="text" name="department" class="form-control form-control-sm">
+                                      <select required name="government_id" class="form-control form-control-sm">
+                                        <option value=""></option>
+                                        @foreach(App\Government::orderBy('government_name_en')->get() as $dep)
+                                        <option {{ $dep->government_id == $user->government_id ? 'selected' : ''}} value="{{ $dep->government_id }}">{{ Auth::user()->LanguageId == 1 ? $dep->government_name_en : $dep->government_name_ar }}</option>
+                                        @endforeach
+                                      </select>
                                   </div>
                               </div>
+                              @endif
                               <div class="col-sm-6">
                                   <div class="form-group form-group-sm">
                                       <label for="example-search-input" class="kt-font-dark">{{ __('Designation') }}
@@ -140,7 +149,8 @@
                         </div>
                     </section>
                     <section class="row kt-margin-t-10">
-                      <div class="col-sm-6">
+                        @if(is_null($user->government_id))
+                        <div class="col-sm-6">
                           <div class="form-group form-group-sm">
                               <label for="example-search-input" class="kt-font-dark">{{ __('User Role') }}
                                   <span class="text-danger">*</span>
@@ -153,6 +163,10 @@
                               </select>
                           </div>
                         </div>
+                        @else
+                        <input type="hidden" value="6" name="role_id">
+                        @endif
+
                         <div class="col-sm-6">
                             <div class="form-group form-group-sm">
                                 <label for="example-search-input" class="kt-font-dark">{{ __('Username') }}

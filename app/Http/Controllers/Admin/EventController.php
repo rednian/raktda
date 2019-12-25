@@ -3,7 +3,7 @@
 
 	use App\Notifications\EventNotification;
 	use DB;
-	use niklasravnsborg\LaravelPdf\Pdf;
+	use PDF;
 	use Auth;
 	use App\User;
 	use MaddHatter\LaravelFullcalendar\Calendar;
@@ -24,9 +24,43 @@
 	use Yajra\DataTables\Facades\DataTables;
 	use App\ScheduleTypeDayTime;
 	use App\EmployeeCustomSchedule;
+	use Illuminate\Support\Facades\URL;
 
 	class EventController extends Controller
 	{
+		public function __construct(){
+			$this->middleware('signed')->except([
+	            'cancel',
+				'showWeb',
+				'showAll',
+				'calendar',
+				'submit',
+				'updateLock',
+				'download',
+				'uploadedRequirement',
+				'addRequirementDatatable',
+				'artistDatatable',
+				'truckDatatable',
+				'truckRequirementDatatable',
+				'liquorRequirementDatatable',
+				'applicationDatatable',
+				'imageDatatable',
+				'commentDatatable',
+				'saveEventComment',
+				'dataTable',
+				'addAppointment',
+				'checkTimeAvailability',
+				'roundTime',
+				'saveAppointment',
+				'countTodayAppointment',
+				'resetTimeSlot',
+				'isTimeNotAvailable',
+				'SplitTime',
+				'availableInspector',
+				'isInspectorWorking',
+	        ]);
+		}
+	    
 		public function index(Request $request)
 		{
 			$event = Event::whereDate('expired_date', '<', Carbon::now())->where('status', 'active')->update(['status'=>'expired']);
@@ -35,13 +69,13 @@
 					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
 				})->count();
 
-			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
+			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
 
 			return view($view, [
 				'page_title' => 'Event Permit',
 				'types'=> EventType::all(),
 				'new_request'=>Event::where('status', 'new')->count(),
-				'pending_request'=>Event::where('status', 'amended')->count(),
+				'pending_request'=>Event::whereIn('status', ['amended', 'checked'])->count(),
 				'active_request'=> $event,
 				'cancelled_permit'=> Event::lastMonth(['cancelled'])->count(),
 				'rejected_permit'=> Event::lastMonth(['rejected'])->count(),
@@ -51,30 +85,43 @@
 			]);
 		}
 
+
 		public function cancel(Request $request, Event $event)
 		{
-
 			if ($event) {
 			try {
-				$event->update(['cancel_reason'=> $request->comment ,'status'=>'cancelled']);
-				$event->comment()->create(array_merge($request->all(), ['user_id'=>$request->user()->user_id]));
+				$request['role_id'] = $request->user()->roles()->first()->role_id;
+				$request['user_id'] = $request->user()->user_id;
+
+				$event->update([
+					'cancel_reason'=> $request->comment ,
+					'status'=>'cancelled', 
+					'cancel_date'=>Carbon::now(), 
+					'cancelled_by'=>$request->user_id, 
+					'role_id'=>$request->role_id
+				]);
+				$request['action'] = $request->status;
+				$event->comment()->create($request->all());
+
 				if($event->permit()->count() > 0){
 					$event->permit->update(['permit_status'=>'cancelled', 'cancel_reason'=> $request->comment]);
-					$event->permit->comment()->create(array_merge($request->all(), ['user_id'=>$request->user()->user_id]));
+					$event->permit->comment()->create($request->all());
 				}
-				$result = ['success', ucfirst($event->name_en).' has been cancelled Successfully ', 'Success'];
+				$result = ['success',' ', 'Success'];
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
 			}
-			  return response()->json(['message' => $result]);
+			  return redirect()->back()->with('message',$result);
 			}
 		}
+
+
 
 		public function showWeb(Request $request, Event $event)
 		{
 			try {
 				$event->update(['is_display_web'=>$request->is_display_web]);
-				$result = ['success', ucfirst($event->name_en).' has will display in the website calendar ', 'Success'];
+				$result = ['success','', 'Success'];
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
 			}
@@ -87,12 +134,13 @@
 		{
 			try {
 				$event->update(['is_display_all'=>$request->is_display_all]);
-				$result = ['success', ucfirst($event->name_en).' has will display in the client\'s calendar ', 'Success'];
+				$result = ['success', '', 'Success'];
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
 			}
 			 return response()->json(['message' => $result]);
 		}
+
 
 		public function calendar(Request $request)
 		{
@@ -103,7 +151,7 @@
 					'start'=> date('Y-m-d', strtotime($event->issued_date)).' '.date('H:m', strtotime($event->time_start)),
 					'end'=> date('Y-m-d', strtotime($event->expired_date)).' '.date('H:m', strtotime( $event->time_end)),
 					'id'=>$event->event_id,
-					'url'=> route('admin.event.show', $event->event_id).'?tab=event-calendar',
+					'url'=> URL::signedRoute('admin.event.show', $event->event_id),
 					'description'=> 'Venue : '.$venue = $request->user()->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
 					'backgroundColor'=> $event->type->color,
 					'textColor' => '#fff !important',
@@ -111,11 +159,11 @@
 			});
 			return response()->json($events);
 		}
+		
 
 
 		public function submit(Request $request, Event $event)
 		{
-			// dd($request->all());	
 			try {
 				DB::beginTransaction();
 
@@ -178,7 +226,7 @@
 						break;
 					case 'need approval':
 
-					dd($request->all());
+					// dd($request->all());
 
 						// $user = User::availableInspector($event->issued_date)->get();
 						// $emp = EmployeeWorkSchedule::getSchedule()->get();
@@ -197,12 +245,27 @@
 						if($request->has('approver')){
 							if(!$request->has('inspection')){
 								foreach ($request->approver as $role_id) {
-									$event->comment()->create([
-										'action' => 'pending',
-										'role_id' => $role_id,
-										'user_type' => 'admin',
-										'type' => 0
-									]);
+									
+									if($role_id == 6){
+										if($request->has('department')){
+											foreach ($request->department as $dep) {
+												$event->comment()->create([
+													'action' => 'pending',
+													'role_id' => $role_id,
+													'user_type' => 'admin',
+													'type' => 0,
+													'government_id' => $dep
+												]);
+											}
+										}
+									}else{
+										$event->comment()->create([
+											'action' => 'pending',
+											'role_id' => $role_id,
+											'user_type' => 'admin',
+											'type' => 0
+										]);
+									}
 								}
 							}else{
 								if(in_array(5, $request->approver)){
@@ -216,13 +279,13 @@
 							}
 						}
 
-						if($request->has('inspection')){
-							//SAVE APPOINTMENT
-							$this->addAppointment([
-								'id' => $event->event_id,
-								'type' => 'event'
-							]);
-						}
+						// if($request->has('inspection')){
+						// 	//SAVE APPOINTMENT
+						// 	$this->addAppointment([
+						// 		'id' => $event->event_id,
+						// 		'type' => 'event'
+						// 	]);
+						// }
 
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
@@ -266,7 +329,7 @@
 				DB::rollBack();
 			}
 
-			return redirect('/event#new-request')->with('message',$result);
+			return redirect(URL::signedRoute('admin.event.index') . '#new-request')->with('message', $result);
 		}
 
 		public function updateLock(Request $request, Event $event)
@@ -289,11 +352,36 @@
 			$data['diff'] = $diff;
 			$data['days'] = $numberTransformer->toWords($diff);
 
+			if($event->liquor()->exists()){
+			    $data['liquor'] = $event->liquor;
+			}
+			if($event->truck()->exists()){
+			    $data['truck'] = $event->truck()->get();
+			}
+			
 			$pdf = PDF::loadView('permits.event.print', $data, [], [
 			    'title' => 'Event Permit',
 			    'default_font_size' => 10
 			]);
-			return $pdf->stream('Event-Permit.pdf');
+			
+			if($event->truck()->exists()){
+				$pdf->getMpdf()->AddPage();
+				$pdf->getMpdf()->WriteHTML(\View::make('permits.event.truckprint')->with($data)->render());
+			}
+
+			if($event->liquor()->exists()){
+				if($event->liquor->provided != null || $event->liquor->provided != 1)
+				{
+				    $pdf->getMpdf()->AddPage();
+				    $pdf->getMpdf()->WriteHTML(\View::make('permits.event.liquorprint')->with($data)->render());
+				}
+			}
+
+			// $pdf = PDF::loadView('permits.event.print', $data, [], [
+			//     'title' => 'Event Permit',
+			//     'default_font_size' => 10
+			// ]);
+			 return $pdf->stream('Event-Permit.pdf');
 		} 
 
 
@@ -392,17 +480,60 @@
 			->make(true);
 		}
 
+
+		public function artistDatatable(Request $request, Event $event)
+		{
+		
+			if (!is_null($event->permit)) {
+				$permit = $event->permit->artistPermit()->get();
+			}
+			else{
+				$permit = [];
+			}
+
+
+
+			return DataTables::of($permit)
+			->addColumn('name', function($artist) use ($request){
+				$fname = $request->user()->LanguageId == 1 ? ucfirst($artist->firstname_en) : $artist->firstname_ar; 
+				$lastname = $request->user()->LanguageId == 1 ? ucfirst($artist->lastname_en) : $artist->lastname_ar;
+				return profileName($fname.' '.$lastname, $artist->artist->artist_status); 
+			})
+			->addColumn('profession', function($artist) use ($request){
+				return $request->user()->LanguageId == 1 ? ucfirst($artist->profession->name_en) : $artist->profession->name_ar;
+			})
+			->addColumn('person_code', function($artist){
+				return $artist->artist->person_code;
+			})
+			->editColumn('birthdate', function($artist){
+				return $artist->birthdate->format('d-F-Y');
+			})
+			->addColumn('age', function($artist){
+				return $artist->birthdate->age;
+			})
+			->editColumn('mobile_number', function($artist){
+				return $artist->mobile_number;
+			})
+			->rawColumns(['name'])
+			->make(true);
+
+		}
+
+
 		public function truckDatatable(Request $request, Event $event)
 		{
 			return DataTables::of($event->truck()->get())
 			->addColumn('name', function($truck) use ($request){
-				return $request->user()->LanguageId == 1 ?  $truck->company_name_en : $truck->company_name_ar;
+				return $request->user()->LanguageId == 1 ?  ucfirst($truck->company_name_en) : $truck->company_name_ar;
 			})
 			->addColumn('type', function($truck) use ($request){
 				return $request->user()->LanguageId == 1 ? $truck->food_type : $truck->food_type;
 			})
-			->editColumn('plate_number', function ($truck){
-				return $truck->plate_number;
+			->addColumn('issued_date', function($truck){
+				return date('d-F-Y', strtotime($truck->registration_issued_date));
+			})
+			->addColumn('expired_date', function($truck){
+				return date('d-F-Y', strtotime($truck->registration_expired_date));
 			})
 			->addColumn('action', function($truck){
             return '<button type="button" class="btn btn-sm btn-secondary btn-document kt-font-transform-u">Documents <span class="kt-badge kt-badge--outline kt-badge--info">'.$truck->upload()->count().'</span></button>';
@@ -491,9 +622,13 @@
 
 		public function imageDatatable(Request $request, Event $event)
 		{
-			return DataTables::of($even->otherUpload()->get())
+			return DataTables::of($event->otherUpload()->get())
 			->editColumn('path', function($image){
-				return '';
+
+				$html = '<a href="'.asset('/storage/'.$image->path).'" data-type="image" data-type="ajax" data-fancybox>';
+				$html .= '<img  src="'.asset('storage/'.$image->thumbnail).'" class="img img-responsive img-thumbnail center-block" style="max-height: 260px;">';
+				$html .= '</a>';
+				return $html;
 			})
 			->editColumn('size', function($image){
 				return $image->size;
@@ -501,32 +636,79 @@
 			->editColumn('description', function($image){
 				return $image->size;
 			})
+			->rawColumns(['path'])
 			->make(true);
 		}
 
 		public function commentDatatable(Request $request, Event $event)
 		{
 			if ($request->ajax()) {
-				$comments = $event->comment()->latest();
+				$comments = $event->comment()->where('action', '!=' ,'pending')->latest();
 
 				return DataTables::of($comments)
-				->addColumn('name', function($comment){
-					$role = $comment->user_type == 'admin' ? $comment->user->roles()->first()->NameEn : 'Client';
-					return defaults($comment->user->NameEn, $role);
+				->addColumn('name', function($comment) use($request){
+					$role_name = $comment->role->NameEn;
+					if(!is_null($comment->government_id)){
+						$role_name = $request->LanguageId == 1 ? $comment->government->government_name_en : $comment->government->government_name_ar;
+					}
+
+					if(is_null($comment->user_id)){
+						return profileName($role_name, '');
+					}
+
+					return profileName($comment->user->NameEn, $role_name);
 				})
 				->editColumn('comment', function($comment){
 					return ucfirst($comment->comment);
 				})
 				->addColumn('date', function($comment){
-					// dd($comment->created_at->);
-					return $comment->created_at->format('d-M-Y h:i A');
+					return '<span class="text-underline" title="'.$comment->created_at->format('l h:i A |d-F-Y').'">'.humanDate($comment->created_at).'</span>';
+					return ;
 				})
 				->addColumn('action_taken', function($comment){
 					return ucwords($comment->action);
 				})
-				->rawColumns(['name'])
+				->rawColumns(['name', 'date'])
 				->make(true);
 			}
+		}
+
+		public function saveEventComment(Event $event, Request $request){
+			DB::beginTransaction();
+			try {
+				$comment = $event->comment()->where([
+		            'action' => 'pending',
+		            'role_id' => $request->user()->roles()->first()->role_id,
+		        ])->latest()->first();
+
+		        if(!is_null($request->user()->government_id)){
+		            $comment = $event->comment()->where([
+		                'action' => 'pending',
+		                'role_id' => $request->user()->roles()->first()->role_id,
+		                'government_id' => $request->user()->government_id
+		            ])->latest()->first();
+		        }
+				
+				$comment->update([
+          			'action' => $request->action,
+          			'comment' => $request->comment,
+          			'comment_ar' => $request->comment_ar,
+          			'user_id' => $request->user()->user_id
+          		]);
+
+          		//CHECK IF I AM THE LAST APPROVER
+                if($event->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
+                    $event->update(['status'=>'checked']);
+                }
+
+          		$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
+          		DB::commit();
+
+			} catch (\Exception $e) {
+				$result = ['danger', $e->getMessage(), 'Error'];
+				DB::rollBack();
+			}
+			return redirect(URL::signedRoute('admin.event.index'))->with('message',$result);
 		}
 
 		public function dataTable(Request $request)
@@ -542,8 +724,17 @@
 				})
 				->when($request->approval, function($q) use($request){
 					$q->whereHas('comment', function($q1) use($request){
-			          	$q1->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id);
+			          	$q1->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->when($request->gov, function($q) use($request){
+			          		$q->where('government_id', $request->user()->government_id);
+			          	});
 			        });
+				})
+				->when($request->checked, function($q) use($request){
+					$q->whereHas('comment', function($q) use($request){
+						$q->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->whereNotNull('user_id')->when($request->gov, function($q) use($request){
+			          		$q->where('government_id', $request->user()->government_id);
+			          	});;
+					});
 				})
 				->whereNotIn('status', ['draft'])
 				->orderBy('updated_at');
@@ -604,8 +795,8 @@
 					$html  .= '	</button>';
 					if ($event->status != 'cancelled' || $event->status != 'rejected') {
 						$html  .= '		<div class="dropdown-menu dropdown-menu-right">';
-						$html  .= '	<a class="dropdown-item" href="'.route('admin.event.show', $event->event_id).'"><i class="la la-calendar-check-o"></i>Event Details</a>';
-						$html  .= '				<a class="dropdown-item" target="_blank" href="'.route('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
+						$html  .= '	<a class="dropdown-item" href="'. URL::signedRoute('admin.event.show', $event->event_id) . '"><i class="la la-calendar-check-o"></i>Event Details</a>';
+						$html  .= '				<a class="dropdown-item" target="_blank" href="'. URL::signedRoute('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
 						$html  .= '				<div class="dropdown-divider"></div>';
 						$html  .= '					<a href="javascript:void(0)" class="dropdown-item cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
 						$html  .= '					</div>';
@@ -615,14 +806,43 @@
 
 					return $html;
 
-					 })
-					->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration'])
-					 ->make(true);
-					$table = $table->getData(true);
-					$table['new_count'] = Event::where('status', 'new')->count();
-					$table['pending_count'] = Event::where('status', 'amended')->count();
-					$table['cancelled_count'] = Event::where('status', 'cancelled')->count();
-					return response()->json($table);
+				 })
+				->addColumn('application_link', function($event){
+					return URL::signedRoute('admin.event.application', $event->event_id);
+				})
+				->addColumn('show_link', function($event){
+					return URL::signedRoute('admin.event.show', $event->event_id);
+				})
+				->addColumn('checked_date', function($event) use($user){
+					if($event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()){
+						return $event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()->updated_at;
+					}
+					return '';
+				})
+				->addColumn('checked_by', function($event) use($user){
+					if($event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()){
+						if(!is_null($event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()->user)){
+							return $event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()->user->NameEn;
+						}
+					}
+					return '';
+				})
+				->addColumn('checked_status', function($event) use($user){
+					if($event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()){
+						if(!is_null($event->comment)){
+							$status = $event->comment()->where('action', '!=', 'pending')->where('role_id', $user->roles()->first()->role_id)->latest()->first()->action;
+							return permitStatus($status);
+						}
+					}
+					return '';
+				})
+				->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration', 'checked_status'])
+				 ->make(true);
+				$table = $table->getData(true);
+				$table['new_count'] = Event::where('status', 'new')->count();
+				$table['pending_count'] = Event::whereIn('status', ['amended', 'checked'])->count();
+				$table['cancelled_count'] = Event::where('status', 'cancelled')->count();
+				return response()->json($table);
 			}
 		}
 

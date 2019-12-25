@@ -11,7 +11,7 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
                 <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title"> Payment Gateway</h3>
+                    <h3 class="kt-portlet__head-title"> {{__('Payment Gateway')}}</h3>
                 </div>
 
                 <div class="kt-portlet__head-toolbar">
@@ -19,7 +19,7 @@
                         <a href="{{url('company/artist/make_payment').'/'.$permit_details->permit_id}}" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                             ">
                             <i class="la la-arrow-left"></i>
-                            Back
+                            {{__('Back')}}
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
@@ -40,12 +40,13 @@
                         <span class="kt-font-dark">{{__('To Date')}}:</span>&emsp;
                         <span
                             class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                        <span class="kt-font-dark">{{__('Location')}}:</span>&emsp;
-                        <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+                        <span class="kt-font-dark">{{__('Work Location')}}:</span>&emsp;
+                        <span
+                            class="kt-font-info">{{getlangId() == 1 ? $permit_details->work_location : $permit_details->work_location_ar}}</span>&emsp;&emsp;
                         <span class="kt-font-dark">{{__('Ref No.')}}:</span>&emsp;
                         <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
                         @if($permit_details->event)
-                        <span>Connected to Event :</span>&emsp;
+                        <span>{{__('Connected to Event')}} :</span>&emsp;
                         <span
                             class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>&emsp;&emsp;
                         @endif
@@ -79,7 +80,7 @@
                         <tbody>
 
                             @foreach($permit_details->artistPermit as $ap)
-                            @if($ap->artist_permit_status == 'approved')
+                            @if($ap->artist_permit_status == 'approved' && $ap->is_paid == 0)
                             <tr>
                                 <td>{{getLangId() == 1 ? $ap['firstname_en'] .' '.$ap['lastname_en'] : $ap['lastname_ar'] .' '. $ap['firstname_ar']}}
                                 </td>
@@ -87,7 +88,8 @@
                                     {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
                                 </td>
                                 @php
-                                $artist_fee = $ap->profession['amount'] * $noofdays;
+                                $noofmonths = ceil($noofdays ? $noofdays : 1 / 30) ;
+                                $artist_fee = $ap->profession['amount'] * $noofmonths;
                                 $artist_vat = $artist_fee * 0.05;
                                 $artist_total = $artist_fee + $artist_vat;
                                 $artist_total_fee += $artist_fee;
@@ -106,7 +108,32 @@
                             </tr>
                             @endif
                             @endforeach
+                            {{-- @if($permit_details->request_type == 'amend')
+                            <tr>
+                                <td colspan="2">{{__('Amendment Fee')}}
+                            </td>
+                            @php
+                            $amend_fee = getSettings()->artist_amendment_fee ;
+                            $artist_total += $amend_fee;
+                            $artist_amend_vat = $amend_fee * 0.05;
+                            $artist_vat_total += $artist_vat;
+                            $artist_amend_total += $amend_fee + $artist_vat_total;
+                            $artist_g_total += $artist_amend_total;
+                            @endphp
+                            <td class="text-right">
+                                {{number_format($amend_fee,2)}}
+                            </td>
+                            <td class="text-right">
+                                {{number_format($artist_amend_vat,2)}}
+                            </td>
+                            <td class="text-right">
+                                {{number_format($artist_amend_total, 2)}}
+                            </td>
+                            </tr>
+                            @endif --}}
                         </tbody>
+
+
                         <tfoot>
                             <tr>
                                 <td colspan="2" class="kt-font-bold">
@@ -130,15 +157,16 @@
                 <input type="hidden" id="artist_total_fee" value="{{$artist_total_fee}}">
                 <input type="hidden" id="artist_vat_total" value="{{$artist_vat_total}}">
                 <input type="hidden" id="artist_g_total" value="{{$artist_g_total}}">
-
                 @php
                 $event_fee_total = 0;
                 $event_vat_total = 0;
                 $event_grand_total = 0;
+                $liquor_fee = 0 ;
+                $truck_fee = 0;
                 $event = $permit_details->event;
                 @endphp
 
-                @if($event && $event->paid != 1)
+                @if($event && $event->paid != 1 && $permit_details->request_type != 'amend')
                 <div class="table-responsive" id="event_details_table" style="display:none;">
                     <table class="table table-borderless table-hover border table-striped">
                         <thead>
@@ -178,17 +206,32 @@
                             </tr>
                             @if($event->is_truck == 1)
                             <tr>
-                                <td colspan="2">{{__('Truck Fee')}} x <b>{{count($event->truck)}}</b> </td>
                                 @php
                                 $per_truck_fee = getSettings()->food_truck_fee;
-                                $no_of_trucks = count($event->truck);
-                                $truck_fee = $noofdays * $per_truck_fee * $no_of_trucks;
+                                $no_of_trucks = count($event->truck->where('paid', 0));
+                                $truck_fee += $noofdays * $per_truck_fee * $no_of_trucks;
                                 $event_fee_total += $truck_fee;
                                 $event_grand_total += $truck_fee;
                                 @endphp
+                                <td colspan="2">{{__('Truck Fee')}} x <b>{{$no_of_trucks}}</b> </td>
                                 <td class="text-right">{{number_format($truck_fee, 2)}}</td>
                                 <td class="text-right">0</td>
                                 <td class="text-right">{{number_format($truck_fee, 2)}}</td>
+                            </tr>
+                            @endif
+                            @if($event->is_liquor == 1 && isset($event->liquor) &&
+                            $event->liquor->provided == 0)
+                            <tr>
+                                <td colspan="2">{{__('Liquor')}} </td>
+                                @php
+                                $per_liquor_fee = getSettings()->liquor_fee;
+                                $liquor_fee += $noofdays * $per_liquor_fee;
+                                $event_fee_total += $liquor_fee;
+                                $event_grand_total += $liquor_fee;
+                                @endphp
+                                <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
+                                <td class="text-right">0</td>
+                                <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
                             </tr>
                             @endif
                         </tbody>
@@ -244,6 +287,11 @@
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
                         id="pay_btn">{{__('PAY')}}</button>
+
+                    {{-- <a href="{{route('artist.gateway', ['id' => $permit_details->permit_id ])}}"></a> --}}
+
+                    {{-- <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
+                        onclick="Checkout.showLightbox()">{{__('PAY')}}</button> --}}
                 </div>
 
             </div>
@@ -256,6 +304,7 @@
 @endsection
 
 @section('script')
+
 <script>
     $(document).ready(function(){
         $('#event_details_table').hide();
@@ -271,64 +320,65 @@
     });
 
 
-    function check_permit(){
-        var ischecked = $('#isEventPay').prop('checked');
-        var artistTotalFee = $('#artist_total_fee').val();
-        var artistVatTotal = $('#artist_vat_total').val();
-        var artistGTotal = $('#artist_g_total').val();
-        var eventFeeTotal = $('#event_fee_total').val();
-        var eventVatTotal = $('#event_vat_total').val();
-        var eventGrandTotal = $('#event_grand_total').val();
-        var totalFee = parseInt(artistTotalFee) + parseInt(eventFeeTotal);
-        var totalVat = parseInt(artistVatTotal) + parseInt(eventVatTotal);
-        var total = parseInt(artistGTotal) + parseInt(eventGrandTotal);
-        if(ischecked)
-        {
-            $('#event_details_table').show();
-            $('#total_amt').html(totalFee.toFixed(2));
-            $('#total_vat').html(totalVat.toFixed(2));
-            $('#grand_total').html(total.toFixed(2));
-            $('#amount').val(totalFee);
-            $('#vat').val(totalVat);
-            $('#total').val(total);
-        }else{
-            $('#event_details_table').hide();
-            $('#total_amt').html(parseInt(artistTotalFee).toFixed(2));
-            $('#total_vat').html(parseInt(artistVatTotal).toFixed(2));
-            $('#grand_total').html(parseInt(artistGTotal).toFixed(2));
-            $('#amount').val(artistTotalFee);
-            $('#vat').val(artistVatTotal);
-            $('#total').val(artistGTotal);
-        }
+function check_permit(){
+    var ischecked = $('#isEventPay').prop('checked');
+    var artistTotalFee = $('#artist_total_fee').val();
+    var artistVatTotal = $('#artist_vat_total').val();
+    var artistGTotal = $('#artist_g_total').val();
+    var eventFeeTotal = $('#event_fee_total').val();
+    var eventVatTotal = $('#event_vat_total').val();
+    var eventGrandTotal = $('#event_grand_total').val();
+    var totalFee = parseInt(artistTotalFee) + parseInt(eventFeeTotal);
+    var totalVat = parseInt(artistVatTotal) + parseInt(eventVatTotal);
+    var total = parseInt(artistGTotal) + parseInt(eventGrandTotal);
+if(ischecked)
+{
+$('#event_details_table').show();
+$('#total_amt').html(totalFee.toFixed(2));
+$('#total_vat').html(totalVat.toFixed(2));
+$('#grand_total').html(total.toFixed(2));
+$('#amount').val(totalFee);
+$('#vat').val(totalVat);
+$('#total').val(total);
+}else{
+$('#event_details_table').hide();
+$('#total_amt').html(parseInt(artistTotalFee).toFixed(2));
+$('#total_vat').html(parseInt(artistVatTotal).toFixed(2));
+$('#grand_total').html(parseInt(artistGTotal).toFixed(2));
+$('#amount').val(artistTotalFee);
+$('#vat').val(artistVatTotal);
+$('#total').val(artistGTotal);
+}
+}
+
+$('#pay_btn').click(function(){
+    var paidEventFee = 0;
+    if($('#isEventPay').prop("checked")){
+        paidEventFee = 1;
     }
+    $.ajax({
+        url: "{{route('company.payment')}}",
+        type: "POST",
+        data: {
+        permit_id:$('#permit_id').val(),
+        amount: $('#amount').val(),
+        vat: $('#vat').val(),
+        total: $('#total').val(),
+        noofdays: $('#noofdays').val(),
+        paidEventFee: paidEventFee
+        },
+        success: function (result) {
+        var toUrl = "{{route('company.happiness_center', ':id')}}";
+        toUrl = toUrl.replace(':id', $('#permit_id').val());
+        if(result.message[0]){
+        window.location.href = toUrl;
+        }
+        }
+    });
+});
 
-    $('#pay_btn').click((e) => {
-                var paidEventFee = 0;
-                if($('#isEventPay').prop("checked")){
-                    paidEventFee = 1;
-                }
-                $.ajax({
-                    url: "{{route('company.payment')}}",
-                    type: "POST",
-                    data: {
-                        permit_id:$('#permit_id').val(),
-                        amount: $('#amount').val(),
-                        vat: $('#vat').val(),
-                        total: $('#total').val(),
-                        noofdays: $('#noofdays').val(),
-                        paidEventFee: paidEventFee
-                    },
-                    success: function (result) {
-                        var toUrl = "{{route('company.happiness_center', ':id')}}";
-                        toUrl = toUrl.replace(':id', $('#permit_id').val());
-                        if(result.message[0]){
-                            window.location.href = toUrl;
-                        }
-                    }
-                });
-                
 
-        });
 
 </script>
+
 @endsection

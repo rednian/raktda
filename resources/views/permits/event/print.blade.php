@@ -151,13 +151,13 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">License Data</th>
-                <th colspan="2" scope="col">بيانات الترخيص</th>
+                <th colspan="2" scope="col">تاريخ الرخصة</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>{{$event_details->owner->company->trade_license}}</td>
-                <td class="subhead">رقم الرخصة <br />License Number</td>
+                <td class="subhead">رقم الرخصة<br />License Number</td>
                 <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}</td>
                 <td class="subhead">اسم المؤسسة<br />Name of Establishment</td>
             </tr>
@@ -167,9 +167,8 @@
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3"> {{$event_details->owner_name}}<br />
-                    {{$event_details->owner_name_ar}}</td>
-                <td class="subhead">صاحب الترخيص <br />License owner</td>
+                <td colspan="3"> {{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}</td>
+                <td class="subhead">المالك<br />License owner</td>
             </tr>
         </tbody>
     </table>
@@ -178,7 +177,7 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">Permit Data</th>
-                <th colspan="2" scope="col">بيانات الترخيص</th>
+                <th colspan="2" scope="col">بيانات التصريح</th>
             </tr>
         </thead>
         <tbody>
@@ -188,37 +187,37 @@
                 <td class="subhead">اسم الفعالية<br />Event Name</td>
             </tr>
             <tr>
-                <td colspan="2">{{$event_details->type['name_en']}}</td>
-                <td>{{$event_details->type['name_ar']}}</td>
-                <td class="subhead">نوع تصريح <br />Permit Type</td>
+                <td colspan="2">{{$event_details->type['name_en']}} - {{$event_details->subType['sub_name_en']}}</td>
+                <td>{{$event_details->subType['sub_name_ar']}} - {{$event_details->type['name_ar']}}</td>
+                <td class="subhead">نوع التصريح<br />Permit Type</td>
             </tr>
             <tr>
                 <td colspan="3">{{$event_details->permit_number}}</td>
-                <td class="subhead">رقم التصريح<br />Permit No</td>
+                <td class="subhead">رقم التصريح <br />Permit No</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'days' : 'day'}} </td>
-                <td>انقضاء</td>
-                <td class="subhead">فترة التصريح <br />Permit Period</td>
-            </tr>
+            <td>انقضاء</td>
+            <td class="subhead">فترة التصريح <br />Permit Period</td>
+            </tr> --}}
             <tr>
                 <td colspan="3">{{$event_details->issued_date}}</td>
                 <td class="subhead">تاريخ التصريح<br /> Permit Date</td>
             </tr>
             <tr>
                 <td colspan="3">{{$event_details->expired_date}}</td>
-                <td class="subhead">تاريخ انتهاء الصلاحية <br /> Permit Expiry Date</td>
+                <td class="subhead"> تالايخ انتهاء التصريح <br /> Permit Expiry Date</td>
             </tr>
             <tr>
                 <td colspan="2">{{$event_details->venue_en}}</td>
                 <td>{{$event_details->venue_ar}}</td>
                 <td class="subhead">الموقع <br />Location</td>
             </tr>
-            @if($liquor)
+            @if($event_details->liquor()->exists())
             @if($liquor->provided == 1)
             <tr>
                 <td colspan="3">{{$liquor->liquor_permit_no}}</td>
-                <td class="subhead"> <br />Liquor Permit No</td>
+                <td class="subhead">رقم تصريح الكحوليات<br />Liquor Permit No</td>
             </tr>
             @endif
             @endif
@@ -249,15 +248,14 @@
             <td>{{date('d/m/Y')}}</td>
         </tr>
     </table>
-
     <div id="dept_name">
         <h2>إدارة التراخيص السياحية وضمان الجودة</h2>
         <h3>Department of Tourism Licensing & Quality Assurance</h3>
     </div>
-
     <footer>
         <div>
-            Department of Tourism Licensing & Quality Assurance - RAKTDA - Al Marjan Island - RAK - UAE, PO BOX 29798
+            Department of Tourism Licensing & Quality Assurance - RAKTDA - Al Marjan Island - RAK - UAE, PO BOX
+            29798
         </div>
         <div>
             T +97172338998, F +97172338118

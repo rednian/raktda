@@ -48,6 +48,7 @@
         
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
 						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('Need Approval') }}</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#checked-request" data-target="#checked-request">{{ __('Checked Permits') }}</a></li>
 				 </ul>
           <div class="form-row d-none" style="position: absolute; right: -80px; top: 23px; width: 30%">
             <div class="col-12">
@@ -72,12 +73,9 @@
 									@endempty
 							 @endif --}}
 						</div>
-            
-						
-						
-						
-						
-						
+            <div class="tab-pane show fade" id="checked-request" role="tabpanel">
+                  @include('admin.artist_permit.includes.checked_permit')
+            </div>
 				 </div>
 			</div>
 	 </section>
@@ -91,6 +89,7 @@
   var activePermit = {};
   var archivePermit = {};
   var active_artist_table = {};
+  var checkedPermit;
 
   var hash = window.location.hash;
 
@@ -144,6 +143,8 @@
 
 
     newRequest();
+    // checkedPermit();
+
     setInterval(function(){ newRequest(); pendingRequest();}, 100000);
 
     hash && $('ul.nav a[href="' + hash + '"]').tab('show');
@@ -200,6 +201,9 @@
              d.status = ['need approval', 'checked-inspector', 'checked-manager'];
              d.date = $('#new-applied-date').val()  ? selected_date : null; 
              d.approval = 1;
+             @if(Auth::user()->roles()->first()->role_id == 6)
+             d.gov = 1;
+             @endif
            }
          },
          // order: [[ 3, "desc" ]],
@@ -216,7 +220,7 @@
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
-             location.href = '{{ url('/artist_permit') }}/' + data.permit_id + '/application';
+             location.href = data.application_link;
            });
          },
          initComplete: function(setting, json){
@@ -234,6 +238,87 @@
 
        var search = $.fn.dataTable.util.throttle(function(v){ artistPermit.search(v).draw(); }, 500);
        $('input#search-new-request').keyup(function(){ search($(this).val()); });
+     }
+
+     function checkedPermit() {
+
+       var start = moment().subtract(29, 'days');
+       var end = moment();
+       var selected_date = [];
+
+       $('input#checked-applied-date').daterangepicker({
+         autoUpdateInput: false,
+         buttonClasses: 'btn',
+         applyClass: 'btn-warning btn-sm btn-elevate',
+         cancelClass: 'btn-secondary btn-sm btn-elevate',
+         startDate: start,
+         endDate: end,
+         maxDate: new Date,
+         ranges: {
+           '{{ __('Today') }}': [moment(), moment()],
+           '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+           '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+           '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+           '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+         }
+       }, function (start, end, label) {
+         $('input#checked-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+       }).on('apply.daterangepicker', function(e, d){
+        selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+        checkedPermit.draw();
+       });
+
+
+       checkedPermit = $('table#artist-permit').DataTable({
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ajax: {
+          url: '{{ route('admin.artist_permit.datatable') }}',
+          data: function (d) {
+             // var status = $('select#new-permit-status').val();
+             d.request_type = $('select#checked-request-type').val();
+             d.status = ['need approval', 'checked'];
+             d.checked_date = $('#checked-applied-date').val()  ? selected_date : null; 
+             d.checked = 1;
+             @if(Auth::user()->roles()->first()->role_id == 6)
+             d.gov = 1;
+             @endif
+           }
+         },
+         // order: [[ 3, "desc" ]],
+         columnDefs: [
+           {targets: [0, 2, 4, 5], className: 'no-wrap'},
+         ],
+         columns: [
+           {data: 'reference_number'},
+           {data: 'company_name'},
+           {data: 'artist_number'},
+           {data: 'request_type'},
+           {data: 'applied_date'},
+           {data: 'permit_status'}
+         ],
+         createdRow: function (row, data, index) {
+           $(row).click(function () {
+             location.href = data.show_link;
+           });
+         },
+         initComplete: function(setting, json){
+          $('#new-count').html(json.new_count);
+          $('#pending-count').html(json.pending_count);
+          $('#cancelled-count').html(json.cancelled_count);
+         }
+       });
+
+       //clear fillte button
+       $('#checked-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); checkedPermit.draw();});
+
+       checkedPermit.page.len($('#checked-length-change').val());
+       $('#checked-length-change').change(function(){ checkedPermit.page.len( $(this).val() ).draw(); });
+
+       var search = $.fn.dataTable.util.throttle(function(v){ checkedPermit.search(v).draw(); }, 500);
+       $('input#search-checked-request').keyup(function(){ search($(this).val()); });
      }
 </script>
 @endsection

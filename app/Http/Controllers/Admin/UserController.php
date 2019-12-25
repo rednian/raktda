@@ -52,11 +52,12 @@ class UserController extends Controller
     	return view('admin.user_management.index', ['page_title'=> 'Employee Management']);
     }
 
-    public function create(){
-    	return view('admin.user_management.create', ['page_title'=> 'Add New Employee']);
+    public function create(Request $request){
+    	return view('admin.user_management.create', ['page_title'=> 'Add New Employee', 'type' => $request->t]);
     }
 
     public function store(Request $request){
+        // dd($request->all());
     	DB::beginTransaction();
     	try {
     		$active_sched = ScheduleType::where('is_active', 1)->first();
@@ -84,25 +85,35 @@ class UserController extends Controller
     }
 
     public function datatable(Request $request){
-    	$data = User::whereHas('roles', function($q){
+
+        // dd($request->all());
+
+    	$data = User::when($request->government, function($q){
+            return $q->whereNotNull('government_id');
+        })->when($request->employee, function($q){
+            return $q->whereNull('government_id');
+        })->whereHas('roles', function($q){
     		$q->where('Type', 0);
     	});
 
     	return Datatables::of($data)->addColumn('name', function($user) use($request){
     		return $request->user()->LanguageId == 1 ? $user->NameEn : $user->NameAr;
-    	})->addColumn('department', function($user){
-    		return '';
     	})->addColumn('role', function($user){
     		return ucwords($user->roles()->first()->NameEn);
     	})->editColumn('CreatedAt', function($user){
     		return $user->CreatedAt->format('Y-m-d');
     	})->addColumn('actions', function($user){
-    		return '';
+    		return '<button data-url="' . URL::signedRoute('user_management.details', ['user' => $user->user_id ]) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">Details</button>';
     	})->addColumn('show_url', function($user){
     		return URL::signedRoute('user_management.details', ['user' => $user->user_id ]);
     	})->addColumn('status', function($user){
     		return  $user->IsActive == 1 ? 'Active' : 'Inactive';
-    	})->make(true);
+    	})->addColumn('department', function($user) use($request){
+            if(!is_null($user->government_id)){
+                return $request->user()->language_id == 1 ? $user->governmentDepartment->government_name_en : $user->governmentDepartment->government_name_ar;
+            }
+            return '';
+        })->rawColumns(['actions'])->make(true);
     }
 
     public function showUser(User $user, Request $request){

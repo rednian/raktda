@@ -19,7 +19,7 @@
        <div id="kt_aside_menu"class="kt-aside-menu "data-ktmenu-vertical="1" data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500" >
             
            <ul class="kt-menu__nav ">
-               @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
+               @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
                <li class="kt-menu__item {{ Request::is('dashboard*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.dashboard') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Dashboard') }}</span>
@@ -37,7 +37,7 @@
                </li> --}}
                <li class="kt-menu__item {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.company.index') }}" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">{{ __('Company') }}</span>
+                       <span class="kt-menu__link-text">{{ __('Establishment') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item">
@@ -47,12 +47,12 @@
                </li>
                @endif
                <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('permit*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.artist_permit.index') }}" class="kt-menu__link">
+                   <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="kt-menu__link">
                        <span class="kt-menu__link-text">{{ __('Artist Permit') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item {{ Request::is('event*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.event.index') }}" class="kt-menu__link ">
+                   <a href="{{ URL::signedRoute('admin.event.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Event Permit') }}</span>
                    </a>
                </li>
@@ -65,7 +65,7 @@
                </li>
                @endif
 
-               @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5])->exists())
+               @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
                <li class="kt-menu__item {{ Request::is('artist_reports*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.artist_permit_reports.reports') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Reports') }}</span>

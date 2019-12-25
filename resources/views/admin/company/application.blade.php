@@ -39,7 +39,7 @@
              </div>
              <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
                <div class="card-body">
-                  <div class="row form-group form-group-sm">
+                  {{-- <div class="row form-group form-group-sm">
                     <div class="col-sm-6">
                         <label class="kt-font-dark">{{ __('Establishment Type') }} </label>
                         <div class="input-group input-group-sm">
@@ -55,7 +55,7 @@
                          </div>
                         </div>
                      </div>
-                  </div>
+                  </div> --}}
                   <div class="row form-group form-group-sm">
                      <div class="col-sm-6">
                          <label class="kt-font-dark">{{ __('Establishment Name') }} <span class="text-danger">*</span></label>
@@ -280,7 +280,7 @@
                      <div class="col-sm-6">
                          <label class="kt-font-dark">{{ __('Name') }} </label>
                           <div class="input-group input-group-sm">
-                           <input value="{{ ucfirst($company->contact->name_en) }}" name="event_type" readonly="readonly" type="text"
+                           <input value="{{ ucfirst($company->contact->contact_name_en) }}" name="event_type" readonly="readonly" type="text"
                                         class="form-control">
                            <div class="input-group-append">
                               <span class="input-group-text">
@@ -295,7 +295,7 @@
                      <div class="col-sm-6">
                          <label class="kt-font-dark">{{ __(' Name (AR)') }} </label>
                           <div class="input-group input-group-sm">
-                           <input value="{{ ucfirst($company->contact->name_ar) }}" name="event_type" readonly="readonly" type="text"
+                           <input value="{{ ucfirst($company->contact->contact_name_ar) }}" name="event_type" readonly="readonly" type="text"
                                         class="form-control">
                            <div class="input-group-append">
                               <span class="input-group-text">
@@ -404,12 +404,12 @@
           <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x" role="tablist">
             <li class="nav-item">
               <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_2_3_tab_content" role="tab">
-               {{__('Select Action')}}
+               {{__('SELECT ACTION')}}
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_2_tab_content" role="tab">
-                {{__('Checked History')}}
+                {{__('ACTION HISTORY')}}
                 <span class="kt-badge kt-badge--outline kt-badge--warning">{{ $company->comment()->count() }}</span>
               </a>
             </li>
@@ -446,7 +446,7 @@
                     </div>
                  </div>
                  <div class="form-group form-group-sm">
-                    <button type="submit" class="btn btn-warning kt-font-transform-u btn-sm">Submit</button>
+                    <button type="submit" class="btn btn-maroon kt-font-transform-u btn-sm">Submit</button>
                  </div>
               </form>
             </div>
@@ -536,11 +536,25 @@
             url: '{{ route('admin.company.application.datatable', $company->company_id) }}'
          },
          columns: [
-         {data: 'count'},
+         // {data: 'requirement'},
          {data: 'name'},
          {data: 'issued_date'},
          {data: 'expired_date'}
-         ]
+         ],
+         "order": [[ 0, 'asc' ]],
+           rowGroup: {
+             startRender: function ( rows, group ) { 
+              var row_data = rows.data()[0];
+              return $('<tr/>').append( '<td >'+group+'</td>' )
+                         .append( '<td>'+rows.count()+'</td>' )
+                         .append( '<td>'+row_data.issued_date+'</td>' )
+                         .append( '<td>'+row_data.expired_date+'</td>' )
+                         .append( '<td></td>' )
+                         // .append( '<td>'+row_data.action+'</td>' )
+                         .append( '<tr/>' );
+               },
+            dataSrc: 'requirement'
+         }
       });
    }
 </script>

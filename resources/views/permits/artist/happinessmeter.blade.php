@@ -11,7 +11,7 @@
             <div class="kt-portlet__head kt-portlet__head--lg">
                 <div class="kt-portlet__head-label">
                     <h3 class="kt-portlet__head-title">
-                        Happiness Meter
+                        {{__('Happiness Meter')}}
                     </h3>
                 </div>
 
@@ -27,10 +27,10 @@
                             <form id="happiness_center" autocomplete="off" novalidate>
                                 <div class="d-flex justify-content-around happiness--center">
                                     <input type="hidden" id="sel_value">
-                                    <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 1)">
+                                    <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id,3)">
                                         <!--<a href="/company/artist_permits"> -->
-                                        <!-- <img src="./assets/img/happiness.svg" alt="" id="happy_btn"> -->
-                                        <?php echo file_get_contents('./img/happiness.svg'); ?>
+                                        <!-- <img src="./assets/img/sad.svg" alt="" id="sad_btn"> -->
+                                        <?php echo file_get_contents('./img/sad.svg'); ?>
                                         <!--</a> -->
                                     </div>
                                     <div id="notbad" style="cursor:pointer" onclick="makeSelected(this.id,2)">
@@ -39,18 +39,18 @@
                                         <?php echo file_get_contents('./img/notbad.svg'); ?>
                                         <!--</a> -->
                                     </div>
-                                    <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id,3)">
+                                    <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 1)">
                                         <!--<a href="/company/artist_permits"> -->
-                                        <!-- <img src="./assets/img/sad.svg" alt="" id="sad_btn"> -->
-                                        <?php echo file_get_contents('./img/sad.svg'); ?>
+                                        <!-- <img src="./assets/img/happiness.svg" alt="" id="happy_btn"> -->
+                                        <?php echo file_get_contents('./img/happiness.svg'); ?>
                                         <!--</a> -->
                                     </div>
                                     <input type="hidden" id="permit_id" value={{$id}}>
                                 </div>
                                 <div>
-                                    <label for="" class="kt-margin-t-20 kt-font-dark">Comments :</label>
+                                    <label for="" class="kt-margin-t-20 kt-font-dark">{{__('Comments')}} :</label>
                                     <textarea name="remarks" id="remarks" class="form-control form-control-sm " rows="5"
-                                        placeholder=" Please enter your valueable feedback..."></textarea>
+                                        placeholder="{{__('please enter your valueable comments')}}"></textarea>
                                 </div>
                             </form>
                         </div>
@@ -62,7 +62,7 @@
                 <div class="d-flex justify-content-end">
                     <div class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
                         <i class="la la-check"></i>
-                        Submit
+                        {{__('Submit')}}
                     </div>
                 </div>
             </div>

@@ -15,38 +15,41 @@
                     <div class="alert-icon">
                         <i class="flaticon-questions-circular-button"></i>
                     </div>
-                    <div class="alert-text">If you Add or Update Truck Details Permit will get Amended </div>
+                    <div class="alert-text">{{__('If you Add or Update Food Truck Details Permit will get Amended')}}
+                    </div>
                 </div>
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" autocomplete="off" placeholder="company name">
+                                id="company_name_en" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" autocomplete="off" placeholder="company name - Ar">
+                                id="company_name_ar" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}}</label>
-                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
-                                autocomplete="off" placeholder="food type">
+                            <textarea class="form-control form-control-sm" name="food_type" id="food_type"
+                                autocomplete="off" placeholder="{{__('Food Services')}}" rows="2"></textarea>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Plate No')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Traffic Plate No')}}</label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
-                                autocomplete="off" placeholder="plate no">
+                                autocomplete="off" placeholder="{{__('Traffic Plate No')}}">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Issue')}} </label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}
+                            </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_issue_date"
                                 data-date-end-date="+0d" id="regis_issue_date" autocomplete="off"
                                 placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Expiry')}} </label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}
+                            </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_expiry_date"
                                 data-date-start-date="+0d" id="regis_expiry_date" autocomplete="off"
                                 placeholder="DD-MM-YYYY">

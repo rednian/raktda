@@ -47,7 +47,7 @@
                         <div class="kt-wizard-v3__form">
                             <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-2 kt-margin-b-0">
                                         <label for="permit_from"
                                             class="col-form-label col-form-label-sm ">{{__('From Date')}} <span
                                                 class="text-danger">*</span></label>
@@ -68,7 +68,7 @@
                                     </div>
                                     <input type="hidden" id="artiststartafter"
                                         value="{{getSettings()->artist_start_after}}" />
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-2 kt-margin-b-0">
                                         <label for="permit_to"
                                             class="col-form-label col-form-label-sm">{{__('To Date')}}<span
                                                 class="text-danger">*</span></label>
@@ -89,15 +89,15 @@
                                     </div>
 
 
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             {{__('Work Location')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm"
                                             placeholder="{{__('Work Location')}}" name="work_loc" id="work_loc"
                                             onkeyup="checkFilled()"
-                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
+                                            value="{{count($artist_details) > 0 ? getlangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             {{__('Work Location - Ar')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm"
@@ -105,7 +105,7 @@
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-2 kt-margin-b-0">
                                         <label for="" class="col-form-label col-form-label-sm">{{__('Connected Event')}}
                                             ?</label>
                                         <div class="kt-radio-inline">
@@ -128,14 +128,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-3 " id="events_div"
+                                    <div class="form-group col-lg-3 kt-margin-b-0" id="events_div"
                                         style="display:{{ session($user_id.'_apn_is_event') == 0 ? 'none': 'block'}}">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
-                                            {{__('Events')}} <span class="text-danger">*</span></label>
+                                            {{__('Select Event')}} <span class="text-danger">*</span></label>
                                         <select type="text"
                                             class="form-control form-control-sm {{count($artist_details) > 0 ? 'mk-disabled' : ''}}"
                                             name="event_id" id="event_id" onchange="check_Add_Event()">
-                                            <option value=" ">Select</option>
+                                            <option value=" ">{{__('Select')}}</option>
                                             @if(count($events) > 0)
                                             @foreach($events as $event)
                                             <option value="{{$event->event_id}}"
@@ -144,7 +144,7 @@
                                             </option>
                                             @endforeach
                                             @endif
-                                            <option value="add_new" class="kt-font-bold">{{__('Add New')}}</option>
+                                            <option value="add_new" class="kt-font-bolder">{{__('Add New')}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -158,55 +158,58 @@
 
         <input type="hidden" id="temp_permit_id" value="{{$permit_id}}">
 
-        <div class="table-responsive">
-            <table class="table table-striped border table-hover table-borderless">
-                <thead>
-                    <tr>
-                        <th> {{__('First Name')}}</th>
-                        <th> {{__('Last Name')}}</th>
-                        <th> {{__('Profession')}}</th>
-                        <th> {{__('Mobile Number')}}</th>
-                        {{-- <th>Email</th> --}}
-                        <th> {{__('Status')}}</th>
-                        <th class="text-center"> {{__('Action')}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if(count($artist_details) > 0)
-                    @foreach($artist_details as $ad)
-                    {{-- {{dd($ad)}} --}}
-                    <tr>
-                        <td>{{$ad->firstname_en}}</td>
-                        <td>{{$ad->lastname_en}}</td>
-                        <td>{{$ad->profession['name_en']}}</td>
-                        <td>{{$ad->mobile_number}}</td>
-                        {{-- <td>{{$ad->email}}</td> --}}
-                        <td>{{$ad->artist_permit_status}}</td>
-                        <td class="d-flex justify-content-center">
-                            <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}" title="Edit">
-                                <button class="btn btn-sm btn-secondary btn-elevate">Edit</button>
-                            </a>
-                            <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'new'])}}"
-                                title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
-                            </a>
-                            @if(count($artist_details) > 1)
-                            <a href="#"
-                                onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
-                                data-toggle="modal" data-target="#delartistmodal" title="Delete">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
-                            </a>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                    @else
-                    <tr>
-                        <td colspan="7" class="text-center">{{__('Please Add Artists')}} ...!</td>
-                    </tr>
-                    @endif
-                </tbody>
-            </table>
+        <div class="col-md-12 kt-margin-t-10">
+            <div class="table-responsive">
+                <table class="table table-striped border table-hover table-borderless">
+                    <thead>
+                        <tr>
+                            <th> {{__('First Name')}}</th>
+                            <th> {{__('Last Name')}}</th>
+                            <th> {{__('Profession')}}</th>
+                            <th> {{__('Mobile Number')}}</th>
+                            {{-- <th>Email</th> --}}
+                            <th> {{__('Status')}}</th>
+                            <th class="text-center"> {{__('Action')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(count($artist_details) > 0)
+                        @foreach($artist_details as $ad)
+                        {{-- {{dd($ad)}} --}}
+                        <tr>
+                            <td>{{$ad->firstname_en}}</td>
+                            <td>{{$ad->lastname_en}}</td>
+                            <td>{{$ad->profession['name_en']}}</td>
+                            <td>{{$ad->mobile_number}}</td>
+                            {{-- <td>{{$ad->email}}</td> --}}
+                            <td>{{$ad->artist_permit_status}}</td>
+                            <td class="d-flex justify-content-center">
+                                <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
+                                    title="{{__('Edit')}}">
+                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
+                                </a>
+                                <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'new'])}}"
+                                    title="{{__('View')}}">
+                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                                </a>
+                                @if(count($artist_details) > 1)
+                                <a href="#"
+                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
+                                    data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
+                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
+                                </a>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                        @else
+                        <tr>
+                            <td colspan="7" class="text-center">{{__('Please Add Artists')}} ...!</td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
@@ -214,14 +217,14 @@
         <div class="d-flex justify-content-between">
             <button
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
-                id="draft_btn" title="Save as Draft">
+                id="draft_btn" title="{{__('Save As Draft')}}">
                 <i class="la la-check"></i>
                 {{__('Save As Draft')}}
             </button>
 
             <button
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
-                id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}} title="Submit Permit">
+                id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}} title="{{__('Submit Permit')}}">
                 <i class="la la-check"></i>
                 {{__('Submit Permit')}}
             </button>
@@ -498,7 +501,7 @@
                     {
                         $('#artist_details').modal('show');
                         var code = data.person_code ? data.person_code : '';
-                        $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+ data.visa_type.visa_type_en + '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
+                        $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>  <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+ data.visa_type.visa_type_en + '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
 
                     }
                 }

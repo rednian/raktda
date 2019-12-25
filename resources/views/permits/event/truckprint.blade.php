@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$event_details->permit_number}} - Truck Permit</title>
+    <title>{{$event_details->permit_number}} - {{__('Event Permit')}}</title>
     <style>
         * {
             box-sizing: border-box;
@@ -141,7 +141,7 @@
                 تصريح مؤقت
             </div>
             <div>
-                Truck Permit
+                Food Truck Permit
             </div>
         </div>
     </header>
@@ -150,30 +150,33 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">License Data</th>
-                <th colspan="2" scope="col">بيانات الترخيص</th>
+                <th colspan="2" scope="col">تاريخ الرخصة</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>{{$event_details->owner->company->trade_license}}</td>
-                <td class="subhead">رقم الرخصة <br />License Number</td>
-                <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}</td>
+                <td class="subhead">رقم الرخصة<br />License Number</td>
+                <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}
+                </td>
                 <td class="subhead">اسم المؤسسة<br />Name of Establishment</td>
             </tr>
             <tr>
-                <td colspan="3">{{date('d-M-Y',strtotime($event_details->owner->company->trade_license_expired_date))}}
+                <td colspan="3">
+                    {{date('d-M-Y',strtotime($event_details->owner->company->trade_license_expired_date))}}
                 </td>
                 <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3"> {{$event_details->owner->NameAr}}<br />
-                    {{$event_details->owner->NameEn}}</td>
-                <td class="subhead">صاحب الترخيص <br />License owner</td>
+                <td colspan="3"> {{$event_details->owner_name_ar}}<br />
+                    {{$event_details->owner_name}}</td>
+                <td class="subhead">المالك <br />License owner</td>
             </tr>
         </tbody>
     </table>
 
-    @php
+
+    {{-- @php
     $i = 1 ;
     @endphp
     @foreach($truck as $truc)
@@ -181,37 +184,69 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">Food Truck {{$i}}</th>
-                <th colspan="2" scope="col"> </th>
+    <th colspan="2" scope="col"> </th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="2">{{$truc->company_name_en}}</td>
+            <td>{{$truc->company_name_ar}}</td>
+            <td class="subhead"><br />Company Name</td>
+        </tr>
+        <tr>
+            <td colspan="3">{{$truc->plate_number}}</td>
+            <td class="subhead">رقم التصريح<br />Plate No</td>
+        </tr>
+        <tr>
+            <td colspan="3">{{$truc->food_type}}</td>
+            <td class="subhead">تاريخ التصريح<br /> Food Services</td>
+        </tr>
+        <tr>
+            <td colspan="3">{{date('d-M-Y',strtotime($truc->registration_issued_date))}}</td>
+            <td class="subhead">تاريخ انتهاء الصلاحية <br /> Registration Issued Date</td>
+        </tr>
+        <tr>
+            <td colspan="3">{{date('d-M-Y',strtotime($truc->registration_expired_date))}}</td>
+            <td class="subhead">تاريخ انتهاء الصلاحية <br /> Registration Expiry Date</td>
+        </tr>
+    </tbody>
+    @php
+    $i++;
+    @endphp
+    </table>
+    @endforeach --}}
+
+
+    <table border="1" id="permit_data">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Establishment Name</th>
+                <th>Traffic Plate No.</th>
+                <th>Registration Expriy Date</th>
+                <th>Food Services</th>
             </tr>
         </thead>
         <tbody>
+            @php
+            $i = 1 ;
+            @endphp
+            @foreach($truck as $truc)
             <tr>
-                <td colspan="2">{{$truc->company_name_en}}</td>
-                <td>{{$truc->company_name_ar}}</td>
-                <td class="subhead"><br />Company Name</td>
+                <td>{{$i}}</td>
+                <td>{{$truc->company_name_ar}} <br /> {{$truc->company_name_en}}</td>
+                <td>{{$truc->plate_number}}</td>
+                <td>{{date('d-M-Y',strtotime($truc->registration_expired_date))}}</td>
+                <td>{{$truc->food_type}}</td>
             </tr>
-            <tr>
-                <td colspan="3">{{$truc->plate_number}}</td>
-                <td class="subhead">رقم التصريح<br />Plate No</td>
-            </tr>
-            <tr>
-                <td colspan="3">{{$truc->food_type}}</td>
-                <td class="subhead">تاريخ التصريح<br /> Food Services</td>
-            </tr>
-            <tr>
-                <td colspan="3">{{date('d-M-Y',strtotime($truc->registration_issued_date))}}</td>
-                <td class="subhead">تاريخ انتهاء الصلاحية <br /> Registration Issued Date</td>
-            </tr>
-            <tr>
-                <td colspan="3">{{date('d-M-Y',strtotime($truc->registration_expired_date))}}</td>
-                <td class="subhead">تاريخ انتهاء الصلاحية <br /> Registration Expiry Date</td>
-            </tr>
+            @php
+            $i++;
+            @endphp
+            @endforeach
         </tbody>
-        @php
-        $i++;
-        @endphp
+
     </table>
-    @endforeach
+
 
     <table id="date_data" border="1">
         <tr>
@@ -219,23 +254,24 @@
             <td>{{date('d/m/Y')}}</td>
         </tr>
     </table>
-
     <div id="dept_name">
         <h2>إدارة التراخيص السياحية وضمان الجودة</h2>
         <h3>Department of Tourism Licensing & Quality Assurance</h3>
     </div>
-
-    <footer>
-        <div>
-            Department of Tourism Licensing & Quality Assurance - RAKTDA - Al Marjan Island - RAK - UAE, PO BOX 29798
-        </div>
-        <div>
-            T +97172338998, F +97172338118
-        </div>
-        <div>
-            TLQA@raktda.com &emsp; www.raktda.com
-        </div>
-    </footer>
+    <htmlpagefooter name="page-footer">
+        <footer>
+            <div>
+                Department of Tourism Licensing & Quality Assurance - RAKTDA - Al Marjan Island - RAK - UAE, PO BOX
+                29798
+            </div>
+            <div>
+                T +97172338998, F +97172338118
+            </div>
+            <div>
+                TLQA@raktda.com &emsp; www.raktda.com
+            </div>
+        </footer>
+    </htmlpagefooter>
 </body>
 
 </html>

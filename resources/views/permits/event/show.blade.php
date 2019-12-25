@@ -14,7 +14,6 @@
                 </strong>
             </span>
         </div>
-
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
                 <a href="{{route('event.index')}}#{{$tab}}"
@@ -22,49 +21,58 @@
                     <i class="la la-arrow-left"></i>
                     {{__('Back')}}
                 </a>
-
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
                 <a href="{{route('event.index')}}#{{$tab}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                 </a>
-
             </div>
         </div>
     </div>
-
     <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
-
-
-
     <div class="kt-portlet__body">
         <div class="kt-container">
             <section class="row">
-                <div class="col-md-8">
-                    <table class="table table-borderless">
+                <div class="col-md-7">
+                    {{-- <table class="table table-borderless">
                         <tr class="kt-margin-b-0 kt-font-dark">
                             <td class="kt-font-bold kt-margin-r-5">{{__('Event Name')}}</td>
-                            <td>:</td>
-                            <td>{{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}</td>
-                        </tr>
-                        <tr class="kt-margin-b-0 kt-font-dark">
-                            <td class="kt-font-bold kt-margin-r-15">{{__('Event Type')}}</td>
-                            <td>:</td>
-                            <td>{{getLangId() == 1 ? ucwords($event->type->name_en) : $event->type->name_ar}}</td>
-                        </tr>
-                    </table>
-
+                    <td>:</td>
+                    <td>{{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}</td>
+                    </tr>
+                    <tr class="kt-margin-b-0 kt-font-dark">
+                        <td class="kt-font-bold kt-margin-r-15">{{__('Event Type')}}</td>
+                        <td>:</td>
+                        <td>{{!empty($event->type) ? getLangId() == 1 ? ucwords($event->type->name_en) : $event->type->name_ar : ''}}
+                        </td>
+                    </tr>
+                    </table> --}}
+                    <p class="kt-margin-b-0 kt-font-dark"><span
+                            class="kt-font-bold kt-margin-r-5">{{__('Establishment Type')}}
+                        </span>: {{ ucfirst($event->firm)}}</p>
+                    <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}}
+                        </span>: {{getLangId() == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
+                    <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Owner')}}
+                        </span>:
+                        {{getLangId() == 1 ?  ucfirst($event->owner_name) : $event->owner_name_ar }}</p>
+                    <p class="kt-margin-b-0 kt-font-dark"><span
+                            class="kt-font-bold kt-margin-r-15">{{__('Event Type ')}} </span>:
+                        {{getLangId() == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
+                    </p>
+                    <p class="kt-margin-b-0 kt-font-dark"><span
+                            class="kt-font-bold kt-margin-r-15">{{__('Event Sub Type ')}} </span>:
+                        {{$event->subType ? getLangId() == 1  ?  ucfirst($event->subType->sub_name_en) : $event->subType->sub_name_ar  : ''}}
+                    </p>
+                    <p class="kt-margin-b-0 kt-font-dark"><span
+                            class="kt-font-bold kt-margin-r-40">{{__('Venue ')}}</span>:
+                        {{getLangId() == 1 ? ucfirst($event->venue_en) :  $event->venue_ar}}
+                    </p>
                     <iframe class="border kt-padding-5" id='mapcanvas'
                         src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'
                         style="height: 310px; width: 100%; margin-top: 1%; border-style: none;"></iframe>
-                    <h6 class="kt-margin-t-10 kt-font-dark">{{__('Event Description')}}</h6>
-                    <p class="border kt-padding-5 kt-font-dark">
-                        {{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}
-                    </p>
-
                 </div>
-                <div class="col-md-4 border">
+                <div class="col-md-5 border">
                     <div class="kt-widget kt-widget--user-profile-4">
                         <div class="kt-widget__head kt-margin-t-5">
                             <div class="kt-widget__media kt-margin-b-5">
@@ -88,56 +96,110 @@
                                         {!! permitStatus($event->status)!!}
                                     </div>
                                 </div>
+                                @if ($event->status == 'cancelled')
+                                <div class="kt-widget__section">
+                                    <h6 class="kt-font-dark">{{ __('Cancel Reason') }} <small
+                                            title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}"
+                                            class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small>
+                                    </h6>
+
+                                    <hr class="kt-margin-b-0 kt-margin-t-0">
+                                    <p>
+                                        {{ucfirst($event->cancel_reason)}}
+                                    </p>
+                                </div>
+                                @endif
                             </div>
                         </div>
+
+                        <input type="hidden" id="event_id" value="{{$event->event_id}}">
+
                         <div class="kt-widget__body kt-margin-t-5">
                             <hr>
+                            <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
                             <table class="table table-sm table-hover table-borderless table-display">
+                                {{-- <tr>
+                                    <td>{{ __('Event Name (EN)') }} : </td>
+                                <td class="kt-font-dark">{{ ucfirst($event->name_en) }}</td>
+                                </tr>
                                 <tr>
-                                    <td class="kt-font-bold">{{ __('Applied Date') }} </td>
-                                    <td>:</td>
+                                    <td>{{ __('Event Name (AR)') }} : </td>
+                                    <td class="kt-font-dark">{{ $event->name_ar }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ __('Event Owner (EN)') }} : </td>
+                                    <td class="kt-font-dark">{{ $event->owner_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ __('Event Owner (AR)') }} : </td>
+                                    <td class="kt-font-dark">{{ $event->owner_name_ar }}</td>
+                                </tr> --}}
+                                {{-- <tr>
+                                    <td>{{ __('Event Type') }} : </td>
+                                <td class="kt-font-dark">
+                                    {{getLangId() == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
+                                </td>
+                                </tr> --}}
+                                <tr>
+                                    <td style="width: 50%;">{{ __('Start Date') }} : </td>
+                                    <td style="width: 50%;" class="kt-font-dark col-md-6">
+                                        {{ date('d-F-Y', strtotime($event->issued_date)) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ __('End Date') }} : </td>
+                                    <td class="kt-font-dark">
+                                        {{ date('d-F-Y', strtotime($event->expired_date)) }}
+                                    </td>
+                                </tr>
+                                {{-- <tr>
+                                    <td>{{ __('Venue (EN)') }} : </td>
+                                <td class="kt-font-dark">
+                                    {{ $event->venue_en }}
+                                </td>
+                                </tr>
+
+                                <tr>
+                                    <td>{{ __('Venue (AR)') }} : </td>
+                                    <td class="kt-font-dark">
+                                        {{ $event->venue_en }}
+                                    </td>
+                                </tr> --}}
+                                {{-- {{dd($event->time_start)}} --}}
+                                <tr>
+                                    <td>{{ __('Start Time') }} : </td>
+                                    <td class="kt-font-dark">
+                                        {{ date('h:i a', strtotime($event->time_start)) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ __('End Time') }} : </td>
+                                    <td class="kt-font-dark">
+                                        {{ date('h:i a', strtotime($event->time_end)) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ __('Applied Date') }} : </td>
                                     <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="kt-font-bold">{{ __('Reference No.') }} </td>
-                                    <td>:</td>
+                                    <td>{{ __('Reference No.') }} :</td>
                                     <td class="kt-font-dark"><code
                                             style="font-size:;">{{ $event->reference_number }}</code></td>
                                 </tr>
                                 <tr>
-                                    <td class="kt-font-bold">{{ __('Permit Number') }} </td>
-                                    <td>:</td>
+                                    <td>{{ __('Permit Number') }} :</td>
                                     <td class="kt-font-dark">
-                                        <code>{{ $event->permit_number ? $event->permit_number : '' }}</code></td>
+                                        <code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
                                 </tr>
                                 <tr>
-                                    <td class="kt-font-bold">{{ __('Expected Audience') }} </td>
-                                    <td>:</td>
+                                    <td>{{ __('Expected Audience') }} :</td>
                                     <td class="kt-font-dark">{{$event->audience_number}}</td>
                                 </tr>
-                                <tr>
-                                    <td class="kt-font-bold">{{__('From')}}</td>
-                                    <td>:</td>
-                                    <td>{{$event->issued_date}} <br>{{$event->time_start}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="kt-font-bold">{{__('To')}}</td>
-                                    <td>:</td>
-                                    <td>{{$event->expired_date}} <br> {{$event->time_end}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="kt-font-bold">{{__('Venue')}}</td>
-                                    <td>:</td>
-                                    <td>{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="kt-font-bold">{{__('Address')}}</td>
-                                    <td>:</td>
-                                    <td>{{$event->address}}</td>
-                                </tr>
                             </table>
-
-
+                            <hr>
+                            <h6 class="kt-font-dark">{{ __('Event Details') }}</h6>
+                            <label>{{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}</label>
                         </div>
                     </div>
                 </div>
@@ -146,16 +208,16 @@
             <div>
                 @if($event->is_truck && count($event->truck) > 0)
                 <div class="d-flex kt-margin-b-10 justify-content-between">
-                    <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Truck Details')}}</h5>
+                    <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Food Truck Details')}}
+                    </h5>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead class="kt-font-transform-u">
-                            <th>{{__('Company')}}</th>
-                            <th>{{__('Company - Ar')}}</th>
-                            <th>{{__('Type of Food')}}</th>
-                            <th>{{__('Plate No')}}</th>
-                            <th class="text-center"> {{__('Registration Exp')}}</th>
+                            <th>{{__('Establishment Name')}}</th>
+                            <th>{{__('Establishment Name (AR)')}}</th>
+                            <th>{{__('Food Services')}}</th>
+                            <th>{{__('Traffic Plate No')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
@@ -167,11 +229,11 @@
                                 <td>{{$truck->plate_number}}</td>
                                 {{-- <td>{{date('d-M-Y', strtotime($truck->registration_issued_date))}}
                                 </td> --}}
-                                <td class="text-center">{{date('d-M-Y', strtotime($truck->registration_expired_date))}}
-                                </td>
+                                {{-- <td class="text-center">{{date('d-M-Y', strtotime($truck->registration_expired_date))}}
+                                </td> --}}
                                 <td class="text-center">
                                     <a class="btn btn-secondary"
-                                        onclick="viewThisTruck({{$truck->event_truck_id}})">View</a>
+                                        onclick="viewThisTruck({{$truck->event_truck_id}})">{{__('View')}}</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -195,8 +257,8 @@
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead class="kt-font-transform-u">
-                            <th>{{__('Company')}}</th>
-                            <th>{{__('Company Ar')}}</th>
+                            <th>{{__('Establishment Name')}}</th>
+                            <th>{{__('Establishment Name (AR)')}}</th>
                             <th>{{__('Purchase Receipt')}}</th>
                             <th>{{__('Liquor Service')}}</th>
                             <th></th>
@@ -210,7 +272,7 @@
                                 </td>
                                 <td class="text-center">
                                     <a class="btn btn-secondary"
-                                        onclick="viewLiquor('{{$liquor->event_liquor_id}}')">View</a>
+                                        onclick="viewLiquor('{{$liquor->event_liquor_id}}')">{{__('View')}}</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -228,9 +290,6 @@
                 @endif
                 @endif
             </div>
-
-
-
             @if($artist)
             {{-- {{dd($artist)}} --}}
             <div class="pt-2 img-responsive">
@@ -260,7 +319,7 @@
                             <td class="text-center"> <a
                                     href="{{route('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
                                     title="View">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                                 </a></td>
                         </tr>
                         @endforeach
@@ -270,8 +329,9 @@
             @endif
 
             @if(count($eventReq) > 0)
-            <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Uploaded Requirements')}}</h5>
-            <div class="event--requirement-files pt-5">
+            <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold kt-margin-t-10">
+                {{__('Uploaded Requirements')}}</h5>
+            <div class="event--requirement-files">
                 <table class="table table-hover table-borderless border table-striped">
                     <thead class="text-center">
                         <tr class="kt-font-transform-u">
@@ -293,7 +353,7 @@
                             </td>
                             <td class="text-center">
                                 <a href="{{asset('storage')}}{{'/'.$req->pivot['path']}}" target="blank" ">
-                                    <button class=" btn btn-sm btn-secondary">View
+                                    <button class=" btn btn-sm btn-secondary">{{__('View')}}
                                     </button></a>
                             </td>
                         </tr>
@@ -306,27 +366,33 @@
 
             {{-- {{dd($eventImages)}} --}}
             @if(count($eventImages) > 0)
-            <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Event Images')}}</h5>
-            <div class="row col-md-12">
-                <label for="" class="kt-font-dark">{{__('Description')}}</label> :
-                &emsp;<label for="">{{$eventImages[0]->description}}</label>
-            </div>
+            <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Images')}}</h5>
+
             <div class="row col-md-12">
                 @foreach($eventImages->reverse() as $upload)
                 <div class="col-md-3 my-4">
                     <div class="container">
-                        <div class="img-box" style="border:1px solid #ccc;padding:5px;border-radius:5px;">
-                            <img src="{{url('storage').'/'.$upload->thumbnail}}" alt="Image"
-                                style="width:100%; height:auto;">
-                        </div>
-                    </div>
+                        <a href="{{url('storage').'/'.$upload->thumbnail}}" target="_blank">
+                            <div class="img-box" style="border:1px solid #ccc;padding:5px;border-radius:5px;">
+                                <img src="{{url('storage').'/'.$upload->thumbnail}}" alt="Image"
+                                    style="width:100%; height:auto;">
+                            </div>
+                        </a>
+                        {{-- <div style="position: absolute;left:50%; top: 50%;transform: translate(-50%, -50%);">
+                            <span> <a href="{{url('storage').'/'.$upload->thumbnail}}" target="_blank"><i
+                            class="fa fa-eye text-info"></i></a>
+                        </span>&emsp;
+                        <span> <a href="{{url('storage').'/'.$upload->thumbnail}}" download><i
+                                    class="fa fa-download text-success"></i></a> </span>
+                    </div> --}}
                 </div>
-                @endforeach
             </div>
-            @endif
-
+            @endforeach
         </div>
+        @endif
+
     </div>
+</div>
 </div>
 
 @include('permits.event.common.view_food_truck', ['truck_req'=>$truck_req])
@@ -426,13 +492,14 @@
                             dataType: "json",
                             success: function(data)
                             {
+                                console.log(data);
                                 if (data) {
                                     let j = 1 ;
                                    for(data of data) {
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);
@@ -515,7 +582,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         let docName =  d[d.length - 1];
@@ -577,6 +644,7 @@
                         $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
                         $('#liquor_details .ajax-file-upload-red').trigger('click');
+                        console.log(data);
                         if(data.provided == 1)
                         {
                             checkLiquorVenue(1);

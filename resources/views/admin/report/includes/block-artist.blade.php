@@ -20,19 +20,76 @@
         width: 36px;
         margin-left: -37px;
     }
+
     #search_button_css1 {
         background: transparent;
         border: none;
         height: 38px;
         width: 36px;
         margin-left: 6px;
-    }e
-     .dataTables_wrapper {
-         font-size: 12px;
-     }
+       }
+        
+    .dataTables_wrapper {
+        font-size: 12px;
+    }
+
     .dataTables_wrapper tr td {
         font-size: 11px;
     }
+
+</style>
+<table class="table  table-hover  table-borderless table-striped border" id="block-artist">
+    <thead>
+        <tr>
+            <th colspan="2"><select class="form-control" onchange="myFunction()" name="filter_search"
+                    id="filter_search">
+                    <option>Search By</option>
+                    <option value="1">Person Code</option>
+                    <option value="2">Artist Status</option>
+                    <option value="3">Artist Name</option>
+                    <option value="4">Profession</option>
+                    <option value="5">Nationality</option>
+                </select></th>
+            <th colspan="2">
+                <div class="row" id="search_by_name" style="display:-webkit-box">
+                    <input type="text" id="search_artist" class="form-control" name="search_artist"
+                        placeholder="Search..."><button style="" id="search_button_css"
+                        class="fa fa-search search_button"></button>
+                </div>
+
+                <div class="row" id="search_by_nationality_tab" style="display:none">
+                    <select type="text" id="search_by_nationality" class="form-control" style="width: 90%"
+                        name="search_artist">
+                        <option value="">Select Nationality</option>
+                        @foreach($country as $key => $nationality)
+                        <option value="{{$key}}">{{$nationality}}</option>
+                        @endforeach
+                    </select>
+                    <button style="" id="search_button_css1" class="fa fa-search submit_button_nationality"></button>
+                </div>
+
+                <div class="row" id="search_by_profession_tab" style="display:none">
+                    <select type="text" id="search_by_profession" style="width: 90%" class="form-control"
+                        name="search_artist">
+                        <option value="">Select Profession</option>
+                        @foreach($profession as $key => $nationality)
+                        <option value="{{$key}}">{{$nationality}}</option>
+                        @endforeach
+                    </select>
+                    <button style="" id="search_button_css1" class="fa fa-search submit_button_profession"></button>
+                </div>
+            </th>
+            <th><button style="margin-left: 20px" class="form-control" id="resetButton">Reset</button></th>
+        </tr>
+        <tr style="font-size: 12px">
+            <th></th>
+            <th style="width: 14%">{{ __('PERSON CODE') }}</th>
+            <th style="width: 14%">{{ __('ARTIST STATUS') }}</th>
+            <th>{{ __('ARTIST NAME') }}</th>
+            <th>{{ __('PROFESSION') }}</th>
+            <th>{{ __('NATIONALITY') }}</th>
+            <th style="width: 14%">{{ __('MOBILE NUMBER') }}</th>
+            <th>{{ __('ACTIVE PERMIT') }}</th>
     #name_search_button{
         border-radius: 4px;
         padding: 5px;
@@ -142,6 +199,7 @@
                 @endforeach
             </select>
         </th>
+
         <th>  <button id="ArtistTableresetButton" class="btn btn-sm pull-right btn-secondary">Reset</button></th>
     </tr>
 
@@ -161,6 +219,11 @@
         <th></th>
 
     </tr>
+
+        <th><button style="margin-left: 20px" class="btn btn-sm btn-secondary" id="ArtistTableresetButton" >{{__('Reset')}}</button></th>
+
+        </tr>
+
     </thead>
 </table>
 
@@ -273,6 +336,7 @@
 
 @endforeach
 @section('script')
+
     <script>
 
         function printContent(id) {
@@ -294,15 +358,29 @@
         })
 
 
+
+<script>
+
+ 
+
         $(function myTable() {
 
             var currentdate = new Date();
             var datetime = + currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/"
                 + currentdate.getFullYear() + "  "
-           /*     + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();*/
+           /
+
+         table= $('#block-artist').DataTable({
+          dom: 'Bfrtip',
+           "searching":false,
+            buttons: ['pageLength',
+                {
+                    extend: 'pdf',
+                    messageBottom: datetime,
+                    title: function () {
+                            return 'Artists List ';
+
 
             table= $('#block-artist').DataTable({
                 dom: 'Bfrtip',
@@ -3006,4 +3084,3 @@
 
 @endsection
 {{--@include('admin.artist_permit.includes.artist-block-modal')--}}
-

@@ -99,7 +99,7 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 "><strong>{{__('Visa Expiry')}}:</strong></label>
+                        <label class="col col-md-6 "><strong>{{__('Visa Expiry Date')}}:</strong></label>
                         <p class="col col-md-6">
                             {{$artist_details->visa_expire_date->year > 1 ? date('d-M-Y', strtotime($artist_details->visa_expire_date)) : ''}}
                         </p>
@@ -150,7 +150,7 @@
                     <tbody>
                         @foreach($artist_details->artistPermitDocument as $req)
                         <tr>
-                            <td style="width:50%;">{{$req->requirement->requirement_name}}</td>
+                            <td style="width:50%;">{{ucfirst($req->requirement->requirement_name)}}</td>
                             <td class="text-center">
                                 {{$req->issued_date != '0000-00-00' ? date('d-m-Y', strtotime($req->issued_date)) : ''}}
                             </td>

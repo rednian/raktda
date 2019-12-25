@@ -15,12 +15,12 @@
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u" title="Go Back">
                     <i class="la la-arrow-left"></i>
-                    Back
+                    {{__('Back')}}
                 </button>
                 <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()" title="Add Artist">
                     <i class="la la-plus"></i>
-                    Add Artist
+                    {{__('Add Artist')}}
                 </button>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
@@ -47,7 +47,7 @@
                         <div class="kt-wizard-v3__form">
                             <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-2">
                                         <label for="permit_from" class="col-form-label col-form-label-sm ">{{__('From
                                             Date')}} <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
@@ -64,7 +64,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-2">
                                         <label for="permit_to" class="col-form-label col-form-label-sm">{{__('To
                                             Date')}} <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
@@ -117,7 +117,7 @@
                                             {{__('Events')}} <span class="text-danger">*</span></label>
                                         <select type="text" class="form-control form-control-sm mk-disabled"
                                             name="event_id" id="event_id">
-                                            <option value=" ">Select</option>
+                                            <option value=" ">{{__('Select')}}</option>
                                             <option value="{{$event->event_id}}" selected>
                                                 {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
                                             </option>
@@ -138,13 +138,13 @@
             <table class="table table-striped border table-hover table-borderless">
                 <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Profession</th>
-                        <th>Mobile</th>
+                        <th>{{__('First Name')}}</th>
+                        <th>{{__('Last Name')}}</th>
+                        <th>{{__('Profession')}}</th>
+                        <th>{{__('Mobile')}}</th>
                         {{-- <th>Email</th> --}}
-                        <th>Status</th>
-                        <th class="text-center">Actions</th>
+                        <th>{{__('Status')}}</th>
+                        <th class="text-center">{{__('Action')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -160,18 +160,18 @@
                         <td>{{$ad->artist_permit_status}}</td>
                         <td class="d-flex justify-content-center">
                             <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'event'])}}"
-                                title="Edit">
-                                <button class="btn btn-sm btn-secondary btn-elevate">Edit</button>
+                                title="{{__('Edit')}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
                             </a>
                             <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'event'])}}"
-                                title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                title="{{__('View')}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
-                                data-toggle="modal" data-target="#delartistmodal" title="Delete">
-                                <button class="btn btn-sm btn-secondary btn-elevate">Remove</button>
+                                data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
                             </a>
                             @endif
                         </td>
@@ -179,7 +179,7 @@
                     @endforeach
                     @else
                     <tr>
-                        <td colspan="7" class="text-center">Please Add Artists ...!</td>
+                        <td colspan="7" class="text-center">{{__('Please Add Artists')}}</td>
                     </tr>
                     @endif
                 </tbody>
@@ -192,7 +192,7 @@
             <button class=" btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u
             {{ count($artist_details) == 0 ? 'd-none' : ''}}" id="submit_btn" title="Submit Permit">
                 <i class="la la-check"></i>
-                Submit Permit
+                {{__('Submit Permit')}}
             </button>
         </div>
 

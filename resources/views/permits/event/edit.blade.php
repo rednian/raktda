@@ -54,21 +54,44 @@
                                                     <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="event_type_id"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Establishment Name')}} <span
+                                                            {{__('Establishment Type')}} <span
                                                                 class="text-danger">*</span>
                                                         </label>
                                                         <select class="form-control form-control-sm" name="firm_type"
                                                             id="firm_type" onchange="getRequirementsList()">
                                                             <option value="">{{__('Select')}}</option>
+
+                                                            <option value="corporate"
+                                                                {{$event->firm == 'corporate' ? 'selected' : ''}}>
+                                                                {{__('Corporate')}}
+                                                            </option>
                                                             <option value="government"
                                                                 {{$event->firm == 'government' ? 'selected' : ''}}>
                                                                 {{__('Goverment')}}
                                                             </option>
-                                                            <option value="corporate"
-                                                                {{$event->firm == 'corporate' ? 'selected' : ''}}>
-                                                                Corporate
-                                                            </option>
                                                         </select>
+                                                    </div>
+
+
+
+                                                    <div class="col-md-4 form-group form-group-xs">
+                                                        <label for="owner_name"
+                                                            class=" col-form-label kt-font-bold text-right">{{__('Owner Name (EN)')}}
+                                                            <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="owner_name" id="owner_name"
+                                                            placeholder="{{__('Owner Name (EN)')}}"
+                                                            value="{{$event->owner_name}}">
+                                                    </div>
+
+                                                    <div class="col-md-4 form-group form-group-xs">
+                                                        <label for="owner_name"
+                                                            class=" col-form-label kt-font-bold text-right">{{__('Owner Name (AR)')}}
+                                                            <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="owner_name_ar" id="owner_name_ar" dir="rtl"
+                                                            placeholder="{{__('Owner Name (AR)')}}"
+                                                            value="{{$event->owner_name_ar}}">
                                                     </div>
 
                                                     <div class="col-md-4 form-group form-group-xs ">
@@ -78,7 +101,7 @@
                                                         </label>
                                                         <select class="form-control form-control-sm"
                                                             name="event_type_id" id="event_type_id" placeholder="Type"
-                                                            onchange="getRequirementsList()">
+                                                            onchange="getRequirementsList();setSubTypes()">
                                                             <option value="">{{__('Select')}}</option>
                                                             @foreach ($event_types as $pt)
                                                             <option value="{{$pt->event_type_id}}"
@@ -86,72 +109,70 @@
                                                                 {{ucwords($pt->name_en)}}</option>
                                                             @endforeach
                                                         </select>
-
-                                                    </div>
-
-                                                    <div class="col-md-4 form-group form-group-xs">
-                                                        <label for="owner_name"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
-                                                            <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            name="owner_name" id="owner_name"
-                                                            placeholder="{{__('Owner Name')}}"
-                                                            value="{{$event->owner_name}}">
-                                                    </div>
-
-                                                    <div class="col-md-4 form-group form-group-xs">
-                                                        <label for="owner_name"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Owner Name - Ar')}}
-                                                            <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            name="owner_name_ar" id="owner_name_ar"
-                                                            placeholder="{{__('Owner Name - Ar')}}"
-                                                            value="{{$event->owner_name_ar}}">
                                                     </div>
 
 
                                                     <div class="col-md-4 form-group form-group-xs">
                                                         <label for="name_en"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
+                                                            class=" col-form-label kt-font-bold text-right">{{__('Event Name (EN)')}}
                                                             <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="name_en" id="name_en"
-                                                            placeholder="{{__('Event Name')}}"
+                                                            placeholder="{{__('Event Name (EN)')}}"
                                                             value="{{$event->name_en}}">
                                                     </div>
 
                                                     <div class=" col-md-4 form-group form-group-xs">
                                                         <label for="name_ar"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Event Name - Ar')}} <span
+                                                            {{__('Event Name (AR)')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm "
                                                             name="name_ar" dir="rtl" id="name_ar"
-                                                            placeholder="{{__('Event Name - Ar')}}"
+                                                            placeholder="{{__('Event Name (AR)')}}"
                                                             value="{{$event->name_ar}}">
                                                     </div>
 
+                                                    <input type="hidden" id="sel_event_sub_type"
+                                                        value="{{$event->event_type_sub_id}}">
+
+                                                    <div class="col-md-4 form-group form-group-xs ">
+                                                        <label for="event_type_id"
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            {{__('Event Sub Type')}} <span class="text-danger"
+                                                                id="event_sub_type_req"></span>
+                                                        </label>
+                                                        <select class="form-control form-control-sm"
+                                                            name="event_sub_type_id" id="event_sub_type_id">
+                                                            <option value="">{{__('Select')}}</option>
+                                                            {{-- @foreach ($event_sub_types as $pt)
+                                                                <option value="{{$pt->event_type_sub_id}}">
+                                                            {{getLangId() == 1 ? ucwords($pt->sub_name_en) : $pt->sub_name_ar}}
+                                                            </option>
+                                                            @endforeach --}}
+                                                        </select>
+                                                    </div>
 
 
                                                     <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="description_en"
                                                             class="col-form-label kt-font-bold text-right">
-                                                            {{__('Event Details')}} <span
+                                                            {{__('Event Details (EN)')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <textarea type="text" class="form-control form-control-sm"
                                                             name="description_en" id="description_en"
-                                                            placeholder="{{__('Event Details')}}" rows="3"
+                                                            placeholder="{{__('Event Details (EN)')}}" rows="3"
                                                             maxlength="255">{{$event->description_en}}</textarea>
                                                     </div>
 
                                                     <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="description_ar"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Event Details - Ar')}} <span
+                                                            {{__('Event Details (AR)')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <textarea class="form-control form-control-sm"
                                                             name="description_ar" dir="rtl" id="description_ar"
-                                                            placeholder="{{__('Event Details - Ar')}}" rows="3"
+                                                            placeholder="{{__('Event Details (AR)')}}" rows="3"
                                                             maxlength="255">{{$event->description_ar}}</textarea>
                                                     </div>
 
@@ -177,6 +198,9 @@
                                                                 1000 & above</option>
                                                         </select>
                                                     </div>
+
+
+
 
 
                                                     <div class="col-md-4  form-group form-group-xs ">
@@ -213,14 +237,15 @@
                                                             <label class="kt-radio">
                                                                 <input type="radio" name="isLiquor"
                                                                     onclick="checkLiquor(1)" value="1"
-                                                                    {{$event->is_liquor == '1' ? 'checked': ''}}> Yes
+                                                                    {{$event->is_liquor == '1' ? 'checked': ''}}>
+                                                                {{__('Yes')}}
                                                                 <span></span>
                                                             </label>
                                                             <label class="kt-radio">
                                                                 <input type="radio" name="isLiquor"
                                                                     onclick="checkLiquor(0)" value="0"
                                                                     {{$event->is_liquor == '0' ? 'checked': ''}}>
-                                                                No
+                                                                {{__('No')}}
                                                                 <span></span>
 
 
@@ -263,8 +288,7 @@
                                                             <div class="kt-input-icon kt-input-icon--right">
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="issued_date" id="issued_date"
-                                                                    placeholder="{{__('From Date')}}"
-                                                                    onchange="givWarn()"
+                                                                    placeholder="DD-MM-YYYY" onchange="givWarn()"
                                                                     value="{{date('d-m-Y',strtotime($event->issued_date))}}" />
                                                                 <span
                                                                     class="kt-input-icon__icon kt-input-icon__icon--right">
@@ -306,7 +330,7 @@
                                                             <div class="kt-input-icon kt-input-icon--right">
                                                                 <input type="text" class="form-control form-control-sm"
                                                                     name="expired_date" id="expired_date"
-                                                                    placeholder="{{__('To Date')}}"
+                                                                    placeholder="DD-MM-YYYY"
                                                                     value="{{date('d-m-Y',strtotime($event->expired_date))}}">
                                                                 <span
                                                                     class="kt-input-icon__icon kt-input-icon__icon--right">
@@ -361,9 +385,11 @@
                                                     <div class="col-md-6 form-group form-group-xs ">
                                                         <label for="venue_en"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Venue')}} <span class="text-danger">*</span></label>
+                                                            {{__('Venue (EN)')}} <span
+                                                                class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            name="venue_en" id="venue_en" placeholder="{{__('Venue')}}"
+                                                            name="venue_en" id="venue_en"
+                                                            placeholder="{{__('Venue (EN)')}}"
                                                             value="{{$event->venue_en}}">
 
                                                     </div>
@@ -371,10 +397,12 @@
                                                     <div class="col-md-6 form-group form-group-xs ">
                                                         <label for="venue_ar"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            Venue - Ar <span class="text-danger">*</span></label>
+                                                            {{__('Venue (AR)')}} <span
+                                                                class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="venue_ar" dir="rtl" id="venue_ar"
-                                                            placeholder="Venue - Ar" value="{{$event->venue_ar}}">
+                                                            placeholder="{{__('Venue (AR)')}}"
+                                                            value="{{$event->venue_ar}}">
                                                     </div>
 
 
@@ -463,7 +491,7 @@
                                                     <input type="hidden" id="full_address" name="full_address"
                                                         value="{{$event->full_address}}">
 
-                                                    <div class="col-md-6 form-group form-group-xs ">
+                                                    <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="longitude"
                                                             class=" col-form-label kt-font-bold text-right">
                                                             {{__('Longitude')}} <span
@@ -473,7 +501,7 @@
                                                             value="{{$event->longitude}}">
                                                     </div>
 
-                                                    <div class="col-md-6 form-group form-group-xs ">
+                                                    <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="latitude"
                                                             class=" col-form-label kt-font-bold text-right">
                                                             {{__('Latitude')}} <span
@@ -482,6 +510,16 @@
                                                             name="latitude" id="latitude" placeholder="Latitude"
                                                             value="{{$event->latitude}}">
                                                     </div>
+
+                                                    <div class="col-md-4 form-group form-group-xs ">
+                                                        <label for="addi_loc_info"
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            {{__('Additional Location Info')}} </label>
+                                                        <textarea class="form-control form-control-sm"
+                                                            name="addi_loc_info" id="addi_loc_info" rows="2">{{$event->additional_location_info ? $event->additional_location_info : ''}}
+                                                        </textarea>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                             <div id="address-map-container"
@@ -515,18 +553,14 @@
                             </form>
                             <form id="image_upload_form">
                                 <div class="row">
-                                    <div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{{__('Event
-                                        Images')}}</label>
-                                        <p class="reqName">{{__('Add multiple images of the event')}}</p>
+                                    <div class="col-lg-4 col-sm-12"><label
+                                            class="kt-font-bold text--maroon">{{__('Images')}}</label>
+                                        <p class="reqName">{{__('Add multiple images')}}</p>
                                     </div>
                                     <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
                                         <div id="image_uploader">{{__('Upload')}}</div>
                                     </div>
-                                    <div class="col-lg-4 col-sm-12"><label
-                                            class="kt-font-bold text--maroon">{{__('Description')}}</label>
-                                        <input type="text" name="description" id="description"
-                                            class="form-control form-control-sm" placeholder="Image Description">
-                                    </div>
+
                                 </div>
                             </form>
                         </div>
@@ -637,6 +671,9 @@
         uploadFunction();
         picUploadFunction();
         imageUploadFunction();
+
+        setSubTypes($('#event_type_id').val());
+
         $('#submit_btn').css('display', 'none');
 
         var isTruck = $('#prev_val_isTruck').val();
@@ -807,7 +844,8 @@
                 firm_type: 'required',
                 no_of_audience: 'required',
                 owner_name: 'required',
-                owner_name_ar: 'required'
+                owner_name_ar: 'required',
+                event_sub_type_id: 'required'
             },
             messages: {
                 event_type_id: '',
@@ -835,7 +873,8 @@
                 firm_type: '',
                 no_of_audience: '',
                 owner_name:'',
-                owner_name_ar: ''
+                owner_name_ar: '',
+                event_sub_type_id: ''
             },
         });
 
@@ -928,6 +967,8 @@
                     no_of_audience: $('#no_of_audience').val(),
                     owner_name: $('#owner_name').val(),
                     owner_name_ar: $('#owner_name_ar').val(),
+                    addi_loc_info: $('#addi_loc_info').val(),
+                    event_sub_type_id: $('#event_sub_type_id').val()
             };
             localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
         }
@@ -1171,7 +1212,7 @@
 
             var hasFile = docValidation();
 
-                if (documentsValidator ? documentsValidator.form() && hasFile : 1) {
+                if (documentsValidator != '' ? documentsValidator.form() : 1 && hasFile) {
 
                     $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
                     $('#submit_btn').css('pointer-events', 'none');
@@ -1325,13 +1366,17 @@
             return hasFile;
         }
 
-        for(var i = 1; i <= $('#truck_document_count').val(); i++)
-        {
-            docRules['truck_doc_issue_date_'+i] = 'required';
-            docRules['truck_doc_exp_date_'+i] = 'required';
-            docMessages['truck_doc_issue_date_'+i] = '';
-            docMessages['truck_doc_exp_date_'+i] = '';
-        }
+        
+        // truckDocRules = {};
+        // truckDocMessages = {};
+
+        // for(var i = 1; i <= $('#truck_document_count').val(); i++)
+        // {
+        //     docRules['truck_doc_issue_date_'+i] = 'required';
+        //     docRules['truck_doc_exp_date_'+i] = 'required';
+        //     docMessages['truck_doc_issue_date_'+i] = '';
+        //     docMessages['truck_doc_exp_date_'+i] = '';
+        // }
         
         function go_back_truck_list()
         {
@@ -1379,7 +1424,7 @@
                     if(result) 
                     {
                         editTruck();
-                        $('#disp_mess').html('<h5 class="text-danger py-2">Truck Details Deleted successfully</h5>');
+                        $('#disp_mess').html('<h5 class="text-danger py-2">Food Truck Details Deleted successfully</h5>');
                         setTimeout(function(){ $('#disp_mess').html('');}, 2000)
                     }
                 }
@@ -1460,7 +1505,7 @@
                                 $('#edit_one_food_truck').modal('hide');
                                 $('#edit_food_truck').modal('show');
                                 $('#truckEditBtn').show();
-                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details Added successfully</h5>');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
                         }
@@ -1499,7 +1544,7 @@
                                 editTruck();
                                 $('#edit_food_truck').modal('show');
                                 $('#edit_one_food_truck').modal('hide');
-                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details updated successfully</h5>');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
                         }
@@ -1575,7 +1620,7 @@
                                     if(j <= 2 ){
                                     let id = obj[0].id;
                                     let number = id.split("_");
-                                    let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                    let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                     let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                     const d = data["path"].split("/");
                                     // var cc = d.splice(4,5);
@@ -2014,7 +2059,39 @@
             $('#image_uploader + div').attr('id', 'image-file-upload');
         };
       
-
+        function setSubTypes()
+        {
+            var langId = $('#getLangid').val();
+            var et = $('#event_type_id').val();
+            var sub_id = $('#sel_event_sub_type').val();
+            if(et)
+            {
+                var url = "{{route('event.get_event_sub_types', ':id')}}";
+                url = url.replace(':id', et);
+                $.ajax({
+                url: url ,
+                success: function (result) {
+                         $('#event_sub_type_id').empty();
+                         $('#event_sub_type_id').append('<option value="">{{__('Select')}}</option>');
+                        if(result.length > 0){
+                            for(var  i = 0; i< result.length;i++)
+                            {
+                                $('#event_sub_type_id').append('<option value="'+result[i].event_type_sub_id+'" >'+(langId == 1 ? toCapitalize(result[i].sub_name_en) : result[i].sub_name_ar)+'</option>');
+                                if(result[i].event_type_sub_id == sub_id){
+                                    $('#event_sub_type_id option[value='+result[i].event_type_sub_id+']').attr('selected', 'selected');
+                                }
+                            }   
+                            $('select[name="event_sub_type_id"]').rules('add', { required: true, messages: {required:''}});
+                            $('#event_sub_type_req').html('*');
+                        }else 
+                        {
+                            $('select[name="event_sub_type_id"]').rules("remove"), "required";$('#event_sub_type_id').removeClass('is-invalid');
+                            $('#event_sub_type_req').html('');
+                        }
+                    }
+                });
+            }
+        }
         
 </script>
 

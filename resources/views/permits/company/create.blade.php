@@ -91,28 +91,29 @@
                     @csrf
                     <section class="panel panel-default">
                         <div class="panel-heading">
-                            Company Information
+                            Establishment Information
                             <h5 class="panel-title"></h5>
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label>Establishment Type <span class="text-danger">*</span></label>
-                                <select name="company_type_id" class="form-control">
+                                {{-- <label>Establishment Type <span class="text-danger">*</span></label> --}}
+                                <input name="company_type_id" type="hidden" value="{{App\CompanyType::where('name_en', 'corporate')->first()->company_type_id}}">
+                                {{-- <select name="company_type_id" class="form-control ki">
                                     <option selected disabled>Select Establishment Type</option>
                                     @if (App\CompanyType::orderBy('name_en')->count() > 0)
                                         @foreach (App\CompanyType::orderBy('name_en')->get() as $type)
-                                            <option value="{{$type->company_id}}">{{ucfirst($type->name_en)}}</option>
+                                            <option value="{{$type->company_type_id}}">{{ucfirst($type->name_en)}}</option>
                                         @endforeach
                                     @endif
-                                </select>
+                                </select> --}}
                             </div>
                             <div class="form-group">
-                                <label>Company Name <span class="text-danger">*</span></label>
+                                <label>Establishment Name <span class="text-danger">*</span></label>
                                 <input value="{{old('name_en')}}"  type="text" name="name_en" class="form-control" required autocomplete="off" autofocus>
                             </div>
                             <div class="form-group corporate">
                                 <label>Trade License Number <span class="text-danger">*</span></label>
-                                <input value="{{old('trade_lincense')}}" type="text" name="trade_lincense" class="form-control" required autocomplete="off" autofocus>
+                                <input value="{{old('trade_license')}}" type="text" name="trade_license" class="form-control" required autocomplete="off" autofocus>
                             </div>
                             <section class="row corporate">
                                 <div class="col-sm-6">
@@ -221,13 +222,13 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Password <span class="text-danger">*</span></label>
-                                        <input type="text" name="password" class="form-control" required autocomplete="off" autofocus>
+                                        <input type="password" name="password" class="form-control" required autocomplete="off" autofocus>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Confirm Password <span class="text-danger">*</span></label>
-                                        <input type="text" name="confirmPassword" class="form-control" required autocomplete="off" autofocus>
+                                        <input type="password" name="confirmPassword" class="form-control" required autocomplete="off" autofocus>
                                     </div>
                                 </div>
                             </section>
@@ -260,8 +261,9 @@
     <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function(){
-            $('select[name=type]').change(function(){
-                if($(this).val() != 'corporate'){
+            $('select[name=company_type_id]').change(function(){
+                console.log($(this).val());
+                if($(this).val() == 1){
                     $('.corporate').addClass('hide').find('input').attr('disabled', true);
                 }
                 else{
@@ -307,6 +309,19 @@
           }
         }
       },
+
+      mobile_number:{
+        validators:{
+           remote: {
+             url: '{{ route('company.isexist') }}',
+             type: 'get',
+             data: {email: $(this).val()},
+             message: 'The mobile number is already exist.',
+             delay: 1000
+           } 
+        }
+      },
+
       email:{
         validators:{
            remote: {

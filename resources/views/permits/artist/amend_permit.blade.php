@@ -49,12 +49,13 @@
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
                 <span class="kt-font-dark">{{__('To Date')}}:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                <span class="kt-font-dark">{{__('Location')}}:</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->work_location}}</span>&emsp;&emsp;
+                <span class="kt-font-dark">{{__('Work Location')}}:</span>&emsp;
+                <span
+                    class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
                 <span class="kt-font-dark">{{__('Ref No.')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
                 @if($permit_details->event)
-                <span>Connected to Event :</span>&emsp;
+                <span>{{__('Connected to Event')}} :</span>&emsp;
                 <span
                     class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>
                 @endif
@@ -99,13 +100,13 @@
                             </a> --}}
                             <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
                                 title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
                                 data-toggle="modal" data-target="#delartistmodal" title="Remove">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">Remove</button>
+                                <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Remove')}}</button>
                             </a>
                             @endif
 
@@ -235,7 +236,7 @@
             {
                 $('#artist_details').modal('show');
                 var code = data.person_code ? data.person_code : '';
-                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name - Ar</th> <td >' + data.firstname_ar + '</td>  <th>Last Name - Ar</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
+                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>  <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
 
             }
             }
@@ -257,6 +258,7 @@
 
     $('#submit_btn').click( function() {
         $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+        $('#submit_btn').css('pointer-events', 'none');
         $.ajax({
             type: 'POST',
             url: '{{route("artist.update_permit")}}',

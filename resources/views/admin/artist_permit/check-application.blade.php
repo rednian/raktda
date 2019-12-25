@@ -2,13 +2,16 @@
 @section('style')
 	<link href="{{ asset('/assets/css/wizard-3.css') }}" rel="stylesheet" type="text/css"/>
 	
-	{{-- <style>
-		@if($artist_permit->artist_permit_status == 'approved' && Auth::user()->)
+	<style>
+		@if(Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 		.input-group-append{
 			display:none;
 		}
+		.kt-wizard-v3 .kt-wizard-v3__nav .kt-wizard-v3__nav-items .kt-wizard-v3__nav-item {
+		  flex: 0 0 50% !important;
+		}
 		@endif
-	</style> --}}
+	</style>
 	
 @endsection
 @section('content')
@@ -18,19 +21,19 @@
 			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ strtoupper($artist_permit->artist->fullName) }}</span></h3>
 		</div>
 		<div class="kt-portlet__head-toolbar">
-			<a href="{{ route('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-maroon btn-elevate kt-margin-r-4 kt-font-transform-u">
+			<a href="{{ URL::signedRoute('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-secondary btn-elevate kt-margin-r-4 kt-font-transform-u">
 				<i class="la la-arrow-left"></i>
-				Back to permit details
+				{{ __('Back') }}
 			</a>
 			<div class="dropdown dropdown-inline">
 				<button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="flaticon-more"></i>
 				</button>
 				<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-					<a class="dropdown-item kt-font-transform-u" href="{{ route('admin.artist_permit.index') }}">Artist Permit list</a>
+					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist_permit.index') }}">{{ __('Artist Permit') }}</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item kt-font-transform-u" href="{{ route('admin.artist.show', $artist_permit->artist_id) }}">Artist Information</a>
-					<a class="dropdown-item kt-font-transform-u" href="javascript:void(0)">Company Information</a>
+					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist.show', $artist_permit->artist_id) }}">{{ __('Artist Details') }}</a>
+					<a class="dropdown-item kt-font-transform-u" href="javascript:void(0)">{{ __('Establishment Details') }}</a>
 				</div>
 			</div>
 		</div>
@@ -42,22 +45,24 @@
 					<div class="kt-wizard-v3__nav-items">
 						<a class="kt-wizard-v3__nav-item" href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="current">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span>Artist Information</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span> {{ __('Artist Details') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
 						<a class="kt-wizard-v3__nav-item" href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>2</span>Uploaded Documents</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>2</span> {{ __('Uploaded Documents') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
+						@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 						<a class="kt-wizard-v3__nav-item" href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span>Submit</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span> {{ __('SUBMIT') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
+						@endif
 					</div>
 				</div>
 			</div>
@@ -73,7 +78,11 @@
 								<section class="row">
 									<div class="col kt-margin-t-20 kt-margin-b-20">
 										@include('admin.artist_permit.includes.notification')
+
+										@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 										@include('admin.artist_permit.includes.comment')
+										@endif
+
 										@include('admin.artist_permit.includes.personal-info-tab')	
 										@include('admin.artist_permit.includes.address-info-tab')
 										@include('admin.artist_permit.includes.address1-info-tab')
@@ -90,7 +99,11 @@
 									<section class="row">
 										<div class="col kt-margin-t-20 kt-margin-b-20">
 											@include('admin.artist_permit.includes.notification')
+
+											@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 											@include('admin.artist_permit.includes.comment')
+											@endif
+
 											<?php
 											$nearly_expire = $artist_permit->artistPermitDocument()->whereDate('expired_date', '<', Carbon\Carbon::now()->addMonth())->get();
 //											dd($nearly_expire);
@@ -116,10 +129,10 @@
 											<table class="border table table-hover table-borderless table-striped" id="document-table">
 												<thead>
 												<tr>
-													<th>DOCUMENT NAME</th>
-													<th>ISSUED DATE</th>
-													<th>EXPIRED DATE</th>
-													<th>ACTION</th>
+													<th>{{ __('DOCUMENT NAME') }}</th>
+													<th>{{ __('ISSUED DATE') }}</th>
+													<th>{{ __('EXPIRY DATE') }}</th>
+													<th>{{ __('ACTION') }}</th>
 												</tr>
 												</thead>
 											</table>
@@ -130,6 +143,7 @@
 						</div>
 						<!--end: Form Wizard Step 2-->
 						<!--begin: Form Wizard Step 3-->
+						@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 						<div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
 							<div class="kt-form__section kt-form__section--first">
 								<div class="kt-wizard-v3__form">
@@ -169,25 +183,28 @@
 								</div>
 							</div>
 						</div>
+						@endif
 						<!--end: Form Wizard Step 3-->
 						<!--begin: Form Actions -->
 						<div class="kt-form__actions">
 							<button type="button" class="btn btn-elevate btn-maroon btn-sm kt-font-bold kt-font-transform-u btn-wide"
-											data-ktwizard-type="action-prev">Previous
+											data-ktwizard-type="action-prev">{{ __('PREVIOUS') }}
 							</button>
 							<button type="button" class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u"
-											data-ktwizard-type="action-next">Next
+											data-ktwizard-type="action-next">{{ __('NEXT') }}
 							</button>
+							@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 							<div class="dropdown" data-ktwizard-type="action-submit">
 								<button class="btn btn-warning btn-sm btn-wide kt-font-bold kt-font-transform-u dropdown-toggle" type="button"
 												id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Take action & finish
+									{{ __('Take Action & Finish') }}
 								</button>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
-									<button type="submit" name="artist_permit_status" value="approved" class="dropdown-item">Approve Artist</button>
-									<button type="submit" name="artist_permit_status" value="rejected" class="dropdown-item">Reject Artist</button>
+									<button type="submit" name="artist_permit_status" value="approved" class="dropdown-item">{{ __('Approve Artist') }}</button>
+									<button type="submit" name="artist_permit_status" value="rejected" class="dropdown-item">{{ __('Reject Artist') }}</button>
 								</div>
 							</div>
+							@endif
 						</div>
 						<!--end: Form Actions -->
 					</form>
@@ -233,9 +250,9 @@
 				}
 			});
 
-			var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
+			var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
 			wizard.on("beforeNext", function(wizardObj) {
-				{{-- @if($artist_permit->artist_permit_status != 'approved') --}}
+				@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 				if(wizardObj.currentStep == 1){
 					$('input[type=checkbox][data-step=step-1]').each(function () {
 						if(!$(this).is(':checked')){
@@ -257,7 +274,7 @@
 					});
 
 				}
-				{{-- @endif --}}
+				@endif
 			}).on("change", function(wizard) { KTUtil.scrollTop(); });
 		});
 	</script>
@@ -292,6 +309,9 @@
 				columnDefs: [
 					{targets: [3], className: 'no-wrap'},
 					{targets: [3], className: 'no-wrap', sortable: false},
+					@if(Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
+					{targets: [3], visible: false},
+					@endif
 				],
 				columns: [
 					{data: 'document_name'},
