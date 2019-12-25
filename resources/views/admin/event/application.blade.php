@@ -355,7 +355,7 @@
 																<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-truck"
 																		 aria-expanded="true"
 																		 aria-controls="collapse-truck">
-																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('TRUCK DETAILS') }}</h6>
+																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('Food Truck Details') }}</h6>
 																</div>
 														 </div>
 														 <div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck">

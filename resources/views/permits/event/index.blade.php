@@ -58,13 +58,13 @@
                 <table class="table table-striped table-hover table-borderless border" id="applied-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th class="kt-font-transform-u">{{__('Reference NO.')}}</th>
+                            <th class="kt-font-transform-u">{{__('REFERENCE NO.')}}</th>
                             <th>{{__('Event Type')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To')}} </th>
                             <th>{{__('Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
-                            <th class="text-center">{{__('Status')}}</th>
+                            <th class="text-center">{{__('STATUS')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                         </tr>
@@ -76,11 +76,11 @@
                 <table class="table table-striped table-borderless border" id="existing-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('Permit No')}}</th>
+                            <th>{{__('Permit Number')}}</th>
                             <th>{{__('Event Type')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To')}} </th>
-                            <th>{{__('Name')}}</th>
+                            <th>{{__('Event Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
@@ -104,12 +104,11 @@
                 <table class="table table-striped table-borderless border" id="drafts-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('Event Type')}}</th>
                             <th>{{__('From')}} </th>
                             <th>{{__('To')}} </th>
-                            <th>{{__('Name')}}</th>
+                            <th>{{__('Event Name')}}</th>
                             {{-- <th>{{__('Venue')}}</th> --}}
-                            <th>{{__('Added On')}}</th>
+                            <th>{{__('ADDED ON')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                         </tr>
@@ -135,7 +134,7 @@
         <div class="modal-content">
             <div class="modal-header">
 
-                <h5 class="modal-title" id="exampleModalLabel">Cancel Permit</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Cancel Permit')}}</h5>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
@@ -152,6 +151,37 @@
                     <input type="submit" class="btn btn-sm btn--maroon popup-submit-btn" value="Cancel">
                 </form>
             </div>
+
+        </div>
+    </div>
+</div>
+
+<!--end::Modal-->
+
+<!--begin::Modal-->
+<div class="modal fade" id="del_draft_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Delete Draft')}}</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('event.delete_draft')}}" method="POST" novalidate>
+                    @csrf
+                    <label>{{__('Are you sure to delete this draft')}}
+                        ? {{__('Data will be lost')}}</label>
+                    <input type="hidden" id="del_draft_id" name="del_draft_id">
+                    <div>
+                        <input type="submit" class="btn btn-sm btn--maroon pull-right" value="Delete">
+                    </div>
+                </form>
+            </div>
+
 
         </div>
     </div>
@@ -276,7 +306,8 @@
                 }
             ],
             language: {
-                emptyTable: "No Applied Event Permits"
+                emptyTable: "No Applied Event Permits",
+                searchPlaceholder: "{{__('Search')}}"
             }
         });
 
@@ -305,15 +336,10 @@
                 { data: 'details', name: 'details' ,  className: "text-center"},
             ],
             columnDefs: [
-                {
-                    targets:1,
-                    render: function(data, type, full, meta) {
-						return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span >${full.type.name_ar}</span>`;
-					}
-                }
             ],
             language: {
-                emptyTable: "No Existing Event Permits"
+                emptyTable: "No Valid Event Permits",
+                searchPlaceholder: "{{__('Search')}}"
             }
         });
 
@@ -329,10 +355,10 @@
                 request.setRequestHeader("token", token);
             },
             columns: [
-                { data: 'issued_date', name: 'issued_date' },
+                { data: 'issued_date', name: 'issued_date' },       
                 { data: 'expired_date', name: 'expired_date' },
                 { data: 'name_en', name: 'name_en' },
-                { data: 'venue_en', name: 'venue_en' },
+                // { data: 'venue_en', name: 'venue_en' },
                 { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                 { data: 'action', name: 'action' ,  className: "text-center"},
                 { data: 'details', name: 'details' ,  className: "text-center"},
@@ -347,7 +373,7 @@
 					}
                 },
                 {
-                    targets: 2,
+                    targets: 4,
                     width: '10%',
                     className:'text-center',
                     render: function(data, type, full, meta) {
@@ -357,7 +383,8 @@
                 },
             ],
             language: {
-                emptyTable: "No Event Permit Drafts"
+                emptyTable: "No Event Permit Drafts",
+                searchPlaceholder: "{{__('Search')}}"
             }
 
         });
@@ -371,9 +398,9 @@
         $.ajax({
             url: url,
             success: function(result){
-               result = result.replace(/\s/g, '');
-                if(result != '') {
-                    if(result == 'new' || result == 'active'){
+            //    result = result.replace(/\s/g, '');
+            //     if(result != '') {
+            //         if(result == 'new' || result == 'active'){
                         $('#cancel_permit').modal('show');
                         $('#cancel_permit_id').val(id);
                         if(permit_no)
@@ -382,14 +409,19 @@
                         }else{
                             $('#cancel_permit_number').html('<strong>'+refno+'</strong>');
                         }
-                    }else {
-                            alert('Permit is already in processing');
-                    }
+                    // }else {
+                    //         alert('Permit is already in processing');
+                    // }
 
-                }
+                
             }
         });
 
+    }
+
+    const delete_draft  = (id, refno) => {
+        $('#del_draft_modal').modal('show');
+        $('#del_draft_id').val(id);
     }
 
     
@@ -451,9 +483,10 @@
                   center: 'title',
                   right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
               },
-              height: 'auto',
+            //   height: 'auto',
               allDaySlot: true,
-              contentHeight: 450,
+              height: 800,
+            contentHeight: 750,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
@@ -471,22 +504,23 @@
               navLinks: true,
               events: {
                   url: '{{ route('company.event.calendar') }}',
-                  textColor: '#fff'
+                  textColor: '#000'
               },
               eventRender: function(info) {
-                  var element = $(info.el);
-                  if (info.event.extendedProps && info.event.extendedProps.description) {
-                      if (element.hasClass('fc-day-grid-event')) {
-                          element.data('content', info.event.extendedProps.description);
-                          element.data('placement', 'top');
-                          KTApp.initPopover(element);
-                      } else if (element.hasClass('fc-time-grid-event')) {
-                          element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
-                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      }
-                  }
-              }
+                    var element = $(info.el);
+
+                    if (info.event.extendedProps && info.event.extendedProps.description) {
+                        if (element.hasClass('fc-day-grid-event')) {
+                            element.data('content', info.event.extendedProps.description);
+                            element.data('placement', 'top');
+                            KTApp.initPopover(element);
+                        } else if (element.hasClass('fc-time-grid-event')) {
+                            element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>'); 
+                        } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                            element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>'); 
+                        }
+                    } 
+                }
           });
           calendar.render();
      }

@@ -65,7 +65,7 @@
                                         </div>
                                     </div>
                                 </section>
-                                <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                                {{-- <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
                                     id="permit-instruction-details">
                                     <div class="card">
                                         <div class="card-header" id="headingFour6">
@@ -74,539 +74,519 @@
                                                 aria-controls="collapseFour6">
                                                 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
                                                     {{__('Rules and Conditions')}}</h6>
-                                            </div>
-                                        </div>
-                                        <div id="collapseFour6" class="collapse show" aria-labelledby="headingFour6"
-                                            data-parent="#permit-instruction-details">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                                terry richardson ad squid. 3 wolf moon officia aute
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-                                <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
-                                    <input type="checkbox" id="agree" name="agree">
-                                    {{__('I Read and understand all service rules and agree to continue submitting it.')}}
-                                    <span></span>
-                                </label>
+                            </div>
+                        </div>
+                        <div id="collapseFour6" class="collapse show" aria-labelledby="headingFour6"
+                            data-parent="#permit-instruction-details">
+                            <div class="card-body">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                terry richardson ad squid. 3 wolf moon officia aute
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                        <div class="kt-form__section kt-form__section--first">
-                            <div class="kt-wizard-v3__form">
-                                <form id="eventdetails" action="" novalidate autocomplete="off">
-                                    <section
-                                        class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                                        id="accordionExample5">
-                                        <div class="card">
-                                            <div class="card-header" id="headingOne6">
-                                                <div class="card-title show" data-toggle="collapse"
-                                                    data-target="#collapseOne6" aria-expanded="true"
-                                                    aria-controls="collapseOne6">
-                                                    <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                                                        {{__('Event Details')}}
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                            <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
-                                                data-parent="#accordionExample5">
-                                                <div class="card-body">
-                                                    <div class="row">
-
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="event_type_id"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Establishment Type')}} <span
-                                                                    class="text-danger">*</span>
-                                                            </label>
-                                                            <select class="form-control form-control-sm"
-                                                                name="firm_type" id="firm_type"
-                                                                onchange="getRequirementsList()">
-                                                                <option value="">{{__('Select')}}</option>
-                                                                <option value="government">{{__('Goverment')}}</option>
-                                                                <option value="corporate">{{__('Corporate')}}</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="event_type_id"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Type')}} <span class="text-danger">*</span>
-                                                            </label>
-                                                            <select class="form-control form-control-sm"
-                                                                name="event_type_id" id="event_type_id"
-                                                                placeholder="Type" onchange="getRequirementsList()">
-                                                                <option value="">{{__('Select')}}</option>
-                                                                @foreach ($event_types as $pt)
-                                                                <option value="{{$pt->event_type_id}}">
-                                                                    {{ucwords($pt->name_en)}}</option>
-                                                                @endforeach
-                                                            </select>
-
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="owner_name"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name" id="owner_name"
-                                                                placeholder="{{__('Owner Name')}}">
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="owner_name"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name - Ar')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name_ar" id="owner_name_ar" dir="rtl"
-                                                                placeholder="{{__('Owner Name - Ar')}}">
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="name_en"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="name_en" id="name_en"
-                                                                placeholder="{{__('Event Name')}}">
-                                                        </div>
-
-                                                        <div class=" col-md-4 form-group form-group-xs">
-                                                            <label for="name_ar"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Name - Ar')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm "
-                                                                name="name_ar" dir="rtl" id="name_ar"
-                                                                placeholder="{{__('Event Name - Ar')}}">
-                                                        </div>
-
-
-
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="description_en"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Details')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <textarea type="text" class="form-control form-control-sm"
-                                                                name="description_en" id="description_en" rows="3"
-                                                                placeholder="{{__('Event Details')}}"
-                                                                maxlength="255"></textarea>
-                                                        </div>
-
-                                                        <div class=" col-md-4 form-group form-group-xs ">
-                                                            <label for=" description_ar"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Details - Ar')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <textarea class="form-control form-control-sm" rows="3"
-                                                                name="description_ar" dir="rtl" id="description_ar"
-                                                                placeholder="{{__('Event Details - Ar')}}"
-                                                                maxlength="255"></textarea>
-                                                        </div>
-
-                                                        <div class=" col-md-4 form-group form-group-xs ">
-                                                            <label for="no_of_audience"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Expected Audience')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <select class="form-control form-control-sm"
-                                                                name="no_of_audience" id="no_of_audience">
-                                                                <option value="">{{__('Select')}}</option>
-                                                                <option value="0-100">0-100</option>
-                                                                <option value="100-500">100-500</option>
-                                                                <option value="500-1000">500-1000</option>
-                                                                <option value="1000&above">1000 & above</option>
-                                                            </select>
-                                                        </div>
-
-
-                                                        <div class="col-md-4  form-group form-group-xs ">
-                                                            <label class="col-form-label"> {{__('Food truck')}}
-                                                                ?</label>
-                                                            {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
-                                                                <input type="checkbox" name="isTruck" id="isTruck">
-                                                                <span></span>
-                                                            </label> --}}
-                                                            <div class="kt-radio-inline">
-                                                                <label class="kt-radio ">
-                                                                    <input type="radio" name="isTruck"
-                                                                        onclick="checkTruck(1)" value="1"> {{__('Yes')}}
-                                                                    <span></span>
-                                                                </label>
-                                                                <label class="kt-radio">
-                                                                    <input type="radio" name="isTruck"
-                                                                        onclick="checkTruck(0)" value="0" checked>
-                                                                    {{__('No')}}
-                                                                    <span></span>
-                                                                </label>
-                                                                <i class="fa fa-edit fa-2x pull-right" id="truckEditBtn"
-                                                                    onclick="editTruck()"></i>
-
-                                                            </div>
-                                                            <input type="hidden" id="prev_val_isTruck" value="0">
-                                                        </div>
-
-                                                        <div class="col-md-4  form-group form-group-xs ">
-                                                            <label class="col-form-label"> {{__('Liquor')}} ?</label>
-                                                            <div class="kt-radio-inline">
-                                                                <label class="kt-radio">
-                                                                    <input type="radio" name="isLiquor"
-                                                                        onclick="checkLiquor(1)" value="1">
-                                                                    {{__('Yes')}}
-                                                                    <span></span>
-                                                                </label>
-                                                                <label class="kt-radio">
-                                                                    <input type="radio" name="isLiquor"
-                                                                        onclick="checkLiquor(0)" value="0" checked>
-                                                                    {{__('No')}}
-                                                                    <span></span>
-                                                                </label>
-                                                                <i class="fa fa-edit fa-2x pull-right"
-                                                                    id="liquorEditBtn" onclick="editLiquor()"></i>
-                                                            </div>
-                                                            <input type="hidden" id="prev_val_isLiquor" value="0">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-
-                                    <section
-                                        class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                                        id="accordionExample6">
-                                        <div class="card">
-                                            <div class="card-header" id="headingTwo6">
-                                                <div class="card-title show" data-toggle="collapse"
-                                                    data-target="#collapseTwo6" aria-expanded="false"
-                                                    aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                                                        {{__('Date Details')}}
-                                                    </h6>
-                                                </div>
-                                            </div>
-
-                                            <div class="collapse show" aria-labelledby="headingTwo6"
-                                                data-parent="#accordionExample6" id="collapseTwo6">
-                                                <div class="card-body">
-                                                    <div class="row">
-
-                                                        <div class="col-md-3 form-group form-group-xs ">
-                                                            <label for="issued_date"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('From Date')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <div class="input-group input-group-sm date">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm"
-                                                                        name="issued_date" id="issued_date"
-                                                                        onchange="givWarn()"
-                                                                        placeholder="{{__('From Date')}}" />
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-calendar"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="col-md-3 form-group form-group-xs">
-                                                            <label class="col-form-label">{{__('From Time')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <div class="input-group input-group-sm timepicker">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input class="form-control form-control-sm"
-                                                                        value="{{date('h:i a', strtotime('10:00 AM'))}}"
-                                                                        name="time_start" id="time_start" type="text" />
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-clock-o"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-
-
-                                                        <div class="col-md-3 form-group form-group-xs ">
-                                                            <label for="expired_date"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('To Date')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <div class="input-group input-group-sm date">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm"
-                                                                        name="expired_date" id="expired_date"
-                                                                        placeholder="{{__('To Date')}}">
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-calendar"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-3 form-group form-group-xs">
-                                                            <label class="col-form-label">{{__('To Time')}} <span
-                                                                    class="text-danger">*</span></label>
-
-                                                            <div class="input-group input-group-sm timepicker">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input class="form-control form-control-sm"
-                                                                        value="{{date('h:i a', strtotime('5:00 PM'))}}"
-                                                                        name="time_end" id="time_end" type="text" />
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-clock-o"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-
-                                    <section
-                                        class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                                        id="accordionExample7">
-                                        <div class="card">
-                                            <div class="card-header" id="headingTwo6">
-                                                <div class="card-title show" data-toggle="collapse"
-                                                    data-target="#collapseTwo5" aria-expanded="false"
-                                                    aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                                                        {{__('Location Details')}}
-                                                    </h6>
-                                                </div>
-                                            </div>
-
-                                            <div class="collapse show" aria-labelledby="headingTwo6"
-                                                data-parent="#accordionExample7" id="collapseTwo5">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-md-6 form-group form-group-xs ">
-                                                            <label for="venue_en"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Venue')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="venue_en" id="venue_en"
-                                                                placeholder="{{__('Venue')}}">
-
-                                                        </div>
-
-                                                        <div class="col-md-6 form-group form-group-xs ">
-                                                            <label for="venue_ar"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Venue - Ar')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="venue_ar" dir="rtl" id="venue_ar"
-                                                                placeholder="Venue - Ar">
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="emirate_id"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
-                                                            </label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                value="Ras Al Khaimah" readonly>
-                                                            <input type="hidden" name="emirate_id" id="emirate_id"
-                                                                value="5">
-                                                        </div>
-
-
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="area_id"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Area')}}
-                                                            </label>
-                                                            <select class="  form-control form-control-sm "
-                                                                name="area_id" id="area_id">
-                                                                <option value="">{{__('Select')}}</option>
-                                                                @foreach($areas as $ar)
-                                                                <option value="{{$ar->id}}">
-                                                                    {{$ar->area_en}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="country_id"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Country')}}
-                                                            </label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                value="United Arab Emirates" readonly>
-                                                            <input type="hidden" name="country_id" id="country_id"
-                                                                value="232">
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-
-                                    <section
-                                        class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                                        id="accordionExample8">
-                                        <div class="card">
-                                            <div class="card-header" id="headingTwo6">
-                                                <div class="card-title show" data-toggle="collapse"
-                                                    data-target="#collapseTwo4" aria-expanded="false"
-                                                    aria-controls="collapseTwo6">
-                                                    <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                                                        {{__('Map Details')}}
-                                                    </h6>
-                                                </div>
-                                            </div>
-
-                                            <div class="collapse show" aria-labelledby="headingTwo6"
-                                                data-parent="#accordionExample8" id="collapseTwo4">
-                                                <div class="card-body">
-                                                    <div class="row">
-
-                                                        <div class="col-md-8 col-sm-12 form-group form-group-xs ">
-                                                            <label for="address"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Address')}}
-                                                                <span class="text-danger">*</span>
-                                                            </label>
-                                                            <input type="text"
-                                                                class="form-control form-control-sm map-input"
-                                                                name="address" id="address-input" placeholder="Address"
-                                                                value="">
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="street"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Street')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="street" id="street" placeholder="Street">
-                                                        </div>
-
-                                                        <input type="hidden" id="full_address" name="full_address">
-
-                                                        <div class="col-md-6 form-group form-group-xs ">
-                                                            <label for="longitude"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Longitude')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="longitude" id="longitude" placeholder="Longitude">
-                                                        </div>
-
-                                                        <div class="col-md-6 form-group form-group-xs ">
-                                                            <label for="latitude"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Latitude')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="latitude" id="latitude" placeholder="Latitude">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div id="address-map-container"
-                                                    style="width:100%;height:200px;padding:15px;">
-                                                    <div style="width: 100%; height: 100%" id="map"></div>
-                                                </div>
-                                            </div>
-                                    </section>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
-
-                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                        <div class="kt-form__section kt-form__section--first ">
-                            <div class="">
-                                @include('permits.components.requirements')
-                                <form id="documents_required" method="post">
-
-                                </form>
-                                <form id="image_upload_form">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{{__('Event
-                                            Images')}}</label>
-                                            <p class="reqName">{{__('Add multiple images of the event')}}</p>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
-                                            <div id="image_uploader">{{__('Upload')}}</div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12"><label
-                                                class="kt-font-bold text--maroon">{{__('Description')}}</label>
-                                            <input type="text" name="description" id="description"
-                                                class="form-control form-control-sm" placeholder="Image Description">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-prev" id="prev_btn">
-                            {{__('Previous')}}
-                        </div>
-
-
-                        <a href="{{route('event.index')}}#applied">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                {{__('Back')}}
-                            </div>
-                        </a>
-
-                        <div class="btn-group" role="group" id="submit--btn-group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{__('Submit')}}
-                            </button>
-                            <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
-                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
-                                    value="finished" id="submit_btn">{{__('Finish & Submit')}}</button>
-                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-danger"
-                                    value="finished" id="submit_btn_artist">{{__('Submit & Add Artist')}}</button>
-                                <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
-                                    id="draft_btn">{{__('Save as Draft')}}</button>
-                            </div>
-                        </div>
-
-
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-next" id="next_btn">
-                            {{__('Next')}}
-                        </div>
-                    </div>
+                    </section> --}}
+                    <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
+                        <input type="checkbox" id="agree" name="agree">
+                        {{__('I Read and understand all service rules and agree to continue submitting it.')}}
+                        <span></span>
+                    </label>
                 </div>
             </div>
         </div>
+
+
+        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+            <div class="kt-form__section kt-form__section--first">
+                <div class="kt-wizard-v3__form">
+                    <form id="eventdetails" action="" novalidate autocomplete="off">
+                        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                            id="accordionExample5">
+                            <div class="card">
+                                <div class="card-header" id="headingOne6">
+                                    <div class="card-title show" data-toggle="collapse" data-target="#collapseOne6"
+                                        aria-expanded="true" aria-controls="collapseOne6">
+                                        <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
+                                            {{__('Event Details')}}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
+                                    data-parent="#accordionExample5">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="event_type_id"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Establishment Type')}} <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="form-control form-control-sm" name="firm_type"
+                                                    id="firm_type" onchange="getRequirementsList()">
+                                                    <option value="">{{__('Select')}}</option>
+                                                    <option value="corporate">{{__('Corporate')}}</option>
+                                                    <option value="government">{{__('Goverment')}}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs">
+                                                <label for="owner_name"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Owner Name (EN)')}}
+                                                    <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    name="owner_name" id="owner_name" maxlength="255">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs">
+                                                <label for="owner_name"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Owner Name (AR)')}}
+                                                    <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    name="owner_name_ar" id="owner_name_ar" dir="rtl" maxlength="255">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="event_type_id"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Event Type')}} <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="form-control form-control-sm" name="event_type_id"
+                                                    id="event_type_id" placeholder="Type"
+                                                    onchange="getRequirementsList();setSubTypes()">
+                                                    <option value="">{{__('Select')}}</option>
+                                                    @foreach ($event_types as $pt)
+                                                    <option value="{{$pt->event_type_id}}">
+                                                        {{ getLangId() == 1 ? ucwords($pt->name_en) : $pt->name_ar}}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+
+                                            <div class="col-md-4 form-group form-group-xs">
+                                                <label for="name_en"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Event Name (EN)')}}
+                                                    <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="name_en"
+                                                    id="name_en" maxlength="255">
+                                            </div>
+
+                                            <div class=" col-md-4 form-group form-group-xs">
+                                                <label for="name_ar" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Event Name (AR)')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm " name="name_ar"
+                                                    dir="rtl" id="name_ar" maxlength="255">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="event_type_id"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Event Sub Type')}} <span class="text-danger"
+                                                        id="event_sub_type_req"></span>
+                                                </label>
+                                                <select class="form-control form-control-sm" name="event_sub_type_id"
+                                                    id="event_sub_type_id">
+                                                    <option value="">{{__('Select')}}</option>
+                                                    {{-- @foreach ($event_sub_types as $pt)
+                                                    <option value="{{$pt->event_type_sub_id}}">
+                                                    {{getLangId() == 1 ? ucwords($pt->sub_name_en) : $pt->sub_name_ar}}
+                                                    </option>
+                                                    @endforeach --}}
+                                                </select>
+                                            </div>
+
+
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="description_en"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Event Details (EN)')}} <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea type="text" class="form-control form-control-sm"
+                                                    name="description_en" id="description_en" rows="3"
+                                                    maxlength="255"></textarea>
+                                            </div>
+
+                                            <div class=" col-md-4 form-group form-group-xs ">
+                                                <label for=" description_ar"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Event Details (AR)')}} <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea class="form-control form-control-sm" rows="3"
+                                                    name="description_ar" dir="rtl" id="description_ar"
+                                                    maxlength="255"></textarea>
+                                            </div>
+
+                                            <div class=" col-md-4 form-group form-group-xs ">
+                                                <label for="no_of_audience"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Expected Audience')}} <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-control form-control-sm" name="no_of_audience"
+                                                    id="no_of_audience">
+                                                    <option value="">{{__('Select')}}</option>
+                                                    <option value="0-100">0-100</option>
+                                                    <option value="100-500">100-500</option>
+                                                    <option value="500-1000">500-1000</option>
+                                                    <option value="1000&above">1000 & above</option>
+                                                </select>
+                                            </div>
+
+
+
+                                            <div class="col-md-4  form-group form-group-xs ">
+                                                <label class="col-form-label"> {{__('Food truck')}}
+                                                    ?</label>
+                                                {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
+                                                                <input type="checkbox" name="isTruck" id="isTruck">
+                                                                <span></span>
+                                                            </label> --}}
+                                                <div class="kt-radio-inline">
+                                                    <label class="kt-radio ">
+                                                        <input type="radio" name="isTruck" onclick="checkTruck(1)"
+                                                            value="1"> {{__('Yes')}}
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio">
+                                                        <input type="radio" name="isTruck" onclick="checkTruck(0)"
+                                                            value="0" checked>
+                                                        {{__('No')}}
+                                                        <span></span>
+                                                    </label>
+                                                    <i class="fa fa-edit fa-2x pull-right" id="truckEditBtn"
+                                                        onclick="editTruck()"></i>
+
+                                                </div>
+                                                <input type="hidden" id="prev_val_isTruck" value="0">
+                                            </div>
+
+                                            <div class="col-md-4  form-group form-group-xs ">
+                                                <label class="col-form-label"> {{__('Liquor')}} ?</label>
+                                                <div class="kt-radio-inline">
+                                                    <label class="kt-radio">
+                                                        <input type="radio" name="isLiquor" onclick="checkLiquor(1)"
+                                                            value="1">
+                                                        {{__('Yes')}}
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio">
+                                                        <input type="radio" name="isLiquor" onclick="checkLiquor(0)"
+                                                            value="0" checked>
+                                                        {{__('No')}}
+                                                        <span></span>
+                                                    </label>
+                                                    <i class="fa fa-edit fa-2x pull-right" id="liquorEditBtn"
+                                                        onclick="editLiquor()"></i>
+                                                </div>
+                                                <input type="hidden" id="prev_val_isLiquor" value="0">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                            id="accordionExample6">
+                            <div class="card">
+                                <div class="card-header" id="headingTwo6">
+                                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo6"
+                                        aria-expanded="false" aria-controls="collapseTwo6">
+                                        <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
+                                            {{__('Date Details')}}
+                                        </h6>
+                                    </div>
+                                </div>
+
+                                <div class="collapse show" aria-labelledby="headingTwo6"
+                                    data-parent="#accordionExample6" id="collapseTwo6">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <div class="col-md-3 form-group form-group-xs ">
+                                                <label for="issued_date"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('From Date')}} <span class="text-danger">*</span></label>
+                                                <div class="input-group input-group-sm date">
+                                                    <div class="kt-input-icon kt-input-icon--right">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="issued_date" id="issued_date" placeholder="DD-MM-YYYY"
+                                                            onchange="givWarn()" />
+                                                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                            <span>
+                                                                <i class="la la-calendar"></i>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-3 form-group form-group-xs">
+                                                <label class="col-form-label">{{__('From Time')}} <span
+                                                        class="text-danger">*</span></label>
+                                                <div class="input-group input-group-sm timepicker">
+                                                    <div class="kt-input-icon kt-input-icon--right">
+                                                        <input class="form-control form-control-sm"
+                                                            value="{{date('h:i a', strtotime('10:00 AM'))}}"
+                                                            name="time_start" id="time_start" type="text" />
+                                                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                            <span>
+                                                                <i class="la la-clock-o"></i>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+
+                                            <div class="col-md-3 form-group form-group-xs ">
+                                                <label for="expired_date"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('To Date')}}
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="input-group input-group-sm date">
+                                                    <div class="kt-input-icon kt-input-icon--right">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="expired_date" id="expired_date"
+                                                            placeholder="DD-MM-YYYY">
+                                                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                            <span>
+                                                                <i class="la la-calendar"></i>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 form-group form-group-xs">
+                                                <label class="col-form-label">{{__('To Time')}} <span
+                                                        class="text-danger">*</span></label>
+
+                                                <div class="input-group input-group-sm timepicker">
+                                                    <div class="kt-input-icon kt-input-icon--right">
+                                                        <input class="form-control form-control-sm"
+                                                            value="{{date('h:i a', strtotime('5:00 PM'))}}"
+                                                            name="time_end" id="time_end" type="text" />
+                                                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                            <span>
+                                                                <i class="la la-clock-o"></i>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                            id="accordionExample7">
+                            <div class="card">
+                                <div class="card-header" id="headingTwo6">
+                                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo5"
+                                        aria-expanded="false" aria-controls="collapseTwo6">
+                                        <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
+                                            {{__('Location Details')}}
+                                        </h6>
+                                    </div>
+                                </div>
+
+                                <div class="collapse show" aria-labelledby="headingTwo6"
+                                    data-parent="#accordionExample7" id="collapseTwo5">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 form-group form-group-xs ">
+                                                <label for="venue_en" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Venue (EN)')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="venue_en"
+                                                    id="venue_en" maxlength="255">
+
+                                            </div>
+
+                                            <div class="col-md-6 form-group form-group-xs ">
+                                                <label for="venue_ar" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Venue (AR)')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="venue_ar"
+                                                    dir="rtl" id="venue_ar" maxlength="255">
+                                            </div>
+
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="emirate_id"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
+                                                </label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    value="Ras Al Khaimah" readonly>
+                                                <input type="hidden" name="emirate_id" id="emirate_id" value="5">
+                                            </div>
+
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="area_id"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Area')}}
+                                                </label>
+                                                <select class="  form-control form-control-sm " name="area_id"
+                                                    id="area_id">
+                                                    <option value="">{{__('Select')}}</option>
+                                                    @foreach($areas as $ar)
+                                                    <option value="{{$ar->id}}">
+                                                        {{$ar->area_en}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="country_id"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Country')}}
+                                                </label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    value="United Arab Emirates" readonly>
+                                                <input type="hidden" name="country_id" id="country_id" value="232">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                            id="accordionExample8">
+                            <div class="card">
+                                <div class="card-header" id="headingTwo6">
+                                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo4"
+                                        aria-expanded="false" aria-controls="collapseTwo6">
+                                        <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
+                                            {{__('Map Details')}}
+                                        </h6>
+                                    </div>
+                                </div>
+
+                                <div class="collapse show" aria-labelledby="headingTwo6"
+                                    data-parent="#accordionExample8" id="collapseTwo4">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <div class="col-md-8 col-sm-12 form-group form-group-xs ">
+                                                <label for="address"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Address')}}
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control form-control-sm map-input"
+                                                    name="address" id="address-input" value="" maxlength="255">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="street" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Street')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="street"
+                                                    id="street">
+                                            </div>
+
+                                            <input type="hidden" id="full_address" name="full_address">
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="longitude" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Longitude')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="longitude"
+                                                    id="longitude">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="latitude" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Latitude')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="latitude"
+                                                    id="latitude">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="addi_loc_info"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Additional Location Info')}}</label>
+                                                <textarea class="form-control form-control-sm" name="addi_loc_info"
+                                                    id="addi_loc_info" maxlength="255"></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
+                                        <div style="width: 100%; height: 100%" id="map"></div>
+                                    </div>
+                                </div>
+                        </section>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
+
+        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+            <div class="kt-form__section kt-form__section--first ">
+                <div class="">
+                    @include('permits.components.requirements')
+                    <form id="documents_required" method="post">
+
+                    </form>
+                    <form id="image_upload_form">
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-12"><label
+                                    class="kt-font-bold text--maroon">{{__('Images')}}</label>
+                                <p class="reqName">{{__('Add multiple images')}}</p>
+                            </div>
+                            <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
+                                <div id="image_uploader">{{__('Upload')}}</div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="kt-form__actions">
+            <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                data-ktwizard-type="action-prev" id="prev_btn">
+                {{__('Previous')}}
+            </div>
+
+
+            <a href="{{route('event.index')}}#applied">
+                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                    {{__('Back')}}
+                </div>
+            </a>
+
+            <div class="btn-group" role="group" id="submit--btn-group">
+                <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{__('Submit')}}
+                </button>
+                <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
+                    <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
+                        value="finished" id="submit_btn">{{__('Finish & Submit')}}</button>
+                    <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-danger"
+                        value="finished" id="submit_btn_artist">{{__('Submit & Add Artist')}}</button>
+                    <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
+                        id="draft_btn">{{__('Save as Draft')}}</button>
+                </div>
+            </div>
+
+
+            <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                data-ktwizard-type="action-next" id="next_btn">
+                {{__('Next')}}
+            </div>
+        </div>
     </div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -837,7 +817,7 @@
                 firm_type: 'required',
                 no_of_audience: 'required',
                 owner_name: 'required',
-                owner_name_ar: 'required'
+                owner_name_ar: 'required',
             },
             messages: {
                 event_type_id: '',
@@ -859,7 +839,7 @@
                 firm_type: '',
                 no_of_audience:'',
                 owner_name:'',
-                owner_name_ar: ''
+                owner_name_ar: '',
             },
         });
 
@@ -944,7 +924,9 @@
                     isLiquor: $("input:radio[name='isLiquor']:checked").val(),
                     no_of_audience: $('#no_of_audience').val(),
                     owner_name: $('#owner_name').val(),
-                    owner_name_ar: $('#owner_name_ar').val()
+                    owner_name_ar: $('#owner_name_ar').val(),
+                    addi_loc_info: $('#addi_loc_info').val(),
+                    event_sub_type_id: $('#event_sub_type_id').val()
                 };
 
                 localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
@@ -1082,7 +1064,7 @@
 
         function call_this_to_submit(isArtist = null){
             var hasFile = docValidation();
-                if (documentsValidator ? documentsValidator.form() && hasFile : 1) {
+                if (documentsValidator ? documentsValidator.form() : '' &&  hasFile ) {
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
                     $('#submit--btn-group').css('pointer-events', 'none');
                     var ed = localStorage.getItem('eventdetails');
@@ -1130,9 +1112,11 @@
 
         $('#draft_btn').click((e) => {
             var hasFile = docValidation();
-                if (documentsValidator ? documentsValidator.form() && hasFile : 1) {
+                if (documentsValidator != '' ? documentsValidator.form() : 1 && hasFile) {
 
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+
+                    $('#submit--btn-group').css('pointer-events', 'none');
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
@@ -1180,6 +1164,36 @@
                     // alert('It will take 10 days to process the permit');
                     $('#showwarning').modal('show');
                 }
+            }
+        }
+
+        function setSubTypes()
+        {
+            var langId = $('#getLangid').val();
+            var et = $('#event_type_id').val();
+            if(et)
+            {
+                var url = "{{route('event.get_event_sub_types', ':id')}}";
+                url = url.replace(':id', et);
+                $.ajax({
+                url: url ,
+                success: function (result) {
+                        $('#event_sub_type_id').empty();
+                        $('#event_sub_type_id').append('<option value="">{{__('Select')}}</option>');
+                        if(result.length > 0){
+                            for(var  i = 0; i< result.length;i++)
+                            {
+                                $('#event_sub_type_id').append('<option value="'+result[i].event_type_sub_id+'">'+(langId == 1 ? toCapitalize(result[i].sub_name_en) : result[i].sub_name_ar)+'</option>');
+                            }
+                            $('select[name="event_sub_type_id"]').rules('add', { required: true, messages: {required:''}});
+                            $('#event_sub_type_req').html('*');
+                        }else 
+                        {
+                            $('select[name="event_sub_type_id"]').rules("remove"), "required";$('#event_sub_type_id').removeClass('is-invalid');
+                            $('#event_sub_type_req').html('');
+                        }
+                    }
+                });
             }
         }
 
@@ -1349,13 +1363,16 @@
             return hasFile;
         }
 
-        for(var i = 1; i <= $('#truck_document_count').val(); i++)
-        {
-            docRules['truck_doc_issue_date_'+i] = 'required';
-            docRules['truck_doc_exp_date_'+i] = 'required';
-            docMessages['truck_doc_issue_date_'+i] = '';
-            docMessages['truck_doc_exp_date_'+i] = '';
-        }
+        // truckDocRules = {};
+        // truckDocMessages = {};
+
+        // for(var i = 1; i <= $('#truck_document_count').val(); i++)
+        // {
+        //     truckDocRules['truck_doc_issue_date_'+i] = 'required';
+        //     truckDocRules['truck_doc_exp_date_'+i] = 'required';
+        //     truckDocMessages['truck_doc_issue_date_'+i] = '';
+        //     truckDocMessages['truck_doc_exp_date_'+i] = '';
+        // }
         
         function go_back_truck_list()
         {
@@ -1408,7 +1425,7 @@
                     if(result) 
                     {
                         editTruck();
-                        $('#disp_mess').html('<h5 class="text-danger py-2">Truck Details Deleted successfully</h5>');
+                        $('#disp_mess').html('<h5 class="text-danger py-2">Food Truck Details Deleted successfully</h5>');
                         setTimeout(function(){ $('#disp_mess').html('');}, 2000)
                     }
                 }
@@ -1488,7 +1505,7 @@
                                 editTruck();
                                 $('#edit_one_food_truck').modal('hide');
                                 $('#edit_food_truck').modal('show');
-                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details Added successfully</h5>');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
                         }
@@ -1528,7 +1545,7 @@
                                 editTruck();
                                 $('#edit_food_truck').modal('show');
                                 $('#edit_one_food_truck').modal('hide');
-                                $('#disp_mess').html('<h5 class="text-success py-2">Truck details updated successfully</h5>');
+                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
                         }
@@ -1592,7 +1609,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);
@@ -1807,7 +1824,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);

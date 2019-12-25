@@ -65,8 +65,8 @@ return [
     'select' => 'Select',
     'first_name' => 'First Name',
     'last_name' => 'Last Name',
-    'first_name_ar' => 'First Name - AR',
-    'last_name_ar' => 'Last Name - AR',
+    'first_name_ar' => 'First Name (AR)',
+    'last_name_ar' => 'Last Name (AR)',
     'birth_date' => 'Birth Date',
     'religion' => 'Religion',
 

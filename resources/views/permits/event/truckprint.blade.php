@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$event_details->permit_number}} - Event Permit</title>
+    <title>{{$event_details->permit_number}} - {{__('Event Permit')}}</title>
     <style>
         * {
             box-sizing: border-box;
@@ -150,13 +150,13 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">License Data</th>
-                <th colspan="2" scope="col">بيانات الترخيص</th>
+                <th colspan="2" scope="col">تاريخ الرخصة</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>{{$event_details->owner->company->trade_license}}</td>
-                <td class="subhead">رقم الرخصة <br />License Number</td>
+                <td class="subhead">رقم الرخصة<br />License Number</td>
                 <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}
                 </td>
                 <td class="subhead">اسم المؤسسة<br />Name of Establishment</td>
@@ -170,7 +170,7 @@
             <tr>
                 <td colspan="3"> {{$event_details->owner_name_ar}}<br />
                     {{$event_details->owner_name}}</td>
-                <td class="subhead">صاحب الترخيص <br />License owner</td>
+                <td class="subhead">المالك <br />License owner</td>
             </tr>
         </tbody>
     </table>
@@ -221,10 +221,10 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Company Name</th>
-                <th>Plate No.</th>
-                <th>Reg. Expriy Date</th>
-                <th>Food Service</th>
+                <th>Establishment Name</th>
+                <th>Traffic Plate No.</th>
+                <th>Registration Expriy Date</th>
+                <th>Food Services</th>
             </tr>
         </thead>
         <tbody>

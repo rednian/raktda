@@ -2,6 +2,13 @@
 
 namespace App\Http\Controllers\Company;
 
+use Auth;
+use DB;
+use Session;
+use URL;
+use PDF;
+use Storage;
+
 use Illuminate\Http\Request;
 use App\EventType;
 use App\Country;
@@ -11,12 +18,10 @@ use App\Event;
 use App\Requirement;
 use App\EventRequirement;
 use App\EventTypeRequirement;
-use Auth;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
-use PDF;
 use App\Company;
 use App\EventLiquorTruckRequirement;
 use App\EventTruck;
@@ -24,11 +29,9 @@ use App\EventLiquor;
 use App\EventTransaction;
 use App\Transaction;
 use App\EventComment;
-use App\EventOtherUpload ;
-use Session;
-use URL;
+use App\EventOtherUpload ;;
 use App\Happiness;
-use Storage;
+use App\EventTypeSub;
 use NumberToWords\NumberToWords;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -49,6 +52,7 @@ class EventController extends Controller
         EventLiquor::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
         EventTruck::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
         $data['event_types'] = EventType::all()->sortBy('name_en');
+        $data['event_sub_types'] = EventTypeSub::all()->sortBy('sub_name_en');
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
         $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
@@ -150,6 +154,7 @@ class EventController extends Controller
                     if ($total_docs > 0) {
 
                         for ($k = 0; $k < $total_docs; $k++) {
+
                             if (Storage::exists(session($userid  . '_truck_file_'  . $l)[$k])) {
 
                                 $ext = session($userid . '_truck_ext_'  . $l)[$k];
@@ -172,8 +177,8 @@ class EventController extends Controller
                                 }
 
                                 EventLiquorTruckRequirement::create([
-                                    'issued_date' => $truck_doc_details[$m] != null ? Carbon::parse($truck_doc_details[$m]['issue_date'])->toDateTimeString() : '',
-                                    'expired_date' => $truck_doc_details[$m] != null ? Carbon::parse($truck_doc_details[$m]['exp_date'])->toDateTimeString() : '',
+                                    'issue_date' => !empty($truck_doc_details[$m]) ? Carbon::parse($truck_doc_details[$m]['issue_date'])->toDateString() : '',
+                                    'expired_date' => !empty($truck_doc_details[$m])? Carbon::parse($truck_doc_details[$m]['exp_date'])->toDateString() : '',
                                     'created_at' =>  Carbon::now()->toDateTimeString(),
                                     'created_by' =>  Auth::user()->user_id,
                                     'requirement_id' => $l,
@@ -309,7 +314,7 @@ class EventController extends Controller
 
 
                                 EventLiquorTruckRequirement::create([
-                                    'issued_date' =>  $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
+                                    'issue_date' =>  $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
                                     'expired_date' => $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['exp_date'])->toDateTimeString() : '',
                                     'created_at' =>  Carbon::now()->toDateTimeString(),
                                     'created_by' =>  Auth::user()->user_id,
@@ -454,7 +459,9 @@ class EventController extends Controller
             'firm' => $evd['firm_type'],
             'audience_number' => $evd['no_of_audience'],
             'owner_name' => $evd['owner_name'],
-            'owner_name_ar' => $evd['owner_name_ar']
+            'owner_name_ar' => $evd['owner_name_ar'],
+            'additional_location_info' => trim($evd['addi_loc_info']),          
+            'event_type_sub_id' => $evd['event_sub_type_id']
         );
 
         if ($from == 'new') {
@@ -601,6 +608,8 @@ class EventController extends Controller
                     EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
                         'path' => $newpath,
                     ]);
+
+                    Storage::delete('public/'.$path);
                 }
             }
         }
@@ -632,8 +641,11 @@ class EventController extends Controller
                     EventLiquorTruckRequirement::where('liquor_truck_requirement_id', $req->liquor_truck_requirement_id)->update([
                         'path' => $newpath,
                     ]);
+
+                    Storage::delete('public/'.$path);
                 }
             }
+            
         }
 
         EventLiquor::whereNull('event_id')->where('status',1)->delete();
@@ -664,11 +676,13 @@ class EventController extends Controller
             session()->forget([$userid . '_event_pic_file', $userid . '_event_ext', $userid . '_event_thumb_file']);
             Event::where('event_id', $event_id)->update(['logo_original' => $newPathLink, 'logo_thumbnail' => $newThumbPathLink]);
 
+            Storage::delete([session($userid . '_event_pic_file') , session($userid . '_event_thumb_file')]);
+
         }
 
         $this->insertEventImages($event_id, $request->description);
 
-        Storage::deleteDirectory('public/' . $userid . '/event/temp/');
+        
 
         if ($event) {
             $result = ['success', 'Event Permit Applied Successfully', 'Success'];
@@ -713,6 +727,9 @@ class EventController extends Controller
         $data['artist'] = $artist;
         $data['tab'] =  $request->tab;
         $data['eventImages']  = $event->otherUpload;
+        if (! $event) {
+           return abort(401);
+        }
         return view('permits.event.show', $data);
     }
 
@@ -726,7 +743,9 @@ class EventController extends Controller
         $data['emirates'] = Emirates::all()->sortBy('name_en');
         $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
         $data['event'] = $event;
-
+        if (! $event) {
+            abort(401);
+        }
         if ($event->status == 'processing') {
             return redirect('company/event');
         }
@@ -752,17 +771,24 @@ class EventController extends Controller
     public function calendarFn()
     {
         $user = Auth::user();
-        $events = Event::whereIn('status', ['active', 'expired'])->where('created_by', Auth::user()->user_id)->orWhere('is_display_all', 1)->get();
+        $allEvents = Event::where('is_display_all', 1);
+        $events = Event::whereIn('status', ['active', 'expired'])->where('created_by', Auth::user()->user_id)->union($allEvents)->get();
+
         $events = $events->map(function ($event) use ($user) {
+            $input = array("fc-event-danger", "fc-event-success", "fc-event-primary", "fc-event-light","fc-event-danger", "fc-event-brand");
+            $arr = array("fc-event-solid-primary",  "fc-event-solid-warning", "fc-event-solid-success");
+            $rand_keys = array_rand($input, 2);
+            $rand_keys_d = array_rand($arr, 2);
             return [    
                 'title' => $user->LanguageId == 1 ? ucwords($event->name_en) : $event->name_ar,
                 'start' => date('Y-m-d', strtotime($event->issued_date)) . 'T' . date('H:i:s', strtotime($event->time_start)),
                 'end' => date('Y-m-d', strtotime($event->expired_date)) . 'T' . date('H:i:s', strtotime($event->time_end)),
                 'id' => $event->event_id,
-                'url' => route('event.show', $event->event_id) . '?tab=calendar',
+                'url' => $event->created_by == $user->user_id ? route('event.show', $event->event_id) . '?tab=calendar' : '#',
                 'description' => 'Venue : ' . $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
-                'backgroundColor' => '#ffcccb !important',
-                'textColor' => '#fff !important',
+                // 'backgroundColor' => '#1dbb9e !important',
+                // 'textColor' => '#fff !important',
+                'className' => $input[$rand_keys[0]] .' '.$arr[$rand_keys_d[0]]
             ];
         });
         return response()->json($events);
@@ -801,7 +827,9 @@ class EventController extends Controller
             'firm' => $evd['firm_type'],
             'is_truck' => $evd['isTruck'],
             'is_liquor' => $evd['isLiquor'],
-            'audience_number' => $evd['no_of_audience']
+            'audience_number' => $evd['no_of_audience'],
+            'additional_location_info' => $evd['addi_loc_info'],      
+            'event_type_sub_id' => $evd['event_sub_type_id']
         );
 
         $old_status = Event::where('event_id', $event_id)->first()->status;
@@ -933,7 +961,6 @@ class EventController extends Controller
             }
         }
 
-
         if ($event) {
             $result = ['success', 'Event Permit Updated Successfully', 'Success'];
         } else {
@@ -945,16 +972,24 @@ class EventController extends Controller
 
     public function cancel(Request $request)
     {
-        $event_id = $request->permit_id;
-        $reason = $request->cancel_reason;
+        try {
+            DB::beginTransaction();
+            $event_id = $request->permit_id;
+            $reason = $request->cancel_reason;
 
-        Event::where('event_id', $event_id)->update([
-            'request_type' => 'cancelled',
-            'cancelled_by' => Auth::user()->user_id,
-            'cancel_reason' => $reason
-        ]);
-
-        return redirect()->route('event.index');
+            Event::where('event_id', $event_id)->update([
+                'cancel_date' => Carbon::now(),
+                'status' => 'cancelled',
+                'cancelled_by' => Auth::user()->user_id,
+                'cancel_reason' => $reason
+            ]);
+            DB::commit();
+            $result = ['success', ' Permit Cancelled successfully ', 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+        return redirect()->route('event.index')->with('message', $result);
     }
 
     public function get_status($id)
@@ -980,6 +1015,9 @@ class EventController extends Controller
     public function download($id)
     {
         $event_details = Event::with('type', 'country')->where('event_id', $id)->first();
+        if(is_null($event_details)){
+            return abort(401);
+        }
         $data['event_details'] = $event_details;
         $from = Event::where('event_id', $id)->first()->issued_date;
         $to = Event::where('event_id', $id)->first()->expired_date;
@@ -996,33 +1034,27 @@ class EventController extends Controller
         //     'title' => 'Event Permit',
         //     'default_font_size' => 10
         // ]);
-        if($event_details->is_liquor == 1){
-            $data['liquor'] = EventLiquor::where('event_id', $id)->first();
-        }
-        if($event_details->is_truck == 1){
+        if($event_details->truck()->exists()){
             $data['truck'] = EventTruck::where('event_id', $id)->get();
         }
-       
+        if($event_details->liquor()->exists()){
+            $data['liquor'] = EventLiquor::where('event_id', $id)->first();
+        }
+        
         $pdf = PDF::loadView('permits.event.print', $data, [], [
             'title' => 'Event Permit',
             'default_font_size' => 10
         ]);
         
-        if($event_details->is_truck == 1){
-            if(count($event_details->truck) > 0)
+        if($event_details->truck()->exists()){
+            $pdf->getMpdf()->AddPage();
+            $pdf->getMpdf()->WriteHTML(\View::make('permits.event.truckprint')->with($data)->render());
+        }
+        if($event_details->liquor()->exists()){
+            if($event_details->liquor->provided != null || $event_details->liquor->provided != 1)
             {
                 $pdf->getMpdf()->AddPage();
-                $pdf->getMpdf()->WriteHTML(\View::make('permits.event.truckprint')->with($data)->render());
-            }
-        }
-        if($event_details->is_liquor == 1){
-            if($event_details->liquor)
-            {
-                if($event_details->liquor->provided != null || $event_details->liquor->provided != 1)
-                {
-                    $pdf->getMpdf()->AddPage();
-                    $pdf->getMpdf()->WriteHTML(\View::make('permits.event.liquorprint')->with($data)->render());
-                }
+                $pdf->getMpdf()->WriteHTML(\View::make('permits.event.liquorprint')->with($data)->render());
             }
         }
         // $pdf->getMpdf()->useDefaultCSS2();
@@ -1077,6 +1109,8 @@ class EventController extends Controller
             } else {
                 return 'None';
             }
+        })->editColumn('name_en', function ($permits) {
+            return getLangId() == 1 ? $permits->name_en : $permits->name_ar ;
         })->addColumn('action', function ($permit) use ($status, $amend_grace) {
             if(check_is_blocked()['status'] == 'blocked'){
                 return ;
@@ -1091,10 +1125,10 @@ class EventController extends Controller
                         return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">Rejected</span>';
                     } else if ($permit->status == 'cancelled') {
                         return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">Cancelled</span>';
-                    } else if ($permit->status == 'bounce back') {
+                    } else if ($permit->status == 'need modification') {
                         return '<a href="' . route('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
                     } else if ($permit->status == 'new') {
-                        return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
+                        // return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     }
                     break;
                 case 'valid':
@@ -1110,7 +1144,7 @@ class EventController extends Controller
                     break;
                 case 'draft':   
                     if ($permit->status == 'draft') {
-                        return '<a href="' . route('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View / Update</span></a>';
+                        return '<a href="' . route('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>&emsp;<span onClick="delete_draft(' . $permit->event_id . ')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Delete</span>';
                     }
                     break;
             }
@@ -1120,13 +1154,15 @@ class EventController extends Controller
             $status = $permit->status;
             $ret_status = '';
             if($status == 'amended' || $status == 'new' || $status == 'need approval' || $status == 'processing') {
-                $ret_status = 'Pending'; 
+                return $ret_status = __('Pending'); 
             }else if($status == 'approved-unpaid') {
-                $ret_status = 'Approved';
+                return $ret_status = __('Approved');
+            }else if($status == 'need modification') {
+                return $ret_status = __('Bounce Back');
             }else {
-                $ret_status = $permit->status;
+                return $ret_status = $permit->status;
             }
-            return  $ret_status;
+            
         })->addColumn('details', function ($permit)  use ($status) {
             $from = '';
             switch ($status) {
@@ -1140,12 +1176,12 @@ class EventController extends Controller
                     $from = 'draft';
                     break;
             }
-            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
+            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
             if ($permit->status == 'expired') {
                 return;
             } else {
-                return '<a href="' . route('company.event.download', $permit->event_id) . '" target="_blank" title="Download Permit"><i class="fa fa-file-download"></i></a>';
+                return '<a href="' . route('company.event.download', $permit->event_id) . '" target="_blank" title="Download Permit"><i class="fa fa-file-download fs-16"></i></a>';
             }
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
@@ -1268,7 +1304,7 @@ class EventController extends Controller
                                 $newPathLink = $check_path . '/' . $next_file_no . '_' . $date . '.' . $ext;
 
                                 EventLiquorTruckRequirement::create([
-                                    'issued_date' =>  $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
+                                    'issue_date' =>  $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
                                     'expired_date' => $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['exp_date'])->toDateTimeString() : '',
                                     'created_at' =>  Carbon::now()->toDateTimeString(),
                                     'created_by' =>  Auth::user()->user_id,
@@ -1307,9 +1343,9 @@ class EventController extends Controller
 
     public function generateReferenceNumber()
     {
-        $last_permit_d = Event::latest()->first();
+        $last_permit_d = Event::max('reference_number');
         if ($last_permit_d) {
-            $last_rn = $last_permit_d->reference_number;
+            $last_rn = $last_permit_d;
             $n = substr($last_rn, 3);
             $f = substr($n, 0, 1);
             $l = substr($n, -1, 1);
@@ -1389,10 +1425,12 @@ class EventController extends Controller
             'area_id' => $evd['area_id'],
             'event_type_id' => $evd['event_type_id'],
             'owner_name' => $evd['owner_name'],
+            'owner_name_ar' => $evd['owner_name_ar'],
+            'company_id' => Auth::user()->EmpClientId,
             'status' => 'draft',
             'created_by' =>  $userid,
-            'reference_number' => $this->generateReferenceNumber(),
-            'request_type' => 'new request'
+            'additional_location_info' => trim($evd['addi_loc_info']),          
+            'event_type_sub_id' => $evd['event_sub_type_id']
         );
 
         $event = Event::create($input_Array);
@@ -1584,6 +1622,30 @@ class EventController extends Controller
         return view('permits.event.draft', $data);
     }
 
+    public function get_event_sub_types($id)
+    {
+        if($id)
+        {
+            return EventTypeSub::where('event_type_id', $id)->get();
+        }
+    }
+
+    public function delete_draft(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $event_id = $request->del_draft_id;
+
+            Event::where('event_id', $event_id)->delete();
+            DB::commit();
+            $result = ['success', ' Draft Deleted successfully ', 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', $e->getMessage(), 'Error'];
+        }
+        return redirect()->route('event.index')->with('message', $result);
+    }
+
 
     public function update_draft(Request $request)
     {
@@ -1617,6 +1679,9 @@ class EventController extends Controller
             'firm' => $evd['firm_type'],
             'audience_number' => $evd['no_of_audience'],
             'owner_name' => $evd['owner_name'],
+            'owner_name_ar' => $evd['owner_name_ar'],
+            'additional_location_info' => trim($evd['addi_loc_info']),     
+            'event_type_sub_id' => $evd['event_sub_type_id']
         );
 
         $event = Event::where('event_id', $event_id)->update($input_Array);
@@ -2196,7 +2261,6 @@ class EventController extends Controller
         $filepath = $request->path;
         $ext = $request->ext;
         $id = $request->id;
-
         $files = session()->pull(Auth::user()->user_id . '_truck_file_' . $id, []);
         $exts = session()->pull(Auth::user()->user_id . '_truck_ext_' . $id, []);
         if (($key = array_search($filepath, $files)) !== false) {

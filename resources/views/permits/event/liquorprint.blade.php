@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$event_details->permit_number}} - Event Permit</title>
+    <title>{{$event_details->permit_number}} - {{__('Event Permit')}}</title>
     <style>
         * {
             box-sizing: border-box;
@@ -150,13 +150,13 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">License Data</th>
-                <th colspan="2" scope="col">بيانات الترخيص</th>
+                <th colspan="2" scope="col">تاريخ الرخصة</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>{{$event_details->owner->company->trade_license}}</td>
-                <td class="subhead">رقم الرخصة <br />License Number</td>
+                <td class="subhead">رقم الرخصة<br />License Number</td>
                 <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}</td>
                 <td class="subhead">اسم المؤسسة<br />Name of Establishment</td>
             </tr>
@@ -168,7 +168,7 @@
             <tr>
                 <td colspan="3">{{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}
                 </td>
-                <td class="subhead">صاحب الترخيص <br />License owner</td>
+                <td class="subhead">المالك <br />License owner</td>
             </tr>
         </tbody>
     </table>
@@ -178,18 +178,18 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">Permit Data</th>
-                <th colspan="2" scope="col">بيانات الترخيص</th>
+                <th colspan="2" scope="col">بيانات التصريح</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td colspan="2">{{$liquor->company_name_en}}</td>
                 <td>{{$liquor->company_name_ar}}</td>
-                <td class="subhead"><br />Company Name</td>
+                <td class="subhead">رقم المنشأة<br />Establishment Name</td>
             </tr>
             <tr>
                 <td colspan="3">{{$liquor->purchase_receipt}}</td>
-                <td class="subhead"><br />Purchase Receipt</td>
+                <td class="subhead">رقم إيصال الشراء<br />Purchase Receipt Number</td>
             </tr>
             <tr>
                 <td colspan="3">{{$liquor->liquor_service}}</td>
@@ -202,17 +202,12 @@
             </tr>
             @endif
             <tr>
-                <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'days' : 'day'}} </td>
-                <td>انقضاء</td>
-                <td class="subhead">فترة التصريح <br />Permit Period</td>
-            </tr>
-            <tr>
                 <td colspan="3">{{$event_details->issued_date}}</td>
                 <td class="subhead">تاريخ التصريح<br /> Permit Date</td>
             </tr>
             <tr>
                 <td colspan="3">{{$event_details->expired_date}}</td>
-                <td class="subhead">تاريخ انتهاء الصلاحية <br /> Permit Expiry Date</td>
+                <td class="subhead"> تالايخ انتهاء التصريح <br /> Permit Expiry Date</td>
             </tr>
             <tr>
                 <td colspan="2">{{$event_details->venue_en}}</td>

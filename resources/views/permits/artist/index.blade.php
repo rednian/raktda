@@ -53,14 +53,14 @@
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('Ref NO.')}}</th>
-                            <th>{{__('Permit Term')}}</th>
+                            <th>{{__('REFERENCE NO.')}}</th>
+                            <th>{{__('PERMIT TERM')}}</th>
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
-                            <th>{{__('Location')}}</th>
+                            <th>{{__('Work Location')}}</th>
                             <th>{{__('Artists')}}</th>
-                            <th>{{__('Status')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th>{{__('STATUS')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -71,12 +71,12 @@
                 <table class="table table-striped table-borderless table-hover border" id="existing-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('Ref NO.')}}</th>
-                            <th>{{__('Term')}}</th>
+                            <th>{{__('REFERENCE NO.')}}</th>
+                            <th>{{__('PERMIT TERM')}}</th>
                             <th>{{__('Permit Number')}}</th>
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
-                            <th>{{__('Location')}}</th>
+                            <th>{{__('Work Location')}}</th>
                             <th>{{__('Artists')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
@@ -94,7 +94,7 @@
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
                             <th>{{__('Work Location')}}</th>
-                            <th>{{__('Added On')}}</th>
+                            <th>{{__('ADDED ON')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                         </tr>
@@ -147,7 +147,7 @@
             <div class="modal-dialog " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Cancelled Reason</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{__('Cancelled Reason')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -161,12 +161,44 @@
         <!--end::Modal-->
 
         <!--begin::Modal-->
+        <div class="modal fade" id="del_draft_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog " role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <h5 class="modal-title" id="exampleModalLabel">{{__('Delete Draft')}}</h5>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{route('artist.delete_draft')}}" method="POST" novalidate>
+                            @csrf
+                            <label>{{__('Are you sure to delete this draft')}}
+                                ? {{__('Data will be lost')}}</label>
+                            <input type="hidden" id="del_draft_id" name="del_draft_id">
+                            <div>
+                                <input type="submit" class="btn btn-sm btn--maroon pull-right" value="Delete">
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!--end::Modal-->
+
+
+        <!--begin::Modal-->
         <div class="modal fade" id="rejected_permit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Rejected Reason</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{__('Rejected Reason')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -205,6 +237,8 @@
             $('html,body').scrollTop(scrollmem);
         });
 
+        var getLangid = $('#getLangid').val();
+
         var table1 = $('#applied-artists-table').DataTable({
             responsive: true,
             processing: true,
@@ -240,7 +274,8 @@
                 }
             ],
             language: {
-                emptyTable: "No Applied Artist Permits"
+                emptyTable: "No Applied Artist Permits",
+                searchPlaceholder: "{{__('Search')}}"
             }
         });
 
@@ -288,7 +323,7 @@
                                 noofapproved++;
                             }
                         }
-                        return 'Approved ' + noofapproved + ' of ' + total;
+                        return "{{__('Approved')}} " + noofapproved + ' of ' + total;
                     }
                 },
                 {
@@ -301,7 +336,8 @@
                 }
             ],
             language: {
-                emptyTable: "No Valid Artist Permits"
+                emptyTable: "No Valid Artist Permits",
+                searchPlaceholder: "{{__('Search')}}"
             }
         });
 
@@ -337,7 +373,8 @@
                 },
             ],
             language: {
-                emptyTable: "No Drafts Added"
+                emptyTable: "No Artist Drafts Added",
+                searchPlaceholder: "{{__('Search')}}"
             }
         });
 
@@ -358,6 +395,11 @@
                 }
             }
         });
+    }
+
+    const delete_draft  = (id, refno) => {
+        $('#del_draft_modal').modal('show');
+        $('#del_draft_id').val(id);
     }
 
     const show_cancelled = (id) => {

@@ -74,6 +74,10 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('artist/fetch_event_details', 'Company\ArtistController@fetch_event_details')->name('artist.fetch_event_details');
     Route::get('artist/checkVisaRequired/{id}', 'Company\ArtistController@checkVisaRequired')->name('artist.checkVisaRequired');
     Route::post('artist/check_artist_exists_in_permit', 'Company\ArtistController@check_artist_exists_in_permit')->name('artist.check_artist_exists_in_permit');
+    Route::get('artist/gateway/{id}', function(){
+        return view('permits.artist.gateway');
+    })->name('artist.gateway');
+    Route::post('artist/draft/delete', 'Company\ArtistController@delete_draft')->name('artist.delete_draft');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
@@ -132,7 +136,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('event/get_uploaded_eventImages/{id}', 'Company\EventController@get_uploaded_eventImages')->name('event.get_uploaded_eventImages');   
     
     Route::post('event/uploadEventPics', 'Company\EventController@uploadEventPics')->name('event.uploadEventPics');
+    Route::post('event/draft/delete', 'Company\EventController@delete_draft')->name('event.delete_draft');
     // Route::get('event/eventpics/{id}', 'Company\EventController@eventpics')->name('event.eventpics');
-
+    Route::get('event/get_event_sub_types/{id}', 'Company\EventController@get_event_sub_types')->name('event.get_event_sub_types');
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 });

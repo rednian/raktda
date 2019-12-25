@@ -38,7 +38,7 @@ $language_id = Auth::user()->LanguageId;
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> @lang('words.upload_documents')
+                                    <span>03</span> {{__('Upload Documents')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -58,7 +58,87 @@ $language_id = Auth::user()->LanguageId;
                 <div class="kt-form w-100 px-5" id="kt_form">
                     <!--begin: Form Wizard Step 1-->
 
-                    @include('permits.artist.common.wizard_instructions')
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
+                        <div class="kt-form__section kt-form__section--first">
+                            <div class="kt-wizard-v3__form">
+                                <!--begin::Accordion-->
+                                <div class="accordion accordion-solid accordion-toggle-plus border"
+                                    id="accordionExample6">
+
+                                    <div class="card">
+                                        <div class="card-header" id="headingTwo6">
+                                            <div class="card-title" data-toggle="collapse" data-target="#collapseTwo6"
+                                                aria-expanded="false" aria-controls="collapseTwo6">
+                                                <h6 class="kt-font-transform-u kt-font-bolder">
+                                                    {{__('Documents Required')}}</h6>
+                                            </div>
+                                        </div>
+                                        <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
+                                            data-parent="#accordionExample6">
+                                            <div class="card-body">
+
+                                                <table class="table table-borderless table-sm">
+                                                    <tr>
+                                                        <th>{{__('Document Name')}}</th>
+                                                        <th>{{__('Description')}}</th>
+                                                    </tr>
+                                                    @foreach($requirements as $req)
+                                                    <tr>
+                                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar}}
+                                                        </td>
+                                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div class="accordion accordion-solid accordion-toggle-plus border"
+                                    id="accordionExample61">
+                                    <div class="card">
+                                        <div class="card-header" id="headingThree6">
+                                            <div class="card-title collapsed" data-toggle="collapse"
+                                                data-target="#collapseThree6" aria-expanded="false"
+                                                aria-controls="collapseThree6">
+                                                <h6 class="kt-font-transform-u kt-font-bolder"> {{__('Permit Fee')}}
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
+                                            data-parent="#accordionExample61">
+                                            <div class="card-body">
+                                                <table class="table table-borderless table-sm">
+                                                    <tr>
+                                                        <th>{{__('Profession')}}</th>
+                                                        <th>{{__('Fee')}} (AED)</th>
+                                                    </tr>
+                                                    @foreach($profession as $pt)
+                                                    <tr>
+                                                        <td>{{getLangId() == 1 ? ucfirst($pt->name_en) : $pt->name_ar}}
+                                                        </td>
+                                                        <td>{{number_format($pt->amount,2)}}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
+                                    <input type="checkbox" id="agree" name="agree">
+                                    {{__('I Read and understand all service rules and agree to continue submitting it.')}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
                     @php
                     $user_id = Auth::user()->user_id;
@@ -75,13 +155,13 @@ $language_id = Auth::user()->LanguageId;
                     <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
                     <input type="hidden" id="from" value="{{$from}}">
 
-
                     {{-- Artist details wizard Start --}}
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
                                 <form id="artist_details" novalidate autocomplete="off">
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample5">
                                         <div class="card">
                                             <div class="card-header" id="headingOne6">
                                                 <div class="card-title collapsed" data-toggle="collapse"
@@ -108,7 +188,7 @@ $language_id = Auth::user()->LanguageId;
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm"
                                                                                 name="code" id="code"
-                                                                                placeholder="{{__('Person code')}}">
+                                                                                placeholder="{{__('Person Code')}}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-3">
@@ -177,7 +257,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 <input type="hidden" id="nationality_cont">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Birth Date')}}<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Birthdate')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -209,7 +289,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="pp_expiry"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Passport Expiry')}}<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Passport Expiry Date')}}<span
                                                                             class="text-danger hd-uae">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -241,7 +321,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="dob"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('UID Expiry')}}<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('UID Expiry Date')}}<span
                                                                             class="text-danger hd-uae">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -311,7 +391,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="fname_ar"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name - Ar')}}<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name (AR)')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -325,7 +405,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="lname_ar"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right ">{{__('Last Name - Ar')}}<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right ">{{__('Last Name (AR)')}}<span
                                                                             class="text-danger">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -404,7 +484,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="visa_expiry"
-                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Visa Expiry')}}<span
+                                                                        class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Visa Expiry Date')}}<span
                                                                             class="text-danger hd-uae hd-eu">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -476,7 +556,8 @@ $language_id = Auth::user()->LanguageId;
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample7">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample7">
 
                                         <div class="card">
                                             <div class="card-header" id="headingTwo6">
@@ -565,7 +646,8 @@ $language_id = Auth::user()->LanguageId;
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample8">
+                                    <div class="accordion accordion-solid accordion-toggle-plus border"
+                                        id="accordionExample8">
 
                                         <div class="card">
                                             <div class="card-header" id="headingTwo7">
@@ -750,8 +832,8 @@ $language_id = Auth::user()->LanguageId;
                                             <label for="" class="text--maroon kt-font-bold"
                                                 title="Expiry Date">{{__('Expiry Date')}}</label>
                                             <input type="text" class="form-control form-control-sm date-picker"
-                                                name="doc_exp_date_{{$i}}" id="doc_exp_date_{{$i}}"
-                                                placeholder="DD-MM-YYYY" />
+                                                name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
+                                                id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
                                         </div>
                                         @endif
                                     </div>
@@ -857,7 +939,7 @@ $language_id = Auth::user()->LanguageId;
     <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Person Code Search</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Person Code Search')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearPersonCode()">
                 </button>
             </div>
@@ -1211,8 +1293,6 @@ $language_id = Auth::user()->LanguageId;
            
         }
 
-      
-
         $("#check_inst").on("click", function () {
             setThis('none', 'block', 'block', 'none');
         });
@@ -1257,7 +1337,6 @@ $language_id = Auth::user()->LanguageId;
 
 
         $('#next_btn').click(function (e) {
-
             wizard = new KTWizard("kt_wizard_v3");
             if (wizard.currentStep == 1) {
                 if ($('#agree').is(':checked')) {
@@ -1273,7 +1352,6 @@ $language_id = Auth::user()->LanguageId;
 
             // checking the next page is artist details
             if (wizard.currentStep == 2) {
-               
                 KTUtil.scrollTop();// validating the artist details page
                 // object of array storing the artist details
                 var artist_id = $('#artist_number').val();
@@ -1777,6 +1855,8 @@ $language_id = Auth::user()->LanguageId;
         function submitFunction(id){
 
             $('#submit--btn_group').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+
+            $('#submit--btn-group').css('pointer-events', 'none');
 
             var pd = localStorage.getItem('permitDetails');
             var ad = localStorage.getItem('artistDetails');
