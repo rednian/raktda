@@ -37,7 +37,7 @@
                </li> --}}
                <li class="kt-menu__item {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ route('admin.company.index') }}" class="kt-menu__link ">
-                       <span class="kt-menu__link-text">{{ __('Company') }}</span>
+                       <span class="kt-menu__link-text">{{ __('Establishment') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item">
@@ -47,12 +47,12 @@
                </li>
                @endif
                <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('permit*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.artist_permit.index') }}" class="kt-menu__link">
+                   <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="kt-menu__link">
                        <span class="kt-menu__link-text">{{ __('Artist Permit') }}</span>
                    </a>
                </li>
                <li class="kt-menu__item {{ Request::is('event*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.event.index') }}" class="kt-menu__link ">
+                   <a href="{{ URL::signedRoute('admin.event.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Event Permit') }}</span>
                    </a>
                </li>

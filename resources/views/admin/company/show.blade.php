@@ -3,7 +3,7 @@
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
     <div class="kt-portlet__head kt-portlet__head--sm">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} -{{__('DETAILS')}}</h3>
+            <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - {!!permitStatus($company->status) !!} </h3>
         </div>
         <div class="kt-portlet__head-toolbar">
             <a href="{{ route('admin.company.index') }}#active-company" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
@@ -91,7 +91,7 @@
                 @endif
                 @if ($company->status == 'active' || $company->status == 'blocked')
                  <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
-                   <div class="card border">
+                   <div class="card">
                      <div class="card-header " id="headingOne6">
                        <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
                          @if ($company->status == 'active')
@@ -151,7 +151,7 @@
                 </div>
                 <div class="kt-widget__details">
                   <span class="kt-widget__title">{{__('ACTIVE ARTIST PERMITS')}}</span>
-                  <span class="kt-widget__value kt-font-brand">{{$company->permit()->where('permit_status','active')->count()}}</span>
+                  <span class="kt-widget__value">{{$company->permit()->where('permit_status','active')->count()}}</span>
                 </div>
               </div>
               
@@ -183,7 +183,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_4_5_tab_content" role="tab">
+                    <a class="nav-link" data-toggle="tab" href="#requirement-tab" role="tab">
                         {{__('UPLOADED REQUIREMENTS')}}
                     </a>
                 </li>
@@ -203,7 +203,7 @@
                                <th>{{__('EVENT NAME')}}</th>
                                <th>{{__('REFERENCE NO.')}}</th>
                                <th>{{__('PERMIT NO.')}}</th>
-                               <th>{{__('EVENT DURATION.')}}</th>
+                               <th>{{__('EVENT DURATION')}}</th>
                                <th>{{__('APPLICATION TYPE')}}</th>
                                <th>{{__('STATUS')}}</th>
                                <th>{{__('VENUE')}}</th>
@@ -219,7 +219,7 @@
                    </table>
                 </div>
                 <div class="tab-pane" id="artist-permit-tab" role="tabpanel">
-                   <table class="table table-borderless table-striped table-hover border table-sm" id="artist-permit-table">
+                   <table class="table table-borderless table-striped table-hover border" id="artist-permit-table">
                        <thead>
                            <tr>
                                {{-- <th></th> --}}
@@ -259,6 +259,18 @@
                         </thead>
                     </table>
                 </div>
+                 <div class="tab-pane" id="requirement-tab" role="tabpanel">
+                  <table class="table table-borderless table-striped table-hover border" id="requirement-table">
+                     <thead>
+                        <tr>
+                           <th>#</th>
+                           <th>{{__('REQUIREMENT NAME')}}</th>
+                           <th>{{__('ISSUED DATE')}}</th>
+                           <th>{{__('EXPIRED DATE')}}</th>
+                        </tr>
+                     </thead>
+                  </table>
+                 </div>
                 <div class="tab-pane" id="action-history" role="tabpanel">
                     <table class="table table-borderless table-striped table-hover table-sm border" id="action-table">
                         <thead>
@@ -284,17 +296,57 @@
     var event = {};
     $(document).ready(function(){
       $('form#frm-status').validate();
-        // hasUrl();
+        hasUrl();
         eventList();
+        artistPermit();
         artist();
+        documentRequirement();
         actionTable();
+      
+      
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+          var current_tab = $(e.target).attr('href');
+
+          if('#artist-permit-tab' == current_tab ){ artistPermit(); }
+          if('#artist-tab' == current_tab ){  artist(); }
+          if('#action-history' == current_tab ){ actionTable(); }
+          if('#event-tab' == current_tab){   eventList(); }
+        });
 
     });
+
+   function documentRequirement(){
+      $('#requirement-table').DataTable({
+         ajax:{
+            url: '{{ route('admin.company.application.datatable', $company->company_id) }}'
+         },
+         columns: [
+         {data: 'count'},
+         {data: 'name'},
+         {data: 'issued_date'},
+         {data: 'expired_date'}
+         ]
+      });
+   }
 
     function artistPermit(){
       $('table#artist-permit-table').DataTable({
         ajax: '{{ route('admin.company.artistpemit.datatable', $company->company_id) }}',
-        
+        columnDefs:[
+        {targets: '_all', className: 'now-wrap'}
+        ],
+        columns:[
+        {data: 'reference_number'},
+        {data: 'duration'},
+        {data: 'request_type'},
+        {data: 'permit_number'},
+        {data: 'artist_number'},
+        {data: 'status'},
+        {data: 'location'},
+        ],
+        createdRow: function(row, data, index){
+          $('td:not(:first-child)',row).click(function(e){ location.href = data.link; });
+        }
       });
     }
 
@@ -407,7 +459,7 @@
        $(this).tab('show');
        var scrollmem = $('body').scrollTop();
        window.location.hash = this.hash;
-       $('html,body').scrollTop(scrollmem);
+       // $('html,body').scrollTop(scrollmem);
      });
    }
 </script>

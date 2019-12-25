@@ -109,7 +109,7 @@ class CompanyController extends Controller
    		return ucfirst($comment->action);
    	})
    	->addColumn('date', function($comment){
-   		return '<span  title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
+   		return '<span class="text-underline"  title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
    	})
    	->rawColumns(['date', 'name'])
    	->make(true);
@@ -151,8 +151,8 @@ class CompanyController extends Controller
          $name =  $request->user()->LanguageId == 1 ?  ucfirst($companyRequirement->requirement->requirement_name) : $companyRequirement->requirement->requirement_name_ar;
          return '<a href="'.asset('/storage/'.$companyRequirement->path).'" data-caption="'.ucfirst($name).'" data-fancybox="gallery"  data-fancybox>'.ucfirst($name).'</a>';
       })
-      ->addColumn('count', function($companyRequirement) use ($array, $counter){
-       
+      ->addColumn('requirement', function($companyRequirement) use ($array, $counter){
+       return ucfirst($companyRequirement->requirement->requirement_name);
       })
       ->editColumn('issued_date', function($companyRequirement){
          return $companyRequirement->issued_date ? date('d-F-Y', strtotime($companyRequirement->issued_date)) : '-'; 
@@ -160,16 +160,52 @@ class CompanyController extends Controller
        ->editColumn('expired_date', function($companyRequirement){
           return $companyRequirement->expired_date ? date('d-F-Y', strtotime($companyRequirement->expired_date)) : '-'; 
       })
+       ->rawColumns(['name'])
       ->make(true);
    }
 
    public function artistpermitDatatable(Request $request, Company $company)
    {
-      $permit = $company->has('permit')->orderBy('expired_date', 'desc')->get();
+      $permit = $company->permit()->orderBy('expired_date', 'desc')->get();
+      $user = $request->user()->LanguageId;
+
       return DataTables::of($permit)
       ->addColumn('artist_number', function($permit){
-        return $permit->artistpermit()->count();
+        $total = $permit->artistPermit()->count();
+        $approved = $permit->artistPermit()->where('artist_permit_status', 'approved')->count();
+        return $approved.' approved of '.$total;
       })
+      ->addColumn('location', function($permit) use ($user){
+        return $user == 1 ? ucfirst($permit->work_location) : $permit->work_location_ar;
+      })
+      ->addColumn('status', function($permit){
+        return ucfirst(permitStatus($permit->permit_status));
+      })
+      ->addColumn('link', function($permit){
+        return URL::signedRoute('admin.artist_permit.show', ['permit' => $permit->permit_id]);
+      })
+      ->addColumn('duration', function($permit){
+        $date = Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
+        $date = $date !=  0 ? $date : 1;
+        $day = $date > 1 ? ' Days': ' Day';
+        return $date.$day;
+      })
+      ->addColumn('term', function($permit){
+        return ucfirst($permit->term);
+      })
+      ->addColumn('request_type', function($permit){
+        return ucfirst($permit->request_type);
+      })
+      ->editColumn('issued_date', function($permit){
+        return $permit->issued_date->format('d-F-Y');
+      })
+      ->editColumn('expired_date', function($permit){
+         return $permit->expired_date->format('d-F-Y');
+      })
+      ->addColumn('has_event', function($permit){
+        return $permit->event()->exists() ? 'YES' : 'NO';
+      })
+      ->rawColumns(['status'])
       ->make(true);
    }
 
@@ -358,13 +394,19 @@ class CompanyController extends Controller
         return $request->user()->LanguageId == 1 ? ucfirst($company->area->area_en) : $company->area->area_ar; 
       })
       ->addColumn('issued_date', function($company){
-         // return $company->type->name_en == 'government' ? '-' : $company->trade_license_issued_date->format('d-F-Y'); 
+         return $company->trade_license_issued_date->format('d-F-Y'); 
       })
-       ->addColumn('expired_date', function($company){
-         // return $company->type->name_en == 'government' ? '-' : $company->trade_license_expired_date->format('d-F-Y'); 
+       ->addColumn('expired_date', function($company){  
+         return $company->trade_license_expired_date->format('d-F-Y'); 
       })
       ->editColumn('type', function($company) use ($request){
          return $request->user()->LanguageId == 1 ? ucfirst($company->type->name_en) : $company->type->name_ar; 
+      })
+      ->editColumn('registered_date', function($company){
+        return $company->registered_date->format('d-F-Y');
+      })
+       ->editColumn('registered_by', function($company) use ($request){
+        return $request->user()->LanguageId == 1 ? ucfirst($company->registeredBy->NameEn) : $company->registeredBy->NameAr;
       })
       ->editColumn('address', function($company) use ($request){
          $country = $request->user()->LanguageId == 1 ? ucfirst($company->country->name_en) : $company->country->name_ar;

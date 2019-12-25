@@ -62,10 +62,14 @@
                                   @if ($company->status == 'back' || $company->status == 'rejected' )
                                     <div class="alert alert-danger kt-padding-t-5 kt-padding-b-5" role="alert">
                                         <div class="alert-text">
-                                          <h4 class="alert-heading">Sorry your application was rejected.</h4>
+                                           @if ($company->status == 'back')
+                                           <h4 class="alert-heading">Check the comment below.</h4>
+                                           @endif
+                                          
                                        
                                           @if ($company->status == 'rejected')
-                                             <span class="pull-right">Your application is rejected and can no longer proceed. Please contact RAKTDA.</span>
+                                             <h4 class="alert-heading">Sorry your application was rejected.</h4>
+                                             <span>Your application is rejected and can no longer proceed. Please contact RAKTDA.</span>
                                            @endif 
 
                                           </p>
@@ -78,17 +82,17 @@
                                     <div class="alert alert-success" role="alert">
                                        <div class="alert-text">
                                          <h4 class="alert-heading">Congratulation your establishment is registered successfully!</h4>
-                                         <p>You can now apply an <a href="{{ route('event.create') }}" class="btn btn-sm btn-maroon">EVENT PERMIT</a> or  <a href="{{ route('artist.create') }}" class="btn btn-sm btn-maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
+                                         <p>You can now apply an <a href="{{ route('event.create') }}" class="btn btn-sm btn--maroon">EVENT PERMIT</a> or  <a href="{{ route('artist.create') }}" class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
                                          {{-- <hr> --}}
                                          {{-- <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p> --}}
                                        </div>
-                                     </div>
+                                     </div> 
                                   @endif
 
                                   @if ($company->status == 'new' || $company->status == 'pending')
                                     <div class="alert alert-success" role="alert">
                                        <div class="alert-text">
-                                         <h4 class="alert-heading">Registration submitted successfully!</h4>
+                                         <h4 class="alert-heading">Registration successfully submitted!</h4>
                                          <p>Your registration will be check by RAKTDA and notify you as soon as possible.</p>
                                          {{-- <hr> --}}
                                          {{-- <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p> --}}
@@ -107,7 +111,7 @@
                                                </div>
                                                <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6" style="">
                                                    <div class="card-body">
-                                                       <section required class="row form-group form-group-sm">
+                                                       {{-- <section required class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label >Establistment Type <span class="text-danger">*</span></label>
                                                                @if ($company->status == 'active' || $company->status == 'blocked')
@@ -123,7 +127,7 @@
                                                                @endif
                                                                
                                                            </div>
-                                                       </section>
+                                                       </section> --}}
                                                        <section class="row form-group form-group-sm">
                                                         @php
                                                           if ($company->status == 'active' || $company->status == 'blocked') {
@@ -135,6 +139,7 @@
                                                         @endphp
                                                            <div class="col-md-6">
                                                                <label >Establishment Name <span class="text-danger">*</span></label>
+                                                                <input name="company_type_id" type="hidden" value="{{App\CompanyType::where('name_en', 'corporate')->first()->company_type_id}}">
                                                                <input {{$disabled}}  name="name_en" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->name_en}}">
                                                            </div>
                                                            <div class="col-md-6">
@@ -309,33 +314,51 @@
                                            <div class="card">
                                                <div class="card-header" id="heading-requirement">
                                                    <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
-                                                       <h6 class="kt-font-dark "><span class="kt-font-transform-u">Requirement</span> <small>Please upload the required documents.</small></h6>
+                                                       <h6 class="kt-font-dark "><span class="kt-font-transform-u">Upload Requirements</span> 
+                                                        {{-- <small>Please upload the required documents.</small> --}}
+                                                      </h6>
                                                    </div>
                                                </div>
-                                               <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement" style="font-language-override: ">
+                                               <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement">
                                                    <div class="card-body">
-                                                    @if ($requirements = App\Requirement::where('requirement_type', 'company')->get())
-                                                      @foreach ($requirements as $requirement)
-                                                        <section class="row form-group form-group-xs">
-                                                          <div class="col-md-6">
-                                                            <label for="">
-                                                              {{Auth::user()->LanguageId == 1 ? ucfirst($requirement->requirement_name) : $requirement->$requirement->requirement_name_ar}}
-                                                              <span class="text-danger">*</span>
-                                                            </label>
-                                                            <input name="file[{{$requirement->requirement_id}}][name]" value="{{$requirement->requirement_name}}"  type="hidden" readonly>
-                                                            <input name="file[{{$requirement->requirement_id}}][file][]" type="file" multiple class="form-control filer_input form-control-sm">
-                                                          </div>
-                                                          <div class="col-md-3">
-                                                            <label for="">Issued Date</label>
-                                                            <input name="file[{{$requirement->requirement_id}}][issued_date]" type="text" class="date-picker start form-control form-control-sm">
-                                                          </div>
-                                                          <div class="col-md-3">
-                                                            <label for="">Expired Date</label>
-                                                            <input name="file[{{$requirement->requirement_id}}][expired_date]" type="text" class="date-picker end form-control form-control-sm">
-                                                          </div>
-                                                        </section>
-                                                      @endforeach
-                                                    @endif
+
+                                                    <section class="row form-group form-group-xs" id="upload-row">
+                                                      <div class="col-md-3">
+                                                        <label>{{__('Requirement Name')}} <span class="text-danger">*</span></label>
+                                                        <select name="requirement_id" class=" form-control"></select>
+                                                      </div>
+                                                      <div class="col-md-4">
+                                                        <label>{{__('Upload Requirement')}} <span class="text-danger">*</span></label>
+                                                        <input id="file" onchange="readUrl(this);" type="file" multiple class="form-control">
+                                                      </div>
+                                                      <div class="col-md-2 date-required">
+                                                        <label>{{__('Issued Date')}} <span class="text-danger">*</span></label>
+                                                        <input autocomplete="off" id="upload-date-start"  name="issued_date" type="text" multiple class="form-control date-picker start">
+                                                      </div>
+                                                      <div class="col-md-2 date-required">
+                                                        <label>{{__('Expiry Date')}} <span class="text-danger">*</span></label>
+                                                        <input id="upload-date-end"  name="expired_date" type="text" multiple class="form-control date-picker end">
+                                                      </div>
+                                                      <div class="col-md-1">
+                                                        <label> </label>
+                                                        <button autocomplete="off" type="button" id="btn-save" class="kt-margin-t-5 btn btn-warning kt-font-transform-u">{{__('Save')}}</button>
+                                                      </div>
+                                                    </section>
+
+                                                    <table class="table table-borderless border table-sm" id="upload-requirement-table">
+                                                      <thead>
+                                                        <tr>
+                                                          <th>{{__('REQUIREMENT NAME')}}</th>
+                                                          <th>{{__('FILE')}}</th>
+                                                          <th>{{__('ISSUED DATE')}}</th>
+                                                          <th>{{__('EXPIRED DATE')}}</th>
+                                                          <th>{{__('ACTION')}}</th>
+                                                        </tr>
+                                                      </thead>
+                                                    </table>
+  
+
+                                            
                                                   
                                                    </div>
                                                    
@@ -347,12 +370,13 @@
 
                                         
                                         
-                                           <div class="col-sm-12">
+                                          <div class="col-sm-12">
                                             @if ($company->status == 'draft')
                                                <button style="padding: 0.5rem 1rem;" type="submit" name="submit" value="draft" class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark">Save as Draft</button>
                                             @endif
-                                               <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn-maroon btn-sm kt-font-transform-u">{{ $company->application ? 'Update Application' : 'Submit Application'}}</button>
+                                               <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">{{ $company->application ? 'Update Application' : 'Submit Application'}}</button>
                                            </div>
+                                           
                                        </div>
                                     </form>
                                   @endif
@@ -476,10 +500,24 @@
 @section('script')
 <script src="{{ asset('assets/vendors/custom/jquery.filer/js/jquery.filer.js') }}"></script>
 <script>
-  var files = [];
+  window.files = [];
   var filenames = [];
+  var name = null;
+  var requirementTable = {};
 
     $(document).ready(function(){
+      requirement();
+      datePicker();
+      type();
+      uploaded();
+      $('form[name=edit_company]').validate();
+
+      $('#btn-save').click(function(){
+        upload();
+      });
+
+     
+   
 
            //  approver.select2({
            // minimumResultsForSearch: 'Infinity',
@@ -502,27 +540,85 @@
 
       });
 
-      datePicker();
-
-   
-      $('select[name=company_type_id]').change(function(){
-        //if establishment type is corporate
-        if($(this).val() == 2){
-          $('#trade-license-container').removeClass('kt-hide').find('input').removeAttr('disabled', true).attr('required', true);
-        }
-        else{
-         $('#trade-license-container').addClass('kt-hide').find('input').attr('disabled', true).removeAttr('required', true); 
-        }
-      });
-
-      $('form[name=edit_company]').validate();
-
-
-
-
     });
 
+    function uploaded(){
+      requirementTable = $('#upload-requirement-table').DataTable({
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ajax: '{{ route('company.requirement.datatable', $company->company_id) }}',
+        // columnDefs:[{targets: [4], className:'no-wrap'}],
+        "order": [[ 0, 'asc' ]],
+          rowGroup: {
+            startRender: function ( rows, group ) { 
+             var row_data = rows.data()[0];
+             return $('<tr/>').append( '<td >'+group+'</td>' )
+                        .append( '<td>'+rows.count()+'</td>' )
+                        .append( '<td>'+row_data.issued_date+'</td>' )
+                        .append( '<td>'+row_data.expired_date+'</td>' )
+                        .append( '<td></td>' )
+                        // .append( '<td>'+row_data.action+'</td>' )
+                        .append( '<tr/>' );
+              },
+           dataSrc: 'name'
+        },
+        columns:[
+        // {data: 'name'},
+        {data: 'file'},
+        {data: 'issued_date'},
+        {data: 'expired_date'},
+        {render: function(data){ return null}},
+        {data: 'action'},
+        ],
+        createdRow: function(row, data, index){
+          $('.btn-remove',row).click(function(){
+            $.ajax({
+              url: '{{ route('company.requirement.delete', $company->company_id) }}',
+              data: {company_requirement_id : data.company_requirement_id},
+              type: 'post'
+            }).done(function(response, textStatus, xhr){
+              if(xhr.status == 200){ 
+                requirementTable.ajax.reload();
+              }
+            });
 
+          });
+        }
+      });
+    }
+
+
+    function upload(){
+
+      var formData = new FormData();
+      files.forEach(function(v, i){
+       formData.append('files[]', v.file);
+      });
+
+      formData.append('issued_date', $('#upload-date-start').val());
+      formData.append('expired_date', $('#upload-date-end').val());
+      formData.append('requirement_id', $('select[name=requirement_id]').val());
+      formData.append('requirement_name', name);
+
+      $.ajax({
+           url: '{{ route('company.upload', $company->company_id) }}',
+           type: 'POST',
+           data: formData,
+           cache: false,
+           processData:false,
+           contentType: false,
+         }).done(function(response, textStatus, xhr){
+
+             if(xhr.status == 200){ 
+              $('#upload-row').find('input').val('');
+              requirementTable.ajax.reload();
+              files = []; 
+              $('#upload-date-start').val('');
+              $('#upload-date-end').val('');
+           }
+         });
+    }
 
     function readUrl(input) {
       if(input.files.length > 0){
@@ -535,21 +631,54 @@
           };
          });
       }
-      // if (input.files && input.files[0]) {
 
-      //   for (var i = 0; i < input.files.length; i++) {
-      //     var reader = new FileReader();
-      //     reader.readAsDataURL(input.files[i]);
-
-      //     reader.onload = function (e) {
-      //       var url = e.target.result
-
-      //       files.push(url);
-      //       // showImages();
-      //     };
-      //   }
-      // }
     }
+
+
+    function type(){
+      $('select[name=company_type_id]').change(function(){
+        //if establishment type is corporate
+        if($(this).val() == 2){
+          $('#trade-license-container').removeClass('kt-hide').find('input').removeAttr('disabled', true).attr('required', true);
+        }
+        else{
+         $('#trade-license-container').addClass('kt-hide').find('input').attr('disabled', true).removeAttr('required', true); 
+        }
+      });
+    }
+
+
+    function requirement(){
+      $('select[name=requirement_id]').change(function(){
+        if($(this).find('option:selected').data('date') != 1){
+          $('.date-required').find('input').attr('disabled', true);
+          $('.date-required').find('span').addClass('kt-hide');
+        }
+        else{
+           $('.date-required').find('input').removeAttr('disabled', true);
+           $('.date-required').find('span').removeClass('kt-hide');
+        }
+        name = $(this).find('option:selected').data('name');
+      });
+
+      $('select[name=requirement_id]').html('');
+      $('select[name=requirement_id]').append('<option selected disabled>Select Requirement</option>');
+      $.ajax({
+        url: '{{ route('company.requirement') }}',
+        dataType: 'json',
+      }).done(function(response){
+        if(response){
+          $.each(response, function(i, v){
+            $('select[name=requirement_id]').append('<option data-name="'+v.requirement_name+'" data-date="'+v.dates_required+'" value="'+v.requirement_id+'">'+v.requirement_name+'</option>');
+          });
+          $('select[name=requirement_id]').append('<option value="other upload" >Other</option>');
+        }
+      });
+    }
+
+
+
+
 
 
     function datePicker(){

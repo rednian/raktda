@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ __('ARTIST UPLOADED DOCUMENTS') }}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{ __('UPLOADED DOCUMENTS') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -12,7 +12,7 @@
                     <tr>
                         <th>{{ __('DOCUMENT NAME') }}</th>
                         <th>{{ __('ISSUED DATE') }}</th>
-                        <th>{{ __('EXPIRED DATE') }}</th>
+                        <th>{{ __('EXPIRY DATE') }}</th>
                     </tr>
                     </thead>
                 </table>
