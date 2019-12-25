@@ -23,17 +23,17 @@
 		<div class="kt-portlet__head-toolbar">
 			<a href="{{ URL::signedRoute('admin.artist_permit.applicationdetails', $permit->permit_id) }}" class="btn btn-sm btn-secondary btn-elevate kt-margin-r-4 kt-font-transform-u">
 				<i class="la la-arrow-left"></i>
-				Back to permit details
+				{{ __('Back') }}
 			</a>
 			<div class="dropdown dropdown-inline">
 				<button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="flaticon-more"></i>
 				</button>
 				<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist_permit.index') }}">Artist Permit list</a>
+					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist_permit.index') }}">{{ __('Artist Permit') }}</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist.show', $artist_permit->artist_id) }}">Artist Information</a>
-					<a class="dropdown-item kt-font-transform-u" href="javascript:void(0)">Company Information</a>
+					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist.show', $artist_permit->artist_id) }}">{{ __('Artist Details') }}</a>
+					<a class="dropdown-item kt-font-transform-u" href="javascript:void(0)">{{ __('Establishment Details') }}</a>
 				</div>
 			</div>
 		</div>
@@ -45,20 +45,20 @@
 					<div class="kt-wizard-v3__nav-items">
 						<a class="kt-wizard-v3__nav-item" href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="current">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span>Artist Information</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span> {{ __('Artist Details') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
 						<a class="kt-wizard-v3__nav-item" href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>2</span>Uploaded Documents</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>2</span> {{ __('Uploaded Documents') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
 						@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 						<a class="kt-wizard-v3__nav-item" href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span>Submit</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span> {{ __('SUBMIT') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
@@ -129,10 +129,10 @@
 											<table class="border table table-hover table-borderless table-striped" id="document-table">
 												<thead>
 												<tr>
-													<th>DOCUMENT NAME</th>
-													<th>ISSUED DATE</th>
-													<th>EXPIRED DATE</th>
-													<th>ACTION</th>
+													<th>{{ __('DOCUMENT NAME') }}</th>
+													<th>{{ __('ISSUED DATE') }}</th>
+													<th>{{ __('EXPIRY DATE') }}</th>
+													<th>{{ __('ACTION') }}</th>
 												</tr>
 												</thead>
 											</table>
@@ -188,20 +188,20 @@
 						<!--begin: Form Actions -->
 						<div class="kt-form__actions">
 							<button type="button" class="btn btn-elevate btn-maroon btn-sm kt-font-bold kt-font-transform-u btn-wide"
-											data-ktwizard-type="action-prev">Previous
+											data-ktwizard-type="action-prev">{{ __('PREVIOUS') }}
 							</button>
 							<button type="button" class="btn active btn-elevate btn-warning kt-font-bold  btn-sm kt-font-bold btn-wide kt-font-transform-u"
-											data-ktwizard-type="action-next">Next
+											data-ktwizard-type="action-next">{{ __('NEXT') }}
 							</button>
 							@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 							<div class="dropdown" data-ktwizard-type="action-submit">
 								<button class="btn btn-warning btn-sm btn-wide kt-font-bold kt-font-transform-u dropdown-toggle" type="button"
 												id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Take action & finish
+									{{ __('Take Action & Finish') }}
 								</button>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
-									<button type="submit" name="artist_permit_status" value="approved" class="dropdown-item">Approve Artist</button>
-									<button type="submit" name="artist_permit_status" value="rejected" class="dropdown-item">Reject Artist</button>
+									<button type="submit" name="artist_permit_status" value="approved" class="dropdown-item">{{ __('Approve Artist') }}</button>
+									<button type="submit" name="artist_permit_status" value="rejected" class="dropdown-item">{{ __('Reject Artist') }}</button>
 								</div>
 							</div>
 							@endif
@@ -250,7 +250,7 @@
 				}
 			});
 
-			var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
+			var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
 			wizard.on("beforeNext", function(wizardObj) {
 				@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 				if(wizardObj.currentStep == 1){

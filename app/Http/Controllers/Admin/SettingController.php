@@ -30,12 +30,8 @@ class SettingController extends Controller
 
 	public function excelTojson(Request $request){
 
-		
-<<<<<<< Updated upstream
-		Excel::load(storage_path() . '/app/public/newtranslations.xlsx', function($reader){
-=======
 		Excel::load(storage_path() . '/app/public/translations2.xlsx', function($reader){
->>>>>>> Stashed changes
+
 		    // Getting all results
 		    $arr = array();
 		    $reader->each(function($sheet) use($arr){

@@ -2,7 +2,11 @@
 //if comapany is not yet active 
 Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function(){
   Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
-  Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');  
+  Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');
+  Route::post('/{company}/upload', 'Company\CompanyController@upload')->name('company.upload');
+  Route::get('/requirement', 'Company\CompanyController@requirements')->name('company.requirement');  
+  Route::get('/details/{company}/requirement-datatable', 'Company\CompanyController@uploadedDatatable')->name('company.requirement.datatable');  
+  Route::post('/details/{company}/requirement/delete', 'Company\CompanyController@deleteFile')->name('company.requirement.delete');  
 });
 
 
@@ -11,8 +15,6 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
         return redirect()->route('artist.index');
     })->name('company.dashboard');
 
-   
-    Route::get('/{company}/details-requirement', 'Company\CompanyController@requirementDatatable')->name('company.requirement.datatable');
 
     // Route::get('{company_name}/dashboard', function () {
     //     return redirect()->route('artist.index');

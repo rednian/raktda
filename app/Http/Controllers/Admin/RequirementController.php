@@ -201,20 +201,26 @@ class RequirementController extends Controller
         ->editColumn('requirement_description', function($args){
             return Str::limit($args->requirement_description, 20, ' ...');
         })
-        ->editColumn('validity', function($args){
-            return !is_null($args->validity) ? $args->validity . ' month/s' : 'N/A';
+        ->editColumn('validity', function($args) use($request){
+            if($request->user()->LanguageId == 1){
+                return !is_null($args->validity) ? $args->validity . ' month/s' : 'N/A';
+            }
+            return !is_null($args->validity) ? $args->validity . ' month/s' : __('Not Applicable');
         })
-        ->editColumn('term', function($args){
-            return !is_null($args->term) ? ucwords($args->term) . ' Term' : 'N/A';
+        ->editColumn('term', function($args) use($request){
+            if($request->user()->LanguageId == 1){
+                return !is_null($args->term) ? ucwords($args->term) . ' Term' : 'N/A';
+            }
+            return !is_null($args->term) ? __(ucwords($args->term) . ' Term') : __('Not Applicable');
         })
         ->editColumn('dates_required', function($args){
-            return $args->dates_required ? 'Yes' : 'No';
+            return $args->dates_required ? __('Yes') : __('No');
         })
         ->editColumn('status', function($args) use($user){
-            return $args->status ? '<span class="kt-badge kt-badge--success kt-badge--inline">Active</span>' : '<span class="kt-badge kt-badge--danger kt-badge--inline">Inactive</span>';
+            return $args->status ? '<span class="kt-badge kt-badge--success kt-badge--inline">' . __('Active') . '</span>' : '<span class="kt-badge kt-badge--danger kt-badge--inline">' . __('Inactive') . '</span>';
         })
         ->addColumn('actions', function($args){
-            return '<button data-url="' . route('requirements.destroy', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">Delete</button> <button data-url="' . route('requirements.edit', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">Edit</button>';
+            return '<button data-url="' . route('requirements.destroy', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">' . __('Delete') . '</button> <button data-url="' . route('requirements.edit', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('Edit') . '</button>';
         })
         ->addColumn('isInEventType', function($args) use($request){
             if($request->has('event_type_id')){

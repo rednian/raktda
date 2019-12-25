@@ -7,6 +7,7 @@ use App\User;
 use App\Company;
 use Carbon\Carbon;
 use App\CompanyRequirement;
+use App\Requirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -64,7 +65,7 @@ class CompanyController extends Controller
          switch ($request->submit) {
            case 'draft':
                $company->update($request->all());
-                 $result = ['success', 'Your work successfully saved', 'Success'];
+                 $result = ['success', '', 'Success'];
              break;
           case 'submitted':
 
@@ -130,60 +131,103 @@ class CompanyController extends Controller
          }
 
 
-
-
-         if ($request->has('file')) {
-            $path = 'public/'.$company->company_id;
-
-            $company->requirement()->delete();
-            Storage::deleteDirectory($path);
-            foreach ($request->file as $requirement_id => $upload) {
-                  $requirement_name = explode(' ', $upload['name']);
-                  $requirement_name = strtolower(implode('_', $requirement_name));
-
-               if (!empty($upload['file'])) {
-               foreach ($upload['file'] as $index => $file) {
-                  $filename = $requirement_name.'_'.$index.'.'.$file->getClientOriginalExtension();
-       
-                  Storage::putFileAs($path, $file, $filename);
-                  $company->requirement()->create([
-                     'page_number'=>$index+1, 
-                     'issued_date'=>$upload['issued_date'],
-                     'expired_date'=>$upload['expired_date'],
-                     'requirement_id'=>$requirement_id,
-                     'path'=>$path.'/'.$requirement_name.'_'.$index.'.'.$file->getClientOriginalExtension(),
-                  ]);
-
-               }
-               }
-         
-            }
-         }
-
          DB::commit();
+        $result = ['success', '', 'Success'];
       } catch (Exception $e) {
          DB::rollBack();
          $result = ['danger', $e->getMessage(), 'Error'];
       }
 
-      return redirect()->back()->with('message', $result);
-             
+      return redirect()->back()->with('message', $result);    
+   }
+
+
+   public function deleteFile(Request $request, Company $company)
+   {
+    $company->requirement()->where('company_requirement_id', $request->company_requirement_id)->delete();
+
+   }
+
+
+
+   public function upload(Request $request, Company $company)
+   {
+    try {
+      DB::beginTransaction();
+
+      $path = 'public/'.$company->company_id;
+      $requirement_name = explode(' ', $request->requirement_name);
+      $requirement_name = strtolower(implode('_', $requirement_name));
+
+       //remove file if exists.
+      if ($company->whereHas('requirement', function($q) use ($request){
+          $q->where('requirement_id', $request->requirement_id);
+        })->exists()) {
+         $company->requirement()->where('requirement_id', $request->requirement_id)->delete();
+       }
+
+       if ($request->files) {
+
+          foreach ($request->files as $upload) {
+            foreach ($upload as $page_number => $file) {
+                $filename = $requirement_name.'_'.($page_number+1).'.'.$file->getClientOriginalExtension();
+
+                Storage::putFileAs($path, $file, $filename);
+
+                $request['path'] = $company->company_id.'/'.$filename;
+                $request['page_number'] = $page_number+1;
+                if($request->requirement_id != 'other upload'){
+                  $company->requirement()->create($request->all());
+                }
+                else{
+                  // $company->requirement()->create([]);
+                }
+                
+            }
+
+          }
+       }
+      DB::commit();
+      $result = ['success', '', 'Success'];
+    } catch (Exception $e) {
+      DB::rollBack();
+     $result = ['danger', $e->getMessage(), 'Error'];
+    }
+    return response()->json(['message'=> $result]);
       
    }
 
-   private function generateTransactionCode()
+   public function uploadedDatatable(Request $request, Company $company)
    {
-    
+      $user = $request->user()->LanguageId;
+      $requirement = Requirement::has('company')->where('requirement_type', 'company')->count();
 
-    if (Company::exists()) {
-      $reference_number = Company::latest()->first()->reference_number;
-
-    }
-    else{
-     
-    }
-
+      return DataTables::of($company->requirement()->get())
+      ->addColumn('name', function($data) use ($user){
+        return $user == 1 ? ucfirst($data->requirement->requirement_name) : $data->requirement->requirement_name_ar;
+      })
+      ->editColumn('issued_date', function($data){
+        return '';
+      })
+      ->editColumn('expired_date', function($data){
+       return '';
+      })
+      ->addColumn('file', function($data){
+        $html = '<a href="'.asset('/storage/'.$data->path).'"data-fancybox data-fancybox data-caption="'.$data->requirement->requirement_name.'">';
+        $html .= $data->requirement->requirement_name.'_'.$data->page_number;
+        $html .= '</a>';
+        return $html;
+      })
+      ->addColumn('count', function($data) use ($requirement){
+        return $requirement.'  PAGE';
+      })
+      ->addColumn('action', function($data){
+        return '<button type="button" class="btn btn-sm btn-remove btn-secondary">'.__('REMOVE').'</button>';
+      })
+      ->rawColumns(['file', 'action'])
+      ->make(true);
    }
+
 
    public function isexist(Request $request)
    {
@@ -194,11 +238,16 @@ class CompanyController extends Controller
          $result =  User::where('email', $request->email)->exists() ?  false : true;
       }
 
+      if($request->mobile_number){
+         $result =  User::where('mobile_number', $request->mobile_number)->exists() ?  false : true;
+      }
+
       return response()->json(['valid'=>$result]);
    }
 
-   public function requirementDatatable(Request $request, Company $company)
+   public function requirements(Request $request)
    {
-    return DataTables::of($company->requirement()->get())->make(true);
+      $requirement = Requirement::where('requirement_type', 'company')->orderBy('requirement_name')->get();
+      return response()->json($requirement);
    }
 }

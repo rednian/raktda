@@ -15,13 +15,14 @@
         <div class="kt-portlet__head-toolbar">
             <a href="{{ URL::signedRoute('admin.event.index') }}#{{ $tab }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
                  <i class="la la-arrow-left"></i>
-                 {{ __('BACK TO PERMIT LIST') }}
+                 {{ __('BACK') }}
             </a>
             <div class="dropdown dropdown-inline">
                  <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="flaticon-more"></i>
                  </button>
                  <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
+                  <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">{{ __('Establishment Detail') }}</a>
                         @if ($event->status == 'active' || $event->status == 'expired')
                             {{-- <div class="dropdown-divider"></div> --}}
                             <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
@@ -30,8 +31,9 @@
             </div>
          </div>
     </div>
-    <div class="kt-portlet__body kt-padding-t-5">
 
+    <div class="kt-portlet__body kt-padding-t-5">
+      
       @if ($event->status == 'active')
         <section class="row kt-margin-t-10">
           <div class="col-md-12">
@@ -48,17 +50,17 @@
                         @csrf
                         <div class="form-group row form-group-sm">
                           <div class="col-md-6">
-                            <label for="">Remarks <span class="text-danger">*</span></label>
+                            <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
                             <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                           </div>
                           <div class="col-md-6">
-                            <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                            <label for="">{{ __('Remarks (AR)') }}<span class="text-danger">*</span></label>
                             <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                           </div>
                         </div>
                         <div class="form-group row">
                           <div class="col">
-                            <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="cancelled">SUBMIT</button>
+                            <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="cancelled">{{ __('SUBMIT') }}</button>
                           </div>
                         </div>
                       </form>
@@ -102,6 +104,7 @@
         </div>
       </div>
       @endif
+
       @if($event->comment()->where('action', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
       <section class="row kt-margin-t-10">
           <div class="col-md-12">
@@ -118,27 +121,27 @@
                         @csrf
                         <div class="form-group row form-group-sm">
                             <div class="col-md-6">
-                                <label for="">Action <span class="text-danger">*</span></label>
+                                <label for="">{{ __('Action') }} <span class="text-danger">*</span></label>
                                 <select required="" name="action" class="form-control form-control-sm">
                                     <option value=""></option>
-                                    <option value="approved">Approved</option>
-                                    <option value="disapproved">Disapproved</option>
+                                    <option value="approved">{{ __('Approved') }}</option>
+                                    <option value="rejected">{{ __('Rejected') }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row form-group-sm">
                           <div class="col-md-6">
-                            <label for="">Remarks <span class="text-danger">*</span></label>
+                            <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
                             <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                           </div>
                           <div class="col-md-6">
-                            <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                            <label for="">{{ __('Remarks (AR)') }} <span class="text-danger">*</span></label>
                             <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                           </div>
                         </div>
                         <div class="form-group row">
                           <div class="col">
-                            <button type="button" id="btnCheckedPermit" class="btn btn-sm btn-maroon kt-transform-u">SUBMIT</button>
+                            <button type="button" id="btnCheckedPermit" class="btn btn-sm btn-maroon kt-transform-u">{{ __('SUBMIT') }}</button>
                           </div>
                         </div>
                       </form>
@@ -155,7 +158,7 @@
         <div class="col-md-7">
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Owner')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->owner_name) : $event->owner_name_ar }}</p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type ')}} </span>: 
+          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type')}} </span>: 
             {{Auth::user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
           </p>
 
@@ -164,22 +167,22 @@
             {{ date('d-F-Y', strtotime($event->issued_date)) }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-25">{{__('End Date ')}}</span>: 
+            <span class="kt-font-bold kt-margin-r-25">{{__('End Date')}}</span>: 
             {{ date('d-F-Y', strtotime($event->expired_date)) }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-25">{{__('Duration ')}}</span>: 
+            <span class="kt-font-bold kt-margin-r-25">{{__('Event Duration')}}</span>: 
             @php
               $date = Carbon\Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
               $day = $date > 1 ? ' Days' :' Day';
             @endphp
             {{ $date.$day }}
           </p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-50">{{__('Time ')}}</span>:  {{ $event->time_start }} -- {{ $event->time_end }}</p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-40">{{__('Venue ')}}</span>: 
+          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-50">{{__('Time')}}</span>:  {{ $event->time_start }} -- {{ $event->time_end }}</p>
+          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-40">{{__('Venue')}}</span>: 
             {{  Auth::user()->LanguageId == 1 ? ucfirst($event->venue_en) :  $event->venue_ar }}
           </p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-30">{{__('Address ')}}</span>: {{ $event->full_address }}</p>
+          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-30">{{__('Address')}}</span>: {{ $event->full_address }}</p>
           <hr class="">
           <section class="kt-widget kt-widget--user-profile-3">
             <div class="kt-widget__bottom kt-margin-0" style="border:none;">
@@ -400,7 +403,7 @@
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
-                    <input type="checkbox" checked="checked" name="">
+                    <input type="checkbox"  name="is_display_all" {{$event->is_display_all ? 'checked' :  null}}>
                     <span></span>
                   </label>
                 </span>
@@ -411,7 +414,7 @@
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
-                    <input type="checkbox" checked="checked" name="">
+                    <input type="checkbox" name="is_display_web" {{$event->is_display_web ? 'checked' :  null}}>
                     <span></span>
                   </label>
                 </span>
@@ -470,7 +473,7 @@
                    <th>{{ __('REQUIREMENT NAME') }}</th>
                    <th>{{ __('FILES') }}</th>
                    <th>{{ __('ISSUED DATE') }}</th>
-                   <th>{{ __('EXPIRED DATE') }}</th>
+                   <th>{{ __('EXPIRY DATE') }}</th>
                 </tr>
               </thead>
              </table>
@@ -567,6 +570,42 @@
   var document_table = {}; 
   var comment_table = {}; 
   $(document).ready(function(){
+
+    $('input[name=is_display_all]').change(function(){
+      var el = $(this);
+      if($(this).is(':checked')){
+       var val = el.is(':checked') ? 1 : null;
+       bootbox.confirm('Are you sure you want to show the event to display in registered user\'s calendar?', function(result){
+         if(result){
+           $.ajax({
+             url: '{{ route('admin.event.showall', $event->event_id) }}',
+             data: {is_display_all: val }
+           }).done(function(response){
+
+           });
+         }
+         else{
+          el.attr('checked', false);
+         }
+       });
+      }
+      else{
+        var val = !$(this).is(':checked') ? 0 : 1;
+        bootbox.confirm('Are you sure you want to remove the event from registered user\'s calendar?', function(result){
+          if(result){
+            $.ajax({
+              url: '{{ route('admin.event.showall', $event->event_id) }}',
+              data: {is_display_all: val }
+            }).done(function(response){
+
+            });
+          }
+          else{
+            $('input[name=is_display_all]').attr('checked', true);
+          }
+        });
+      }
+    });
 
     $('form#frm-status').validate();
     $('form#frm-savecomment').validate();

@@ -57,7 +57,7 @@
 									</td>
 							 </tr>
 							 <tr>
-									<td>{{ __('Permit Start') }} :</td>
+									<td>{{ __('Permit Start Date') }} :</td>
 									<td>
                             <span class="kt-font-transform-u">
                               {{ $permit->issued_date ? $permit->issued_date->format('d-M-Y') : null }}
@@ -90,14 +90,14 @@
 	 <div class="col-6">
 			<section class="kt-section border kt-padding-10 kt-margin-b-20">
 				 <div class="kt-section__desc">
-						<h6 class="kt-font-dark kt-font-bold kt-margin-b-10">{{ __('Establishment Information') }}</h6>
+						<h6 class="kt-font-dark kt-font-bold kt-margin-b-10">{{ __('Establishment Details') }}</h6>
 						<table class="table table-borderless table-sm">
 							 <tr>
 									<td width="36%">{{ __('Establishment Name') }} :</td>
 									<td class="text-danger kt-font-bolder">{{ ucwords($permit->owner->company->name_en) }}</td>
 							 </tr>
 							 <tr>
-									<td>{{ __('Trade License Number') }} :</td>
+									<td>{{ __('Business License Number') }} :</td>
 									<td>{{ $permit->owner->company->trade_license }}</td>
 							 </tr>
 							 <tr>
@@ -113,7 +113,7 @@
 									</td>
 							 </tr>
 						</table>
-						<h6 class="kt-font-dark kt-font-bold kt-margin-b-10 kt-margin-t-20">{{ __('Contact Information') }}</h6>
+						{{-- <h6 class="kt-font-dark kt-font-bold kt-margin-b-10 kt-margin-t-20">{{ __('Contact Information') }}</h6> --}}
 						{{-- <table class="table table-borderless table-sm">
 							 <tr>
 									<td width="36%">{{ __('Contact Person') }} :</td>

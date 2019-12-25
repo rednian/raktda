@@ -85,20 +85,29 @@
 			]);
 		}
 
+
 		public function cancel(Request $request, Event $event)
 		{
-
 			if ($event) {
 			try {
-				$event->update(['cancel_reason'=> $request->comment ,'status'=>'cancelled', 'cancel_date'=>Carbon::now()]);
+				$request['role_id'] = $request->user()->roles()->first()->role_id;
+				$request['user_id'] = $request->user()->user_id;
+
+				$event->update([
+					'cancel_reason'=> $request->comment ,
+					'status'=>'cancelled', 
+					'cancel_date'=>Carbon::now(), 
+					'cancelled_by'=>$request->user_id, 
+					'role_id'=>$request->role_id
+				]);
 				$request['action'] = $request->status;
-				$event->comment()->create(array_merge($request->all(), ['user_id'=>$request->user()->user_id]));
+				$event->comment()->create($request->all());
 
 				if($event->permit()->count() > 0){
 					$event->permit->update(['permit_status'=>'cancelled', 'cancel_reason'=> $request->comment]);
-					$event->permit->comment()->create(array_merge($request->all(), ['user_id'=>$request->user()->user_id]));
+					$event->permit->comment()->create($request->all());
 				}
-				$result = ['success', ucfirst($event->name_en).' has been cancelled Successfully ', 'Success'];
+				$result = ['success',' ', 'Success'];
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
 			}
@@ -106,11 +115,13 @@
 			}
 		}
 
+
+
 		public function showWeb(Request $request, Event $event)
 		{
 			try {
 				$event->update(['is_display_web'=>$request->is_display_web]);
-				$result = ['success', ucfirst($event->name_en).' has will display in the website calendar ', 'Success'];
+				$result = ['success','', 'Success'];
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
 			}
@@ -123,12 +134,13 @@
 		{
 			try {
 				$event->update(['is_display_all'=>$request->is_display_all]);
-				$result = ['success', ucfirst($event->name_en).' has will display in the client\'s calendar ', 'Success'];
+				$result = ['success', '', 'Success'];
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
 			}
 			 return response()->json(['message' => $result]);
 		}
+
 
 		public function calendar(Request $request)
 		{
@@ -147,6 +159,7 @@
 			});
 			return response()->json($events);
 		}
+		
 
 
 		public function submit(Request $request, Event $event)
@@ -612,8 +625,8 @@
 			return DataTables::of($event->otherUpload()->get())
 			->editColumn('path', function($image){
 
-				$html = '<a href="'.$image->path.'" data-type="image" data-type="ajax" data-fancybox>';
-				$html .= '<img  src="'.$image->thumbnail.'" class="img img-responsive img-thumbnail center-block" style="max-height: 260px;">';
+				$html = '<a href="'.asset('/storage/'.$image->path).'" data-type="image" data-type="ajax" data-fancybox>';
+				$html .= '<img  src="'.asset('storage/'.$image->thumbnail).'" class="img img-responsive img-thumbnail center-block" style="max-height: 260px;">';
 				$html .= '</a>';
 				return $html;
 			})

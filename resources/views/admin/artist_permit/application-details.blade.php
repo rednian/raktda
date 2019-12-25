@@ -3,19 +3,19 @@
 	 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border">
 			<div class="kt-portlet__head kt-portlet__head--sm">
 				 <div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Artist Permit Details</h3>
+						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Artist Permit') }}</h3>
 				 </div>
 				 <div class="kt-portlet__head-toolbar">
 						<a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
 							 <i class="la la-arrow-left"></i>
-							 Back to permit list
+							 {{ __('Back') }}
 						</a>
 						<div class="dropdown dropdown-inline">
 							 <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="flaticon-more"></i>
 							 </button>
 							 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-									<a class="dropdown-item kt-font-trasnform-u" href="#">Company Details</a>
+									<a class="dropdown-item kt-font-trasnform-u" href="#">{{ __('Establishment Details') }}</a>
 									{{-- <div class="dropdown-divider"></div> --}}
 									{{-- <a class="dropdown-item" href="#"><i class="la la-cog"></i> Settings</a> --}}
 							 </div>
@@ -26,7 +26,7 @@
         @if ($permit->event()->count() > 0)
         <a href="{{ URL::signedRoute('admin.event.show', $permit->event->event_id) }}">
           <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
-            <div class="alert-text">This permit is connected to <span class="text-success kt-font-bold kt-font-transform-u">{{ $permit->event->name_en }}</span> event with reference number <span class="kt-font-danger">{{ $permit->event->reference_number }}</span>
+            <div class="alert-text">{{ __('This permit is connected to') }} <span class="text-success kt-font-bold kt-font-transform-u">{{ $permit->event->name_en }}</span> {{ __('event with reference number') }} <span class="kt-font-danger">{{ $permit->event->reference_number }}</span>
               {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
             </div>
           </div>
@@ -37,7 +37,7 @@
 							 <div class="card-header" id="headingOne5">
 									<div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapseOne5"
 											 aria-expanded="true" aria-controls="collapseOne5">
-										 <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Basic Information</h6>
+										 <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">{{ __('Basic Information') }}</h6>
 									</div>
 							 </div>
 							 <div id="collapseOne5" class="collapse show" aria-labelledby="headingOne5" data-parent="#accordionExample5">
@@ -50,7 +50,7 @@
                <div class="card">
                 <div class="card-header" id="headingThree5">
                   <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapseThree5" aria-expanded="true" aria-controls="collapseThree5">
-                    <h6 class="kt-font-dark kt-font-transform-u">checked & Approval History</h6>
+                    <h6 class="kt-font-dark kt-font-transform-u">{{ __('Checked History') }}</h6>
                   </div>
                 </div>
                 <div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
@@ -58,11 +58,11 @@
                     <table class=" border table-striped table table-borderless table-hover">
                       <thead>
                         <tr>
-                          <th>CHECKED BY</th>
-                          <th>REMARKS</th>
-                          <th>USER GROUP</th>
-                          <th>CHECKED DATE</th>
-                          <th>ACTION TAKEN</th>
+                          <th>{{ __('CHECKED BY') }}</th>
+                          <th>{{ __('REMARKS') }}</th>
+                          <th>{{ __('USER ROLE') }}</th>
+                          <th>{{ __('CHECKED DATE') }}</th>
+                          <th>{{ __('ACTION TAKEN') }}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -92,7 +92,7 @@
                 <div class="card-header" id="accordion-permit-artist-heading-one">
                   <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#accordion-permit-artist-collapse-one"
 											 aria-expanded="true" aria-controls="accordion-permit-artist-collapse-one">
-										 <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Artist List</h6>
+										 <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">{{ __('Artist List') }}</h6>
 									</div>
 							 </div>
 							 <div id="accordion-permit-artist-collapse-one" class="collapse show" aria-labelledby="accordion-permit-artist-heading-one"
@@ -101,26 +101,25 @@
                     <?php  $is_artist_check = $permit->artistpermit()->where('artist_permit_status', 'unchecked')->exists(); ?>
                     <div id="action-alert" class="alert d-none alert-outline-danger fade show" role="alert">
                       <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                      <div class="alert-text">Please check each artist with the action status of
-                        <span class="kt-badge kt-badge--warning kt-badge--inline">Unchecked</span>
-                        before taking action!
+                      <div class="alert-text">
+                          {{ __('Please check each artist with the action status of unchecked before taking action!') }}
                       </div>
                     </div>
                     <div id="action-alert-unselected" class="alert d-none alert-outline-danger fade show" role="alert">
                       <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                      <div class="alert-text">Please check atleast one artist before taking action!</div>
+                      <div class="alert-text">{{ __('Please check atleast one checkbox to take action.') }}</div>
                       <div class="alert-close"></div>
                     </div>
                     <table class="table table-hover table-borderless table-striped border table-sm" id="artist-table">
                       <thead>
                         <tr>
-													 <th>PERSON CODE</th>
-													 <th>ARSTIST NAME</th>
-													 <th>AGE</th>
-													 <th>PROFESSION</th>
-													 <th>NATIONALITY</th>
-													 <th>STATUS</th>
-													 <th>ACTION</th>
+													 <th>{{ __('PERSON CODE') }}</th>
+													 <th>{{ __('ARTIST NAME') }}</th>
+													 <th>{{ __('AGE') }}</th>
+													 <th>{{ __('PROFESSION') }}</th>
+													 <th>{{ __('NATIONALITY') }}</th>
+													 <th>{{ __('STATUS') }}</th>
+													 <th>{{ __('ACTION') }}</th>
 												</tr>
 												</thead>
 										 </table>
@@ -133,7 +132,7 @@
             <div class="card-header" id="accordion-permit-history-heading-one">
               <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#accordion-permit-history-collapse-one"
 											 aria-expanded="true" aria-controls="accordion-permit-history-collapse-one">
-                       <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">Permit History</h6>
+                       <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">{{ __('PERMIT HISTORY') }}</h6>
               </div>
             </div>
             <div id="accordion-permit-history-collapse-one" class="collapse show" aria-labelledby="accordion-permit-history-heading-one"
@@ -150,18 +149,18 @@
                   <table class="table table-striped table-borderless table-hover" id="table-permit-history">
                     <thead>
                       <tr>
-                        <th>Applied Date</th>
-                        <th>Issued Date</th>
-                        <th>Expired Date</th>
-                        <th>Artists</th>
-                        <th>Request Type</th>
-                        <th>Permit Status</th>
-                        <th>Action</th>
+                        <th>{{ __('Applied Date') }}</th>
+                        <th>{{ __('Issued Date') }}</th>
+                        <th>{{ __('Expired Date') }}</th>
+                        <th>{{ __('No. of Artist') }}</th>
+                        <th>{{ __('Request Type') }}</th>
+                        <th>{{ __('Permit Status') }}</th>
+                        <th>{{ __('Action') }}</th>
                       </tr>
                     </thead>
                   </table>
                   @else
-                    @empty Permit History is Empty @endempty
+                    @empty {{ __('No data available in table') }} @endempty
                   @endif
                 </div>
               </div>
@@ -176,7 +175,7 @@
     @include('admin.artist_permit.includes.document')
 		@include('admin.artist_permit.includes.check-existing permit')
 	<div id="action-container">
-			<button id="btn-action" class="btn btn-warning btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">Take Action for application</button>
+			<button id="btn-action" class="btn btn-warning btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">{{ __('Take Action For Application') }}</button>
 	</div>
 @endsection
 @section('script')

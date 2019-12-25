@@ -51,7 +51,7 @@
               <div class="kt-widget24 kt-widget24--solid">
                 <div class="kt-widget24__details">
                   <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('New ') }}</span>
+                    <span class="kt-widget24__title" title="Click to edit">{{ __('New') }}</span>
                     <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                   </div>
                   <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>

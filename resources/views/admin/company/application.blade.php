@@ -39,7 +39,7 @@
              </div>
              <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
                <div class="card-body">
-                  <div class="row form-group form-group-sm">
+                  {{-- <div class="row form-group form-group-sm">
                     <div class="col-sm-6">
                         <label class="kt-font-dark">{{ __('Establishment Type') }} </label>
                         <div class="input-group input-group-sm">
@@ -55,7 +55,7 @@
                          </div>
                         </div>
                      </div>
-                  </div>
+                  </div> --}}
                   <div class="row form-group form-group-sm">
                      <div class="col-sm-6">
                          <label class="kt-font-dark">{{ __('Establishment Name') }} <span class="text-danger">*</span></label>
@@ -536,11 +536,25 @@
             url: '{{ route('admin.company.application.datatable', $company->company_id) }}'
          },
          columns: [
-         {data: 'count'},
+         // {data: 'requirement'},
          {data: 'name'},
          {data: 'issued_date'},
          {data: 'expired_date'}
-         ]
+         ],
+         "order": [[ 0, 'asc' ]],
+           rowGroup: {
+             startRender: function ( rows, group ) { 
+              var row_data = rows.data()[0];
+              return $('<tr/>').append( '<td >'+group+'</td>' )
+                         .append( '<td>'+rows.count()+'</td>' )
+                         .append( '<td>'+row_data.issued_date+'</td>' )
+                         .append( '<td>'+row_data.expired_date+'</td>' )
+                         .append( '<td></td>' )
+                         // .append( '<td>'+row_data.action+'</td>' )
+                         .append( '<tr/>' );
+               },
+            dataSrc: 'requirement'
+         }
       });
    }
 </script>
