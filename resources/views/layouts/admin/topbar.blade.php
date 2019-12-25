@@ -3,7 +3,7 @@
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
         <!--begin: Notifications -->
-        <div class="kt-header__topbar-item dropdown">
+        <div class="kt-header__topbar-item dropdown kt-hide">
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="30px,0px" aria-expanded="true">
                 <span class="kt-header__topbar-icon kt-pulse kt-pulse--danger">
                     <i class="flaticon2-bell-alarm-symbol"></i>

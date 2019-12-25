@@ -20,76 +20,19 @@
         width: 36px;
         margin-left: -37px;
     }
-
     #search_button_css1 {
         background: transparent;
         border: none;
         height: 38px;
         width: 36px;
         margin-left: 6px;
-       }
-        
-    .dataTables_wrapper {
-        font-size: 12px;
-    }
-
+    }e
+     .dataTables_wrapper {
+         font-size: 12px;
+     }
     .dataTables_wrapper tr td {
         font-size: 11px;
     }
-
-</style>
-<table class="table  table-hover  table-borderless table-striped border" id="block-artist">
-    <thead>
-        <tr>
-            <th colspan="2"><select class="form-control" onchange="myFunction()" name="filter_search"
-                    id="filter_search">
-                    <option>Search By</option>
-                    <option value="1">Person Code</option>
-                    <option value="2">Artist Status</option>
-                    <option value="3">Artist Name</option>
-                    <option value="4">Profession</option>
-                    <option value="5">Nationality</option>
-                </select></th>
-            <th colspan="2">
-                <div class="row" id="search_by_name" style="display:-webkit-box">
-                    <input type="text" id="search_artist" class="form-control" name="search_artist"
-                        placeholder="Search..."><button style="" id="search_button_css"
-                        class="fa fa-search search_button"></button>
-                </div>
-
-                <div class="row" id="search_by_nationality_tab" style="display:none">
-                    <select type="text" id="search_by_nationality" class="form-control" style="width: 90%"
-                        name="search_artist">
-                        <option value="">Select Nationality</option>
-                        @foreach($country as $key => $nationality)
-                        <option value="{{$key}}">{{$nationality}}</option>
-                        @endforeach
-                    </select>
-                    <button style="" id="search_button_css1" class="fa fa-search submit_button_nationality"></button>
-                </div>
-
-                <div class="row" id="search_by_profession_tab" style="display:none">
-                    <select type="text" id="search_by_profession" style="width: 90%" class="form-control"
-                        name="search_artist">
-                        <option value="">Select Profession</option>
-                        @foreach($profession as $key => $nationality)
-                        <option value="{{$key}}">{{$nationality}}</option>
-                        @endforeach
-                    </select>
-                    <button style="" id="search_button_css1" class="fa fa-search submit_button_profession"></button>
-                </div>
-            </th>
-            <th><button style="margin-left: 20px" class="form-control" id="resetButton">Reset</button></th>
-        </tr>
-        <tr style="font-size: 12px">
-            <th></th>
-            <th style="width: 14%">{{ __('PERSON CODE') }}</th>
-            <th style="width: 14%">{{ __('ARTIST STATUS') }}</th>
-            <th>{{ __('ARTIST NAME') }}</th>
-            <th>{{ __('PROFESSION') }}</th>
-            <th>{{ __('NATIONALITY') }}</th>
-            <th style="width: 14%">{{ __('MOBILE NUMBER') }}</th>
-            <th>{{ __('ACTIVE PERMIT') }}</th>
     #name_search_button{
         border-radius: 4px;
         padding: 5px;
@@ -147,12 +90,12 @@
                 <input type="text" value='blocked' id="blocked_artist_input" hidden>
             </a></li>
 
-        <li id="active_artist_click" class="nav-item"><a class="nav-link" data-toggle="tab" href="#" data-target="#">
+        <li id="active_artist_click" class="nav-item"><a class="nav-link" data-toggle="ttab" href="#" data-target="#">
                 <span  style="font-size: 11px">{{__('ACTIVE ARTISTS')}}</span>
                 <input type="text" value="active" id="active_artist_input" hidden>
             </a></li>
         <li>
-        {{--    <button class="btn btn-warning btn-sm" style=" box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;" id="filter_button">Filter</button></li>--}}
+            <button class="btn btn-warning btn-sm" style=" box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;" id="filter_button">Filter</button></li>
 
 
     </ul>
@@ -199,7 +142,6 @@
                 @endforeach
             </select>
         </th>
-
         <th>  <button id="ArtistTableresetButton" class="btn btn-sm pull-right btn-secondary">Reset</button></th>
     </tr>
 
@@ -219,11 +161,6 @@
         <th></th>
 
     </tr>
-
-        <th><button style="margin-left: 20px" class="btn btn-sm btn-secondary" id="ArtistTableresetButton" >{{__('Reset')}}</button></th>
-
-        </tr>
-
     </thead>
 </table>
 
@@ -244,17 +181,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="container" id="tableToPrint_{{$artists->artist_id}}" style="margin-top: 10px">
-                        <table class="table table-borderless table-hover" id="artistTableHide_{{$artists->artist_id}}" >
+                        <table class="table table-borderless table-hover" id="artistTableHide_{{$artists->artist_id}}" style="font-family:arial;font-size: 11px">
                             <tr>
                                 <td colspan="8" ><img style="
                                      height: 59%;width: 99%" src='{{asset('img/raktdalogo.png')}}'/></td>
 
                             </tr>
-                            <tr><th colspan="12" style="border-radius: 5px;font-weight:bold;background-color: #f5f5f5;color: #0c0c0c;padding: 11px;font-size: 11px;text-align: center;box-shadow: 1px 14px 6px -16px black;">
+                            <tr><th colspan="12" style="background-color:#f0f0f0;color:black;padding: 11px;text-align: center;box-shadow: 0px 8px 10px -12px black">
                                     Personal Details - {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en  : $artists->firstname_ar. " ".$artistWithThisId->lastname_ar}}
                                 </th>
                             </tr>
-                            <tr style="font-size: 11px">
+                            <tr style="font-size: 10px">
                                 <th width="10%">PERSON CODE</th>
                                 <th width="14%">PROFESSION</th>
                                 <th width="14%">NATIONALITY</th>
@@ -264,7 +201,7 @@
                                 <th width="26%">PASSPORT EXPIRY DATE</th>
 
                             </tr>
-                            <tr style="font-size: 11px">
+                            <tr>
                                 <td width="14%">{{$artistWithThisId->artist->person_code}}</td>
                                 <td width="14%">{{$artistWithThisId->profession?$artistWithThisId->profession->name_en:''}}</td>
                                 <td width="14%">{{$artistWithThisId->country?$artistWithThisId->country->nationality_en:''}}</td>
@@ -282,7 +219,7 @@
 
                         <table class="table  table-hover table-borderless table-striped " style="font-size: 12px;margin-top:5%;font-family:Arial" id="printTable_{{$artists->artist_id}}">
                             <thead>
-                            <tr><th colspan="7"  style="font-size:12px;font-weight:bold;box-shadow: 1px 14px 6px -16px black;padding: 9px;background-color: #f5f5f5;color: black;text-align: center;width: 100%">
+                            <tr><th colspan="7"  style="font-size:11px;padding: 9px;background-color: #f0f0f0;font-weight:bold;color: black;text-align: center;box-shadow: 0px 8px 10px -12px black;width: 100%">
                                    Permit Details -  {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en: $artists->firstname_ar." ".$artists->lastname_ar}}
                                 </th></tr>
                             <tr  align="center">
@@ -305,16 +242,16 @@
                             @foreach($permits->permit as $permit)
 
                                 <tr align="center" >
-                                    <td  style="text-align: left;font-size: 11px">{{ Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en  : $artists->firstname_ar . ' ' . $artists->lastname_ar}}
-                                    <td style="text-align: left;font-size: 11px">{{$permit->permit_number}}</td>
-                                    <td style="text-align: left;font-size: 11px">{{$permit->reference_number}}</td>
+                                    <td  style="text-align: left;font-size: 10px">{{ Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en  : $artists->firstname_ar . ' ' . $artists->lastname_ar}}
+                                    <td style="text-align: left;font-size: 10px">{{$permit->permit_number}}</td>
+                                    <td style="text-align: left;font-size: 10px">{{$permit->reference_number}}</td>
                                     <?php
                                     $issued_date= \Illuminate\Support\Facades\Date::make($permit->issued_date)->format('d/m/Y');
                                     $expire_date= \Illuminate\Support\Facades\Date::make($permit->expired_date)->format('d/m/Y');
                                     ?>
-                                    <td style="text-align: left;font-size: 11px">{{$issued_date}}</td>
-                                    <td style="text-align: left;font-size: 11px">{{$expire_date}}</td>
-                                    <td style="text-align: left;font-size: 11px">{{$permit->company? $permit->company->name_en:''}}</td>
+                                    <td style="text-align: left;font-size: 10px">{{$issued_date}}</td>
+                                    <td style="text-align: left;font-size: 10px">{{$expire_date}}</td>
+                                    <td style="text-align: left;font-size: 10px">{{$permit->company? $permit->company->name_en:''}}</td>
                                 </tr>
 
                             @endforeach
@@ -336,7 +273,6 @@
 
 @endforeach
 @section('script')
-
     <script>
 
         function printContent(id) {
@@ -358,29 +294,15 @@
         })
 
 
-
-<script>
-
- 
-
         $(function myTable() {
 
             var currentdate = new Date();
             var datetime = + currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/"
                 + currentdate.getFullYear() + "  "
-           /
-
-         table= $('#block-artist').DataTable({
-          dom: 'Bfrtip',
-           "searching":false,
-            buttons: ['pageLength',
-                {
-                    extend: 'pdf',
-                    messageBottom: datetime,
-                    title: function () {
-                            return 'Artists List ';
-
+           /*     + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();*/
 
             table= $('#block-artist').DataTable({
                 dom: 'Bfrtip',
@@ -3084,3 +3006,4 @@
 
 @endsection
 {{--@include('admin.artist_permit.includes.artist-block-modal')--}}
+

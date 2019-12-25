@@ -562,11 +562,14 @@
                   d.status = ['active'];
                }
             },
+            responsive:true,
             columnDefs: [
                {targets: '_all', className: 'no-wrap'},
                {targets: 5, sortable: false},
             ],
             columns: [
+               {render:function(){ return null;}},
+               {data: 'action'},
                {data: 'reference_number'},
                {data: 'permit_number'},
                {data: 'company_name'},
@@ -574,10 +577,11 @@
                {data: 'duration'},
                {data: 'artist_number'},
                {data: 'request_type'},
-               {data: 'action'},
+               {data: 'location'}
             ],
 
             createdRow: function (row, data, index) {
+              $('td:not(:nth-child(2n+1))',row).click(function(e){ location.href = data.application_link; });
               $('.btn-download', row).click(function(){
 
               });
@@ -786,22 +790,31 @@
              d.date = $('#new-applied-date').val()  ? selected_date : null;
            }
          },
-         // order: [[ 3, "desc" ]],
+         responsive: true,
+         order: [[ 0, "desc" ]],
          columnDefs: [
-           {targets: [0, 2, 4, 5], className: 'no-wrap'},
+           {targets: '_all', className: 'no-wrap'},
          ],
          columns: [
+           {render:function(){ return null;}},
            {data: 'reference_number'},
            {data: 'company_name'},
            {data: 'artist_number'},
            {data: 'applied_date'},
+           {data: 'term'},
            {data: 'duration'},
+           {data: 'permit_start'},
+           {data: 'permit_end'},
            {data: 'request_type'},
+           {data: 'location'},
          ],
          createdRow: function (row, data, index) {
-           $(row).click(function () {
-             location.href = data.application_link;
-           });
+
+           $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });
+           
+           // $(row).click(function () {
+           //   location.href = data.application_link;
+           // });
          },
          initComplete: function(setting, json){
           $('#new-count').html(json.new_count);

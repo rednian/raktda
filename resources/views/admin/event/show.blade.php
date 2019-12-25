@@ -22,7 +22,7 @@
                         <i class="flaticon-more"></i>
                  </button>
                  <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                  <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">{{ __('Establishment Detail') }}</a>
+                  <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">{{ __('Establishment Detail') }}</a>
                         @if ($event->status == 'active' || $event->status == 'expired')
                             {{-- <div class="dropdown-divider"></div> --}}
                             <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
@@ -570,12 +570,25 @@
   var document_table = {}; 
   var comment_table = {}; 
   $(document).ready(function(){
+    $('input[name=is_display_web]').change(function(){
+       var val = $(this).is(':checked') ? 1 : null;
+       bootbox.confirm('Are you sure you want to show the event to the public website calendar?', function(result){
+         if(result){
+           $.ajax({
+             url: '{{ route('admin.event.showweb', $event->event_id) }}',
+             data: {is_display_web: val }
+           }).done(function(response){
+           });
+         }
+       });
+    });
+
 
     $('input[name=is_display_all]').change(function(){
       var el = $(this);
       if($(this).is(':checked')){
        var val = el.is(':checked') ? 1 : null;
-       bootbox.confirm('Are you sure you want to show the event to display in registered user\'s calendar?', function(result){
+       bootbox.confirm('Are you sure you want to show the event to registered user\'s calendar?', function(result){
          if(result){
            $.ajax({
              url: '{{ route('admin.event.showall', $event->event_id) }}',

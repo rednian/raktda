@@ -529,8 +529,9 @@ class ArtistPermitController extends Controller
 		    ->whereNotNull('permit_number')
 		    ->where('permit_number','like', $permit_number[0].'%')
 		    ->get();
+        
     	return DataTables::of($permit)
-		    ->addColumn('applied_date', function($permit){
+		    ->addColumn('applied_date', function($permit){  
 		    	if(!$permit->created_at){ return null;}
 		    	return $permit->created_at->format('d-M-Y');
 		    })
@@ -613,7 +614,11 @@ class ArtistPermitController extends Controller
       })
       ->editColumn('permit_start', function($permit){
         if(!$permit->issued_date) return null;
-        return $permit->issued_date->format('d-M-Y');
+        return $permit->issued_date->format('d-F-Y');
+      })
+      ->editColumn('permit_end', function($permit){
+        if(!$permit->expired_date) return null;
+        return $permit->expired_date->format('d-F-Y');
       })
       ->addColumn('duration', function($permit){
         $date = Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
@@ -622,10 +627,16 @@ class ArtistPermitController extends Controller
         return $date.$day;
       })
       ->addColumn('company_name', function($permit) use ($request){
+          return $request->user()->LanguageId == 1 ? ucfirst($permit->work_location) : $permit->work_location_ar;
+      })
+      ->addColumn('location', function($permit) use ($request){
           return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : $permit->owner->company->name_ar;
       })
       ->addColumn('application_link', function($permit){
         return URL::signedRoute('admin.artist_permit.applicationdetails', ['permit' => $permit->permit_id]);
+      })
+      ->editColumn('term', function($permit){
+        return ucfirst($permit->term).' Term Permit';
       })
       ->addColumn('show_link', function($permit){
         return URL::signedRoute('admin.artist_permit.show', ['permit' => $permit->permit_id]);
@@ -637,22 +648,22 @@ class ArtistPermitController extends Controller
 		         if(strtolower($permit->company->company_type) == 'government'){$class_name = 'danger'; }
 		         if(strtolower($permit->company->company_type) == 'individual'){$class_name = 'info'; }
 		         return '<span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($permit->company->company_type).'</span>';
-	         })
-	         ->editColumn('request_type', function($permit){
-	         	return ucwords($permit->request_type).' Application';
-	         })
-           ->addColumn('action', function($permit){
-            return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary">' . __('Download') . '</a>';
-           })
-           ->addColumn('inspection_url', function($permit){
-            return route('tasks.artist_permit.details', $permit->permit_id);
-           })
-	         ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action' , 'applied_date'])
-	         ->make(true);
-           $table = $table->getData(true);
-           $table['new_count'] = Permit::has('artist')->where('permit_status', 'new')->count();
-           $table['pending_count'] = Permit::has('artist')->whereIn('permit_status', ['modified', 'checked'])->count();
-           $table['cancelled_count'] = Permit::has('artist')->where('permit_status', 'cancelled')->count();
+	     })
+	     ->editColumn('request_type', function($permit){
+	         return ucwords($permit->request_type).' Application';
+	     })
+      ->addColumn('action', function($permit){
+          return '<a href="'.route('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary">' . __('Download') . '</a>';
+      })
+      ->addColumn('inspection_url', function($permit){
+          return route('tasks.artist_permit.details', $permit->permit_id);
+      })
+	    ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action' , 'applied_date'])
+	    ->make(true);
+       $table = $table->getData(true);
+       $table['new_count'] = Permit::has('artist')->where('permit_status', 'new')->count();
+       $table['pending_count'] = Permit::has('artist')->whereIn('permit_status', ['modified', 'checked'])->count();
+       $table['cancelled_count'] = Permit::has('artist')->where('permit_status', 'cancelled')->count();
 
            return response()->json($table);
      }

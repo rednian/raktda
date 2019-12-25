@@ -56,6 +56,8 @@
 <table class="table  table-hover  table-borderless table-striped table-sm border" id="artist-permit-approved">
 	 <thead>
 	 <tr>
+			<th></th>
+			<th>{{ __('ACTION') }}</th>
 			<th>{{ __('REFERENCE NO.') }}</th>
 			<th>{{ __('PERMIT NO.') }}</th>
 			<th>{{ __('ESTABLISHMENT NAME') }}</th>
@@ -68,7 +70,7 @@
 							</span>
 			</th>
 			<th>{{ __('REQUEST TYPE') }}</th>
-			<th>{{ __('ACTION') }}</th>
+			<th>{{ __('WORK LOCATION') }}</th>
 	 	</tr>
 	</thead>
 </table>

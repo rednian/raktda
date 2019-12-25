@@ -71,6 +71,12 @@
 
 			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
 
+			$event_type = EventType::whereDoesntHave('event', function($q){
+				return $q->where('status', 'draft');
+			})->toSql();
+
+			// dd($event_type);
+
 			return view($view, [
 				'page_title' => 'Event Permit',
 				'types'=> EventType::all(),
@@ -715,6 +721,14 @@
 		{
 			if ($request->ajax()) {
 				$user = Auth::user();
+				$field_name = 'created_at';
+				$order = 'desc';
+
+				if (in_array($request->status, ['new', 'checked', 'amended'])) {
+					$field_name = 'updated_at';
+					$order = 'asc';
+				}
+
 
 				$events = Event::when($request->type, function($q) use ($request){
 					$q->where('firm', $request->type);
@@ -737,7 +751,8 @@
 					});
 				})
 				->whereNotIn('status', ['draft'])
-				->orderBy('updated_at');
+				// ->orderBy($field_name, $order)
+				->get();
 
 				$table =  DataTables::of($events)
 				->addColumn('establishment_name', function($event){
@@ -754,9 +769,10 @@
                       return $html;
 
 				})
-				->addColumn('owner',function(){
-
+				->addColumn('owner',function($event) use ($request){ 
+					return $request->user()->LanguageId == 1 ? ucfirst($event->owner_name_en) : $event->owner_name_ar;
 				})
+				
 				->addColumn('website', function($event){
 					$display = $event->is_display_web ? 'checked="checked"' : null;
 
@@ -767,6 +783,11 @@
 					$html .=  '	</label>';
 					$html .=  '</span>';
 					return $html;
+				})
+				->addColumn('event_type', function($event) use ($request){
+					$type = $request->user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar;
+					$sub = $request->user()->LanguageId == 1 ?  ucfirst($event->subtype->name_en) : $event->subtype->name_ar;
+					return type($type, $sub);
 				})
 				->addColumn('show', function($event){
 					$display = $event->is_display_all ? 'checked="checked"' : null;
@@ -836,7 +857,7 @@
 					}
 					return '';
 				})
-				->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration', 'checked_status'])
+				->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration', 'checked_status', 'event_type'])
 				 ->make(true);
 				$table = $table->getData(true);
 				$table['new_count'] = Event::where('status', 'new')->count();

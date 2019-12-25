@@ -156,14 +156,14 @@
                   <option value="government">{{ __('Government') }}</option>
                 </select>
               </div>
-              <div class="col-3">
+              {{-- <div class="col-3">
                 <select name="" id="new-permit-status"
                   class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
                   <option disabled selected>{{ __('STATUS') }}</option>
                   <option value="new">{{ __('New') }}</option>
                   <option value="amended">{{ __('Amended') }}</option>
                 </select>
-              </div>
+              </div> --}}
               <div class="col-2">
                 <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">{{ __('RESET') }}</button>
               </div>
@@ -189,8 +189,8 @@
               <th>{{ __('PERMIT DURATION') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('APPLIED DATE') }}</th>
-              <th>{{ __('STATUS') }}</th>
+              <th>{{ __('SUBMITTED DATE') }}</th>
+              {{-- <th>{{ __('STATUS') }}</th> --}}
             </tr>
           </thead>
         </table>
@@ -401,19 +401,18 @@
     </div>
   </div>
 </section>
-<table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
+<table class="table table-head-noborder table-borderless border table-striped" id="new-event-active">
   <thead>
     <tr>
-      <!-- <th></th> -->
-      <th>{{ __('ACTION') }}</th>
+      <th></th>
       <th>{{ __('REFERENCE NO.') }}</th>
-      <th>{{ __('ESTABLISHMENT NAME') }}</th>
-      <th>{{ __('PERMIT DURATION') }}</th>
-      <th>{{ __('EVENT NAME') }}</th>
-      <!-- <th>{{ __('PERMIT START') }}</th> -->
       <th>{{ __('APPLICATION TYPE') }}</th>
-      <th>{{ __('SHOW TO USER CALENDAR') }}</th>
-      <th>{{ __('SHOW TO WEBSITE CALENDAR') }}</th>
+      <th>{{ __('ESTABLISHMENT NAME') }}</th>
+      <th>{{ __('EVENT TYPE') }}</th>
+      <th>{{ __('EVENT NAME') }}</th>
+      <th>{{ __('PERMIT DURATION') }}</th>
+      {{-- th>{{ __('SHOW TO USER CALENDAR') }}</th>
+      <th>{{ __('SHOW TO WEBSITE CALENDAR') }}</th> --}}
     </tr>
   </thead>
 </table>
@@ -774,19 +773,20 @@
           {targets: '_all', className: 'no-wrap'}
         ],
         columns: [
-          // {data: 'event_id'},
-          {data: 'action'},
+          {render: function(){ return null}},
           {data: 'reference_number'},
-          // {data: 'permit_number'},
-          {data: 'establishment_name'},
-          {data: 'duration'},
-          {data: 'event_name'},
+          // {data: 'action'},
           {data: 'type'},
-          {data: 'show'},
-          // {data: 'start'},
-          {data: 'website'},
+          {data: 'establishment_name'},
+          {data: 'event_type'},
+          {data: 'event_name'},
+          {data: 'duration'},
+          // {data: 'permit_number'},
+          // {data: 'show'},
+          // {data: 'website'},
         ],
         createdRow: function (row, data, index) {
+          $('td:not(:first-child)',row).click(function(e){ location.href = data.show_link; });
 
           $('#cancel-modal').on('shown.bs.modal', function () {
             $('#cancel-modal').find('textarea').trigger('focus');
@@ -1038,6 +1038,7 @@
         dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        'order': [[0, 'desc']],
          ajax: {
            url: '{{ route('admin.event.datatable') }}',
            data: function (d) {
@@ -1059,7 +1060,7 @@
            {data: 'event_name'},
            {data: 'type'},
            {data: 'created_at'},
-           {data: 'status'}
+           // {data: 'status'}
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {
