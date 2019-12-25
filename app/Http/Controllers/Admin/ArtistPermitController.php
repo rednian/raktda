@@ -18,15 +18,35 @@ use App\ArtistPermitComment;
 use App\PermitComment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\Facades\DataTables;
 
 class ArtistPermitController extends Controller
-{
+{   
+
+    public function __construct(){
+        $this->middleware('signed')->except([
+            'search',
+            'download',
+            'submitApplication',
+            'checkActivePermit',
+            'artistChecklist',
+            'approverDataTable',
+            'artistChecklistDocument',
+            'artistPermitHistory',
+            'applicationDataTable',
+            'permitHistory',
+            'applicationCommentDataTable',
+            'datatable',
+            'artistDataTable'
+        ]);
+    }
+
     public function index(Request $request)
     {
       $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
 
-      $view = $request->user()->roles()->whereIn('roles.role_id', [4, 5])->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
+      $view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
 
 	    return view($view, [
             'page_title'=> 'Artist Permit Dashboard',
@@ -34,7 +54,7 @@ class ArtistPermitController extends Controller
             'professions'=>Profession::has('artistpermit')->get(),
             'countries'=> Country::has('artistpermit')->get(),
             'new_request'=> Permit::has('artist')->where('permit_status', 'new')->count(),
-            'pending_request'=> Permit::has('artist')->where('permit_status', 'modified')->count(),
+            'pending_request'=> Permit::has('artist')->whereIn('permit_status', ['modified', 'checked'])->count(),
             'approved_permit'=> Permit::lastMonth(['active'])->count(),
             'rejected_permit'=> Permit::lastMonth(['rejected'])->count(),
             'cancelled_permit'=> Permit::lastMonth(['cancelled'])->count(),
@@ -49,7 +69,7 @@ class ArtistPermitController extends Controller
         return response()->json($permit);
     }
 
-    public function download(Permit $permit)
+    public function download(Request $request, Permit $permit)
     {
       $data['company_details'] = $permit->owner->user_id;
       $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'nationality')->get();
@@ -64,14 +84,15 @@ class ArtistPermitController extends Controller
       return $pdf->stream('Permit-' . $permitNumber . '.pdf');
     }
 
-    public function show(Permit $permit)
+    public function show(Request $request, Permit $permit)
     {
-    	return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no]);
+    	 return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no]);
     }
 
     public function applicationDetails(Request $request, Permit $permit)
     {
-        if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
+       
+      if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
 
         //UPDATE LOCK ARTIST PERMIT
         $permit->update([
@@ -88,8 +109,6 @@ class ArtistPermitController extends Controller
 
     public function submitApplication(Request $request, Permit $permit)
     {
-
-
       try {
         DB::beginTransaction();
            $user_time = $request->session()->get('user');
@@ -106,66 +125,65 @@ class ArtistPermitController extends Controller
            switch ($request->action) {
              case 'approved-unpaid':
               $permit->comment()->create($request->all());
+              $permit->update(['permit_status'=>$request->action]);
                break;
               case 'rejected';
                 $request['type'] = 1;
                  $permit->comment()->create($request->all());
+                 $permit->update(['permit_status'=>$request->action]);
               break;
               case 'send_back':
                 $request['type'] = 1;
                 $request['action'] = 'modification request';
-               $permit->comment()->create($request->all());
+                $permit->comment()->create($request->all());
+                $permit->update(['permit_status'=>$request->action]);
               break;
               case 'need approval':
-
-
-              //ADD TO APPROVALS
-              // $approval = $permit->getPermitApproval()->create([
-              //   'type' => 'artist',
-              //   'created_by' => $request->user()->user_id
-              // ]);
-
-
-              // if ($request->is_manual_schedule) {
-
-                // $user = User::availableInspector($permit->issued_date)->first();
-
-
-
-                // $approval->approver()->create(['user_id'=>$user->user_id]);
-              // }
-
-
-
-
-              // $approval = $permit->approval()->create(['type'=>'artist', 'inspection_id'=>$permit->permit_id, 'schedule_date'=>'']);
-
-
-              // dd($user);
 
                $request['type'] = 1;
 
                $permit->comment()->create($request->all());
                if($request->role){
-                foreach ($request->role as $role_id) {
-                  $permit->comment()->create([
-                    'action'=>'pending',
-                    'role_id'=>$role_id,
-                    'user_id'=> null,
-                    'comment'=> null,
-                  ]);
-                }
+                  foreach ($request->role as $role_id) {
+                    if($role_id != 6){
+                        $permit->comment()->create([
+                          'action'=>'pending',
+                          'role_id'=>$role_id,
+                          'user_id'=> null,
+                          'comment'=> null,
+                        ]);
+                    }else{//IF GOVERNMENT APPROVAL -> LOOP SELECTED GOVT DEPT
+                        if($request->has('department')){
+                            foreach ($request->department as $dep) {
+                                $permit->comment()->create([
+                                  'action'=>'pending',
+                                  'role_id'=>$role_id,
+                                  'user_id'=> null,
+                                  'comment'=> null,
+                                  'government_id' => $dep
+                                ]);
+                            }
+                        }
+                    }
+                  }
                }
+               $permit->update(['permit_status'=>$request->action]);
               break;
               //INSPECTOR AND MANAGER APPROVAL
-              case 'checked':
-
-                  $status = $user->roles()->first()->role_id == 4 ? 'inspector' : 'manager';
+              case 'approved':
 
                   $comment = $permit->comment()->where([
                     'action' => 'pending',
-                    'role_id' => $user->roles()->first()->role_id
+                    'role_id' => $user->roles()->first()->role_id,
                   ])->first();
+
+                  if(!is_null($user->government_id)){
+                      $comment = $permit->comment()->where([
+                        'action' => 'pending',
+                        'role_id' => $user->roles()->first()->role_id,
+                        'government_id' => $user->government_id
+                      ])->first();
+                  }
 
                   $comment->update($request->except(['_token', 'bypass_payment']));
 
@@ -185,21 +203,60 @@ class ArtistPermitController extends Controller
                       $permit->save();
                   }
 
-                  //CHANGE THE STATUS THAT WILL IDENTIFY IF IT IS FROM INSPECTOR OR MANAGER
-                  $request['action'] = 'checked-'.$status;
+                  //CHECK IF I AM THE LAST APPROVER
+                  if($permit->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
+                      $permit->update(['permit_status'=>'checked']);
+                  }
 
               break;
+              case 'disapproved':
 
+                  $comment = $permit->comment()->where([
+                    'action' => 'pending',
+                    'role_id' => $user->roles()->first()->role_id
+                  ])->first();
+
+                  if(!is_null($user->government_id)){
+                      $comment = $permit->comment()->where([
+                        'action' => 'pending',
+                        'role_id' => $user->roles()->first()->role_id,
+                        'government_id' => $user->government_id
+                      ])->first();
+                  }
+
+                  $comment->update($request->except(['_token', 'bypass_payment']));
+
+                  //RESET LOCK TO NONE
+                  $permit->update([
+                    'lock' => null,
+                    'lock_user_id' => null
+                  ]);
+
+                  if($request->has('bypass_payment')){
+
+                      $comment->exempt_payment = 1;
+                      $comment->save();
+
+                      $permit->exempt_payment = 1;
+                      $permit->exempt_by = $request->user()->user_id;
+                      $permit->save();
+                  }
+
+                  //CHECK IF I AM THE LAST APPROVER
+                  if($permit->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
+                      $permit->update(['permit_status'=>'checked']);
+                  }
+
+              break;
            }
-             $permit->update(['permit_status'=>$request->action]);
 
         DB::commit();
-	      $result = ['success', ' Permit has been rejected successfully ', 'Success'];
+	      $result = ['success', ' Success!', 'Success'];
       } catch (\Exception $e) {
       	DB::rollBack();
 	      $result = ['error', $e->getMessage(), 'Error'];
       }
-	    return redirect()->route('admin.artist_permit.index')->with('message', $result);
+	    return redirect(URL::signedRoute('admin.artist_permit.index'))->with('message', $result);
     }
 
     public function checkActivePermit(Request $request, Permit $permit, Artist $artist)
@@ -255,7 +312,7 @@ class ArtistPermitController extends Controller
          $result = ['danger', $e->getMessage(), 'Error'];
       }
 
-       return redirect()->route('admin.artist_permit.applicationdetails', $permit->permit_id)->with(['message'=>$result]);
+       return redirect(URL::signedRoute('admin.artist_permit.applicationdetails', $permit->permit_id))->with(['message'=>$result]);
     }
 
     public function checkApplication(Request $request,Permit $permit,  ArtistPermit $artistpermit)
@@ -451,6 +508,12 @@ class ArtistPermitController extends Controller
             $html .= '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">'.$artist_permit->comments()->count().'</span></button>';
             return $html;
           })
+          ->addColumn('show_link', function($artist_permit) use($permit){
+            return URL::signedRoute('admin.artist_permit.checkApplication', ['permit' => $permit->permit_id, 'artistpermit' => $artist_permit->artist_permit_id]);
+          })
+          ->addColumn('artist_link', function($artist_permit){
+            return URL::signedRoute('admin.artist.show', $artist_permit->artist_id);
+          })
 			    ->rawColumns(['artist_status', 'existing_permit', 'action'])
 			    ->make(true);
         }
@@ -486,7 +549,7 @@ class ArtistPermitController extends Controller
 		    	return permitStatus($permit->permit_status);
 		    })
 		     ->addColumn('action', function ($permit){
-		    	return '<a href="'.route('admin.artist_permit.show', $permit->permit_id).'" class="btn btn-sm btn-secondary btn-elevate">Details</a>';
+		    	return '<a href="'. URL::signedRoute('admin.artist_permit.show', $permit->permit_id) . '" class="btn btn-sm btn-secondary btn-elevate">Details</a>';
 		    })
 		    ->rawColumns(['permit_status', 'action'])
 		    ->make(true);
@@ -529,10 +592,12 @@ class ArtistPermitController extends Controller
       })
       ->when($request->approval, function($q) use($request){
         $q->whereHas('comment', function($q) use($request){
-          $q->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id);
+          $q->where('action', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->when($request->gov, function($q) use($request){
+            $q->where('government_id', $request->user()->government_id);
+          });
         });
       })
-      ->latest();
+      ->get();
 
       $table = Datatables::of($permit)
       ->addColumn('artist_number', function($permit){
@@ -541,7 +606,7 @@ class ArtistPermitController extends Controller
         if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
         return 'Checked '.$check.' of '.$total;
       })
-        ->editColumn('permit_status', function($permit){ return permitStatus($permit->permit_status); })
+      ->editColumn('permit_status', function($permit){ return permitStatus($permit->permit_status); })
 	    ->editColumn('reference_number', function($permit){ return '<span class="kt-font-bold">'.$permit->reference_number.'</span>'; })
 	    ->addColumn('applied_date', function($permit){
         return '<span class="text-underline" title="'.$permit->created_at->format('l d-M-Y h:i A').'">'.humanDate($permit->created_at).'</span>';
@@ -558,6 +623,12 @@ class ArtistPermitController extends Controller
       })
       ->addColumn('company_name', function($permit) use ($request){
           return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : $permit->owner->company->name_ar;
+      })
+      ->addColumn('application_link', function($permit){
+        return URL::signedRoute('admin.artist_permit.applicationdetails', ['permit' => $permit->permit_id]);
+      })
+      ->addColumn('show_link', function($permit){
+        return URL::signedRoute('admin.artist_permit.show', ['permit' => $permit->permit_id]);
       })
       ->addColumn('company_type', function($permit){
             return;
@@ -585,7 +656,7 @@ class ArtistPermitController extends Controller
 	         ->make(true);
            $table = $table->getData(true);
            $table['new_count'] = Permit::has('artist')->where('permit_status', 'new')->count();
-           $table['pending_count'] = Permit::has('artist')->where('permit_status', 'modified')->count();
+           $table['pending_count'] = Permit::has('artist')->whereIn('permit_status', ['modified', 'checked'])->count();
            $table['cancelled_count'] = Permit::has('artist')->where('permit_status', 'cancelled')->count();
 
            return response()->json($table);

@@ -143,6 +143,20 @@
 @yield('script')
 <script type="text/javascript">
     $(document).ready(function(){
+
+        @if (Session::has('message'))
+        $.notify({
+            title: '{{Session::get('message')[2]}}',
+            message: '{{Session::get('message')[1]}}',
+        },{
+            type:'{{Session::get('message')[0]}}',
+            animate: {
+                enter: 'animated zoomIn',
+                exit: 'animated zoomOut'
+            },
+        });
+        @endif
+        
             $('span[data-lang=en]').click(function(){
               getLang(1);
             });

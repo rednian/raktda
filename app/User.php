@@ -19,7 +19,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     protected $table = 'smartrak_smartgov.user';
     protected $primaryKey = 'user_id';
     protected $fillable = [
-        'NameAr', 'NameEn', 'username', 'password', 'type', 'IsActive', 'CreatedBy', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number', 'email_verified_at'
+        'NameAr', 'NameEn', 'username', 'password', 'type', 'IsActive', 'CreatedBy', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number', 'email_verified_at', 'user_id', 'government_id'
     ];
     // protected $auditInclude = [
     //     'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'
@@ -89,6 +89,10 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
 
     public function appointments(){
         return $this->belongsToMany(Approval::class, 'approvers', 'user_id', 'approval_id');
+    }
+
+    public function governmentDepartment(){
+        return $this->belongsTo(Government::class, 'government_id');
     }
 }
 

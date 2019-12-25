@@ -12,18 +12,18 @@
 <section id="app-wizard" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
 	<div class="kt-portlet__head kt-portlet__head--sm">
 		<div class="kt-portlet__head-label">
-			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ ucwords($event->name_en) }} - {{ __('APPLICATION') }}</span></h3>
+			<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ Auth::user()->LanguageId == 1 ? ucwords($event->name_en) : $event->name_ar }}</span></h3>
 		</div>
 		<div class="kt-portlet__head-toolbar">
-			<a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-outline-secondary kt-margin-r-4 kt-font-transform-u">
-				<i class="la la-arrow-left"></i>{{ __('BACK TO EVENT LIST') }}
+			<a href="{{ URL::signedRoute('admin.event.index') }}" class="btn btn-sm btn-outline-secondary kt-margin-r-4 kt-font-transform-u">
+				<i class="la la-arrow-left"></i>{{ __('BACK') }}
 			</a>
 			<div class="dropdown dropdown-inline">
 				<button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-elevate btn-icon btn-sm btn-icon-sm">
 					<i class="flaticon-more"></i>
 				</button>
 				<div x-placement="bottom-end" class="dropdown-menu dropdown-menu-right">
-					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">{{ __('COMPANY INFORMATION') }}</a>
+					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">{{ __('ESTABLISHMENT DETAILS') }}</a>
 				</div>
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 					<div class="kt-wizard-v3__nav-items">
 						<a href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="current" class="kt-wizard-v3__nav-item">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span>{{ __('EVENT INFORMATION') }}</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>1</span>{{ __('EVENT DETAILS') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						</a>
@@ -47,7 +47,7 @@
 						</a>
 						 <a href="javascript:void(0)" data-ktwizard-type="step" data-ktwizard-state="pending" class="kt-wizard-v3__nav-item">
 							<div class="kt-wizard-v3__nav-body">
-								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span> {{ __('EVENT APPROVER') }}</div>
+								<div class="kt-wizard-v3__nav-label  text-center kt-font-transform-u"><span>3</span> {{ __('SUBMIT') }}</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
 						 </a>
@@ -66,44 +66,29 @@
 					 						@include('admin.artist_permit.includes.comment')
 					 						@if ($existing_event->count() > 0)
 					 							<div class="alert alert-outline-danger fade show" role="alert">
-					 							<div class="alert-text">
-					 								<h6 class="alert-heading text-danger kt-font-transform-u">Important</h6>
-													<p>The venue of this event has {{ $existing_event->count() }} active event.</p>
-													<hr>
-													 <button type="button" data-target="#event-exist-modal" data-toggle="modal"
-														 class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">Show Event Calendar
-													 </button>
-													 <button type="button" class="btn btn-sm btn-secondary  kt-font-transform-u" data-dismiss="alert" aria-label="Close">Close
-													 </button>
-												</div>
+						 							<div class="alert-text">
+						 								<h6 class="alert-heading text-danger kt-font-transform-u">Important</h6>
+														<p>The venue of this event has {{ $existing_event->count() }} active event.</p>
+														<hr>
+														 <button type="button" data-target="#event-exist-modal" data-toggle="modal"
+															 class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">Show Event Calendar
+														 </button>
+														 <button type="button" class="btn btn-sm btn-secondary  kt-font-transform-u" data-dismiss="alert" aria-label="Close">Close
+														 </button>
+													</div>
 
-											 </div>
+												 </div>
 					 						@endif
 											 <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border" id="accordion-detail">
 												<div class="card">
 													<div class="card-header" id="heading-detail">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-detail" aria-expanded="true" aria-controls="collapse-detail">
-															<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('EVENT INFORMATION') }}</h6>
+															<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('EVENT DETAILS') }}</h6>
 														</div>
 													 </div>
 													 <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
 														<div class="card-body">
 															<div class="row form-group form-group-sm">
-																<div class="col-sm-6">
-																	 <label class="kt-font-dark">{{ __('Event Type') }} <span class="text-danger">*</span></label>
-																	  <div class="input-group input-group-sm">
-																	 	<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
-																	 					 class="form-control">
-																	 	<div class="input-group-append">
-																	 		<span class="input-group-text">
-																	 			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																	 				<input data-step="step-1" type="checkbox">
-																	 				<span></span>
-																	 			</label>
-																	 		 </span>
-																	 	</div>
-																	  </div>
-																</div>
 																<div class="col-sm-6">
 																	<section class="row">
 																		<div class="col-md-6">
@@ -140,6 +125,38 @@
 																</div>
 															</div>
 															<div class="row form-group form-group-sm">
+																<div class="col-sm-6">
+																	 <label class="kt-font-dark">{{ __('Event Type') }} <span class="text-danger">*</span></label>
+																	  <div class="input-group input-group-sm">
+																	 	<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
+																	 					 class="form-control">
+																	 	<div class="input-group-append">
+																	 		<span class="input-group-text">
+																	 			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																	 				<input data-step="step-1" type="checkbox">
+																	 				<span></span>
+																	 			</label>
+																	 		 </span>
+																	 	</div>
+																	  </div>
+																</div>
+																<div class="col-sm-6">
+																 <label class="kt-font-dark">{{ __('Event Sub Type') }} </label>
+																  <div class="input-group input-group-sm">
+																 	<input value="{{ ucfirst(Auth::user()->Language == 1 ? $event->subType->name_en : $event->subType->name_ar) }}" name="event_type" readonly="readonly" type="text"
+																 					 class="form-control">
+																 	<div class="input-group-append">
+																 		<span class="input-group-text">
+																 			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																 				<input data-step="step-1" type="checkbox">
+																 				<span></span>
+																 			</label>
+																 		 </span>
+																 	</div>
+																  </div>
+																</div>
+															</div>
+															<div class="row form-group form-group-sm">
 																<div class="col-md-6">
 																	<label class="kt-font-dark">{{ __('Event Name') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
@@ -158,7 +175,7 @@
 																<div class="col-md-6">
 																	<label class="kt-font-dark">{{ __('Event Name (AR)') }} <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
-																		<input value="{{ ucfirst($event->name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
+																		<input dir="rtl" value="{{ ucfirst($event->name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append">
 																			<span class="input-group-text">
 																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -189,7 +206,7 @@
 																<div class="col-md-6">
 																	<label class="kt-font-dark">{{ __('Owner Name (AR)') }} <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
-																		<input value="{{ ucfirst($event->owner_name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
+																		<input dir="rtl" value="{{ ucfirst($event->owner_name_ar) }}" name="name_ar" readonly="readonly" type="text" class="form-control">
 																		<div class="input-group-append">
 																			<span class="input-group-text">
 																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -219,7 +236,7 @@
 																<div class="col-md-6">
 																	 <label class="kt-font-dark">{{ __('Event Details (AR)') }} <span class="text-danger">*</span></label>
 																	 <div class="input-group input-group-sm">
-																	 	<textarea name="description_ar" rowspan="3" class="form-control" readonly>{{ ucfirst($event->description_ar) }}</textarea>
+																	 	<textarea dir="rtl" name="description_ar" rowspan="3" class="form-control" readonly>{{ ucfirst($event->description_ar) }}</textarea>
 																		<div class="input-group-append">
 																			<span class="input-group-text">
 																				<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -248,7 +265,7 @@
 																<div class="card-body">
 																	 <div class="row form-group form-group-sm">
 																	 	<div class="col-6">
-																	 		 <label class="kt-font-dark">{{ __('Duration') }} <span class="text-danger">*</span></label>
+																	 		 <label class="kt-font-dark">{{ __('Event Duration') }} <span class="text-danger">*</span></label>
 																	 		 <div class="input-group input-group-sm">
 																	 		 	@php
 																	 		 	  $date = Carbon\Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
@@ -269,7 +286,7 @@
 																	 </div>
 																	 <div class="row form-group form-group-sm">
 																			<div class="col-3">
-																				 <label class="kt-font-dark">{{ __('Date Start') }} <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('Start Date') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ date('d-F-Y', strtotime($event->issued_date)) }}" name="issued_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -284,7 +301,7 @@
 																				 </div>
 																			</div>
 																			<div class="col-3">
-																				 <label class="kt-font-dark">{{ __('Date End') }} <span class="text-danger">*</span></label>
+																				 <label class="kt-font-dark">{{ __('End Date') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
 																						<input value="{{ $event->expired_date }}" name="expired_date" readonly="readonly" type="text"
 																									 class="form-control">
@@ -384,7 +401,7 @@
 																					<div class="col-6">
 																						<label class="kt-font-dark">{{ __('Company Name (AR)') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
-																							<input value="{{ $truck->company_name_ar }}" name="company_name_ar" readonly="readonly" type="text"
+																							<input dir="rtl" value="{{ $truck->company_name_ar }}" name="company_name_ar" readonly="readonly" type="text"
 																											 class="form-control">
 																								<div class="input-group-append">
 																									<span class="input-group-text">
@@ -414,7 +431,7 @@
 																						 </div>
 																					</div>
 																					<div class="col-3">
-																						<label class="kt-font-dark">{{ __('Plate Number') }} <span class="text-danger">*</span></label>
+																						<label class="kt-font-dark">{{ __('Traffic Plate Number') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
 																							<input value="{{ $truck->plate_number }}" name="plate_number" readonly="readonly" type="text"
 																											 class="form-control">
@@ -511,7 +528,7 @@
 																			<div class="col-6">
 																				 <label class="kt-font-dark">{{ __('Establishment Name (AR)') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
-																						<input value="{{ $event->liquor->company_name_ar }}" name="expired_date" readonly="readonly" type="text"
+																						<input dir="rtl" value="{{ $event->liquor->company_name_ar }}" name="expired_date" readonly="readonly" type="text"
 																									 class="form-control">
 																						<div class="input-group-append">
 																							 <span class="input-group-text">
@@ -633,7 +650,7 @@
 																			<div class="col-6">
 																				 <label class="kt-font-dark">{{ __('Venue (AR)') }} <span class="text-danger">*</span></label>
 																				 <div class="input-group input-group-sm">
-																						<input value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
+																						<input dir="rtl" value="{{ ucfirst($event->venue_ar) }}" name="venue_ar" readonly="readonly" type="text"
 																									 class="form-control">
 																						<div class="input-group-append">
 																							 <span class="input-group-text">
@@ -716,14 +733,14 @@
 												<div class="card">
 													<div class="card-header" id="heading-map">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-map" aria-expanded="true" aria-controls="collapse-map">
-														<h6 class="kt-font-transform-u kt-font-dark kt-font-bolder">map details</h6>
+														<h6 class="kt-font-transform-u kt-font-dark kt-font-bolder">{{ __('MAP DETAILS') }}</h6>
 														</div>
 													</div>
 													<div id="collapse-map" class="collapse show" aria-labelledby="heading-map" data-parent="#accordion-map" style="">
 														<div class="card-body">
 															<div class="row">
 																<div class="col-sm-6">
-																	<label class="kt-font-dark">Map Full Address <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">{{ __('Address') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
 																		<input value="{{$event->full_address}}" name="" readonly="readonly" type="text" class="form-control" > 
 																		<div class="input-group-append">
@@ -737,7 +754,7 @@
 																	</div>
 																</div>
 																<div class="col-sm-3">
-																	<label class="kt-font-dark">Latitude <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">{{ __('Latitude') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
 																		<input value="{{$event->latitude}}" name="" readonly="readonly" type="text" class="form-control" > 
 																		<div class="input-group-append">
@@ -751,7 +768,7 @@
 																	</div>
 																</div>
 																<div class="col-sm-3">
-																	<label class="kt-font-dark">Latitude <span class="text-danger">*</span></label>
+																	<label class="kt-font-dark">{{ __('Longitude') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
 																		<input value="{{$event->longitude}}" name="" readonly="readonly" type="text" class="form-control" > 
 																		<div class="input-group-append">
@@ -763,6 +780,12 @@
 																			</span>
 																		</div>
 																	</div>
+																</div>
+															</div>
+															<div class="row form-group form-group-sm">
+																<div class="col-md-12">
+																	<label for="">{{__('Additional Location Information')}}</label>
+																	<textarea rows="2" class="form-control form-control-sm">{{ucfirst($event->additional_location_info)}}</textarea>
 																</div>
 															</div>
 															<section class="row">
@@ -787,32 +810,6 @@
 											<div class="col kt-margin-t-20 kt-margin-b-20">
 												@include('admin.event.includes.existing-notification')
 												 @include('admin.artist_permit.includes.comment')
-												 @if ($event->truck()->count() > 0)
-												 		<div class="accordion accordion-solid accordion-toggle-plus" id="accordion-truck">
-												 		<div class="card border">
-												 			<div class="card-header" id="heading-truck">
-												 				<div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-truck" aria-expanded="true" aria-controls="collapse-truck">
-												 					<span class="kt-font-dark kt-font-bold">{{__('FOOD TRUCK REQUIREMENTS')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span></span>
-												 				</div>
-												 			</div>
-												 			<div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck">
-												 				<div class="card-body">
-												 					<table class="table table-hover table-borderless table-sm border table-striped" id="truck-table">
-												 						<thead>
-												 							<tr>
-												 								 <th>#</th>
-												 								 <th>{{ __('COMPANY NAME') }}</th>
-												 								 <th>{{ __('FOOD TYPE') }}</th>
-												 								 <th>{{ __('PLATE NUMBER') }}</th>
-												 								 <th>{{ __('ACTION') }}</th>
-												 							</tr>
-												 						</thead>
-												 					 </table>
-												 				</div>
-												 			</div>
-												 		</div>
-												 	</div>
-												 @endif
 											 <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x " role="tablist">
 											 	<li class="nav-item">
 											 		<a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content" role="tab">
@@ -826,13 +823,23 @@
 											 			</a>
 											 		</li>
 											 	@endif
-											 	@if ($event->otherUpload()->count() > 0)
+
+											 	@if ($event->truck()->count() > 0)
+											 		<li class="nav-item">
+											 			<a class="nav-link" data-toggle="tab" href="#food-truck-tab" role="tab">
+											 				{{__('FOOD TRUCK REQUIREMENTS')}}
+											 				<span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span></span>
+											 			</a>
+											 		</li>
+											 	@endif
+											 	
+											 	{{-- @if ($event->otherUpload()->count() > 0) --}}
 											 	<li class="nav-item">
 											 		<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_3_3_tab_content" role="tab">
-											 			{{__('UPLOADED IMAGES')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
+											 			{{__('IMAGE UPLOADED')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
 											 		</a>
 											 	</li>
-											 	@endif
+											 	{{-- @endif --}}
 											 </ul>
 											 <div class="tab-content">
  												<div class="tab-pane active" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
@@ -842,7 +849,20 @@
  																 <th>{{ __('REQUIREMENT NAME') }}</th>
  																 <th>{{ __('FILES') }}</th>
  																 <th>{{ __('ISSUED DATE') }}</th>
- 																 <th>{{ __('EXPIRED DATE') }}</th>
+ 																 <th>{{ __('EXPIRY DATE') }}</th>
+ 																 <th>{{ __('ACTION') }}</th>
+ 															</tr>
+ 														</thead>
+ 													 </table>
+ 												</div>
+ 												<div class="tab-pane" id="food-truck-tab" role="tabpanel">
+ 													<table class="table table-hover table-borderless table-sm border table-striped" id="truck-table">
+ 														<thead>
+ 															<tr>
+ 																 <th>#</th>
+ 																 <th>{{ __('ESTABLISHMENT NAME') }}</th>
+ 																 <th>{{ __('SERVICE TYPE') }}</th>
+ 																 <th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
  																 <th>{{ __('ACTION') }}</th>
  															</tr>
  														</thead>
@@ -856,7 +876,7 @@
  																 <th>{{ __('REQUIREMENT NAME') }}</th>
  																 <th>{{ __('FILES') }}</th>
  																 <th>{{ __('ISSUED DATE') }}</th>
- 																 <th>{{ __('EXPIRED DATE') }}</th>
+ 																 <th>{{ __('EXPIRY DATE') }}</th>
  																 <th>{{ __('ACTION') }}</th>
  															</tr>
  														</thead>
@@ -901,19 +921,19 @@
   																			<div class="col-12">
   																				<div class="kt-radio-inline">
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="approved-unpaid" type="radio" name="status"> Approve Application
+  																						<input value="approved-unpaid" type="radio" name="status"> {{ __('Approve Application') }}
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="need modification" type="radio" name="status"> Send Back for Amendment
+  																						<input value="need modification" type="radio" name="status"> {{ __('Bounce Back for Ammendments') }}
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="need approval" type="radio" name="status"> Need Approval
+  																						<input value="need approval" type="radio" name="status"> {{ __('Need Approval') }}
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="rejected" type="radio" name="status"> Reject Application
+  																						<input value="rejected" type="radio" name="status"> {{ __('Reject Application') }}
   																						<span></span>
   																					</label>
   																				</div>
@@ -921,7 +941,7 @@
   																		</div>
 												  					</div>
 
-												  					<div class="col-md-4">
+												  					<div class="col-md-6">
 												  						<div class="form-group form-group kt-hide">
 												  							<label for="" class="kt-font-dark">{{ __('Approvers') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-approver" name="approver[]" multiple="multiple" id="" class="form-control">
@@ -937,10 +957,22 @@
 												  						<div class="form-group form-group kt-hide">
 												  							<div class="kt-checkbox-inline">
 																				<label class="kt-checkbox">
-																					<input type="checkbox" id="site-inspection" name="inspection"> {{ __('Site Inspection required') }}
+																					<input type="checkbox" id="site-inspection" name="inspection"> {{ __('Site Inspection Required') }}
 																					<span></span>
 																				</label>
 																			</div>
+												  						</div>
+												  					</div>
+												  					<div class="col-md-6">
+												  						<div class="form-group form-group kt-hide">
+												  							<label for="" class="kt-font-dark">{{ __('Government Entities') }} <span class="text-danger">*</span></label>
+												  							<select disabled required id="select-department" name="department[]" multiple="multiple" id="" class="form-control">
+																				@if(App\Government::has('getUsers')->count() > 0)
+																				@foreach(App\Government::has('getUsers')->get() as $gov)
+																				<option value="{{ $gov->government_id }}">{{ Auth::user()->LanguageId == 1 ? ucwords($gov->government_name_en) : $gov->government_name_ar }}</option>
+																				@endforeach
+																				@endif
+												  							 </select>
 												  						</div>
 												  					</div>
 												  				</section>
@@ -982,11 +1014,11 @@
   																			<div class="col-12">
   																				<div class="kt-radio-inline">
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="approved" type="radio" name="status"> Approve Application
+  																						<input value="approved" type="radio" name="status"> {{ __('Approve Application') }}
   																						<span></span>
   																					</label>
   																					<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-  																						<input value="disapproved" type="radio" name="status"> Disapprove Application
+  																						<input value="rejected" type="radio" name="status"> {{ __('Reject Application') }}
   																						<span></span>
   																					</label>
   																				</div>
@@ -1003,7 +1035,7 @@
 												  	<div class="card">
 												  		<div class="card-header" id="heading-requirements">
 												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
-												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('Additional Requirements') }}</span>
+												  				<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('ADDITIONAL REQUIREMENTS') }}</span>
 												  					<small class="text-muted">{{ __('Select Additional Requirements from the list or add new requirement') }}</small>
 												  				</h6>
 												  			</div>
@@ -1060,7 +1092,7 @@
 								 <th>{{ __('REQUIREMENT NAME') }}</th>
 								 <th>{{ __('FILES') }}</th>
 								 <th>{{ __('ISSUED DATE') }}</th>
-								 <th>{{ __('EXPIRED DATE') }}</th>
+								 <th>{{ __('EXPIRY DATE') }}</th>
 								 <th>{{ __('ACTION') }}</th>
 							</tr>
 						</thead>
@@ -1178,11 +1210,15 @@
        requirementTable();
        liqourRequirement();
        truck();
+       imageTable();
      });
 
      function imageTable(){
      	$('table#image-table').DataTable({
-     		ajax: ''
+     		ajax: '{{ route('admin.event.images.datatable', $event->event_id) }}',
+     		columns:[
+     		{data: 'path'}
+     		]
      	});
      }
 
@@ -1207,23 +1243,23 @@
 
      	var counter = 0;
 
-     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">{{ __('Add New Requirement') }}</button>');
+     	 $('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">{{ __('ADD NEW REQUIREMENT') }}</button>');
      	 $('#btn-add').on( 'click', function () {
      	 	var html = '<section class="row">';
      	 		html += '	<div class="col-sm-4">'
      	 		html += '		<div class="form-group form-group-xs">';
-     	 		html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="requirement name">';
+     	 		html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="{{ __('Requirement Name') }}">';
      	 		html += '		</div>';
      	 		html += '	</div>';
      	 		html += ' <div class="col-sm-4">';
      	 		html += ' 	<div  class="form-group form-group-xs">';
-     	 		html += '		<input placeholder="description" type="text" name="requirements['+counter+'][description]" class="form-control form-control-sm" >';
+     	 		html += '		<input placeholder="{{ __('Description') }}" type="text" name="requirements['+counter+'][description]" class="form-control form-control-sm" >';
      	 		html += ' 	</div>';
      	 		html += ' </div>';
      	 		html += '	<div class="col-sm-4">';
      	 		html + '		<div class="form-group form-group-xs">';
      	 		html += '			<div class="kt-checkbox--inline kt-forn-dark">';
-     	 		html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> Issued date & Expired date required?<span></span></label>';
+     	 		html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> {{ __('Requires Date Validation') }}<span></span></label>';
      	 		html += '			</div>';
      	 		html += '		</div>';
      	 		html += '	</div>';
@@ -1408,6 +1444,7 @@
      	});
 
      	var approver = $('select#select-approver');
+     	var departmentsSelect2 = $('select#select-department');
 
      	approver.change(function(){
      		var val = $(this).val();
@@ -1416,18 +1453,38 @@
      		}	
      		else{
      			$('input#site-inspection').parents('.form-group').addClass('kt-hide');	
+     			$('input#site-inspection').removeAttr('checked', true);
+     			$('input#site-inspection').prop('checked', false);
+     		}
+
+     		if(val.indexOf('6') > -1){
+     			$('select#select-department').val('').trigger('change');
+     			$('select#select-department').parents('.form-group').removeClass('kt-hide');
+     			$('select#select-department').removeAttr('disabled', true);
+     		}	
+     		else{
+     			$('select#select-department').parents('.form-group').addClass('kt-hide');
+     			$('select#select-department').attr('disabled', true);
      		}
      	});
 
      	approver.select2({
 		 minimumResultsForSearch: 'Infinity',
-		 maximumSelectionLength: 2,
 		 placeholder: 'Select Approver',
 		 autoWidth: true,
 		 width: '100%',
 		 allowClear: true,
 		 tags: true
        });
+
+     	departmentsSelect2.select2({
+		 minimumResultsForSearch: 'Infinity',
+		 placeholder: 'Select Government Department',
+		 autoWidth: true,
+		 width: '100%',
+		 allowClear: true,
+		 tags: true
+       	});
 
      	$('input[name=status][type=radio]').change(function(){
      		if($(this).val() == 'need modification'){
@@ -1451,7 +1508,12 @@
      			 approver.parents('.form-group').removeClass('kt-hide').find('select').removeAttr('disabled', true); 
      		}
      		else{
-     			 approver.parents('.form-group').addClass('kt-hide').find('select').attr('disabled', true); 
+     			approver.parents('.form-group').addClass('kt-hide').find('select').attr('disabled', true); 
+     			$('input#site-inspection').parents('.form-group').addClass('kt-hide');
+				$('select#select-department').val('').trigger('change');
+				$('select#select-approver').val('').trigger('change');
+				$('select#select-department').parents('.form-group').addClass('kt-hide');
+     			$('select#select-department').attr('disabled', true);
      		}
      	});
 
@@ -1489,7 +1551,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {

@@ -8,7 +8,7 @@ class PermitComment extends Model
 {
     protected $table = 'smartrak_smartgov.permit_comment';
     protected $primaryKey = 'permit_comment_id';
-    protected $fillable = [ 'comment', 'user_id', 'permit_id', 'type', 'action', 'role_id', 'checked_date', 'exempt_payment'];
+    protected $fillable = [ 'comment', 'user_id', 'permit_id', 'type', 'action', 'role_id', 'checked_date', 'exempt_payment', 'government_id'];
     protected  $dates = ['created_at', 'updated_at', 'checked_date'];
 
     public function role()
@@ -43,5 +43,9 @@ class PermitComment extends Model
     public function getCheckedDateAttribute($value)
     {
         return !is_null($value) ? date('d-M-Y', strtotime($value)) : '';
+    }
+
+    public function government(){
+        return $this->belongsTo(Government::class, 'government_id');
     }
 }

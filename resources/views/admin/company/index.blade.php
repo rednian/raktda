@@ -85,7 +85,7 @@
                 </a>
               </li>
                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-company">
-               {{ __('Company List') }}
+               {{ __('Establishment List') }}
              </a></li>
             </ul>
          </div>
@@ -108,7 +108,7 @@
                    </div>
                    <div class="col-8">
                      <form class="form-row">
-                       <div class="col-3">
+                       {{-- <div class="col-3">
                          <select name="company_id" id="new-company-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="new_company.draw()" >
                            <option selected disabled >{{ __('ESTABLISHMENT TYPE') }}</option>
                           @if ($types->count() >0 )
@@ -117,7 +117,7 @@
                             @endforeach
                           @endif
                          </select>
-                       </div>
+                       </div> --}}
                        <div class="col-3">
                          <select name="area_id" id="new-company-area" class="form-control-sm form-control custom-select custom-select-sm " onchange="new_company.draw()" >
                            <option selected disabled >{{ __('AREA') }}</option>
@@ -166,11 +166,10 @@
                                <th>{{ __('ESTABLISHMENT NAME') }}</th>
                                <th>{{ __('PHONE NUMBER') }}</th>
                                <th>{{ __('EMAIL') }}</th>
-                               <th>{{ __('COMPANY ADDRESS') }}</th>
+                               <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
                                <th>{{ __('WEBSITE') }}</th>
-                               <th>{{ __('TRADE LICENSE EXPIRATION DATE') }}</th>
-                               <th>{{ __('TRADE LICENSE ISSUED DATE') }}</th>
-                               <th>{{ __('TRADE LICENSE EXPIRED DATE') }}</th>
+                               <th>{{ __('BUSINESSS LICENSE ISSUED DATE') }}</th>
+                               <th>{{ __('BUSINESSS LICENSE EXPIRY DATE') }}</th>
                                <th>{{ __('BOUNCE BACK REASON') }}</th>
                            </tr>
                        </thead>
@@ -192,7 +191,7 @@
                       <div class="col-8">
                         <form class="form-row">
                           
-                          <div class="col-3">
+                          {{-- <div class="col-3">
                             <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="company_table.draw()" >
                               <option selected disabled >{{ __('ESTABLISHMENT TYPE') }}</option>
                               @if ($types->count() >0 )
@@ -201,12 +200,13 @@
                                 @endforeach
                               @endif
                             </select>
-                          </div>
+                          </div> --}}
                           <div class="col-3">
                             <select  name="" id="active-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="company_table.draw()">
                               <option disabled selected>{{ __('STATUS') }}</option>
                               <option value="active">{{ __('Active') }}</option>
                               <option value="blocked">{{ __('Blocked') }}</option>
+                              <option value="Rejected">{{ __('Rejected') }}</option>
                             </select>
                           </div>
                           <div class="col-3">
@@ -235,20 +235,22 @@
                         </div>
                       </div>
                   </section>
-                  <table class="table table-hover table-borderless table- border table-sm table-striped" id="company-table">
+                  <table class="table table-hover table-borderless table- border table-striped" id="company-table">
                     <thead>
                         <tr>
                             <th></th>
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('PHONE NUMBER') }}</th>
-                            <th>{{ __('TRADE LICENSE EXPIRATION DATE') }}</th>
+                            <th>{{ __('REGISTERED DATE') }}</th>
                             <th>{{ __('STATUS') }}</th>
                             <th>{{ __('EMAIL') }}</th>
-                            <th>{{ __('COMPANY ADDRESS') }}</th>
+                            <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
                             <th>{{ __('WEBSITE') }}</th>
-                            <th>{{ __('TRADE LICENSE ISSUED DATE') }}</th>
-                            <th>{{ __('TRADE LICENSE EXPIRED DATE') }}</th>
+                            <th>{{ __('REGISTERED BY') }}</th>
+                            <th>{{ __('BUSINESS LICENSE NUMBER') }}</th>
+                            <th>{{ __('BUSINESS LICENSE ISSUED DATE') }}</th>
+                            <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
                         </tr>
                     </thead>
                </table>
@@ -286,7 +288,7 @@
         ajax: {
            url: '{{ route('admin.company.datatable') }}',
            data: function(d){
-              var status =  $('#active-permit-status').val();
+              // var status =  $('#active-permit-status').val();
               d.status =  ['back'];
               // d.type = $('#active-applicant-type').val();
               // d.area = $('#active-company-area').val();
@@ -299,7 +301,7 @@
         columns:[
         {render: function(){ return null; }},
         {data: 'reference_number'},
-        {data: 'profile'},
+        {data: 'name'},
         {data: 'phone_number'},
         {data: 'company_email'},
         {data: 'address'},
@@ -307,7 +309,7 @@
         {data: 'trade_expired_date'},
         {data: 'issued_date'},
         {data: 'expired_date'},
-        {data: 'reason'},
+        // {data: 'reason'},
         ],
         createdRow: function(row, data, index){
 
@@ -328,7 +330,7 @@
            data: function(d){
               var status =  $('#active-permit-status').val();
               d.status = status ? [status] : ['blocked', 'active', 'rejected'];
-              d.type = $('#active-applicant-type').val();
+              // d.type = $('#active-applicant-type').val();
               d.area = $('#active-company-area').val();
            }
         },
@@ -340,13 +342,15 @@
         columns:[
         {render: function(){ return null; }},
         {data: 'reference_number'},
-        {data: 'profile'},
+        {data: 'name'},
         {data: 'phone_number'},
-        {data: 'trade_expired_date'},
+        {data: 'registered_date'},
         {data: 'status'},
         {data: 'company_email'},
         {data: 'address'},
         {data: 'website'},
+        {data: 'registered_by'},
+        {data: 'trade_license'},
         {data: 'issued_date'},
         {data: 'expired_date'},
         ],
@@ -379,7 +383,7 @@
             url: '{{ route('admin.company.datatable') }}',
             data: function(d){
                d.status = ['new', 'pending'];
-               d.type = $('#new-company-type').val();
+               // d.type = $('#new-company-type').val();
                d.area = $('#new-company-area').val();
             }
          },

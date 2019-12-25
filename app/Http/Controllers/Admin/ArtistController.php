@@ -8,6 +8,7 @@
 	use App\ArtistAction;
 	use App\ArtistPermit;
     use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\URL;
     use Yajra\DataTables\Facades\DataTables;
     use function foo\func;
 	use Illuminate\Http\Request;
@@ -15,6 +16,18 @@
 
 	class ArtistController extends Controller
 	{
+		public function __construct(){
+	        $this->middleware('signed')->except([
+	            'artist_block',
+				'artist_unblock',
+				'updateStatus',
+				'datatable',
+				'statusHistory',
+				'permithistory',
+				'history',
+				'checked_list',
+	        ]);
+	    }
 		public function artist_block(Request $request){
 			$data=$request->all();
 		    foreach ($data['id'] as $artist_id) {
@@ -29,7 +42,6 @@
              }
          }
             return response()->json();
-
 		}
 
         public function artist_unblock(Request $request){
@@ -51,18 +63,18 @@
 
 		public function updateStatus(Request $request, Artist $artist)
 		{
-			if ($request->is_multiple) {
-
-			} else {
-				$status = $request->status == 'block' ? 'blocked': 'active';
-				$artist->update(['artist_status' => $status]);
-				$artist->action()->create([
-					 'remarks'=>$request->remarks,
-					 'action'=> $status,
-					 'user_id'=>Auth::user()->user_id,
-				]);
+			try {
+				$artist->update(['artist_status'=>$request->status]);
+				$request['action'] = $request->status == 'active' ?  'unblocked' : $request->status;
+				$request['user_id'] = $request->user()->user_id;
+				$artist->action()->create($request->all());
+				$result = ['success', 'Artist has been '.$request->action.' Successfully ', 'Success'];
+			} catch (Exception $e) {
+				$result = ['danger', $e->getMessage(), 'Error'];
+				
 			}
-			return redirect()->back()->with(['']);
+
+			return redirect()->back()->with('message', $result);
 		}
 
 		public function show(Request $request, Artist $artist)
@@ -127,7 +139,9 @@
 					 ->addColumn('artist_status', function($artist){
 					 	return artistStatus($artist->artist_status);
 					 })
-
+					 ->addColumn('show_link', function($artist){
+					 	return URL::signedRoute('admin.artist.show', $artist->artist_id);
+					 })
 					 ->rawColumns(['name', 'nationality', 'artist_status'])
 					 // ->setTotalRecords($totalRecords)
 					 ->make(true);
@@ -137,13 +151,13 @@
 
 		public function statusHistory(Request $request, Artist $artist)
 		{
-			$action = ArtistAction::where('artist_id', $artist->artist_id)->orderBy('created_at', 'desc')->get();
+			$action = ArtistAction::where('artist_id', $artist->artist_id)->latest();
 			return DataTables::of($action)
 				 ->editColumn('created_at', function($action){
-					 return $action->created_at->format('d-M-Y h a');
+					 return '<span class="text-underline" title="'.$action->created_at->format('l h:i A | d-F-Y').'">'.humanDate($action->created_at).'</span>';
 				 })
-				 ->addColumn('employee_name', function($action){
-					 return ucwords($action->user->NameEn);
+				 ->addColumn('name', function($action){
+				 	return profileName($action->user->NameEn, $action->user->roles()->first()->NameEn);
 				 })
 				 ->editColumn('action', function($action){
 					 return artistStatus($action->action);
@@ -151,7 +165,7 @@
 				 ->editColumn('remarks', function($action){
 					 return ucfirst($action->remarks);
 				 })
-				 ->rawColumns(['action'])
+				 ->rawColumns(['action', 'name', 'created_at'])
 				 ->make(true);
 		}
 

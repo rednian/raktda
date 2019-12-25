@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'set_lang_front' => \App\Http\Middleware\SetLanguageFrontend::class,
         'inspector' => \App\Http\Middleware\InspectorMiddleware::class,
         'lock_artist_permit' => \App\Http\Middleware\CheckLockArtistPermit::class,
+        'company_status' => \App\Http\Middleware\companyStatusMiddleware::class,
     ];
 
     /**

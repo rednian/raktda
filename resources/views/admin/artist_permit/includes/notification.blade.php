@@ -7,7 +7,7 @@
          @if ($age < 18) <li>{{ __('The artist age is below 18 years old.') }}</li> @endif
          @if ($status != 'active') 
             <li>
-            {{ __('The artist is currently blocked with the reason below :') }}
+            {{ __('The artist is currently blocked with the reason below:') }}
             <ul>
                <li>{{ ucfirst($reason) }}</li>
             </ul>
@@ -15,7 +15,7 @@
          @endif
          @if ($permit_count > 0)
             <li>
-               {{ __("The artist currently has $permit_count active permit.") }}
+               {{ __("The artist currently has active permit.") }}
             </li>
          @endif
       </ul>

@@ -2,7 +2,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">ARTIST COMMENT</h5>
+				<h5 class="modal-title" id="exampleModalLabel">{{ __('COMMENTS') }}</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				</button>
 			</div>
@@ -10,9 +10,9 @@
 				<table class="table table-borderless table-striped  table-hover border" id="table-comment">
 					<thead>
 					<tr>
-						<th>REMARKS</th>
-						<th>CHECKED BY</th>
-						<th>CHECKED DATE</th>
+						<th>{{ __('REMARKS') }}</th>
+						<th>{{ __('CHECKED BY') }}</th>
+						<th>{{ __('CHECKED DATE') }}</th>
 					</tr>
 					</thead>
 				</table>
