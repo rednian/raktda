@@ -96,15 +96,16 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label>Establishment Type <span class="text-danger">*</span></label>
-                                <select name="company_type_id" class="form-control">
+                                {{-- <label>Establishment Type <span class="text-danger">*</span></label> --}}
+                                <input name="company_type_id" type="hidden" value="{{App\CompanyType::where('name_en', 'corporate')->first()->company_type_id}}">
+                                {{-- <select name="company_type_id" class="form-control ki">
                                     <option selected disabled>Select Establishment Type</option>
                                     @if (App\CompanyType::orderBy('name_en')->count() > 0)
                                         @foreach (App\CompanyType::orderBy('name_en')->get() as $type)
                                             <option value="{{$type->company_type_id}}">{{ucfirst($type->name_en)}}</option>
                                         @endforeach
                                     @endif
-                                </select>
+                                </select> --}}
                             </div>
                             <div class="form-group">
                                 <label>Establishment Name <span class="text-danger">*</span></label>
@@ -112,7 +113,7 @@
                             </div>
                             <div class="form-group corporate">
                                 <label>Trade License Number <span class="text-danger">*</span></label>
-                                <input value="{{old('trade_lincense')}}" type="text" name="trade_lincense" class="form-control" required autocomplete="off" autofocus>
+                                <input value="{{old('trade_license')}}" type="text" name="trade_license" class="form-control" required autocomplete="off" autofocus>
                             </div>
                             <section class="row corporate">
                                 <div class="col-sm-6">
@@ -308,6 +309,19 @@
           }
         }
       },
+
+      mobile_number:{
+        validators:{
+           remote: {
+             url: '{{ route('company.isexist') }}',
+             type: 'get',
+             data: {email: $(this).val()},
+             message: 'The mobile number is already exist.',
+             delay: 1000
+           } 
+        }
+      },
+
       email:{
         validators:{
            remote: {

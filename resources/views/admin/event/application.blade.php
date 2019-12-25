@@ -90,21 +90,6 @@
 														<div class="card-body">
 															<div class="row form-group form-group-sm">
 																<div class="col-sm-6">
-																	 <label class="kt-font-dark">{{ __('Event Type') }} <span class="text-danger">*</span></label>
-																	  <div class="input-group input-group-sm">
-																	 	<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
-																	 					 class="form-control">
-																	 	<div class="input-group-append">
-																	 		<span class="input-group-text">
-																	 			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																	 				<input data-step="step-1" type="checkbox">
-																	 				<span></span>
-																	 			</label>
-																	 		 </span>
-																	 	</div>
-																	  </div>
-																</div>
-																<div class="col-sm-6">
 																	<section class="row">
 																		<div class="col-md-6">
 																			 <label class="kt-font-dark">{{ __('Application Type') }}</label>
@@ -137,6 +122,38 @@
 																	  </div>
 																		</div>
 																	</section>
+																</div>
+															</div>
+															<div class="row form-group form-group-sm">
+																<div class="col-sm-6">
+																	 <label class="kt-font-dark">{{ __('Event Type') }} <span class="text-danger">*</span></label>
+																	  <div class="input-group input-group-sm">
+																	 	<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
+																	 					 class="form-control">
+																	 	<div class="input-group-append">
+																	 		<span class="input-group-text">
+																	 			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																	 				<input data-step="step-1" type="checkbox">
+																	 				<span></span>
+																	 			</label>
+																	 		 </span>
+																	 	</div>
+																	  </div>
+																</div>
+																<div class="col-sm-6">
+																 <label class="kt-font-dark">{{ __('Event Sub Type') }} </label>
+																  <div class="input-group input-group-sm">
+																 	<input value="{{ ucfirst(Auth::user()->Language == 1 ? $event->subType->name_en : $event->subType->name_ar) }}" name="event_type" readonly="readonly" type="text"
+																 					 class="form-control">
+																 	<div class="input-group-append">
+																 		<span class="input-group-text">
+																 			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																 				<input data-step="step-1" type="checkbox">
+																 				<span></span>
+																 			</label>
+																 		 </span>
+																 	</div>
+																  </div>
 																</div>
 															</div>
 															<div class="row form-group form-group-sm">

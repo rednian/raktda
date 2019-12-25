@@ -125,6 +125,7 @@ class ArtistPermitController extends Controller
            switch ($request->action) {
              case 'approved-unpaid':
               $permit->comment()->create($request->all());
+              $permit->update(['permit_status'=>$request->action]);
                break;
               case 'rejected';
                 $request['type'] = 1;

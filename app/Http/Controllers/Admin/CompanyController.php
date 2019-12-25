@@ -151,8 +151,8 @@ class CompanyController extends Controller
          $name =  $request->user()->LanguageId == 1 ?  ucfirst($companyRequirement->requirement->requirement_name) : $companyRequirement->requirement->requirement_name_ar;
          return '<a href="'.asset('/storage/'.$companyRequirement->path).'" data-caption="'.ucfirst($name).'" data-fancybox="gallery"  data-fancybox>'.ucfirst($name).'</a>';
       })
-      ->addColumn('count', function($companyRequirement) use ($array, $counter){
-       
+      ->addColumn('requirement', function($companyRequirement) use ($array, $counter){
+       return ucfirst($companyRequirement->requirement->requirement_name);
       })
       ->editColumn('issued_date', function($companyRequirement){
          return $companyRequirement->issued_date ? date('d-F-Y', strtotime($companyRequirement->issued_date)) : '-'; 
@@ -160,6 +160,7 @@ class CompanyController extends Controller
        ->editColumn('expired_date', function($companyRequirement){
           return $companyRequirement->expired_date ? date('d-F-Y', strtotime($companyRequirement->expired_date)) : '-'; 
       })
+       ->rawColumns(['name'])
       ->make(true);
    }
 
@@ -393,13 +394,19 @@ class CompanyController extends Controller
         return $request->user()->LanguageId == 1 ? ucfirst($company->area->area_en) : $company->area->area_ar; 
       })
       ->addColumn('issued_date', function($company){
-         // return $company->type->name_en == 'government' ? '-' : $company->trade_license_issued_date->format('d-F-Y'); 
+         return $company->trade_license_issued_date->format('d-F-Y'); 
       })
-       ->addColumn('expired_date', function($company){
-         // return $company->type->name_en == 'government' ? '-' : $company->trade_license_expired_date->format('d-F-Y'); 
+       ->addColumn('expired_date', function($company){  
+         return $company->trade_license_expired_date->format('d-F-Y'); 
       })
       ->editColumn('type', function($company) use ($request){
          return $request->user()->LanguageId == 1 ? ucfirst($company->type->name_en) : $company->type->name_ar; 
+      })
+      ->editColumn('registered_date', function($company){
+        return $company->registered_date->format('d-F-Y');
+      })
+       ->editColumn('registered_by', function($company) use ($request){
+        return $request->user()->LanguageId == 1 ? ucfirst($company->registeredBy->NameEn) : $company->registeredBy->NameAr;
       })
       ->editColumn('address', function($company) use ($request){
          $country = $request->user()->LanguageId == 1 ? ucfirst($company->country->name_en) : $company->country->name_ar;
