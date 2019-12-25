@@ -7,4 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class VisaType extends Model
 {
     protected $table = 'visa_type';
+
+
+    public function artistPermit()
+    {
+        return $this->hasMany(ArtistPermit::class, 'visa_type_id');
+    }
+
 }
+
+

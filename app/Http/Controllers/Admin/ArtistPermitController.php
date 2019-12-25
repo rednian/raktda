@@ -537,15 +537,15 @@ class ArtistPermitController extends Controller
 		    ->editColumn('issued_date', function($permit){
 		    	if(!$permit->issued_date){ return null;}
 		    	return $permit->issued_date->format('d-M-Y');
-		    })
-		    ->editColumn('expired_date', function($permit){
+		         })
+		       ->editColumn('expired_date', function($permit){
 		    	if(!$permit->expired_date){ return null;}
 		    	return $permit->expired_date->format('d-M-Y');
-		    })
-        ->addColumn('artist_number', function($permit){
-          return $permit->artist()->count();
-        })
-		    ->addColumn('permit_status', function ($permit){
+		          })
+               ->addColumn('artist_number', function($permit){
+                return $permit->artist()->count();
+                  })
+		       ->addColumn('permit_status', function ($permit){
 		    	return permitStatus($permit->permit_status);
 		    })
 		     ->addColumn('action', function ($permit){

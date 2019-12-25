@@ -1,6 +1,4 @@
-
-
-<table class="table  table-hover  table-borderless table-striped border" id="all-permit-report">
+<table class="table table-hover table-borderless table-striped border" id="all-permit-report">
     <thead>
     <tr>
         <th colspan="6">
@@ -57,8 +55,7 @@
         <th>{{ __('NO. OF ARTIST') }}
             <span data-content="The number of artist that already checked"
                   data-original-title="" data-container="body" data-toggle="kt-popover"
-                  data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-							</span>
+                  data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large"></span>
         </th>
         <th>{{ __('REQUEST TYPE') }}</th>
         <th>{{ __('PERMIT STATUS') }}</th>
@@ -69,7 +66,6 @@
     #artist-permit-processing_length{
         display: none;
     }
-
     #artist-permit-processing_wrapper .dt-buttons{
         background-color: #edeef4;
     }
