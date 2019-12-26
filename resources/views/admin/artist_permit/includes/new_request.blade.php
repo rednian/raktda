@@ -74,6 +74,8 @@
 		<th>{{ __('PERMIT END DATE') }}</th>
 		<th>{{ __('REQUEST TYPE') }}</th>
 		<th>{{ __('WORK LOCATION') }}</th>
+		<th>{{ __('CONNECTED TO AN EVENT') }}</th>
+		<th>{{ __('EVENT NAME') }}</th>
 	 </tr>
 	 </thead>
 </table>

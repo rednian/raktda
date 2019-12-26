@@ -15,9 +15,9 @@
 									<i class="flaticon-more"></i>
 							 </button>
 							 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-									<a class="dropdown-item kt-font-trasnform-u" href="#">{{ __('Establishment Details') }}</a>
-									{{-- <div class="dropdown-divider"></div> --}}
-									{{-- <a class="dropdown-item" href="#"><i class="la la-cog"></i> Settings</a> --}}
+									<a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
+                  {{ __('Establishment Details') }}
+                </a>
 							 </div>
 						</div>
 				 </div>

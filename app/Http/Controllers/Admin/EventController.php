@@ -720,15 +720,8 @@
 		public function dataTable(Request $request)
 		{
 			if ($request->ajax()) {
+
 				$user = Auth::user();
-				$field_name = 'created_at';
-				$order = 'desc';
-
-				if (in_array($request->status, ['new', 'checked', 'amended'])) {
-					$field_name = 'updated_at';
-					$order = 'asc';
-				}
-
 
 				$events = Event::when($request->type, function($q) use ($request){
 					$q->where('firm', $request->type);
@@ -751,23 +744,15 @@
 					});
 				})
 				->whereNotIn('status', ['draft'])
-				// ->orderBy($field_name, $order)
 				->get();
+				
 
 				$table =  DataTables::of($events)
 				->addColumn('establishment_name', function($event){
 					return $event->owner->type != 2 ? $event->owner->company->name_en : null;
 				})
 				->addColumn('duration', function($event) use ($user){
-					
-                      $html = '<div class="kt-user-card-v2">';
-                      $html .= ' <div class="kt-user-card-v2__details">';
-                      // $html .= '  <span class="kt-user-card-v2__name">'.$event->issued_date.'-'.$event->expired_date.'</span>';
-                      $html .= '  <span class="kt-user-card-v2__email kt-link">'.Carbon::parse($event->issued_date)->diffInDays($event->expired_date).' Days</span>';
-                      $html .= ' </div>';
-                      $html .= '</div>';
-                      return $html;
-
+					return Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
 				})
 				->addColumn('owner',function($event) use ($request){ 
 					return $request->user()->LanguageId == 1 ? ucfirst($event->owner_name_en) : $event->owner_name_ar;

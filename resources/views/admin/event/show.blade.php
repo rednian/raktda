@@ -22,11 +22,13 @@
                         <i class="flaticon-more"></i>
                  </button>
                  <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                  <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">{{ __('Establishment Detail') }}</a>
-                        @if ($event->status == 'active' || $event->status == 'expired')
-                            {{-- <div class="dropdown-divider"></div> --}}
-                            <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
-                        @endif
+                  <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">
+                    {{ __('Establishment Detail') }}
+                  </a>
+                    @if ($event->status == 'active' || $event->status == 'expired')
+                        {{-- <div class="dropdown-divider"></div> --}}
+                        <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
+                    @endif
                  </div>
             </div>
          </div>

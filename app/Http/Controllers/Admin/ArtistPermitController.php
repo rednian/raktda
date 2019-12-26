@@ -125,7 +125,7 @@ class ArtistPermitController extends Controller
            switch ($request->action) {
              case 'approved-unpaid':
               $permit->comment()->create($request->all());
-              $permit->update(['permit_status'=>$request->action]);
+              $permit->update(['permit_status'=>$request->action, 'approved_by'=>$request->user_id, 'approved_date'=> Carbon::now() ]);
                break;
               case 'rejected';
                 $request['type'] = 1;
@@ -626,11 +626,41 @@ class ArtistPermitController extends Controller
         $day = $date > 1 ? ' Days': ' Day';
         return $date.$day;
       })
+      ->editColumn('approved_date', function($permit){
+        return $permit->approved_date ? $permit->approved_date->format('d-F-Y') : '- '; 
+      })
+      ->editColumn('approved_by', function($permit) use ($request){
+        if ($permit->approved_by) {
+          $name = $request->user()->LanguageId == 1 ?  ucwords($permit->approvedBy->NameEn) : ucwords($permit->approvedBy->NameAr);
+          $role = $request->user()->LanguageId == 1 ?ucwords($permit->approvedBy->roles()->first()->NameEn) : ucwords($permit->approvedBy->roles()->first()->NameAr);
+          return profileName($name, $role);
+        }
+        return '-';
+
+      })
+      ->addColumn('has_event', function($permit){
+        return $permit->event()->exists() ? __('YES') : __('NO');
+      })
+       ->addColumn('event', function($permit) use ($request){
+        if ($permit->event()->exists()) {
+            $name = $request->user()->LanguageId == 1 ? ucfirst($permit->event->name_en) : ucfirst($permit->event->name_ar);
+            $type = $request->user()->LanguageId == 1 ? ucfirst($permit->event->type->name_en) : ucfirst($permit->event->type->name_ar);
+            return profileName($name, $type);
+        }
+        return '-';
+      })
       ->addColumn('company_name', function($permit) use ($request){
-          return $request->user()->LanguageId == 1 ? ucfirst($permit->work_location) : $permit->work_location_ar;
+          return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : ucfirst($permit->owner->company->name_ar);
+      })
+      ->editColumn('exempt_payment', function($permit){
+        return $permit->exempt_payment ? __('YES') : '-';
+      })
+      ->editColumn('exempt_by', function($permit) use ($request){
+        // return $request->user()->LanguageId == 1 ? ucfirst($permit->exemptBy->NameEn) : $permit->exemptBy->NameAr;
       })
       ->addColumn('location', function($permit) use ($request){
-          return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : $permit->owner->company->name_ar;
+           return $request->user()->LanguageId == 1 ? ucfirst($permit->work_location) : $permit->work_location_ar;
+         
       })
       ->addColumn('application_link', function($permit){
         return URL::signedRoute('admin.artist_permit.applicationdetails', ['permit' => $permit->permit_id]);
@@ -658,7 +688,7 @@ class ArtistPermitController extends Controller
       ->addColumn('inspection_url', function($permit){
           return route('tasks.artist_permit.details', $permit->permit_id);
       })
-	    ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action' , 'applied_date'])
+	    ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action' , 'applied_date', 'approved_by'])
 	    ->make(true);
        $table = $table->getData(true);
        $table['new_count'] = Permit::has('artist')->where('permit_status', 'new')->count();

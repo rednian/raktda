@@ -89,7 +89,7 @@
             </section>
           </div>
           <div class="col-md-5">
-            <section class="kt-form kt-form--label-right kt-padding-t-10 border-right">
+            <section class="kt-form kt-form--label-right kt-padding-t-10">
               <h6 class="kt-font-dark">{{__('CONTACT PERSON DETAILS')}}</h6>
               <div class="form-group form-group-xs row">
                 <label class="col-5 col-form-label">{{__('Name')}} :</label>

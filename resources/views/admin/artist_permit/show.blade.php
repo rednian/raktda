@@ -14,7 +14,13 @@
                     <i class="flaticon-more"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                    <a class="dropdown-item kt-font-trasnform-u" href="#">{{ __('Establishment Details') }}</a>
+                    <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
+                        {{ __('Establishment Details') }}
+                    </a>
+                    @if ($permit->permit_status == 'active' || $permit->permit_status == 'expired')
+                        {{-- <div class="dropdown-divider"></div> --}}
+                        <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.artist_permit.download', $permit->permit_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
+                    @endif
                 </div>
             </div>
         </div>
