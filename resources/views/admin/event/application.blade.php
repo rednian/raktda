@@ -904,6 +904,7 @@
 											<div class="col kt-margin-t-20 kt-margin-b-20">
 												@include('admin.event.includes.existing-notification')
 												  @include('admin.artist_permit.includes.comment')
+												  
 												   <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-action">
 												  	<div class="card">
 												  		<div class="card-header" id="heading-action">

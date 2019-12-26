@@ -46,7 +46,7 @@ function profileName($name = null, $type = null){
 }
 
 function humanDate($date){
-    return $date-> diffForHumans();
+    return $date->diffForHumans();
 }
 
 function defaults($name = null, $role){

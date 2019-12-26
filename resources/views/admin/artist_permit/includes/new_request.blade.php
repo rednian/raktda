@@ -70,12 +70,11 @@
 		<th>{{ __('SUBMITTED DATE') }}</th>
 		<th>{{ __('PERMIT TERM') }}</th>
 		<th>{{ __('PERMIT DURATION') }}</th>
-		<th>{{ __('PERMIT START DATE') }}</th>
-		<th>{{ __('PERMIT END DATE') }}</th>
 		<th>{{ __('REQUEST TYPE') }}</th>
 		<th>{{ __('WORK LOCATION') }}</th>
 		<th>{{ __('CONNECTED TO AN EVENT') }}</th>
 		<th>{{ __('EVENT NAME') }}</th>
+		<th>{{ __('PERMIT RIVISION') }}</th>
 	 </tr>
 	 </thead>
 </table>

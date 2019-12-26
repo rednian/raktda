@@ -39,7 +39,7 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending ') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending') }}</a>
                 <small class="kt-widget24__desc">{{ __('All Request') }}</small>
               </div>
               <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
@@ -52,8 +52,8 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Cancelled ') }}</a>
-                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Cancelled') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
               <span id="cancelled-count" class="kt-widget24__stats kt-font-default">{{ $cancelled_permit }}</span>
             </div>
@@ -65,8 +65,8 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved ') }}</a>
-                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
             </div>
@@ -78,8 +78,8 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Rejected ') }}</a>
-                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Rejected') }}</a>
+                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $rejected_permit }}</span>
             </div>
@@ -92,7 +92,7 @@
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
                 <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</a>
-                <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
+                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $active_request }}</span>
             </div>
@@ -184,6 +184,7 @@
         <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">
           <thead>
             <tr>
+              <th></th>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('PERMIT DURATION') }}</th>
@@ -1052,16 +1053,18 @@
              d.date = $('#new-applied-date').val()  ? selected_date : null;
            }
          },
-
+         responsive: true,
          columnDefs: [
            {targets: '_all', className: 'no-wrap'}
          ],
          columns: [
+           {render: function(){ return null; }},
            {data: 'reference_number'},
+           {data: 'event_name'},
+           {data: 'event_type'},
            {data: 'establishment_name'},
            {data: 'duration'},
-           {data: 'event_name'},
-           {data: 'type'},
+           // {data: 'type'},
            {data: 'created_at'},
            // {data: 'status'}
          ],
