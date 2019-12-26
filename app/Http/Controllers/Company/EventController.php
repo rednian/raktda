@@ -337,9 +337,9 @@ class EventController extends Controller
         }
 
         if ($event_liquor) {
-            $result = ['success', 'Liquor Details Added Successfully', 'Success'];
+            $result = ['success', __('Liquor Details Added Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result, 'event_liquor_id' => $event_liquor_id]);
@@ -685,9 +685,9 @@ class EventController extends Controller
         
 
         if ($event) {
-            $result = ['success', 'Event Permit Applied Successfully', 'Success'];
+            $result = ['success', __('Event Permit Applied Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result, 'event_id' => $event_id]);
@@ -962,9 +962,9 @@ class EventController extends Controller
         }
 
         if ($event) {
-            $result = ['success', 'Event Permit Updated Successfully', 'Success'];
+            $result = ['success', __('Event Permit Updated Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -984,10 +984,10 @@ class EventController extends Controller
                 'cancel_reason' => $reason
             ]);
             DB::commit();
-            $result = ['success', ' Permit Cancelled successfully ', 'Success'];
+            $result = ['success', __('Permit Cancelled successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', $e->getMessage(), 'Error'];
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
         return redirect()->route('event.index')->with('message', $result);
     }
@@ -1012,12 +1012,13 @@ class EventController extends Controller
         return view('permits.event.upload', ['event' => $event]);
     }
 
-    public function download($id)
+    public function download(Request $request , $id)
     {
-        $event_details = Event::with('type', 'country')->where('event_id', $id)->first();
-        if(is_null($event_details)){
+        if(!$request->hasValidSignature()){
             return abort(401);
         }
+        $event_details = Event::with('type', 'country')->where('event_id', $id)->first();
+        
         $data['event_details'] = $event_details;
         $from = Event::where('event_id', $id)->first()->issued_date;
         $to = Event::where('event_id', $id)->first()->expired_date;
@@ -1118,15 +1119,15 @@ class EventController extends Controller
             switch ($status) {
                 case 'applied':
                     if ($permit->firm == 'government' && $permit->status == 'approved-unpaid') {
-                        return '<a href="' . route('event.happiness', $permit->event_id) . '"  title="Happiness"><span class="kt-badge kt-badge--success kt-badge--inline">Happiness</span></a>';
+                        return '<a href="' . route('event.happiness', $permit->event_id) . '"  title="'.__('Happiness').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Happiness').'</span></a>';
                     }else if ($permit->status == 'approved-unpaid') {
-                        return '<a href="' . route('company.event.payment', $permit->event_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
+                        return '<a href="' . route('company.event.payment', $permit->event_id) . '"  title="'.__('Payment').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
                     } else if ($permit->status == 'rejected') {
-                        return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">Rejected</span>';
+                        return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Rejected').'</span>';
                     } else if ($permit->status == 'cancelled') {
-                        return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">Cancelled</span>';
+                        return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
                     } else if ($permit->status == 'need modification') {
-                        return '<a href="' . route('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
+                        return '<a href="' . route('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
                     } else if ($permit->status == 'new') {
                         // return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     }
@@ -1136,15 +1137,15 @@ class EventController extends Controller
                         $issued_date = strtotime($permit->issued_date);
                         $today = strtotime(date('Y-m-d 00:00:00'));
                         $diff = abs($today - $issued_date) / 60 / 60 / 24;
-                        $amend_btn = ($diff <= $amend_grace) ? '<a href="' . route('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-l-15">Amend </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-pull-right"><i class="fa fa-user-plus"></i></a><br />' : '';
-                        return $amend_btn . '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\',\''.$permit->permit_number.'\')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline" title="Cancel Permit">Cancel</span>';
+                        $amend_btn = ($diff <= $amend_grace) ? '<a href="' . route('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-l-15">Amend </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="'.__('Add Artist').'" class="kt-font-dark kt-pull-right"><i class="fa fa-user-plus"></i></a><br />' : '';
+                        return $amend_btn . '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\',\''.$permit->permit_number.'\')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline" title="'.__('Cancel Permit').'">'.__('Cancel').'</span>';
                     } else if ($permit->status == 'expired') {
-                        return '<div class="alert-text">Expired</div>';
+                        return '<div class="alert-text">'.__('Expired').'</div>';
                     }
                     break;
                 case 'draft':   
                     if ($permit->status == 'draft') {
-                        return '<a href="' . route('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>&emsp;<span onClick="delete_draft(' . $permit->event_id . ')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Delete</span>';
+                        return '<a href="' . route('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>&emsp;<span onClick="delete_draft(' . $permit->event_id . ')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Delete').'</span>';
                     }
                     break;
             }
@@ -1176,12 +1177,12 @@ class EventController extends Controller
                     $from = 'draft';
                     break;
             }
-            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
+            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
             if ($permit->status == 'expired') {
                 return;
             } else {
-                return '<a href="' . route('company.event.download', $permit->event_id) . '" target="_blank" title="Download Permit"><i class="fa fa-file-download fs-16"></i></a>';
+                return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.download', $permit->event_id) . '" target="_blank" title="'.__('Download Permit').'"><i class="fa fa-file-download fs-16"></i></a>';
             }
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
@@ -1328,9 +1329,9 @@ class EventController extends Controller
             
 
         if ($event) {
-            $result = ['success', 'Event Permit Amended Successfully', 'Success'];
+            $result = ['success', __('Event Permit Amended Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -1600,9 +1601,9 @@ class EventController extends Controller
 
 
         if ($event) {
-            $result = ['success', 'Event Permit Draft Saved Successfully', 'Success'];
+            $result = ['success', __('Event Permit Draft Saved Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -1638,10 +1639,10 @@ class EventController extends Controller
 
             Event::where('event_id', $event_id)->delete();
             DB::commit();
-            $result = ['success', ' Draft Deleted successfully ', 'Success'];
+            $result = ['success', __('Draft Deleted successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', $e->getMessage(), 'Error'];
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
         return redirect()->route('event.index')->with('message', $result);
     }
@@ -1820,9 +1821,9 @@ class EventController extends Controller
 
 
         if ($event) {
-            $result = ['success', 'Draft Updated Successfully', 'Success'];
+            $result = ['success', __('Draft Updated Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -1991,9 +1992,9 @@ class EventController extends Controller
         }
 
         if ($trnx_id) {
-            $result = ['success', 'Payment Done Successfully', 'Success'];
+            $result = ['success', __('Payment Done Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -2035,7 +2036,7 @@ class EventController extends Controller
             ]);
         }
 
-        $result = ['success', 'Thank you For your Feedback', 'Success'];
+        $result = ['success', __('Thank you For your Feedback'), 'Success'];
 
         return response()->json(['message' => $result]);
     }
@@ -2122,9 +2123,9 @@ class EventController extends Controller
         $del = \App\EventOtherUpload::where('event_other_upload_id', $id)->delete();
 
          if ($del) {
-            $result = ['success', 'Event Picture Deleted Successfully', 'Success'];
+            $result = ['success', __('Event Picture Deleted Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);

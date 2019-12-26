@@ -50,22 +50,24 @@
                     </table> --}}
                     <p class="kt-margin-b-0 kt-font-dark"><span
                             class="kt-font-bold kt-margin-r-5">{{__('Establishment Type')}}
-                        </span>: {{ ucfirst($event->firm)}}</p>
+                        </span>: {{__(ucwords($event->firm))}}</p>
                     <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}}
                         </span>: {{getLangId() == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
                     <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Owner')}}
                         </span>:
                         {{getLangId() == 1 ?  ucfirst($event->owner_name) : $event->owner_name_ar }}</p>
-                    <p class="kt-margin-b-0 kt-font-dark"><span
-                            class="kt-font-bold kt-margin-r-15">{{__('Event Type ')}} </span>:
+                    <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type')}}
+                        </span>:
                         {{getLangId() == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
                     </p>
+                    @if($event->subType)
                     <p class="kt-margin-b-0 kt-font-dark"><span
-                            class="kt-font-bold kt-margin-r-15">{{__('Event Sub Type ')}} </span>:
-                        {{$event->subType ? getLangId() == 1  ?  ucfirst($event->subType->sub_name_en) : $event->subType->sub_name_ar  : ''}}
+                            class="kt-font-bold kt-margin-r-15">{{__('Event Sub Type')}} </span>:
+                        {{getLangId() == 1  ?  ucfirst($event->subType->sub_name_en) : $event->subType->sub_name_ar}}
                     </p>
+                    @endif
                     <p class="kt-margin-b-0 kt-font-dark"><span
-                            class="kt-font-bold kt-margin-r-40">{{__('Venue ')}}</span>:
+                            class="kt-font-bold kt-margin-r-40">{{__('Venue')}}</span>:
                         {{getLangId() == 1 ? ucfirst($event->venue_en) :  $event->venue_ar}}
                     </p>
                     <iframe class="border kt-padding-5" id='mapcanvas'
@@ -330,13 +332,13 @@
 
             @if(count($eventReq) > 0)
             <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold kt-margin-t-10">
-                {{__('Uploaded Requirements')}}</h5>
+                {{__('Uploaded Documents')}}</h5>
             <div class="event--requirement-files">
                 <table class="table table-hover table-borderless border table-striped">
                     <thead class="text-center">
                         <tr class="kt-font-transform-u">
                             <th class="text-left">{{__('Document Name')}}</th>
-                            <th>{{__('Issue Date')}}</th>
+                            <th>{{__('Issued Date')}}</th>
                             <th>{{__('Expiry Date')}}</th>
                             <th>{{__('View')}}</th>
                         </tr>

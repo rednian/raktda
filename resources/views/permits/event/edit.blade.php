@@ -67,7 +67,7 @@
                                                             </option>
                                                             <option value="government"
                                                                 {{$event->firm == 'government' ? 'selected' : ''}}>
-                                                                {{__('Goverment')}}
+                                                                {{__('Government')}}
                                                             </option>
                                                         </select>
                                                     </div>
@@ -76,11 +76,11 @@
 
                                                     <div class="col-md-4 form-group form-group-xs">
                                                         <label for="owner_name"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Owner Name (EN)')}}
+                                                            class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
                                                             <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="owner_name" id="owner_name"
-                                                            placeholder="{{__('Owner Name (EN)')}}"
+                                                            placeholder="{{__('Owner Name')}}"
                                                             value="{{$event->owner_name}}">
                                                     </div>
 
@@ -114,11 +114,11 @@
 
                                                     <div class="col-md-4 form-group form-group-xs">
                                                         <label for="name_en"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Event Name (EN)')}}
+                                                            class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
                                                             <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="name_en" id="name_en"
-                                                            placeholder="{{__('Event Name (EN)')}}"
+                                                            placeholder="{{__('Event Name')}}"
                                                             value="{{$event->name_en}}">
                                                     </div>
 
@@ -157,11 +157,11 @@
                                                     <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="description_en"
                                                             class="col-form-label kt-font-bold text-right">
-                                                            {{__('Event Details (EN)')}} <span
+                                                            {{__('Event Details')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <textarea type="text" class="form-control form-control-sm"
                                                             name="description_en" id="description_en"
-                                                            placeholder="{{__('Event Details (EN)')}}" rows="3"
+                                                            placeholder="{{__('Event Details')}}" rows="3"
                                                             maxlength="255">{{$event->description_en}}</textarea>
                                                     </div>
 
@@ -195,7 +195,7 @@
                                                                 500-1000</option>
                                                             <option value="1000&above"
                                                                 {{$event->audience_number == '1000&above' ? 'selected': ''}}>
-                                                                1000 & above</option>
+                                                                {{__('1000 & above')}}</option>
                                                         </select>
                                                     </div>
 
@@ -204,7 +204,7 @@
 
 
                                                     <div class="col-md-4  form-group form-group-xs ">
-                                                        <label class="col-form-label"> {{__('Food truck')}} ?</label>
+                                                        <label class="col-form-label"> {{__('Food Truck')}} ?</label>
                                                         {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
                                                                 <input type="checkbox" name="isTruck" id="isTruck">
                                                                 <span></span>
@@ -385,11 +385,9 @@
                                                     <div class="col-md-6 form-group form-group-xs ">
                                                         <label for="venue_en"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Venue (EN)')}} <span
-                                                                class="text-danger">*</span></label>
+                                                            {{__('Venue')}} <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            name="venue_en" id="venue_en"
-                                                            placeholder="{{__('Venue (EN)')}}"
+                                                            name="venue_en" id="venue_en" placeholder="{{__('Venue')}}"
                                                             value="{{$event->venue_en}}">
 
                                                     </div>
@@ -514,7 +512,7 @@
                                                     <div class="col-md-4 form-group form-group-xs ">
                                                         <label for="addi_loc_info"
                                                             class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Additional Location Info')}} </label>
+                                                            {{__('Additional Location Information')}} </label>
                                                         <textarea class="form-control form-control-sm"
                                                             name="addi_loc_info" id="addi_loc_info" rows="2">{{$event->additional_location_info ? $event->additional_location_info : ''}}
                                                         </textarea>

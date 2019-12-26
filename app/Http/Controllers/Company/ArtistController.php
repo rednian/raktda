@@ -37,6 +37,7 @@ use App\EventTransaction;
 use App\EventLiquor;
 use App\CompanyComment;
 use App\Transaction;
+use App\PermitReference;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ArtistController extends Controller
@@ -127,12 +128,12 @@ class ArtistController extends Controller
                 case 'applied':
                     if ($permit->permit_status == 'approved-unpaid') {
                          if($permit->event) {
-                              if($permit->event->firm == 'government')
+                              if($permit->event->firm == 'government' || $permit->event->exempt_payment == 1)
                               {
-                                return '<a href="' . route('company.happiness_center', $permit->permit_id) . '"  title="Happiness"><span class="kt-badge kt-badge--success kt-badge--inline">Happiness</span></a>';
+                                return '<a href="' . route('company.happiness_center', $permit->permit_id) . '"  title="Happiness"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Happiness').'</span></a>';
                               }
                          }
-                        return '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
+                        return '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
                     } else if ($permit->permit_status == 'new') { //&& $permit->lock == ''
                        
                     } else if ($permit->permit_status == 'modification request') {
@@ -141,17 +142,17 @@ class ArtistController extends Controller
                             if($permit->event) {
                                 if($permit->event->firm == 'government')
                                 {
-                                    $pay_btn = '<a href="' . route('company.happiness_center', $permit->permit_id) . '"  title="Happiness"><span class="kt-badge kt-badge--info kt-badge--inline">Happiness</span></a>';
+                                    $pay_btn = '<a href="' . route('company.happiness_center', $permit->permit_id) . '"  title="Happiness"><span class="kt-badge kt-badge--info kt-badge--inline">'.__('Happiness').'</span></a>';
                                 }
                             }else {
-                                $pay_btn = '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">Payment</span></a>';
+                                $pay_btn = '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
                             }
                         }
-                        return '<a href="' . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">Edit </span></a>' . $pay_btn;
+                        return '<a href="' . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5" title="'.__('Payment').'">'.__('Edit').'</span></a>' . $pay_btn;
                     } else if ($permit->permit_status == 'rejected') {
-                        return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">Rejected</span>';
+                        return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Rejected').'</span>';
                     } else if ($permit->permit_status == 'cancelled') {
-                        return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">Cancelled</span>';
+                        return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
                     }
                     break;
                 case 'valid':
@@ -160,8 +161,8 @@ class ArtistController extends Controller
                     $today = strtotime(date('Y-m-d 00:00:00'));
                     $diff = abs($today - $issued_date) / 60 / 60 / 24;
                     $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
-                    $amendBtn = ($diff < $amend_grace) ? '<a href="'  . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend']) .  '" title="Amend"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">Amend</span></a>' : '';
-                    $renewBtn = ($expDiff <= $renew_grace) ? '<a href="'  . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'renew']) .  '" title="Renew"><span  class="kt-badge kt-badge--success kt-badge--inline">Renew</span></a>' : '';
+                    $amendBtn = ($diff < $amend_grace) ? '<a href="'  . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend']) .  '" title="Amend"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">'.__('Amend').'</span></a>' : '';
+                    $renewBtn = ($expDiff <= $renew_grace) ? '<a href="'  . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'renew']) .  '" title="Renew"><span  class="kt-badge kt-badge--success kt-badge--inline">'.__('Renew').'</span></a>' : '';
                     if($permit->permit_number)
                     {
                         $pn = Permit::where('permit_number', 'like', "$permit->permit_number%")->latest()->first();
@@ -171,7 +172,7 @@ class ArtistController extends Controller
                     }
                     
                     if($permit->status == 'expired'){
-                        return '<div class="alert-text">Expired</div>';
+                        return '<div class="alert-text">'.__('Expired').'</div>';
                     }
                     return  '<span class="d-flex flex-column">' . $amendBtn . $renewBtn . '</span>';
                     break;
@@ -199,9 +200,9 @@ class ArtistController extends Controller
                     $from = 'valid';
                     break;
             }
-            return '<a href="' . route('company.get_permit_details', $permit->permit_id) .  '?tab=' . $from . '" title="View Details" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
+            return '<a href="' . route('company.get_permit_details', $permit->permit_id) .  '?tab=' . $from . '" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . route('company.download_permit', $permit) . '" target="_blank" title="Download Permit"><i class="fa fa-file-download fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.download_permit', $permit) . '" target="_blank" title="'.__('Download Permit').'"><i class="fa fa-file-download fs-16"></i></a>';
         })->rawColumns(['action', 'details', 'download', 'permit_id'])->make(true);
     }
 
@@ -371,10 +372,10 @@ class ArtistController extends Controller
             );
             $result = Permit::where('permit_id', $id)->update($insval);
             DB::commit();
-            $message = ['success', 'Permit Cancelled successfully ', 'Success'];
+            $message = ['success', __('Permit Cancelled successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
-            $message = ['error', 'Error, Please Try Again', 'Error'];
+            $message = ['error', __('Error, Please Try Again'), 'Error'];
         }
         return redirect()->route('artist.index')->with('message', $message);
     }
@@ -494,7 +495,7 @@ class ArtistController extends Controller
 
             if($diff_in_minutes < 5){
                 // $request->session()->flash('lock', $permit);
-                return response()->json(['message' => ['danger', 'Opps! Someone is currently checking the permit. Please try again later.', 'Information'] , 'lock' => 'yes']);
+                return response()->json(['message' => ['danger', __('Opps! Someone is currently checking the permit. Please try again later.'), 'Information'] , 'lock' => 'yes']);
             }else {
                 return response()->json(['lock' => 'no']);
             }
@@ -688,9 +689,9 @@ class ArtistController extends Controller
 
 
         if ($artistTempData) {
-            $result = ['success', 'Artist Added Successfully', 'Success'];
+            $result = ['success', __('Artist Added Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -983,10 +984,17 @@ class ArtistController extends Controller
 
             if ($from == 'renew') {
                 Permit::where('permit_id', $temp_permit_id)->update(['is_edit' => 0]);
+                $permit->permit_reference_id = Permit::where('permit_id', $temp_permit_id)->value('permit_reference_id');
+                $permit->rivision_number = (int) Permit::where('permit_id', $temp_permit_id)->value('rivision_number') + 1;
                 $permit->permit_number = $artist_temp_data[0]->permit_number;
                 $permit->request_type = 'renew';
                 $permit->save();
             } else {
+                $permit_reference = PermitReference::create([
+                    'user_id' => Auth::user()->user_id
+                ]);
+                $permit->permit_reference_id = $permit_reference->permit_reference_id;
+                $permit->rivision_number = 1;
                 $permit->request_type = 'new';
                 $permit->save();
             }
@@ -1003,9 +1011,9 @@ class ArtistController extends Controller
 
         if ($permit) {
             $this->makeSessionForgetPermitDetails();
-            $result = ['success', 'Artist Permit Applied Successfully', 'Success'];
+            $result = ['success', __('Artist Permit Applied Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -1356,9 +1364,9 @@ class ArtistController extends Controller
         }
 
         if ($artists) {
-            $result = ['success', 'Artist Updated Successfully', 'Success'];
+            $result = ['success', __('Artist Updated Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -1603,10 +1611,10 @@ class ArtistController extends Controller
                 ['created_by', Auth::user()->user_id],
             ])->where('permit_id', $permit_id)->delete();
             DB::commit();
-            $result = ['success', ' Draft Deleted successfully ', 'Success'];
+            $result = ['success', __('Draft Deleted successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', $e->getMessage(), 'Error'];
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
         return redirect()->route('artist.index')->with('message', $result);
     }
@@ -1661,9 +1669,9 @@ class ArtistController extends Controller
 
         if ($update) {
             $this->makeSessionForgetPermitDetails();
-            $result = ['success', 'Draft Saved Successfully', 'Success'];
+            $result = ['success', __('Draft Saved Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -1887,14 +1895,14 @@ class ArtistController extends Controller
             ArtistTempData::where('permit_id', $permit_id)->delete();
             ArtistTempDocument::where('permit_id', $permit_id)->delete();
             if ($old_permit_status == 'modification request') {
-                $message = ['success', 'Artist Permit Updated Successfully', 'Success'];
+                $message = ['success', __('Artist Permit Updated Successfully'), 'Success'];
             } else if ($old_permit_status == 'active') {
-                $message = ['success', 'Artist Permit Amended Successfully', 'Success'];
+                $message = ['success', __('Artist Permit Amended Successfully'), 'Success'];
             } else {
-                $message = ['success', 'Artist Permit Added Successfully', 'Success'];
+                $message = ['success', __('Artist Permit Added Successfully'), 'Success'];
             }
         } else {
-            $message = ['error', 'Error, Please Try Again', 'Error'];
+            $message = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $message]);
@@ -1927,15 +1935,18 @@ class ArtistController extends Controller
     }
 
 
-    public function download_permit(Permit $permit)
+    public function download_permit(Request $request, Permit $permit)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $data['company_details'] = Auth::user()->type == 1 ? Company::find(Auth::user()->EmpClientId) : [];
         $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'Nationality')->get();
         $data['permit_details'] = $permit;
 
-        if($permit->user_id == Auth::user()->user_id) {
-            return abort(401);
-        }
+        // if($permit->user_id == Auth::user()->user_id) {
+        //     return abort(401);
+        // }
 
         $permitNumber = $permit->permit_number;
 
@@ -2092,9 +2103,9 @@ class ArtistController extends Controller
         }
 
         if ($transArr) {
-            $result = ['success', 'Payment Done Successfully', 'Success'];
+            $result = ['success', __('Payment Done Successfully'), 'Success'];
         } else {
-            $result = ['error', 'Error, Please Try Again', 'Error'];
+            $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
         return response()->json(['message' => $result]);
@@ -2119,7 +2130,29 @@ class ArtistController extends Controller
 
         $permit = Permit::where('permit_id', $permit_id)->first();
 
-        if($permit->event)
+        if($permit->exempt_payment == 1)
+        {
+            $permit_number = generateArtistPermitNumber();
+
+            $issued_date = strtotime($permit->issued_date);
+            $expired_date = strtotime($permit->exprired_date);
+            $today_date = strtotime(date('Y-m-d'));
+
+            $diff = round(abs($expired_date - $issued_date) / 60 / 60 / 24);
+
+            if ($issued_date <= $today_date) {
+                $new_issued_date = date('Y-m-d');
+                $new_expiry_date = date('Y-m-d', strtotime($new_issued_date . ' + ' . $diff . ' days'));
+                $permit->update(['issued_date' =>  $new_issued_date, 'expired_date' => $new_expiry_date]);
+            }
+
+            $permit->update(['permit_status' => 'active']);
+
+            if (!$permit->permit_number) {
+                $permit->update(['permit_number' => $permit_number]);
+            }
+        }
+        else if($permit->event)
         {
             if($permit->event->firm == 'government')
             {
@@ -2145,7 +2178,7 @@ class ArtistController extends Controller
             }
         }
 
-        $result = ['success', 'Thank you for your Feedback', 'Success'];
+        $result = ['success', __('Thank you for your Feedback'), 'Success'];
         return response()->json(['message' => $result]);
     }
 

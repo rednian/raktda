@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                {{__('This Artist Already Exists in the permit')}}
+                {{__('This artist already exists in the permit')}}
             </div>
         </div>
     </div>

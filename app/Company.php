@@ -82,7 +82,6 @@ class Company extends Model
         return $this->hasOne(CompanyContact::class, 'company_id')->withDefault(['contact_name_en'=>null, 'contact_name_ar'=>null]);
     }
 
-
     public function requirement()
     {
         return $this->hasMany(CompanyRequirement::class, 'company_id');

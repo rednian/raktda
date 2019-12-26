@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck List')}}&emsp;<i
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck List')}}&emsp;<i
                         class="fa fa-truck"></i>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
@@ -18,8 +18,8 @@
                     <table class="table table-borderless border table-striped">
                         <thead>
                             <th>#</th>
-                            <th>{{__('Establishment Name (EN)')}}</th>
-                            <th>{{__('Establishment Name  (AR)')}}</th>
+                            <th>{{__('Establishment Name')}}</th>
+                            <th>{{__('Establishment Name (AR)')}}</th>
                             <th>{{__('Traffic Plate No')}}</th>
                             <th>{{__('Food Services')}}</th>
                             <th></th>
@@ -50,7 +50,7 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
                                 id="company_name_en" autocomplete="off" ">
@@ -122,7 +122,7 @@
                         @if($req->dates_required == 1)
                         <div class="col-lg-2 col-sm-12">
                             <label for="" class="text--maroon kt-font-bold"
-                                title="Issue Date">{{__('Issue Date')}}</label>
+                                title="Issue Date">{{__('Issued Date')}}</label>
                             <input type="text" class="form-control form-control-sm date-picker"
                                 name="truck_doc_issue_date_{{$i}}" data-date-end-date="0d"
                                 id="truck_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />

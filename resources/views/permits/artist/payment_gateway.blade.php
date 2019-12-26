@@ -305,6 +305,128 @@
 
 @section('script')
 
+<script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js"
+    data-error="errorCallback" data-cancel="cancelCallback">
+</script>
+
+
+<script type="text/javascript">
+    function errorCallback(error) {
+        console.log(JSON.stringify(error));
+    }
+
+    function cancelCallback() {
+        console.log('Payment cancelled');
+    }
+
+    function completeCallback(resultIndicator, sessionVersion)
+    {
+        console.log(resultIndicator)
+        console.log(sessionVersion)
+        Checkout.configure().session.id = sessionVersion;
+    }
+    
+
+    // curl https://test-rakbankpay.mtf.gateway.mastercard.com/api/nvp/version/54 \
+    //     -d "apiOperation=CREATE_CHECKOUT_SESSION" \
+    //     -d "apiPassword=$PWD" \
+    //     -d "interaction.returnUrl=<your_return_URL>" \
+    //     -d "apiUsername=merchant.<your_merchant_id>" \
+    //     -d "merchant=<your_merchant_id>" \
+    //     -d "order.id=<unique_order_id>" \
+    //     -d "order.amount=100.00" \
+    //     -d "order.currency=USD"
+
+    
+    $.ajax({
+            url: 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session',
+            type: 'POST',
+            headers: {
+                'Authorization': 'Basic ' + btoa('merchant.NRSINFOWAYSL:aabf38b7ab511335ba2fb786206b1dc0')
+            },
+            data: {
+                interaction: {
+                    operation: 'PURCHASE'
+                },
+                order: {
+                    currency: 'AED',
+                    id: '123'
+                }
+            },
+            success: function(res){
+                console.log('fdafd');
+                console.log(res)
+            }, error: function (error) {
+                console.log('error')
+                console.log(error)
+            }
+        });
+
+    
+        // var url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session';
+        // const otherparams = {
+        //     headers: {
+        //         'Authorization': 'Basic ' + btoa('merchant.NRSINFOWAYSL:aabf38b7ab511335ba2fb786206b1dc0')
+        //     },
+        //     method: 'POST'
+        // }
+
+        // fetch(url, otherparams)
+        //     .then(data=> {
+        //         return data.json();
+        //     })
+        //     .then(res => {
+        //         console.log(res)
+        //     })
+        //     .catch(error => console.log(error))
+
+  
+
+        // $.ajax({
+        //     url: 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/nvp/version/54',
+        //     type: 'POST',
+        //     headers: {
+        //         'Authorization': 'Basic ' + btoa('merchant.NRSINFOWAYSL:aabf38b7ab511335ba2fb786206b1dc0')
+        //     },
+        //     // data: {
+        //     //     apiUsername: 'merchant.NRSINFOWAYSL',
+        //     //     apiPassword: btoa('aabf38b7ab511335ba2fb786206b1dc0')
+        //     // },
+        //     success: function(res){
+        //         // sessID = data.session.id;
+        //         console.log('fdafd');
+        //         console.log(res)
+        //     }, error: function (error) {
+        //         console.log('error')
+        //         console.log(error)
+        //     }
+        // });
+
+
+    Checkout.configure({
+        merchant: 'NRSINFOWAYSL',
+        order: {
+            amount: function() {
+                //Dynamic calculation of amount
+                return 150;
+            },
+            currency: 'AED',
+            description: 'Permit Payment',
+            id: '123'
+        },
+        interaction: {
+            operation: 'PURCHASE', // set this field to 'PURCHASE' for Hosted Checkout to perform a Pay Operation.
+            merchant: {
+                name: 'RAKTDA NRS Infoways',
+                // address: {
+                //     line1: '200 Sample St',
+                //     line2: '1234 Example Town'            
+                // }    
+            }
+        }
+    });
+
+</script>
 <script>
     $(document).ready(function(){
         $('#event_details_table').hide();
@@ -317,6 +439,7 @@
         $('#amount').val(artistTotalFee);
         $('#vat').val(artistVatTotal);
         $('#total').val(artistGTotal);
+
     });
 
 
@@ -376,7 +499,6 @@ $('#pay_btn').click(function(){
         }
     });
 });
-
 
 
 </script>

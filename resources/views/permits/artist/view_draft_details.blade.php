@@ -36,7 +36,7 @@
                 <span class="kt-font-info">
                     {{getLangId() == 1 ? ucwords($draft_details[0]->work_location) : $draft_details[0]->work_location_ar}}</span>&emsp;&emsp;
                 @if($draft_details[0]->event)
-                <span>{{__('Connected to Event')}} :</span>&emsp;
+                <span>{{__('Connected Event ?')}} :</span>&emsp;
                 <span
                     class="kt-font-info">{{ getLangId() == 1 ? $draft_details[0]->event->name_en : $draft_details[0]->event->name_ar }}</span>&emsp;&emsp;
                 @endif

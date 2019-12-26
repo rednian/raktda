@@ -50,7 +50,7 @@
                 <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_en"
                                 id="l_company_name_en" autocomplete="off">
@@ -118,7 +118,7 @@
                         @if($req->dates_required == 1)
                         <div class="col-lg-2 col-sm-12">
                             <label for="" class="text--maroon kt-font-bold"
-                                title="Issue Date">{{__('Issue Date')}}</label>
+                                title="Issue Date">{{__('Issued Date')}}</label>
                             <input type="text" class="form-control form-control-sm date-picker"
                                 name="liquor_doc_issue_date_{{$i}}" data-date-end-date="0d"
                                 id="liquor_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
@@ -142,7 +142,7 @@
                         <label for="" class="col-form-label kt-font-bold">{{__('Liquor Permit No')}} <span
                                 class="text-danger">*</span></label>
                         <input type="text" class="form-control form-control-sm" name="liquor_permit_no"
-                            id="liquor_permit_no" autocomplete="off" placeholder="{{__('Liquor Permit No')}}">
+                            id="liquor_permit_no" autocomplete="off">
                     </div>
                 </form>
                 <div class="kt-pull-right kt-margin-t-10">

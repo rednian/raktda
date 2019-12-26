@@ -38,10 +38,10 @@
             <span>{{__('Work Location')}}:</span>&emsp;
             <span
                 class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
-            <span>{{__('Ref NO.')}}</span>&emsp;
+            <span>{{__('Reference No.')}}</span>&emsp;
             <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
             @if($permit_details->event)
-            <span>{{__('Connected to Event')}} :</span>&emsp;
+            <span>{{__('Connected Event ?')}} :</span>&emsp;
             <span
                 class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>&emsp;&emsp;
             @endif
@@ -64,9 +64,12 @@
                 <tbody>
                     @foreach ($permit_details->artistPermit as $artistPermit)
                     <tr>
-                        <td>{{$artistPermit->firstname_en}}</td>
-                        <td>{{$artistPermit->lastname_en}}</td>
-                        <td>{{$artistPermit->profession['name_en']}}</td>
+                        <td>{{ getLangId() == 1 ? ucwords($artistPermit->firstname_en) : $artistPermit->firstname_ar }}
+                        </td>
+                        <td>{{ getLangId() == 1 ? ucwords($artistPermit->lastname_en) : $artistPermit->lastname_ar }}
+                        </td>
+                        <td>{{ getLangId() == 1 ? ucwords($artistPermit->profession['name_en']) : $artistPermit->profession['name_ar']}}
+                        </td>
                         <td>{{$artistPermit->mobile_number}}</td>
                         {{-- <td>{{$artistPermit->email}}</td> --}}
                         <td>
@@ -78,9 +81,8 @@
                         </a></td> --}}
 
                         <td class="text-center"> <a
-                                href="{{route('artist_details.view' , [ 'id' => $artistPermit->artist_permit_id , 'from' => 'details'])}}"
-                                title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                href="{{route('artist_details.view' , [ 'id' => $artistPermit->artist_permit_id , 'from' => 'details'])}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                             </a></td>
                     </tr>
                     @endforeach

@@ -33,14 +33,16 @@
 
                     $name = Auth::user()->NameEn;
                     $first_name = explode(' ', Auth::user()->NameEn);
+                    $name_ar = Auth::user()->NameAr ;
                     $first_name = $first_name[0];
                     $first_letter = substr($first_name, 0, 1);
                     @endphp
 
                     <span class="kt-header__topbar-welcome kt-hidden-mobile">{{__('Hi')}}</span> <span
-                        class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords($first_name) }}</span>
+                        class="kt-header__topbar-username kt-hidden-mobile">{{ getLangId() == 1 ? ucwords($first_name) :  $name_ar }}</span>
                     <span
-                        class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
+                        class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}
+                    </span>
                 </div>
             </div>
             <div
@@ -52,7 +54,7 @@
                             class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>
                     </div>
                     <div style="display: flex; flex-direction: column;">
-                        <div class="kt-user-card__name">{{ $name }}</div>
+                        <div class="kt-user-card__name">{{ getLangId() == 1 ? ucwords($name) : $name_ar }}</div>
 
                         <div id="header--company">{{ $company_name }}</div>
                     </div>
@@ -72,10 +74,10 @@
                             {{-- <div class="kt-notification__item-time"> Account settings and more </div> --}}
                         </div>
                     </a>
-                    <div class="kt-notification__custom kt-space-between">
+                    <div class="kt-notification__custom kt-space-between pull-right">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                            class="btn btn-brand btn-elevate btn-sm">@lang('words.sign_out')</a>
+                            class="btn btn-secondary btn-elevate btn-hover-warning">{{__('Sign Out')}}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf
                         </form>
                     </div>

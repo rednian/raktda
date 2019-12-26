@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Event Permits - Smart Government Rak')
+@section('title', __('Event Permit'))
 
 @section('content')
 
@@ -133,9 +133,7 @@
     <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
-
                 <h5 class="modal-title" id="exampleModalLabel">{{__('Cancel Permit')}}</h5>
-
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -145,10 +143,10 @@
                     <label>{{__('Are you sure to Cancel this Permit of')}} <span class="text--maroon"
                             id="cancel_permit_number"></span>
                         ?</label>
-                    <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..." style="resize:none;"
-                        class="form-control" id="cancel_reason"></textarea>
+                    <textarea name="cancel_reason" rows="3" placeholder="{{__('Enter the reason here')}}"
+                        style="resize:none;" class="form-control" id="cancel_reason"></textarea>
                     <input type="hidden" id="cancel_permit_id" name="permit_id">
-                    <input type="submit" class="btn btn-sm btn--maroon popup-submit-btn" value="Cancel">
+                    <input type="submit" class="btn btn-sm btn--maroon popup-submit-btn" value="{{__('Cancel')}}">
                 </form>
             </div>
 

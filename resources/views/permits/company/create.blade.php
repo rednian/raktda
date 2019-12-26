@@ -14,7 +14,8 @@
     <link href="{{ asset('/assets/css/login/style.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/login/style-responsive.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/login/style-responsive.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/vendors/custom/validator/css/bootstrapValidator.min.css') }}" rel="stylesheet" id="theme" />
+    <link href="{{ asset('assets/vendors/custom/validator/css/bootstrapValidator.min.css') }}" rel="stylesheet"
+        id="theme" />
     <link rel='apple-touch-icon' type='image/png' href="{{ asset('/img/apple-touch-icon.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
@@ -74,14 +75,14 @@
         <section class="row">
             <div class="col-md-6 col-md-offset-3">
                 @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
                 @endif
                 @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
                 @endif
             </div>
         </section>
@@ -97,35 +98,41 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 {{-- <label>Establishment Type <span class="text-danger">*</span></label> --}}
-                                <input name="company_type_id" type="hidden" value="{{App\CompanyType::where('name_en', 'corporate')->first()->company_type_id}}">
+                                <input name="company_type_id" type="hidden"
+                                    value="{{App\CompanyType::where('name_en', 'corporate')->first()->company_type_id}}">
                                 {{-- <select name="company_type_id" class="form-control ki">
                                     <option selected disabled>Select Establishment Type</option>
                                     @if (App\CompanyType::orderBy('name_en')->count() > 0)
                                         @foreach (App\CompanyType::orderBy('name_en')->get() as $type)
-                                            <option value="{{$type->company_type_id}}">{{ucfirst($type->name_en)}}</option>
-                                        @endforeach
-                                    @endif
+                                            <option value="{{$type->company_type_id}}">{{ucfirst($type->name_en)}}
+                                </option>
+                                @endforeach
+                                @endif
                                 </select> --}}
                             </div>
                             <div class="form-group">
                                 <label>Establishment Name <span class="text-danger">*</span></label>
-                                <input value="{{old('name_en')}}"  type="text" name="name_en" class="form-control" required autocomplete="off" autofocus>
+                                <input value="{{old('name_en')}}" type="text" name="name_en" class="form-control"
+                                    required autocomplete="off" autofocus>
                             </div>
                             <div class="form-group corporate">
                                 <label>Trade License Number <span class="text-danger">*</span></label>
-                                <input value="{{old('trade_license')}}" type="text" name="trade_license" class="form-control" required autocomplete="off" autofocus>
+                                <input value="{{old('trade_license')}}" type="text" name="trade_license"
+                                    class="form-control" required autocomplete="off" autofocus>
                             </div>
                             <section class="row corporate">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Trade License Issued Date <span class="text-danger">*</span></label>
-                                        <input required value="{{old('trade_license_issued_date')}}" type="date" name="trade_license_issued_date" class="form-control" autocomplete="off">
+                                        <input required value="{{old('trade_license_issued_date')}}" type="date"
+                                            name="trade_license_issued_date" class="form-control" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Trade License Expired Date <span class="text-danger">*</span></label>
-                                        <input required value="{{old('trade_license_expired_date')}}" type="date" name="trade_license_expired_date" class="form-control" autocomplete="off">
+                                        <input required value="{{old('trade_license_expired_date')}}" type="date"
+                                            name="trade_license_expired_date" class="form-control" autocomplete="off">
                                     </div>
                                 </div>
                             </section>
@@ -133,13 +140,15 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Phone Number <span class="text-danger">*</span></label>
-                                        <input required value="{{old('phone_number')}}" type="text" name="phone_number" class="form-control" autocomplete="off">
+                                        <input required value="{{old('phone_number')}}" type="text" name="phone_number"
+                                            class="form-control" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Email <span class="text-danger">*</span></label>
-                                        <input required value="{{old('company_email')}}" type="email" name="company_email" class="form-control" autocomplete="off">
+                                        <input required value="{{old('company_email')}}" type="email"
+                                            name="company_email" class="form-control" autocomplete="off">
                                     </div>
                                 </div>
                             </section>
@@ -149,9 +158,10 @@
                                         <label>Country <span class="text-danger">*</span></label>
                                         <select name="country_id" class="form-control">
                                             @if (App\Country::orderBy('name_en')->count() > 0)
-                                                @foreach (App\Country::orderBy('name_en')->get() as $country)
-                                                <option  {{ $country->country_code == 'AE' ? 'selected': null }} value="{{$country->country_id}}">{{ucfirst($country->name_en)}}</option>
-                                                @endforeach
+                                            @foreach (App\Country::orderBy('name_en')->get() as $country)
+                                            <option {{ $country->country_code == 'AE' ? 'selected': null }}
+                                                value="{{$country->country_id}}">{{ucfirst($country->name_en)}}</option>
+                                            @endforeach
                                             @endif
                                         </select>
                                     </div>
@@ -161,9 +171,10 @@
                                         <label>Emirate <span class="text-danger">*</span></label>
                                         <select required name="emirate_id" class="form-control">
                                             @if (App\Emirates::orderBy('name_en')->count() > 0)
-                                                @foreach (App\Emirates::orderBy('name_en')->get() as $emirate)
-                                                <option {{ $emirate->name_en == 'Ras Al Khaimah' ? 'selected': null }} value="{{$emirate->id}}">{{ucfirst($emirate->name_en)}}</option>
-                                                @endforeach
+                                            @foreach (App\Emirates::orderBy('name_en')->get() as $emirate)
+                                            <option {{ $emirate->name_en == 'Ras Al Khaimah' ? 'selected': null }}
+                                                value="{{$emirate->id}}">{{ucfirst($emirate->name_en)}}</option>
+                                            @endforeach
                                             @endif
                                         </select>
                                     </div>
@@ -175,9 +186,10 @@
                                         <label>Area <span class="text-danger">*</span></label>
                                         <select required name="area_id" class="form-control">
                                             @if (App\Areas::where('emirates_id', 5)->orderBy('area_en')->count() > 0)
-                                                @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as $area)
-                                                <option  value="{{$area->id}}">{{ucfirst($area->area_en)}}</option>
-                                                @endforeach
+                                            @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as
+                                            $area)
+                                            <option value="{{$area->id}}">{{ucfirst($area->area_en)}}</option>
+                                            @endforeach
                                             @endif
                                         </select>
                                     </div>
@@ -185,7 +197,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Address <span class="text-danger">*</span></label>
-                                        <input required value="{{old('company_email')}}" type="text" name="address" class="form-control" autocomplete="off">
+                                        <input required value="{{old('company_email')}}" type="text" name="address"
+                                            class="form-control" autocomplete="off">
                                     </div>
                                 </div>
                             </section>
@@ -198,54 +211,63 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <label>Name <span class="text-danger">*</span></label>
-                                <input value="{{old('NameEn')}}" type="text" name="NameEn" class="form-control" required autocomplete="off" autofocus>
+                                <input value="{{old('NameEn')}}" type="text" name="NameEn" class="form-control" required
+                                    autocomplete="off" autofocus>
                             </div>
                             <section class="row">
                                 <div class="col-md-6">
-                                   <div class="form-group">
-                                       <label>Email <span class="text-danger">*</span></label>
-                                       <input value="{{old('email')}}" type="email" required name="email" class="form-control" required autocomplete="off" autofocus>
-                                   </div> 
+                                    <div class="form-group">
+                                        <label>Email <span class="text-danger">*</span></label>
+                                        <input value="{{old('email')}}" type="email" required name="email"
+                                            class="form-control" required autocomplete="off" autofocus>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Mobile Number <span class="text-danger">*</span></label>
-                                        <input value="{{old('mobile_number')}}" type="text" required name="mobile_number" class="form-control" required autocomplete="off" autofocus>
+                                        <input value="{{old('mobile_number')}}" type="text" required
+                                            name="mobile_number" class="form-control" required autocomplete="off"
+                                            autofocus>
                                     </div>
                                 </div>
                             </section>
                             <div class="form-group">
                                 <label>Username <span class="text-danger">*</span></label>
-                                <input value="{{old('username')}}" type="text" name="username" class="form-control" required autocomplete="off" autofocus>
+                                <input value="{{old('username')}}" type="text" name="username" class="form-control"
+                                    required autocomplete="off" autofocus>
                             </div>
                             <section class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Password <span class="text-danger">*</span></label>
-                                        <input type="password" name="password" class="form-control" required autocomplete="off" autofocus>
+                                        <input type="password" name="password" class="form-control" required
+                                            autocomplete="off" autofocus>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Confirm Password <span class="text-danger">*</span></label>
-                                        <input type="password" name="confirmPassword" class="form-control" required autocomplete="off" autofocus>
+                                        <input type="password" name="confirmPassword" class="form-control" required
+                                            autocomplete="off" autofocus>
                                     </div>
                                 </div>
                             </section>
                         </div>
                     </section>
                     <div class="form-group">
-                         <div class="g-recaptcha" data-sitekey="6LdnLwgUAAAAAAIb9L3PQlHQgvSCi16sYgbMIMFR"></div>
+                        <div class="g-recaptcha" data-sitekey="6LdnLwgUAAAAAAIb9L3PQlHQgvSCi16sYgbMIMFR"></div>
                     </div>
                     <div class="form-group">
-                       <label>
-                           <input name="agree" required type="checkbox" required=""> By clicking Register, you agree to our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>, including our <a href="#">Cookie Use</a>.
-                       </label> 
+                        <label>
+                            <input name="agree" required type="checkbox" required=""> By clicking Register, you agree to
+                            our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>, including
+                            our <a href="#">Cookie Use</a>.
+                        </label>
                     </div>
                     <div class="form-group">
-                       <div class="login-buttons">
-                           <button type="submit" class="btn btn-success btn-block">Register</button>
-                       </div> 
+                        <div class="login-buttons">
+                            <button type="submit" class="btn btn-success btn-block">Register</button>
+                        </div>
                     </div>
                     <div class="m-t-20 m-b-40 p-b-40 text-inverse">
                         Already a member? Click <a href="{{ route('login') }}">here</a> to login.
@@ -256,8 +278,11 @@
     </div>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('assets/vendors/general/jquery/dist/jquery.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/vendors/custom/validator/js/bootstrapValidator.min.js') }}" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/vendors/custom/validator/js/bootstrapValidator.min.js') }}" type="text/javascript">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+    </script>
     <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function(){

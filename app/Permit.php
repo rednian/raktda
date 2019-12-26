@@ -15,7 +15,7 @@ class Permit extends Model
     protected $primaryKey = 'permit_id';
     protected $fillable = [
         'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
-        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid', 'paid_event_fee', 'work_location_ar', 'lock_user_id'
+        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid', 'paid_event_fee', 'work_location_ar', 'lock_user_id', 'exempt_by','exempt_payment', 'permit_reference_id'
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
 
@@ -24,6 +24,11 @@ class Permit extends Model
         return $q->has('artist')->whereHas('comment', function($q) use ($status){
              $q->where('action', $status[0])->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
         })->whereIn('permit_status', [$status]);
+    }
+
+    public function permitReference()
+    {
+        return $this->belongsTo(PermitReference::class, 'permit_reference_id');
     }
 
 

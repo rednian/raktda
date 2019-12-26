@@ -500,7 +500,7 @@
 }
 
 .modal-header h5 {
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 
 .ajax-upload-dragdrop > div {
@@ -726,6 +726,7 @@ select option:first-child {
 
 .artist--view-head-details span i {
     padding-right: 15px;
+    padding-left: 15px;
 }
 
 @media (max-width: 400px) {
@@ -745,4 +746,8 @@ select option:first-child {
 
 .fs-16 {
     font-size: 16px;
+}
+
+.datepicker {
+    z-index: 100 !important;
 }

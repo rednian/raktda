@@ -7,7 +7,7 @@
                 </button>
             </div>
             <div class="modal-body d-flex justify-content-between">
-                <h6 class="text--maroon">{{__('Are you sure to remove the added data')}} ?</h6>
+                <h6 class="text--maroon">{{__('Are you sure to remove the added data')}} ?</h6>
                 <input type="hidden" id="fromSection">
                 <button class="btn btn-sm btn--yellow" onclick="changeData()">{{__('Ok')}}</button>
             </div>

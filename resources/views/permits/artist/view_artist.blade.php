@@ -58,7 +58,7 @@
                     <span href="#"><i class="flaticon2-new-email"></i>{{$artist_details->email}}</span>
                     <span href="#"><i class="flaticon2-phone"></i>{{$artist_details->mobile_number}}</span>
                     <span href="#"><i
-                            class="flaticon2-placeholder"></i>{{$artist_details->Nationality['nationality_en']}}</span>
+                            class="flaticon2-placeholder"></i>{{getLangId() == 1 ? ucwords($artist_details->Nationality['nationality_en']) : $artist_details->Nationality['nationality_ar']}}</span>
                 </div>
             </div>
             <div class="mt-5 col-md-12">
@@ -71,7 +71,7 @@
                     <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Gender')}}:</strong></label>
                         <p class="col col-md-6">
-                            {{$artist_details->gender == '1' ? 'Male' : 'Female'}}</p>
+                            {{$artist_details->gender == '1' ? __('Male') : __('Female')}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 "><strong>{{__('Passport No')}}:</strong></label>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 "><strong>{{__('Passport Expiry')}}:</strong></label>
+                        <label class="col col-md-6 "><strong>{{__('Passport Expiry Date')}}:</strong></label>
                         <p class="col col-md-6">
                             {{$artist_details->passport_expire_date->year > 1 ? date('d-M-Y', strtotime($artist_details->passport_expire_date)) : ''}}
                         </p>
@@ -110,7 +110,7 @@
                             {{$artist_details->uid_number}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 "><strong>{{__('UID Expiry')}}:</strong></label>
+                        <label class="col col-md-6 "><strong>{{__('UID Expiry Date')}}:</strong></label>
                         <p class="col col-md-6">
                             {{$artist_details->uid_expire_date->year > 1 ? date('d-M-Y', strtotime($artist_details->uid_expire_date)) : ''}}
                         </p>
@@ -124,7 +124,7 @@
                             {{$artist_details->phone_number ? $artist_details->phone_number : ''}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 "><strong>{{__('Sponser Name')}}:</strong></label>
+                        <label class="col col-md-6 "><strong>{{__('Sponsor Name')}}:</strong></label>
                         <p class="col col-md-6">
                             {{ucwords($artist_details->sponsor_name_en)}}</p>
                     </div>
@@ -142,7 +142,7 @@
                     <thead class="text-center">
                         <tr>
                             <th class="text-left">{{__('Document Name')}}</th>
-                            <th>{{__('Issue Date')}}</th>
+                            <th>{{__('Issued Date')}}</th>
                             <th>{{__('Expiry Date')}}</th>
                             <th>{{__('View')}}</th>
                         </tr>

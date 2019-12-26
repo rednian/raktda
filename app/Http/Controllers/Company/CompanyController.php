@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use DB;
+use Auth;
 use App\User;
 use App\Company;
 use Carbon\Carbon;
@@ -40,6 +41,58 @@ class CompanyController extends Controller
    public function edit(Request $request, Company $company)
    {
        return view('permits.company.edit', ['company'=>$company, 'page_title'=> '']); 
+   }
+
+   public function updateUser(Request $request, Company $company) {
+
+     $acccount_name_en = $request->acccount_name_en;
+     $acccount_name_ar = $request->acccount_name_ar;
+     $account_username = $request->account_username ;
+     $account_email = $request->account_email ;
+     $account_mobile= $request->account_mobile ;
+
+      try {
+        DB::beginTransaction();
+
+        User::where('user_id', Auth::user()->user_id)->update([
+          'NameAr' => $acccount_name_ar,
+          'NameEn' => $acccount_name_en,
+          'username' => $account_username,
+          'email' => $account_email,
+          'mobile_number' => $account_mobile
+        ]);
+        
+        DB::commit();
+        $result = ['success', 'Password Changed Successfully', 'Success'];
+      } catch (Exception $e) {
+        DB::rollBack();
+        $result = ['danger', $e->getMessage(), 'Error'];
+      }
+
+      return redirect()->back()->with(['message'=> $result]);
+   }
+
+   public function changePassword(Request $request, Company $company) {
+      $old_password = $request->old_password;
+      $new_password = $request->new_password ;
+      $confirm_password = $request->confirm_password ;
+
+      try {
+        DB::beginTransaction();
+        if($new_password == $confirm_password){
+          $newpassword = Hash::make($request->new_password);
+          User::where('user_id', Auth::user()->user_id)->update([
+            'password' => $newpassword
+          ]);
+        }
+        DB::commit();
+        $result = ['success', 'Password Changed Successfully', 'Success'];
+      } catch (Exception $e) {
+        DB::rollBack();
+        $result = ['danger', $e->getMessage(), 'Error'];
+      }
+
+      return redirect()->back()->with(['message'=> $result]);
    }
 
    public function update(Request $request, Company $company)
