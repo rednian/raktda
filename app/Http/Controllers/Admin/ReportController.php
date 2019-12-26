@@ -23,25 +23,26 @@ class ReportController extends Controller
 {
     public function reports(){
         $artist = Artist::all();
-      /*  $countryList=Country::has('artistPermit')->with(['artistPermit'=>function($q){$q->with('permit');}])->get();
-            $country=[];
-            foreach ($countryList as $city){
-                foreach ($city->artistPermit as $permit){{
-                    if($permit->permit->permit_status=='active'){
-                        array_push($country,$city);
-                    }
-                }}
-            }*/
-            $country=[];
-            $a=ArtistPermit::with(['permit'=>function($query){$query->where('permit_status','active');}])->has('permit')->get();
-           foreach ($a as $b){
-               array_push($country,$b->country);
-           }
+            $country=Country::wherehas('artistPermit.permit',function ($query){
+                $query->where('permit_status','active');
+            })->get();
 
-        $profession= Profession::has('artistPermit')->get();
-        $areas=Areas::has('artistPermit')->get();
-        $visa=VisaType::has('artistPermit')->get();
-        $gender=Gender::has('artistPermit')->get();
+        $profession= Profession::wherehas('artistPermit.permit',function ($query){
+            $query->where('permit_status','active');
+        })->get();
+
+        $areas=Areas::wherehas('artistPermit.permit',function ($query){
+            $query->where('permit_status','active');
+        })->get();
+
+        $visa=VisaType::wherehas('artistPermit.permit',function ($query){
+            $query->where('permit_status','active');
+        })->get();
+
+        $gender=Gender::wherehas('artistPermit.permit',function ($query){
+            $query->where('permit_status','active');
+        })->get();
+
         $artistPermit=ArtistPermit::with('artist')->has('permit')->with('country')->with('profession')->get();
 
 
@@ -189,7 +190,6 @@ class ReportController extends Controller
 
 
     public function search_artist(Request $request){
-
       if ($request->ajax()) {
           if ($request->filter_search != '' && $request->search_artist != '') {
               if ($request->filter_search== ConstantValue::STATUS){
@@ -288,18 +288,48 @@ class ReportController extends Controller
                       })
 
                       ->addColumn('artist_id', function(Artist $user) {
-                          return "<button type='button' style='height: 25px;
-                 line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-primary btn-sm button_modal{{$user->artist_id}}'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
-                          View</button>";
+
+                          foreach ($user->artistPermit as $artist){
+                               if($artist->permit->permit_status=='active'){
+                                   return "<button type='button' style='height: 25px;
+                               line-height: 4px;
+                               border-radius: 3px;
+                               border: navajowhite;
+                               box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-primary btn-sm button_modal{{$user->artist_id}}'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                               View</button>
+                                ";
+
+                                }
+                                else{
+                                  return "<button type='button' style='height: 25px;
+                                line-height: 4px;
+                                border-radius: 3px;
+                                border: navajowhite;
+                                box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-danger btn-sm button_modal{{$user->artist_id}}'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                                View</button>
+                           
+                               ";
+
+                              }
+                          }
                       })
                       ->rawColumns(['artist_id','person_code','artist_status','artist_name'])
                       ->make(true);
               }
+
+
+
               if ($request->filter_search==ConstantValue::GENDER){
-                  $artist = ArtistPermit::with('artist')->has('permit')->with(['permit'=>function($q){$q->where('permit_status','active');}])->where('gender_id','LIKE', "%{$request->search_artist}%")->get();
+
+                  $artist=Artist::wherehas('permit',function ($query){
+                      $query->where('permit_status','active');
+                  })->when($request->search_artist,function ($q) use ($request){
+                      $q->whereHas('artistPermit',function ($query) use ($request){
+                          $query->where('gender_id',$request->search_artist);
+                      });
+                  })->get();
+
+
                   return Datatables::of($artist)
 
                       ->addColumn('person_code', function(Artist $user) {
@@ -320,7 +350,7 @@ class ReportController extends Controller
                       })
                       ->addColumn('nationality', function(Artist $user) {
                           foreach ($user->artistPermit as $artist){
-                              return Auth()->user()->LanguageId==1?$artist->country->nationality_en:$artist->country->nationality_ar;
+                              return Auth()->user()->LanguageId==1?$artist->country->nationality_en:$artist->country->nationality_en;
                           }
                       })
                       ->addColumn('mobile_number', function(Artist $user) {
@@ -330,7 +360,7 @@ class ReportController extends Controller
                       })
                       ->addColumn('permit_status', function(Artist $user) {
                           foreach ($user->artistPermit as $artist){
-                              dd($artist->permit);
+                              return $artist->permit->permit_status;
                           }
 
                       })
@@ -392,23 +422,39 @@ class ReportController extends Controller
                       })
 
                       ->addColumn('artist_id', function(Artist $user) {
-                          return "<button type='button' style='height: 25px;
-                 line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-primary btn-sm button_modal{{$user->artist_id}}'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                          foreach ($user->artistPermit as $artist) {
+                              if ($artist->permit->permit_status == 'active') {
+                                  return "<button type='button' style='height: 25px;
+                           line-height: 4px;
+                           border-radius: 3px;
+                           border: navajowhite;
+                           box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-primary btn-sm button_modal{{$user->artist_id}}'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
                           View</button>";
+                              } else {
+                                  return "<button type='button' style='height: 25px;
+                           line-height: 4px;
+                           border-radius: 3px;
+                           border: navajowhite;
+                           box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-danger btn-sm button_modal{{$user->artist_id}}'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                          View</button>";
+                              }
+                          }
                       })
                       ->rawColumns(['person_code','artist_status','artist_name','artist_id'])
                       ->make(true);
 
               }
-              if ($request->filter_search==ConstantValue::ARTISTNAME){
 
-                  $artist = Artist::whereHas('artistPermit', function($q) use ($request)
-                  {
-                      $q->where('firstname_en','LIKE' ,"%$request->search_artist%");
-                  })->latest();
+
+              if($request->filter_search==ConstantValue::ARTISTNAME){
+
+                  $artist=Artist::wherehas('permit',function ($query){
+                      $query->where('permit_status','active');
+                  })->when($request->search_artist,function ($q) use ($request){
+                      $q->whereHas('artistPermit',function ($query) use ($request){
+                          $query->where('firstname_en','LIKE', "%{$request->search_artist}%");
+                      });
+                  })->get();
 
                   return Datatables::of($artist)
                       ->addColumn('person_code', function(Artist $user) {
@@ -418,12 +464,9 @@ class ReportController extends Controller
                           return $user->artist_status;
                       })
                       ->addColumn('artist_name', function(Artist $user) {
-                          if($user->artistPermit){
-                              foreach ($user->artistPermit as $artist){
-                                  return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
-                              }
+                          foreach ($user->artistPermit as $artist){
+                              return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
                           }
-                          return '';
                       })
                       ->addColumn('profession', function(Artist $user) {
                           foreach ($user->artistPermit as $artist){
@@ -519,34 +562,107 @@ class ReportController extends Controller
 
               if ($request->filter_search==ConstantValue::PROFESSION){
 
-                  $artist = ArtistPermit::with('artist')->has('permit')->with(['permit'=>function($q){$q->where('permit_status','active');}])->with('profession')->where('profession_id',$request->search_artist)->get();
+
+                  $artist=Artist::wherehas('permit',function ($query){
+                      $query->where('permit_status','active');
+                  })->when($request->search_artist,function ($q) use ($request){
+                      $q->whereHas('artistPermit',function ($query) use ($request){
+                          $query->where('profession_id','LIKE', "%{$request->search_artist}%");
+                      });
+                  })->get();
 
                   return Datatables::of($artist)
 
-                      ->addColumn('person_code', function(ArtistPermit $user) {
-                          return $user->artist->person_code;
+                      ->addColumn('person_code', function(Artist $user) {
+                          return $user->person_code;
                       })
-                      ->addColumn('artist_status', function(ArtistPermit $user) {
-                          return $user->artist->artist_status;
+                      ->addColumn('artist_status', function(Artist $user) {
+                          return $user->artist_status;
                       })
-                      ->addColumn('artist_name', function(ArtistPermit $user) {
-                          return Auth()->user()->LanguageId==1?$user->firstname_en. ' ' .$user->lastname_en:$user->firstname_ar. ' ' .$user->lastname_ar;
+                      ->addColumn('artist_name', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
+                          }
                       })
-                      ->addColumn('profession', function(ArtistPermit $user) {
-                              return $user->profession->name_en;
+                      ->addColumn('profession', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return $artist->profession->name_en;
+                          }
                       })
-                      ->addColumn('nationality', function(ArtistPermit $user) {
-                          return Auth()->user()->LanguageId==1?$user->country->nationality_en:$user->country->nationality_ar;
+                      ->addColumn('nationality', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return Auth()->user()->LanguageId==1?$artist->country->nationality_en:$artist->country->nationality_en;
+                          }
+                      })
+                      ->addColumn('mobile_number', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return $artist->mobile_number;
+                          }
+                      })
+                      ->addColumn('permit_status', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return $artist->permit->permit_status;
+                          }
 
                       })
-                      ->addColumn('mobile_number', function(ArtistPermit $user) {
-                              return $user->mobile_number;
+                      ->addColumn('email', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->email;
+                              }
+                          }
+                          return '';
                       })
-                      ->addColumn('permit_status', function(ArtistPermit $user) {
-                              return $user->permit->permit_status;
+                      ->addColumn('identification_number', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->identification_number;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('address_en', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->address_en;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('language_id', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->language->name_en;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('fax_number', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->fax_number;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('po_box', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->po_box;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('emirate_id', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->emirate->name_en;
+                              }
+                          }
+                          return '';
                       })
 
-                      ->addColumn('artist_id', function(ArtistPermit $user) {
+                      ->addColumn('artist_id', function(Artist $user) {
                           $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
 
                           return "<button type='button' style='height: 25px;
@@ -562,29 +678,105 @@ class ReportController extends Controller
               if ($request->filter_search==ConstantValue::NATIONALITY){
                   $artist = ArtistPermit::where('country_id',$request->search_artist)->has('permit')->with(['permit'=>function($q){$q->where('permit_status','active');}])->with('artist')->with('country')->get();
 
+                  $artist=Artist::wherehas('permit',function ($query){
+                      $query->where('permit_status','active');
+                  })->when($request->search_artist,function ($q) use ($request){
+                      $q->whereHas('artistPermit',function ($query) use ($request){
+                          $query->where('country_id','LIKE', "%{$request->search_artist}%");
+                      });
+                  })->get();
                   return Datatables::of($artist)
-                      ->addColumn('person_code', function(ArtistPermit $user) {
-                          return $user->artist->person_code;
+
+                      ->addColumn('person_code', function(Artist $user) {
+                          return $user->person_code;
                       })
-                      ->addColumn('artist_status', function(ArtistPermit $user) {
-                          return $user->artist->artist_status;
+                      ->addColumn('artist_status', function(Artist $user) {
+                          return $user->artist_status;
                       })
-                      ->addColumn('artist_name', function(ArtistPermit $user) {
-                          return Auth()->user()->LanguageId==1?$user->firstname_en. ' ' .$user->lastname_en:$user->firstname_ar. ' ' .$user->lastname_ar;
+                      ->addColumn('artist_name', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
+                          }
                       })
-                      ->addColumn('profession', function(ArtistPermit $user) {
-                          return $user->profession->name_en;
+                      ->addColumn('profession', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return $artist->profession->name_en;
+                          }
                       })
-                      ->addColumn('nationality', function(ArtistPermit $user) {
-                          return Auth()->user()->LanguageId==1?$user->country->nationality_en:$user->country->nationality_ar;
+                      ->addColumn('nationality', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return Auth()->user()->LanguageId==1?$artist->country->nationality_en:$artist->country->nationality_en;
+                          }
                       })
-                      ->addColumn('mobile_number', function(ArtistPermit $user) {
-                          return $user->mobile_number;
+                      ->addColumn('mobile_number', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return $artist->mobile_number;
+                          }
                       })
-                      ->addColumn('permit_status', function(ArtistPermit $user) {
-                          return $user->permit->permit_status;
+                      ->addColumn('permit_status', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return $artist->permit->permit_status;
+                          }
+
                       })
-                      ->addColumn('artist_id', function(ArtistPermit $user) {
+                      ->addColumn('email', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->email;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('identification_number', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->identification_number;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('address_en', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->address_en;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('language_id', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->language->name_en;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('fax_number', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->fax_number;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('po_box', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->po_box;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('emirate_id', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->emirate->name_en;
+                              }
+                          }
+                          return '';
+                      })
+
+                      ->addColumn('artist_id', function(Artist $user) {
                           $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
 
                           return "<button type='button' style='height: 25px;
@@ -605,7 +797,12 @@ class ReportController extends Controller
               if ($request->filter_search==ConstantValue::NUMBER_OF_PERMIT){
 
                   if($request->search_artist=='single') {
-                      $artists = Artist::has('permit')->with(['permit'=>function($q){$q->where('permit_status','active');}])->has('artistPermit')->with('artistPermit')->get();
+
+                      $artists=Artist::wherehas('artistPermit.permit',function ($query){
+                          $query->where('permit_status','active');
+                      })->get();
+
+
                       foreach ($artists as $artist) {
                             if($artist->permit->count()==1){
                                 array_push($single,$artist);
@@ -707,9 +904,13 @@ class ReportController extends Controller
                               ->make(true);
                   }
                   if($request->search_artist=='multiple'){
-                      $artists = Artist::has('permit')->with(['permit'=>function($q){$q->where('permit_status','active');}])->get();
 
-                      foreach ($artists as $artist) {
+                          $artists=Artist::wherehas('artistPermit.permit',function ($query){
+                              $query->where('permit_status','active');
+                          })->get();
+
+
+                          foreach ($artists as $artist) {
                           if($artist->permit->count()>1){
                               array_push($multiple,$artist);
                           }
@@ -814,9 +1015,13 @@ class ReportController extends Controller
 
                   if($request->search_artist=='all'){
                       $allArtists=[];
-                      $artists = Artist::has('permit')->with(['permit'=>function($q){$q->where('permit_status','active');}])->get();
 
-                      foreach ($artists as $artist) {
+                          $artists=Artist::wherehas('artistPermit.permit',function ($query){
+                              $query->where('permit_status','active');
+                          })->get();
+
+
+                          foreach ($artists as $artist) {
 
                           if($artist->permit->count()>0){
                               array_push($allArtists,$artist);
@@ -942,32 +1147,106 @@ class ReportController extends Controller
               }
 
               if ($request->filter_search==ConstantValue::VISATYPE){
-                  $artist = ArtistPermit::where('visa_type_id',$request->search_artist)->with('artist')->with('country')->get();
+                  $artist=Artist::wherehas('permit',function ($query){
+                      $query->where('permit_status','active');
+                  })->when($request->search_artist,function ($q) use ($request){
+                      $q->whereHas('artistPermit',function ($query) use ($request){
+                          $query->where('visa_type_id','LIKE', "%{$request->search_artist}%");
+                      });
+                  })->get();
                   return Datatables::of($artist)
 
-                      ->addColumn('person_code', function(ArtistPermit $user) {
-                          return $user->artist->person_code;
+                      ->addColumn('person_code', function(Artist $user) {
+                          return $user->person_code;
                       })
-                      ->addColumn('artist_status', function(ArtistPermit $user) {
-                          return $user->artist->artist_status;
+                      ->addColumn('artist_status', function(Artist $user) {
+                          return $user->artist_status;
                       })
-                      ->addColumn('artist_name', function(ArtistPermit $user) {
-                          return Auth()->user()->LanguageId==1?$user->firstname_en. ' ' .$user->lastname_en:$user->firstname_ar. ' ' .$user->lastname_ar;
+                      ->addColumn('artist_name', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
+                          }
                       })
-                      ->addColumn('profession', function(ArtistPermit $user) {
-                          return $user->profession->name_en;
+                      ->addColumn('profession', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return $artist->profession->name_en;
+                          }
                       })
-                      ->addColumn('nationality', function(ArtistPermit $user) {
-                          return Auth()->user()->LanguageId==1?$user->country->nationality_en:$user->country->nationality_ar;
+                      ->addColumn('nationality', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return Auth()->user()->LanguageId==1?$artist->country->nationality_en:$artist->country->nationality_en;
+                          }
                       })
-                      ->addColumn('mobile_number', function(ArtistPermit $user) {
-                          return $user->mobile_number;
+                      ->addColumn('mobile_number', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return $artist->mobile_number;
+                          }
                       })
-                      ->addColumn('permit_status', function(ArtistPermit $user) {
-                          return $user->permit->permit_status;
+                      ->addColumn('permit_status', function(Artist $user) {
+                          foreach ($user->artistPermit as $artist){
+                              return $artist->permit->permit_status;
+                          }
+
+                      })
+                      ->addColumn('email', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->email;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('identification_number', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->identification_number;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('address_en', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->address_en;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('language_id', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->language->name_en;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('fax_number', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->fax_number;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('po_box', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->po_box;
+                              }
+                          }
+                          return '';
+                      })
+                      ->addColumn('emirate_id', function(Artist $user) {
+                          if($user->artistPermit){
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->emirate->name_en;
+                              }
+                          }
+                          return '';
                       })
 
-                      ->addColumn('artist_id', function(ArtistPermit $user) {
+
+                      ->addColumn('artist_id', function(Artist $user) {
                           return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
@@ -980,26 +1259,39 @@ class ReportController extends Controller
                       ->make(true);
               }
 
-
               if ($request->filter_search==ConstantValue::AGE) {
                   if ($request->search_artist == 17) {
-                  $artist = ArtistPermit::with('artist')->has('permit')->with(['permit'=>function($q){$q->where('permit_status','active');}])->with('country')->where('birthdate', '>', date('Y-m-d', strtotime('-18 years')))->get();
-                      return Datatables::of($artist)
+                /*  $artist = ArtistPermit::with('artist')->has('permit')->with(['permit'=>function($q){$q->where('permit_status','active');}])->with('country')->where('birthdate', '>', date('Y-m-d', strtotime('-18 years')))->get();*/
 
-                          ->addColumn('person_code', function (ArtistPermit $user) {
-                              return $user->artist->person_code;
+                      $artist=Artist::wherehas('artistPermit.permit',function ($query){
+                          $query->where('permit_status','active');
+                      })->wherehas('artistPermit',function ($q){
+                          $q->where('birthdate', '>', date('Y-m-d', strtotime('-18 years')));
+                      })->with('artistPermit')->get();
+
+                      return Datatables::of($artist)
+                          ->addColumn('person_code', function(Artist $user) {
+                              return $user->person_code;
                           })
-                          ->addColumn('artist_status', function (ArtistPermit $user) {
-                              return $user->artist->artist_status;
+                          ->addColumn('artist_status', function(Artist $user) {
+                              return $user->artist_status;
                           })
-                          ->addColumn('artist_name', function (ArtistPermit $user) {
-                              return Auth()->user()->LanguageId == 1 ? $user->firstname_en . ' ' . $user->lastname_en : $user->firstname_ar . ' ' . $user->lastname_ar;
+
+                          ->addColumn('artist_name', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
+                              }
                           })
-                          ->addColumn('profession', function (ArtistPermit $user) {
-                              return $user->profession->name_en;
+                          ->addColumn('profession', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->profession->name_en;
+                              }
                           })
-                          ->addColumn('nationality', function (ArtistPermit $user) {
-                              return Auth()->user()->LanguageId == 1 ? $user->country->nationality_en : $user->country->nationality_ar;
+
+                          ->addColumn('nationality', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return Auth()->user()->LanguageId==1?$artist->country->nationality_en:$artist->country->nationality_ar;
+                              }
                           })
                           ->addColumn('mobile_number', function(Artist $user) {
                               foreach ($user->artistPermit as $artist){
@@ -1010,66 +1302,43 @@ class ReportController extends Controller
                               foreach ($user->artistPermit as $artist){
                                   return $artist->permit->permit_status;
                               }
-
                           })
                           ->addColumn('email', function(Artist $user) {
-                              if($user->artistPermit){
-                                  foreach ($user->artistPermit as $artist){
-                                      return $artist->email;
-                                  }
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->email;
                               }
-                              return '';
                           })
                           ->addColumn('identification_number', function(Artist $user) {
-                              if($user->artistPermit){
-                                  foreach ($user->artistPermit as $artist){
-                                      return $artist->identification_number;
-                                  }
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->identification_number;
                               }
-                              return '';
                           })
                           ->addColumn('address_en', function(Artist $user) {
-                              if($user->artistPermit){
-                                  foreach ($user->artistPermit as $artist){
-                                      return $artist->address_en;
-                                  }
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->address_en;
                               }
-                              return '';
                           })
                           ->addColumn('language_id', function(Artist $user) {
-                              if($user->artistPermit){
-                                  foreach ($user->artistPermit as $artist){
-                                      return $artist->language->name_en;
-                                  }
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->language->name_en;
                               }
-                              return '';
-                          })
-                          ->addColumn('fax_number', function(Artist $user) {
-                              if($user->artistPermit){
-                                  foreach ($user->artistPermit as $artist){
-                                      return $artist->fax_number;
-                                  }
-                              }
-                              return '';
-                          })
-                          ->addColumn('po_box', function(Artist $user) {
-                              if($user->artistPermit){
-                                  foreach ($user->artistPermit as $artist){
-                                      return $artist->po_box;
-                                  }
-                              }
-                              return '';
                           })
                           ->addColumn('emirate_id', function(Artist $user) {
-                              if($user->artistPermit){
-                                  foreach ($user->artistPermit as $artist){
-                                      return $artist->emirate->name_en;
-                                  }
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->emirate->name_en;
                               }
-                              return '';
                           })
-
-                          ->addColumn('artist_id', function(ArtistPermit $user) {
+                          ->addColumn('po_box', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->po_box;
+                              }
+                          })
+                          ->addColumn('fax_number', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->po_box;
+                              }
+                          })
+                          ->addColumn('artist_id', function(Artist $user) {
                               $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
                               return "<button type='button' style='height: 25px;
                  line-height: 4px;
@@ -1083,32 +1352,82 @@ class ReportController extends Controller
                           ->make(true);
                   }
                   if($request->search_artist==18){
-                      $artist = ArtistPermit::with('artist')->has('permit')->with(['permit'=>function($q){$q->where('permit_status','active');}])->with('country')->where('birthdate', '<=', date('Y-m-d', strtotime('-18 years')))->get();
+                      $artist=Artist::wherehas('artistPermit.permit',function ($query){
+                          $query->where('permit_status','active');
+                      })->wherehas('artistPermit',function ($q){
+                          $q->where('birthdate', '<=', date('Y-m-d', strtotime('-18 years')));
+                      })->with('artistPermit')->get();
+
                       return Datatables::of($artist)
-
-                          ->addColumn('person_code', function (ArtistPermit $user) {
-                              return $user->artist->person_code;
+                          ->addColumn('person_code', function(Artist $user) {
+                              return $user->person_code;
                           })
-                          ->addColumn('artist_status', function (ArtistPermit $user) {
-                              return $user->artist->artist_status;
-                          })
-                          ->addColumn('artist_name', function (ArtistPermit $user) {
-                              return Auth()->user()->LanguageId == 1 ? $user->firstname_en . ' ' . $user->lastname_en : $user->firstname_ar . ' ' . $user->lastname_ar;
-                          })
-                          ->addColumn('profession', function (ArtistPermit $user) {
-                              return $user->profession->name_en;
-                          })
-                          ->addColumn('nationality', function (ArtistPermit $user) {
-                              return Auth()->user()->LanguageId == 1 ? $user->country->nationality_en : $user->country->nationality_ar;
-                          })
-                          ->addColumn('mobile_number', function (ArtistPermit $user) {
-                              return $user->mobile_number;
-                          })
-                          ->addColumn('permit_status', function (ArtistPermit $user) {
-                              return $user->permit->permit_status;
+                          ->addColumn('artist_status', function(Artist $user) {
+                              return $user->artist_status;
                           })
 
-                          ->addColumn('artist_id', function(ArtistPermit $user) {
+                          ->addColumn('artist_name', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return Auth()->user()->LanguageId==1?$artist->firstname_en. ' ' .$artist->lastname_en:$artist->firstname_ar. ' ' .$artist->lastname_ar;
+                              }
+                          })
+                          ->addColumn('profession', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->profession->name_en;
+                              }
+                          })
+
+                          ->addColumn('nationality', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return Auth()->user()->LanguageId==1?$artist->country->nationality_en:$artist->country->nationality_ar;
+                              }
+                          })
+                          ->addColumn('mobile_number', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->mobile_number;
+                              }
+                          })
+                          ->addColumn('permit_status', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->permit->permit_status;
+                              }
+                          })
+                          ->addColumn('email', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->email;
+                              }
+                          })
+                          ->addColumn('identification_number', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->identification_number;
+                              }
+                          })
+                          ->addColumn('address_en', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->address_en;
+                              }
+                          })
+                          ->addColumn('language_id', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->language->name_en;
+                              }
+                          })
+                          ->addColumn('emirate_id', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->emirate->name_en;
+                              }
+                          })
+                          ->addColumn('po_box', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->po_box;
+                              }
+                          })
+                          ->addColumn('fax_number', function(Artist $user) {
+                              foreach ($user->artistPermit as $artist){
+                                  return $artist->po_box;
+                              }
+                          })
+                          ->addColumn('artist_id', function(Artist $user) {
                               $artistDetails=ArtistPermit::where('artist_id',$user->artist_id)->first();
                               return "<button type='button' style='height: 25px;
                  line-height: 4px;

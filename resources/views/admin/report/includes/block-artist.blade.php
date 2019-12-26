@@ -71,7 +71,7 @@
 
 </style>
 <div class="container" style="margin-top:-16px">
-    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="">
+    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="navlink">
         <li  id="all_permit_type_click" class="nav-item "><a class="nav-link active" data-toggle="tab" href="#">
                 <span style="font-size: 11px">{{__('ARTISTS WITH ACTIVE PERMITS')}}</span>
                 <input type="text" value='all' id="all_permit_type_input" hidden>
@@ -95,16 +95,17 @@
                 <input type="text" value="active" id="active_artist_input" hidden>
             </a></li>
         <li>
-            <button class="btn btn-warning btn-sm" style=" box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;" id="filter_button">Filter</button></li>
-
-
+            <button class="btn btn-warning btn-sm" style=" box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;border: none" id="filter_button">Filter</button></li>
+        <li>
+            <button class="btn btn-secondary btn-sm"  style="box-shadow: -1px 3px 3px -3px #1e1e1e;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 8px;
+margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetButton">RESET</button></li>
     </ul>
 </div>
 
 <table class="table  table-hover  table-borderless table-striped border" id="block-artist">
     <thead>
     <tr id="filterTableCollapse" style="display: none">
-        <th> <div class="col-sm" style="display: inline-flex">
+        <th> <div class="col-sm" style="display: inline-flex;width:200px">
                 <input type="text" class="form-control form-control-sm " name="search-artist-name" id="search-artist-name" placeholder="{{__('Name')}}">
                 <button class="fa fa-search" id="name_search_button"></button>
             </div></th>
@@ -134,7 +135,7 @@
                 @endforeach
             </select>
         </th>
-        <th>
+        <th colspan="2">
             <select type="text" id="search_by_visa" style="width:97px" class="form-control form-control-sm custom-select-sm custom-select" name="search_artist" >
                 <option value="">{{__('Visa Type')}}</option>
                 @foreach($visas as $key => $visa)
@@ -142,15 +143,14 @@
                 @endforeach
             </select>
         </th>
-        <th>  <button id="ArtistTableresetButton" class="btn btn-sm pull-right btn-secondary">Reset</button></th>
     </tr>
 
     <tr style="font-size: 12px">
-        <th style="width: 14%;font-weight: bold">{{ __('PERSON CODE') }}</th>
-        <th style="font-weight: bold">{{ __('NAME') }}</th>
-        <th style="font-weight: bold">{{ __('PROFESSION') }}</th>
-        <th style="font-weight: bold">{{ __('NATIONALITY') }}</th>
-        <th style="width: 14%;font-weight: bold">{{ __('MOBILE') }}</th>
+        <th style="width: 18% !important;font-weight: bold">{{ __('PERSON CODE') }}</th>
+        <th style="font-weight: bold;width: 18%">{{ __('NAME') }}</th>
+        <th style="font-weight: bold;width: 18%">{{ __('PROFESSION') }}</th>
+        <th style="font-weight: bold;width: 18%">{{ __('NATIONALITY') }}</th>
+        <th style="width: 18%;font-weight: bold">{{ __('MOBILE') }}</th>
         <th style="font-weight: bold;width:14%;">{{ __('EMAIL') }}</th>
         <th style="font-weight: bold">{{ __('IDENTIFICATION NUMBER') }}</th>
         <th style="font-weight: bold">{{ __('LANGUAGE') }}</th>
@@ -181,38 +181,36 @@
                 </div>
                 <div class="modal-body">
                     <div class="container" id="tableToPrint_{{$artists->artist_id}}" style="margin-top: 10px">
-                        <table class="table table-borderless table-hover" id="artistTableHide_{{$artists->artist_id}}" style="font-family:arial;font-size: 11px">
+
+                        <table class="table table-borderless table-hover" id="artistTableHide_{{$artists->artist_id}}" style="font-family:arial;font-size: 11px;padding: 3px">
                             <tr>
                                 <td colspan="8" ><img style="
                                      height: 59%;width: 99%" src='{{asset('img/raktdalogo.png')}}'/></td>
-
                             </tr>
-                            <tr><th colspan="12" style="background-color:#f0f0f0;color:black;padding: 11px;text-align: center;box-shadow: 0px 8px 10px -12px black">
+                            <tr><th colspan="12" style="background-color:#f0f0f0;color:black;padding: 11px;text-align: center;box-shadow:4px 9px 3px -9px #000000a1">
                                     Personal Details - {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en  : $artists->firstname_ar. " ".$artistWithThisId->lastname_ar}}
                                 </th>
                             </tr>
-                            <tr style="font-size: 10px">
-                                <th width="10%">PERSON CODE</th>
-                                <th width="14%">PROFESSION</th>
-                                <th width="14%">NATIONALITY</th>
-                                <th width="20%">E-MAIL</th>
-                                <th width="15%">VISA NO.</th>
-                                <th width="15%">PASSPORT NO.</th>
-                                <th width="26%">PASSPORT EXPIRY DATE</th>
-
+                            <tr style="font-size: 10px;text-align: left">
+                                <th  style=";padding: 9px;width: 16%">PERSON CODE</th>
+                                <th  style=";padding: 9px;width: 14%">PROFESSION</th>
+                                <th style=";padding: 9px;width: 14%">NATIONALITY</th>
+                                <th style="padding: 9px;width: 20%">E-MAIL</th>
+                                <th  style=";padding: 9px;width:17%">PASSPORT NO.</th>
+                                <th style="padding: 9px">PASSPORT EXPIRY DATE</th>
+                                <th style="padding: 9px;width:12%;">VISA NO.</th>
                             </tr>
-                            <tr>
-                                <td width="14%">{{$artistWithThisId->artist->person_code}}</td>
-                                <td width="14%">{{$artistWithThisId->profession?$artistWithThisId->profession->name_en:''}}</td>
-                                <td width="14%">{{$artistWithThisId->country?$artistWithThisId->country->nationality_en:''}}</td>
-                                <td width="18%">{{$artistWithThisId->email}}</td>
-                                <td width="15%">{{$artistWithThisId->visa_number}}</td>
-                                <td width="15%">{{$artistWithThisId->passport_number}}</td>
-
+                            <tr align="left">
+                                <td style=";padding: 9px;width: 16%">{{$artistWithThisId->artist->person_code}}</td>
+                                <td style=";padding: 9px;width: 14%">{{$artistWithThisId->profession?$artistWithThisId->profession->name_en:''}}</td>
+                                <td style=";padding: 9px;width: 14%">{{$artistWithThisId->country?$artistWithThisId->country->nationality_en:''}}</td>
+                                <td style="padding: 9px;width: 20%">{{$artistWithThisId->email}}</td>
+                                <td  style=";padding: 9px;width:17%">{{$artistWithThisId->passport_number}}</td>
                                 <?php
                                 $passport_expire_date=\Illuminate\Support\Facades\Date::make($artistWithThisId->passport_expire_date)->format('d/m/Y');
                                 ?>
-                                <td width="24%">{{$passport_expire_date}}</td>
+                                <td style="padding: 9px;width: 18%">{{$passport_expire_date}}</td>
+                                <td style="padding: 9px;width:10%;">{{$artistWithThisId->visa_number}}</td>
                             </tr>
                         </table>
 
@@ -220,15 +218,15 @@
                         <table class="table  table-hover table-borderless table-striped " style="font-size: 12px;margin-top:5%;font-family:Arial" id="printTable_{{$artists->artist_id}}">
                             <thead>
                             <tr><th colspan="7"  style="font-size:11px;padding: 9px;background-color: #f0f0f0;font-weight:bold;color: black;text-align: center;box-shadow: 0px 8px 10px -12px black;width: 100%">
-                                   Permit Details -  {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en: $artists->firstname_ar." ".$artists->lastname_ar}}
+                                   Permit Details   {{--{{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en: $artists->firstname_ar." ".$artists->lastname_ar}}--}}
                                 </th></tr>
                             <tr  align="center">
-                                <th style="width: 18% ;font-weight: bold;font-size: 10px;text-align: left">{{ __('NAME') }}</th>
-                                <th style="width: 14%; font-weight: bold;font-size: 10px ;text-align: left">{{ __('PERMIT NO.') }}</th>
-                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px">{{ __('REFERENCE NO.') }}</th>
-                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px">{{ __('ISSUED DATE') }}</th>
-                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px">{{ __('EXPIRY DATE') }}</th>
-                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px">{{ __('COMPANY') }}</th>
+                                <th style="width: 18% ;font-weight: bold;font-size: 10px;text-align: left;padding:13px">{{ __('NAME') }}</th>
+                                <th style="width: 14%; font-weight: bold;font-size: 10px ;text-align: left;padding:13px">{{ __('PERMIT NO.') }}</th>
+                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('REFERENCE NO.') }}</th>
+                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('ISSUED DATE') }}</th>
+                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('EXPIRY DATE') }}</th>
+                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('COMPANY') }}</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -242,16 +240,16 @@
                             @foreach($permits->permit as $permit)
 
                                 <tr align="center" >
-                                    <td  style="text-align: left;font-size: 10px">{{ Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en  : $artists->firstname_ar . ' ' . $artists->lastname_ar}}
-                                    <td style="text-align: left;font-size: 10px">{{$permit->permit_number}}</td>
-                                    <td style="text-align: left;font-size: 10px">{{$permit->reference_number}}</td>
+                                    <td  style="text-align: left;padding:14px;font-size: 10px">{{ Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en  : $artists->firstname_ar . ' ' . $artists->lastname_ar}}
+                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->permit_number}}</td>
+                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->reference_number}}</td>
                                     <?php
                                     $issued_date= \Illuminate\Support\Facades\Date::make($permit->issued_date)->format('d/m/Y');
                                     $expire_date= \Illuminate\Support\Facades\Date::make($permit->expired_date)->format('d/m/Y');
                                     ?>
-                                    <td style="text-align: left;font-size: 10px">{{$issued_date}}</td>
-                                    <td style="text-align: left;font-size: 10px">{{$expire_date}}</td>
-                                    <td style="text-align: left;font-size: 10px">{{$permit->company? $permit->company->name_en:''}}</td>
+                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$issued_date}}</td>
+                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$expire_date}}</td>
+                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->company? $permit->company->name_en:''}}</td>
                                 </tr>
 
                             @endforeach
@@ -276,7 +274,6 @@
     <script>
 
         function printContent(id) {
-
             var artistTableHide = '#artistTableHide_' + id;
             var tableToPrint = 'tableToPrint_' + id;
 
@@ -293,7 +290,16 @@
             $('#filterTableCollapse').toggle(400)
         })
 
+     /*   function showTool(x) {
 
+            $('#tooltip_'+x).css({'display':'block'});
+        }
+
+        function hideTool(x) {
+           $('#tooltip_'+x).css({'display':'none'});
+        }
+
+*/
         $(function myTable() {
 
             var currentdate = new Date();
@@ -415,9 +421,13 @@
 
         $('#name_search_button').click(function (e) {
             e.preventDefault();
+            $('#navlink li a').removeClass('active');
+            var link = $('#all_permit_type_click a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             var search_artist=$('input[name="search-artist-name"]').val();
             var filter_search={{\App\ConstantValue::ARTISTNAME}};
-
             $.ajax({
                 url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
                 data:{filter_search:filter_search,search_artist:search_artist}
@@ -425,7 +435,7 @@
             if(search_artist != '' && filter_search != '')
             {
                 $('#block-artist').DataTable().destroy();
-                fill_datatable(search_artist, filter_search);
+                fill_datatable(filter_search, search_artist);
             }
             else
             {
@@ -525,7 +535,12 @@
                                 return 'Artists List Searched By Visa Type'; }
 
                             if(filter_search==8){
-                                return 'Artists List Searched By Age'; }
+                                if(search_artist=='17'){
+                                return 'Artists Below Age 18'; }
+                                if(search_artist=='18'){
+                                    return 'Artists Above Age 18';
+                                }
+                            }
 
                             if(filter_search==9){
                                 return 'Artists List Searched By Area'; }
@@ -580,34 +595,39 @@
                         },
                         title: function () {
                             if(filter_search==1){
-                                return 'ARTISTS WITH  STATUS '; }
+                                return 'Artists List Searched By Status'; }
                             if(filter_search==3){
-                                return 'ARTISTS LIST SEARCHED BY NAME '; }
+                                return 'Artists List Searched By Name'; }
                             if(filter_search ==4){
-                                return 'ARTISTS WITH PROFESSION'; }
+                                return 'Artists With Profession'; }
 
                             if(filter_search==5){
-                                return 'ARTISTS WITH NATIONALITY '; }
+                                return 'Artists By Nationality'; }
 
                             if(filter_search==6){
                                 if(search_artist=='single') {
-                                    return "ARTISTS WITH SINGLE PERMIT";
+                                    return "Artists With Single Permit";
                                 }
                                 if(search_artist=='multiple'){
-                                    return "ARTISTS WITH MULTIPLE PERMITS";
+                                    return "Artists With Multiple Permits";
                                 }
                                 if(search_artist=='all'){
-                                    return "ARTISTS WITH ACTIVE PERMIT";
+                                    return "Artists With Active Permits";
                                 }
                             }
                             if(filter_search==7){
-                                return 'ARTISTS LIST SEARCHED BY VISA TYPE '; }
+                                return 'Artists List Searched By Visa Type'; }
 
                             if(filter_search==8){
-                                return 'ARTISTS LIST SEARCHED BY AGE '; }
+                                if(search_artist=='17'){
+                                    return 'Artists Below Age 18'; }
+                                if(search_artist=='18'){
+                                    return 'Artists Above Age 18';
+                                }
+                            }
 
                             if(filter_search==9){
-                                return 'ARTISTS LIST SEARCHED BY AREA '; }
+                                return 'Artists List Searched By Area'; }
                         },
 
                     }
@@ -766,6 +786,11 @@
 
         $('#ArtistTableresetButton').click(function () {
             ArtistResetTable();
+           $('#navlink li a').removeClass('active');
+            var link = $('#all_permit_type_click a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
         })
 
         $('#Artist-report-tab').click(function () {
@@ -775,13 +800,13 @@
 
 
         $('.search_button').click(function(){
+
             var filter_search = $('#filter_search').val();
             var search_artist = $('#search_artist').val();
 
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
-                $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             }
             else
@@ -793,7 +818,11 @@
         $('#search_by_status').change(function(){
             var filter_search = {{\App\ConstantValue::STATUS}};
             var search_artist = $('#search_by_status').val();
-
+            $('#navlink li a').removeClass('active');
+            var link = $('#all_permit_type_click a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
@@ -809,7 +838,11 @@
         $('#search_by_gender').change(function(){
             var filter_search = {{\App\ConstantValue::GENDER}};
             var search_artist = $('#search_by_gender').val();
-
+            $('#navlink li a').removeClass('active');
+            var link = $('#all_permit_type_click a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
@@ -825,7 +858,11 @@
         $('#search_by_visa').change(function(){
             var filter_search = '{{\App\ConstantValue::VISATYPE}}';
             var search_artist = $('#search_by_visa').val();
-
+            $('#navlink li a').removeClass('active');
+            var link = $('#all_permit_type_click a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
@@ -843,7 +880,11 @@
 
             var filter_search = {{\App\ConstantValue::PROFESSION}};
             var search_artist = $('#search_by_profession').val();
-
+            $('#navlink li a').removeClass('active');
+            var link = $('#all_permit_type_click a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
@@ -859,11 +900,14 @@
         $('#search_by_nationality').change(function(){
             var filter_search = 5;
             var search_artist = $('#search_by_nationality').val();
-
+            $('#navlink li a').removeClass('active');
+            var link = $('#all_permit_type_click a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
-                $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             }
             else
@@ -1421,7 +1465,11 @@
         $('#search_by_age').change(function () {
             var filter_search ={{\App\ConstantValue::AGE}};
             var search_artist = $('#search_by_age').val();
-
+            $('#navlink li a').removeClass('active');
+            var link = $('#all_permit_type_click a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
@@ -1437,7 +1485,11 @@
         $('#search_by_area').change(function () {
             var filter_search ={{\App\ConstantValue::AREA}};
             var search_artist = $('#search_by_area').val();
-
+            $('#navlink li a').removeClass('active');
+            var link = $('#all_permit_type_click a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             if(filter_search != '' &&  search_artist != '')
             {
                 $('#block-artist').DataTable().destroy();
