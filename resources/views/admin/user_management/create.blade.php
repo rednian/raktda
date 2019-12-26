@@ -16,7 +16,7 @@
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ URL::signedRoute('user_management.index') . ( $type == 'g' ? '#government_management' : '#employee_management') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
-						 {{ __('BACK TO LIST') }}
+						 {{ __('BACK') }}
 					</a>
 					<div class="btn-group">
 						<button type="button" data-submittype="continue" class="btn btn-sm btn-warning btn-submit">
@@ -64,7 +64,7 @@
 				<div class="card">
 					<div class="card-header" id="inspection-settings-heading">
 						<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#inspection-settings-details" aria-expanded="true" aria-controls="inspection-settings-details">
-							<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Personal Information') }}</h6>
+							<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Personal Details') }}</h6>
 						</div>
 					 </div>
 					 <div id="inspection-settings-details" class="collapse show" aria-labelledby="inspection-settings-heading" data-parent="#inspection-settings">
@@ -145,7 +145,7 @@
 				<div class="card">
 					<div class="card-header" id="event-settings-heading">
 						<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#event-settings-details" aria-expanded="true" aria-controls="event-settings-details">
-							<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Account Settings') }}</h6>
+							<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('ACCOUNT SETTINGS') }}</h6>
 						</div>
 					 </div>
 					 <div id="event-settings-details" class="collapse show" aria-labelledby="event-settings-heading" data-parent="#event-settings">

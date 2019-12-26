@@ -22,7 +22,6 @@
                         <i class="flaticon-more"></i>
                  </button>
                  <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                  <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">{{ __('Establishment Detail') }}</a>
                         @if ($event->status == 'active' || $event->status == 'expired')
                             {{-- <div class="dropdown-divider"></div> --}}
                             <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
@@ -31,7 +30,6 @@
             </div>
          </div>
     </div>
-
     <div class="kt-portlet__body kt-padding-t-5">
       
       @if ($event->status == 'active')
@@ -54,7 +52,7 @@
                             <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                           </div>
                           <div class="col-md-6">
-                            <label for="">{{ __('Remarks (AR)') }}<span class="text-danger">*</span></label>
+                            <label for="">{{ __('Remarks (AR)') }} <span class="text-danger">*</span></label>
                             <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                           </div>
                         </div>
@@ -91,12 +89,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              {{-- <tr>
                 <td>{{ $action->user->NameEn }}</td>
                 <td>{{ $action->updated_at }}</td>
                 <td>{{ $action->comment }}</td>
                 <td class="text-right">{!! permitStatus($action->action) !!}</td>
-              </tr>
+              </tr> --}}
             </tbody>
           </table>
            <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_4_4_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
@@ -104,7 +102,6 @@
         </div>
       </div>
       @endif
-
       @if($event->comment()->where('action', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
       <section class="row kt-margin-t-10">
           <div class="col-md-12">
@@ -316,14 +313,14 @@
                          </tr>      
                      </table>
                      <hr>
-                     <h6 class="kt-font-dark">{{__('Liqour Information')}}</h6>
+                     <h6 class="kt-font-dark">{{__('Liquor Details')}}</h6>
                      <table class="table table-sm table-hover table-borderless table-display">
                        <tr>
                         <tr>
-                          <td width="55%">{{__('Company Name')}} :</td>
+                          <td width="55%">{{__('Establishment Name')}} :</td>
                           <td>{{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}</td>
                         </tr>
-                         <td>{{__('Provided By Venue ?')}} : </td>
+                         <td>{{__('Provided by venue')}} : </td>
                          <td>{{$event->provided ? 'YES' : 'NO'}}</td>
                          @if ($event->provided)
                            <tr>
@@ -340,7 +337,7 @@
                              <td>{{$event->liquor->liquor_type}}</td>
                            </tr>
                            <tr>
-                             <td>{{__('Purchase Receipt')}} :</td>
+                             <td>{{__('Purchase Receipt Number')}} :</td>
                              <td>{{$event->liquor->purchase_receipt}}</td>
                            </tr>
                          @endif
@@ -353,7 +350,7 @@
                       
                      </div>
                      <hr>
-                      <h6 class="kt-font-dark">{{ __('Establishment Information') }}</h6>
+                      <h6 class="kt-font-dark">{{ __('Establishment Details') }}</h6>
                       @if ($event->owner->company()->exists())
                         <table class="table table-borderless table-sm table-display">
                             <tr>
@@ -399,22 +396,22 @@
         <div class="col-md-5">
           <form class=" kt-padding-5 kt-margin-t-10">
             <div class="form-group row form-group-sm">
-              <label class="col-10 col-form-label">Show event to all registered company calendar</label>
+              <label class="col-10 col-form-label">{{ __('Show event to all registered company calendar') }}</label>
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
-                    <input type="checkbox"  name="is_display_all" {{$event->is_display_all ? 'checked' :  null}}>
+                    <input type="checkbox" checked="checked" name="">
                     <span></span>
                   </label>
                 </span>
               </div>
             </div>
             <div class="form-group row form-group-sm">
-              <label class="col-10 col-form-label">Show event to public website calendar</label>
+              <label class="col-10 col-form-label">{{ __('Show event to public website calendar') }}</label>
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
-                    <input type="checkbox" name="is_display_web" {{$event->is_display_web ? 'checked' :  null}}>
+                    <input type="checkbox" checked="checked" name="">
                     <span></span>
                   </label>
                 </span>
@@ -434,7 +431,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#truck-tab" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK DETAILS') }}
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK INFORMATION') }}
                <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span> 
             </a>
           </li>
@@ -459,7 +456,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_4_4_tab_content" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ACTION HISTORY') }} 
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('CHECKED HISTORY') }} 
               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->comment()->where('action', '!=', 'pending')->count()}}</span>
             </a>
           </li>
@@ -482,12 +479,12 @@
              <table class="table border borderless table-hover table-sm" id="truck-table">
               <thead>
                 <tr>
-                   <th>{{ __('TRUCK NAME') }}</th>
-                   <th>{{ __('COMPANY NAME') }}</th>
+                   <th>{{ __('NAME') }}</th>
+                   <th>{{ __('ESTABLISHMENT NAME') }}</th>
                    <th>{{ __('SERVICE TYPE') }}</th>
                    <th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
-                   <th>{{ __('REGISTRATION ISSUED DATE') }}</th> 
-                   <th>{{ __('REGISTRATION EXPIRED DATE') }}</th> 
+                   <th>{{ __('ISSUED DATE') }}</th> 
+                   <th>{{ __('REGISTRATION EXPIRY DATE') }}</th> 
                    <th>{{ __('ACTION') }}</th> 
                 </tr>
               </thead>
@@ -552,14 +549,14 @@
                  <th>{{ __('REQUIREMENT NAME') }}</th>
                  <th>{{ __('FILES') }}</th>
                  <th>{{ __('ISSUED DATE') }}</th>
-                 <th>{{ __('EXPIRED DATE') }}</th>
+                 <th>{{ __('EXPIRY DATE') }}</th>
                  <th>{{ __('ACTION') }}</th>
               </tr>
             </thead>
           </table>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{ __('Close') }}</button>
         </div>
       </div>
     </div>
@@ -570,42 +567,6 @@
   var document_table = {}; 
   var comment_table = {}; 
   $(document).ready(function(){
-
-    $('input[name=is_display_all]').change(function(){
-      var el = $(this);
-      if($(this).is(':checked')){
-       var val = el.is(':checked') ? 1 : null;
-       bootbox.confirm('Are you sure you want to show the event to display in registered user\'s calendar?', function(result){
-         if(result){
-           $.ajax({
-             url: '{{ route('admin.event.showall', $event->event_id) }}',
-             data: {is_display_all: val }
-           }).done(function(response){
-
-           });
-         }
-         else{
-          el.attr('checked', false);
-         }
-       });
-      }
-      else{
-        var val = !$(this).is(':checked') ? 0 : 1;
-        bootbox.confirm('Are you sure you want to remove the event from registered user\'s calendar?', function(result){
-          if(result){
-            $.ajax({
-              url: '{{ route('admin.event.showall', $event->event_id) }}',
-              data: {is_display_all: val }
-            }).done(function(response){
-
-            });
-          }
-          else{
-            $('input[name=is_display_all]').attr('checked', true);
-          }
-        });
-      }
-    });
 
     $('form#frm-status').validate();
     $('form#frm-savecomment').validate();

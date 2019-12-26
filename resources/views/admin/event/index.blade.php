@@ -105,7 +105,7 @@
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
           role="tablist" id="artist-permit-nav">
           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-              data-target="#new-request">{{ __('New Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
+              data-target="#new-request">{{ __('New Requests') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#pending-request"
               data-target="#pending-request">{{ __('Pending Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
@@ -630,11 +630,11 @@
           var calendarEl = document.getElementById('event-calendar');
 
           var calendar = new FullCalendar.Calendar(calendarEl, {
-              @if(Auth::user()->LanguageId != 1)
-                locale: 'ar',
-              @endif
               plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
               isRTL: KTUtil.isRTL(),
+              @if(Auth::user()->LanguageId != 1)
+                locale: 'ar',
+                @endif
               header: {
                   left: 'prev,next today',
                   center: 'title',
@@ -743,15 +743,15 @@
         cancelClass: 'btn-secondary btn-sm btn-elevate',
         startDate: start,
         endDate: end,
-       locale:{'customRangeLabel':'Custom From and To'},
+       locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         // maxDate: new Date,
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#active-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
@@ -872,14 +872,14 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
-       locale:{'customRangeLabel':'Custom From and To'},
+       locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#processing-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
@@ -945,14 +945,14 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
-        locale:{'customRangeLabel':'Custom From and To'},
+        locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#pending-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
@@ -1021,14 +1021,14 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
-        locale:{'customRangeLabel':'Custom From and To'},
+        locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));

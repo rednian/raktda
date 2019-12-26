@@ -11,12 +11,12 @@
 	<section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 		<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 			 <div class="kt-portlet__head-label">
-					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Edit Schedule</h3>
+					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Edit Schedule') }}</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#artist_requirements' }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
-						 {{ __('BACK TO SCHEDULES') }}
+						 {{ __('BACK') }}
 					</a>
 					<div class="btn-group">
 						<button type="button" data-submittype="continue" class="btn btn-sm btn-warning btn-submit">
