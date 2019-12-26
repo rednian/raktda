@@ -184,6 +184,7 @@
         <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">
           <thead>
             <tr>
+              <th></th>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('PERMIT DURATION') }}</th>
@@ -1052,16 +1053,18 @@
              d.date = $('#new-applied-date').val()  ? selected_date : null;
            }
          },
-
+         responsive: true,
          columnDefs: [
            {targets: '_all', className: 'no-wrap'}
          ],
          columns: [
+           {render: function(){ return null; }},
            {data: 'reference_number'},
+           {data: 'event_name'},
+           {data: 'event_type'},
            {data: 'establishment_name'},
            {data: 'duration'},
-           {data: 'event_name'},
-           {data: 'type'},
+           // {data: 'type'},
            {data: 'created_at'},
            // {data: 'status'}
          ],

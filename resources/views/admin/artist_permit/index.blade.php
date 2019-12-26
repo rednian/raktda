@@ -1,4 +1,4 @@
-      @extends('layouts.admin.admin-app')
+@extends('layouts.admin.admin-app')
 @section('style')
 <style>
   .widget-toolbar{ cursor: pointer; }
@@ -266,6 +266,7 @@
 
     $('.nav-tabs a').on('shown.bs.tab', function (event) {
       var current_tab = $(event.target).attr('href');
+      if (current_tab == '#new-request' ) {  newRequest(); }
       if (current_tab == '#pending-request' ) { pendingRequest(); }
       if (current_tab == '#processing-permit') { processingTable(); }
       if (current_tab == '#active-permit' ) { approvedTable(); }
@@ -594,6 +595,7 @@
             columnDefs: [
                {targets: [0, 4, 5], className: 'no-wrap'},
             ],
+            order: [[3, 'desc']],
             columns: [
                {data: 'reference_number'},
                {data: 'company_name'},
@@ -668,18 +670,27 @@
            }
          },
          columnDefs: [
-           {targets: [0, 2, 4, 5], className: 'no-wrap'},
+           {targets: '_all', className: 'no-wrap'},
          ],
+         order: [[4, 'asc']],
+         responsive: true,
          columns: [
+           {render:function(){return  null;}},
            {data: 'reference_number'},
            {data: 'company_name'},
            {data: 'artist_number'},
-           {data: 'applied_date'},
+           {data: 'updated_at'},
            {data: 'duration'},
+           {data: 'permit_status'},
+           {data: 'term'},
            {data: 'request_type'},
+           {data: 'location'},
+           {data: 'has_event'},
+           {data: 'event'},
+           {data: 'rivision'},
          ],
          createdRow: function (row, data, index) {
-           $(row).click(function () {
+           $('td:not(:first-child)',row).click(function () {
              location.href = data.application_link;
            });
          },
@@ -752,12 +763,11 @@
            {data: 'applied_date'},
            {data: 'term'},
            {data: 'duration'},
-           {data: 'permit_start'},
-           {data: 'permit_end'},
            {data: 'request_type'},
            {data: 'location'},
            {data: 'has_event'},
            {data: 'event'},
+           {data: 'rivision'},
          ],
          createdRow: function (row, data, index) {
            $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });

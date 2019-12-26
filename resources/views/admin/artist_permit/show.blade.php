@@ -103,6 +103,7 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content" role="tab" aria-selected="false">
                                     {{ __('PERMIT HISTORY') }}
+                                    <span class="kt-badge kt-badge--outline kt-badge--info">{{$rivision}}</span>
                                 </a>
                 </li>
                 @endif
@@ -180,17 +181,19 @@
                             </div>
                             @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
                             <div class="tab-pane" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
-                               <table class="table table-striped table-borderless table-sm table-hover border" id="table-permit-history">
+                               <table class="table table-striped table-borderless table-hover" id="table-permit-history">
                                  <thead>
-                                 <tr>
-                                        <th>{{ __('APPLIED DATE') }}</th>
-                                        <th>{{ __('ISSUED DATE') }}</th>
-                                        <th>{{ __('EXPIRY DATE') }}</th>
-                                        <th>{{ __('NO. OF ARTIST') }}</th>
-                                        <th>{{ __('REQUEST TYPE') }}</th>
-                                        <th>{{ __('PERMIT STATUS') }}</th>
-                                        <th>{{ __('ACTION') }}</th>
-                                 </tr>
+                                   <tr>
+                                     <th>{{ __('RIVISION NO.') }}</th>
+                                     <th>{{ __('REFERENCE NO.') }}</th>
+                                     <th>{{ __('PERMIT NO.') }}</th>
+                                     <th>{{ __('NO. OF ARTIST') }}</th>
+                                     <th>{{ __('PERMIT DURATION') }}</th>
+                                     <th>{{ __('PERMIT START DATE') }}</th>
+                                     <th>{{ __('PERMIT END DATE') }}</th>
+                                     <th>{{ __('REQUEST TYPE') }}</th>
+                                     <th>{{ __('STATUS') }}</th>
+                                   </tr>
                                  </thead>
                                </table>
                             </div>
@@ -220,27 +223,29 @@
        });
 
     function permitHistory() {
-       $('table#table-permit-history').DataTable({
-          ajax: {
-             url: '{{ route('admin.artist_permit.history', $permit->permit_id) }}'
-          },
-          columnDefs: [
-             {targets: [5, 6], className: 'no-wrap'}
-          ],
-          columns: [
-             {data: 'applied_date'},
-             {data: 'issued_date'},
-             {data: 'expired_date'},
-             {data: 'artist_number'},
-             {
-                render: function (row, type, full, meta) {
-                   return full.request_type + ' Application';
-                }
-             },
-             {data: 'permit_status'},
-             {data: 'action'}
-          ]
-       });
+      $('table#table-permit-history').DataTable({
+        ajax: {
+          url: '{{ route('admin.artist_permit.history', $permit->permit_id) }}'
+        },
+        columnDefs: [
+        {targets: '_all', className: 'no-wrap'}
+        ],
+        responsive: true,
+        columns: [
+           {data: 'rivision_number'},
+           {data: 'reference_number'},
+           {data: 'permit_number'},
+           {data: 'artist_number'},
+           {data: 'duration'},
+           {data: 'issued_date'},
+           {data: 'expired_date'},
+           {data: 'request_type'},
+           {data: 'permit_status'}
+        ],
+        createdRow: function(row, data, index){
+          $('td:not(:first-child)', row).click(function(){location.href = data.link;});
+        }
+     });
     }
 
     function artistTable() {

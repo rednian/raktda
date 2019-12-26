@@ -136,35 +136,28 @@
               <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#accordion-permit-history-collapse-one"
 											 aria-expanded="true" aria-controls="accordion-permit-history-collapse-one">
                        <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">{{ __('PERMIT HISTORY') }}</h6>
+                       <span class="kt-badge kt-badge--outline kt-badge--info">{{$rivision}}</span>
               </div>
             </div>
             <div id="accordion-permit-history-collapse-one" class="collapse show" aria-labelledby="accordion-permit-history-heading-one"
 										data-parent="#accordion-permit-history">
                 <div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
-                  <?php
-                  $permit_history = \App\Permit::whereNotIn('permit_status', ['cancelled', 'unprocessed', 'draft'])
-                  ->whereDate('created_at', '<', $permit->created_at)
-                  ->whereNotNull('permit_number')
-									->where('permit_number', $permit->number)
-									->get();
-                  ?>
-                  @if($permit_history->count() > 0)
                   <table class="table table-striped table-borderless table-hover" id="table-permit-history">
                     <thead>
                       <tr>
-                        <th>{{ __('Applied Date') }}</th>
-                        <th>{{ __('Issued Date') }}</th>
-                        <th>{{ __('Expired Date') }}</th>
-                        <th>{{ __('No. of Artist') }}</th>
-                        <th>{{ __('Request Type') }}</th>
-                        <th>{{ __('Permit Status') }}</th>
-                        <th>{{ __('Action') }}</th>
+                        <th>{{ __('RIVISION NO.') }}</th>
+                        <th>{{ __('REFERENCE NO.') }}</th>
+                        <th>{{ __('PERMIT NO.') }}</th>
+                        <th>{{ __('NO. OF ARTIST') }}</th>
+                        <th>{{ __('PERMIT DURATION') }}</th>
+                        <th>{{ __('PERMIT START DATE') }}</th>
+                        <th>{{ __('PERMIT END DATE') }}</th>
+                        <th>{{ __('REQUEST TYPE') }}</th>
+                        <th>{{ __('STATUS') }}</th>
                       </tr>
                     </thead>
                   </table>
-                  @else
-                    @empty {{ __('No data available in table') }} @endempty
-                  @endif
+             
                 </div>
               </div>
             </div>
@@ -264,21 +257,23 @@
         url: '{{ route('admin.artist_permit.history', $permit->permit_id) }}'
       },
       columnDefs: [
-      {targets: [5, 6], className: 'no-wrap'}
+      {targets: '_all', className: 'no-wrap'}
       ],
+      responsive: true,
       columns: [
-         {data: 'applied_date'},
+         {data: 'rivision_number'},
+         {data: 'reference_number'},
+         {data: 'permit_number'},
+         {data: 'artist_number'},
+         {data: 'duration'},
          {data: 'issued_date'},
          {data: 'expired_date'},
-         {data: 'expired_date'},
-         {
-            render: function (row, type, full, meta) {
-               return full.request_type + ' Application';
-            }
-         },
-         {data: 'permit_status'},
-         {data: 'action'}
-      ]
+         {data: 'request_type'},
+         {data: 'permit_status'}
+      ],
+      createdRow: function(row, data, index){
+        $('td:not(:first-child)', row).click(function(){location.href = data.link;});
+      }
    });
   }
 
