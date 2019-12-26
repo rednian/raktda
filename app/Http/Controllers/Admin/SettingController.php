@@ -30,14 +30,11 @@ class SettingController extends Controller
 
 	public function excelTojson(Request $request){
 
-		// (strtotime($Rs['age_on_dt'])-strtotime($id2))/(60*60*24*365) < $Rs['adult_min_age']
+		Excel::load(storage_path() . '/app/public/translations2.xlsx', function($reader){
 
-		$d1 = strtotime('2020-01-14');
-
-
-		$bdate = strtotime('2008-01-18');
-
-		
+		    // Getting all results
+		    $arr = array();
+		    $reader->each(function($sheet) use($arr){
 
 		$day = (60*60*24*(365));
 

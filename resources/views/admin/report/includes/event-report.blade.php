@@ -3,6 +3,32 @@
         background-color: #edeef4;
     }
 </style>
+
+<div class="container">
+    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="">
+        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#" data-target="#">
+                <span id="all_events" style="font-size: 11px">{{__('ALL EVENTS')}}</span>
+                <input type="text" value="active" id="active_artist_input" hidden>
+            </a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#" data-target="#">
+                <span id="events_next_30_days" style="font-size: 11px">{{__('EVENTS IN NEXT 30 DAYS')}}</span>
+                <input type="text" value="active" id="active_artist_input" hidden>
+            </a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#" data-target="#">
+                <span  id="events_next_60_days" style="font-size: 11px">{{__('EVENTS IN NEXT 60 DAYS')}}</span>
+                <input type="text" value='blocked' id="blocked_artist_input" hidden>
+            </a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#">
+                <span id="events_previous_30_days" style="font-size: 11px">{{__('EVENTS IN PREVIOUS 30 DAYS')}}</span>
+                <input type="text" value='single' id="single_permit_type_input" hidden>
+            </a></li>
+
+            <button id="ArtistTableresetButton" class="btn btn-sm pull-right btn-secondary">Reset</button>
+        </li>
+
+    </ul>
+</div>
+
 <table class="table table-hover  table-borderless table-striped border" id="event-report">
     <thead>
 
@@ -51,9 +77,5 @@
 
 </table>
 
-@section('script')
-
-
-@endsection
 {{--@include('admin.artist_permit.includes.artist-block-modal')--}}
 

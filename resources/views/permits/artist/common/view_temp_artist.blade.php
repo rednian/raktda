@@ -113,7 +113,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 "><strong>{{__('Visa Expiry')}}:</strong></label>
+                        <label class="col col-md-6 "><strong>{{__('Visa Expiry Date')}}:</strong></label>
                         <p class="col col-md-6 text-left">
                             {{$artist_details->visa_expire_date != '0000-00-00' ? date('d-M-Y', strtotime($artist_details->visa_expire_date)) : ''}}
                         </p>
@@ -172,7 +172,8 @@
                             </td>
                             <td class="text-center">
                                 <a href="{{asset('storage')}}{{'/'.$req->path}}" target="blank" ">
-                                                                <button class=" btn btn-sm btn-secondary">View
+                                                                <button class=" btn btn-sm
+                                    btn-secondary">{{__('View')}}
                                     </button></a>
                             </td>
                         </tr>

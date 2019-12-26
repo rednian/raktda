@@ -12,10 +12,7 @@
 
 <table class="table table-hover table-borderless table-striped border" id="active-artist">
 	 <thead>
-
-
      <tr>
-
      <th colspan="6"><section class="form-row">
              <div class="col-12">
                  <form class="form-row">

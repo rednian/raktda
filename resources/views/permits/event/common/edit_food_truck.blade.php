@@ -18,9 +18,9 @@
                     <table class="table table-borderless border table-striped">
                         <thead>
                             <th>#</th>
-                            <th>{{__('Company')}}</th>
-                            <th>{{__('Company - Ar')}}</th>
-                            <th>{{__('Plate No')}}</th>
+                            <th>{{__('Establishment Name (EN)')}}</th>
+                            <th>{{__('Establishment Name  (AR)')}}</th>
+                            <th>{{__('Traffic Plate No')}}</th>
                             <th>{{__('Food Services')}}</th>
                             <th></th>
                         </thead>
@@ -50,39 +50,39 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" autocomplete="off" placeholder="company name">
+                                id="company_name_en" autocomplete="off" ">
                         </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name - Ar')}} <span
+                        <div class=" col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" dir="rtl" autocomplete="off" placeholder="company name - Ar">
+                                id="company_name_ar" dir="rtl" autocomplete="off" ">
                         </div>
-                        <div class="col-md-4 form-group form-group-xs">
+                        <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}} <span
                                     class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-control-sm" name="food_type" id="food_type"
-                                autocomplete="off" placeholder="food type">
+                            <textarea class="form-control form-control-sm" name="food_type" id="food_type"
+                                autocomplete="off" rows="2"></textarea>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Plate No')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Traffic Plate No')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
-                                autocomplete="off" placeholder="plate no">
+                                autocomplete="off" ">
                         </div>
-                        <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Issue')}} <span
-                                    class="text-danger">*</span></label>
+                        <div class=" col-md-4 form-group form-group-xs">
+                            <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}
+                                <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_issue_date"
                                 data-date-end-date="+0d" id="regis_issue_date" autocomplete="off"
                                 placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Registration Expiry')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Expiry Date')}}
+                                <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_expiry_date"
                                 data-date-start-date="+0d" id="regis_expiry_date" autocomplete="off"
                                 placeholder="DD-MM-YYYY">

@@ -127,7 +127,7 @@
         </section>
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
 						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#processing-permit">{{ __('Processing Permits') }}</a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit">{{ __('Permit Action') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }} </a></li>
@@ -149,77 +149,29 @@
 
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
-									@include('admin.artist_permit.includes.new_request')
-							{{--  @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
-							 @else
-									@empty()
-										 No New Request Permit
-									@endempty
-							 @endif --}}
+								@include('admin.artist_permit.includes.new_request')
 						</div>
             <div class="tab-pane show fade" id="pending-request" role="tabpanel">
-               {{-- @include('admin.artist_permit.includes.summary') --}}
-                  @include('admin.artist_permit.includes.pending-permit')
-              {{--  @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
-               @else
-                  @empty()
-                     No New Request Permit
-                  @endempty
-               @endif --}}
+                @include('admin.artist_permit.includes.pending-permit')
             </div>
 						<div class="tab-pane fade" id="processing-permit" role="tabpanel">
-							 {{-- @include('admin.artist_permit.includes.summary') --}}
-									@include('admin.artist_permit.includes.processing')
-							{{--  @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request', 'processing', 'need approval'])->count() > 0)
-							 @else
-									@empty()
-										 No on Proccess permit
-									@endempty
-							 @endif --}}
+								@include('admin.artist_permit.includes.processing')
 						</div>
 						<div class="tab-pane fade" id="active-permit" role="tabpanel">
-							 {{-- @include('admin.artist_permit.includes.summary') --}}
-									@include('admin.artist_permit.includes.approved')
-							{{--  @if(\App\Permit::whereIn('permit_status', ['active'])->count() > 0)
-							 @else
-									@empty()
-										 No Active permit
-									@endempty
-							 @endif --}}
+								@include('admin.artist_permit.includes.approved')
 						</div>
 						<div class="tab-pane fade" id="archive-permit" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
-									@include('admin.artist_permit.includes.archive')
-							{{--  @if(\App\Permit::whereIn('permit_status', ['rejected', 'expired'])->count() > 0)
-							 @else
-									@empty()
-										 No Expired or Rejected permit
-									@endempty
-							 @endif --}}
+								@include('admin.artist_permit.includes.archive')
 						</div>
 						<div class="tab-pane fade" id="active-artist" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
-									@include('admin.artist_permit.includes.active-artist')
-							{{--  @if(\App\Artist::where('artist_status', 'active')->count() > 0)
-							 @else
-									@empty()
-										 Active artist is empty
-									@endempty
-							 @endif --}}
+								@include('admin.artist_permit.includes.active-artist')
 						</div>
 						<div class="tab-pane fade kt-hide" id="blocked-artist" role="tabpanel">
-							 @include('admin.artist_permit.includes.summary')
 							@include('admin.artist_permit.includes.block-artist')
-							 {{-- @if(\App\Artist::where('artist_status', 'blocked')->count() > 0)
-							 @else
-									@empty()
-										 Blocked artist is empty
-									@endempty
-							 @endif --}}
 						</div>
 				 </div>
 			</div>
-	 </section>
+ </section>
 @endsection
 @section('script')
 <script type="text/javascript">
@@ -562,11 +514,14 @@
                   d.status = ['active'];
                }
             },
+            responsive:true,
             columnDefs: [
                {targets: '_all', className: 'no-wrap'},
                {targets: 5, sortable: false},
             ],
             columns: [
+               {render:function(){ return null;}},
+               {data: 'action'},
                {data: 'reference_number'},
                {data: 'permit_number'},
                {data: 'company_name'},
@@ -574,13 +529,15 @@
                {data: 'duration'},
                {data: 'artist_number'},
                {data: 'request_type'},
-               {data: 'action'},
+               {data: 'location'}
             ],
 
             createdRow: function (row, data, index) {
-              $(row).click(function () {
-                 location.href = data.show_link;
-              });
+
+              $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });
+              $('td:not(:first-child)', row).click(function () { location.href = data.show_link; });
+              $('.btn-download', row).click(function(e){ e.stopPropagation(); });
+              
             }
          });
 
@@ -782,22 +739,28 @@
              d.date = $('#new-applied-date').val()  ? selected_date : null;
            }
          },
-         // order: [[ 3, "desc" ]],
+         responsive: true,
+         order: [[ 0, "desc" ]],
          columnDefs: [
-           {targets: [0, 2, 4, 5], className: 'no-wrap'},
+           {targets: '_all', className: 'no-wrap'},
          ],
          columns: [
+           {render:function(){ return null;}},
            {data: 'reference_number'},
            {data: 'company_name'},
            {data: 'artist_number'},
            {data: 'applied_date'},
+           {data: 'term'},
            {data: 'duration'},
+           {data: 'permit_start'},
+           {data: 'permit_end'},
            {data: 'request_type'},
+           {data: 'location'},
+           {data: 'has_event'},
+           {data: 'event'},
          ],
          createdRow: function (row, data, index) {
-           $(row).click(function () {
-             location.href = data.application_link;
-           });
+           $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });
          },
          initComplete: function(setting, json){
           $('#new-count').html(json.new_count);

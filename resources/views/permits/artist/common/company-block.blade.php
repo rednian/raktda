@@ -6,11 +6,7 @@
         <div class="alert-text">
             <div class="kt-scroll" data-scroll="true" style="max-height: 100px">
                 <ul>
-                    {{__('Your Company is blocked ! The Reason is')}}
-                    {{getLangId() == 1 ? check_is_blocked()['comments']->comment_en : check_is_blocked()['comments']->comment_ar}}
-                    . <br />
-                    {{__('You are not allowed to take any action. Only view is allowed')}}<br />
-                    {{__('Please Contact RakTDA Administrator')}}
+                    {{__('Your Company is blocked! Please Contact TDA Administrator')}}
                 </ul>
             </div>
         </div>

@@ -108,16 +108,39 @@
                                                             <select class="form-control form-control-sm"
                                                                 name="firm_type" id="firm_type" disabled>
                                                                 <option value="">{{__('Select')}}</option>
-                                                                <option value="government"
-                                                                    {{$event->firm == 'government' ? 'selected' : ''}}>
-                                                                    {{__('Goverment')}}
-                                                                </option>
+
                                                                 <option value="corporate"
                                                                     {{$event->firm == 'corporate' ? 'selected' : ''}}>
                                                                     {{__('Corporate')}}
                                                                 </option>
+                                                                <option value="government"
+                                                                    {{$event->firm == 'government' ? 'selected' : ''}}>
+                                                                    {{__('Goverment')}}
+                                                                </option>
                                                             </select>
                                                         </div>
+
+
+                                                        <div class="col-md-4 form-group form-group-xs">
+                                                            <label for="owner_name"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name (EN)')}}
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="owner_name" id="owner_name"
+                                                                placeholder="{{__('Owner Name (EN)')}}"
+                                                                value="{{$event->owner_name}}" readonly>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs">
+                                                            <label for="owner_name"
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name (AR)')}}
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="owner_name_ar" id="owner_name_ar" dir="rtl"
+                                                                placeholder="{{__('Owner Name (AR)')}}"
+                                                                value="{{$event->owner_name_ar}}" readonly>
+                                                        </div>
+
 
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="event_type_id"
@@ -137,47 +160,48 @@
 
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="owner_name"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name" id="owner_name"
-                                                                placeholder="{{__('Owner Name')}}"
-                                                                value="{{$event->owner_name}}" readonly>
-                                                        </div>
-
-                                                        <div class="col-md-4 form-group form-group-xs">
-                                                            <label for="owner_name"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Owner Name - Ar')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                name="owner_name_ar" id="owner_name_ar" dir="rtl"
-                                                                placeholder="{{__('Owner Name - Ar')}}"
-                                                                value="{{$event->owner_name_ar}}" readonly>
-                                                        </div>
-
 
 
                                                         <div class="col-md-4 form-group form-group-xs">
                                                             <label for="name_en"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}<span
+                                                                class=" col-form-label kt-font-bold text-right">{{__('Event Name (EN)')}}<span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="name_en" id="name_en"
-                                                                placeholder="{{__('Event Name')}}"
+                                                                placeholder="{{__('Event Name (EN)')}}"
                                                                 value="{{$event->name_en}}" readonly>
                                                         </div>
 
                                                         <div class=" col-md-4 form-group form-group-xs">
                                                             <label for="name_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Name - Ar')}}<span
+                                                                {{__('Event Name (AR)')}}<span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm "
                                                                 name="name_ar" dir="rtl" id="name_ar"
-                                                                placeholder="{{__('Event Name - Ar')}}"
+                                                                placeholder="{{__('Event Name (AR)')}}"
                                                                 value="{{$event->name_ar}}" readonly>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="event_type_id"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Event Sub Type')}}
+                                                                @if($event->event_type_sub_id)
+                                                                <span class="text-danger">*</span>
+                                                                @endif
+                                                            </label>
+                                                            <select class="form-control form-control-sm"
+                                                                name="event_sub_type_id" id="event_sub_type_id"
+                                                                disabled>
+                                                                @if($event->event_type_sub_id)
+                                                                <option value="{{$event->event_type_sub_id}}" selected>
+                                                                    {{getLangId() == 1 ? ucwords($event->subType->sub_name_en) : $event->subType->sub_name_ar}}
+                                                                </option>
+                                                                @else
+                                                                <option value="">{{__('Select')}}</option>
+                                                                @endif
+                                                            </select>
                                                         </div>
 
 
@@ -185,11 +209,11 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="description_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Details ')}}<span
+                                                                {{__('Event Details (EN)')}}<span
                                                                     class="text-danger">*</span></label>
                                                             <textarea type="text" class="form-control form-control-sm"
                                                                 name="description_en" id="description_en"
-                                                                placeholder="{{__('Event Details')}}" rows="3"
+                                                                placeholder="{{__('Event Details (EN)')}}" rows="3"
                                                                 maxlength="255"
                                                                 readonly>{{$event->description_en}}</textarea>
                                                         </div>
@@ -197,11 +221,11 @@
                                                         <div class=" col-md-4 form-group form-group-xs ">
                                                             <label for=" description_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Event Details - Ar')}} <span
+                                                                {{__('Event Details (AR)')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <textarea class="form-control form-control-sm"
                                                                 name="description_ar" dir="rtl" id="description_ar"
-                                                                placeholder="{{__('Event Details - Ar')}}" rows="3"
+                                                                placeholder="{{__('Event Details (AR)')}}" rows="3"
                                                                 maxlength="255"
                                                                 readonly>{{$event->description_ar}}</textarea>
                                                         </div>
@@ -216,18 +240,20 @@
                                                                 <option value="">{{__('Select')}}</option>
                                                                 <option value="0-100"
                                                                     {{$event->audience_number == '0-100' ? 'selected': ''}}>
-                                                                    0-100</option>
+                                                                    {{__('0-100')}}</option>
                                                                 <option value="100-500"
                                                                     {{$event->audience_number == '100-500' ? 'selected': ''}}>
-                                                                    100-500</option>
+                                                                    {{__('100-500')}}</option>
                                                                 <option value="500-1000"
                                                                     {{$event->audience_number == '500-1000' ? 'selected': ''}}>
-                                                                    500-1000</option>
+                                                                    {{__('500-1000')}}</option>
                                                                 <option value="1000&above"
                                                                     {{$event->audience_number == '1000&above' ? 'selected': ''}}>
-                                                                    1000 & above</option>
+                                                                    {{__('1000 & above')}}</option>
                                                             </select>
                                                         </div>
+
+
 
 
                                                         <div class="col-md-4  form-group form-group-xs ">
@@ -422,11 +448,11 @@
                                                         <div class="col-md-6 form-group form-group-xs ">
                                                             <label for="venue_en"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Venue')}} <span
+                                                                {{__('Venue (EN)')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="venue_en" id="venue_en"
-                                                                placeholder="{{__('Venue')}}"
+                                                                placeholder="{{__('Venue (EN)')}}"
                                                                 value="{{$event->venue_en}}" readonly>
 
                                                         </div>
@@ -434,11 +460,11 @@
                                                         <div class="col-md-6 form-group form-group-xs ">
                                                             <label for="venue_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
-                                                                {{__('Venue - Ar')}} <span
+                                                                {{__('Venue (AR)')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="venue_ar" dir="rtl" id="venue_ar"
-                                                                placeholder="Venue - Ar" value="{{$event->venue_ar}}"
+                                                                placeholder="Venue (AR)" value="{{$event->venue_ar}}"
                                                                 readonly>
                                                         </div>
 
@@ -527,7 +553,7 @@
                                                                 value="{{$event->street}}" readonly>
                                                         </div>
 
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="longitude"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Longitude')}}<span
@@ -537,7 +563,7 @@
                                                                 value="{{$event->longitude}}" readonly>
                                                         </div>
 
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="latitude"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Latitude')}} <span
@@ -546,6 +572,17 @@
                                                                 name="latitude" id="latitude" placeholder="Latitude"
                                                                 value="{{$event->latitude}}" readonly>
                                                         </div>
+
+                                                        <div class="col-md-4 form-group form-group-xs ">
+                                                            <label for="addi_loc_info"
+                                                                class=" col-form-label kt-font-bold text-right">
+                                                                {{__('Additional Location Info')}} </label>
+                                                            <textarea class="form-control form-control-sm"
+                                                                name="addi_loc_info" id="addi_loc_info" rows="2"
+                                                                readonly>{{$event->additional_location_info}}
+                                                            </textarea>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                                 <div id="address-map-container"
@@ -574,17 +611,12 @@
                                 </form>
                                 <form id="image_upload_form">
                                     <div class="row">
-                                        <div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{{__('Event
-                                            Images')}}</label>
-                                            <p class="reqName">{{__('Add multiple images of the event')}}</p>
+                                        <div class="col-lg-4 col-sm-12"><label
+                                                class="kt-font-bold text--maroon">{{__('Images')}}</label>
+                                            <p class="reqName">{{__('Add multiple images')}}</p>
                                         </div>
                                         <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
                                             <div id="image_uploader">{{__('Upload')}}</div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12"><label
-                                                class="kt-font-bold text--maroon">{{__('Description')}}</label>
-                                            <input type="text" name="description" id="description"
-                                                class="form-control form-control-sm" placeholder="Image Description">
                                         </div>
                                     </div>
                                 </form>
@@ -1067,7 +1099,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);
@@ -1470,12 +1502,12 @@
                 type: 'POST',
                 data: {id: id, firm: firm},
                 success: function (result) {
+                    $('#documents_required').empty();
+                    var res = result;
+                     $('#requirements_count').val(res.length);
                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                  if(result){
-                    $('#documents_required').empty();
-                     var res = result;
-                     $('#requirements_count').val(res.length);
-                     
+
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
                          $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' ) +'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
@@ -1594,7 +1626,7 @@
                                         if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                         const d = data["path"].split("/");
                                         // var cc = d.splice(4,5);

@@ -5,6 +5,25 @@ function duration($start = null, $end = null){
     return $days  >= 31 ? Carbon\Carbon::parse($start)->diffInMonths($end).' Month': $days.' Days';
 }
 
+function type($name = null, $type = null){
+
+    $classname = ['dark', 'success', 'danger', 'warning', 'info', 'primary'];
+    
+    $first = explode(' ', $name);
+    $first = strtoupper(substr($first[0], 0, 1));
+
+    $html = '<div class="kt-user-card-v2">'; 
+    $html .= ' <div class="kt-user-card-v2__details">'; 
+    $html .= '  <span class="kt-user-card-v2__name">'.ucfirst($name).'</span>'; 
+    $html .= '  <span class="kt-user-card-v2__email kt-link">'.ucfirst($type).'</span>'; 
+    $html .= ' </div>'; 
+    $html .= '</div>'; 
+
+    return $html;
+
+}
+
+
 function profileName($name = null, $type = null){
 
     $classname = ['dark', 'success', 'danger', 'warning', 'info', 'primary'];
@@ -191,12 +210,12 @@ function getTransactionReferNumber()
 
 function generateEventPermitNumber()
 {
-    $last_permit_d = \App\Event::where('permit_number', 'not like', '%-%')->latest()->first();
+    $last_permit_d = \App\Event::max('permit_number');
 
-    if (!isset($last_permit_d->permit_number)) {
+    if (!isset($last_permit_d)) {
         $new_permit_no = sprintf("EP%04d",  1);
     } else {
-        $last_pn = $last_permit_d->permit_number;
+        $last_pn = $last_permit_d;
         $n = substr($last_pn, 2);
         $f = substr($n, 0, 1);
         $l = substr($n, -1, 1);
@@ -206,17 +225,18 @@ function generateEventPermitNumber()
         }
         $new_permit_no = sprintf("EP%0" . $x . "d", $n + 1);
     }
+
     return $new_permit_no;
 }
 
 function generateArtistPermitNumber()
 {
-    $last_permit_d = \App\Permit::orderBy('created_at', 'desc')->where('permit_number', 'not like', '%-%')->first();
+    $last_permit_d = \App\Permit::where('permit_number', 'not like', '%-%')->max('permit_number');
 
-    if (!isset($last_permit_d->permit_number)) {
+    if (!isset($last_permit_d)) {
         $new_permit_no = sprintf("AP%04d",  1);
     } else {
-        $last_pn = $last_permit_d->permit_number;
+        $last_pn = $last_permit_d;
         $n = substr($last_pn, 2);
         $f = substr($n, 0, 1);
         $l = substr($n, -1, 1);

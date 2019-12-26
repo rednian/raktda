@@ -23,7 +23,7 @@
 					<i class="flaticon-more"></i>
 				</button>
 				<div x-placement="bottom-end" class="dropdown-menu dropdown-menu-right">
-					<a href="javascript:void(0)" class="dropdown-item kt-font-transform-u">{{ __('ESTABLISHMENT DETAILS') }}</a>
+					<a href="{{ URL::signedRoute('admin.company.show', $event->owner->company->company_id)}}" class="dropdown-item kt-font-transform-u">{{ __('ESTABLISHMENT DETAILS') }}</a>
 				</div>
 			</div>
 		</div>
@@ -355,7 +355,7 @@
 																<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-truck"
 																		 aria-expanded="true"
 																		 aria-controls="collapse-truck">
-																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('TRUCK DETAILS') }}</h6>
+																	 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('Food Truck Details') }}</h6>
 																</div>
 														 </div>
 														 <div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck">

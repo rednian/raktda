@@ -71,6 +71,12 @@
 
 			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
 
+			$event_type = EventType::whereDoesntHave('event', function($q){
+				return $q->where('status', 'draft');
+			})->toSql();
+
+			// dd($event_type);
+
 			return view($view, [
 				'page_title' => 'Event Permit',
 				'types'=> EventType::all(),
@@ -714,6 +720,7 @@
 		public function dataTable(Request $request)
 		{
 			if ($request->ajax()) {
+
 				$user = Auth::user();
 
 				$events = Event::when($request->type, function($q) use ($request){
@@ -737,26 +744,20 @@
 					});
 				})
 				->whereNotIn('status', ['draft'])
-				->orderBy('updated_at');
+				->get();
+				
 
 				$table =  DataTables::of($events)
 				->addColumn('establishment_name', function($event){
 					return $event->owner->type != 2 ? $event->owner->company->name_en : null;
 				})
 				->addColumn('duration', function($event) use ($user){
-					
-                      $html = '<div class="kt-user-card-v2">';
-                      $html .= ' <div class="kt-user-card-v2__details">';
-                      // $html .= '  <span class="kt-user-card-v2__name">'.$event->issued_date.'-'.$event->expired_date.'</span>';
-                      $html .= '  <span class="kt-user-card-v2__email kt-link">'.Carbon::parse($event->issued_date)->diffInDays($event->expired_date).' Days</span>';
-                      $html .= ' </div>';
-                      $html .= '</div>';
-                      return $html;
-
+					return Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
 				})
-				->addColumn('owner',function(){
-
+				->addColumn('owner',function($event) use ($request){ 
+					return $request->user()->LanguageId == 1 ? ucfirst($event->owner_name_en) : $event->owner_name_ar;
 				})
+				
 				->addColumn('website', function($event){
 					$display = $event->is_display_web ? 'checked="checked"' : null;
 
@@ -767,6 +768,11 @@
 					$html .=  '	</label>';
 					$html .=  '</span>';
 					return $html;
+				})
+				->addColumn('event_type', function($event) use ($request){
+					$type = $request->user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar;
+					$sub = $request->user()->LanguageId == 1 ?  ucfirst($event->subtype->name_en) : $event->subtype->name_ar;
+					return type($type, $sub);
 				})
 				->addColumn('show', function($event){
 					$display = $event->is_display_all ? 'checked="checked"' : null;
@@ -836,7 +842,7 @@
 					}
 					return '';
 				})
-				->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration', 'checked_status'])
+				->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration', 'checked_status', 'event_type'])
 				 ->make(true);
 				$table = $table->getData(true);
 				$table['new_count'] = Event::where('status', 'new')->count();

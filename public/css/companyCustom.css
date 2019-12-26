@@ -742,3 +742,7 @@ select option:first-child {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 }
+
+.fs-16 {
+    font-size: 16px;
+}

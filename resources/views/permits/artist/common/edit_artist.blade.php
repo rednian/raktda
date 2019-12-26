@@ -75,9 +75,11 @@
                         <!--begin: Form Wizard Step 3-->
                         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                             <div class="kt-form__section kt-form__section--first ">
+                                @if($from == 'edit')
                                 @component('permits.components.artist_permit_comments', ['staff_comments' =>
                                 $staff_comments])
                                 @endcomponent
+                                @endif
                                 <div class="kt-wizard-v3__form">
                                     <form id="documents_required" method="post" autocomplete="off">
                                         <input type="hidden" id="artist_number_doc" value={{1}}>
@@ -86,14 +88,14 @@
 
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-12">
-                                                    <label class="kt-font-bold text--maroon"> Artist Photo <span
-                                                            class="text-danger">*</span></label>
+                                                    <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}}
+                                                        <span class="text-danger">*</span></label>
                                                     <p for="" class="reqName " title="Artist Photo">
-                                                        Use Passport size picture with white background</p>
+                                                        {{__('Use Passport size picture with white background')}}</p>
                                                 </div>
                                                 <div class="col-lg-4 col-sm-12">
                                                     <label style="visibility:hidden">hidden</label>
-                                                    <div id="pic_uploader">Upload
+                                                    <div id="pic_uploader">{{__('Upload')}}
                                                     </div>
                                                 </div>
 

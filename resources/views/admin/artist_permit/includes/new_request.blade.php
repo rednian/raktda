@@ -57,6 +57,7 @@
 <table class="table table-hover table-borderless table-striped border" id="artist-permit">
 	<thead>
 	 <tr>
+	 	<th></th>
 	 	<th>{{ __('REFERENCE NO.') }}</th>
 		<th>{{ __('ESTABLISHMENT NAME') }}</th>
 		<th>
@@ -66,9 +67,15 @@
 				  data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
 			</span>
 		</th>
-		<th>{{ __('APPLIED DATE') }}</th>
+		<th>{{ __('SUBMITTED DATE') }}</th>
+		<th>{{ __('PERMIT TERM') }}</th>
 		<th>{{ __('PERMIT DURATION') }}</th>
+		<th>{{ __('PERMIT START DATE') }}</th>
+		<th>{{ __('PERMIT END DATE') }}</th>
 		<th>{{ __('REQUEST TYPE') }}</th>
+		<th>{{ __('WORK LOCATION') }}</th>
+		<th>{{ __('CONNECTED TO AN EVENT') }}</th>
+		<th>{{ __('EVENT NAME') }}</th>
 	 </tr>
 	 </thead>
 </table>

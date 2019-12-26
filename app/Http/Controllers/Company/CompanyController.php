@@ -39,18 +39,22 @@ class CompanyController extends Controller
 
    public function edit(Request $request, Company $company)
    {
+      foreach ($company->requirement()->whereNull('is_submit')->get() as $requirement) {
+          Storage::delete('/public/'.$requirement->path);
+      }
+      // $company->requirement()->whereNull('is_submit')->delete();
        return view('permits.company.edit', ['company'=>$company, 'page_title'=> '']); 
    }
 
    public function update(Request $request, Company $company)
    {
-
     if ($company->status == 'rejected') {
       return redirect()->back();
     }
       try {
 
          DB::beginTransaction();
+          $company->requirement()->update(['is_submit'=>1]);
 
          if ($request->company_type_id == 1) {
            $request['trade_license'] = null;
@@ -68,6 +72,7 @@ class CompanyController extends Controller
                  $result = ['success', '', 'Success'];
              break;
           case 'submitted':
+
 
             if (Company::exists()) {
                $last_reference = Company::where('company_id', '!=', $company->company_id)->orderBy('company_id', 'desc')->first()->reference_number;
