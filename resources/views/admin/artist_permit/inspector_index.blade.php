@@ -65,7 +65,7 @@
         
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
-									@include('admin.artist_permit.includes.new_request')
+									@include('admin.artist_permit.includes.approval_request')
 							{{--  @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
 							 @else
 									@empty()
@@ -143,7 +143,7 @@
 
 
     newRequest();
-    // checkedPermit();
+    checkedPermit();
 
     setInterval(function(){ newRequest(); pendingRequest();}, 100000);
 
@@ -173,6 +173,7 @@
          startDate: start,
          endDate: end,
          maxDate: new Date,
+         locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
          ranges: {
            '{{ __('Today') }}': [moment(), moment()],
            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -254,6 +255,7 @@
          startDate: start,
          endDate: end,
          maxDate: new Date,
+         locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
          ranges: {
            '{{ __('Today') }}': [moment(), moment()],
            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -269,8 +271,7 @@
         checkedPermit.draw();
        });
 
-
-       checkedPermit = $('table#artist-permit').DataTable({
+       checkedPermit = $('table#checked-permit').DataTable({
         dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -295,9 +296,9 @@
            {data: 'reference_number'},
            {data: 'company_name'},
            {data: 'artist_number'},
-           {data: 'request_type'},
-           {data: 'applied_date'},
-           {data: 'permit_status'}
+           {data: 'last_check_date'},
+           {data: 'last_check_by'},
+           {data: 'last_action_taken'}
          ],
          createdRow: function (row, data, index) {
            $(row).click(function () {

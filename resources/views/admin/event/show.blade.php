@@ -93,12 +93,16 @@
               </tr>
             </thead>
             <tbody>
-              {{-- <tr>
+              <tr>
                 <td>{{ $action->user->NameEn }}</td>
                 <td>{{ $action->updated_at }}</td>
-                <td>{{ $action->comment }}</td>
+                <td>{{ $action->comment }}
+                    @if($action->exempt_payment)
+                      <br><span class="kt-badge kt-badge--warning kt-badge--inline">{{ __('Exempted for Payment') }}</span>
+                    @endif
+                </td>
                 <td class="text-right">{!! permitStatus($action->action) !!}</td>
-              </tr> --}}
+              </tr>
             </tbody>
           </table>
            <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_4_4_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
@@ -140,6 +144,16 @@
                             <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                           </div>
                         </div>
+                        @if(Auth::user()->roles()->whereIn('roles.role_id', [5])->exists())
+                        <div class="form-group row form-group-sm">
+                            <div class="col-md-6">
+                                <label class="kt-checkbox kt-checkbox--default kt-font-dark">
+                                  <input name="bypass_payment" value="1" type="checkbox"> {{ __('Bypass the payment') }}
+                                  <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        @endif
                         <div class="form-group row">
                           <div class="col">
                             <button type="button" id="btnCheckedPermit" class="btn btn-sm btn-maroon kt-transform-u">{{ __('SUBMIT') }}</button>

@@ -665,16 +665,20 @@
 					return profileName($comment->user->NameEn, $role_name);
 				})
 				->editColumn('comment', function($comment){
-					return ucfirst($comment->comment);
+					$c = ucfirst($comment->comment);
+					if($comment->exempt_payment){
+                      $c .= '<br><span class="kt-badge kt-badge--warning kt-badge--inline">' . __('Exempted for Payment') . '</span>';
+					}
+                    return $c;
 				})
 				->addColumn('date', function($comment){
 					return '<span class="text-underline" title="'.$comment->created_at->format('l h:i A |d-F-Y').'">'.humanDate($comment->created_at).'</span>';
 					return ;
 				})
 				->addColumn('action_taken', function($comment){
-					return ucwords($comment->action);
+					return permitStatus(ucwords($comment->action));
 				})
-				->rawColumns(['name', 'date'])
+				->rawColumns(['name', 'date', 'comment', 'action_taken'])
 				->make(true);
 			}
 		}
@@ -701,6 +705,16 @@
           			'comment_ar' => $request->comment_ar,
           			'user_id' => $request->user()->user_id
           		]);
+
+				// CHECK IF EXEMPTED FOR PAYMENT
+          		if($request->has('bypass_payment')){
+                  $comment->exempt_payment = 1;
+                  $comment->save();
+
+                  $event->exempt_payment = 1;
+                  $event->exempt_by = $request->user()->user_id;
+                  $event->save();
+              	}
 
           		//CHECK IF I AM THE LAST APPROVER
                 if($event->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){

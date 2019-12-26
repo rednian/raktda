@@ -10,6 +10,7 @@
 							 <i class="la la-arrow-left"></i>
 							 {{ __('Back') }}
 						</a>
+            @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
 						<div class="dropdown dropdown-inline">
 							 <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="flaticon-more"></i>
@@ -20,6 +21,7 @@
                 </a>
 							 </div>
 						</div>
+            @endif
 				 </div>
 			</div>
 			<div class="kt-portlet__body kt-padding-t-5">
@@ -127,6 +129,7 @@
 							 </div>
 						</div>
 				 </section>
+         @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 				 <section class="accordion accordion-solid accordion-toggle-plus kt-margin-t-15" id="accordion-permit-history">
           <div class="card">
             <div class="card-header" id="accordion-permit-history-heading-one">
@@ -159,6 +162,7 @@
               </div>
             </div>
           </section>
+          @endif
         </div>
         <?php
         $artist_number = $permit->artistpermit()->count();

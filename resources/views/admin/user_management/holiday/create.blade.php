@@ -16,7 +16,7 @@
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ URL::signedRoute('user_management.index') . '#holiday' }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
-						 {{ __('BACK TO LIST') }}
+						 {{ __('BACK') }}
 					</a>
 					<div class="btn-group">
 						<button type="button" data-submittype="continue" class="btn btn-sm btn-warning btn-submit">

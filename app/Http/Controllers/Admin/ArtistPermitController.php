@@ -191,14 +191,14 @@ class ArtistPermitController extends Controller
                   $comment = $permit->comment()->where([
                     'action' => 'pending',
                     'role_id' => $user->roles()->first()->role_id,
-                  ])->first();
+                  ])->latest()->first();
 
                   if(!is_null($user->government_id)){
                       $comment = $permit->comment()->where([
                         'action' => 'pending',
                         'role_id' => $user->roles()->first()->role_id,
                         'government_id' => $user->government_id
-                      ])->first();
+                      ])->latest()->first();
                   }
 
                   $comment->update($request->except(['_token', 'bypass_payment']));
@@ -633,6 +633,13 @@ class ArtistPermitController extends Controller
           });
         });
       })
+      ->when($request->checked, function($q) use($request){
+          $q->whereHas('comment', function($q) use($request){
+            $q->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->whereNotNull('user_id')->when($request->gov, function($q) use($request){
+                    $q->where('government_id', $request->user()->government_id);
+                  });;
+          });
+      })
       ->get();
 
       $table = Datatables::of($permit)
@@ -736,7 +743,24 @@ class ArtistPermitController extends Controller
       ->addColumn('inspection_url', function($permit){
           return route('tasks.artist_permit.details', $permit->permit_id);
       })
-	    ->rawColumns(['request_type', 'reference_number', 'company_type', 'permit_status', 'action' , 'applied_date', 'approved_by', 'updated_at'])
+      ->addColumn('last_check_date', function($permit) use($request){
+          if($permit->comment()->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->latest()->first()){
+            return $permit->comment()->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->latest()->first()->updated_at;
+          }
+      })
+      ->addColumn('last_check_by', function($permit) use($request){
+          if($permit->comment()->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->latest()->first()){
+              return $permit->comment()->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->latest()->first()->user->NameEn;
+          }
+          
+      })
+      ->addColumn('last_action_taken', function($permit) use($request){
+          if($permit->comment()->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->latest()->first()){
+              $status = $permit->comment()->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->latest()->first()->action;
+            return permitStatus($status);
+          }
+      })
+	    ->rawColumns(['last_action_taken','request_type', 'reference_number', 'company_type', 'permit_status', 'action' , 'applied_date', 'approved_by', 'updated_at'])
 	    ->make(true);
        $table = $table->getData(true);
        $table['new_count'] = Permit::has('artist')->where('permit_status', 'new')->count();

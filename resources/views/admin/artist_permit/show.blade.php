@@ -9,11 +9,13 @@
             <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate kt-font-transform-u">
                 <i class="la la-arrow-left"></i>{{ __('BACK') }}
             </a>
+            @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
             <div class="dropdown dropdown-inline">
                 <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="flaticon-more"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
+                    
                     <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
                         {{ __('Establishment Details') }}
                     </a>
@@ -23,6 +25,7 @@
                     @endif
                 </div>
             </div>
+            @endif
         </div>
     </div>
     <div class="kt-portlet__body kt-padding-t-5">
@@ -35,6 +38,45 @@
           </div>
           </a>
         @endif
+        
+        @if(Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+        @if($permit->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
+        @php
+            $action = $permit->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first();
+        @endphp
+        <div class="alert alert-outline-danger fade show" role="alert" style="margin-bottom:0px">
+            <div class="alert-text">
+              <h6 class="alert-heading text-danger kt-font-transform-u">{{ __('Last Action Taken') }}</h6>
+              <table class="table table-hover table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>{{ __('Checked By') }}</th>
+                    <th>{{ __('Checked Date') }}</th>
+                    <th>{{ __('Remarks') }}</th>
+                    <th class="text-right">{{ __('Action') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ $action->user->NameEn }}</td>
+                    <td>{{ $action->updated_at }}</td>
+                    <td>
+                        {{ $action->comment }}
+                        @if($action->exempt_payment)
+                          <br><span class="kt-badge kt-badge--warning kt-badge--inline">{{ __('Exempted for Payment') }}</span>
+                        @endif
+                    </td>
+                    <td class="text-right">{!! permitStatus($action->action) !!}</td>
+                  </tr>
+                </tbody>
+              </table>
+               <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_1_2_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
+               </a>
+            </div>
+        </div>
+        @endif
+        @endif
+
         <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
             <div class="card">
                 <div class="card-header" id="headingOne5">
@@ -48,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
+            <ul id="tabDetails" class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_1_tab_content" role="tab" aria-selected="true">{{ __('ARTIST LIST') }}</a>
                 </li>
@@ -57,13 +99,15 @@
                        {{ __('CHECKED HISTORY') }}
                     </a>
                 </li>
+                @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content" role="tab" aria-selected="false">
                                     {{ __('PERMIT HISTORY') }}
                                     <span class="kt-badge kt-badge--outline kt-badge--info">{{$rivision}}</span>
                                 </a>
-                            </li>
-                        </ul>
+                </li>
+                @endif
+            </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="kt_portlet_base_demo_1_1_tab_content" role="tabpanel">
                                 <table class="table table-hover border table-borderless table-striped table-sm" id="artist-table">
@@ -135,6 +179,7 @@
                                  </div>
                                 @endif
                             </div>
+                            @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
                             <div class="tab-pane" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
                                <table class="table table-striped table-borderless table-hover" id="table-permit-history">
                                  <thead>
@@ -152,6 +197,7 @@
                                  </thead>
                                </table>
                             </div>
+                            @endif
                         </div>
                         
                       
