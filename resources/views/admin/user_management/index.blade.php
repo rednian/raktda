@@ -38,7 +38,7 @@
 					<div class="tab-pane active" id="employee_management" role="tabpanel">
 						<ul class="nav nav-tabs  nav-tabs-line nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
 				            <li class="nav-item">
-				               <a class="nav-link active" data-toggle="tab" href="#employee" role="tab">{{ __('Employees') }}</a>
+				               <a class="nav-link active" data-toggle="tab" href="#employee" role="tab">{{ __('Employee') }}</a>
 				            </li>
 				            <li class="nav-item">
 				               <a class="nav-link" data-toggle="tab" href="#leave" role="tab">{{ __('Time Off') }}</a>
@@ -79,7 +79,7 @@
 					                    </div>
 					                </div>
 					                <div class="col-sm-2">
-					                    <button type="button" id="btnShowAllLeaves" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u">{{ __('All') }}</button>
+					                    <button type="button" id="btnShowAllLeaves" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u">{{ __('ALL') }}</button>
 					                </div>
 					                 <div class="col-sm-6">
 					                    <a href="{{ URL::signedRoute('user_management.leave.add', ['user' => null]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW TIME OFF') }}</a>
@@ -103,6 +103,19 @@
 					                  </div>
 					             </section>
 		            		</div>
+		            		<div class="tab-pane" id="holiday" role="tabpanel">
+								<section class="row">
+									<div class="col-12">
+										<a href="{{ URL::signedRoute('user_management.holiday.add') }}"
+											class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Add Holiday') }}</a>
+									</div>
+								</section>
+								<section class="row">
+									<div class="col-12">
+										<div id="holiday_calendar"></div>
+									</div>
+								</section>
+							</div>
 		            	</div>
 					</div>
 					<div class="tab-pane" id="government_management" role="tabpanel">
@@ -125,21 +138,8 @@
 						</table>
 					</div>
 		        </div>
-
 			</div>
-			<div class="tab-pane" id="holiday" role="tabpanel">
-				<section class="row">
-					<div class="col-12">
-						<a href="{{ URL::signedRoute('user_management.holiday.add') }}"
-							class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Add Holiday') }}</a>
-					</div>
-				</section>
-				<section class="row">
-					<div class="col-12">
-						<div id="holiday_calendar"></div>
-					</div>
-				</section>
-			</div>
+			
 		</div>
 
 	</div>
@@ -153,7 +153,7 @@
 		$(document).ready(function(){
 
 			$('#kt_select2_1, #kt_select2_1_validate').select2({
-	            placeholder: "Search by Employee"
+	            placeholder: "{{ __('Search by Employee') }}"
 	        });
 
 			var calendarEl = document.getElementById('leave_calendar');

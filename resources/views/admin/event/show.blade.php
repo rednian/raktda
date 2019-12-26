@@ -22,6 +22,7 @@
                         <i class="flaticon-more"></i>
                  </button>
                  <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
+
                   <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">
                     {{ __('Establishment Detail') }}
                   </a>
@@ -33,7 +34,6 @@
             </div>
          </div>
     </div>
-
     <div class="kt-portlet__body kt-padding-t-5">
       
       @if ($event->status == 'active')
@@ -56,7 +56,7 @@
                             <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                           </div>
                           <div class="col-md-6">
-                            <label for="">{{ __('Remarks (AR)') }}<span class="text-danger">*</span></label>
+                            <label for="">{{ __('Remarks (AR)') }} <span class="text-danger">*</span></label>
                             <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                           </div>
                         </div>
@@ -93,12 +93,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              {{-- <tr>
                 <td>{{ $action->user->NameEn }}</td>
                 <td>{{ $action->updated_at }}</td>
                 <td>{{ $action->comment }}</td>
                 <td class="text-right">{!! permitStatus($action->action) !!}</td>
-              </tr>
+              </tr> --}}
             </tbody>
           </table>
            <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_4_4_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
@@ -106,7 +106,6 @@
         </div>
       </div>
       @endif
-
       @if($event->comment()->where('action', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
       <section class="row kt-margin-t-10">
           <div class="col-md-12">
@@ -401,22 +400,22 @@
         <div class="col-md-5">
           <form class=" kt-padding-5 kt-margin-t-10">
             <div class="form-group row form-group-sm">
-              <label class="col-10 col-form-label">Show event to all registered company calendar</label>
+              <label class="col-10 col-form-label">{{ __('Show event to all registered company calendar') }}</label>
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
-                    <input type="checkbox"  name="is_display_all" {{$event->is_display_all ? 'checked' :  null}}>
+                    <input type="checkbox" checked="checked" name="">
                     <span></span>
                   </label>
                 </span>
               </div>
             </div>
             <div class="form-group row form-group-sm">
-              <label class="col-10 col-form-label">Show event to public website calendar</label>
+              <label class="col-10 col-form-label">{{ __('Show event to public website calendar') }}</label>
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
-                    <input type="checkbox" name="is_display_web" {{$event->is_display_web ? 'checked' :  null}}>
+                    <input type="checkbox" checked="checked" name="">
                     <span></span>
                   </label>
                 </span>
@@ -561,7 +560,7 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{ __('Close') }}</button>
         </div>
       </div>
     </div>
@@ -584,7 +583,6 @@
          }
        });
     });
-
 
     $('input[name=is_display_all]').change(function(){
       var el = $(this);
