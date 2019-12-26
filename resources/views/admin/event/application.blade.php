@@ -904,6 +904,34 @@
 											<div class="col kt-margin-t-20 kt-margin-b-20">
 												@include('admin.event.includes.existing-notification')
 												  @include('admin.artist_permit.includes.comment')
+
+												  	{{-- CHECKED HISTORY --}}
+													<section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-check-history">
+												  	<div class="card">
+												  		<div class="card-header" id="heading-check-history">
+												  			<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-check-history" aria-expanded="true" aria-controls="collapse-check-history">
+												  				<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Checked History') }}</h6>
+												  			</div>
+												  		 </div>
+												  		 <div id="collapse-check-history" class="collapse show" aria-labelledby="heading-check-history" data-parent="#accordion-check-history">
+
+												  			<div class="card-body">
+												  				<table class="table table-head-noborder table-borderless table-striped border no-footer dataTable" id="checked-history-table">
+			 														<thead>
+			 															<tr>
+			 																 <th>{{ __('NAME') }}</th>
+			 																 <th>{{ __('REMARKS') }}</th>
+			 																 <th>{{ __('DATE') }}</th>
+			 																 <th>{{ __('ACTION TAKEN') }}</th>
+			 															</tr>
+			 														</thead>
+			 													 </table>
+												  			</div>
+												  		</div>
+												  	</div>
+												  </section>
+	
+													{{-- ACTION --}}
 												   <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-action">
 												  	<div class="card">
 												  		<div class="card-header" id="heading-action">
@@ -949,21 +977,24 @@
 												  										 ->count() > 0)
 												  												@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
 												  										 ->get() as $role)
+												  										 			{{-- SHOW ONLY INSPECTOR AND MANGER --}}
+												  										 			@if($role->role_id != 6)
 												  													 	<option value="{{ $role->role_id }}">{{ ucwords($role->NameEn) }}</option>
+												  													@endif
 												  												@endforeach
 												  										 @endif
 												  							 </select>
 												  						</div>
-												  						<div class="form-group form-group kt-hide">
+												  						{{-- <div class="form-group form-group kt-hide">
 												  							<div class="kt-checkbox-inline">
 																				<label class="kt-checkbox">
 																					<input type="checkbox" id="site-inspection" name="inspection"> {{ __('Site Inspection Required') }}
 																					<span></span>
 																				</label>
 																			</div>
-												  						</div>
+												  						</div> --}}
 												  					</div>
-												  					<div class="col-md-6">
+												  					{{-- <div class="col-md-6">
 												  						<div class="form-group form-group kt-hide">
 												  							<label for="" class="kt-font-dark">{{ __('Government Entities') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-department" name="department[]" multiple="multiple" id="" class="form-control">
@@ -974,7 +1005,7 @@
 																				@endif
 												  							 </select>
 												  						</div>
-												  					</div>
+												  					</div> --}}
 												  				</section>
 												  				<section class="row d-none" id="select-additional">
 												  					<div class="col">
@@ -1211,6 +1242,7 @@
        liqourRequirement();
        truck();
        imageTable();
+       commentHistory();
      });
 
      function imageTable(){
@@ -1304,6 +1336,24 @@
      			});
      		}
      	});
+     }
+
+     function commentHistory(){
+     	$('table#checked-history-table').DataTable({
+	      	ajax:{
+	        	url: '{{ route('admin.event.comment', $event->event_id) }}',
+	      	},
+	      	lengthChange: false,
+	      	filter: false,
+	      	columnDefs:[{target:'_all', className: 'no-wrap'}],
+	      	responsive: true,
+	      	columns: [
+		      	{data: 'name'},
+		      	{data: 'comment'},
+		      	{data: 'date'},
+		      	{data: 'action_taken'},
+	      	]
+	    });
      }
 
      function truckRequirement(data){
