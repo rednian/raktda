@@ -24,7 +24,7 @@ class Event extends Model
 
     public function approved()
     {
-        return $this->belongsTo(User::class, 'approved_by', 'user_id');     
+        return $this->belongsTo(User::class, 'approved_by', 'user_id')->withDefault(['NameEn'=> null,'NameAr'=>null]);     
     }
 
 

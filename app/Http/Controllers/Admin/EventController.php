@@ -740,8 +740,14 @@
 				$events = Event::when($request->type, function($q) use ($request){
 					$q->where('firm', $request->type);
 				})
+				->when($request->event_type_id, function($q) use ($request){
+					$q->where('event_type_id', $request->event_type_id);
+				})
 				->when($request->status, function($q) use ($request){
 					$q->whereIn('status', $request->status);
+				})
+				->when($request->event_type_sub_id, function($q) use ($request){
+					$q->where('event_type_sub_id', $request->event_type_sub_id);
 				})
 				->when($request->approval, function($q) use($request){
 					$q->whereHas('comment', function($q1) use($request){
@@ -762,70 +768,71 @@
 				
 
 				$table =  DataTables::of($events)
-				->addColumn('establishment_name', function($event){
-					return $event->owner->type != 2 ? $event->owner->company->name_en : null;
+				->addColumn('establishment_name', function($event) use ($user){
+					return $user->LanguageId != 2 ? ucfirst($event->owner->company->name_en) : ucfirst($event->owner->company->name_ar);
 				})
 				->addColumn('duration', function($event) use ($user){
+					$date = Carbon::parse($event->expired_date)->diffInDays($event->issued_date);
+					$date = $date !=  0 ? $date : 1;
+					$day = $date > 1 ? ' Days': ' Day';
+					return $date.$day;
 					return Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
 				})
+				->addColumn('expected_audience', function($event){ return $event->audience_number; })
 				->addColumn('owner',function($event) use ($request){ 
 					return $request->user()->LanguageId == 1 ? ucfirst($event->owner_name_en) : $event->owner_name_ar;
 				})
+				->editColumn('approved_date', function($event){
+					if ($event->approved_by) {
+						return '<span class="text-underline" title="'.$event->approved_date->format('l h:i A | d-F-Y').'">'.humanDate($event->approved_date).'</span>';
+					}
+					return null;
+				})
+				->editColumn('approved_by', function($event) use ($user){
+					return $user->LanguageId == 1 ? ucwords($event->approved->NameEn) : ucwords($event->approved->NameAr);
+				})
+				->addColumn('has_liquor', function($event){ return $event->liquor()->exists() ? __('YES') : __('NO'); })
+				->addColumn('has_truck', function($event){ return $event->truck()->exists() ? __('YES') : __('NO'); })
+				->addColumn('has_artist', function($event){ return $event->permit()->exists() ? $event->permit->artistPermit()->count() : __('NO'); })
+				->addColumn('location',function($event) use ($request){ 
+					return ucfirst($event->full_address);
+				})
+				->addColumn('description',function($event) use ($user){ 
+					return $user->LanguageId == 1 ? ucfirst($event->description_en) : ucfirst($event->description_ar);
+				})
 				
 				->addColumn('website', function($event){
-					$display = $event->is_display_web ? 'checked="checked"' : null;
-
-					$html =  '<span class="kt-switch  kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
-					$html .=  '	<label>';
-					$html .=  '	<input class="website" type="checkbox" '.$display.' name="">';
-					$html .=  '		<span></span>';
-					$html .=  '	</label>';
-					$html .=  '</span>';
-					return $html;
+					return $event->is_display_web ? __('YES'): __('NO');
 				})
 				->addColumn('event_type', function($event) use ($request){
 					$type = $request->user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar;
 					$sub = $request->user()->LanguageId == 1 ?  ucfirst($event->subtype->name_en) : $event->subtype->name_ar;
+					$sub = !empty($sub) ? $sub : '-';
 					return type($type, $sub);
 				})
+				->addColumn('venue', function($event) use ($user){
+					return $user->LanguageId == 1 ? ucfirst($event->venue_en) : ucfirst($event->venue_ar);
+				})
 				->addColumn('show', function($event){
-					$display = $event->is_display_all ? 'checked="checked"' : null;
-
-					$html =  '<span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success kt-switch--sm">';
-					$html .=  '	<label >';
-					$html .=  '	<input class="display-all" type="checkbox" '.$display.' name="" >';
-					$html .=  '		<span ></span>';
-					$html .=  '	</label>';
-					$html .=  '</span>';
-					return $html;
-
+					$display = $event->is_display_all ? __('YES'): __('NO');	
 				})
 				->addColumn('event_name', function($event) use ($user){
-					if ($user->LanguageId == 1) {return ucwords($event->name_en);} return $event->name_ar; })
-				->addColumn('type', function($event){ return ucwords($event->firm); })
-				->editColumn('created_at', function($event){
-					return '<span title="'.$event->created_at->format('l d-M-Y h:i A').'" data-original-title="'.$event->created_at->format('l d-M-Y h:i A').'" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" class="text-underline">'.humanDate($event->created_at).'</span>';
+					if ($user->LanguageId == 1) {return ucfirst($event->name_en);} return ucfirst($event->name_ar); })
+				->addColumn('type', function($event){ 
+					return ucwords(__($event->firm)); 
 				})
-				->addColumn('start', function($event){ return $event->issued_date.'  '.$event->time_start; })
+				->editColumn('updated_at', function($event){
+					return '<span title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-original-title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" class="text-underline">'.humanDate($event->updated_at).'</span>';
+				})
+				->addColumn('start', function($event){ return date('d-F-Y', strtotime($event->issued_date)); })
+				->addColumn('end', function($event){ return date('d-F-Y', strtotime($event->expired_date)); })
+				->addColumn('time', function($event){ return $event->time_start.' - '.$event->time_end; })
 				->editColumn('status', function($event){ return permitStatus($event->status); })
 				->addColumn('action', function($event){
-					$html  = '<div class="dropdown dropdown-inline">';
-					$html  .= '	<button type="button" class="btn btn-secondary btn-elevate-hover btn-icon btn-sm btn-icon-md btn-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-					$html  .= '<i class="flaticon-more-1"></i>';
-					$html  .= '	</button>';
-					if ($event->status != 'cancelled' || $event->status != 'rejected') {
-						$html  .= '		<div class="dropdown-menu dropdown-menu-right">';
-						$html  .= '	<a class="dropdown-item" href="'. URL::signedRoute('admin.event.show', $event->event_id) . '"><i class="la la-calendar-check-o"></i>Event Details</a>';
-						$html  .= '				<a class="dropdown-item" target="_blank" href="'. URL::signedRoute('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
-						$html  .= '				<div class="dropdown-divider"></div>';
-						$html  .= '					<a href="javascript:void(0)" class="dropdown-item cancel-modal"><i class=" text-danger la la-minus-circle"></i> Cancel Permit</a>';
-						$html  .= '					</div>';
+					if ($event->status == 'active') {
+						return '<a class="dropdown-item" target="_blank" href="'. URL::signedRoute('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
 					}
-
-					$html  .= '					</div>';
-
-					return $html;
-
+					return null;
 				 })
 				->addColumn('application_link', function($event){
 					return URL::signedRoute('admin.event.application', $event->event_id);
@@ -856,7 +863,7 @@
 					}
 					return '';
 				})
-				->rawColumns(['status', 'action', 'show', 'website', 'created_at', 'duration', 'checked_status', 'event_type'])
+				->rawColumns(['status', 'action', 'show', 'website', 'updated_at', 'duration', 'checked_status', 'event_type', 'approved_date'])
 				 ->make(true);
 				$table = $table->getData(true);
 				$table['new_count'] = Event::where('status', 'new')->count();

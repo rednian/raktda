@@ -1,4 +1,4 @@
-{
+
     "New": "جديد",
     "Pending": "تحتاج لمراجعة",
     "Cancelled": "ملغية",
@@ -445,8 +445,6 @@
     "Street" : "الشارع",
     "Thank you for your feedback" : "شكراً لمعلوماتكم االقيمة",
     "This Artist Already Exists in the permit":"هذا الفنان موجود في التصريح",
-    "Time End" : "بداية الوقت",
-    "Time Start":"نهاية الوقت",
-    "to date": "إلى تاريخ",
+}
     
 

@@ -95,7 +95,7 @@ class ArtistPermitController extends Controller
         ->where('permit_id', '<', $permit->permit_id)
         ->count();
 
-    	 return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no, 'revision'=>$revision]);
+    	 return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no, 'rivision'=>$revision]);
     }
 
     public function applicationDetails(Request $request, Permit $permit)
@@ -667,7 +667,7 @@ class ArtistPermitController extends Controller
       })
       ->addColumn('rivision', function($permit){
         $permits = Permit::has('artist')->where('permit_status', '!=', 'draft')
-        // ->where('permit_id', '!=', $permit->permit_id)
+        ->where('permit_id', '!=', $permit->permit_id)
         ->where('permit_id', '<=', $permit->permit_id)
         ->where('permit_reference_id', $permit->permit_reference_id)
         ->whereNotNull('permit_reference_id')
@@ -760,7 +760,7 @@ class ArtistPermitController extends Controller
             return permitStatus($status);
           }
       })
-	    ->rawColumns(['last_action_taken','request_type', 'reference_number', 'company_type', 'permit_status', 'action' , 'applied_date', 'approved_by', 'updated_at'])
+	    ->rawColumns(['last_action_taken','request_type', 'reference_number', 'company_type', 'permit_status', 'action' , 'applied_date', 'approved_by', 'updated_at', 'event'])
 	    ->make(true);
        $table = $table->getData(true);
        $table['new_count'] = Permit::has('artist')->where('permit_status', 'new')->count();

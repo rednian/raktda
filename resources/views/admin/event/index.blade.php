@@ -137,16 +137,24 @@
           <div class="col-8">
             <form class="form-row">
               <div class="col-4">
-                <div class="input-group input-group-sm">
-                  <div class="kt-input-icon kt-input-icon--right">
-                    <input autocomplete="off" type="text" class="form-control form-control-sm"
-                      aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}"
-                      id="new-applied-date">
-                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                      <span><i class="la la-calendar"></i></span>
-                    </span>
-                  </div>
-                </div>
+                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="new-event-type-id" onchange="newEventTable.draw()">
+                  <option selected disabled>{{__('EVENT TYPE')}}</option>
+                  @if ($types = App\EventType::whereHas('event', function($q){$q->where('status', 'new');})->get())
+                    @foreach ($types as $type)
+                      <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
+                    @endforeach
+                  @endif
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="new-event-type-sub-id" onchange="newEventTable.draw()">
+                  <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->where('status', 'new');})->get())
+                    @foreach ($subs as $sub)
+                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                    @endforeach
+                  @endif
+                </select>
               </div>
               <div class="col-3">
                 <select name="" id="new-applicant-type"
@@ -156,14 +164,7 @@
                   <option value="government">{{ __('Government') }}</option>
                 </select>
               </div>
-              {{-- <div class="col-3">
-                <select name="" id="new-permit-status"
-                  class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
-                  <option disabled selected>{{ __('STATUS') }}</option>
-                  <option value="new">{{ __('New') }}</option>
-                  <option value="amended">{{ __('Amended') }}</option>
-                </select>
-              </div> --}}
+            
               <div class="col-2">
                 <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">{{ __('RESET') }}</button>
               </div>
@@ -181,17 +182,27 @@
             </div>
           </div>
         </section>
-        <table class="table table-hover table-borderless table- border table-striped" id="new-event-request">
+        <table class="table table-hover table-borderless table-sm border table-striped" id="new-event-request">
           <thead>
             <tr>
-              <th></th>
               <th>{{ __('REFERENCE NO.') }}</th>
-              <th>{{ __('ESTABLISHMENT NAME') }}</th>
-              <th>{{ __('PERMIT DURATION') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
-              <th>{{ __('APPLICATION TYPE') }}</th>
+              <th>{{ __('EVENT TYPE') }}</th>
+              <th>{{ __('ESTABLISHMENT NAME') }}</th>
+              <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('SUBMITTED DATE') }}</th>
-              {{-- <th>{{ __('STATUS') }}</th> --}}
+              <th>{{ __('APPLICATION TYPE') }}</th>
+              <th>{{ __('EVENT START DATE') }}</th>
+              <th>{{ __('EVENT END DATE') }}</th>
+              <th>{{ __('TIME') }}</th>
+              <th>{{ __('OWNER NAME') }}</th>
+              <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR ? ') }}</th>
+              <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
+              <th>{{ __('HAS ARTIST ? ') }}</th>
+              <th>{{ __('EVENT DETAILS') }}</th>
+              <th>{{ __('VENUE') }}</th>
+              <th>{{ __('EVENT LOCATION') }}</th>
             </tr>
           </thead>
         </table>
@@ -213,20 +224,28 @@
           <div class="col-8">
             <form class="form-row">
               <div class="col-4">
-                <div class="input-group input-group-sm">
-                  <div class="kt-input-icon kt-input-icon--right">
-                    <input autocomplete="off" type="text" class="form-control form-control-sm"
-                      aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}"
-                      id="pending-applied-date">
-                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                      <span><i class="la la-calendar"></i></span>
-                    </span>
-                  </div>
-                </div>
+                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="pending-event-type-id" onchange="pendingEventTable.draw()">
+                  <option selected disabled>{{__('EVENT TYPE')}}</option>
+                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['amended', 'checked']);})->get())
+                    @foreach ($types as $type)
+                      <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
+                    @endforeach
+                  @endif
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="pending-event-type-sub-id" onchange="pendingEventTable.draw()">
+                  <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['amended', 'checked']);})->get())
+                    @foreach ($subs as $sub)
+                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                    @endforeach
+                  @endif
+                </select>
               </div>
               <div class="col-3">
                 <select name="" id="pending-applicant-type"
-                  class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()">
+                  class="form-control-sm form-control custom-select custom-select-sm " onchange="pendingEventTable.draw()">
                   <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
                   <option value="corporate">{{ __('Corporate') }}</option>
                   <option value="government">{{ __('Government') }}</option>
@@ -249,17 +268,28 @@
             </div>
           </div>
         </section>
-        <table class="table table-hover table-borderless table- border table-striped" id="pending-event-request">
+        <table class="table table-hover table-borderless table-sm border table-striped" id="pending-event-request">
           <thead>
             <tr>
               <th>{{ __('REFERENCE NO.') }}</th>
-              <th>{{ __('ESTABLISHMENT NAME') }}</th>
-              <th>{{ __('PERMIT DURATION') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
-              <th>{{ __('APPLIED DATE') }}</th>
-              <th>{{ __('APPLICATION TYPE') }}</th>
-              {{-- <th>PERMIT START</th> --}}
+              <th>{{ __('EVENT TYPE') }}</th>
+              <th>{{ __('ESTABLISHMENT NAME') }}</th>
+              <th>{{ __('EVENT DURATION') }}</th>
+              <th>{{ __('SUBMITTED DATE') }}</th>
               <th>{{ __('STATUS') }}</th>
+              <th>{{ __('APPLICATION TYPE') }}</th>
+              <th>{{ __('EVENT START DATE') }}</th>
+              <th>{{ __('EVENT END DATE') }}</th>
+              <th>{{ __('TIME') }}</th>
+              <th>{{ __('OWNER NAME') }}</th>
+              <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR ? ') }}</th>
+              <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
+              <th>{{ __('HAS ARTIST ? ') }}</th>
+              <th>{{ __('EVENT DETAILS') }}</th>
+              <th>{{ __('VENUE') }}</th>
+              <th>{{ __('EVENT LOCATION') }}</th>
             </tr>
           </thead>
         </table>
@@ -281,16 +311,24 @@
           <div class="col-8">
             <form class="form-row">
               <div class="col-4">
-                <div class="input-group input-group-sm">
-                  <div class="kt-input-icon kt-input-icon--right">
-                    <input autocomplete="off" type="text" class="form-control form-control-sm"
-                      aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}"
-                      id="processing-applied-date">
-                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                      <span><i class="la la-calendar"></i></span>
-                    </span>
-                  </div>
-                </div>
+                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="processing-event-type-id" onchange="eventProcessingTable.draw()">
+                  <option selected disabled>{{__('EVENT TYPE')}}</option>
+                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['approved-unpaid', 'processing', 'need approval', 'need modification']);})->get())
+                    @foreach ($types as $type)
+                      <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
+                    @endforeach
+                  @endif
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="processing-event-type-sub-id" onchange="eventProcessingTable.draw()">
+                  <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['approved-unpaid', 'processing', 'need approval', 'need modification']);})->get())
+                    @foreach ($subs as $sub)
+                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                    @endforeach
+                  @endif
+                </select>
               </div>
               <div class="col-3">
                 <select name="" id="processing-applicant-type"
@@ -299,15 +337,6 @@
                   <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
                   <option value="corporate">{{ __('corporate') }}</option>
                   <option value="government">{{ __('Government') }}</option>
-                </select>
-              </div>
-              <div class="col-3">
-                <select name="" id="processing-permit-status"
-                  class=" form-control form-control-sm custom-select-sm custom-select"
-                  onchange="eventProcessingTable.draw()">
-                  <option disabled selected>{{ __('STATUS') }}</option>
-                  <option value="approved-unpaid">{{ __('Approved-unpaid') }}</option>
-                  <option value="need-approval">{{ __('Need Approval') }}</option>
                 </select>
               </div>
               <div class="col-2">
@@ -328,17 +357,27 @@
             </div>
           </div>
         </section>
-        <table class="table table-head-noborder table-borderless table-striped border" id="new-event-processing">
+        <table class="table table-head-noborder table-borderless table-sm table-striped border" id="new-event-processing">
           <thead>
             <tr>
               <th>{{ __('REFERENCE NO.') }}</th>
-              <th>{{ __('ESTABLISHMENT NAME') }}</th>
-              <th>{{ __('PERMIT DURATION') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
-              <th>{{ __('APPLIED DATE') }}</th>
-              <th>{{ __('APPLICATION TYPE') }}</th>
-              {{-- <th>PERMIT START</th> --}}
+              <th>{{ __('EVENT TYPE') }}</th>
+              <th>{{ __('ESTABLISHMENT NAME') }}</th>
+              <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('STATUS') }}</th>
+              <th>{{ __('APPLICATION TYPE') }}</th>
+              <th>{{ __('EVENT START DATE') }}</th>
+              <th>{{ __('EVENT END DATE') }}</th>
+              <th>{{ __('TIME') }}</th>
+              <th>{{ __('OWNER NAME') }}</th>
+              <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR ? ') }}</th>
+              <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
+              <th>{{ __('HAS ARTIST ? ') }}</th>
+              <th>{{ __('EVENT DETAILS') }}</th>
+              <th>{{ __('VENUE') }}</th>
+              <th>{{ __('EVENT LOCATION') }}</th>
             </tr>
           </thead>
         </table>
@@ -359,141 +398,172 @@
           </div>
           <div class="col-8">
             <form class="form-row">
-              {{-- <div class="col-4">
-                         <div class="input-group input-group-sm">
-                             <div class="kt-input-icon kt-input-icon--right">
-                               <input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('PERMIT DURATION DATE') }}"
-              id="active-applied-date" >
+              <div class="col-4">
+                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="active-event-type-id" onchange="eventActiveTable.draw()">
+                  <option selected disabled>{{__('EVENT TYPE')}}</option>
+                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['active']);})->get())
+                    @foreach ($types as $type)
+                      <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
+                    @endforeach
+                  @endif
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="active-event-type-sub-id" onchange="eventActiveTable.draw()">
+                  <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['active']);})->get())
+                    @foreach ($subs as $sub)
+                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                    @endforeach
+                  @endif
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm "
+                  onchange="eventActiveTable.draw()">
+                  <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
+                  <option value="corporate">{{ __('Corporate') }}</option>
+                  <option value="government">{{ __('Government') }}</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">{{ __('RESET') }}</button>
+              </div>
+          </form>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group form-group-sm">
+            <div class="kt-input-icon kt-input-icon--right">
+              <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..."
+                id="search-active-request">
               <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                <span><i class="la la-calendar"></i></span>
+                <span><i class="la la-search"></i></span>
               </span>
+            </div>
           </div>
-      </div>
-    </div> --}}
-    <div class="col-3">
-      <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm "
-        onchange="eventActiveTable.draw()">
-        <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
-        <option value="corporate">{{ __('Corporate') }}</option>
-        <option value="government">{{ __('Government') }}</option>
-      </select>
-    </div>
-    {{-- <div class="col-3">
-                       <select  name="" id="active-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventActiveTable.draw()">
-                         <option disabled selected>STATUS</option>
-                         <option value="active">active</option>
-                         <option value="amended">Amended</option>
-                       </select>
-                     </div> --}}
-    <div class="col-4">
-      <button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">{{ __('RESET') }}</button>
-    </div>
-    </form>
-  </div>
-  <div class="col-md-3">
-    <div class="form-group form-group-sm">
-      <div class="kt-input-icon kt-input-icon--right">
-        <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..."
-          id="search-active-request">
-        <span class="kt-input-icon__icon kt-input-icon__icon--right">
-          <span><i class="la la-search"></i></span>
-        </span>
-      </div>
-    </div>
-  </div>
-</section>
-<table class="table table-head-noborder table-borderless border table-striped" id="new-event-active">
-  <thead>
-    <tr>
-      <th></th>
-      <th>{{ __('REFERENCE NO.') }}</th>
-      <th>{{ __('APPLICATION TYPE') }}</th>
-      <th>{{ __('ESTABLISHMENT NAME') }}</th>
-      <th>{{ __('EVENT TYPE') }}</th>
-      <th>{{ __('EVENT NAME') }}</th>
-      <th>{{ __('PERMIT DURATION') }}</th>
-      {{-- th>{{ __('SHOW TO USER CALENDAR') }}</th>
-      <th>{{ __('SHOW TO WEBSITE CALENDAR') }}</th> --}}
-    </tr>
-  </thead>
-</table>
-</div>
-<div class="tab-pane fade" id="archive-permit" role="tabpanel">
-  <section class="form-row">
-    <div class="col-1">
-      <div>
-        <select name="length_change" id="archive-length-change"
-          class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
-          <option value='10'>10</option>
-          <option value='25'>25</option>
-          <option value='50'>50</option>
-          <option value='75'>75</option>
-          <option value='100'>100</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-8">
-      <form class="form-row">
-        {{-- <div class="col-4">
-                         <div class="input-group input-group-sm">
-                             <div class="kt-input-icon kt-input-icon--right">
-                               <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="APPLIED DATE" id="archive-applied-date" >
-                               <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                 <span><i class="la la-calendar"></i></span>
-                               </span>
-                             </div>
-                       </div>
-                     </div> --}}
-        <div class="col-3">
-          <select name="" id="archive-applicant-type"
-            class="form-control-sm form-control custom-select custom-select-sm " onchange="eventArchiveTable.draw()">
-            <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
-            <option value="corporate">{{ __('Corporate') }}</option>
-            <option value="government">{{ __('Government') }}</option>
-          </select>
         </div>
-        <div class="col-3">
-          <select name="" id="archive-permit-status"
-            class=" form-control form-control-sm custom-select-sm custom-select" onchange="eventArchiveTable.draw()">
-            <option disabled selected>{{ __('STATUS') }}</option>
-            <option value="cancelled">{{ __('Cancelled') }}</option>
-            <option value="expired">{{ __('Expired') }}</option>
-            <option value="rejected">{{ __('Rejected') }}</option>
-          </select>
-        </div>
-        <div class="col-3">
-          <button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">{{ __('RESET') }}</button>
-        </div>
-      </form>
+      </section>
+      <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
+        <thead>
+          <tr>
+            <th>{{ __('REFERENCE NO.') }}</th>
+            <th>{{ __('EVENT NAME') }}</th>
+            <th>{{ __('EVENT TYPE') }}</th>
+            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+            <th>{{ __('EVENT DURATION') }}</th>
+            <th>{{ __('APPLICATION TYPE') }}</th>
+            <th>{{ __('APPROVED DATE') }}</th>
+            <th>{{ __('APPROVED BY') }}</th>
+            <th>{{ __('PERMIT NUMBER') }}</th>
+            <th>{{ __('EVENT START DATE') }}</th>
+            <th>{{ __('EVENT END DATE') }}</th>
+            <th>{{ __('TIME') }}</th>
+            <th>{{ __('OWNER NAME') }}</th>
+            <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
+            <th>{{ __('HAS LIQUOR ? ') }}</th>
+            <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
+            <th>{{ __('HAS ARTIST ? ') }}</th>
+            <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
+            <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
+            <th>{{ __('EVENT DETAILS') }}</th>
+            <th>{{ __('VENUE') }}</th>
+            <th>{{ __('EVENT LOCATION') }}</th>
+          </tr>
+        </thead>
+      </table>
     </div>
-    <div class="col-md-3">
-      <div class="form-group form-group-sm">
-        <div class="kt-input-icon kt-input-icon--right">
-          <input autocomplete="off" type="search" class="form-control form-control-sm"
-            placeholder="{{ __('Search') }}..." id="search-archive-request">
-          <span class="kt-input-icon__icon kt-input-icon__icon--right">
-            <span><i class="la la-search"></i></span>
-          </span>
+    <div class="tab-pane fade" id="archive-permit" role="tabpanel">
+      <section class="form-row">
+        <div class="col-1">
+          <div>
+            <select name="length_change" id="archive-length-change"
+              class="form-control-sm form-control custom-select custom-select-sm">
+              <option value='10'>10</option>
+              <option value='25'>25</option>
+              <option value='50'>50</option>
+              <option value='75'>75</option>
+              <option value='100'>100</option>
+            </select>
+          </div>
         </div>
-      </div>
+        <div class="col-8">
+          <form class="form-row">
+            <div class="col-4">
+              <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="archieve-event-type-id" onchange="eventArchiveTable.draw()">
+                <option selected disabled>{{__('EVENT TYPE')}}</option>
+                @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['cancelled', 'rejected', 'expired']);})->get())
+                  @foreach ($types as $type)
+                    <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
+                  @endforeach
+                @endif
+              </select>
+            </div>
+            <div class="col-3">
+              <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="archieve-event-type-sub-id" onchange="eventArchiveTable.draw()">
+                <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['cancelled', 'rejected', 'expired']);})->get())
+                  @foreach ($subs as $sub)
+                    <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                  @endforeach
+                @endif
+              </select>
+            </div>
+            <div class="col-3">
+              <select name="" id="archive-applicant-type"
+                class="form-control-sm form-control custom-select custom-select-sm " onchange="eventArchiveTable.draw()">
+                <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
+                <option value="corporate">{{ __('Corporate') }}</option>
+                <option value="government">{{ __('Government') }}</option>
+              </select>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">{{ __('RESET') }}</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group form-group-sm">
+            <div class="kt-input-icon kt-input-icon--right">
+              <input autocomplete="off" type="search" class="form-control form-control-sm"
+                placeholder="{{ __('Search') }}..." id="search-archive-request">
+              <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                <span><i class="la la-search"></i></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <table class="table table-head-noborder table-hover table-sm table-striped table-borderless border"
+        id="new-event-archive">
+        <thead>
+          <tr>
+            <th>{{ __('REFERENCE NO.') }}</th>
+            <th>{{ __('EVENT NAME') }}</th>
+            <th>{{ __('EVENT TYPE') }}</th>
+            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+            <th>{{ __('EVENT DURATION') }}</th>
+            <th>{{ __('APPLICATION TYPE') }}</th>
+            <th>{{ __('STATUS') }}</th>
+            <th>{{ __('APPROVED DATE') }}</th>
+            <th>{{ __('APPROVED BY') }}</th>
+            <th>{{ __('PERMIT NUMBER') }}</th>
+            <th>{{ __('EVENT START DATE') }}</th>
+            <th>{{ __('EVENT END DATE') }}</th>
+            <th>{{ __('TIME') }}</th>
+            <th>{{ __('OWNER NAME') }}</th>
+            <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
+            <th>{{ __('HAS LIQUOR ? ') }}</th>
+            <th>{{ __('HAS TRUCK ? ') }}</th>
+            <th>{{ __('HAS ARTIST ? ') }}</th>
+            <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
+            <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
+            <th>{{ __('EVENT DETAILS') }}</th>
+            <th>{{ __('VENUE') }}</th>
+            <th>{{ __('EVENT LOCATION') }}</th>
+          </tr>
+        </thead>
+      </table>
     </div>
-  </section>
-  <table class="table table-head-noborder table-hover table-sm table-striped table-borderless border"
-    id="new-event-archive">
-    <thead>
-      <tr>
-        <th>{{ __('REFERENCE NO.') }}</th>
-        <th>{{ __('ESTABLISHMENT NAME') }}</th>
-        <th>{{ __('PERMIT DURATION') }}</th>
-        <th>{{ __('EVENT NAME') }}</th>
-        {{-- <th>APPLIED DATE</th> --}}
-        <th>{{ __('APPLICATION TYPE') }}</th>
-        <th>{{ __('STATUS') }}</th>
-        <th>{{ __('ACTION') }}</th>
-      </tr>
-    </thead>
-  </table>
-</div>
 <div class="tab-pane fade" id="calendar" role="tabpanel">
   <section class="row">
     <div class="col-md-3">
@@ -591,15 +661,12 @@
        }
      };
      $(document).ready(function () {
-
-
-
       $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){ $('.nav-tabs a[href="#new-request"]').tab('show');  });
-      $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });4
 
-       newEvent();
-       setInterval(function(){ newEvent(); pendingEvent();},100000);
-       calendar();
+      newEvent();
+      calendar();
+      setInterval(function(){ newEvent(); pendingEvent();},100000);
 
        var hash = window.location.hash;
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
@@ -613,6 +680,7 @@
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var current_tab = $(e.target).attr('href');
 
+        if('#new-request' == current_tab ){ newEvent(); }
         if('#pending-request' == current_tab ){ pendingEvent(); }
         if('#processing-permit' == current_tab ){ processing(); }
         if('#active-permit' == current_tab ){ active(); }
@@ -621,65 +689,7 @@
       
      });
 
-     function calendar(){
-      var todayDate = moment().startOf('day');
-          var YM = todayDate.format('YYYY-MM');
-          var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
-          var TODAY = todayDate.format('YYYY-MM-DD');
-          var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
-          var calendarEl = document.getElementById('event-calendar');
-
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-              plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-              isRTL: KTUtil.isRTL(),
-              @if(Auth::user()->LanguageId != 1)
-                locale: 'ar',
-                @endif
-              header: {
-                  left: 'prev,next today',
-                  center: 'title',
-                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
-              },
-              height: 'auto',
-              allDaySlot: true,
-              contentHeight: 450,
-              aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
-              // nowIndicator: true,
-              // now: TODAY + 'T09:25:00', // just for demo
-              views: {
-                  dayGridMonth: { buttonText: '{{ __('Month') }}' },
-                  timeGridWeek: { buttonText: '{{ __('Week') }}' },
-                  timeGridDay: { buttonText: '{{ __('Day') }}' },
-                  listDay: { buttonText: '{{ __('Day List') }}' },
-                  listWeek: { buttonText: '{{ __('Week List') }}' }
-              },
-              defaultView: 'dayGridMonth',
-              // defaultDate: TODAY,
-              editable: true,
-              eventLimit: true, // allow "more" link when too many events
-              navLinks: true,
-              events: {
-                url: '{{ route('admin.event.calendar') }}',
-                textColor : '#ffffff',
-              },
-              eventRender: function(info) {
-                  var element = $(info.el);
-                  if (info.event.extendedProps && info.event.extendedProps.description) {
-                      if (element.hasClass('fc-day-grid-event')) {
-                          element.data('content', info.event.extendedProps.description);
-                          element.data('placement', 'top');
-                          KTApp.initPopover(element);
-                      } else if (element.hasClass('fc-time-grid-event')) {
-                          element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
-                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                      }
-                  }
-              }
-          });
-          calendar.render();
-     }
-
+    
      function archive() {
      eventArchiveTable = $('table#new-event-archive').DataTable({
       dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
@@ -691,29 +701,46 @@
             d.type = $('select#archive-applicant-type').val();
             var status = $('select#archive-permit-status').val();
             d.status = status != null ? [status] : ['expired', 'rejected', 'cancelled'];
+            d.event_type_id = $('#archieve-event-type-id').val();
+            d.event_type_sub_id = $('#archieve-event-type-sub-id').val();
           }
         },
         columnDefs: [
-          {targets: [0,4,5,6], className: 'no-wrap'}
+          {targets: '_all', className: 'no-wrap'}
         ],
+        order: [[11, 'desc']],
+        responsive: true,
         columns: [
           {data: 'reference_number'},
+          {data: 'event_name'},
+          {data: 'event_type'},
           {data: 'establishment_name'},
           {data: 'duration'},
-          {data: 'event_name'},
           {data: 'type'},
-          // {data: 'start'},
           {data: 'status'},
-          {data: 'action'},
+          {data: 'approved_date'},
+          {data: 'approved_by'},
+          {data: 'permit_number'},
+          {data: 'start'},
+          {data: 'end'},
+          {data: 'time'},
+          {data: 'owner'},
+          {data: 'expected_audience'},
+          {data: 'has_liquor'},
+          {data: 'has_truck'},
+          {data: 'has_artist'},
+          {data: 'show'},
+          {data: 'website'},
+          {data: 'description'},
+          {data: 'venue'},
+          {data: 'location'},
         ],
         createdRow: function (row, data, index) {
           $('button', row).click(function(e){
             e.stopPropagation();
           });
           $('.btn-download', row).click(function(e) { e.stopPropagation(); });
-          $(row).click(function () {
-            location.href = data.show_link;
-          });
+          $('td:not(:first-child)',row).click(function () { location.href = data.show_link; });
         },
         initComplete: function(){
            $('[data-toggle="tooltip"]').tooltip();
@@ -732,34 +759,6 @@
      }
 
      function active() {
-      var start = moment().subtract(29, 'days');
-      var end = moment();
-      var new_selected_date = null;
-
-      $('input#active-applied-date').daterangepicker({
-        autoUpdateInput: false,
-        buttonClasses: 'btn',
-        applyClass: 'btn-warning btn-sm btn-elevate',
-        cancelClass: 'btn-secondary btn-sm btn-elevate',
-        startDate: start,
-        endDate: end,
-       locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
-        // maxDate: new Date,
-        ranges: {
-          '{{ __('Today') }}': [moment(), moment()],
-          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
-          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
-          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
-          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-      }, function (start, end, label) {
-        $('input#active-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
-      }).on('apply.daterangepicker', function(e, d){
-       new_selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
-       eventActiveTable.draw();
-      });
-
 
       eventActiveTable = $('table#new-event-active').DataTable({
         dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
@@ -771,23 +770,38 @@
           data: function (d) {
             d.type = $('select#active-applicant-type').val();
             d.status = ['active'];
+            d.event_type_id = $('#active-event-type-id').val();
+            d.event_type_sub_id = $('#active-event-type-sub-id').val();
           }
         },
         columnDefs: [
           {targets: '_all', className: 'no-wrap'}
         ],
+        responsive:true,
+        order: [[6, 'desc']],
         columns: [
-          {render: function(){ return null}},
           {data: 'reference_number'},
-          // {data: 'action'},
-          {data: 'type'},
-          {data: 'establishment_name'},
-          {data: 'event_type'},
           {data: 'event_name'},
+          {data: 'event_type'},
+          {data: 'establishment_name'},
           {data: 'duration'},
-          // {data: 'permit_number'},
-          // {data: 'show'},
-          // {data: 'website'},
+          {data: 'type'},
+          {data: 'approved_date'},
+          {data: 'approved_by'},
+          {data: 'permit_number'},
+          {data: 'start'},
+          {data: 'end'},
+          {data: 'time'},
+          {data: 'owner'},
+          {data: 'expected_audience'},
+          {data: 'has_liquor'},
+          {data: 'has_truck'},
+          {data: 'has_artist'},
+          {data: 'show'},
+          {data: 'website'},
+          {data: 'description'},
+          {data: 'venue'},
+          {data: 'location'},
         ],
         createdRow: function (row, data, index) {
           $('td:not(:first-child)',row).click(function(e){ location.href = data.show_link; });
@@ -900,25 +914,36 @@
             var status = $('select#processing-permit-status').val();
              d.status = status != null ? [status] : ['approved-unpaid', 'processing', 'need approval', 'need modification'];
              d.type = $('select#processing-applicant-type').val();
+             d.event_type_id = $('#processing-event-type-id').val();
+             d.event_type_sub_id = $('#processing-event-type-sub-id').val();
           }
         },
         columnDefs: [
           {targets: '_all', className: 'no-wrap'}
         ],
+        responsive: true,
         columns: [
           {data: 'reference_number'},
+          {data: 'event_name'},
+          {data: 'event_type'},
           {data: 'establishment_name'},
           {data: 'duration'},
-          {data: 'event_name'},
-          {data: 'created_at'},
+          {data: 'status'},
           {data: 'type'},
-          // {data: 'start'},
-          {data: 'status'}
+          {data: 'start'},
+          {data: 'end'},
+          {data: 'time'},
+          {data: 'owner'},
+          {data: 'expected_audience'},
+          {data: 'has_liquor'},
+          {data: 'has_truck'},
+          {data: 'has_artist'},
+          {data: 'description'},
+          {data: 'venue'},
+          {data: 'location'},
         ],
         createdRow: function (row, data, index) {
-          $(row).click(function () {
-            location.href = data.show_link;
-          });
+          $('td:not(:first-child)', row).click(function () { location.href = data.show_link; });
         }
       });
 
@@ -934,33 +959,6 @@
      }
 
      function pendingEvent() {
-      var start = moment().subtract(29, 'days');
-      var end = moment();
-      var selected_date = null;
-
-      $('input#pending-applied-date').daterangepicker({
-        autoUpdateInput: false,
-        buttonClasses: 'btn',
-        applyClass: 'btn-warning btn-sm btn-elevate',
-        cancelClass: 'btn-secondary btn-sm btn-elevate',
-        startDate: start,
-        endDate: end,
-        maxDate: new Date,
-        locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
-        ranges: {
-          '{{ __('Today') }}': [moment(), moment()],
-          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
-          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
-          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
-          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-      }, function (start, end, label) {
-        $('input#pending-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
-      }).on('apply.daterangepicker', function(e, d){
-       selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
-       pendingEventTable.draw();
-      });
 
        pendingEventTable = $('table#pending-event-request').DataTable({
         dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
@@ -974,26 +972,38 @@
              d.status = ['amended', 'checked'];
              d.type = $('select#pending-applicant-type').val();
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
+             d.event_type_id = $('#pending-event-type-id').val();
+             d.event_type_sub_id = $('#pending-event-type-sub-id').val();
            }
          },
 
          columnDefs: [
            {targets: '_all', className: 'no-wrap'}
          ],
+         responsive: true,
          columns: [
            {data: 'reference_number'},
+           {data: 'event_name'},
+           {data: 'event_type'},
            {data: 'establishment_name'},
            {data: 'duration'},
-           {data: 'event_name'},
-           {data: 'created_at'},
+           {data: 'updated_at'},
+           {data: 'status'},
            {data: 'type'},
-           // {data: 'start'},
-           {data: 'status'}
+           {data: 'start'},
+           {data: 'end'},
+           {data: 'time'},
+           {data: 'owner'},
+           {data: 'expected_audience'},
+           {data: 'has_liquor'},
+           {data: 'has_truck'},
+           {data: 'has_artist'},
+           {data: 'description'},
+           {data: 'venue'},
+           {data: 'location'},
          ],
          createdRow: function (row, data, index) {
-           $(row).click(function () {
-             location.href = data.application_link;
-           });
+           $('td:not(:first-child)', row).click(function () { location.href = data.application_link; });
          }
        });
 
@@ -1010,39 +1020,12 @@
 
 
      function newEvent() {
-      var start = moment().subtract(29, 'days');
-      var end = moment();
-      var selected_date = null;
-
-      $('input#new-applied-date').daterangepicker({
-        autoUpdateInput: false,
-        buttonClasses: 'btn',
-        applyClass: 'btn-warning btn-sm btn-elevate',
-        cancelClass: 'btn-secondary btn-sm btn-elevate',
-        startDate: start,
-        endDate: end,
-        maxDate: new Date,
-        locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
-        ranges: {
-          '{{ __('Today') }}': [moment(), moment()],
-          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
-          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
-          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
-          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-      }, function (start, end, label) {
-        $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
-      }).on('apply.daterangepicker', function(e, d){
-       selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
-       newEventTable.draw();
-      });
 
        newEventTable = $('table#new-event-request').DataTable({
         dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-        'order': [[0, 'desc']],
+        'order': [[5, 'desc']],
          ajax: {
            url: '{{ route('admin.event.datatable') }}',
            data: function (d) {
@@ -1051,6 +1034,8 @@
              d.status =  ['new'];
              d.type = $('select#new-applicant-type').val();
              d.date = $('#new-applied-date').val()  ? selected_date : null;
+             d.event_type_id = $('#new-event-type-id').val();
+             d.event_type_sub_id = $('#new-event-type-sub-id').val();
            }
          },
          responsive: true,
@@ -1058,20 +1043,27 @@
            {targets: '_all', className: 'no-wrap'}
          ],
          columns: [
-           {render: function(){ return null; }},
            {data: 'reference_number'},
            {data: 'event_name'},
            {data: 'event_type'},
            {data: 'establishment_name'},
            {data: 'duration'},
-           // {data: 'type'},
-           {data: 'created_at'},
-           // {data: 'status'}
+           {data: 'updated_at'},
+           {data: 'type'},
+           {data: 'start'},
+           {data: 'end'},
+           {data: 'time'},
+           {data: 'owner'},
+           {data: 'expected_audience'},
+           {data: 'has_liquor'},
+           {data: 'has_truck'},
+           {data: 'has_artist'},
+           {data: 'description'},
+           {data: 'venue'},
+           {data: 'location'},
          ],
          createdRow: function (row, data, index) {
-           $(row).click(function () {
-             location.href = data.application_link;
-           });
+           $('td:not(:first-child)', row).click(function () { location.href = data.application_link; });
          },
           initComplete: function(setting, json){
             $('#new-count').html(json.new_count);
@@ -1091,5 +1083,65 @@
        var search = $.fn.dataTable.util.throttle(function(v){ newEventTable.search(v).draw(); });
        $('input#search-new-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
      }
+
+     function calendar(){
+      var todayDate = moment().startOf('day');
+          var YM = todayDate.format('YYYY-MM');
+          var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+          var TODAY = todayDate.format('YYYY-MM-DD');
+          var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+          var calendarEl = document.getElementById('event-calendar');
+
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+              plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+              isRTL: KTUtil.isRTL(),
+              @if(Auth::user()->LanguageId != 1)
+                locale: 'ar',
+                @endif
+              header: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
+              },
+              height: 'auto',
+              allDaySlot: true,
+              contentHeight: 450,
+              aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
+              // nowIndicator: true,
+              // now: TODAY + 'T09:25:00', // just for demo
+              views: {
+                  dayGridMonth: { buttonText: '{{ __('Month') }}' },
+                  timeGridWeek: { buttonText: '{{ __('Week') }}' },
+                  timeGridDay: { buttonText: '{{ __('Day') }}' },
+                  listDay: { buttonText: '{{ __('Day List') }}' },
+                  listWeek: { buttonText: '{{ __('Week List') }}' }
+              },
+              defaultView: 'dayGridMonth',
+              // defaultDate: TODAY,
+              editable: true,
+              eventLimit: true, // allow "more" link when too many events
+              navLinks: true,
+              events: {
+                url: '{{ route('admin.event.calendar') }}',
+                textColor : '#ffffff',
+              },
+              eventRender: function(info) {
+                  var element = $(info.el);
+                  if (info.event.extendedProps && info.event.extendedProps.description) {
+                      if (element.hasClass('fc-day-grid-event')) {
+                          element.data('content', info.event.extendedProps.description);
+                          element.data('placement', 'top');
+                          KTApp.initPopover(element);
+                      } else if (element.hasClass('fc-time-grid-event')) {
+                          element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                      } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                          element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                      }
+                  }
+              }
+          });
+          calendar.render();
+     }
+
 </script>
 @endsection
