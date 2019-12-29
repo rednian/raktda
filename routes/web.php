@@ -177,11 +177,17 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/event_reports/application_type', 'Admin\EventReportController@application_type')
         ->name('admin.event_reports.application_type');
 
+    Route::get('artist_reports/event_reports/getEvent/{id}', 'Admin\EventReportController@getEvent')
+        ->name('admin.event_reports.getEvent');
+
     Route::post('/event_reports/status', 'Admin\EventReportController@status')
         ->name('admin.event_reports.status');
 
     Route::get('artist_reports/artist_permit_report/show/{id}', 'Admin\EventReportController@show')
         ->name('admin.event_reports.show');
+
+    Route::post('artist_reports/artist_permit_report/events', 'Admin\EventReportController@events')
+        ->name('admin.event_reports.events');
 
     Route::get('artist_reports/artist_permit_report/show/{id}', 'Admin\ReportController@artist_permit_report')
         ->name('admin.artist_permit_report.show');
@@ -192,6 +198,8 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
     Route::get('artist_reports/artist_permit_report/all_permit_report', 'Admin\ReportController@all_permit_report')
         ->name('admin.artist_permit_report.all_permit_report');
+
+
 
 
 
