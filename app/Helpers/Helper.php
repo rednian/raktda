@@ -5,6 +5,25 @@ function duration($start = null, $end = null){
     return $days  >= 31 ? Carbon\Carbon::parse($start)->diffInMonths($end).' Month': $days.' Days';
 }
 
+function type($name = null, $type = null){
+
+    $classname = ['dark', 'success', 'danger', 'warning', 'info', 'primary'];
+    
+    $first = explode(' ', $name);
+    $first = strtoupper(substr($first[0], 0, 1));
+
+    $html = '<div class="kt-user-card-v2">'; 
+    $html .= ' <div class="kt-user-card-v2__details">'; 
+    $html .= '  <span class="kt-user-card-v2__name">'.ucfirst($name).'</span>'; 
+    $html .= '  <span class="kt-user-card-v2__email kt-link">'.ucfirst($type).'</span>'; 
+    $html .= ' </div>'; 
+    $html .= '</div>'; 
+
+    return $html;
+
+}
+
+
 function profileName($name = null, $type = null){
 
     $classname = ['dark', 'success', 'danger', 'warning', 'info', 'primary'];
@@ -27,7 +46,7 @@ function profileName($name = null, $type = null){
 }
 
 function humanDate($date){
-    return $date-> diffForHumans();
+    return $date->diffForHumans();
 }
 
 function defaults($name = null, $role){

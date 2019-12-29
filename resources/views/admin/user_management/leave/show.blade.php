@@ -16,7 +16,7 @@
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ is_null($user->user_id) ? URL::signedRoute('user_management.index') . '#leave' : URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#leave' }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
-						 {{ __('BACK TO LIST') }}
+						 {{ __('BACK') }}
 					</a>
 					<button type="button" id="btnDeleteLeave" class="btn btn-sm btn-danger btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-times"></i>
@@ -159,14 +159,14 @@
         });
 
         $('#kt_select2_1, #kt_select2_1_validate').select2({
-            placeholder: "Select an employee"
+            placeholder: "{{ __('Select an employee') }}"
         });
 
         var validated_form = $('form#formAddLeave').validate();
 
         //DELETE LEAVE
         $('#btnDeleteLeave').click(function(){
-        	bootbox.confirm('Are you sure you want delete leave?', function(result){
+        	bootbox.confirm('{{ __('Are you sure you want delete?') }}', function(result){
         		if(result){
         			$('form#formDeleteLeave').trigger('submit');
         		}
@@ -188,8 +188,8 @@
 			var diff = endDate - startDate;
 			if(diff <= 0){
 				$.notify({
-			        title: 'Invalid Dates',
-			        message: 'Make sure that end date is larger than start date.',
+			        title: '{{ __('Invalid Dates') }}',
+			        message: '{{ __('Make sure that end date is larger than start date.') }}',
 			        type:'error',
 			    },{
 			        type:'error',

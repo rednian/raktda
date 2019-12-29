@@ -41,7 +41,7 @@
                    </a>
                </li>
                <li class="kt-menu__item">
-                   <a href="javascript:void(0)" class="kt-menu__link ">
+                   <a href="javascript:void(0)" class="kt-menu__link kt-hide">
                        <span class="kt-menu__link-text">{{ __('Classification') }}</span>
                    </a>
                </li>
@@ -58,7 +58,7 @@
                </li>
 
                @if(Auth::user()->roles()->whereIn('roles.role_id', [1,3,4])->exists())
-               <li class="kt-menu__item {{ Request::is('inspection*') ? 'kt-menu__item--active': '' }}">
+               <li class="kt-menu__item kt-hide {{ Request::is('inspection*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ URL::signedRoute('inspection.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Inspection') }}</span>
                    </a>

@@ -15,7 +15,7 @@
 				<div class="kt-portlet__head-toolbar">
 					<button type="button" id="btnSaveSettings" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">
 						 <i class="la la-check"></i>
-						 {{ __('Save Changes') }}
+						 {{ __('SAVE CHANGES') }}
 					</button>
 				</div>
 			</div>
@@ -24,10 +24,10 @@
 				
 				 <ul id="main-tab" class="nav nav-tabs  nav-tabs-line nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
 						<li class="nav-item">
-							 <a class="nav-link active" data-toggle="tab" href="#personal" role="tab">{{ __('Personal Information') }}</a>
+							 <a class="nav-link active" data-toggle="tab" href="#personal" role="tab">{{ __('Personal Details') }}</a>
 						</li>
 						<li class="nav-item">
-							 <a class="nav-link" data-toggle="tab" href="#credentials" role="tab">{{ __('Account & Password Settings') }}</a>
+							 <a class="nav-link" data-toggle="tab" href="#credentials" role="tab">{{ __('Account Settings') }}</a>
 						</li>
 				 </ul>
 				 <form action="{{ route('admin.settings.account.save') }}" id="formAccountSettings" method="POST">

@@ -3,36 +3,334 @@
 	 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border">
 			<div class="kt-portlet__head kt-portlet__head--sm">
 				 <div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Artist Permit') }}</h3>
+						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Artist Permit') }} - {{$permit->reference_number}} </h3>
 				 </div>
 				 <div class="kt-portlet__head-toolbar">
 						<a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
 							 <i class="la la-arrow-left"></i>
 							 {{ __('Back') }}
 						</a>
+            @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
 						<div class="dropdown dropdown-inline">
 							 <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="flaticon-more"></i>
 							 </button>
 							 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-									<a class="dropdown-item kt-font-trasnform-u" href="#">{{ __('Establishment Details') }}</a>
-									{{-- <div class="dropdown-divider"></div> --}}
-									{{-- <a class="dropdown-item" href="#"><i class="la la-cog"></i> Settings</a> --}}
+									<a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
+                  {{ __('Establishment Details') }}
+                </a>
 							 </div>
 						</div>
+            @endif
 				 </div>
 			</div>
 			<div class="kt-portlet__body kt-padding-t-5">
-        @if ($permit->event()->count() > 0)
-        <a href="{{ URL::signedRoute('admin.event.show', $permit->event->event_id) }}">
-          <div class="alert alert-outline-danger alert-bold kt-margin-t-10 kt-margin-b-10" role="alert">
-            <div class="alert-text">{{ __('This permit is connected to') }} <span class="text-success kt-font-bold kt-font-transform-u">{{ $permit->event->name_en }}</span> {{ __('event with reference number') }} <span class="kt-font-danger">{{ $permit->event->reference_number }}</span>
-              {{-- <span class="btn btn-maroon kt-font-transform-u btn-sm">Event Details <span class="la la-arrow-right"></span></span> --}}
+        <section class="row">
+          <div class="col-md-8">
+            <div class="kt-widget kt-widget--project-1">
+              <div class="kt-widget__body kt-padding-0">
+                <h6 class="kt-font-dark kt-font-bold kt-margin-b-15 kt-font-transform-u">{{ __('Permit Details') }}</h6>
+                <div class="kt-widget__stats kt-padding-l-0 kt-margin-t-5 kt-padding-b-5 border-top border-bottom">
+                  <div class="kt-widget__item">
+                    <span class="kt-widget__subtitel">{{__('Permit Start Date')}}</span>
+                    <div class="kt-widget__progress d-flex  align-items-center kt-margin-t-5">
+                      <span class="kt-widget__stat kt-padding-l-0">
+                     {{ $permit->issued_date->format('d-F-Y') }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="kt-widget__item">
+                    <span class="kt-widget__subtitel">{{__('Permit End Date')}}</span>
+                    <div class="kt-widget__progress d-flex  align-items-center kt-margin-t-5">
+                      <span class="kt-widget__stat kt-padding-l-0">
+                     {{ $permit->expired_date->format('d-F-Y') }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="kt-widget__item">
+                    <span class="kt-widget__subtitel">{{__('Permit Duration')}}</span>
+                    <div class="kt-widget__progress d-flex  align-items-center kt-margin-t-5">
+                      <span class="kt-widget__stat kt-padding-l-0">
+                      @php
+                        $date =Carbon\Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
+                        $date = $date !=  0 ? $date : 1;
+                        $day = $date > 1 ? ' Days': ' Day';
+                      @endphp
+                      {{$date.$day}}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="kt-widget__item">
+                    <span class="kt-widget__subtitel">{{__('Permit Term')}}</span>
+                    <div class="kt-widget__progress d-flex  align-items-center kt-margin-t-5">
+                      <span class="kt-widget__stat kt-padding-l-0">
+                     {{ __(ucfirst($permit->term).' Term Permit') }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                      <section class="kt-section kt-margin-t-5">
+                         <div class="kt-section__desc">
+                            
+                            <table class="table table-borderless table-sm">
+                               <tr>
+                                  <td width="25%">{{ __('Reference Number') }} :</td>
+                                  <td class="text-danger kt-font-bolder">{{ $permit->reference_number }}</td>
+                               </tr>
+                               <tr>
+                                  <td>{{ __('Request Type') }} :</td>
+                                  <td>{{ ucfirst($permit->request_type) }} Application</td>
+                               </tr>
+                               <tr>
+                                  <td>{{ __('Permit Status') }} :</td>
+                                  <td>
+                              <?php
+                              $status = $permit->permit_status;
+                              $class_name = 'warning';
+                              if (strtolower($permit->permit_status) == 'new') {
+                                $class_name = 'success';
+                              }
+                              if (strtolower($permit->permit_status) == 'processing' || strtolower($permit->permit_status) == 'modification request') {
+
+                                $class_name = 'warning';
+                              }
+                              if (strtolower($permit->permit_status) == 'pending from client') {
+                                $class_name = 'info';
+                              }
+                              if (strtolower($permit->permit_status) == 'new-update from client') {
+                                $class_name = 'info';
+                              }
+                              if (strtolower($permit->permit_status) == 'unprocessed') {
+                                $class_name = 'danger';
+                              }
+                              if (strtolower($permit->permit_status) == 'modification request') {
+                                $status = 'need modification';
+                              }
+                              ?>
+                                     <span
+                                         class="kt-badge kt-badge--inline kt-badge--{{$class_name}}">{{ ucwords($status) }}</span>
+                                  </td>
+                               </tr>
+                               @if ($permit->number)
+                                  <tr>
+                                     <td>Permit Number :</td>
+                                     <td>{{ $permit->permit_number ? $permit->permit_number : null   }}</td>
+                                  </tr>
+                               @endif
+                               <tr>
+                                  <td>{{ __('Work Location') }} :</td>
+                                  <td>{{ ucwords($permit->work_location) }}</td>
+                               </tr>
+                            </table>
+                         </div>
+                      </section>
+                {{-- <span class="kt-widget__text">
+                  I distinguish three main text objecttives.First, your objective could
+                  be merely to inform people.A second be to persuade people.
+                </span> --}}
+                <div class="kt-widget__content border-top kt-margin-t-15">
+                  <div class="kt-widget__details">
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Revision Number')}}</span>
+                    <span class="kt-widget__value">{{str_pad($permit->rivision_number, 3, 0, STR_PAD_LEFT)}}</span>
+                  </div>
+                  <div class="kt-widget__details">
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Connected to an Event ?')}}</span>
+                    <span class="kt-widget__value">
+                      @if ($permit->event()->exists())
+                        <a href="{{URL::signedRoute('admin.event.show', $permit->event->event_id)}}" class="btn btn-sm btn-secondary">{{__('YES')}}</a>
+                        @else
+                        {{__('NO')}}
+                      @endif
+                    </span>
+                  </div>
+                  <div class="kt-widget__details">
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Artist')}}</span>
+                    <div class="kt-badge kt-badge__pics">
+                      @if ($permit->artistPermit()->exists())
+                        @foreach ($permit->artistPermit as $number => $artist_permit)
+                          @if ($number < 6)
+                            <a href="{{ URL::signedRoute('admin.artist.show', $artist_permit->artist->artist_id) }}" class="kt-badge__pic" data-original-title="{{ ucwords($artist_permit->fullname) }}" data-toggle="kt-tooltip" data-skin="brand" data-placement="top">
+                              <img src="{{ asset('storage/'.$artist_permit->thumbnail) }}" alt="image">
+                            </a>
+                            @else
+                            <a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
+                              +{{$permit->artistPermit()->count() - ($number - 6) }}
+                            </a>
+                          @endif
+                        @endforeach
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                <hr>
+              </div>
+              
             </div>
           </div>
-          </a>
-        @endif
-				 <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
+          <div class="col-md-4">
+            <section class="kt-section border kt-padding-10 kt-margin-b-20">
+               <div class="kt-section__desc">
+                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10">{{ __('Establishment Details') }}</h6>
+                  <table class="table table-borderless table-sm table-display">
+                    <tbody>
+                      <tr>
+                         <td><span style="font-size: large;" class="flaticon-home"></span></td>
+                         <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucwords($permit->owner->company->name_en) : ucwords($permit->owner->company->name_ar) }}</td>
+                      </tr>
+                      <tr>
+                        <td><span style="font-size: large;" class="flaticon-email"></span></td>
+                        <td>{{$permit->owner->company->company_email}}</td>
+                      </tr>
+                      <tr>
+                        <td><span style="font-size: large;" class="la la-phone"></span></td>
+                       <td>{{$permit->owner->company->phone_number}}</td>
+                      </tr>
+                      <tr>
+                        <td><span style="font-size: large;" class="flaticon-placeholder-3"></span></td>
+                        @php
+                          $country = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->country->name_en) : ucfirst($permit->owner->company->country->name_ar);
+                          $area = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->area->area_en) : ucfirst($permit->owner->company->area->area_en);
+                          $emirate = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->emirate->name_en) : ucfirst($permit->owner->company->emirate->name_en);
+                          $address = ucfirst($permit->owner->company->address).' '.ucfirst($area).' '.ucfirst($emirate).' '.ucfirst($country);
+                        @endphp
+                        <td>{{$address}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10 kt-margin-t-20">{{ __('Contact Person Details') }}</h6>
+                  <table class="table table-borderless table-sm table-display">
+                    <tbody>
+                      <tr>
+                        <td class="no-wrap"><i style="font-size: large;" class="flaticon-profile-1"></i></td>
+                        <td>
+                          {{ Auth::user()->LanguageId == 1 ? ucwords($permit->company->contact->contact_name_en) : ucwords($permit->company->contact->contact_name_ar)  }}
+                        </td>
+                     </tr>
+                     <tr>
+                        <td><i style="font-size: large;" class="la la-suitcase"></i></td>
+                        <td>{{ Auth::user()->LanguageId == 1 ? ucwords($permit->company->contact->designation_en) : ucwords($permit->company->contact->designation_ar) }}</td>
+                     </tr>
+                     <tr>
+                        <td><i style="font-size: large;" class="la la-mobile-phone"></i></td>
+                        <td>{{ $permit->company->contact->mobile_number }}</td>
+                     </tr>
+                    </tbody>
+                  </table>
+               </div>
+            </section>
+          </div>
+        </section>
+        <section class="row">
+          <div class="col-md-12">
+            <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_1_tab_content" role="tab">
+                  {{__('ARTIST LIST')}}
+                  <span class="kt-badge kt-badge--outline kt-badge--info">{{$permit->artistPermit()->count()}}</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_2_tab_content" role="tab">
+                  {{__('CHECKED HISTORY')}}
+                  {{-- <span class="kt-badge kt-badge--outline kt-badge--info">{{$permit->comment()->o}}</span> --}}
+                </a>
+              </li>
+              @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content" role="tab">
+                  {{__('PERMIT HISTORY')}}
+                  <span class="kt-badge kt-badge--outline kt-badge--info">{{$rivision}}</span>
+                </a>
+              </li>
+              @endif
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="kt_portlet_base_demo_1_1_tab_content" role="tabpanel">
+                <?php  $is_artist_check = $permit->artistpermit()->where('artist_permit_status', 'unchecked')->exists(); ?>
+                <div id="action-alert" class="alert d-none alert-outline-danger fade show" role="alert">
+                  <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                  <div class="alert-text">
+                      {{ __('Please check each artist with the action status of unchecked before taking action!') }}
+                  </div>
+                </div>
+                <div id="action-alert-unselected" class="alert d-none alert-outline-danger fade show" role="alert">
+                  <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                  <div class="alert-text">{{ __('Please check atleast one checkbox to take action.') }}</div>
+                  <div class="alert-close"></div>
+                </div>
+                  <table class="table table-hover table-borderless table-striped border table-sm" id="artist-table">
+                    <thead>
+                      <tr>
+                         <th>{{ __('PERSON CODE') }}</th>
+                         <th>{{ __('ARTIST NAME') }}</th>
+                         <th>{{ __('AGE') }}</th>
+                         <th>{{ __('PROFESSION') }}</th>
+                         <th>{{ __('NATIONALITY') }}</th>
+                         <th>{{ __('STATUS') }}</th>
+                         <th>{{ __('ACTION') }}</th>
+                      </tr>
+                      </thead>
+                   </table>
+              </div>
+
+              <div class="tab-pane" id="kt_portlet_base_demo_1_2_tab_content" role="tabpanel">
+                <table class=" border table-striped table table-borderless table-hover table-sm" id="permit-comment-table">
+                  <thead>
+                    <tr>
+                      <th>{{ __('CHECKED BY') }}</th>
+                      <th>{{ __('REMARKS') }}</th>
+                      {{-- <th>{{ __('USER ROLE') }}</th> --}}
+                      <th>{{ __('CHECKED DATE') }}</th>
+                      <th>{{ __('ACTION TAKEN') }}</th>
+                    </tr>
+                  </thead>
+                  {{-- <tbody>
+                    @foreach($permit->comment()->doesntHave('artistPermitComment')->orderBy('created_at', 'desc')->get() as $comment)
+                    <tr>
+                        <td>{{ ucwords($comment->user->NameEn) }}</td>
+                        <td>
+                          {{ ucfirst($comment->comment) }}
+                          @if($comment->exempt_payment)
+                          <br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>
+                          @endif
+                        </td>
+                        <td>{{ $comment->role_id != 6 ? ucfirst($comment->role->NameEn) : (Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar) }}</td>
+                        <td>{{ $comment->checked_date }}</td>
+                        <td>{{ ucfirst($comment->action) }}</td>
+                    </tr>
+                    @endforeach
+                  </tbody> --}}
+                </table>
+              </div>
+
+               @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
+               <div class="tab-pane" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
+                 <table class="table table-striped table-borderless table-hover" id="table-permit-history">
+                   <thead>
+                     <tr>
+                       <th>{{ __('RIVISION NO.') }}</th>
+                       <th>{{ __('REFERENCE NO.') }}</th>
+                       <th>{{ __('PERMIT NO.') }}</th>
+                       <th>{{ __('NO. OF ARTIST') }}</th>
+                       <th>{{ __('PERMIT DURATION') }}</th>
+                       <th>{{ __('PERMIT START DATE') }}</th>
+                       <th>{{ __('PERMIT END DATE') }}</th>
+                       <th>{{ __('REQUEST TYPE') }}</th>
+                       <th>{{ __('STATUS') }}</th>
+                     </tr>
+                   </thead>
+                 </table>
+               </div>
+               @endif
+              
+            </div>
+          </div>
+        </section>
+        
+
+				 <div class="accordion accordion-solid accordion-toggle-plus kt-hide" id="accordionExample5">
 						<div class="card">
 							 <div class="card-header" id="headingOne5">
 									<div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#collapseOne5"
@@ -55,39 +353,13 @@
                 </div>
                 <div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
                   <div class="card-body">
-                    <table class=" border table-striped table table-borderless table-hover">
-                      <thead>
-                        <tr>
-                          <th>{{ __('CHECKED BY') }}</th>
-                          <th>{{ __('REMARKS') }}</th>
-                          <th>{{ __('USER ROLE') }}</th>
-                          <th>{{ __('CHECKED DATE') }}</th>
-                          <th>{{ __('ACTION TAKEN') }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @foreach($permit->comment()->doesntHave('artistPermitComment')->orderBy('created_at', 'desc')->get() as $comment)
-                        <tr>
-                            <td>{{ ucwords($comment->user->NameEn) }}</td>
-                            <td>
-                              {{ ucfirst($comment->comment) }}
-                              @if($comment->exempt_payment)
-                              <br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>
-                              @endif
-                            </td>
-                            <td>{{ $comment->role_id != 6 ? ucfirst($comment->role->NameEn) : (Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar) }}</td>
-                            <td>{{ $comment->checked_date }}</td>
-                            <td>{{ ucfirst($comment->action) }}</td>
-                        </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
+                    
                   </div>
                 </div>
               </div>
               @endif
             </div>
-            <section class="accordion accordion-solid accordion-toggle-plus kt-margin-t-15" id="accordion-permit-artist">
+            <section class="accordion accordion-solid accordion-toggle-plus kt-margin-t-15 kt-hide" id="accordion-permit-artist">
               <div class="card">
                 <div class="card-header" id="accordion-permit-artist-heading-one">
                   <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#accordion-permit-artist-collapse-one"
@@ -98,18 +370,8 @@
 							 <div id="accordion-permit-artist-collapse-one" class="collapse show" aria-labelledby="accordion-permit-artist-heading-one"
 										data-parent="#accordion-permit-artist">
 									<div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
-                    <?php  $is_artist_check = $permit->artistpermit()->where('artist_permit_status', 'unchecked')->exists(); ?>
-                    <div id="action-alert" class="alert d-none alert-outline-danger fade show" role="alert">
-                      <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                      <div class="alert-text">
-                          {{ __('Please check each artist with the action status of unchecked before taking action!') }}
-                      </div>
-                    </div>
-                    <div id="action-alert-unselected" class="alert d-none alert-outline-danger fade show" role="alert">
-                      <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                      <div class="alert-text">{{ __('Please check atleast one checkbox to take action.') }}</div>
-                      <div class="alert-close"></div>
-                    </div>
+                   
+                    
                     <table class="table table-hover table-borderless table-striped border table-sm" id="artist-table">
                       <thead>
                         <tr>
@@ -127,45 +389,40 @@
 							 </div>
 						</div>
 				 </section>
-				 <section class="accordion accordion-solid accordion-toggle-plus kt-margin-t-15" id="accordion-permit-history">
+         @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
+				 <section class="accordion accordion-solid accordion-toggle-plus kt-margin-t-15 kt-hide" id="accordion-permit-history">
           <div class="card">
             <div class="card-header" id="accordion-permit-history-heading-one">
               <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse" data-target="#accordion-permit-history-collapse-one"
 											 aria-expanded="true" aria-controls="accordion-permit-history-collapse-one">
                        <h6 class="kt-font-dark kt-font-transform-u kt-font-bolder">{{ __('PERMIT HISTORY') }}</h6>
+                       <span class="kt-badge kt-badge--outline kt-badge--info">{{$rivision}}</span>
               </div>
             </div>
             <div id="accordion-permit-history-collapse-one" class="collapse show" aria-labelledby="accordion-permit-history-heading-one"
 										data-parent="#accordion-permit-history">
                 <div class="card-body border kt-padding-r-15 kt-padding-l-15 kt-padding-t-10 kt-padding-b-10">
-                  <?php
-                  $permit_history = \App\Permit::whereNotIn('permit_status', ['cancelled', 'unprocessed', 'draft'])
-                  ->whereDate('created_at', '<', $permit->created_at)
-                  ->whereNotNull('permit_number')
-									->where('permit_number', $permit->number)
-									->get();
-                  ?>
-                  @if($permit_history->count() > 0)
                   <table class="table table-striped table-borderless table-hover" id="table-permit-history">
                     <thead>
                       <tr>
-                        <th>{{ __('Applied Date') }}</th>
-                        <th>{{ __('Issued Date') }}</th>
-                        <th>{{ __('Expired Date') }}</th>
-                        <th>{{ __('No. of Artist') }}</th>
-                        <th>{{ __('Request Type') }}</th>
-                        <th>{{ __('Permit Status') }}</th>
-                        <th>{{ __('Action') }}</th>
+                        <th>{{ __('RIVISION NO.') }}</th>
+                        <th>{{ __('REFERENCE NO.') }}</th>
+                        <th>{{ __('PERMIT NO.') }}</th>
+                        <th>{{ __('NO. OF ARTIST') }}</th>
+                        <th>{{ __('PERMIT DURATION') }}</th>
+                        <th>{{ __('PERMIT START DATE') }}</th>
+                        <th>{{ __('PERMIT END DATE') }}</th>
+                        <th>{{ __('REQUEST TYPE') }}</th>
+                        <th>{{ __('STATUS') }}</th>
                       </tr>
                     </thead>
                   </table>
-                  @else
-                    @empty {{ __('No data available in table') }} @endempty
-                  @endif
+             
                 </div>
               </div>
             </div>
           </section>
+          @endif
         </div>
         <?php
         $artist_number = $permit->artistpermit()->count();
@@ -182,11 +439,19 @@
 <script type="text/javascript">
   var artist = {};
   $(document).ready(function () {
-
-
+    // hasUrl();
     submitAction();
     artistTable();
     permitHistory();
+    permitComment();
+
+    // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    //   var current_tab = $(e.target).attr('href');
+
+    //   if('#kt_portlet_base_demo_1_1_tab_content' == current_tab ){  artistTable(); }
+    //   if('#kt_portlet_base_demo_1_2_tab_content' == current_tab ){ permitComment();   }
+    //   if('#kt_portlet_base_demo_1_3_tab_content' == current_tab ){  permitHistory(); }
+    // });
 
     //UPDATE LOCK EVERY 5 SECONDS
     var lockinterval = setInterval(updateLock, 60000);
@@ -254,27 +519,45 @@
 
   });
 
+  function permitComment(){
+    $('table#permit-comment-table').DataTable({
+      ajax: '{{ route('admin.permit.comment.datatable', $permit->permit_id) }}',
+      responsive: true,
+      columns:[
+      {data: 'name'},
+      {data: 'comment'},
+      {data: 'action'},
+      {data: 'created_at'},
+      ],
+      columnDefs:[
+      {targets:'_all', className: 'no-wrap'}
+      ],
+    });
+  }
+
   function permitHistory() {
     $('table#table-permit-history').DataTable({
       ajax: {
         url: '{{ route('admin.artist_permit.history', $permit->permit_id) }}'
       },
       columnDefs: [
-      {targets: [5, 6], className: 'no-wrap'}
+      {targets: '_all', className: 'no-wrap'}
       ],
+      responsive: true,
       columns: [
-         {data: 'applied_date'},
+         {data: 'rivision_number'},
+         {data: 'reference_number'},
+         {data: 'permit_number'},
+         {data: 'artist_number'},
+         {data: 'duration'},
          {data: 'issued_date'},
          {data: 'expired_date'},
-         {data: 'expired_date'},
-         {
-            render: function (row, type, full, meta) {
-               return full.request_type + ' Application';
-            }
-         },
-         {data: 'permit_status'},
-         {data: 'action'}
-      ]
+         {data: 'request_type'},
+         {data: 'permit_status'}
+      ],
+      createdRow: function(row, data, index){
+        $('td:not(:first-child)', row).click(function(){location.href = data.link;});
+      }
    });
   }
 
@@ -428,5 +711,16 @@
          }
       });
   }
+
+     function hasUrl(){
+     var hash = window.location.hash;
+     hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+     $('.nav-tabs a').click(function (e) {
+       $(this).tab('show');
+       var scrollmem = $('body').scrollTop();
+       window.location.hash = this.hash;
+       $('html,body').scrollTop(scrollmem);
+     });
+   }
 </script>
 @endsection

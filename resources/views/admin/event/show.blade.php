@@ -35,128 +35,157 @@
             {{ __('Download') }}</a>
           @endif
         </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="kt-portlet__body kt-padding-t-5">
+        <div class="kt-portlet__head-toolbar">
+            <a href="{{ URL::signedRoute('admin.event.index') }}#{{ $tab }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
+                 <i class="la la-arrow-left"></i>
+                 {{ __('BACK') }}
+            </a>
+            <div class="dropdown dropdown-inline">
+                 <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="flaticon-more"></i>
+                 </button>
+                 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
 
-    @if ($event->status == 'active')
-    <section class="row kt-margin-t-10">
-      <div class="col-md-12">
-        <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
-          <div class="card border">
-            <div class="card-header " id="headingOne6">
-              <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse"
-                data-target="#collapseOne6">
-                {{__('CANCEL EVENT')}}
-              </div>
+                  <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">
+                    {{ __('Establishment Detail') }}
+                  </a>
+                    @if ($event->status == 'active' || $event->status == 'expired')
+                        {{-- <div class="dropdown-divider"></div> --}}
+                        <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
+                    @endif
+                 </div>
             </div>
-            <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6">
-              <div class="card-body kt-padding-b-0">
-                <form action="{{ route('admin.event.cancel', $event->event_id) }}" method="post" class="form"
-                  id="frm-status">
-                  @csrf
-                  <div class="form-group row form-group-sm">
-                    <div class="col-md-6">
-                      <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
-                      <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3"
-                        autocomplete="off"></textarea>
-                    </div>
-                    <div class="col-md-6">
-                      <label for="">{{ __('Remarks (AR)') }}<span class="text-danger">*</span></label>
-                      <textarea required="" name="comment_ar" dir="rtl" maxlength="255"
-                        class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
+         </div>
+    </div>
+    <div class="kt-portlet__body kt-padding-t-5">
+      
+      @if ($event->status == 'active')
+        <section class="row kt-margin-t-10">
+          <div class="col-md-12">
+            <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
+                <div class="card border">
+                  <div class="card-header " id="headingOne6">
+                    <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6">
+                        {{__('CANCEL EVENT')}}
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <div class="col">
-                      <button class="btn btn-sm btn-maroon kt-transform-u" name="status"
-                        value="cancelled">{{ __('SUBMIT') }}</button>
+                  <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6" data-parent="#accordionExample6">
+                    <div class="card-body kt-padding-b-0">
+                      <form action="{{ route('admin.event.cancel', $event->event_id) }}" method="post" class="form" id="frm-status">
+                        @csrf
+                        <div class="form-group row form-group-sm">
+                          <div class="col-md-6">
+                            <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
+                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                          <div class="col-md-6">
+                            <label for="">{{ __('Remarks (AR)') }} <span class="text-danger">*</span></label>
+                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col">
+                            <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="cancelled">{{ __('SUBMIT') }}</button>
+                          </div>
+                        </div>
+                      </form>
+
                     </div>
                   </div>
                 </form>
               </div>
             </div>
           </div>
+        </section>
+      @endif
+      
+      {{-- EVENT APPROVAL BY INSPECTOR, MANAGER AND GOVERNMENT --}}
+      @if(Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+      @if($event->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
+      @php 
+        $action = $event->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first();
+      @endphp
+      <div class="alert alert-outline-danger fade show" role="alert" style="margin-bottom:0px">
+        <div class="alert-text">
+          <h6 class="alert-heading text-danger kt-font-transform-u">{{ __('Last Action Taken') }}</h6>
+          <table class="table table-hover table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>{{ __('Checked By') }}</th>
+                <th>{{ __('Checked Date') }}</th>
+                <th>{{ __('Remarks') }}</th>
+                <th class="text-right">{{ __('Action') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ $action->user->NameEn }}</td>
+                <td>{{ $action->updated_at }}</td>
+                <td>{{ $action->comment }}
+                    @if($action->exempt_payment)
+                      <br><span class="kt-badge kt-badge--warning kt-badge--inline">{{ __('Exempted for Payment') }}</span>
+                    @endif
+                </td>
+                <td class="text-right">{!! permitStatus($action->action) !!}</td>
+              </tr>
+            </tbody>
+          </table>
+           <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_4_4_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
+           </a>
         </div>
       </div>
-    </section>
-    @endif
-
-    {{-- EVENT APPROVAL BY INSPECTOR, MANAGER AND GOVERNMENT --}}
-    @if(Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
-    @if($event->comment()->where('action', '!=', 'pending')->where('role_id',
-    Auth::user()->roles()->first()->role_id)->latest()->first())
-    @php
-    $action = $event->comment()->where('action', '!=', 'pending')->where('role_id',
-    Auth::user()->roles()->first()->role_id)->latest()->first();
-    @endphp
-    <div class="alert alert-outline-danger fade show" role="alert" style="margin-bottom:0px">
-      <div class="alert-text">
-        <h6 class="alert-heading text-danger kt-font-transform-u">{{ __('Last Action Taken') }}</h6>
-        <table class="table table-hover table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>{{ __('Checked By') }}</th>
-              <th>{{ __('Checked Date') }}</th>
-              <th>{{ __('Remarks') }}</th>
-              <th class="text-right">{{ __('Action') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ $action->user->NameEn }}</td>
-              <td>{{ $action->updated_at }}</td>
-              <td>{{ $action->comment }}</td>
-              <td class="text-right">{!! permitStatus($action->action) !!}</td>
-            </tr>
-          </tbody>
-        </table>
-        <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_4_4_tab_content\']').tab('show');"
-          class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
-        </a>
-      </div>
-    </div>
-    @endif
-
-    @if($event->comment()->where('action', 'pending')->where('role_id',
-    Auth::user()->roles()->first()->role_id)->latest()->first())
-    <section class="row kt-margin-t-10">
-      <div class="col-md-12">
-        <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample7">
-          <div class="card border">
-            <div class="card-header " id="headingOne7">
-              <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse"
-                data-target="#collapseOne7">
-                {{__('TAKE ACTION')}}
-              </div>
-            </div>
-            <div id="collapseOne7" class="collapse show" aria-labelledby="headingOne7" data-parent="#accordionExample7">
-              <div class="card-body kt-padding-b-0">
-                <form action="{{ route('admin.event.savecomment', $event->event_id) }}" method="post" class="form"
-                  id="frm-savecomment">
-                  @csrf
-                  <div class="form-group row form-group-sm">
-                    <div class="col-md-6">
-                      <label for="">{{ __('Action') }} <span class="text-danger">*</span></label>
-                      <select required="" name="action" class="form-control form-control-sm">
-                        <option value=""></option>
-                        <option value="approved">{{ __('Approved') }}</option>
-                        <option value="rejected">{{ __('Rejected') }}</option>
-                      </select>
+      @endif
+      @if($event->comment()->where('action', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
+      <section class="row kt-margin-t-10">
+          <div class="col-md-12">
+            <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample7">
+                <div class="card border">
+                  <div class="card-header " id="headingOne7">
+                    <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne7">
+                        {{__('TAKE ACTION')}}
                     </div>
                   </div>
-                  <div class="form-group row form-group-sm">
-                    <div class="col-md-6">
-                      <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
-                      <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3"
-                        autocomplete="off"></textarea>
-                    </div>
-                    <div class="col-md-6">
-                      <label for="">{{ __('Remarks (AR)') }} <span class="text-danger">*</span></label>
-                      <textarea required="" name="comment_ar" dir="rtl" maxlength="255"
-                        class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
+                  <div id="collapseOne7" class="collapse show" aria-labelledby="headingOne7" data-parent="#accordionExample7">
+                    <div class="card-body kt-padding-b-0">
+                      <form action="{{ route('admin.event.savecomment', $event->event_id) }}" method="post" class="form" id="frm-savecomment">
+                        @csrf
+                        <div class="form-group row form-group-sm">
+                            <div class="col-md-6">
+                                <label for="">{{ __('Action') }} <span class="text-danger">*</span></label>
+                                <select required="" name="action" class="form-control form-control-sm">
+                                    <option value=""></option>
+                                    <option value="approved">{{ __('Approved') }}</option>
+                                    <option value="rejected">{{ __('Rejected') }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-group-sm">
+                          <div class="col-md-6">
+                            <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
+                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                          <div class="col-md-6">
+                            <label for="">{{ __('Remarks (AR)') }} <span class="text-danger">*</span></label>
+                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                          </div>
+                        </div>
+                        @if(Auth::user()->roles()->whereIn('roles.role_id', [5])->exists())
+                        <div class="form-group row form-group-sm">
+                            <div class="col-md-6">
+                                <label class="kt-checkbox kt-checkbox--default kt-font-dark">
+                                  <input name="bypass_payment" value="1" type="checkbox"> {{ __('Bypass the payment') }}
+                                  <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        @endif
+                        <div class="form-group row">
+                          <div class="col">
+                            <button type="button" id="btnCheckedPermit" class="btn btn-sm btn-maroon kt-transform-u">{{ __('SUBMIT') }}</button>
+                          </div>
+                        </div>
+                      </form>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -304,12 +333,36 @@
                       title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}"
                       class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small></h6>
 
-                  <hr class="kt-margin-b-0 kt-margin-t-0">
-                  <p>
-                    {{ucfirst($event->cancel_reason)}}
-                  </p>
-                </div>
-                @endif
+      <section class="row">
+        <div class="col-md-7">
+          <div class="form-group form-group-sm">
+            <label class="kt-font-dark kt-font-transform-u">{{__('Event Details')}}</label>
+            <textarea style="resize: both;" readonly rows="4" class="form-control">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}</textarea>
+          </div>
+        </div>
+        @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+        <div class="col-md-5">
+          <form class=" kt-padding-5 kt-margin-t-10">
+            <div class="form-group row form-group-sm">
+              <label class="col-10 col-form-label">{{ __('Show event to all registered company calendar') }}</label>
+              <div class="col-2">
+                <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                  <label class="kt-margin-b-0">
+                    <input type="checkbox" checked="checked" name="">
+                    <span></span>
+                  </label>
+                </span>
+              </div>
+            </div>
+            <div class="form-group row form-group-sm">
+              <label class="col-10 col-form-label">{{ __('Show event to public website calendar') }}</label>
+              <div class="col-2">
+                <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                  <label class="kt-margin-b-0">
+                    <input type="checkbox" checked="checked" name="">
+                    <span></span>
+                  </label>
+                </span>
               </div>
             </div>
             <div class="kt-widget__body kt-margin-t-5">
@@ -580,30 +633,32 @@
   </div>
 </div>
 
-<div class="modal fade" id="truck-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="title"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        </button>
-      </div>
-      <div class="modal-body">
-        <table class="table table-borderless table-hover table-striped  border" id="truck-requirement-table">
-          <thead>
-            <tr>
-              <th>{{ __('REQUIREMENT NAME') }}</th>
-              <th>{{ __('FILES') }}</th>
-              <th>{{ __('ISSUED DATE') }}</th>
-              <th>{{ __('EXPIRY DATE') }}</th>
-              <th>{{ __('ACTION') }}</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+
+<div class="modal fade" id="truck-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-borderless table-hover table-striped  border" id="truck-requirement-table">
+            <thead>
+              <tr>
+                 <th>{{ __('REQUIREMENT NAME') }}</th>
+                 <th>{{ __('FILES') }}</th>
+                 <th>{{ __('ISSUED DATE') }}</th>
+                 <th>{{ __('EXPIRY DATE') }}</th>
+                 <th>{{ __('ACTION') }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{ __('Close') }}</button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -614,12 +669,24 @@
   var document_table = {}; 
   var comment_table = {}; 
   $(document).ready(function(){
+    $('input[name=is_display_web]').change(function(){
+       var val = $(this).is(':checked') ? 1 : null;
+       bootbox.confirm('Are you sure you want to show the event to the public website calendar?', function(result){
+         if(result){
+           $.ajax({
+             url: '{{ route('admin.event.showweb', $event->event_id) }}',
+             data: {is_display_web: val }
+           }).done(function(response){
+           });
+         }
+       });
+    });
 
     $('input[name=is_display_all]').change(function(){
       var el = $(this);
       if($(this).is(':checked')){
        var val = el.is(':checked') ? 1 : null;
-       bootbox.confirm('Are you sure you want to show the event to display in registered user\'s calendar?', function(result){
+       bootbox.confirm('Are you sure you want to show the event to registered user\'s calendar?', function(result){
          if(result){
            $.ajax({
              url: '{{ route('admin.event.showall', $event->event_id) }}',

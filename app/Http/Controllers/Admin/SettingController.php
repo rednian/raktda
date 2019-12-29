@@ -31,7 +31,6 @@ class SettingController extends Controller
 	public function excelTojson(Request $request){
 
 		Excel::load(storage_path() . '/app/public/translations2.xlsx', function($reader){
-
 		    // Getting all results
 		    $arr = array();
 		    $reader->each(function($sheet) use($arr){
@@ -42,8 +41,6 @@ class SettingController extends Controller
 		    	if($value != ''){
 		    		echo '"'.$key . '":"' . $value . '",<br>';
 		    	}
-
-		    	
 		    	
 		    	// dd($sheet['english']);
 			    // // // Loop through all rows
@@ -52,11 +49,7 @@ class SettingController extends Controller
 			    // // 	dd($row->arabic);
 			    // // });
 			});
-		    
-			
-
 		});
-
 		
 	}
 }

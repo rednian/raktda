@@ -238,7 +238,6 @@
                   <table class="table table-hover table-borderless table- border table-striped" id="company-table">
                     <thead>
                         <tr>
-                            <th></th>
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('PHONE NUMBER') }}</th>
@@ -340,7 +339,6 @@
            {targets: '_all', className:'no-wrap'}
         ],
         columns:[
-        {render: function(){ return null; }},
         {data: 'reference_number'},
         {data: 'name'},
         {data: 'phone_number'},
