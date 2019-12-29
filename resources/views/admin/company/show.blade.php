@@ -355,13 +355,143 @@
             </div>
         </section>
          
-                                                        
     </div>
+
+
+
+    <section class="row">
+      <div class="col-lg-12">
+        <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-2x" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#event-tab" role="tab">
+              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+              {{__('EVENT PERMITS')}}
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->event()->count()}}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#artist-permit-tab" role="tab">
+              {{__('ARTIST PERMIT')}}
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->permit()->count()}}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#artist-tab" role="tab">
+              {{__('ARTIST LIST')}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#requirement-tab" role="tab">
+              {{__('UPLOADED REQUIREMENTS')}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#action-history" role="tab">
+              {{__('ACTION HISTORY')}}
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->comment()->count()}}</span>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="event-tab" role="tabpanel">
+            <table class="table table-borderless table-striped table-hover border table-sm" id="event-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>{{__('EVENT NAME')}}</th>
+                  <th>{{__('REFERENCE NO.')}}</th>
+                  <th>{{__('PERMIT NO.')}}</th>
+                  <th>{{__('EVENT DURATION')}}</th>
+                  <th>{{__('APPLICATION TYPE')}}</th>
+                  <th>{{__('STATUS')}}</th>
+                  <th>{{__('VENUE')}}</th>
+                  <th>{{__('LOCATION')}}</th>
+                  <th>{{__('START')}}</th>
+                  <th>{{__('END')}}</th>
+                  <th>{{__('TIME')}}</th>
+                  <th>{{__('Food Truck')}}</th>
+                  <th>{{__('HAS LIQUOR')}}</th>
+                  <th>{{__('NUMBER OF ARTIST')}}</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="tab-pane" id="artist-permit-tab" role="tabpanel">
+            <table class="table table-borderless table-striped table-hover border" id="artist-permit-table">
+              <thead>
+                <tr>
+                  {{-- <th></th> --}}
+                  <th>{{__('REFERENCE NO.')}}</th>
+                  <th>{{__('DURATION')}}</th>
+                  <th>{{__('REQUEST TYPE')}}</th>
+                  <th>{{__('PERMIT NO.')}}</th>
+                  <th>{{__('NUMBER OF ARTIST')}}</th>
+                  <th>{{__('STATUS')}}</th>
+                  <th>{{__('WORK LOCATION')}}</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="tab-pane" id="artist-tab" role="tabpanel">
+            <table class="table table-borderless table-striped table-hover border table-sm" id="artist-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>{{__('ARTIST NAME')}}</th>
+                  <th>{{__('PERSON CODE.')}}</th>
+                  <th>{{__('NATIONALITY')}}</th>
+                  <th>{{__('MOBILE NUMBER')}}</th>
+                  <th>{{__('EMAIL')}}</th>
+                  <th>{{__('STATUS')}}</th>
+                  <th>{{__('BIRTHDATE')}}</th>
+                  <th>{{__('AGE')}}</th>
+                  <th>{{__('RELIGION')}}</th>
+                  <th>{{__('VISA TYPE')}}</th>
+                  <th>{{__('VISA NUMBER')}}</th>
+                  <th>{{__('VISA EXPIRY')}}</th>
+                  <th>{{__('PASSPORT NUMBER')}}</th>
+                  <th>{{__('PASSPORT EXPIRY')}}</th>
+                  <th>{{__('IDETIFICATION NUMBER')}}</th>
+                  <th>{{__('ADDRESS')}}</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="tab-pane" id="requirement-tab" role="tabpanel">
+            <table class="table table-borderless table-striped table-hover border" id="requirement-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>{{__('REQUIREMENT NAME')}}</th>
+                  <th>{{__('ISSUED DATE')}}</th>
+                  <th>{{__('EXPIRED DATE')}}</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="tab-pane" id="action-history" role="tabpanel">
+            <table class="table table-borderless table-striped table-hover table-sm border" id="action-table">
+              <thead>
+                <tr>
+                  <th>{{__('NAME')}}</th>
+                  <th>{{__('REMARKS')}}</th>
+                  <th>{{__('ACTION')}}</th>
+                  <th>{{__('DATE')}}</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  </div>
 </div>
 @stop
 @section('script')
 <script type="text/javascript">
-    var event = {};
+  var event = {};
     $(document).ready(function(){
       $('form#frm-status').validate();
         hasUrl();

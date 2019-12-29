@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="false">
+                    <a class="nav-link " data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="false">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                 <polygon points="0 0 24 0 24 24 0 24"></polygon>
@@ -168,7 +168,7 @@
                                                        </section>
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
-                                                               <label >Establishment Email <span class="text-danger">*</span></label>
+                                                           <label >{{__('Establishment Email')}}<span class="text-danger">*</span></label>
                                                                <input name="company_email" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->company_email}}">
                                                            </div>
                                                            <div class="col-md-6">
@@ -391,37 +391,57 @@
                 </div>
                 
                 <div class="tab-pane" id="kt_user_edit_tab_2" role="tabpanel">
-                    <div class="kt-form kt-form--label-right kt-hide">
-                        <div class="kt-form__body">
+                    <div class="kt-form kt-form--label-right">
+                        <div class="kt-form__body col-sm-12 col-md-10">
                             <div class="kt-section kt-section--first">
-                                <div class="kt-section__body">
-                                    <div class="row">
+                            <form action="{{route('company.updateUser', $company->company_id )}}" id="userdetails_form" method="POST" novalidate>
+                                @csrf
+                                <div class="kt-section__body mt-5">
+                                    {{-- <div class="row">
                                         <label class="col-xl-3"></label>
                                         <div class="col-lg-9 col-xl-6">
                                             <h3 class="kt-section__title kt-section__title-sm">Account:</h3>
                                         </div>
+                                    </div> --}}
+                                    @php
+                                        $user = Auth::user();
+                                    @endphp
+                                    <div class="form-group  row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">{{__('Name')}}</label>
+                                       <div class="row col-lg-9 col-xl-6 m-auto">
+                                        <input type="text" class="col-xl-5 col-lg-5 form-control form-control-sm" name="acccount_name_en" id="acccount_name_en" value="{{$user->NameEn}}" />
+                                       <label class="col-xl-2 col-lg-2 col-form-label">{{__('Name (AR)')}}</label>
+                                        <input type="text" class="col-xl-5 col-lg-5 form-control form-control-sm" name="acccount_name_ar" id="acccount_name_ar" dir="rtl" value="{{$user->NameAr}}" />
+                                       </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Username</label>
+                                    <label class="col-xl-3 col-lg-3 col-form-label">{{__('Username')}}</label>
                                         <div class="col-lg-9 col-xl-6">
-                                            <div class="kt-spinner kt-spinner--sm kt-spinner--success kt-spinner--right kt-spinner--input">
-                                                <input class="form-control" type="text" value="nick84">
-                                            </div>
+                                            <input class="form-control form-control-sm" id="account_username"   name="account_username" type="text"  value="{{$user->username}}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Email Address</label>
+                                    <label class="col-xl-3 col-lg-3 col-form-label">{{__('Email Address')}}</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text"><i class="la la-at"></i></span></div>
-                                                <input type="text" class="form-control" value="nick.watson@loop.com" placeholder="Email" aria-describedby="basic-addon1">
+                                                <input type="text" class="form-control form-control-sm" name="account_email" id="account_email" value="{{$user->email}}" placeholder="Email" aria-describedby="basic-addon1">
                                             </div>
-                                            <span class="form-text text-muted">Email will not be publicly displayed. <a href="#" class="kt-link">Learn more</a>.</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">{{__('Mobile Number')}}</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i class="la la-mobile"></i></span></div>
+                                                <input type="text" class="form-control form-control-sm" value="{{$user->mobile_number}}" name="account_mobile" id="account_mobile" placeholder="Mobile Number">
+                                            </div>
                                         </div>
                                     </div>
                                     
                                     
-                                    <div class="form-group form-group-last row">
+                                    {{-- <div class="form-group form-group-last row">
                                         <label class="col-xl-3 col-lg-3 col-form-label">Communication</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <div class="kt-checkbox-inline">
@@ -439,63 +459,75 @@
                                                 </label>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="kt-separator kt-separator--border-dashed kt-separator--portlet-fit kt-separator--space-lg"></div>
-
-                            <div class="kt-section kt-section--first">
-                                <div class="kt-section__body">
-                                    <div class="row">
-                                        <label class="col-xl-3"></label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <h3 class="kt-section__title kt-section__title-sm">Security:</h3>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Login verification</label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <button type="button" class="btn btn-label-brand btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Setup login verification</button>
-                                            <span class="form-text text-muted">
-                                            After you log in, you will be asked for additional information to confirm your identity and protect your account from being compromised. 
-                                            <a href="#" class="kt-link">Learn more</a>.
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Password reset verification</label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <div class="kt-checkbox-single">
-                                                <label class="kt-checkbox">
-                                                    <input type="checkbox"> Require personal information to reset your password.
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <span class="form-text text-muted">
-                                            For extra security, this requires you to confirm your email or phone number when you reset your password.
-                                            <a href="#" class="kt-link">Learn more</a>.
-                                        </span>
-                                        </div>
-                                    </div>
+                                    </div> --}}
+                 
                                     <div class="form-group row kt-margin-t-10 kt-margin-b-10">
                                         <label class="col-xl-3 col-lg-3 col-form-label"></label>
                                         <div class="col-lg-9 col-xl-6">
-                                            <button type="button" class="btn btn-label-danger btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Deactivate your account ?</button>
+                                        <button type="button" data-target="#changePasswordModal" data-toggle="modal" class="btn btn-label-danger btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">{{__('Change your Password ?')}}</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+
+                            <div>
+                            <button class="btn btn-sm btn--yellow pull-right">{{__('Save Changes')}}</button>
+                            </div>
+                        </form>
                 </div>
-                
-                
+
 
                 
             </div>
+            
     </div>
 </div>
+
+
+{{-- change password modal --}}
+
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Change Password')}} ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body container">
+            <form action="{{route('company.changePassword', $company->company_id )}}" id="passwordChangeform" method="POST" novalidate>
+                @csrf
+                <div class="row kt-margin-b-2" >
+                    <label for="" class="col-md-4 col-form-label">{{__('Old Password')}}</label>
+                    <div class="form-group form-group-sm col-md-6">
+                        <input type="text" class="form-control form-control-sm " id="old_password" name="old_password" >
+                    </div>
+                </div>
+                <div class="row kt-margin-b-2" >
+                    <label for="" class="col-md-4 col-form-label">{{__('New Password')}}</label>
+                    <div class="form-group form-group-sm col-md-6">
+                        <input type="text" class="form-control form-control-sm" id="new_password" name="new_password" >
+                    </div>
+                </div>
+                <div class="row kt-margin-b-2" >
+                    <label for="" class="col-md-4 col-form-label">{{__('Confirm Password')}}</label>
+                    <div class="form-group form-group-sm col-md-6">
+                    <input type="text" class="form-control form-control-sm" id="confirm_password" name="confirm_password" >
+                    </div>
+                </div>
+            <input type="submit" value="{{__('Change')}}" onclick="changePassword()"
+                    class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+
+{{-- change password modal --}}
+
+
 @endsection
 @section('script')
 <script src="{{ asset('assets/vendors/custom/jquery.filer/js/jquery.filer.js') }}"></script>
@@ -677,9 +709,112 @@
     }
 
 
+   $('#userdetails_form').validate({
+        rules:{
+            acccount_name_en: 'required',
+            account_username: {
+                required: true,
+                minlength: 5,
+                remote: {
+                    url: '{{route('company.account_exists')}}',
+                    type: 'post',
+                    data: { username: function(){
+                        return $('#account_username').val();
+                    }}
+                }
+            },
+            account_email: {
+                required: true,
+                email: true,
+                remote: {
+                    url: '{{route('company.account_exists')}}',
+                    type: 'post',
+                    data: {email: function(){
+                        return $('#account_email').val();
+                    }}
+                }
+            },
+            account_mobile: {
+                required: true,
+                remote: {
+                    url: '{{route('company.account_exists')}}',
+                    type: 'post',
+                    data: {mobile_number: function(){
+                        return $('#account_mobile').val();
+                    }},
+                }
+            }
+        },
+        messages: {
+            acccount_name_en: 'Please fill in the name',
+            account_username: {
+                required: 'Please fill in the username',
+                minlength: 'Minimum 5 characters required',
+                remote: 'This Username already exists'
+            },
+            account_email: {
+                required: 'Please fill in the Email',
+                email: 'Please Enter a valid Email',
+                remote: 'This Email already exists'
+            },
+            account_mobile: {
+                required: 'Please fill in the mobile',
+                remote: 'This Mobile Number already exists'
+            }
+        }
+    });
 
 
+    $('#passwordChangeform').validate({
+        rules: {
+            old_password: {
+                required: true,
+                remote: {
+                    url: '{{route('company.account_exists')}}',
+                    type: 'post',
+                    data: {old_password: function(){
+                        return $('#old_password').val();
+                    }},
+                    delay: 1000
+                }
+            },
+            new_password: {
+                required: true,
+                minlength: 8 ,
+                notEqual: "#account_username",
+                pwcheck: true,
+            },
+            confirm_password: {
+                required: true,
+                equalTo: "#new_password"
+            }
+        },
+        messages: {
+            old_password: {
+                required: 'Please fill in the old password',
+                remote: 'Password is wrong'
+            },
+            new_password: {
+                required: 'Please fill in the new password',
+                minlength: 'Minimum 8 characters required',
+                pwcheck: 'At Least one lowercase letter and one digit'
+            }, 
+            confirm_password: {
+                required: 'Please fill in the confirm password',
+                equalTo: 'New password and confirm password should be same',
+            }
+        }
+    })
 
+    $.validator.addMethod("pwcheck", function(value) {
+        return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+            && /[a-z]/.test(value) // has a lowercase letter
+            && /\d/.test(value) // has a digit
+    });
+
+    $.validator.addMethod("notEqual", function(value, element, param) {
+        return this.optional(element) || value != param;
+        }, "Should not be the same as username");
 
     function datePicker(){
       var arrows;

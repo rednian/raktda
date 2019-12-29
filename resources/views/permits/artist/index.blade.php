@@ -46,8 +46,6 @@
                 </ul>
             </div>
         </section>
-
-
         <div class="tab-content">
             <div class="tab-pane active" id="applied" role="tabpanel">
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">

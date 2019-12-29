@@ -784,7 +784,7 @@
 															</div>
 															<div class="row form-group form-group-sm">
 																<div class="col-md-12">
-																	<label for="">{{__('Additional Location Information')}}</label>
+																	<label for="">{{__('Additional Location Informationrmation')}}</label>
 																	<textarea rows="2" class="form-control form-control-sm">{{ucfirst($event->additional_location_info)}}</textarea>
 																</div>
 															</div>

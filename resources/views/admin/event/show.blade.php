@@ -1,17 +1,41 @@
 @extends('layouts.admin.admin-app')
 @section('style')
 <style>
-  .table-display td{
-    padding: 0 0.3rem; 
+  .table-display td {
+    padding: 0 0.3rem;
   }
 </style>
 @endsection
 @section('content')
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
-    <div class="kt-portlet__head kt-portlet__head--sm">
-        <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->name_en) : ucfirst($event->name_ar) }} - {{ __('DETAILS') }}</h3>
+  <div class="kt-portlet__head kt-portlet__head--sm">
+    <div class="kt-portlet__head-label">
+      <h3 class="kt-portlet__head-title kt-font-dark">
+        {{ Auth::user()->LanguageId == 1 ? ucfirst($event->name_en) : ucfirst($event->name_ar) }} - {{ __('DETAILS') }}
+      </h3>
+    </div>
+    <div class="kt-portlet__head-toolbar">
+      <a href="{{ URL::signedRoute('admin.event.index') }}#{{ $tab }}"
+        class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
+        <i class="la la-arrow-left"></i>
+        {{ __('BACK') }}
+      </a>
+      <div class="dropdown dropdown-inline">
+        <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class="flaticon-more"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
+          <a target="_blank" class="dropdown-item kt-font-trasnform-u"
+            href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">{{ __('Establishment Detail') }}</a>
+          @if ($event->status == 'active' || $event->status == 'expired')
+          {{-- <div class="dropdown-divider"></div> --}}
+          <a target="_blank" class="dropdown-item kt-font-trasnform-u"
+            href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i>
+            {{ __('Download') }}</a>
+          @endif
         </div>
+
         <div class="kt-portlet__head-toolbar">
             <a href="{{ URL::signedRoute('admin.event.index') }}#{{ $tab }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
                  <i class="la la-arrow-left"></i>
@@ -66,10 +90,12 @@
                           </div>
                         </div>
                       </form>
+
                     </div>
                   </div>
-                </div>
+                </form>
               </div>
+            </div>
           </div>
         </section>
       @endif
@@ -162,246 +188,150 @@
                       </form>
                     </div>
                   </div>
-                </div>
+                  <div class="form-group row">
+                    <div class="col">
+                      <button type="button" id="btnCheckedPermit"
+                        class="btn btn-sm btn-maroon kt-transform-u">{{ __('SUBMIT') }}</button>
+                    </div>
+                  </div>
+                </form>
               </div>
+            </div>
           </div>
-      </section>
-      @endif
-      @endif
-      {{-- @include('admin.event.includes.existing-notification') --}}
-      <section class="row kt-margin-t-10">
-        <div class="col-md-7">
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Owner')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->owner_name) : $event->owner_name_ar }}</p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type')}} </span>: 
-            {{Auth::user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
-          </p>
+        </div>
+      </div>
+    </section>
+    @endif
+    @endif
+    {{-- @include('admin.event.includes.existing-notification') --}}
+    <section class="row kt-margin-t-10">
+      <div class="col-md-7">
+        <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}} </span>:
+          {{Auth::user()->LanguageId == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
+        <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Owner')}} </span>:
+          {{Auth::user()->LanguageId == 1 ?  ucfirst($event->owner_name) : $event->owner_name_ar }}</p>
+        <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type')}} </span>:
+          {{Auth::user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
+        </p>
 
-          <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-20">{{__('Start Date')}}</span>: 
-            {{ date('d-F-Y', strtotime($event->issued_date)) }}
-          </p>
-          <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-25">{{__('End Date')}}</span>: 
-            {{ date('d-F-Y', strtotime($event->expired_date)) }}
-          </p>
-          <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-25">{{__('Event Duration')}}</span>: 
-            @php
-              $date = Carbon\Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
-              $day = $date > 1 ? ' Days' :' Day';
-            @endphp
-            {{ $date.$day }}
-          </p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-50">{{__('Time')}}</span>:  {{ $event->time_start }} -- {{ $event->time_end }}</p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-40">{{__('Venue')}}</span>: 
-            {{  Auth::user()->LanguageId == 1 ? ucfirst($event->venue_en) :  $event->venue_ar }}
-          </p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-30">{{__('Address')}}</span>: {{ $event->full_address }}</p>
-          <hr class="">
-          <section class="kt-widget kt-widget--user-profile-3">
-            <div class="kt-widget__bottom kt-margin-0" style="border:none;">
-              <div class="kt-widget__item kt-padding-t-5">
-                <div class="kt-widget__icon">
-                  <i class="flaticon-truck"></i>
-                </div>
-                <div class="kt-widget__details">
-                  <span class="kt-widget__title">{{__('FOOD TRUCK')}}</span>
-                  <span class="kt-widget__value">{{$event->truck()->count()}}</span>
-                </div>
+        <p class="kt-margin-b-0 kt-font-dark">
+          <span class="kt-font-bold kt-margin-r-20">{{__('Start Date')}}</span>:
+          {{ date('d-F-Y', strtotime($event->issued_date)) }}
+        </p>
+        <p class="kt-margin-b-0 kt-font-dark">
+          <span class="kt-font-bold kt-margin-r-25">{{__('End Date')}}</span>:
+          {{ date('d-F-Y', strtotime($event->expired_date)) }}
+        </p>
+        <p class="kt-margin-b-0 kt-font-dark">
+          <span class="kt-font-bold kt-margin-r-25">{{__('Event Duration')}}</span>:
+          @php
+          $date = Carbon\Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
+          $day = $date > 1 ? ' Days' :' Day';
+          @endphp
+          {{ $date.$day }}
+        </p>
+        <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-50">{{__('Time')}}</span>:
+          {{ $event->time_start }} -- {{ $event->time_end }}</p>
+        <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-40">{{__('Venue')}}</span>:
+          {{  Auth::user()->LanguageId == 1 ? ucfirst($event->venue_en) :  $event->venue_ar }}
+        </p>
+        <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-30">{{__('Address')}}</span>:
+          {{ $event->full_address }}</p>
+        <hr class="">
+        <section class="kt-widget kt-widget--user-profile-3">
+          <div class="kt-widget__bottom kt-margin-0" style="border:none;">
+            <div class="kt-widget__item kt-padding-t-5">
+              <div class="kt-widget__icon">
+                <i class="flaticon-truck"></i>
               </div>
-              <div class="kt-widget__item  kt-padding-t-5">
-                <div class="kt-widget__icon">
-                  <i class="la la-glass"></i>
-                </div>
-                <div class="kt-widget__details">
-                  <span class="kt-widget__title">{{__('HAS LIQUOR')}}</span>
-                  <a href="#" class="kt-widget__value">{{$event->liquor()->count() > 0 ? 'YES' : 'NO'}}</a>
-                </div>
+              <div class="kt-widget__details">
+                <span class="kt-widget__title">{{__('Food Truck')}}</span>
+                <span class="kt-widget__value">{{$event->truck()->count()}}</span>
               </div>
-              <div class="kt-widget__item kt-padding-t-5">
-                <div class="kt-widget__icon">
-                  <i class="flaticon-web"></i>
-                </div>
-                <div class="kt-widget__details">
-                  <span class="kt-widget__title">{{{__('IMAGES')}}}</span>
-                  <a href="#" class="kt-widget__value">{{$event->otherUpload()->count()}}</a>
-                </div>
+            </div>
+            <div class="kt-widget__item  kt-padding-t-5">
+              <div class="kt-widget__icon">
+                <i class="la la-glass"></i>
               </div>
-              <div class="kt-widget__item kt-padding-t-0">
-                <div class="kt-widget__icon">
-                  <i class="flaticon-network"></i>
-                </div>
-                <div class="kt-widget__details">
-                  <div class="kt-section__content kt-section__content--solid">
-                    @if ($event->permit()->count() > 0)
-                      <div class="kt-badge kt-badge__pics">
-                        @foreach ($event->permit->artistpermit as $index => $artist)
-                          @if (++$index <= 5)
-                            <a href="" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="dark" data-placement="top" title="" data-original-title="{{ ucwords($artist->fullname) }}">
-                              <img src="{{ asset('/storage/'.$artist->thumbnail) }}" alt="image" class="img-thumbnail">
-                            </a>
-                            @else
-                            <a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
-                              +{{  ++$index - 5 }}
-                            </a>
-                          @endif
-                        @endforeach
-                      </div>
+              <div class="kt-widget__details">
+                <span class="kt-widget__title">{{__('HAS LIQUOR')}}</span>
+                <a href="#" class="kt-widget__value">{{$event->liquor()->count() > 0 ? 'YES' : 'NO'}}</a>
+              </div>
+            </div>
+            <div class="kt-widget__item kt-padding-t-5">
+              <div class="kt-widget__icon">
+                <i class="flaticon-web"></i>
+              </div>
+              <div class="kt-widget__details">
+                <span class="kt-widget__title">{{{__('IMAGES')}}}</span>
+                <a href="#" class="kt-widget__value">{{$event->otherUpload()->count()}}</a>
+              </div>
+            </div>
+            <div class="kt-widget__item kt-padding-t-0">
+              <div class="kt-widget__icon">
+                <i class="flaticon-network"></i>
+              </div>
+              <div class="kt-widget__details">
+                <div class="kt-section__content kt-section__content--solid">
+                  @if ($event->permit()->count() > 0)
+                  <div class="kt-badge kt-badge__pics">
+                    @foreach ($event->permit->artistpermit as $index => $artist)
+                    @if (++$index <= 5) <a href="" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="dark"
+                      data-placement="top" title="" data-original-title="{{ ucwords($artist->fullname) }}">
+                      <img src="{{ asset('/storage/'.$artist->thumbnail) }}" alt="image" class="img-thumbnail">
+                      </a>
                       @else
-                       <span class="kt-widget__title">{{__('ARTIST')}}</span>
-                       <span class="kt-widget__value">0</span>
-                    @endif
+                      <a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
+                        +{{  ++$index - 5 }}
+                      </a>
+                      @endif
+                      @endforeach
                   </div>
+                  @else
+                  <span class="kt-widget__title">{{__('ARTIST')}}</span>
+                  <span class="kt-widget__value">0</span>
+                  @endif
                 </div>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {{-- <h6 class="kt-font-dark kt-margin-t-10">Event Map Location</h6> --}}
-          <iframe class="border kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 350px; width: 100%; margin-top: 1%; border-style: none;" >
-          </iframe>
-        </div>
-        <div class="col-md-5">
-            <div class="border kt-padding-10">
-                <div class="kt-widget kt-widget--user-profile-4">
-                  <div class="kt-widget__head kt-margin-t-5">
-                    <div class="kt-widget__media kt-margin-b-5">
-                      @if ($event->thumbnail)
-                        <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}" class="kt-widget__img img-circle" alt="image">
-                        @else
-                        <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
-                          @php
-                            $name = explode(' ', $event->name_en);
-                            $name = strtoupper(substr($name[0], 0, 1));
-                          @endphp
-                          {{$name}}
-                        </div>
-                      @endif
-                    </div>
-                    <div class="kt-widget__content">
-                      <div class="kt-widget__section">
-                        <div class="kt-widget__button">
-                          {!! permitStatus($event->status)!!}                      
-                        </div>
-                      </div>
-                      @if ($event->status == 'cancelled')
-                       <div class="kt-widget__section">
-                        <h6 class="kt-font-dark">{{ __('Cancel Reason') }}   <small title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}" class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small></h6>
-
-                        <hr class="kt-margin-b-0 kt-margin-t-0">
-                        <p>
-                          {{ucfirst($event->cancel_reason)}}
-                        </p>
-                       </div>
-                      @endif
-                    </div>
-                  </div>
-                  <div class="kt-widget__body kt-margin-t-5">
-                    <hr>
-                     <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
-                     <table class="table table-sm table-hover table-borderless table-display">
-                      <tr>
-                          <td>{{ __('Applied Date') }} : </td>
-                          <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
-                      </tr>
-                         <tr>
-                             <td>{{ __('Reference No.') }} :</td>
-                             <td class="kt-font-dark"><code style="font-size:;">{{ $event->reference_number }}</code></td>
-                         </tr>
-                          <tr>
-                             <td>{{ __('Permit Number') }} :</td>
-                              <td class="kt-font-dark"><code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
-                         </tr>
-                         <tr>
-                             <td>{{ __('Expected Audience') }} :</td>
-                              <td class="kt-font-dark">{{$event->audience_number}}</td>
-                         </tr>
-                         <tr>
-                             <td>{{ __('Approved By') }} :</td>
-                              <td class="kt-font-dark"></td>
-                         </tr>
-                         <tr>
-                             <td>{{ __('Approved Date') }} :</td>
-                              <td class="kt-font-dark"></td>
-                         </tr>
-                         <tr>
-                             <td>{{ __('Printed Note') }} :</td>
-                              <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->note_en) : $event->note_ar }}</td>
-                         </tr>      
-                     </table>
-                     <hr>
-                     <h6 class="kt-font-dark">{{__('Liquor Details')}}</h6>
-                     <table class="table table-sm table-hover table-borderless table-display">
-                       <tr>
-                        <tr>
-                          <td width="55%">{{__('Establishment Name')}} :</td>
-                          <td>{{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}</td>
-                        </tr>
-                         <td>{{__('Provided by venue')}} : </td>
-                         <td>{{$event->provided ? 'YES' : 'NO'}}</td>
-                         @if ($event->provided)
-                           <tr>
-                             <td>{{__('Liquor Permit Number: ')}}</td>
-                             <td>{{$event->liquor->liquor_permit_no}}</td>
-                           </tr>
-                           @else
-                           <tr>
-                             <td>{{__('Liquor Service')}} :</td>
-                             <td>{{$event->liquor->liquor_service}}</td>
-                           </tr>
-                           <tr>
-                             <td>{{__('Liquor Types')}} :</td>
-                             <td>{{$event->liquor->liquor_type}}</td>
-                           </tr>
-                           <tr>
-                             <td>{{__('Purchase Receipt Number')}} :</td>
-                             <td>{{$event->liquor->purchase_receipt}}</td>
-                           </tr>
-                         @endif
-                       </tr>
-                     </table>
-                     <div class="d-flex justify-content-center">
-                      @if ($event->transaction()->exists())
-                       <button type="button" class="btn btn-secondary btn-sm kt-margin-r-5">Download</button>
-                      @endif
-                      
-                     </div>
-                     <hr>
-                      <h6 class="kt-font-dark">{{ __('Establishment Details') }}</h6>
-                      @if ($event->owner->company()->exists())
-                        <table class="table table-borderless table-sm table-display">
-                            <tr>
-                                <td><span style="font-size: large;" class="flaticon-home"></span> : </td>
-                                <td>{{ ucwords(Auth::user()->LanguageId == 1 ? ucfirst($event->owner->company->name_en) : $event->owner->company->name_ar ) }}</td>
-                            </tr>
-                            <tr>
-                                <td><span style="font-size: large;" class="flaticon-email"></span> : </td>
-                                <td>{{ $event->owner->company->company_email }}</td>
-                            </tr>
-                            <tr>
-                                <td><span style="font-size: large;" class="la la-phone"></span> : </td>
-                                <td>{{ $event->owner->company->phone_number }}</td>
-                            </tr>
-                            <tr>
-                               <td><span style="font-size: large;" class="flaticon-placeholder-3"></span> :</td>
-                               @if (Auth::user()->LanguageId == 1)
-                                <td>{{ $event->owner->company->addres }} {{ $event->owner->company->area->area_en}} {{ $event->owner->company->emirate->name_en}} {{ $event->owner->company->country->name_en}}</td>
-                                @else
-                                <td>{{ $event->owner->company->addres }} {{ ucfirst($event->owner->company->area->area_ar)}} {{ ucfirst($event->owner->company->emirate->name_ar)}} {{ ucfirst($event->owner->company->country->name_ar)}}</td>
-                               @endif
-                            </tr>
-                        </table>
-                        @else
-                        @empty
-                         {{ __('Establishment Information is not required for this Event Owner.') }}
-                        @endempty
-                      @endif
+        {{-- <h6 class="kt-font-dark kt-margin-t-10">Event Map Location</h6> --}}
+        <iframe class="border kt-padding-5" id='mapcanvas'
+          src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'
+          style="height: 350px; width: 100%; margin-top: 1%; border-style: none;">
+        </iframe>
+      </div>
+      <div class="col-md-5">
+        <div class="border kt-padding-10">
+          <div class="kt-widget kt-widget--user-profile-4">
+            <div class="kt-widget__head kt-margin-t-5">
+              <div class="kt-widget__media kt-margin-b-5">
+                @if ($event->thumbnail)
+                <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}" class="kt-widget__img img-circle"
+                  alt="image">
+                @else
+                <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
+                  @php
+                  $name = explode(' ', $event->name_en);
+                  $name = strtoupper(substr($name[0], 0, 1));
+                  @endphp
+                  {{$name}}
+                </div>
+                @endif
+              </div>
+              <div class="kt-widget__content">
+                <div class="kt-widget__section">
+                  <div class="kt-widget__button">
+                    {!! permitStatus($event->status)!!}
                   </div>
                 </div>
-            </div>
-        </div>
-      </section>
+                @if ($event->status == 'cancelled')
+                <div class="kt-widget__section">
+                  <h6 class="kt-font-dark">{{ __('Cancel Reason') }} <small
+                      title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}"
+                      class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small></h6>
 
       <section class="row">
         <div class="col-md-7">
@@ -435,122 +365,274 @@
                 </span>
               </div>
             </div>
-          </form>
-        </div>
-        @endif
-      </section>
-      
-        <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist" id="tabDetails">
-          <li class="nav-item">
-            <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#event-tab" role="tab">
-              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{ __('EVENT REQUIREMENTS') }}
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->eventRequirement()->count()}}</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#truck-tab" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK INFORMATION') }}
-               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span> 
-            </a>
-          </li>
-          <li class="nav-item kt-hide">
-            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#liquor-tab" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('LIQUOR DETAILS') }} 
-             
-            </a>
-          </li>
+            <div class="kt-widget__body kt-margin-t-5">
+              <hr>
+              <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
+              <table class="table table-sm table-hover table-borderless table-display">
+                <tr>
+                  <td>{{ __('Applied Date') }} : </td>
+                  <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
+                </tr>
+                <tr>
+                  <td>{{ __('Reference No.') }} :</td>
+                  <td class="kt-font-dark"><code style="font-size:;">{{ $event->reference_number }}</code></td>
+                </tr>
+                <tr>
+                  <td>{{ __('Permit Number') }} :</td>
+                  <td class="kt-font-dark"><code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
+                </tr>
+                <tr>
+                  <td>{{ __('Expected Audience') }} :</td>
+                  <td class="kt-font-dark">{{$event->audience_number}}</td>
+                </tr>
+                <tr>
+                  <td>{{ __('Approved By') }} :</td>
+                  <td class="kt-font-dark"></td>
+                </tr>
+                <tr>
+                  <td>{{ __('Approved Date') }} :</td>
+                  <td class="kt-font-dark"></td>
+                </tr>
+                <tr>
+                  <td>{{ __('Printed Note') }} :</td>
+                  <td class="kt-font-dark">
+                    {{ Auth::user()->LanguageId == 1 ? ucfirst($event->note_en) : $event->note_ar }}</td>
+                </tr>
+              </table>
+              <hr>
+              <h6 class="kt-font-dark">{{__('Liquor Details')}}</h6>
+              <table class="table table-sm table-hover table-borderless table-display">
+                <tr>
+                <tr>
+                  <td width="55%">{{__('Establishment Name')}} :</td>
+                  <td>
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}
+                  </td>
+                </tr>
+                <td>{{__('Provided by venue')}} : </td>
+                <td>{{$event->provided ? 'YES' : 'NO'}}</td>
+                @if ($event->provided)
+                <tr>
+                  <td>{{__('Liquor Permit Number: ')}}</td>
+                  <td>{{$event->liquor->liquor_permit_no}}</td>
+                </tr>
+                @else
+                <tr>
+                  <td>{{__('Liquor Service')}} :</td>
+                  <td>{{$event->liquor->liquor_service}}</td>
+                </tr>
+                <tr>
+                  <td>{{__('Liquor Types')}} :</td>
+                  <td>{{$event->liquor->liquor_type}}</td>
+                </tr>
+                <tr>
+                  <td>{{__('Purchase Receipt Number')}} :</td>
+                  <td>{{$event->liquor->purchase_receipt}}</td>
+                </tr>
+                @endif
+                </tr>
+              </table>
+              <div class="d-flex justify-content-center">
+                @if ($event->transaction()->exists())
+                <button type="button" class="btn btn-secondary btn-sm kt-margin-r-5">Download</button>
+                @endif
 
-          <li class="nav-item">
-            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#artist-tab" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ARTIST PERMIT DETAILS') }}
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{!is_null($event->permit) ? $event->permit->artistPermit()->count() : 0}}</span> 
-            </a>  
-          </li>
-          <li class="nav-item">
-            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#images-tab" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('IMAGES') }} 
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span> 
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_4_4_tab_content" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('CHECKED HISTORY') }} 
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->comment()->where('action', '!=', 'pending')->count()}}</span>
-            </a>
-          </li>
-          
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane active" id="event-tab" role="tabpanel">
-             <table class="table border borderless table-hover table-" id="requirement-table">
-              <thead>
+              </div>
+              <hr>
+              <h6 class="kt-font-dark">{{ __('Establishment Details') }}</h6>
+              @if ($event->owner->company()->exists())
+              <table class="table table-borderless table-sm table-display">
                 <tr>
-                   <th>{{ __('REQUIREMENT NAME') }}</th>
-                   <th>{{ __('FILES') }}</th>
-                   <th>{{ __('ISSUED DATE') }}</th>
-                   <th>{{ __('EXPIRY DATE') }}</th>
+                  <td><span style="font-size: large;" class="flaticon-home"></span> : </td>
+                  <td>
+                    {{ ucwords(Auth::user()->LanguageId == 1 ? ucfirst($event->owner->company->name_en) : $event->owner->company->name_ar ) }}
+                  </td>
                 </tr>
-              </thead>
-             </table>
-          </div>
-          <div class="tab-pane" id="truck-tab" role="tabpanel">
-             <table class="table border borderless table-hover table-sm" id="truck-table">
-              <thead>
                 <tr>
-                   <th>{{ __('NAME') }}</th>
-                   <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                   <th>{{ __('SERVICE TYPE') }}</th>
-                   <th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
-                   <th>{{ __('ISSUED DATE') }}</th> 
-                   <th>{{ __('REGISTRATION EXPIRY DATE') }}</th> 
-                   <th>{{ __('ACTION') }}</th> 
+                  <td><span style="font-size: large;" class="flaticon-email"></span> : </td>
+                  <td>{{ $event->owner->company->company_email }}</td>
                 </tr>
-              </thead>
-             </table>
-          </div>
-           <div class="tab-pane" id="liquor-tab" role="tabpanel">
-              {{-- <table class="table table-borderless "></table> --}}
-           </div>
-          <div class="tab-pane " id="artist-tab" role="tabpanel">
-             <table class="table border borderless table-hover table-" id="artist-table">
-              <thead>
                 <tr>
-                   <th></th>
-                   <th>{{ __('NAME') }}</th>
-                   <th>{{ __('PROFESSION') }}</th>
-                   <th>{{ __('PERSON CODE') }}</th>
-                   <th>{{ __('BIRTHDATE') }}</th>
-                   <th>{{ __('AGE') }}</th>
-                   <th>{{ __('MOBILE NUMBER') }}</th>
-                   <th>{{ __('EMAIL') }}</th>
+                  <td><span style="font-size: large;" class="la la-phone"></span> : </td>
+                  <td>{{ $event->owner->company->phone_number }}</td>
                 </tr>
-              </thead>
-             </table>
-          </div>
-          <div class="tab-pane" id="images-tab" role="tabpanel">
-           <table class="table border borderless table-hover" id="image-table">
-              <thead>
                 <tr>
-                  <th>{{ __('FILES') }}</th>
+                  <td><span style="font-size: large;" class="flaticon-placeholder-3"></span> :</td>
+                  @if (Auth::user()->LanguageId == 1)
+                  <td>{{ $event->owner->company->addres }} {{ $event->owner->company->area->area_en}}
+                    {{ $event->owner->company->emirate->name_en}} {{ $event->owner->company->country->name_en}}</td>
+                  @else
+                  <td>{{ $event->owner->company->addres }} {{ ucfirst($event->owner->company->area->area_ar)}}
+                    {{ ucfirst($event->owner->company->emirate->name_ar)}}
+                    {{ ucfirst($event->owner->company->country->name_ar)}}</td>
+                  @endif
                 </tr>
-              </thead>
-             </table>
-          </div>
-          <div class="tab-pane" id="kt_portlet_base_demo_4_4_tab_content" role="tabpanel">
-            <table class="table table-hover table-borderless border table-striped table-sm" id="event-comment-datatable">
-                <thead>
-                    <tr>
-                        <th class="no-wrap">{{ __('NAME') }}</th>
-                        <th>{{ __('REMARKS') }}</th>
-                        <th class="no-wrap">{{ __('DATE') }}</th>
-                        <th class="no-wrap">{{ __('ACTION TAKEN') }}</th>
-                    </tr>
-                </thead>
-            </table>
+              </table>
+              @else
+              @empty
+              {{ __('Establishment Information is not required for this Event Owner.') }}
+              @endempty
+              @endif
+            </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="row">
+      <div class="col-md-7">
+        <div class="form-group form-group-sm">
+          <label class="kt-font-dark kt-font-transform-u">{{__('Event Details')}}</label>
+          <textarea style="resize: both;" readonly rows="4"
+            class="form-control">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}</textarea>
+        </div>
+      </div>
+      @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+      <div class="col-md-5">
+        <form class=" kt-padding-5 kt-margin-t-10">
+          <div class="form-group row form-group-sm">
+            <label class="col-10 col-form-label">Show event to all registered company calendar</label>
+            <div class="col-2">
+              <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                <label class="kt-margin-b-0">
+                  <input type="checkbox" name="is_display_all" {{$event->is_display_all ? 'checked' :  null}}>
+                  <span></span>
+                </label>
+              </span>
+            </div>
+          </div>
+          <div class="form-group row form-group-sm">
+            <label class="col-10 col-form-label">Show event to public website calendar</label>
+            <div class="col-2">
+              <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                <label class="kt-margin-b-0">
+                  <input type="checkbox" name="is_display_web" {{$event->is_display_web ? 'checked' :  null}}>
+                  <span></span>
+                </label>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+      @endif
+    </section>
+
+    <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist"
+      id="tabDetails">
+      <li class="nav-item">
+        <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#event-tab" role="tab">
+          <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{ __('EVENT REQUIREMENTS') }}
+          <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->eventRequirement()->count()}}</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#truck-tab" role="tab">
+          <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK INFORMATION') }}
+          <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span>
+        </a>
+      </li>
+      <li class="nav-item kt-hide">
+        <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#liquor-tab" role="tab">
+          <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('LIQUOR DETAILS') }}
+
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#artist-tab" role="tab">
+          <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ARTIST PERMIT DETAILS') }}
+          <span
+            class="kt-badge kt-badge--outline kt-badge--info">{{!is_null($event->permit) ? $event->permit->artistPermit()->count() : 0}}</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#images-tab" role="tab">
+          <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('IMAGES') }}
+          <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_4_4_tab_content"
+          role="tab">
+          <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('CHECKED HISTORY') }}
+          <span
+            class="kt-badge kt-badge--outline kt-badge--info">{{$event->comment()->where('action', '!=', 'pending')->count()}}</span>
+        </a>
+      </li>
+
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="event-tab" role="tabpanel">
+        <table class="table border borderless table-hover table-" id="requirement-table">
+          <thead>
+            <tr>
+              <th>{{ __('REQUIREMENT NAME') }}</th>
+              <th>{{ __('FILES') }}</th>
+              <th>{{ __('ISSUED DATE') }}</th>
+              <th>{{ __('EXPIRY DATE') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tab-pane" id="truck-tab" role="tabpanel">
+        <table class="table border borderless table-hover table-sm" id="truck-table">
+          <thead>
+            <tr>
+              <th>{{ __('NAME') }}</th>
+              <th>{{ __('ESTABLISHMENT NAME') }}</th>
+              <th>{{ __('SERVICE TYPE') }}</th>
+              <th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
+              <th>{{ __('ISSUED DATE') }}</th>
+              <th>{{ __('REGISTRATION EXPIRY DATE') }}</th>
+              <th>{{ __('ACTION') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tab-pane" id="liquor-tab" role="tabpanel">
+        {{-- <table class="table table-borderless "></table> --}}
+      </div>
+      <div class="tab-pane " id="artist-tab" role="tabpanel">
+        <table class="table border borderless table-hover table-" id="artist-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>{{ __('NAME') }}</th>
+              <th>{{ __('PROFESSION') }}</th>
+              <th>{{ __('PERSON CODE') }}</th>
+              <th>{{ __('BIRTHDATE') }}</th>
+              <th>{{ __('AGE') }}</th>
+              <th>{{ __('MOBILE NUMBER') }}</th>
+              <th>{{ __('EMAIL') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tab-pane" id="images-tab" role="tabpanel">
+        <table class="table border borderless table-hover" id="image-table">
+          <thead>
+            <tr>
+              <th>{{ __('FILES') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tab-pane" id="kt_portlet_base_demo_4_4_tab_content" role="tabpanel">
+        <table class="table table-hover table-borderless border table-striped table-sm" id="event-comment-datatable">
+          <thead>
+            <tr>
+              <th class="no-wrap">{{ __('NAME') }}</th>
+              <th>{{ __('REMARKS') }}</th>
+              <th class="no-wrap">{{ __('DATE') }}</th>
+              <th class="no-wrap">{{ __('ACTION TAKEN') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
+
 
 <div class="modal fade" id="truck-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -576,9 +658,11 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{ __('Close') }}</button>
         </div>
+
       </div>
     </div>
   </div>
+</div>
 @endsection
 @section('script')
 <script>

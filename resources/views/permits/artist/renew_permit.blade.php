@@ -42,7 +42,7 @@
     <div class="kt-portlet__body pt-0">
         <div class="kt-widget5__info py-4">
             <div class="pb-2">
-                <span class="kt-font-dark">{{__('Term')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('Permit Term')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->term}}</span>&emsp;&emsp;
                 <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
                 <span class="kt-font-dark">{{__('From Date')}}:</span>&emsp;
@@ -86,13 +86,16 @@
                     <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                     @foreach ($artist_details as $artist_detail)
                     <tr>
-                        <td>{{$artist_detail->firstname_en}}</td>
-                        <td>{{$artist_detail->lastname_en}}</td>
-                        <td>{{$artist_detail->profession['name_en']}}</td>
+                        <td>{{ getLangId() == 1 ? ucwords($artist_detail->firstname_en) : $artist_detail->firstname_ar}}
+                        </td>
+                        <td>{{ getLangId() == 1 ? ucwords($artist_detail->lastname_en) : $artist_detail->lastname_ar}}
+                        </td>
+                        <td>{{ getLangId() == 1 ? ucwords($artist_detail->profession['name_en']) : $artist_detail->profession['name_ar']}}
+                        </td>
                         <td>{{$artist_detail->mobile_number}}</td>
                         {{-- <td>{{$artist_detail->email}}</td> --}}
                         <td>
-                            {{ucwords($artist_detail->artist_permit_status)}}
+                            {{__(ucwords($artist_detail->artist_permit_status))}}
                         </td>
                         <td class="d-flex justify-content-center">
                             <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'renew'])}}"

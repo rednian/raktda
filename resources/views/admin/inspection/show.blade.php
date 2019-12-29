@@ -58,7 +58,7 @@
                   <i class="flaticon-truck"></i>
                 </div>
                 <div class="kt-widget__details">
-                  <span class="kt-widget__title">{{__('FOOD TRUCK')}}</span>
+                  <span class="kt-widget__title">{{__('Food Truck')}}</span>
                   <span class="kt-widget__value">{{$event->truck()->count()}}</span>
                 </div>
               </div>

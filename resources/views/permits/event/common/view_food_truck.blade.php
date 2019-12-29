@@ -12,7 +12,7 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
                                 id="company_name_en" disabled>
                         </div>
@@ -78,7 +78,7 @@
                         @if($req->dates_required == 1)
                         <div class="col-lg-2 col-sm-12">
                             <label for="" class="text--maroon kt-font-bold"
-                                title="Issue Date">{{__('Issue Date')}}</label>
+                                title="Issue Date">{{__('Issued Date')}}</label>
                             <input type="text" class="form-control form-control-sm date-picker"
                                 name="truck_doc_issue_date_{{$i}}" data-date-end-date="0d"
                                 id="truck_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />

@@ -3,11 +3,36 @@
 Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function(){
   Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
   Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');
+  Route::post('/{company}/updateUser', 'Company\CompanyController@updateUser')->name('company.updateUser');
+  Route::post('/{company}/changePassword', 'Company\CompanyController@changePassword')->name('company.changePassword');
   Route::post('/{company}/upload', 'Company\CompanyController@upload')->name('company.upload');
   Route::get('/requirement', 'Company\CompanyController@requirements')->name('company.requirement');  
   Route::get('/details/{company}/requirement-datatable', 'Company\CompanyController@uploadedDatatable')->name('company.requirement.datatable');  
   Route::post('/details/{company}/requirement/delete', 'Company\CompanyController@deleteFile')->name('company.requirement.delete');  
+
+  Route::post('/company/account_exists', function(Illuminate\Http\Request $request) {
+        if($request->username){
+            $result =  \App\User::where('username', $request->username)->where('user_id','!=' ,Auth::user()->user_id)->exists() ?  false : true;
+        }
+        if($request->email){
+            $result =  \App\User::where('email', $request->email)->where('user_id','!=' ,Auth::user()->user_id)->exists() ?  false : true;
+        }
+        if($request->mobile_number){
+            $result =  \App\User::where('mobile_number', $request->mobile_number)->where('user_id','!=' ,Auth::user()->user_id)->exists() ?  false : true;
+        }
+        if($request->old_password){
+            $password = \App\User::where('user_id', Auth::user()->user_id)->first()->value('password');
+            $result = false;
+            if(Illuminate\Support\Facades\Hash::check($request->old_password,$password)){
+                $result = true;
+            }
+        }
+        return response()->json($result);
+
+  })->name('company.account_exists');
+
 });
+
 
 
 Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_status']], function () {

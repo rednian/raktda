@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">Add New Artist Permit
+            <h3 class="kt-portlet__head-title">{{__('Add New Artist Permit')}}
             </h3>
         </div>
 
@@ -99,15 +99,16 @@
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location - Ar')}} <span class="text-danger">*</span></label>
+                                            {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm"
-                                            placeholder="{{__('Work Location - Ar')}}" name="work_loc_ar"
+                                            placeholder="{{__('Work Location (AR)')}}" name="work_loc_ar"
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-2 kt-margin-b-0">
-                                        <label for="" class="col-form-label col-form-label-sm">{{__('Connected Event')}}
-                                            ?</label>
+                                        <label for=""
+                                            class="col-form-label col-form-label-sm">{{__('Connected Event ?')}}
+                                        </label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio  ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(1)"
@@ -177,12 +178,12 @@
                         @foreach($artist_details as $ad)
                         {{-- {{dd($ad)}} --}}
                         <tr>
-                            <td>{{$ad->firstname_en}}</td>
-                            <td>{{$ad->lastname_en}}</td>
-                            <td>{{$ad->profession['name_en']}}</td>
+                            <td>{{  getLangId() == 1 ? $ad->firstname_en : $ad->firstname_ar }}</td>
+                            <td>{{  getLangId() == 1 ? $ad->lastname_en : $ad->lastname_ar}}</td>
+                            <td>{{  getLangId() == 1 ? $ad->profession['name_en'] : $ad->profession['name_ar']}}</td>
                             <td>{{$ad->mobile_number}}</td>
                             {{-- <td>{{$ad->email}}</td> --}}
-                            <td>{{$ad->artist_permit_status}}</td>
+                            <td>{!! __($ad->artist_permit_status) !!}</td>
                             <td class="d-flex justify-content-center">
                                 <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
                                     title="{{__('Edit')}}">
@@ -224,9 +225,9 @@
 
             <button
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
-                id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}} title="{{__('Submit Permit')}}">
+                id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}}>
                 <i class="la la-check"></i>
-                {{__('Submit Permit')}}
+                {{__('Apply Permit')}}
             </button>
         </div>
 

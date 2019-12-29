@@ -87,7 +87,7 @@
                     </section> --}}
                     <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
                         <input type="checkbox" id="agree" name="agree">
-                        {{__('I Read and understand all service rules and agree to continue submitting it.')}}
+                        {{__('I read and understand all service, rules and agree to continue submitting it')}}
                         <span></span>
                     </label>
                 </div>
@@ -124,13 +124,13 @@
                                                     id="firm_type" onchange="getRequirementsList()">
                                                     <option value="">{{__('Select')}}</option>
                                                     <option value="corporate">{{__('Corporate')}}</option>
-                                                    <option value="government">{{__('Goverment')}}</option>
+                                                    <option value="government">{{__('Government')}}</option>
                                                 </select>
                                             </div>
 
                                             <div class="col-md-4 form-group form-group-xs">
                                                 <label for="owner_name"
-                                                    class=" col-form-label kt-font-bold text-right">{{__('Owner Name (EN)')}}
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
                                                     <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control form-control-sm"
                                                     name="owner_name" id="owner_name" maxlength="255">
@@ -164,7 +164,7 @@
 
                                             <div class="col-md-4 form-group form-group-xs">
                                                 <label for="name_en"
-                                                    class=" col-form-label kt-font-bold text-right">{{__('Event Name (EN)')}}
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
                                                     <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control form-control-sm" name="name_en"
                                                     id="name_en" maxlength="255">
@@ -199,8 +199,7 @@
                                             <div class="col-md-4 form-group form-group-xs ">
                                                 <label for="description_en"
                                                     class=" col-form-label kt-font-bold text-right">
-                                                    {{__('Event Details (EN)')}} <span
-                                                        class="text-danger">*</span></label>
+                                                    {{__('Event Details')}} <span class="text-danger">*</span></label>
                                                 <textarea type="text" class="form-control form-control-sm"
                                                     name="description_en" id="description_en" rows="3"
                                                     maxlength="255"></textarea>
@@ -227,14 +226,14 @@
                                                     <option value="0-100">0-100</option>
                                                     <option value="100-500">100-500</option>
                                                     <option value="500-1000">500-1000</option>
-                                                    <option value="1000&above">1000 & above</option>
+                                                    <option value="1000&above">{{__('1000 & above')}}</option>
                                                 </select>
                                             </div>
 
 
 
                                             <div class="col-md-4  form-group form-group-xs ">
-                                                <label class="col-form-label"> {{__('Food truck')}}
+                                                <label class="col-form-label"> {{__('Food Truck')}}
                                                     ?</label>
                                                 {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
                                                                 <input type="checkbox" name="isTruck" id="isTruck">
@@ -400,7 +399,7 @@
                                         <div class="row">
                                             <div class="col-md-6 form-group form-group-xs ">
                                                 <label for="venue_en" class=" col-form-label kt-font-bold text-right">
-                                                    {{__('Venue (EN)')}} <span class="text-danger">*</span></label>
+                                                    {{__('Venue')}} <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control form-control-sm" name="venue_en"
                                                     id="venue_en" maxlength="255">
 
@@ -419,7 +418,8 @@
                                                     class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
                                                 </label>
                                                 <input type="text" class="form-control form-control-sm"
-                                                    value="Ras Al Khaimah" readonly>
+                                                    value="{{getLangId() == 1 ? 'Ras Al Khaimah' : 'رَأْس ٱلْخَيْمَة'}}"
+                                                    readonly>
                                                 <input type="hidden" name="emirate_id" id="emirate_id" value="5">
                                             </div>
 
@@ -443,7 +443,8 @@
                                                     class=" col-form-label kt-font-bold text-right">{{__('Country')}}
                                                 </label>
                                                 <input type="text" class="form-control form-control-sm"
-                                                    value="United Arab Emirates" readonly>
+                                                    value="{{getLangId() == 1 ? 'United Arab Emirates' : 'الإمارات العربية المتحدة‎'}}"
+                                                    readonly>
                                                 <input type="hidden" name="country_id" id="country_id" value="232">
                                             </div>
 
@@ -505,7 +506,7 @@
                                             <div class="col-md-4 form-group form-group-xs ">
                                                 <label for="addi_loc_info"
                                                     class=" col-form-label kt-font-bold text-right">
-                                                    {{__('Additional Location Info')}}</label>
+                                                    {{__('Additional Location Information')}}</label>
                                                 <textarea class="form-control form-control-sm" name="addi_loc_info"
                                                     id="addi_loc_info" maxlength="255"></textarea>
                                             </div>
@@ -1216,18 +1217,18 @@
                 data: { firm: firm , id: id},
                 success: function (result) {
                     $('#documents_required').empty();
-                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count"  />');
+                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Event Permit Required documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('A image of the event logo/ banner')!!}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">{!!__('Upload')!!}</div></div></div><input hidden id="requirements_count"  />');
                  if(result){
                      var res = result;
                      $('#requirements_count').val(res.length);
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+( res[i].requirement_name ? toCapitalize(res[i].requirement_name) : res[i].requirement_name_ar )+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
-                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">{{__("Issue Date")}}</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
-                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+30d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />');
+                            $('#issue_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold">{!!__('Issued Date')!!}</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
+                            $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold">{!!__('Expiry Date')!!}</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+30d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />');
                          }
 
                          

@@ -43,7 +43,7 @@
     <div class="kt-portlet__body">
         <div class="kt-widget5__info py-4">
             <div class="pb-2">
-                <span class="kt-font-dark">{{__('Term')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('Permit Term')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->term}}</span>&emsp;&emsp;
                 <span class="kt-font-dark">{{__('From Date')}}:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
@@ -52,10 +52,10 @@
                 <span class="kt-font-dark">{{__('Work Location')}}:</span>&emsp;
                 <span
                     class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
-                <span class="kt-font-dark">{{__('Ref No.')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('Reference No.')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
                 @if($permit_details->event)
-                <span>{{__('Connected to Event')}} :</span>&emsp;
+                <span>{{__('Connected Event ?')}} :</span>&emsp;
                 <span
                     class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>
                 @endif
@@ -81,18 +81,21 @@
                     <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                     @foreach ($artist_details as $artist_detail)
                     <tr>
-                        <td>{{ucwords($artist_detail->firstname_en)}}</td>
-                        <td>{{ucwords($artist_detail->lastname_en)}}</td>
-                        <td style="width:20%;">{{ucwords($artist_detail->profession['name_en'])}}</td>
+                        <td>{{  getLangId() == 1 ? ucwords($artist_detail->firstname_en) : $artist_detail->firstname_ar }}
+                        </td>
+                        <td>{{ getLangId() == 1 ? ucwords($artist_detail->lastname_en) : $artist_detail->lastname_ar }}
+                        </td>
+                        <td style="width:20%;">
+                            {{ getLangId() == 1 ? ucwords($artist_detail->profession['name_en']) : ucwords($artist_detail->profession['name_ar'])}}
+                        </td>
                         <td>{{$artist_detail->mobile_number}}</td>
                         {{-- <td>{{$artist_detail->email}}</td> --}}
                         <td>
-                            {{ucwords($artist_detail->artist_permit_status)}}
+                            {{__(ucwords($artist_detail->artist_permit_status))}}
                         </td>
                         <td class="d-flex justify-content-center">
-                            <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
-                                title="Replace">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">Replace</button>
+                            <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend'])}}">
+                                <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Replace')}}</button>
                             </a>
                             {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
                             title="View">
@@ -105,7 +108,7 @@
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
-                                data-toggle="modal" data-target="#delartistmodal" title="Remove">
+                                data-toggle="modal" data-target="#delartistmodal">
                                 <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Remove')}}</button>
                             </a>
                             @endif

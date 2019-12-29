@@ -6,9 +6,9 @@
         <div class="alert-text">
             <div class="kt-scroll" data-scroll="true" style="max-height: 100px">
                 <ul>
-                    <li>{{__('Upload file size should be less than 5MB')}}</li>
-                    <li>{{__('For logo or image, Upload File Format should be jpg, png')}} </li>
-                    <li>{{__('For documents, Upload File Format should be pdf,jpg, png, doc')}} </li>
+                    <li>{{__('The maximum file size for uploads is 5 MB')}}</li>
+                    <li>{{__('For image uploads, file format should be  jpg, png')}} </li>
+                    <li>{{__('For documents uploads,  file format should be  pdf, jpg, png')}} </li>
                 </ul>
             </div>
         </div>

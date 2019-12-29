@@ -266,7 +266,7 @@
                         <p>Artist Permit</p>
                     </th>
                     <th>
-                        <p>تصريح الفنان</p>
+                        <p>تصاريح الفنانين</p>
                     </th>
                 </tr>
             </table>
@@ -279,7 +279,7 @@
                         <h5>{{$permit_details['permit_number']}}</h5>
                     </td>
                     <td>
-                        <h5>رقم الإذن</h5>
+                        <h5>رقم التصريح</h5>
                     </td>
                 </tr>
             </table>
@@ -306,13 +306,13 @@
                         <table class="date--row-2">
                             <tr>
                                 <td>
-                                    <h5>Issue Date</h5>
+                                    <h5>Issued Date</h5>
                                 </td>
                                 <td>
                                     <p>{{date('d-m-Y', strtotime($permit_details['expired_date']))}}</p>
                                 </td>
                                 <td>
-                                    <h5>تاريخ الإصدار</h5>
+                                    <h5>تاريخ الاصدار</h5>
                                 </td>
                             </tr>
                         </table>
@@ -357,7 +357,7 @@
                                     <p>{{$permit_details['work_location_ar']}}</p>
                                 </td>
                                 <td>
-                                    <h5>مكان العمل</h5>
+                                    <h5>موقع العمل باللغة العربية</h5>
                                 </td>
                             </tr>
                         </table>
@@ -392,7 +392,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <h5>Person Code / رمز الشخص </h5>
+                                            <h5>Person Code / رقم الشخص </h5>
                                         </td>
                                         <td>
                                             <h5>{{$artist_permit->artist['person_code']}}</h5>
@@ -403,7 +403,7 @@
                                             <h5>Name</h5>
                                         </td>
                                         <td>
-                                            <h5>اسم</h5>
+                                            <h5>الاسم</h5>
                                         </td>
                                     </tr>
                                     <tr>
@@ -443,7 +443,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5>UID No/ رقم UID</h5>
+                                            <h5>UID No / الرقم الموحد</h5>
                                         </td>
                                         <td>
                                             <p>{{!empty($artist_permit->country) && $artist_permit->country->country_code == 'UAE' ?  $artist_permit->identification_number : $artist_permit->uid_number}}
@@ -452,7 +452,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5>Date of Birth/ تاريخ الميلاد </h5>
+                                            <h5>Date of Birth / تاريخ الميلاد </h5>
                                         </td>
                                         <td>
                                             <p>{{date('d-m-Y',strtotime($artist_permit->birthdate))}}</p>

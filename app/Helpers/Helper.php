@@ -219,7 +219,7 @@ function generateEventPermitNumber()
         $n = substr($last_pn, 2);
         $f = substr($n, 0, 1);
         $l = substr($n, -1, 1);
-        $x = 4;
+        $x = 4; 
         if ($f == 9 && $l == 9) {
             $x++;
         }

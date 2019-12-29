@@ -49,7 +49,7 @@
     <div class="kt-portlet__body pt-0">
         <div class="kt-widget5__info py-3">
             <div class="pb-2">
-                <span class="kt-font-dark">{{__('Term')}}:</span>&emsp;
+                <span class="kt-font-dark">{{__('Permit Term')}}:</span>&emsp;
                 <span class="kt-font-info">{{$permit_details->term}}</span>&emsp;&emsp;
                 <span class="kt-font-dark">{{__('From Date')}}:</span>&emsp;
                 <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;

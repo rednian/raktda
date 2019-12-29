@@ -350,13 +350,13 @@
 
                                             <div class="form-group form-group-sm row">
                                                 <label for="sp_name"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponser Name')}}
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponsor Name')}}
                                                 </label>
                                                 <div class="col-lg-8">
                                                     <div class="input-group input-group-sm">
                                                         <input type="text" class="form-control form-control-sm "
                                                             name="sp_name" id="sp_name"
-                                                            placeholder="{{__('Sponser Name')}}"
+                                                            placeholder="{{__('Sponsor Name')}}"
                                                             value="{{$artist_details->sponsor_name_en}}">
                                                     </div>
                                                 </div>
