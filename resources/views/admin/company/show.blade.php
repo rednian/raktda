@@ -170,8 +170,8 @@
         <section class="row kt-margin-t-20">
             <div class="col-lg-12">
                <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-2x" role="tablist">
-                <li class="nav-item active">
-                    <a class="nav-link" data-toggle="tab" href="#action-history" role="tab">
+                <li class="nav-item ">
+                    <a class="nav-link active" data-toggle="tab" href="#action-history" role="tab">
                         {{__('ACTION')}}
                         <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->comment()->count()}}</span>
                     </a>
@@ -221,7 +221,7 @@
                     @endif
                     @if ($company->status == 'active' || $company->status == 'blocked')
                      <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
-                       <div class="card">
+                       <div class="card border kt-margin-b-10">
                          <div class="card-header " id="headingOne6">
                            <div class="card-title kt-padding-b-10 kt-padding-t-10" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
                              @if ($company->status == 'active')

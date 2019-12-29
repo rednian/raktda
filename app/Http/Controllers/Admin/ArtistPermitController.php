@@ -38,7 +38,9 @@ class ArtistPermitController extends Controller
             'permitHistory',
             'applicationCommentDataTable',
             'datatable',
-            'artistDataTable'
+            'artistDataTable',
+            'permitCommentDatatable',
+            'cancelPermit'
         ]);
     }
 
@@ -61,8 +63,8 @@ class ArtistPermitController extends Controller
             'active_permit'=> Permit::lastMonth(['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count(),
             'active'=> Permit::where('permit_status', 'active')->count()
         ]);
-    }
-
+    
+}
     public function search(Request $request)
     {
       $permit = Permit::where('reference_number', 'like', $request->q.'%')->get();
@@ -82,6 +84,30 @@ class ArtistPermitController extends Controller
           'default_font_size' => 10
       ]);
       return $pdf->stream('Permit-' . $permitNumber . '.pdf');
+    }
+
+    public function cancelPermit(Request $request, Permit $permit)
+    {
+      DB::beginTransaction();
+      try {
+          $request['role_id'] = $request->user()->roles()->first()->role_id;
+          $request['user_id'] = $request->user()->user_id;
+          $request['checked_date'] = Carbon::now();
+          $permit->comment()->create($request->all());
+          $permit->update([
+            'cancel_reason'=>$request->comment, 
+            'cancel_by'=>$request->user_id, 
+            'cancel_date'=>$request->checked_date, 
+            'permit_status'=>$request->action
+          ]);
+        DB::commit();
+        $result = ['success', '', 'Success'];
+      } catch (Exception $e) {
+        DB::rollBack();
+         $result = ['error', $e->getMessage(), 'Error'];
+      }
+
+      return redirect()->back()->with('message', $result);
     }
 
     public function show(Request $request, Permit $permit)
@@ -769,6 +795,51 @@ class ArtistPermitController extends Controller
 
            return response()->json($table);
      }
+    }
+
+    public function permitCommentDatatable(Request $request, Permit $permit)
+    {
+      if ($request->ajax()) {
+
+        $comments = $permit->comment()->doesntHave('artistPermitComment')->latest();
+        $user = $request->user()->LanguageId;
+
+        return DataTables::of($comments)
+        ->addColumn('name', function($comment) use ($user){
+          $role_name = $comment->role->NameEn;
+   
+
+          // if ($comment->role_id != 6) {
+          //     return $comment->comment;
+          // }
+          // else{
+          //   return Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar;
+          // }
+
+
+          if (is_null($comment->user_id)) {
+            return profileName($role_name, '');
+          }
+
+          return profileName($comment->user->NameEn, $role_name);
+
+        })
+        ->editColumn('comment', function($comment) use ($user){
+          $data =  ucfirst($comment->comment);
+          if($comment->exempt_payment){
+            $data .= '<br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>';
+          }
+          return $data;
+        })
+        ->editColumn('created_at', function($comment){
+          return '<span title="'.$comment->created_at->format('l h:i A | d-F-Y').'" class="text-underline">'.humanDate($comment->created_at).'</span>';
+        })
+        ->editColumn('action', function($comment){
+          return permitStatus(ucwords($comment->action));
+        })
+        ->rawColumns(['action', 'name', 'created_at', 'comment'])
+        ->make(true);
+      }
     }
 
     public function artistDataTable(Request $request, Permit $permit)

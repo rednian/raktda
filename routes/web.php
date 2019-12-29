@@ -105,6 +105,11 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/artist_permit/{permit}/history', 'Admin\ArtistPermitController@permitHistory')
         ->name('admin.artist_permit.history');
 
+    Route::post('/artist_permit/{permit}/cancel-permit', 'Admin\ArtistPermitController@cancelPermit')
+        ->name('admin.artist_permit.cancelPermit');
+
+    Route::get('artist_permit/{permit}/comment/datatable', 'Admin\ArtistPermitController@permitCommentDatatable')->name('admin.permit.comment.datatable');
+
     Route::get('/artist_permit/{permit}/application/{artistpermit}/comment/datatable', 'Admin\ArtistPermitController@applicationCommentDataTable')
         ->name('admin.artist_permit.comment.datatable');
 
