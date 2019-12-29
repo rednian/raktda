@@ -87,4 +87,8 @@ class Company extends Model
     {
         return $this->hasMany(CompanyRequirement::class, 'company_id');
     }
+
+    public function users(){
+        return $this->hasMany(User::class, 'EmpClientId', 'company_id');
+    }
 }

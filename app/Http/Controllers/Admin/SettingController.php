@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\GeneralSetting;
 use App\Http\Controllers\Controller;
+use App\Notifications\AllNotification;
+use App\User;
+use App\Event;
 use Excel;
 
 class SettingController extends Controller
@@ -30,26 +33,43 @@ class SettingController extends Controller
 
 	public function excelTojson(Request $request){
 
-		Excel::load(storage_path() . '/app/public/translations2.xlsx', function($reader){
-		    // Getting all results
-		    $arr = array();
-		    $reader->each(function($sheet) use($arr){
+		$event = Event::find(25);
 
-		    	$key = $sheet['english'];
-		    	$value = $sheet['arabic'];
+		dd($event->owner->company->users);
 
-		    	if($value != ''){
-		    		echo '"'.$key . '":"' . $value . '",<br>';
-		    	}
+		// $users = User::whereIn('email', ['dondelrosario93@gmail.com', 'chris@nrsinfoways.com'])->get();
+
+		// foreach ($users as $user) {
+
+		// 	$user->notify(new AllNotification([
+		// 		'subject' => 'Artist Permit For Approval',
+		// 		'title' => 'Artist Permit For Approval',
+		// 		'content' => 'The artist permit with reference number <b>RFN0310</ needs to have an approval from your department. Please click the button below to view details or click this link <a href="' . $. '"></a>.',
+		// 		'button' => 'View Permit',
+		// 		'url' => '#'
+		// 	]));
+		// }
+
+		// Excel::load(storage_path() . '/app/public/translations2.xlsx', function($reader){
+		//     // Getting all results
+		//     $arr = array();
+		//     $reader->each(function($sheet) use($arr){
+
+		//     	$key = $sheet['english'];
+		//     	$value = $sheet['arabic'];
+
+		//     	if($value != ''){
+		//     		echo '"'.$key . '":"' . $value . '",<br>';
+		//     	}
 		    	
-		    	// dd($sheet['english']);
-			    // // // Loop through all rows
-			    // // $sheet->each(function($row) {
+		//     	// dd($sheet['english']);
+		// 	    // // // Loop through all rows
+		// 	    // // $sheet->each(function($row) {
 
-			    // // 	dd($row->arabic);
-			    // // });
-			});
-		});
+		// 	    // // 	dd($row->arabic);
+		// 	    // // });
+		// 	});
+		// });
 		
 	}
 }
