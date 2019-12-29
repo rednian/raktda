@@ -2208,6 +2208,7 @@ class ArtistController extends Controller
     }
 
 
+
     // function add_to_artist_temp_data(Request $request)
     // {
 

@@ -62,17 +62,20 @@
                         class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Event Type')}}</label>
                     <span class="col-md-6">{{getLangId() == 1 ? $event->type->name_en : $event->type->name_ar}}</span>
                 </div>
-
+                @if($event->subType)
+                <div class="col-md-4 pb-1 row">
+                    <label
+                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Event Sub Type')}}</label>
+                    <span
+                        class="col-md-6">{{getLangId() == 1 ? $event->subType->sub_name_en : $event->subType->sub_name_ar}}</span>
+                </div>
+                @endif
                 <div class="col-md-4 pb-1 row">
                     <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Venue')}}
                     </label>
                     <span class="col-md-6">{{getLangId() == 1 ?  $event->venue_en : $event->venue_ar}}</span>
                 </div>
-                <div class="col-md-4 pb-1 row">
-                    <label
-                        class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('Area')}}</label>
-                    <span class="col-md-6">{{$event->area['area_en']}}</span>
-                </div>
+
                 <div class="col-md-4 pb-1 row">
                     <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">{{__('From Date')}}
                     </label>
@@ -131,8 +134,8 @@
                     <table class="table table-borderless border table-striped">
                         <thead class="text-center">
                             <th>#</th>
-                            <th>{{__('Company (EN)')}}</th>
-                            <th>{{__('Company (AR)')}}</th>
+                            <th>{{__('Establishment Name')}}</th>
+                            <th>{{__('Establishment Name (AR)')}}</th>
                             <th>{{__('Food Services')}}</th>
                             <th>{{__('Traffic Plate No')}}</th>
                             <th></th>
@@ -171,23 +174,22 @@
                 <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (EN)')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_en"
-                                id="l_company_name_en" autocomplete="off" placeholder="{{__('Company Name (EN)')}}">
+                                id="l_company_name_en" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Company Name (AR)')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
-                                id="l_company_name_ar" dir="rtl" autocomplete="off"
-                                placeholder="{{__('Company Name (AR)')}}">
+                                id="l_company_name_ar" dir="rtl" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Purchase Receipt No')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="purchase_receipt"
-                                id="purchase_receipt" autocomplete="off" placeholder="{{__('Purchase Receipt No')}}">
+                                id="purchase_receipt" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Liquor Service')}} <span
@@ -203,7 +205,7 @@
                             <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor')}} <span
                                     class="text-danger">*</span></label>
                             <textarea type="text" class="form-control form-control-sm" name="liquor_types"
-                                id="liquor_types" autocomplete="off" placeholder="{{__('Types of Liquor')}}"></textarea>
+                                id="liquor_types" autocomplete="off"></textarea>
                         </div>
                         <input type="hidden" id="event_liquor_id" value="{{$event->liquor->event_liquor_id}}">
                     </div>
@@ -760,7 +762,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                     formData: {
                         id: i , 
                         reqId: $('#truck_req_id_'+i).val()
@@ -947,7 +949,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
                         if(files)

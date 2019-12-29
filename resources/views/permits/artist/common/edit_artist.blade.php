@@ -287,7 +287,7 @@
                 maxFileCount:1,
                 showDelete: true,
                 showDownload: true,
-                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 formData: {id: i, reqId: requiId , artistNo: $('#artist_number_doc').val()},
                 onSuccess: function (files, response, xhr, pd) {
                         //You can control using PD
@@ -372,7 +372,7 @@
                 abortStr: '',
                 showPreview:true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');

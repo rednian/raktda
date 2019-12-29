@@ -8,7 +8,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                {{__('You are trying to apply for artist permit which is less than')}}&emsp;{{$day_count}}{{$day_count > 1 ? __('days') : __('day')}}&emsp;{{__('from today your application will be subject to approval by RAKTDA')}}
+                {{__('You are trying to apply for artist permit which is less than')}}
+                &nbsp;{{$day_count}}
+                &nbsp;{{$day_count > 1 ? __('days') : __('day')}}
+                &nbsp;{{__('from today your application will be subject to approval by RAKTDA')}}
             </div>
         </div>
     </div>

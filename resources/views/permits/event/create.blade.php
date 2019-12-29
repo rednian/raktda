@@ -132,7 +132,7 @@
                                                 <label for="owner_name"
                                                     class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
                                                     <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control form-control-sm"
+                                                <input type="text" class="form-control form-control-sm" dir="ltr"
                                                     name="owner_name" id="owner_name" maxlength="255">
                                             </div>
 
@@ -167,7 +167,7 @@
                                                     class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
                                                     <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control form-control-sm" name="name_en"
-                                                    id="name_en" maxlength="255">
+                                                    dir="ltr" id="name_en" maxlength="255">
                                             </div>
 
                                             <div class=" col-md-4 form-group form-group-xs">
@@ -201,7 +201,7 @@
                                                     class=" col-form-label kt-font-bold text-right">
                                                     {{__('Event Details')}} <span class="text-danger">*</span></label>
                                                 <textarea type="text" class="form-control form-control-sm"
-                                                    name="description_en" id="description_en" rows="3"
+                                                    name="description_en" id="description_en" rows="3" dir="ltr"
                                                     maxlength="255"></textarea>
                                             </div>
 
@@ -401,7 +401,7 @@
                                                 <label for="venue_en" class=" col-form-label kt-font-bold text-right">
                                                     {{__('Venue')}} <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control form-control-sm" name="venue_en"
-                                                    id="venue_en" maxlength="255">
+                                                    dir="ltr" id="venue_en" maxlength="255">
 
                                             </div>
 
@@ -477,14 +477,15 @@
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text" class="form-control form-control-sm map-input"
-                                                    name="address" id="address-input" value="" maxlength="255">
+                                                    name="address" id="address-input" dir="ltr" value=""
+                                                    maxlength="255">
                                             </div>
 
                                             <div class="col-md-4 form-group form-group-xs ">
                                                 <label for="street" class=" col-form-label kt-font-bold text-right">
                                                     {{__('Street')}} <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control form-control-sm" name="street"
-                                                    id="street">
+                                                <input type="text" class="form-control form-control-sm" dir="ltr"
+                                                    name="street" id="street">
                                             </div>
 
                                             <input type="hidden" id="full_address" name="full_address">
@@ -492,15 +493,15 @@
                                             <div class="col-md-4 form-group form-group-xs ">
                                                 <label for="longitude" class=" col-form-label kt-font-bold text-right">
                                                     {{__('Longitude')}} <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control form-control-sm" name="longitude"
-                                                    id="longitude">
+                                                <input type="text" class="form-control form-control-sm" dir="ltr"
+                                                    name="longitude" id="longitude">
                                             </div>
 
                                             <div class="col-md-4 form-group form-group-xs ">
                                                 <label for="latitude" class=" col-form-label kt-font-bold text-right">
                                                     {{__('Latitude')}} <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control form-control-sm" name="latitude"
-                                                    id="latitude">
+                                                <input type="text" class="form-control form-control-sm" dir="ltr"
+                                                    name="latitude" id="latitude">
                                             </div>
 
                                             <div class="col-md-4 form-group form-group-xs ">
@@ -508,7 +509,7 @@
                                                     class=" col-form-label kt-font-bold text-right">
                                                     {{__('Additional Location Information')}}</label>
                                                 <textarea class="form-control form-control-sm" name="addi_loc_info"
-                                                    id="addi_loc_info" maxlength="255"></textarea>
+                                                    id="addi_loc_info" dir="ltr" maxlength="255"></textarea>
                                             </div>
 
                                         </div>
@@ -712,7 +713,7 @@
                     abortStr: '',
                     maxFileCount: 2,
                     showDelete: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                     formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
                     onSuccess: function (files, response, xhr, pd) {
                         //You can control using PD
@@ -780,7 +781,7 @@
                 maxFileCount: 1,
                 showPreview: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },
@@ -1577,7 +1578,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                     formData: {
                         id: i , 
                         reqId: $('#truck_req_id_'+i).val()
@@ -1783,7 +1784,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
                        if(files.filepath)
@@ -1994,7 +1995,7 @@
                 returnType: "json",
                 showPreview: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },

@@ -99,9 +99,6 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('artist/fetch_event_details', 'Company\ArtistController@fetch_event_details')->name('artist.fetch_event_details');
     Route::get('artist/checkVisaRequired/{id}', 'Company\ArtistController@checkVisaRequired')->name('artist.checkVisaRequired');
     Route::post('artist/check_artist_exists_in_permit', 'Company\ArtistController@check_artist_exists_in_permit')->name('artist.check_artist_exists_in_permit');
-    Route::get('artist/gateway/{id}', function(){
-        return view('permits.artist.gateway');
-    })->name('artist.gateway');
     Route::post('artist/draft/delete', 'Company\ArtistController@delete_draft')->name('artist.delete_draft');
 
     Route::resource('event', 'Company\EventController');

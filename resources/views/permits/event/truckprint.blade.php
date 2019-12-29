@@ -138,7 +138,7 @@
         </table>
         <div id="heading">
             <div>
-                تصريح مؤقت
+                تصريح عربة طعام
             </div>
             <div>
                 Food Truck Permit
@@ -157,20 +157,17 @@
             <tr>
                 <td>{{$event_details->owner->company->trade_license}}</td>
                 <td class="subhead">رقم الرخصة<br />License Number</td>
-                <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}
-                </td>
-                <td class="subhead">اسم المؤسسة<br />Name of Establishment</td>
+                <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}</td>
+                <td class="subhead">رقم المنشأة<br />Name of Establishment</td>
             </tr>
             <tr>
-                <td colspan="3">
-                    {{date('d-M-Y',strtotime($event_details->owner->company->trade_license_expired_date))}}
+                <td colspan="3">{{date('d-M-Y',strtotime($event_details->owner->company->trade_license_expired_date))}}
                 </td>
-                <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
+                <td class="subhead"> تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
-                <td colspan="3"> {{$event_details->owner_name_ar}}<br />
-                    {{$event_details->owner_name}}</td>
-                <td class="subhead">المالك <br />License owner</td>
+                <td colspan="3"> {{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}</td>
+                <td class="subhead">المالك<br />License owner</td>
             </tr>
         </tbody>
     </table>
@@ -221,10 +218,10 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Establishment Name</th>
-                <th>Traffic Plate No.</th>
-                <th>Registration Expriy Date</th>
-                <th>Food Services</th>
+                <th>رقم المنشأة / Establishment Name</th>
+                <th>رقم اللوحة المرورية / Traffic Plate No.</th>
+                <th>تاريخ انتهاء تسجيل المركبة / Registration Expiry Date</th>
+                <th>خدمة الطعام / Food Services</th>
             </tr>
         </thead>
         <tbody>

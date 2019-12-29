@@ -2296,7 +2296,6 @@ class EventController extends Controller
         return view('permits.event.artist', $data);
     }
 
-
 }
 
 /*
