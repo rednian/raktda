@@ -92,44 +92,38 @@
             <section class="kt-form kt-form--label-right kt-padding-t-10">
               <h6 class="kt-font-dark">{{__('CONTACT PERSON DETAILS')}}</h6>
               <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__('Name')}} :</label>
+                <label class="col-5 col-form-label">{{__('Name')}}:</label>
                 <div class="col-7">
                   <span class="form-control-plaintext kt-font-bolder">{{ $user == 1 ? ucfirst($company->contact->contact_name_en) : $company->contact_name_ar }}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__('Designation')}} :</label>
+                <label class="col-5 col-form-label">{{__('Designation')}}:</label>
                 <div class="col-7">
                   <span class="form-control-plaintext kt-font-bolder">{{ $user == 1 ? ucfirst($company->contact->designation_en) : $company->contact->designation_ar }}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__('Mobile Number')}} :</label>
+                <label class="col-5 col-form-label">{{__('Mobile Number')}}:</label>
                 <div class="col-7">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->mobile_number}}</span>
                 </div>
               </div>
-              <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__('Email')}} :</label>
-                <div class="col-7">
-                  <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->email}}</span>
-                </div>
-              </div>
               
               <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__(' Emirates ID Number')}} :</label>
+                <label class="col-5 col-form-label">{{__(' Emirates ID Number')}}:</label>
                 <div class="col-7">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_identification}}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__(' Emirates ID Issued Date')}} :</label>
+                <label class="col-5 col-form-label">{{__(' Emirates ID Issued Date')}}:</label>
                 <div class="col-7">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_issued_date->format('d-F-Y')}}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__(' Emirates ID Expiry Date')}} :</label>
+                <label class="col-5 col-form-label">{{__(' Emirates ID Expiry Date')}}:</label>
                 <div class="col-7">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_expired_date->format('d-F-Y')}}</span>
                 </div>
@@ -157,7 +151,7 @@
               </div>
               <div class="kt-widget__details">
                 <span class="kt-widget__title">{{__('ACTIVE ARTIST PERMIT')}}</span>
-                <span class="kt-widget__value">{{$company->permit()->count()}}</span>
+                <span class="kt-widget__value">{{$company->permit()->where('permit_status', 'active')->count()}}</span>
               </div>
             </div>
             
@@ -401,8 +395,9 @@
       $('table#artist-permit-table').DataTable({
         ajax: '{{ route('admin.company.artistpemit.datatable', $company->company_id) }}',
         columnDefs:[
-        {targets: '_all', className: 'now-wrap'}
+        {targets: '_all', className: 'no-wrap'}
         ],
+        responsive:true,
         columns:[
         {data: 'reference_number'},
         {data: 'duration'},

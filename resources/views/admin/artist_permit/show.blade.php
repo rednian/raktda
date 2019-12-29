@@ -140,7 +140,7 @@
                  </div>
               </section>
             
-                <div class="kt-widget__content border-top kt-margin-t-15">
+                <div class="kt-widget__content border-top kt-margin-t-5">
                   <div class="kt-widget__details">
                     <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Revision Number')}}</span>
                     <span class="kt-widget__value">{{str_pad($permit->rivision_number, 3, 0, STR_PAD_LEFT)}}</span>
@@ -456,13 +456,13 @@
 
        $('form[name=frm_cancel]').submit(function(e){
             e.preventDefault();
-            bootbox.confirm({
-                'Are you sure you want to cancel this permit? '
-            }, function(result){
-                if(result){
-                    alert();
-                }
-            });
+            // bootbox.confirm({
+            //     'Are you sure you want to cancel this permit? '
+            // }, function(result){
+            //     if(result){
+            //         alert();
+            //     }
+            // });
        });
 
        });

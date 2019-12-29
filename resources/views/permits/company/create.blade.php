@@ -74,15 +74,11 @@
         <h4 class="text-center" style="margin: 2% 0">Create a company account</h4>
         <section class="row">
             <div class="col-md-6 col-md-offset-3">
-                @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
-                @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
+                @if (Session::has('error'))
+                   <div class="alert alert-danger alert-dismissible" role="alert">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                     <strong>Opps!</strong> {{Session::get('error')}}
+                   </div>
                 @endif
             </div>
         </section>

@@ -176,13 +176,17 @@
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type')}} </span>: 
             {{Auth::user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
           </p>
+          <p class="kt-margin-b-0 kt-font-dark">
+            <span class="kt-font-bold kt-margin-r-20">{{__('Sub-Category')}}</span>: 
+            {{ $event->subType()->exists() ? Auth::user()->LanguageId == 1 ? ucfirst($event->subType->name_en) : ucfirst($event->subType->name_ar) : '-'}}
+          </p>
 
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-20">{{__('Start Date')}}</span>: 
+            <span class="kt-font-bold kt-margin-r-20">{{__('Event Start Date')}}</span>:
             {{ date('d-F-Y', strtotime($event->issued_date)) }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-25">{{__('End Date')}}</span>: 
+            <span class="kt-font-bold kt-margin-r-25">{{__('Event End Date')}}</span>: 
             {{ date('d-F-Y', strtotime($event->expired_date)) }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">

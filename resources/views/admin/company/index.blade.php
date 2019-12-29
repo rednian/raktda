@@ -212,7 +212,9 @@
                           <div class="col-3">
                          <select name="area_id" id="active-company-area" class="form-control-sm form-control custom-select custom-select-sm " onchange="company_table.draw()" >
                            <option selected disabled >{{ __('AREA') }}</option>
-                          @if ($areas = App\Areas::where('emirates_id', 5)->get() )
+                          @if ($areas = App\Areas::whereHas('company' ,function($q){
+                            $q->whereIn('status', ['rejected', 'active', 'blocked']);
+                          })->get() )
                             @foreach ($areas as $area)
                              <option value="{{$area->id}}">{{ ucfirst(Auth::user()->LanguageId == 1 ? $area->area_en : $area->area_ar ) }}</option>
                             @endforeach

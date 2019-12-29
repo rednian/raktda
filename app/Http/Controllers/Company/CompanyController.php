@@ -27,11 +27,13 @@ class CompanyController extends Controller
    {
       try {
          DB::beginTransaction();
+         // dd($request->all);
          $company = Company::create(array_merge($request->all(), ['status'=>'draft']));
          $request['password'] = Hash::make($request->password);
          $user = $company->user()->create(array_merge($request->all(), ['IsActive'=> 0, 'type'=> 1]));
          DB::commit();
-         return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]));
+         return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))
+         ->with('success', 'Registration successful. Please login and verify your email.');
       } catch (Exception $e) {
          DB::rollBack();
          return redirect()->back()->with('error', $e->getMessage());
@@ -179,7 +181,7 @@ class CompanyController extends Controller
                  'designation_ar'=>$request->designation_ar,
                  'emirate_id_expired_date'=> date('Y-m-d', strtotime($request->emirate_id_expired_date)),
                  'emirate_id_issued_date'=> date('Y-m-d', strtotime($request->emirate_id_issued_date)),
-                 'emirate_identication'=>$request->emirate_identication,
+                 'emirate_identification'=>$request->emirate_identification,
                  'email'=>$request->email,
                  'mobile_number'=>$request->mobile_number,
                  ]);

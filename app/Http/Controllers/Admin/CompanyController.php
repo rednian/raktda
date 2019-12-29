@@ -403,10 +403,17 @@ class CompanyController extends Controller
          return $request->user()->LanguageId == 1 ? ucfirst($company->type->name_en) : $company->type->name_ar; 
       })
       ->editColumn('registered_date', function($company){
-        return $company->registered_date->format('d-F-Y');
+        if($company->registered_date){
+          return $company->registered_date->format('d-F-Y');
+        }
+        return '-';
       })
        ->editColumn('registered_by', function($company) use ($request){
-        return $request->user()->LanguageId == 1 ? ucfirst($company->registeredBy->NameEn) : $company->registeredBy->NameAr;
+        if(!is_null($company->registered_by)){
+        return $request->user()->LanguageId == 1 ? ucfirst($company->registeredBy->NameEn) : $company->registeredBy->NameAr;  
+        }
+        return '-';
+        
       })
       ->editColumn('address', function($company) use ($request){
          $country = $request->user()->LanguageId == 1 ? ucfirst($company->country->name_en) : $company->country->name_ar;

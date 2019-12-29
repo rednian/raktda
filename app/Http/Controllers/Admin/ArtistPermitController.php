@@ -494,8 +494,9 @@ class ArtistPermitController extends Controller
 
     		return Datatables::of($artist_permit)
 			    ->addColumn('nationality', function($artist_permit){
-			    	if(!$artist_permit->country){ return null; }
-			    	return ucwords($artist_permit->country->nationality_en);
+			    	if($artist_permit->country()->exists()){ ucwords($artist_permit->country->nationality_en); }
+            return null;
+			 
 			    })
 			    ->addColumn('age', function($artist_permit){
 			    	return $artist_permit->age;
@@ -807,16 +808,12 @@ class ArtistPermitController extends Controller
         return DataTables::of($comments)
         ->addColumn('name', function($comment) use ($user){
           $role_name = $comment->role->NameEn;
+
+
+          if ($comment->role_id == 6) {
+             $role_name =  Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : ucwords($comment->government->government_name_ar);
+          }
    
-
-          // if ($comment->role_id != 6) {
-          //     return $comment->comment;
-          // }
-          // else{
-          //   return Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar;
-          // }
-
-
           if (is_null($comment->user_id)) {
             return profileName($role_name, '');
           }

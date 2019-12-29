@@ -290,7 +290,7 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>{{__('Emirates ID')}} <span class="text-danger">*</span></label>
-                                                               <input autocomplete="off" name="emirate_identication" class="form-control form-control-sm" type="text" value="{{$company->contact->emirate_identication}}">
+                                                               <input autocomplete="off" name="emirate_identification" class="form-control form-control-sm" type="text" value="{{$company->contact->emirate_identification}}">
                                                            </div>
                                                            <div class="col-md-6">
                                                                <div class="form-group row">

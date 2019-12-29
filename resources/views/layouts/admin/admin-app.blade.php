@@ -101,6 +101,15 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
+
+    $('form').submit(function() {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            type: 'v2',
+            state: 'primary',
+            message: 'Please wait...'
+    });
+
     @if (Session::has('message'))
     @if(Session::get('message')[0] == 'success')
     $.notify({
