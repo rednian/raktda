@@ -2,30 +2,35 @@
     #event-report_wrapper .dt-buttons{
         background-color: #edeef4;
     }
+
 </style>
 
 <div class="container">
-    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="">
-        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#" data-target="#">
-                <span id="all_events" style="font-size: 11px">{{__('ALL EVENTS')}}</span>
-                <input type="text" value="active" id="active_artist_input" hidden>
-            </a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#" data-target="#">
-                <span id="events_next_30_days" style="font-size: 11px">{{__('EVENTS IN NEXT 30 DAYS')}}</span>
-                <input type="text" value="active" id="active_artist_input" hidden>
-            </a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#" data-target="#">
-                <span  id="events_next_60_days" style="font-size: 11px">{{__('EVENTS IN NEXT 60 DAYS')}}</span>
-                <input type="text" value='blocked' id="blocked_artist_input" hidden>
-            </a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#">
-                <span id="events_previous_30_days" style="font-size: 11px">{{__('EVENTS IN PREVIOUS 30 DAYS')}}</span>
-                <input type="text" value='single' id="single_permit_type_input" hidden>
+    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="event_ul_list">
+        <li  id="all_events"  class="nav-item"><a class="nav-link active"data-toggle="tab" href="#" data-target="#">
+                <span  style="font-size: 11px;">{{__('ALL EVENTS')}}</span>
+                <input type="text" value="all" id="all_events_input" hidden>
             </a></li>
 
-            <button id="ArtistTableresetButton" class="btn btn-sm pull-right btn-secondary">Reset</button>
+            <li id="active_events"  class="nav-item"><a class="nav-link" data-toggle="tab" href="#" data-target="#">
+                <span  style="font-size: 11px">{{__('ACTIVE EVENTS')}}</span>
+                <input type="text" value="active" id="active_events_input" hidden>
+            </a></li>
+        <li id="events_next_30_days" class="nav-item"><a  class="nav-link" data-toggle="tab" href="#" data-target="#">
+                <span  style="font-size: 11px">{{__('EVENTS IN NEXT 30 DAYS')}}</span>
+                <input type="text" value="+30" id="events_in_30_days" hidden>
+            </a></li>
+        <li id="events_next_60_days" class="nav-item"><a class="nav-link" data-toggle="tab"   href="#" data-target="#">
+                <span  style="font-size: 11px">{{__('EVENTS IN NEXT 60 DAYS')}}</span>
+                <input type="text" value='+60' id="events_in_60_days" hidden>
+            </a></li>
+        <li  id="events_previous_30_days"  class="nav-item"><a class="nav-link" data-toggle="tab" href="#">
+                <span style="font-size: 11px">{{__('EVENTS IN PREVIOUS 30 DAYS')}}</span>
+                <input type="text" value='-30' id="events_in_previous_30_days" hidden>
+            </a></li>
+
+            <button id="reset_event_table" style="    height: 27px;line-height: 2px;border-radius: 2px;margin-top: 10px;margin-left: 11px;" class="btn btn-sm pull-right btn-secondary">Reset</button>
         </li>
-
     </ul>
 </div>
 
@@ -33,7 +38,7 @@
     <thead>
 
     <tr>
-        <th colspan="3"><select class="foform-control-sm form-control custom-select custom-select-sm " name="applied_date" id="applied-date">
+        <th colspan="2"><select class="foform-control-sm form-control custom-select custom-select-sm " name="applied_date" id="applied-date">
                 <option value="">{{__('APPLIED DATE')}}</option>
                 <option value="1">{{__('Today')}}</option>
                 <option value="2">{{__('Yesterday')}}</option>
@@ -57,24 +62,22 @@
             <option value="amended">{{__('Amended')}}</option>
             </select>
         </th>
-        <th><button class="btn btn-sm btn-secondary" id="reset-event-table">{{__('RESET')}}</button></th>
+        <th><button class="btn btn-sm btn-secondary" id="reset_event_table">{{__('RESET')}}</button></th>
     </tr>
-
     <tr>
+        <th style="font-weight: bold">{{ __('REFERENCE NO.') }}</th>
+        <th style="font-weight: bold">{{ __('NAME') }}</th>
+        <th style="font-weight: bold">{{ __('DESCRIPTION') }}</th>
+        <th style="font-weight: bold">{{ __('VENUE') }}</th>
+        <th style="font-weight: bold">{{ __('ADDRESS') }}</th>
+        <th style="font-weight: bold">{{ __('COMPANY') }}</th>
+        <th style="font-weight: bold">{{ __('ISSUED DATE') }}</th>
+        <th style="font-weight: bold">{{ __('EVENT TYPE') }}</th>
+        <th style="font-weight: bold">{{ __('APPLICATION TYPE') }}</th>
+        <th style="font-weight: bold">{{ __('STATUS') }}</th>
         <th></th>
-        <th>{{ __('Reference No') }}</th>
-        <th>{{ __('Name') }}</th>
-        <th>{{ __('Description') }}</th>
-        <th>{{ __('Venue') }}</th>
-        <th>{{ __('Address') }}</th>
-        <th>{{ __('Company') }}</th>
-        <th>{{ __('Issue Date') }}</th>
-        <th>{{ __('Event Type') }}</th>
-        <th>{{ __('Application Type') }}</th>
-        <th>{{ __('Status') }}</th>
     </tr>
     </thead>
-
 </table>
 
 {{--@include('admin.artist_permit.includes.artist-block-modal')--}}
