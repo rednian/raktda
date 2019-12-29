@@ -15,9 +15,9 @@ class Permit extends Model
     protected $primaryKey = 'permit_id';
     protected $fillable = [
         'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
-        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid', 'paid_event_fee', 'work_location_ar', 'lock_user_id', 'exempt_by','exempt_payment', 'permit_reference_id'
+        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'cancel_by', 'cancel_date', 'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid', 'paid_event_fee', 'work_location_ar', 'lock_user_id', 'exempt_by', 'exempt_payment', 'approved_by', 'approved_date', 'rivision_number', 'permit_reference_id'
     ];
-    protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock'];
+    protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock', 'approved_date', 'cancel_date'];
 
     public function scopeLastMonth($q, $status = [])
     {
@@ -41,6 +41,21 @@ class Permit extends Model
                 ->where('permit_number', 'like', '%' . $permit_number[0] . '%');
         }
         return false;
+    }
+
+    public function cancelBy()
+    {
+         return $this->belongsTo(User::class, 'cancel_by', 'user_id');
+    }
+
+    public function approvedBy()
+    {
+       return $this->belongsTo(User::class, 'approved_by', 'user_id'); 
+    }
+
+    public function exemptBy()
+    {
+        return $this->belongsTo(User::class, 'exempt_by', 'user_id');
     }
 
     public function event()

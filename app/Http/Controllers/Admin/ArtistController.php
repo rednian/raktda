@@ -130,7 +130,7 @@
 						 return ucwords($artist->artistpermit()->latest()->first()->profession->name_en);
 					 })
 					 ->editColumn('artist_status', function($artist){
-						 return ucfirst($artist->artist_status);
+						 return permitStatus(ucfirst($artist->artist_status));
 					 })
 
 					 ->addColumn('active_permit', function($artist){

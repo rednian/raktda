@@ -1,5 +1,4 @@
 <section class="form-row">
-
 	<div class="col-8">
 		<section class="form-row">
 			<div class="col-4">
@@ -43,6 +42,7 @@
 		</div>
 	</div>
 </section>
+
 <table class="table  table-hover  table-borderless table-striped border" id="block-artist">
 	 <thead>
 	 <tr>

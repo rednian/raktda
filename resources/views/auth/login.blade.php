@@ -3,7 +3,7 @@
 <form method="POST" action="{{ route('login') }}">
     @csrf
     <div class="form-group">
-        <input placeholder="Username" type="text" class="form-control @error('username') is-invalid @enderror" name="login" value="{{ old('login') }}" autocomplete="off" autofocus>
+        <input placeholder="Email or Username" type="text" class="form-control @error('username') is-invalid @enderror" name="login" value="{{ old('login') }}" autocomplete="off" autofocus>
         @error('username')
         <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>

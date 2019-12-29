@@ -103,7 +103,7 @@
                         <div class="form-group m-b-15">
                             <input autocomplete="off" autofocus type="text" @error('username') is-invalid @enderror"
                                 name="login" value="{{ old('login') }}" class="form-control input-lg"
-                                placeholder="Username" required />
+                                placeholder="Email or username" required />
                             @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

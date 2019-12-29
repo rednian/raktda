@@ -25,7 +25,7 @@ class CompanyController extends Controller
          'approved'=> Company::where('status', 'active')->count(),
          'blocked'=> Company::where('status', 'blocked')->count(),
          'types'=>  CompanyType::orderBy('name_en')->get(),
-         'areas'=>  Areas::whereHas('company')->where('emirates_id', 5)->orderBy('area_en')->get(),
+         'areas'=>  Areas::has('company')->where('emirates_id', 5)->orderBy('area_en')->get(),
       ]);
    }
 

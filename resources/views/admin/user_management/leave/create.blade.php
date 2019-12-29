@@ -16,7 +16,7 @@
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ is_null($user->user_id) ? URL::signedRoute('user_management.index') . '#leave' : URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#leave' }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
-						 {{ __('BACK TO LIST') }}
+						 {{ __('BACK') }}
 					</a>
 					<div class="btn-group">
 						<button type="button" data-submittype="continue" class="btn btn-sm btn-warning btn-submit">
@@ -89,7 +89,7 @@
 			                            <span class="text-danger">*</span>
 			                        </label>
 				                    <div class="input-group date">
-										<input required name="leave_start" type="text" class="form-control" id="kt_datetimepicker_start" placeholder="Select date and time"/>
+									<input required name="leave_start" type="text" class="form-control" id="kt_datetimepicker_start" placeholder="{{ __('Select date and time') }}"/>
 										<div class="input-group-append">
 											<span class="input-group-text">
 												<i class="la la-calendar glyphicon-th"></i>
@@ -104,7 +104,7 @@
 			                            <span class="text-danger">*</span>
 			                        </label>
 				                    <div class="input-group date">
-										<input required name="leave_end" type="text" class="form-control" id="kt_datetimepicker_end" placeholder="Select date and time"/>
+									<input required name="leave_end" type="text" class="form-control" id="kt_datetimepicker_end" placeholder="{{ __('Select date and time') }}"/>
 										<div class="input-group-append">
 											<span class="input-group-text">
 												<i class="la la-calendar glyphicon-th"></i>
@@ -152,7 +152,7 @@
         });
 
         $('#kt_select2_1, #kt_select2_1_validate').select2({
-            placeholder: "Select an employee"
+            placeholder: "{{ __('Select an employee') }}"
         });
 
         var validated_form = $('form#formAddLeave').validate();
@@ -172,8 +172,8 @@
 			var diff = endDate - startDate;
 			if(diff <= 0){
 				$.notify({
-			        title: 'Invalid Dates',
-			        message: 'Make sure that end date is larger than start date.',
+			        title: '{{ __('Invalid Dates') }}',
+			        message: '{{ __('Make sure that end date is larger than start date.') }}',
 			        type:'error',
 			    },{
 			        type:'error',
