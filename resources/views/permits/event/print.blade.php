@@ -159,12 +159,12 @@
                 <td>{{$event_details->owner->company->trade_license}}</td>
                 <td class="subhead">رقم الرخصة<br />License Number</td>
                 <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}</td>
-                <td class="subhead">اسم المؤسسة<br />Name of Establishment</td>
+                <td class="subhead">رقم المنشأة<br />Name of Establishment</td>
             </tr>
             <tr>
                 <td colspan="3">{{date('d-M-Y',strtotime($event_details->owner->company->trade_license_expired_date))}}
                 </td>
-                <td class="subhead">تاريخ الانتهاء <br /> Expiry Date</td>
+                <td class="subhead"> تاريخ الانتهاء <br /> Expiry Date</td>
             </tr>
             <tr>
                 <td colspan="3"> {{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}</td>
@@ -184,12 +184,12 @@
             <tr>
                 <td colspan="2">{{$event_details->name_en}}</td>
                 <td>{{$event_details->name_ar}}</td>
-                <td class="subhead">اسم الفعالية<br />Event Name</td>
+                <td class="subhead">اسم الفعالية <br />Event Name</td>
             </tr>
             <tr>
                 <td colspan="2">{{$event_details->type['name_en']}} - {{$event_details->subType['sub_name_en']}}</td>
                 <td>{{$event_details->subType['sub_name_ar']}} - {{$event_details->type['name_ar']}}</td>
-                <td class="subhead">نوع التصريح<br />Permit Type</td>
+                <td class="subhead">نوع التصريح <br />Permit Type</td>
             </tr>
             <tr>
                 <td colspan="3">{{$event_details->permit_number}}</td>
@@ -202,7 +202,7 @@
             </tr> --}}
             <tr>
                 <td colspan="3">{{$event_details->issued_date}}</td>
-                <td class="subhead">تاريخ التصريح<br /> Permit Date</td>
+                <td class="subhead">تاريخ بداية التصريح<br /> Permit Date</td>
             </tr>
             <tr>
                 <td colspan="3">{{$event_details->expired_date}}</td>

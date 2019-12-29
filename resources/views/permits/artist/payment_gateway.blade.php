@@ -299,132 +299,79 @@
     </div>
 </div>
 
-
+<?php
+$url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session';
+$postFields = array(
+    'apiOperation' => 'CREATE_CHECKOUT_SESSION',
+    'order' => array(
+        'currency' => 'AED',
+        'id' => '123456'
+    ),
+    'interaction' => array(
+        'operation' => 'VERIFY'
+    ),
+    'transaction' => array( 
+        'source' => 'INTERNET'
+    )
+);
+$username = 'merchant.NRSINFOWAYSL';
+$password = 'aabf38b7ab511335ba2fb786206b1dc0';
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, $url);
+// curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+// 'Content-Type: application/json'
+// ));
+curl_setopt($curl, CURLOPT_USERPWD, $username . ":" . $password);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postFields));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+$output = curl_exec($curl);
+curl_close($curl);
+$output = json_decode($output);
+// dd($output);
+?>
 
 @endsection
 
 @section('script')
-
 <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js"
-    data-error="errorCallback" data-cancel="cancelCallback">
+    data-error="errorCallback" data-cancel="cancelCallback" data-beforeRedirect="Checkout.saveFormFields"
+    data-afterRedirect="Checkout.restoreFormFields" data-complete="completedCallback">
 </script>
-
-
 <script type="text/javascript">
     function errorCallback(error) {
-        console.log(JSON.stringify(error));
-    }
+            console.log(JSON.stringify(error));
+        }
 
-    function cancelCallback() {
-        console.log('Payment cancelled');
-    }
+        function cancelCallback() {
+            console.log('Payment cancelled');
+        }
 
-    function completeCallback(resultIndicator, sessionVersion)
-    {
-        console.log(resultIndicator)
-        console.log(sessionVersion)
-        Checkout.configure().session.id = sessionVersion;
-    }
-    
+        function completedCallback() {
+            console.log('test')
+        }
 
-    // curl https://test-rakbankpay.mtf.gateway.mastercard.com/api/nvp/version/54 \
-    //     -d "apiOperation=CREATE_CHECKOUT_SESSION" \
-    //     -d "apiPassword=$PWD" \
-    //     -d "interaction.returnUrl=<your_return_URL>" \
-    //     -d "apiUsername=merchant.<your_merchant_id>" \
-    //     -d "merchant=<your_merchant_id>" \
-    //     -d "order.id=<unique_order_id>" \
-    //     -d "order.amount=100.00" \
-    //     -d "order.currency=USD"
-
-    
-    $.ajax({
-            url: 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session',
-            type: 'POST',
-            headers: {
-                'Authorization': 'Basic ' + btoa('merchant.NRSINFOWAYSL:aabf38b7ab511335ba2fb786206b1dc0')
-            },
-            data: {
-                interaction: {
-                    operation: 'PURCHASE'
+        Checkout.configure({
+            merchant: 'TESTNRSINFOWAYSL',
+            order: {
+                amount: function() {
+                    return  $('#total').val();
                 },
-                order: {
-                    currency: 'AED',
-                    id: '123'
-                }
+                currency: 'AED',
+                description: 'Permit payment',
+                id: '123456'
             },
-            success: function(res){
-                console.log('fdafd');
-                console.log(res)
-            }, error: function (error) {
-                console.log('error')
-                console.log(error)
+            interaction: {
+                operation:'PURCHASE',
+                merchant: {
+                    name: 'RAKTDA'
+                },
+                displayControl: {
+                    billingAddress :'HIDE'
+                }
             }
         });
-
-    
-        // var url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session';
-        // const otherparams = {
-        //     headers: {
-        //         'Authorization': 'Basic ' + btoa('merchant.NRSINFOWAYSL:aabf38b7ab511335ba2fb786206b1dc0')
-        //     },
-        //     method: 'POST'
-        // }
-
-        // fetch(url, otherparams)
-        //     .then(data=> {
-        //         return data.json();
-        //     })
-        //     .then(res => {
-        //         console.log(res)
-        //     })
-        //     .catch(error => console.log(error))
-
-  
-
-        // $.ajax({
-        //     url: 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/nvp/version/54',
-        //     type: 'POST',
-        //     headers: {
-        //         'Authorization': 'Basic ' + btoa('merchant.NRSINFOWAYSL:aabf38b7ab511335ba2fb786206b1dc0')
-        //     },
-        //     // data: {
-        //     //     apiUsername: 'merchant.NRSINFOWAYSL',
-        //     //     apiPassword: btoa('aabf38b7ab511335ba2fb786206b1dc0')
-        //     // },
-        //     success: function(res){
-        //         // sessID = data.session.id;
-        //         console.log('fdafd');
-        //         console.log(res)
-        //     }, error: function (error) {
-        //         console.log('error')
-        //         console.log(error)
-        //     }
-        // });
-
-
-    Checkout.configure({
-        merchant: 'NRSINFOWAYSL',
-        order: {
-            amount: function() {
-                //Dynamic calculation of amount
-                return 150;
-            },
-            currency: 'AED',
-            description: 'Permit Payment',
-            id: '123'
-        },
-        interaction: {
-            operation: 'PURCHASE', // set this field to 'PURCHASE' for Hosted Checkout to perform a Pay Operation.
-            merchant: {
-                name: 'RAKTDA NRS Infoways',
-                // address: {
-                //     line1: '200 Sample St',
-                //     line2: '1234 Example Town'            
-                // }    
-            }
-        }
-    });
 
 </script>
 <script>
@@ -439,40 +386,39 @@
         $('#amount').val(artistTotalFee);
         $('#vat').val(artistVatTotal);
         $('#total').val(artistGTotal);
-
     });
 
 
-function check_permit(){
-    var ischecked = $('#isEventPay').prop('checked');
-    var artistTotalFee = $('#artist_total_fee').val();
-    var artistVatTotal = $('#artist_vat_total').val();
-    var artistGTotal = $('#artist_g_total').val();
-    var eventFeeTotal = $('#event_fee_total').val();
-    var eventVatTotal = $('#event_vat_total').val();
-    var eventGrandTotal = $('#event_grand_total').val();
-    var totalFee = parseInt(artistTotalFee) + parseInt(eventFeeTotal);
-    var totalVat = parseInt(artistVatTotal) + parseInt(eventVatTotal);
-    var total = parseInt(artistGTotal) + parseInt(eventGrandTotal);
-if(ischecked)
-{
-$('#event_details_table').show();
-$('#total_amt').html(totalFee.toFixed(2));
-$('#total_vat').html(totalVat.toFixed(2));
-$('#grand_total').html(total.toFixed(2));
-$('#amount').val(totalFee);
-$('#vat').val(totalVat);
-$('#total').val(total);
-}else{
-$('#event_details_table').hide();
-$('#total_amt').html(parseInt(artistTotalFee).toFixed(2));
-$('#total_vat').html(parseInt(artistVatTotal).toFixed(2));
-$('#grand_total').html(parseInt(artistGTotal).toFixed(2));
-$('#amount').val(artistTotalFee);
-$('#vat').val(artistVatTotal);
-$('#total').val(artistGTotal);
-}
-}
+    function check_permit(){
+        var ischecked = $('#isEventPay').prop('checked');
+        var artistTotalFee = $('#artist_total_fee').val();
+        var artistVatTotal = $('#artist_vat_total').val();
+        var artistGTotal = $('#artist_g_total').val();
+        var eventFeeTotal = $('#event_fee_total').val();
+        var eventVatTotal = $('#event_vat_total').val();
+        var eventGrandTotal = $('#event_grand_total').val();
+        var totalFee = parseInt(artistTotalFee) + parseInt(eventFeeTotal);
+        var totalVat = parseInt(artistVatTotal) + parseInt(eventVatTotal);
+        var total = parseInt(artistGTotal) + parseInt(eventGrandTotal);
+        if(ischecked)
+        {
+            $('#event_details_table').show();
+            $('#total_amt').html(totalFee.toFixed(2));
+            $('#total_vat').html(totalVat.toFixed(2));
+            $('#grand_total').html(total.toFixed(2));
+            $('#amount').val(totalFee);
+            $('#vat').val(totalVat);
+            $('#total').val(total);
+        }else{
+            $('#event_details_table').hide();
+            $('#total_amt').html(parseInt(artistTotalFee).toFixed(2));
+            $('#total_vat').html(parseInt(artistVatTotal).toFixed(2));
+            $('#grand_total').html(parseInt(artistGTotal).toFixed(2));
+            $('#amount').val(artistTotalFee);
+            $('#vat').val(artistVatTotal);
+            $('#total').val(artistGTotal);
+        }
+    }
 
 $('#pay_btn').click(function(){
     var paidEventFee = 0;
@@ -499,6 +445,32 @@ $('#pay_btn').click(function(){
         }
     });
 });
+
+function completeCallback(resultIndicator, sessionVersion) {
+        var paidEventFee = 0;
+        if($('#isEventPay').prop("checked")){
+            paidEventFee = 1;
+        }
+        $.ajax({
+            url: "{{route('company.payment')}}",
+            type: "POST",
+            data: {
+                permit_id:$('#permit_id').val(),
+                amount: $('#amount').val(),
+                vat: $('#vat').val(),
+                total: $('#total').val(),
+                noofdays: $('#noofdays').val(),
+                paidEventFee: paidEventFee
+            },
+            success: function (result) {
+                var toUrl = "{{route('company.happiness_center', ':id')}}";
+                toUrl = toUrl.replace(':id', $('#permit_id').val());
+                if(result.message[0]){
+                    window.location.href = toUrl;
+                }
+            }
+    });
+}
 
 
 </script>

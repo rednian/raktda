@@ -79,7 +79,7 @@
                                                             class=" col-form-label kt-font-bold text-right">{{__('Owner Name')}}
                                                             <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            name="owner_name" id="owner_name"
+                                                            name="owner_name" id="owner_name" dir="ltr"
                                                             placeholder="{{__('Owner Name')}}"
                                                             value="{{$event->owner_name}}">
                                                     </div>
@@ -106,7 +106,8 @@
                                                             @foreach ($event_types as $pt)
                                                             <option value="{{$pt->event_type_id}}"
                                                                 {{$event->event_type_id == $pt->event_type_id ? 'selected' : ''}}>
-                                                                {{ucwords($pt->name_en)}}</option>
+                                                                {{getLangId() == 1 ? ucwords($pt->name_en) : $pt->name_ar}}
+                                                            </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -117,7 +118,7 @@
                                                             class=" col-form-label kt-font-bold text-right">{{__('Event Name')}}
                                                             <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            name="name_en" id="name_en"
+                                                            name="name_en" id="name_en" dir="ltr"
                                                             placeholder="{{__('Event Name')}}"
                                                             value="{{$event->name_en}}">
                                                     </div>
@@ -160,7 +161,7 @@
                                                             {{__('Event Details')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <textarea type="text" class="form-control form-control-sm"
-                                                            name="description_en" id="description_en"
+                                                            name="description_en" id="description_en" dir="ltr"
                                                             placeholder="{{__('Event Details')}}" rows="3"
                                                             maxlength="255">{{$event->description_en}}</textarea>
                                                     </div>
@@ -213,13 +214,15 @@
                                                             <label class="kt-radio ">
                                                                 <input type="radio" name="isTruck"
                                                                     onclick="checkTruck(1)" value="1"
-                                                                    {{$event->is_truck == '1' ? 'checked': ''}}> Yes
+                                                                    {{$event->is_truck == '1' ? 'checked': ''}}>
+                                                                {{__('Yes')}}
                                                                 <span></span>
                                                             </label>
                                                             <label class="kt-radio">
                                                                 <input type="radio" name="isTruck"
                                                                     onclick="checkTruck(0)" value="0"
-                                                                    {{$event->is_truck == '0' ? 'checked': ''}}> No
+                                                                    {{$event->is_truck == '0' ? 'checked': ''}}>
+                                                                {{__('No')}}
                                                                 <span></span>
                                                             </label>
 
@@ -387,8 +390,8 @@
                                                             class=" col-form-label kt-font-bold text-right">
                                                             {{__('Venue')}} <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            name="venue_en" id="venue_en" placeholder="{{__('Venue')}}"
-                                                            value="{{$event->venue_en}}">
+                                                            dir="ltr" name="venue_en" id="venue_en"
+                                                            placeholder="{{__('Venue')}}" value="{{$event->venue_en}}">
 
                                                     </div>
 
@@ -455,8 +458,7 @@
                                             <div class="card-title show" data-toggle="collapse"
                                                 data-target="#collapseTwo4" aria-expanded="false"
                                                 aria-controls="collapseTwo6">
-                                                <h6 class="kt-font-transform-u kt-font-dark">{{__('Map
-                                                Details')}}
+                                                <h6 class="kt-font-transform-u kt-font-dark">{{__('Map Details')}}
                                                 </h6>
                                             </div>
                                         </div>
@@ -473,8 +475,8 @@
                                                         </label>
                                                         <input type="text"
                                                             class="form-control form-control-sm map-input"
-                                                            name="address" id="address-input" placeholder="Address"
-                                                            value="{{$event->address}}">
+                                                            name="address" id="address-input" dir="ltr"
+                                                            placeholder="Address" value="{{$event->address}}">
                                                     </div>
 
                                                     <div class="col-md-4 form-group form-group-xs ">
@@ -482,7 +484,7 @@
                                                             class=" col-form-label kt-font-bold text-right">
                                                             {{__('Street')}} <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            name="street" id="street" placeholder="Street"
+                                                            name="street" id="street" dir="ltr" placeholder="Street"
                                                             value="{{$event->street}}">
                                                     </div>
 
@@ -495,8 +497,8 @@
                                                             {{__('Longitude')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            name="longitude" id="longitude" placeholder="Longitude"
-                                                            value="{{$event->longitude}}">
+                                                            name="longitude" id="longitude" dir="ltr"
+                                                            placeholder="Longitude" value="{{$event->longitude}}">
                                                     </div>
 
                                                     <div class="col-md-4 form-group form-group-xs ">
@@ -505,8 +507,8 @@
                                                             {{__('Latitude')}} <span
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            name="latitude" id="latitude" placeholder="Latitude"
-                                                            value="{{$event->latitude}}">
+                                                            name="latitude" id="latitude" dir="ltr"
+                                                            placeholder="Latitude" value="{{$event->latitude}}">
                                                     </div>
 
                                                     <div class="col-md-4 form-group form-group-xs ">
@@ -514,8 +516,8 @@
                                                             class=" col-form-label kt-font-bold text-right">
                                                             {{__('Additional Location Information')}} </label>
                                                         <textarea class="form-control form-control-sm"
-                                                            name="addi_loc_info" id="addi_loc_info" rows="2">{{$event->additional_location_info ? $event->additional_location_info : ''}}
-                                                        </textarea>
+                                                            name="addi_loc_info" id="addi_loc_info" dir="ltr"
+                                                            rows="2">{{$event->additional_location_info ? $event->additional_location_info : ''}}</textarea>
                                                     </div>
 
                                                 </div>
@@ -708,7 +710,7 @@
                     maxFileCount: 2,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                     formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
                     onSuccess: function (files, response, xhr, pd) {
                             //You can control using PD
@@ -792,7 +794,7 @@
                 maxFileCount: 1,
                 showPreview: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },
@@ -1572,7 +1574,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                     formData: {
                         id: i , 
                         reqId: $('#truck_req_id_'+i).val()
@@ -1787,7 +1789,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
                         if(files)
@@ -2015,7 +2017,7 @@
                 returnType: "json",
                 showPreview: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn--yellow mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },

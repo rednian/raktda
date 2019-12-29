@@ -1,115 +1,83 @@
-@extends('layouts.app')
-@section('head')
-<style id="antiClickjack">
-    body {
-        display: none !important;
-    }
-</style>
-@endsection
-@section('content')
+<html>
 
-<div>Please enter your payment details:</div>
-<h3>Credit Card</h3>
-<div>Card Number: <input type="text" id="card-number" class="input-field" title="card number"
-        aria-label="enter your card number" value="" tabindex="1" readonly></div>
-<div>Expiry Month:<input type="text" id="expiry-month" class="input-field" title="expiry month"
-        aria-label="two digit expiry month" value="" tabindex="2" readonly></div>
-<div>Expiry Year:<input type="text" id="expiry-year" class="input-field" title="expiry year"
-        aria-label="two digit expiry year" value="" tabindex="3" readonly></div>
-<div>Security Code:<input type="text" id="security-code" class="input-field" title="security code"
-        aria-label="three digit CCV security code" value="" tabindex="4" readonly></div>
-<div>Cardholder Name:<input type="text" id="cardholder-name" class="input-field" title="cardholder name"
-        aria-label="enter name on card" value="" tabindex="5" readonly></div>
-<div><button id="payButton" onclick="pay('card');">Pay Now</button></div>
+<head>
+    <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js"
+        data-error="errorCallback" data-cancel="cancelCallback" data-complete="completeCallback">
+    </script>
+</head>
 
+<body>
 
-@endsection
+    <?php
+    $url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/TESTNRSINFOWAYSL/session/';
+    $postFields = array(
+        'apiOperation' => 'CREATE_CHECKOUT_SESSION',
+        'order' => array(
+        'currency' => 'AED',
+        'id' => '123'
+        ),
+        'interaction' => array(
+        'operation' => 'PURCHASE'
+        )
+    );
+    $username = 'merchant.TESTNRSINFOWAYSL';
+    $password = 'aabf38b7ab511335ba2fb786206b1dc0';
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    // curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    // 'Content-Type: application/json'
+    // ));
+    curl_setopt($curl, CURLOPT_USERPWD, $username . ":" . $password);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postFields));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    $output = curl_exec($curl);
+    curl_close($curl);
+    $output = json_decode($output);
+    ?>
 
-@section('script')
-<script src="https://test-rakbankpay.mtf.gateway.mastercard.com/form/version/54/merchant/NRSINFOWAYSL/session.js">
-</script>
+    <input type="button" value="Pay with Lightbox" onclick="Checkout.showLightbox();" />
+    <input type="button" value="Pay with Payment Page" onclick="Checkout.showPaymentPage();" />
+    <script type="text/javascript">
+        Checkout.configure({
+                merchant: 'TESTNRSINFOWAYSL',
+                order: {
+                    amount: function() {
+                        return 80 + 20 ;
+                    },
+                    currency: 'AED',
+                    description: 'Permit payment',
+                    id:'123'
+                },
+                session:{
+                    id: "{{$output->session->id}}"
+                },
+               interaction: {
+                   operation:'PURCHASE',
+                   merchant: {
+                       name: 'test'
+                   },
+                   displayControl: {
+                        billingAddress :'HIDE'
+                   }
+               }
+            });
 
-<script>
-    if (self === top) {
-        var antiClickjack = document.getElementById("antiClickjack");
-        antiClickjack.parentNode.removeChild(antiClickjack);
-    } else {
-        top.location = self.location;
-    }
-
-
-
-    PaymentSession.configure({
-    fields: {
-        // ATTACH HOSTED FIELDS TO YOUR PAYMENT PAGE FOR A CREDIT CARD
-        card: {
-            number: "#card-number",
-            securityCode: "#security-code",
-            expiryMonth: "#expiry-month",
-            expiryYear: "#expiry-year",
-            nameOnCard: "#cardholder-name"
-        }
-    },
-    //SPECIFY YOUR MITIGATION OPTION HERE
-    frameEmbeddingMitigation: ["javascript"],
-    callbacks: {
-        initialized: function(response) {
-            // HANDLE INITIALIZATION RESPONSE
-        },
-        formSessionUpdate: function(response) {
-            // HANDLE RESPONSE FOR UPDATE SESSION
-            if (response.status) {
-                if ("ok" == response.status) {
-                    
-                    console.log("Session updated with data: " + response.session.id);
-  
-                    //check if the security code was provided by the user
-                    if (response.sourceOfFunds.provided.card.securityCode) {
-                        console.log("Security code was provided.");
-                    }
-  
-                    //check if the user entered a Mastercard credit card
-                    if (response.sourceOfFunds.provided.card.scheme == 'MASTERCARD') {
-                        console.log("The user entered a Mastercard credit card.")
-                    }
-                } else if ("fields_in_error" == response.status)  {
-  
-                    console.log("Session update failed with field errors.");
-                    if (response.errors.cardNumber) {
-                        console.log("Card number invalid or missing.");
-                    }
-                    if (response.errors.expiryYear) {
-                        console.log("Expiry year invalid or missing.");
-                    }
-                    if (response.errors.expiryMonth) {
-                        console.log("Expiry month invalid or missing.");
-                    }
-                    if (response.errors.securityCode) {
-                        console.log("Security code invalid.");
-                    }
-                } else if ("request_timeout" == response.status)  {
-                    console.log("Session update failed with request timeout: " + response.errors.message);
-                } else if ("system_error" == response.status)  {
-                    console.log("Session update failed with system error: " + response.errors.message);
-                }
-            } else {
-                console.log("Session update failed: " + response);
+            function errorCallback(error) {
+                  console.log(JSON.stringify(error));
             }
-        }
-    },
-    interaction: {
-        displayControl: {
-            formatCard: "EMBOSSED",
-            invalidFieldCharacters: "REJECT"
-        }
-    }
- });
+            function cancelCallback() {
+                  console.log('Payment cancelled');
+            }
 
- function pay() {
-    // UPDATE THE SESSION WITH THE INPUT FROM HOSTED FIELDS
-    PaymentSession.updateSessionFromForm('card');
-}
+            
 
-</script>
+            function completeCallback(resultIndicator, sessionVersion){
+                console.log(resultIndicator)
+                console.log(sessionVersion)
+            }   
+    </script>
+</body>
 
-@endsection
+</html>

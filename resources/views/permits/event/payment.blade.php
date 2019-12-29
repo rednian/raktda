@@ -127,7 +127,7 @@
                                                                 <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="owner_name" id="owner_name"
-                                                                placeholder="{{__('Owner Name')}}"
+                                                                placeholder="{{__('Owner Name')}}" dir="ltr"
                                                                 value="{{$event->owner_name}}" readonly>
                                                         </div>
 
@@ -154,7 +154,8 @@
                                                                 @foreach ($event_types as $pt)
                                                                 <option value="{{$pt->event_type_id}}"
                                                                     {{$event->event_type_id == $pt->event_type_id ? 'selected' : ''}}>
-                                                                    {{ucwords($pt->name_en)}}</option>
+                                                                    {{getLangId() == 1 ? ucwords($pt->name_en) : $pt->name_ar}}
+                                                                </option>
                                                                 @endforeach
                                                             </select>
 
@@ -168,7 +169,7 @@
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="name_en" id="name_en"
-                                                                placeholder="{{__('Event Name')}}"
+                                                                placeholder="{{__('Event Name')}}" dir="ltr"
                                                                 value="{{$event->name_en}}" readonly>
                                                         </div>
 
@@ -214,7 +215,7 @@
                                                             <textarea type="text" class="form-control form-control-sm"
                                                                 name="description_en" id="description_en"
                                                                 placeholder="{{__('Event Details')}}" rows="3"
-                                                                maxlength="255"
+                                                                maxlength="255" dir="ltr"
                                                                 readonly>{{$event->description_en}}</textarea>
                                                         </div>
 
@@ -452,7 +453,7 @@
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
                                                                 name="venue_en" id="venue_en"
-                                                                placeholder="{{__('Venue')}}"
+                                                                placeholder="{{__('Venue')}}" dir="ltr"
                                                                 value="{{$event->venue_en}}" readonly>
 
                                                         </div>
@@ -539,8 +540,9 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control form-control-sm map-input"
-                                                                name="address" id="address-input" placeholder="Address"
-                                                                value="{{$event->address}}" readonly>
+                                                                name="address" id="address-input" dir="ltr"
+                                                                placeholder="Address" value="{{$event->address}}"
+                                                                readonly>
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-xs ">
@@ -549,7 +551,7 @@
                                                                 {{__('Street')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                name="street" id="street" placeholder="Street"
+                                                                name="street" id="street" dir="ltr" placeholder="Street"
                                                                 value="{{$event->street}}" readonly>
                                                         </div>
 
@@ -559,8 +561,9 @@
                                                                 {{__('Longitude')}}<span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                name="longitude" id="longitude" placeholder="Longitude"
-                                                                value="{{$event->longitude}}" readonly>
+                                                                name="longitude" id="longitude" dir="ltr"
+                                                                placeholder="Longitude" value="{{$event->longitude}}"
+                                                                readonly>
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-xs ">
@@ -569,8 +572,9 @@
                                                                 {{__('Latitude')}} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                name="latitude" id="latitude" placeholder="Latitude"
-                                                                value="{{$event->latitude}}" readonly>
+                                                                name="latitude" id="latitude" dir="ltr"
+                                                                placeholder="Latitude" value="{{$event->latitude}}"
+                                                                readonly>
                                                         </div>
 
                                                         <div class="col-md-4 form-group form-group-xs ">
@@ -578,8 +582,8 @@
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Additional Location Information')}} </label>
                                                             <textarea class="form-control form-control-sm"
-                                                                name="addi_loc_info" id="addi_loc_info" rows="2"
-                                                                readonly>{{$event->additional_location_info}}
+                                                                name="addi_loc_info" id="addi_loc_info" dir="ltr"
+                                                                rows="2" readonly>{{$event->additional_location_info}}
                                                             </textarea>
                                                         </div>
 
