@@ -141,7 +141,7 @@
 																	  </div>
 																</div>
 																<div class="col-sm-6">
-																 <label class="kt-font-dark">{{ __('Event Sub Type') }} </label>
+																 <label class="kt-font-dark">{{ __('Event Subcategory') }} </label>
 																  <div class="input-group input-group-sm">
 																 	<input value="{{ ucfirst(Auth::user()->Language == 1 ? $event->subType->name_en : $event->subType->name_ar) }}" name="event_type" readonly="readonly" type="text"
 																 					 class="form-control">
@@ -384,7 +384,7 @@
 																			<div class="kt-section__content">
 																				<div class="row form-group form-group-sm">
 																					<div class="col-6">
-																						 <label class="kt-font-dark">{{ __('Company Name') }} <span class="text-danger">*</span></label>
+																						 <label class="kt-font-dark">{{ __('Establishment Name') }} <span class="text-danger">*</span></label>
 																						 <div class="input-group input-group-sm">
 																								<input value="{{ $truck->company_name_en }}" name="company_name_en" readonly="readonly" type="text"
 																											 class="form-control">
@@ -399,7 +399,7 @@
 																						 </div>
 																					</div>
 																					<div class="col-6">
-																						<label class="kt-font-dark">{{ __('Company Name (AR)') }} <span class="text-danger">*</span></label>
+																						<label class="kt-font-dark">{{ __('Establishment Name (AR)') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
 																							<input dir="rtl" value="{{ $truck->company_name_ar }}" name="company_name_ar" readonly="readonly" type="text"
 																											 class="form-control">
@@ -784,7 +784,7 @@
 															</div>
 															<div class="row form-group form-group-sm">
 																<div class="col-md-12">
-																	<label for="">{{__('Additional Location Informationrmation')}}</label>
+																	<label for="">{{__('Additional Location Information')}}</label>
 																	<textarea rows="2" class="form-control form-control-sm">{{ucfirst($event->additional_location_info)}}</textarea>
 																</div>
 															</div>
@@ -902,10 +902,11 @@
 								<div class="kt-wizard-v3__form">
 									 <section class="row">
 											<div class="col kt-margin-t-20 kt-margin-b-20">
-												@include('admin.event.includes.existing-notification')
-												  @include('admin.artist_permit.includes.comment')
+													@include('admin.event.includes.existing-notification')
+												  	@include('admin.artist_permit.includes.comment')
 
 												  	{{-- CHECKED HISTORY --}}
+												  	@if($event->comment()->exists())
 													<section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-check-history">
 												  	<div class="card">
 												  		<div class="card-header" id="heading-check-history">
@@ -930,6 +931,7 @@
 												  		</div>
 												  	</div>
 												  </section>
+												  @endif
 	
 													{{-- ACTION --}}
 												   <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus" id="accordion-action">
@@ -1242,7 +1244,10 @@
        liqourRequirement();
        truck();
        imageTable();
+
+       @if($event->comment()->exists())
        commentHistory();
+       @endif
      });
 
      function imageTable(){

@@ -14,7 +14,7 @@
 					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __(strtoupper('Add New ' . ($type == 'artist' ? 'Artist' : 'Event') . ' Requirement')) }}</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
-					<a href="{{ $type == 'artist' ? url('settings#artist_requirements') : url('settings#event_requirements') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
+					<a href="{{ $type == 'artist' ? URL::signedRoute('admin.setting.index') . '#artist_requirements' : URL::signedRoute('admin.setting.index') . '#event_requirements' }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
 						 {{ __('BACK TO SETTINGS') }}
 					</a>

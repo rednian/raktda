@@ -9,9 +9,16 @@ use App\Notifications\AllNotification;
 use App\User;
 use App\Event;
 use Excel;
+use Illuminate\Support\Facades\URL;
 
 class SettingController extends Controller
 {
+	public function __construct(){
+		$this->middleware('signed')->except([
+            'saveGeneralSettings',
+        ]);
+	}
+
 	public function index()
 	{
 		$settings = GeneralSetting::first();
@@ -28,7 +35,7 @@ class SettingController extends Controller
 			$result = ['error', $e->getMessage(), 'Error'];
 		}
 
-		return redirect('settings#general_settings')->with('message', $result);
+		return redirect(URL::signedRoute('admin.setting.index') . '#general_settings')->with('message', $result);
 	}
 
 	public function excelTojson(Request $request){

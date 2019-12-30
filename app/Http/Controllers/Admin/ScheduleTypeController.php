@@ -6,9 +6,18 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\ScheduleType;
+use Illuminate\Support\Facades\URL;
 
 class ScheduleTypeController extends Controller
 {
+    public function __construct(){
+        $this->middleware('signed')->except([
+            'store',
+            'update',
+            'destroy',
+            'setActive',
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -59,7 +68,7 @@ class ScheduleTypeController extends Controller
             $result = ['success', 'Schedule Type has been added successfully.', 'Success'];
 
             if($request->submit_type == 'continue'){
-                return redirect('settings#schedule_settings')->with('message', $result);
+                return redirect(URL::signedRoute('admin.setting.index') . '#schedule_settings')->with('message', $result);
             }
             
         } catch (\Exception $e) {
@@ -122,7 +131,7 @@ class ScheduleTypeController extends Controller
             $result = ['success', 'Schedule Type has been saved successfully.', 'Success'];
 
             if($request->submit_type == 'continue'){
-                return redirect('settings#schedule_settings')->with('message', $result);
+                return redirect(URL::signedRoute('admin.setting.index') . '#schedule_settings')->with('message', $result);
             }
             
         } catch (\Exception $e) {
@@ -147,7 +156,7 @@ class ScheduleTypeController extends Controller
         } catch (\Exception $e) {
             $result = ['error', $e->getMessage(), 'Error'];
         }
-        return redirect('settings#schedule_settings')->with('message', $result);
+        return redirect(URL::signedRoute('admin.setting.index') . '#schedule_settings')->with('message', $result);
     }
 
     public function setActive(ScheduleType $schedule_type, Request $request){
@@ -166,6 +175,6 @@ class ScheduleTypeController extends Controller
             $result = ['error', $e->getMessage(), 'Error'];
         }
 
-        return redirect('settings#schedule_settings')->with('message', $result);
+        return redirect(URL::signedRoute('admin.setting.index') . '#schedule_settings')->with('message', $result);
     }
 }

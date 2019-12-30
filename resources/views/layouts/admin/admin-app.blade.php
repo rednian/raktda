@@ -158,7 +158,27 @@
       max: $.validator.format( "رجاء إدخال عدد أقل من أو يساوي {0}" ),
       min: $.validator.format( "رجاء إدخال عدد أكبر من أو يساوي {0}" )
     });
+
+    //DATATABLE
+    $.extend( true, $.fn.dataTable.defaults, {
+        language:{
+          searchPlaceholder: '{{ __('Search') }}',
+          info: 'رض _START_ إلى _END_ للـــ _TOTAL_',
+          infoEmpty: 'رض _START_ إلى _END_ للـــ _TOTAL_',
+          infoFiltered: '',
+          emptyTable: 'لا يوجد بيانات في الجدول',
+          zeroRecords: 'لا يوجد بيانات في الجدول',
+        }
+    });
+
+    //BOOTBOX
+    bootbox.setDefaults({
+      locale: "ar",
+    });
+    
     @endif
+
+    
 
     $('span[data-lang=en]').click(function(){
       getLang(1);

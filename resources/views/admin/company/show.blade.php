@@ -3,12 +3,12 @@
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
     <div class="kt-portlet__head kt-portlet__head--sm">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - PROFILE </h3>
+            <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - {{ __('ESTABLISHMENT DETAILS') }} </h3>
         </div>
         <div class="kt-portlet__head-toolbar">
             <a href="{{ route('admin.company.index') }}#active-company" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
                  <i class="la la-arrow-left"></i>
-                 BACK
+                 {{ __('BACK') }}
             </a>
          </div>
     </div>
@@ -50,37 +50,37 @@
               </div>
               
               <div class="form-group form-group-xs row">
-                <label class="col-4 col-form-label">{{__(' Trade License Number')}} :</label>
+                <label class="col-4 col-form-label">{{__('Trade License Number')}} :</label>
                 <div class="col-8">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->trade_license}}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-4 col-form-label">{{__(' Trade License Issued Date')}} :</label>
+                <label class="col-4 col-form-label">{{__('Trade License Issued Date')}} :</label>
                 <div class="col-8">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->trade_license_issued_date->format('d-F-Y')}}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-4 col-form-label">{{__(' Trade License Expiry Date')}} :</label>
+                <label class="col-4 col-form-label">{{__('Trade License Expiry Date')}} :</label>
                 <div class="col-8">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->trade_license_expired_date->format('d-F-Y')}}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-4 col-form-label">{{__(' Website')}} :</label>
+                <label class="col-4 col-form-label">{{__('Website')}} :</label>
                 <div class="col-8">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->website}}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-4 col-form-label">{{__(' Address')}} :</label>
+                <label class="col-4 col-form-label">{{__('Address')}} :</label>
                 <div class="col-8">
                   <span class="form-control-plaintext kt-font-bolder">{{ $address }}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-4 col-form-label">{{__(' Establishment Description')}} :</label>
+                <label class="col-4 col-form-label">{{__('Description')}} :</label>
                 <div class="col-8">
                   <span class="form-control-plaintext kt-font-bolder">{{ $user == 1 ? ucfirst($company->company_description_en) : $company->company_description_ar }}</span>
                 </div>
@@ -90,7 +90,7 @@
           </div>
           <div class="col-md-5">
             <section class="kt-form kt-form--label-right kt-padding-t-10">
-              <h6 class="kt-font-dark">{{__('CONTACT PERSON DETAILS')}}</h6>
+              <h6 class="kt-font-dark">{{__('CONTACT INFORMATION')}}</h6>
               <div class="form-group form-group-xs row">
                 <label class="col-5 col-form-label">{{__('Name')}}:</label>
                 <div class="col-7">
@@ -111,19 +111,19 @@
               </div>
               
               <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__(' Emirates ID Number')}}:</label>
+                <label class="col-5 col-form-label">{{__('Emirates ID')}}:</label>
                 <div class="col-7">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_identification}}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__(' Emirates ID Issued Date')}}:</label>
+                <label class="col-5 col-form-label">{{__('Emirates ID Issued Date')}}:</label>
                 <div class="col-7">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_issued_date->format('d-F-Y')}}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
-                <label class="col-5 col-form-label">{{__(' Emirates ID Expiry Date')}}:</label>
+                <label class="col-5 col-form-label">{{__('Emirates ID Expiry Date')}}:</label>
                 <div class="col-7">
                   <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_expired_date->format('d-F-Y')}}</span>
                 </div>
@@ -190,7 +190,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#requirement-tab" role="tab">
-                        {{__('UPLOADED REQUIREMENTS')}}
+                        {{__('UPLOADED DOCUMENTS')}}
                     </a>
                 </li>
                 
@@ -231,11 +231,11 @@
                                @csrf
                                <div class="form-group row form-group-sm">
                                  <div class="col-md-6">
-                                   <label for="">Remarks <span class="text-danger">*</span></label>
+                                   <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
                                    <textarea required name="comment_en" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                                  </div>
                                  <div class="col-md-6">
-                                   <label for="">Remarks (AR)<span class="text-danger">*</span></label>
+                                   <label for="">{{ __('Remarks (AR)') }}<span class="text-danger">*</span></label>
                                    <textarea required name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
                                  </div>
                                </div>
@@ -281,8 +281,8 @@
                                <th>{{__('STATUS')}}</th>
                                <th>{{__('VENUE')}}</th>
                                <th>{{__('LOCATION')}}</th>
-                               <th>{{__('START')}}</th>
-                               <th>{{__('END')}}</th>
+                               <th>{{__('START DATE')}}</th>
+                               <th>{{__('END DATE')}}</th>
                                <th>{{__('TIME')}}</th>
                                <th>{{__('FOOD TRUCK')}}</th>
                                <th>{{__('HAS LIQUOR')}}</th>
@@ -297,7 +297,7 @@
                            <tr>
                                {{-- <th></th> --}}
                                <th>{{__('REFERENCE NO.')}}</th>
-                               <th>{{__('DURATION')}}</th>
+                               <th>{{__('PERMIT DURATION')}}</th>
                                <th>{{__('REQUEST TYPE')}}</th>
                                <th>{{__('PERMIT NO.')}}</th>
                                <th>{{__('NUMBER OF ARTIST')}}</th>
@@ -313,7 +313,7 @@
                             <tr>
                                 <th></th>
                                 <th>{{__('ARTIST NAME')}}</th>
-                                <th>{{__('PERSON CODE.')}}</th>
+                                <th>{{__('PERSON CODE')}}</th>
                                 <th>{{__('NATIONALITY')}}</th>
                                 <th>{{__('MOBILE NUMBER')}}</th>
                                 <th>{{__('EMAIL')}}</th>
@@ -325,7 +325,7 @@
                                 <th>{{__('VISA NUMBER')}}</th>
                                 <th>{{__('VISA EXPIRY')}}</th>
                                 <th>{{__('PASSPORT NUMBER')}}</th>
-                                <th>{{__('PASSPORT EXPIRY')}}</th>
+                                <th>{{__('PASSPORT EXPIRY DATE')}}</th>
                                 <th>{{__('IDETIFICATION NUMBER')}}</th>
                                 <th>{{__('ADDRESS')}}</th>
                             </tr>
@@ -339,7 +339,7 @@
                            {{-- <th>#</th> --}}
                            <th>{{__('REQUIREMENT NAME')}}</th>
                            <th>{{__('ISSUED DATE')}}</th>
-                           <th>{{__('EXPIRED DATE')}}</th>
+                           <th>{{__('EXPIRY DATE')}}</th>
                         </tr>
                      </thead>
                   </table>

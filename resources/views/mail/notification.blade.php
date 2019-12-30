@@ -15,7 +15,7 @@
 
 @if(array_key_exists('url', $data))
 <hr/>
-<p>If you’re having trouble clicking the "{{ $data['button'] }}" button, copy and paste the URL below into your web browser: {{ $data['url'] }}</p>
+<p style="font-size:12px">If you’re having trouble clicking the "{{ $data['button'] }}" button, copy and paste the URL below into your web browser: {{ $data['url'] }}</p>
 @endif
 
 Thanks,<br>
