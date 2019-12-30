@@ -103,12 +103,12 @@
 
 
     $('form').submit(function() {
-        KTApp.blockPage({
-            overlayColor: '#000000',
-            type: 'v2',
-            state: 'primary',
-            message: 'Please wait...'
-        });
+       KTApp.blockPage({
+           overlayColor: '#000000',
+           type: 'v2',
+           state: 'success',
+           message: 'Please wait...'
+       });
     });
 
     @if (Session::has('message'))

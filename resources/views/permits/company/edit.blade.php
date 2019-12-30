@@ -15,7 +15,7 @@
         <div class="kt-portlet__head-toolbar">
             <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                    <a class="nav-link active" data-toggle="tab" href="#company-edit" role="tab" aria-selected="false">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                 <polygon points="0 0 24 0 24 24 0 24"></polygon>
@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="false">
+                    <a class="nav-link " data-toggle="tab" href="#user-profile" role="tab" aria-selected="false">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                 <polygon points="0 0 24 0 24 24 0 24"></polygon>
@@ -41,7 +41,7 @@
     </div>
     <div class="kt-portlet__body kt-padding-t-15">
             <div class="tab-content">
-                <div class="tab-pane active" id="kt_user_edit_tab_1" role="tabpanel">
+                <div class="tab-pane active" id="company-edit" role="tabpanel">
                     <div class="kt-form kt-form--label-right">
                       @if ($company->status == 'draft')
                         <div class="alert alert-warning alert-elevate fade show" role="alert">
@@ -103,7 +103,7 @@
                                        {{-- @method('PUT') --}}
                                         @csrf
                                        <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-                                           <div class="card">
+                                           <div class="card border">
                                                <div class="card-header" id="headingOne6">
                                                    <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true" aria-controls="collapseOne6">
                                                        <h6 class="kt-font-dark ">ESTABLISHMENT DETAILS</h6>
@@ -247,7 +247,7 @@
                                            </div>        
                                        </div>
                                        <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-10" id="accordion-contact">
-                                           <div class="card">
+                                           <div class="card border">
                                                <div class="card-header" id="heading-contact">
                                                    <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-contact" aria-expanded="true" aria-controls="collapse-contact">
                                                        <h6 class="kt-font-dark ">{{__('CONTACT PERSON DETAILS')}}</h6>
@@ -311,7 +311,7 @@
                                            </div>        
                                        </div>
                                        <div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-10" id="accordion-requirement">
-                                           <div class="card">
+                                           <div class="card border">
                                                <div class="card-header" id="heading-requirement">
                                                    <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
                                                        <h6 class="kt-font-dark "><span class="kt-font-transform-u">Upload Requirements</span> 
@@ -321,6 +321,22 @@
                                                </div>
                                                <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement">
                                                    <div class="card-body">
+                                                    <div class="alert alert-outline-danger fade show kt-padding-t-0 kt-padding-b-0" role="alert">
+                                                      <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
+                                                      <div class="alert-text kt-font-dark">
+                                                        <span class="kt-font-danger kt-font-bold">Note:</span>
+                                                        <ul>
+                                                          <li class="kt-font-danger">{{__('Uploaded files will be deleted if not submitted or saved as draft.')}}</li>
+                                                          <li>{{__('The maximum file size for uploads is 5MB.')}}</li>
+                                                          <li>{{__('File Upload (JPG, PNG & PDF) only allowed.')}}</li>
+                                                        </ul>
+                                                      </div>
+                                                      <div class="alert-close">
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                          <span aria-hidden="true"><i class="la la-close"></i></span>
+                                                        </button>
+                                                      </div>
+                                                    </div>
 
                                                     <section class="row form-group form-group-xs" id="upload-row">
                                                       <div class="col-md-3">
@@ -329,7 +345,7 @@
                                                       </div>
                                                       <div class="col-md-4">
                                                         <label>{{__('Upload Requirement')}} <span class="text-danger">*</span></label>
-                                                        <input id="file" onchange="readUrl(this);" type="file" multiple class="form-control">
+                                                        <input  id="file" onchange="readUrl(this);" type="file" multiple class="form-control">
                                                       </div>
                                                       <div class="col-md-2 date-required">
                                                         <label>{{__('Issued Date')}} <span class="text-danger">*</span></label>
@@ -345,7 +361,7 @@
                                                       </div>
                                                     </section>
 
-                                                    <table class="table table-borderless border table-sm" id="upload-requirement-table">
+                                                    <table class="table table-borderless border" id="upload-requirement-table">
                                                       <thead>
                                                         <tr>
                                                           <th>{{__('REQUIREMENT NAME')}}</th>
@@ -357,9 +373,6 @@
                                                       </thead>
                                                     </table>
   
-
-                                            
-                                                  
                                                    </div>
                                                    
                                                </div>
@@ -390,7 +403,7 @@
                     </div>
                 </div>
                 
-                <div class="tab-pane" id="kt_user_edit_tab_2" role="tabpanel">
+                <div class="tab-pane" id="user-profile" role="tabpanel">
                     <div class="kt-form kt-form--label-right">
                         <div class="kt-form__body col-sm-12 col-md-10">
                             <div class="kt-section kt-section--first">
@@ -536,43 +549,116 @@
   var filenames = [];
   var name = null;
   var requirementTable = {};
+  var is_valid = false;
 
     $(document).ready(function(){
       requirement();
       datePicker();
       type();
       uploaded();
+      hasUrl();
+
+      // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      //   var current_tab = $(e.target).attr('href');
+
+      //   if('#new-request' == current_tab ){  newCompany(); }
+      //   if('#processing-request' == current_tab ){ processing();   }
+      //   if('#active-company' == current_tab ){  company(); }
+      // });
+
+
+      $('form').submit(function() {
+           KTApp.blockPage({
+               overlayColor: '#000000',
+               type: 'v2',
+               state: 'success',
+               message: 'Please wait...'
+           });
+       });
+
       $('form[name=edit_company]').validate();
-
-      $('#btn-save').click(function(){
-        upload();
-      });
-
-     
-   
-
-           //  approver.select2({
-           // minimumResultsForSearch: 'Infinity',
-           // placeholder: 'Select Approver',
-           // autoWidth: true,
-           // width: '100%',
-           // allowClear: true,
-           // tags: true
-           //   });
-
       $('.select2').select2();
 
-      $('.filer_input').filer({
-        showThumbs: true,
-        limit: 5,
-        fileMaxSize: 5,
-        addMore: false,
-        allowDuplicates: false,
-        extensions: ['pdf', 'jpg', 'png'],
+      $('#btn-save').click(function(){
+        var name = $('#upload-row').find('select').val();
+        var file = document.getElementById('file').files;
 
+        if(file.length == 0 ){
+          $('#upload-row').find('#file').addClass('is-invalid');
+          is_valid = false;
+        }
+        else{
+          $('#upload-row').find('input#file').removeClass('is-invalid');
+           is_valid = true;
+        }
+
+        if(name == null){
+          $('#upload-row').find('select').addClass('is-invalid');
+           is_valid = false;
+        }
+        else{
+          $('#upload-row').find('select').addClass('is-valid');
+           is_valid = true;
+        }
+
+        if(is_valid){
+          $(this).removeAttr('disabled', true);
+          upload();
+        }
+        else{
+          $(this).attr('disabled', true);
+        }
+
+        
       });
 
+
+
+      $('#upload-row').find('select').change(function(){
+        var attr = $('#upload-row').find('input.date-picker');
+          if(typeof attr !== typeof undefined && attr !== false ){
+            attr.val(' ');
+          }
+
+        if($(this).val() && $('input[type=file]').prop('files') > 0){
+          $('#upload-row').find('button#btn-save').removeAttr('disabled', true);
+          $(this).removeClass('is-invalid').addClass('is-valid');
+          $('inputfile]#file').val(' ');
+          // files = [];
+        }
+        else{
+         $('#upload-row').find('button#btn-save').attr('disabled', true);
+          $(this).addClass('is-valid'); 
+        }
+      });
+
+      $('#upload-row').find('input#file').change(function(){
+        if ($(this).prop('files') > 0 && $('#upload-row').find('select').val() == null) {
+          $('#upload-row').find('button#btn-save').attr('disabled', true);
+           $(this).addClass('is-valid'); 
+        }
+        else{
+          $('#upload-row').find('button#btn-save').removeAttr('disabled', true);
+          $(this).removeClass('is-invalid').addClass('is-valid');
+        }
+      });
+
+
     });
+
+
+    function hasUrl(){
+      var hash = window.location.hash;
+      hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+      $('.nav-tabs a').click(function (e) {
+        $(this).tab('show');
+        var scrollmem = $('body').scrollTop();
+        window.location.hash = this.hash;
+        $('html,body').scrollTop(scrollmem);
+      });
+    }
+
+    
 
     function uploaded(){
       requirementTable = $('#upload-requirement-table').DataTable({
@@ -598,8 +684,8 @@
         columns:[
         // {data: 'name'},
         {data: 'file'},
-        {data: 'issued_date'},
-        {data: 'expired_date'},
+        {render: function(data){ return null}},
+        {render: function(data){ return null}},
         {render: function(data){ return null}},
         {data: 'action'},
         ],
@@ -607,10 +693,19 @@
           $('.btn-remove',row).click(function(){
             $.ajax({
               url: '{{ route('company.requirement.delete', $company->company_id) }}',
-              data: {company_requirement_id : data.company_requirement_id},
-              type: 'post'
+              data: {company_requirement_id : data.company_requirement_id, path: data.path},
+              type: 'post',
+              beforeSend: function(){
+                KTApp.blockPage({
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: 'Please wait...'
+                });
+              }
             }).done(function(response, textStatus, xhr){
               if(xhr.status == 200){ 
+                 KTApp.unblockPage();
                 requirementTable.ajax.reload();
               }
             });
@@ -640,19 +735,29 @@
            cache: false,
            processData:false,
            contentType: false,
+           beforeSend: function(){
+            KTApp.blockPage({
+                overlayColor: '#000000',
+                type: 'v2',
+                state: 'success',
+                message: 'Please wait...'
+            });
+           },
          }).done(function(response, textStatus, xhr){
 
              if(xhr.status == 200){ 
               $('#upload-row').find('input').val('');
               requirementTable.ajax.reload();
+               KTApp.unblockPage();
               files = []; 
-              $('#upload-date-start').val('');
+              $('#upload-date-start').val(' ');
               $('#upload-date-end').val('');
            }
          });
     }
 
     function readUrl(input) {
+
       if(input.files.length > 0){
          $.each(input.files, function(i, v){
           var reader = new FileReader();
@@ -672,6 +777,7 @@
         //if establishment type is corporate
         if($(this).val() == 2){
           $('#trade-license-container').removeClass('kt-hide').find('input').removeAttr('disabled', true).attr('required', true);
+
         }
         else{
          $('#trade-license-container').addClass('kt-hide').find('input').attr('disabled', true).removeAttr('required', true); 

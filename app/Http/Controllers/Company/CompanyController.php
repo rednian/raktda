@@ -8,6 +8,7 @@ use App\User;
 use App\Company;
 use Carbon\Carbon;
 use App\CompanyRequirement;
+use App\CompanyOtherUpload;
 use App\Requirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -43,9 +44,9 @@ class CompanyController extends Controller
    public function edit(Request $request, Company $company)
    {
       foreach ($company->requirement()->whereNull('is_submit')->get() as $requirement) {
-          Storage::delete('/public/'.$requirement->path);
+          Storage::delete('public/'.$requirement->path);
       }
-      // $company->requirement()->whereNull('is_submit')->delete();
+      $company->requirement()->whereNull('is_submit')->delete();
        return view('permits.company.edit', ['company'=>$company, 'page_title'=> '']); 
    }
 
@@ -69,13 +70,13 @@ class CompanyController extends Controller
         ]);
         
         DB::commit();
-        $result = ['success', 'Password Changed Successfully', 'Success'];
+        $result = ['success', 'Update Successfully', 'Success'];
       } catch (Exception $e) {
         DB::rollBack();
         $result = ['danger', $e->getMessage(), 'Error'];
       }
 
-      return redirect()->back()->with(['message'=> $result]);
+      return redirect(URL::signedRoute('company.edit', $company->company_id).'#user-profile')->with(['message'=> $result]);
    }
 
    public function changePassword(Request $request, Company $company) {
@@ -130,14 +131,14 @@ class CompanyController extends Controller
 
 
             if (Company::exists()) {
-               $last_reference = Company::where('company_id', '!=', $company->company_id)->orderBy('company_id', 'desc')->first()->reference_number;
+               $last_reference = Company::where('company_id', '!=', $company->company_id)->where('status', '!=', 'draft')->orderBy('company_id', 'desc')->first()->reference_number;
                $reference_number = explode('-', $last_reference);
                // dd($reference_number);
                $reference_number = $reference_number[2]+1 ;
-               $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 6, 0, STR_PAD_LEFT);
+               $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
              }
              else{
-              $reference_number = 'EST-'.date('Y').'-00001';
+              $reference_number = 'EST-'.date('Y').'-0001';
              } 
 
             $company = Company::find($company->company_id);
@@ -204,7 +205,9 @@ class CompanyController extends Controller
 
    public function deleteFile(Request $request, Company $company)
    {
-    $company->requirement()->where('company_requirement_id', $request->company_requirement_id)->delete();
+      if (Storage::delete('public/'.$request->path)) {
+        $company->requirement()->where('company_requirement_id', $request->company_requirement_id)->delete();
+      };
 
    }
 
@@ -219,34 +222,72 @@ class CompanyController extends Controller
       $requirement_name = explode(' ', $request->requirement_name);
       $requirement_name = strtolower(implode('_', $requirement_name));
 
-       //remove file if exists.
-      if ($company->whereHas('requirement', function($q) use ($request){
-          $q->where('requirement_id', $request->requirement_id);
-        })->exists()) {
-         $company->requirement()->where('requirement_id', $request->requirement_id)->delete();
-       }
+     
 
-       if ($request->files) {
+      if($request->requirement_id == 'other upload'){
+        // $company->requirement()->whereType('other')->delete();
+        $other = CompanyOtherUpload::first();
 
-          foreach ($request->files as $upload) {
-            foreach ($upload as $page_number => $file) {
-                $filename = $requirement_name.'_'.($page_number+1).'.'.$file->getClientOriginalExtension();
 
-                Storage::putFileAs($path, $file, $filename);
+        if ($request->files) {
 
-                $request['path'] = $company->company_id.'/'.$filename;
-                $request['page_number'] = $page_number+1;
-                if($request->requirement_id != 'other upload'){
-                  $company->requirement()->create($request->all());
-                }
-                else{
-                  // $company->requirement()->create([]);
-                }
-                
-            }
+           foreach ($request->files as $upload) {
+             foreach ($upload as $page_number => $file) {
+                 $filename = $other->name_en.'_'.($page_number+1).'.'.$file->getClientOriginalExtension();
 
-          }
-       }
+                 Storage::putFileAs($path, $file, $filename);
+
+                 $request['path'] = $company->company_id.'/'.$filename;
+                 $request['type'] = 'other';
+                  $request['file_type'] = $file->getClientMimeType();
+                 $request['requirement_id'] = 1;
+                 $request['page_number'] = $page_number+1;
+                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
+                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
+                   $company->requirement()->create($request->all());   
+             }
+
+           }
+        }
+      }
+      else{
+
+        //remove file if exists.
+       if ($company->whereHas('requirement', function($q) use ($request){
+           $q->where('requirement_id', $request->requirement_id);
+         })->exists()) {
+          // $company->requirement()->where('requirement_id', $request->requirement_id)->delete();
+        }
+
+        if ($request->files) {
+
+           foreach ($request->files as $upload) {
+             foreach ($upload as $page_number => $file) {
+                 $filename = $requirement_name.'_'.($page_number+1).'.'.$file->getClientOriginalExtension();
+
+                 Storage::putFileAs($path, $file, $filename);
+
+                 $request['path'] = $company->company_id.'/'.$filename;
+                 $request['type'] = 'requirement';
+                 $request['file_type'] = $file->getClientMimeType();
+                 $request['page_number'] = $page_number+1;
+                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
+                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
+                 if($request->requirement_id != 'other upload'){
+                   $company->requirement()->create($request->all());
+                 }
+                 else{
+                   // $company->requirement()->create([]);
+                 }
+                 
+             }
+
+           }
+        }
+         
+      }
+
+      
       DB::commit();
       $result = ['success', '', 'Success'];
     } catch (Exception $e) {
@@ -263,25 +304,38 @@ class CompanyController extends Controller
       $requirement = Requirement::has('company')->where('requirement_type', 'company')->count();
 
       return DataTables::of($company->requirement()->get())
-      ->addColumn('name', function($data) use ($user){
-        return $user == 1 ? ucfirst($data->requirement->requirement_name) : $data->requirement->requirement_name_ar;
+      ->addColumn('name', function($upload) use ($user){
+        if($upload->type == 'requirement'){
+            $name =  $user == 1 ? ucwords($upload->requirement->requirement_name) : ucwords($upload->requirement->requirement_name_ar);
+        }
+        else{
+          $name =  __('Other Upload');
+        }
+        return $name;
       })
       ->editColumn('issued_date', function($data){
-        return '';
+        return $data->issued_date ? $data->issued_date->format('d-F-Y') : '-'; 
       })
       ->editColumn('expired_date', function($data){
-       return '';
+       return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-'; 
       })
       ->addColumn('file', function($data){
-        $html = '<a href="'.asset('/storage/'.$data->path).'"data-fancybox data-fancybox data-caption="'.$data->requirement->requirement_name.'">';
-        $html .= $data->requirement->requirement_name.'_'.$data->page_number;
+        if ($data->type == 'requirement') {
+          $name = $data->requirement->requirement_name;
+        }
+        else{
+          $name = __('Other Upload');
+        }
+        $html = '<a href="'.asset('/storage/'.$data->path).'"data-fancybox data-fancybox data-caption="'.$name.'">';
+        $html .= $name.'_'.$data->page_number;
         $html .= '</a>';
         return $html;
       })
       ->addColumn('count', function($data) use ($requirement){
         return $requirement.'  PAGE';
       })
-      ->addColumn('action', function($data){
+      ->addColumn('action', function($data) use ($company){
+        if(in_array($company->status, ['active', 'blocked'])){ return __('Delete not allowed'); }
         return '<button type="button" class="btn btn-sm btn-remove btn-secondary">'.__('REMOVE').'</button>';
       })
       ->rawColumns(['file', 'action'])
