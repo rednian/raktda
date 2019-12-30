@@ -10,9 +10,21 @@ use App\EventType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
 
 class RequirementController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('signed')->except([
+            'store',
+            'isexist',
+            'update',
+            'destroy',
+            'datatable',
+        ]);
+    }
+
     public function index(){
         return abort(404);
     }
@@ -32,99 +44,9 @@ class RequirementController extends Controller
 
     public function create(Request $request)
     {
-
-        if (!$request->hasValidSignature()) {
-            abort(404);
-        }
-
         return view('admin.settings.requirement.create', ['page_title'=> 'Add New Requirement', 'type' => $request->t ]);
     }
 
-
-    // public function store(Request $request)
-    // {
-    //     return response()->json(['result'=>true, 'data'=>Requirement::create($request->all())]);
-    // }
-
-    // public function isexist(Request $request)
-    // {
-    // 	if($request->requirement_name){
-    // 		$requirement = Requirement::where('requirement_name', $request->requirement_name)->where('requirement_type', 'event')->exists();
-    // 		return response()->json(($requirement ? $request->requirement_name. ' already exist.' : true));
-    //   }
-    // 	else{
-    // 		$requirement = Requirement::where('requirement_name_ar', $request->requirement_name_ar)->where('requirement_type', 'event')->exists();
-    // 		return response()->json(($requirement ?  $request->requirement_name_ar. ' already exist.' : true));
-    //   }
-
-    // }
-
-
- //    public function show($id)
- //    {
- //        //
- //    }
-
-
- //    public function edit($id)
- //    {
- //        //
- //    }
-
-
- //    public function update(Request $request, $id)
- //    {
- //        //
- //    }
-
- //    public function update_status(Request $request, Requirement $requirement)
- //    {
- //        if($request->ajax()){
- //            try {
- //                if($requirement->update($request->all())){
- //                     $result = ['success', ucfirst($requirement->requirement_type) .' Permit Requirement Status  has been updated successfully.', 'Success'];
- //                }
- //            } catch (Exception $e) {
- //                $result = ['error', $e->getMessage(), 'Error'];
- //            }
-
- //            return response()->json(['message' => $result]);
- //        }
- //    }
-
-
- //    public function destroy(Request $request, Requirement $requirement)
- //    {
- //        if( $request->ajax() ){
- //            try{
- //                if($requirement->delete()){
- //                    $requirement->update(['deleted_by'=>Auth::user()->user_id]);
- //                    $result = ['success', ucfirst($requirement->requirement_type) .' Permit Requirement has been deleted successfully.', 'Success'];
- //                }
-
- //            }catch(Exception $e){
- //                $result = ['error', $e->getMessage(), 'Error'];
- //            }
-
- //            return response()->json(['message' => $result]);
- //        }
- //    }
-
- //    public function datatable(Request $request)
- //    {
- //        if($request->ajax()){
- //            $requirement = Requirement::when($request->requirement_type, function($q) use ($request){
- //                                 $q->where('requirement_type', $request->requirement_type);
- //                                })
- //                                ->when($request->status, function($q) use ($request){
- //                                    $q->where('status', $request->status);
- //                                })
- //                                ->get();
-
- //             return Datatables::of($requirement)->make(true);
- //        }
-
- //    }
     public function store(Request $request){
 
         try{
@@ -132,7 +54,7 @@ class RequirementController extends Controller
             $result = ['success', 'New Requirement has been added', 'Success'];
 
             if($request->submit_type == 'continue'){
-                return $request->requirement_type == 'artist' ? redirect('settings#artist_requirements')->with('message', $result) : redirect('settings#event_requirements')->with('message', $result);
+                return $request->requirement_type == 'artist' ? redirect(URL::signedRoute('admin.setting.index') . '#artist_requirements')->with('message', $result) : redirect(URL::signedRoute('admin.setting.index') . '#event_requirements')->with('message', $result);
             }
 
         }catch(Exception $e){
@@ -169,7 +91,7 @@ class RequirementController extends Controller
             $result = ['success', 'Requirement has been saved successfully', 'Success'];
 
             if($request->submit_type == 'continue'){
-                return $request->requirement_type == 'artist' ? redirect('settings#artist_requirements')->with('message', $result) : redirect('settings#event_requirements')->with('message', $result);
+                return $request->requirement_type == 'artist' ? redirect(URL::signedRoute('admin.setting.index') . '#artist_requirements')->with('message', $result) : redirect(URL::signedRoute('admin.setting.index') . '#event_requirements')->with('message', $result);
             }
         }catch(Exception $e){
             $result = ['error', $e->getMessage(), 'Error'];
@@ -220,7 +142,7 @@ class RequirementController extends Controller
             return $args->status ? '<span class="kt-badge kt-badge--success kt-badge--inline">' . __('Active') . '</span>' : '<span class="kt-badge kt-badge--danger kt-badge--inline">' . __('Inactive') . '</span>';
         })
         ->addColumn('actions', function($args){
-            return '<button data-url="' . route('requirements.destroy', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">' . __('Delete') . '</button> <button data-url="' . route('requirements.edit', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('Edit') . '</button>';
+            return '<button data-url="' . route('requirements.destroy', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">' . __('Delete') . '</button> <button data-url="' . URL::signedRoute('requirements.edit', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('Edit') . '</button>';
         })
         ->addColumn('isInEventType', function($args) use($request){
             if($request->has('event_type_id')){

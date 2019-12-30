@@ -78,7 +78,7 @@
                    </a>
                </li>
                <li class="kt-menu__item {{ Request::is('settings*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.setting.index') }}" class="kt-menu__link ">
+                   <a href="{{ URL::signedRoute('admin.setting.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text kt-font-transform-u">{{ __('System Settings') }}</span>
                    </a>
                </li>
