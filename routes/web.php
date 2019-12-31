@@ -204,6 +204,14 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('artist_reports/artist_permit_report/all_permit_report', 'Admin\ReportController@all_permit_report')
         ->name('admin.artist_permit_report.all_permit_report');
 
+    //Transactions
+    Route::get('artist_reports/artist_transaction_report', 'Admin\TransactionReportController@artistTransaction')
+        ->name('admin.artist_permit_report.artistTransaction');
+
+    Route::get('artist_reports/event_transaction_report', 'Admin\TransactionReportController@eventTransaction')
+        ->name('admin.artist_permit_report.eventTransaction');
+
+
 
 
 

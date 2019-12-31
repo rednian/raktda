@@ -48,6 +48,7 @@
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
 						<li class="nav-item"><a class="nav-link active" id="artist-report-tab" data-toggle="tab" href="#artist-report" data-target="#artist-report">{{ __('Artist Report') }}</a></li>
                         <li class="nav-item"><a class="nav-link" id="event-report-tab" data-toggle="tab" href="#event-report-section" data-target="#event-report-section">{{__('Event Report') }}</a></li>
+                          <li class="nav-item artist_transaction_tab"><a class="nav-link" id="transaction-report-tab" data-toggle="tab" href="#transaction-report-tab" data-target="#transaction-report-section">{{__('Transactions') }}</a></li>
 
 {{--
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#artist-permit-report" data-target="#artist-permit-report">{{ __('Artist Permit Report') }}</a></li>
@@ -100,7 +101,19 @@
                   @endempty
                @endif --}}
             </div>
-						<div class="tab-pane fade" id="inspection" role="tabpanel">
+                     <div class="tab-pane show fade" id="transaction-report-section" role="tabpanel">
+                         @include('admin.report.includes.transaction-report')
+                         {{-- @include('admin.artist_permit.includes.summary') --}}
+                         {{--  @if(\App\Permit::whereIn('permit_status', ['new', 'modified', 'unprocessed'])->count() > 0)
+                          @else
+                             @empty()
+                                No New Request Permit
+                             @endempty
+                          @endif --}}
+                     </div>
+
+
+                     <div class="tab-pane fade" id="inspection" role="tabpanel">
 							 {{-- @include('admin.artist_permit.includes.summary') --}}
                             <div class="text-success">INSPECTION</div>
 							{{--  @if(\App\Permit::whereIn('permit_status', ['approved-unpaid', 'modification request', 'processing', 'need approval'])->count() > 0)

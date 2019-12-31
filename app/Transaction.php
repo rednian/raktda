@@ -21,4 +21,5 @@ class Transaction extends Model
     {
         return $this->belongsToMany(ArtistPermit::class, 'artsit_permit_transaction', 'transaction_id', 'artist_permit_id')->withPivot('amount');
     }
+
 }
