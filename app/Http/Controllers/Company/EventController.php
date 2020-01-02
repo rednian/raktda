@@ -47,11 +47,15 @@ class EventController extends Controller
         return view('permits.event.index', ['types' => $eventtypes]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         EventLiquor::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
         EventTruck::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
-        $data['event_types'] = EventType::all()->sortBy('name_en');
+        // $data['event_types'] = EventType::all()->sortBy('name_en');
+        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
         $data['event_sub_types'] = EventTypeSub::all()->sortBy('sub_name_en');
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
@@ -713,6 +717,9 @@ class EventController extends Controller
 
     public function show(Request $request, Event $event)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         if ($event->permit) {
             $permit_id = $event->permit->permit_id;
             $artist = \App\Permit::where('permit_id', $permit_id)->with('artistPermit')->where('created_by', Auth::user()->user_id)->first();
@@ -734,9 +741,13 @@ class EventController extends Controller
     }
 
 
-    public function edit(Event $event)
+    public function edit(Request $request, Event $event)
     {
-        $data['event_types'] = EventType::all()->sortBy('name_en');
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
+        // $data['event_types'] = EventType::all()->sortBy('name_en');
+        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
         $data['staff_comments'] = $event->comment()->where('type', 1)->get();
@@ -775,10 +786,10 @@ class EventController extends Controller
         $events = Event::whereIn('status', ['active', 'expired'])->where('created_by', Auth::user()->user_id)->union($allEvents)->get();
 
         $events = $events->map(function ($event) use ($user) {
-            $input = array("fc-event-danger", "fc-event-success", "fc-event-primary", "fc-event-light","fc-event-danger", "fc-event-brand");
-            $arr = array("fc-event-solid-primary",  "fc-event-solid-warning", "fc-event-solid-success");
-            $rand_keys = array_rand($input, 2);
-            $rand_keys_d = array_rand($arr, 2);
+            // $input = array("fc-event-danger", "fc-event-success", "fc-event-primary", "fc-event-light","fc-event-danger", "fc-event-brand");
+            // $arr = array("fc-event-solid-primary",  "fc-event-solid-warning", "fc-event-solid-success");
+            // $rand_keys = array_rand($input, 2);
+            // $rand_keys_d = array_rand($arr, 2);
             return [    
                 'title' => $user->LanguageId == 1 ? ucwords($event->name_en) : $event->name_ar,
                 'start' => date('Y-m-d', strtotime($event->issued_date)) . 'T' . date('H:i:s', strtotime($event->time_start)),
@@ -786,9 +797,8 @@ class EventController extends Controller
                 'id' => $event->event_id,
                 'url' => $event->created_by == $user->user_id ? route('event.show', $event->event_id) . '?tab=calendar' : '#',
                 'description' => 'Venue : ' . $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
-                // 'backgroundColor' => '#1dbb9e !important',
-                // 'textColor' => '#fff !important',
-                'className' => $input[$rand_keys[0]] .' '.$arr[$rand_keys_d[0]]
+                'backgroundColor' => '#8c272d !important',
+                'textColor' => '#fff !important',
             ];
         });
         return response()->json($events);
@@ -1017,6 +1027,13 @@ class EventController extends Controller
         if(!$request->hasValidSignature()){
             return abort(401);
         }
+
+        $hasHappiness = Happiness::where('type', 'event')->where('application_id', $permit->permit_id)->exists();
+        if(!$hasHappiness)
+        {
+            return redirect(URL::signedRoute('company.happiness_center', ['id' => $permit->permit_id]));
+        }
+
         $event_details = Event::with('type', 'country')->where('event_id', $id)->first();
         
         $data['event_details'] = $event_details;
@@ -1119,15 +1136,15 @@ class EventController extends Controller
             switch ($status) {
                 case 'applied':
                     if ($permit->firm == 'government' && $permit->status == 'approved-unpaid') {
-                        return '<a href="' . route('event.happiness', $permit->event_id) . '"  title="'.__('Happiness').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Happiness').'</span></a>';
+                        return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.happiness', $permit->event_id) . '"  title="'.__('Happiness').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Happiness').'</span></a>';
                     }else if ($permit->status == 'approved-unpaid') {
-                        return '<a href="' . route('company.event.payment', $permit->event_id) . '"  title="'.__('Payment').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
+                        return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.payment', $permit->event_id) . '"  title="'.__('Payment').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
                     } else if ($permit->status == 'rejected') {
                         return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Rejected').'</span>';
                     } else if ($permit->status == 'cancelled') {
                         return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
                     } else if ($permit->status == 'need modification') {
-                        return '<a href="' . route('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
+                        return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a><a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
                     } else if ($permit->status == 'new') {
                         // return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     }
@@ -1137,7 +1154,7 @@ class EventController extends Controller
                         $issued_date = strtotime($permit->issued_date);
                         $today = strtotime(date('Y-m-d 00:00:00'));
                         $diff = abs($today - $issued_date) / 60 / 60 / 24;
-                        $amend_btn = ($diff <= $amend_grace) ? '<a href="' . route('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-l-15">Amend </span></a><a href="' . route('event.add_artist', $permit->event_id) . '" title="'.__('Add Artist').'" class="kt-font-dark kt-pull-right"><i class="fa fa-user-plus"></i></a><br />' : '';
+                        $amend_btn = ($diff <= $amend_grace) ? '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-l-15">Amend </span></a><a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.add_artist', $permit->event_id) . '" title="'.__('Add Artist').'" class="kt-font-dark kt-pull-right"><i class="fa fa-user-plus"></i></a><br />' : '';
                         return $amend_btn . '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\',\''.$permit->permit_number.'\')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline" title="'.__('Cancel Permit').'">'.__('Cancel').'</span>';
                     } else if ($permit->status == 'expired') {
                         return '<div class="alert-text">'.__('Expired').'</div>';
@@ -1145,7 +1162,7 @@ class EventController extends Controller
                     break;
                 case 'draft':   
                     if ($permit->status == 'draft') {
-                        return '<a href="' . route('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>&emsp;<span onClick="delete_draft(' . $permit->event_id . ')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Delete').'</span>';
+                        return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>&emsp;<span onClick="delete_draft(' . $permit->event_id . ')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Delete').'</span>';
                     }
                     break;
             }
@@ -1177,7 +1194,7 @@ class EventController extends Controller
                     $from = 'draft';
                     break;
             }
-            return '<a href="' . route('event.show', $permit->event_id) . '?tab=' . $from . '" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.show',[ 'id' =>  $permit->event_id , 'tab' => $from]) .'" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
             if ($permit->status == 'expired') {
                 return;
@@ -1187,8 +1204,11 @@ class EventController extends Controller
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
 
-    public function amend(Event $event)
+    public function amend(Request $request, Event $event)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $data['eventReq'] = $event->requirements()->get();
         $data['event'] =  $event;
         $data['tab'] = 'valid';
@@ -1609,9 +1629,13 @@ class EventController extends Controller
         return response()->json(['message' => $result]);
     }
 
-    public function view_draft(Event $event)
+    public function view_draft(Request $request, Event $event)
     {
-        $data['event_types'] = EventType::all()->sortBy('name_en');
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
+        // $data['event_types'] = EventType::all()->sortBy('name_en');
+        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_docs'] = EventRequirement::with('requirement')->where('event_id', $event->event_id)->where('type', 'truck')->get();
 
@@ -1849,9 +1873,14 @@ class EventController extends Controller
         }
     }
 
-    public function payment(Event $event)
+    public function payment(Request $request, Event $event)
     {
-        $data['event_types'] = EventType::all()->sortBy('name_en');
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
+
+        // $data['event_types'] = EventType::all()->sortBy('name_en');
+        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_docs'] = EventRequirement::with('requirement')->where('event_id', $event->event_id)->where('type', 'truck')->get();
 
@@ -2000,9 +2029,13 @@ class EventController extends Controller
         return response()->json(['message' => $result]);
     }
 
-    public function happiness(Event $event)
+    public function happiness(Request $request, Event $event)
     {
-        $data['event_types'] = EventType::all()->sortBy('name_en');
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
+        // $data['event_types'] = EventType::all()->sortBy('name_en');
+        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_docs'] = EventRequirement::with('requirement')->where('event_id', $event->event_id)->where('type', 'truck')->get();
 
@@ -2276,8 +2309,11 @@ class EventController extends Controller
         return $filepath;
     }
 
-    public function add_artist($id = null)
+    public function add_artist(Request $request, $id = null)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $data['event'] = Event::latest()->first();
         $artistTemp = \App\ArtistTempData::where('created_by', Auth::user()->user_id);
         if ($id) {

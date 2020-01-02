@@ -187,8 +187,11 @@
                 <td class="subhead">اسم الفعالية <br />Event Name</td>
             </tr>
             <tr>
-                <td colspan="2">{{$event_details->type['name_en']}} - {{$event_details->subType['sub_name_en']}}</td>
-                <td>{{$event_details->subType['sub_name_ar']}} - {{$event_details->type['name_ar']}}</td>
+                <td colspan="2">{{$event_details->type['name_en']}}
+                    {{$event_details->subType->sub_name_en ?  ' - ' . $event_details->subType['sub_name_en'] : ''}}
+                </td>
+                <td>{{$event_details->subType->sub_name_ar ? $event_details->subType['sub_name_ar'] . ' - ' : ''}}
+                    {{$event_details->type['name_ar']}}</td>
                 <td class="subhead">نوع التصريح <br />Permit Type</td>
             </tr>
             <tr>

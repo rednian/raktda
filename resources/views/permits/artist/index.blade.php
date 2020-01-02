@@ -32,7 +32,7 @@
                     @if(check_is_blocked()['status'] != 'blocked' && check_is_blocked()['status'] != 'rejected')
                     <span class="nav-item"
                         style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                        <a href="{{ url('company/artist/new/1')}}">
+                        <a href="{{ route('company.add_new_permit', ['id' => 1])}}">
                             <button class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                                 id="nav--new-permit-btn">
                                 <i class="la la-plus"></i>{{__('Add New')}}
@@ -253,10 +253,10 @@
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
                 { data: 'term', name: 'term' },
-                { data: 'issued_date', name: 'issued_date' },
-                { data: 'expired_date', name: 'expired_date' },
-                { data: 'work_location', name: 'work_location' },
-                { data: 'permit_id', name: 'permit_id' },
+                { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
+                { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
+                { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
+                { data: 'permit_id', name: 'permit_id', className: 'no-wrap' },
                 { data: 'permit_status', name: 'permit_status' },
                 { data: 'action', name: 'action',  className: "text-center" },
                 { data: 'details', name: 'details' ,  className: "text-center"},
@@ -300,10 +300,10 @@
                 { data: 'reference_number', name: 'reference_number' },
                 { data: 'term', name: 'term' },
                 { data: 'permit_number', name: 'permit_number' },
-                { data: 'issued_date', name: 'issued_date' },
-                { data: 'expired_date', name: 'expired_date' },
-                { data: 'work_location', name: 'work_location' },
-                { data: 'permit_id', name: 'permit_id' },
+                { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
+                { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
+                { data: 'work_location', name: 'work_location' , className: 'work-location-column'},
+                { data: 'permit_id', name: 'permit_id' , className: 'no-wrap'},
                 { data: 'action', name: 'action' ,  className: "text-center"},
                 { data: 'download', name: 'download' ,  className: "text-center" },
                 { data: 'details', name: 'details' ,  className: "text-center" },

@@ -307,7 +307,13 @@
         // })
 
         $('#submit_btn').click((e) => {
-            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            KTApp.blockPage({
+               overlayColor: '#000000',
+               type: 'v2',
+               state: 'success',
+               message: 'Please wait...'
+           });
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
@@ -326,6 +332,7 @@
                     success: function(result){
                         $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
                         window.location.href="{{route('artist.index')}}#applied";
+                        KTApp.unblockPage();
                     }
             });
         });

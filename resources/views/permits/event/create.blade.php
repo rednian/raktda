@@ -32,8 +32,7 @@
                         <div class="kt-form__section kt-form__section--first">
                             <div class="kt-wizard-v3__form">
                                 <!--begin::Accordion-->
-                                <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                                    id="permit-fee-details">
+                                <section class="accordion kt-margin-b-5 accordion-solid border" id="permit-fee-details">
                                     <div class="card">
                                         <div class="card-header" id="headingThree6">
                                             <div class="card-title collapsed" data-toggle="collapse"
@@ -61,6 +60,27 @@
                                                 </table>
 
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="accordion kt-margin-b-5 accordion-solid border"
+                                    id="permit-document-details">
+                                    <div class="card">
+                                        <div class="card-header" id="headingFour6">
+                                            <div class="card-title collapsed" data-toggle="collapse"
+                                                data-target="#collapseFour6" aria-expanded="false"
+                                                aria-controls="collapseFour6">
+                                                <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
+                                                    {{__('Documents Required')}}</h6>
+                                            </div>
+                                        </div>
+                                        <div id="collapseFour6" class="collapse show" aria-labelledby="headingFour6"
+                                            data-parent="#permit-document-details">
+                                            <div class="card-body">
+
+                                                @include('permits.event.common.documents_required',['event_types' =>
+                                                $event_types])
                                             </div>
                                         </div>
                                     </div>
@@ -242,7 +262,8 @@
                                                 <div class="kt-radio-inline">
                                                     <label class="kt-radio ">
                                                         <input type="radio" name="isTruck" onclick="checkTruck(1)"
-                                                            value="1"> {{__('Yes')}}
+                                                            value="1">
+                                                        {{__('Yes')}}
                                                         <span></span>
                                                     </label>
                                                     <label class="kt-radio">
@@ -426,7 +447,8 @@
 
                                             <div class="col-md-4 form-group form-group-xs ">
                                                 <label for="area_id"
-                                                    class=" col-form-label kt-font-bold text-right">{{__('Area')}}
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Area')}} <span
+                                                        class="text-danger">*</span>
                                                 </label>
                                                 <select class="  form-control form-control-sm " name="area_id"
                                                     id="area_id">
@@ -1072,6 +1094,7 @@
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
                     var dn = localStorage.getItem('documentNames');
+                  
                         $.ajax({
                             url: "{{route('event.store')}}",
                             type: "POST",
@@ -1081,6 +1104,14 @@
                                 documentN: dn,
                                 description: $('#description').val(),
                                 from: 'new'
+                            },
+                            beforeSend: function() {
+                                KTApp.blockPage({
+                                    overlayColor: '#000000',
+                                    type: 'v2',
+                                    state: 'success',
+                                    message: 'Please wait...'
+                                });
                             },
                             success: function (result) {
                                 if(result.message[0]){
@@ -1097,6 +1128,7 @@
                                 }else {
                                     window.location.href = "{{route('event.index')}}#applied";
                                 }
+                                KTApp.unblockPage();
                             }
                         });
                 }
@@ -1133,6 +1165,14 @@
                             liquorId: liquor_id,
                             description: $('#description').val(),
                             truckIds: truck_ids,
+                        },
+                        beforeSend: function() {
+                            KTApp.blockPage({
+                                overlayColor: '#000000',
+                                type: 'v2',
+                                state: 'success',
+                                message: 'Please wait...'
+                            });
                         },
                         success: function (result) {
                             if(result.message[0]){
@@ -1301,6 +1341,7 @@
         });
 
 
+
         var truckValidator = $('#truck_details_form').validate({
             rules: {
                 company_name_en: 'required',
@@ -1467,6 +1508,9 @@
         $('#add_new_truck').click(function(){
             $('#this_event_truck_id').val();
             $('#edit_one_food_truck').modal('show');
+            // $('#edit_one_food_truck').on('shown.bs.modal', function(){
+            //     alert('fdf');
+            // });
             $('#truck_details_form').trigger('reset');
             $('#edit_truck_title').hide();
             $('#update_this_td').hide();

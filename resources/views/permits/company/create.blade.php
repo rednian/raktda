@@ -86,6 +86,8 @@
                 @endif
             </div>
         </section>
+
+
         <section class="row">
             <div class="col-md-6 col-md-offset-3">
                 <form action="{{ route('company.store') }}" method="post" accept-charset="utf-8">

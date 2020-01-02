@@ -35,7 +35,7 @@
 </div>
 
 <div class="modal fade" id="edit_one_food_truck" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style=" overflow-y:auto">
+    aria-hidden="true" style="overflow-y:auto;">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -53,13 +53,13 @@
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" autocomplete="off" ">
+                                id="company_name_en" autocomplete="off">
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" dir="rtl" autocomplete="off" ">
+                                id="company_name_ar" dir="rtl" autocomplete="off">
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}} <span
@@ -71,7 +71,7 @@
                             <label for="" class="col-form-label kt-font-bold">{{__('Traffic Plate No')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
-                                autocomplete="off" ">
+                                autocomplete="off">
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}

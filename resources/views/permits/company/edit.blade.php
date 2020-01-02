@@ -10,6 +10,16 @@
  </style>
 @stop
 @section('content')
+
+@if(check_is_blocked()['status'] == 'rejected')
+@include('permits.artist.common.company-reject')
+@endif
+
+@if(check_is_blocked()['status'] == 'blocked')
+@include('permits.artist.common.company-block')
+@endif
+
+
 <div class="kt-portlet kt-portlet--tabs">
     <div class="kt-portlet__head">
         <div class="kt-portlet__head-toolbar">
