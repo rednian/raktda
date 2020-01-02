@@ -6,7 +6,7 @@
             <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - {{ __('ESTABLISHMENT DETAILS') }} </h3>
         </div>
         <div class="kt-portlet__head-toolbar">
-            <a href="{{ route('admin.company.index') }}#active-company" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
+            <a href="{{ URL::signedRoute('admin.company.index') }}#active-company" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
                  <i class="la la-arrow-left"></i>
                  {{ __('BACK') }}
             </a>

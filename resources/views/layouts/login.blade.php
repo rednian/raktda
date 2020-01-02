@@ -140,11 +140,11 @@
                                     </label>
                                 </div>
                             </div>
-                            {{-- <div class="col-sm-6 ">
+                            <div class="col-sm-6 ">
                                 @if (Route::has('password.request'))
                                    <div class="text-right" style="color: #707478"><a href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a></div>
                                 @endif
-                            </div> --}}
+                            </div>
                         </section>
                         
                         <div class="login-buttons">

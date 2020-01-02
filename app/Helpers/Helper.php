@@ -46,6 +46,9 @@ function profileName($name = null, $type = null){
 }
 
 function humanDate($date){
+    if ($date->diffInMonths(Carbon\Carbon::now()) > 1 ) {
+        return $date->format('d-F-Y');
+    }
     return $date->diffForHumans();
 }
 

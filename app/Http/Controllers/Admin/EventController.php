@@ -151,7 +151,7 @@
 
 		public function calendar(Request $request)
 		{
-			$events = Event::whereIn('status',['active', 'expired'])->get();
+			$events = Event::whereNotNull('approved_by')->get();
 			$events = $events->map(function($event) use ($request){
 				return [
 					'title'=> $request->user()->LanguageId == 1 ? ucfirst($event->name_en) : $event->name_ar,
@@ -162,6 +162,7 @@
 					'description'=> 'Venue : '.$venue = $request->user()->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
 					'backgroundColor'=> $event->type->color,
 					'textColor' => '#fff !important',
+					'businessHours'=> 	['start'=>date('H:m', strtotime($event->time_start)), 'end'=>date('H:m', strtotime( $event->time_end))]
 				];
 			});
 			return response()->json($events);

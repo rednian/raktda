@@ -1116,9 +1116,9 @@
                   listDay: { buttonText: '{{ __('Day List') }}' },
                   listWeek: { buttonText: '{{ __('Week List') }}' }
               },
-              defaultView: 'dayGridMonth',
-              // defaultDate: TODAY,
-              editable: true,
+              defaultView: 'listWeek',
+              defaultDate: TODAY,
+              editable: false,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
               events: {

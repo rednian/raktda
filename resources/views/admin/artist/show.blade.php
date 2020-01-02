@@ -5,7 +5,7 @@
       <div class="kt-portlet__head-label">
          <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST DETAILS') }}</span></h3></div>
          <div class="kt-portlet__head-toolbar">
-            <button id="clickme" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
+            <button type="button" id="clickme" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
                <i class="la la-arrow-left"></i>{{ __('BACK') }}
             </button>
          </div>
@@ -115,9 +115,9 @@
                           <div class="form-group row">
                             <div class="col">
                               @if ($artist->artist_status == 'active')
-                              <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="blocked">{{ __('SUBMIT') }}</button>
+                              <button type="submit" class="btn btn-sm btn-maroon kt-transform-u" name="status" value="blocked">{{ __('SUBMIT') }}</button>
                               @else
-                              <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">{{ __('SUBMIT') }}</button>
+                              <button type="submit" class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">{{ __('SUBMIT') }}</button>
                               @endif
                             </div>
                           </div>

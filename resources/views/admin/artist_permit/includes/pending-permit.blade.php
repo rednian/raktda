@@ -57,7 +57,6 @@
 <table class="table table-hover table-borderless table-striped border" id="pending-permit">
     <thead>
      <tr>
-        <th></th>
         <th>{{ __('REFERENCE NO.') }}</th>
         <th>{{ __('ESTABLISHMENT NAME') }}</th>
         <th>

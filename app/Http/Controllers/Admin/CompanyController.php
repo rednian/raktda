@@ -15,8 +15,10 @@ use App\Http\Controllers\Controller;
 
 class CompanyController extends Controller
 {
-   public function index()
+   public function index(Request $request)
    {
+    if (!$request->hasValidSignature()) { abort(401); }
+
       $new_company = Company::where('status', 'new')->count();
 
       return view('admin.company.index',[ 
