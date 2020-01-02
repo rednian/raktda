@@ -30,6 +30,10 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     protected $casts = ['email_verified_at' => 'datetime'];
     protected $dates = ['CreatedAt'];
 
+    public function routeNotificationForMail($notification)
+    {
+        return $this->email;
+    }
 
     public function scopeAvailableInspector($q, $start_date)
     {

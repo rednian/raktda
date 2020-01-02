@@ -91,7 +91,18 @@
                         {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
                         <h4 style="margin-top: 10%;" class="text-center">Login to your Account</h4>
                     </div>
+                    @if (Session::has('success'))
+                        <section class="row">
+                            <div class="col-sm-12">
+                                <div style="margin-bottom: 0px;" class="alert alert-success alert-dismissible" role="alert">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <strong>Success!</strong> {{Session::get('success')}}
+                                </div>
+                            </div>   
+                        </section>
+                    @endif
                     <div class="icon">
+
                         <i class="fa fa-sign-in"></i>
                     </div>
                 </div>
@@ -120,12 +131,22 @@
                             </span>
                             @enderror
                         </div>
-                        <div class="checkbox m-b-30">
-                            <label>
-                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} />
-                                Remember Me
-                            </label>
-                        </div>
+                        <section class="row">
+                            <div class="col-sm-6">
+                                <div class="checkbox m-b-30" style="margin-top: 0">
+                                    <label>
+                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} />
+                                        Remember Me
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 ">
+                                @if (Route::has('password.request'))
+                                   <div class="text-right" style="color: #707478"><a href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a></div>
+                                @endif
+                            </div>
+                        </section>
+                        
                         <div class="login-buttons">
                             <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
                         </div>

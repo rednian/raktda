@@ -38,7 +38,7 @@
 						<div class="tab-pane active" id="profession" role="tabpanel">
 							<section class="row">
 								 <div class="col-12">
-										<a href="{{ route('settings.profession.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW PROFESSION') }}</a>
+										<a href="{{ URL::signedRoute('settings.profession.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW PROFESSION') }}</a>
 								 </div>
 							</section>
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblProfession">
@@ -100,7 +100,7 @@
 						<div class="tab-pane" id="event_types" role="tabpanel">
 							 <section class="row">
 								 <div class="col-12">
-										<a href="{{ route('event_type.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW EVENT TYPE') }}</a>
+										<a href="{{ URL::signedRoute('event_type.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW EVENT TYPE') }}</a>
 								 </div>
 							</section>
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblEventTypes">
@@ -145,7 +145,7 @@
 								                        	{{ __('Number of inspections per day (per inspector)') }}
 								                            <span class="text-danger">*</span>
 								                        </label>
-								                        <input min="7" value="{{ $general_settings->inspection_per_day }}" type="text" name="inspection_per_day" required class="form-control form-control-sm">
+								                        <input min="1" value="{{ $general_settings->inspection_per_day }}" type="text" name="inspection_per_day" required class="form-control form-control-sm">
 								                    </div>
 								                </div>
 								            </section>
@@ -265,12 +265,12 @@
 													@if($type->getSchedule->isNotEmpty())
 								                	<span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
 														<label>
-															<input data-url="{{ route('schedule_type.set_active', $type->schedule_type_id) }}" class="set_active" {{ $type->is_active ? 'checked disabled' : '' }} type="checkbox" value="1"> <b class="kt-padding-t-5 kt-padding-l-5 kt-font-dark" style="font-weight:normal;display:inline-block;">{{ __('Set as Active Schedule') }}</b>
+															<input data-url="{{ URL::signedRoute('schedule_type.set_active', $type->schedule_type_id) }}" class="set_active" {{ $type->is_active ? 'checked disabled' : '' }} type="checkbox" value="1"> <b class="kt-padding-t-5 kt-padding-l-5 kt-font-dark" style="font-weight:normal;display:inline-block;">{{ __('Set as Active Schedule') }}</b>
 															<span></span>
 														</label>
 													</span>
 
-													<a href="{{ route('schedule_type.edit', $type->schedule_type_id) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Edit Schedule') }}</a> 
+													<a href="{{ URL::signedRoute('schedule_type.edit', $type->schedule_type_id) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Edit Schedule') }}</a> 
 
 													@if(!$type->is_active)
 													<button data-url="{{ route('schedule_type.destroy', $type->schedule_type_id) }}" class="btn btn-sm btn-danger btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10 kt-margin-r-10 btn-delete-schedule">{{ __('Delete Schedule') }}</button>
@@ -407,7 +407,7 @@
 		//FORM SETTINGS
 		$('form#formSettings').validate();
 		$(document).on('click', '#btnSaveSettings', function(){
-			bootbox.confirm('Are you sure you want to save all changes?', function(result){
+			bootbox.confirm('{{ __('Are you sure you want to save all changes?') }}', function(result){
 				if(result){
 					$('form#formSettings').trigger('submit');
 				}
@@ -464,7 +464,13 @@
 
 	            $('button.btn-delete', row).click(function(){
 	            	var url = $(this).data('url');
-	                bootbox.confirm('Are you sure you want delete the <span class="text-success"> ' + data.profession_name + '</span>?', function(result){
+	            	var message = 'Are you sure you want delete the <span class="text-success"> ' + data.profession_name + '</span>?';
+
+	            	@if(Auth::user()->LanguageId != 1)
+	            	message = "هل انت متأكد من أنك تريد حذف " + " <span class=\"text-success\">" + data.profession_name + "</span> " + " ؟",
+	            	@endif
+
+	                bootbox.confirm(message, function(result){
 	                    if(result){
 	                        $.ajax({
 		                        url: url,
@@ -511,7 +517,14 @@
 
 	            $('button.btn-delete', row).click(function(){
 	            	var url = $(this).data('url');
-	                bootbox.confirm('Are you sure you want delete the <span class="text-success"> ' + data.requirement_name + '</span>?', function(result){
+
+	            	var message = 'Are you sure you want delete the <span class="text-success"> ' + data.requirement_name + '</span>?';
+
+	            	@if(Auth::user()->LanguageId != 1)
+	            	message = "هل انت متأكد من أنك تريد حذف " + "<span class=\"text-success\"> " + data.requirement_name + "</span>" + " ؟",
+	            	@endif
+
+	                bootbox.confirm(message, function(result){
 	                    if(result){
 	                        $.ajax({
 		                        url: url,
@@ -558,7 +571,14 @@
 
 	            $('button.btn-delete', row).click(function(){
 	            	var url = $(this).data('url');
-	                bootbox.confirm('Are you sure you want delete the <span class="text-success"> ' + data.requirement_name + '</span>?', function(result){
+
+	            	var message = 'Are you sure you want delete the <span class="text-success"> ' + data.requirement_name + '</span>?';
+
+	            	@if(Auth::user()->LanguageId != 1)
+	            	message = "هل انت متأكد من أنك تريد حذف " + "<span class=\"text-success\"> " + data.requirement_name + "</span>" + " ؟",
+	            	@endif
+
+	                bootbox.confirm(message, function(result){
 	                    if(result){
 	                        $.ajax({
 		                        url: url,
@@ -601,7 +621,14 @@
 
 	            $('button.btn-delete', row).click(function(){
 	            	var url = $(this).data('url');
-	                bootbox.confirm('Are you sure you want delete the <span class="text-success"> ' + data.name + '</span>?', function(result){
+
+	            	var message = 'Are you sure you want delete the <span class="text-success"> ' + data.name + '</span>?';
+
+	            	@if(Auth::user()->LanguageId != 1)
+	            	message = "هل انت متأكد من أنك تريد حذف " + "<span class=\"text-success\"> " + data.name + "</span>" + " ؟",
+	            	@endif
+
+	                bootbox.confirm(message, function(result){
 	                    if(result){
 	                        $.ajax({
 		                        url: url,

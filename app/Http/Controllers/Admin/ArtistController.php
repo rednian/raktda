@@ -74,7 +74,7 @@
 				
 			}
 
-			return redirect()->back()->with('message', $result);
+			return redirect(URL::signedRoute('admin.artist.show', $$artist->artist_id))->with('message', $result);
 		}
 
 		public function show(Request $request, Artist $artist)

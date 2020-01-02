@@ -115,7 +115,6 @@ class ReportController extends Controller
                 foreach ($user->artistPermit as $artist){
                     return $artist->permit->permit_status;
                 }
-
             })
             ->addColumn('email', function(Artist $user) {
                 if($user->artistPermit){
@@ -173,7 +172,6 @@ class ReportController extends Controller
                 }
                 return '';
             })
-
             ->addColumn('artist_id', function(Artist $user) {
                 return "<button type='button' style='height: 25px;
                  line-height: 4px;
@@ -183,7 +181,6 @@ class ReportController extends Controller
                    class='btn btn-primary btn-sm button_modal{{$user->artist_id}}'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
                  View</button>";
             })
-
             ->rawColumns(['person_code','artist_status','artist_name','artist_id','language_id','email'])
             ->make(true);
         }
@@ -1599,5 +1596,9 @@ class ReportController extends Controller
              })
              ->rawColumns(['permit_status'])
              ->make(true);
+     }
+
+     public function  getEvent($id){
+        dd($id);
      }
 }

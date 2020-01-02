@@ -17,7 +17,7 @@
    <!-- begin:: Aside Menu -->
    <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
        <div id="kt_aside_menu"class="kt-aside-menu "data-ktmenu-vertical="1" data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500" >
-            
+
            <ul class="kt-menu__nav ">
                @if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
                <li class="kt-menu__item {{ Request::is('dashboard*') ? 'kt-menu__item--active': '' }}">
@@ -36,7 +36,7 @@
                    </a>
                </li> --}}
                <li class="kt-menu__item {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.company.index') }}" class="kt-menu__link ">
+                   <a href="{{ URL::signedRoute('admin.company.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Establishment') }}</span>
                    </a>
                </li>
@@ -78,7 +78,7 @@
                    </a>
                </li>
                <li class="kt-menu__item {{ Request::is('settings*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.setting.index') }}" class="kt-menu__link ">
+                   <a href="{{ URL::signedRoute('admin.setting.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text kt-font-transform-u">{{ __('System Settings') }}</span>
                    </a>
                </li>

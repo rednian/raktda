@@ -25,6 +25,7 @@
 	use App\ScheduleTypeDayTime;
 	use App\EmployeeCustomSchedule;
 	use Illuminate\Support\Facades\URL;
+	use App\Notifications\AllNotification;
 
 	class EventController extends Controller
 	{
@@ -150,7 +151,7 @@
 
 		public function calendar(Request $request)
 		{
-			$events = Event::whereIn('status',['active', 'expired'])->get();
+			$events = Event::whereNotNull('approved_by')->get();
 			$events = $events->map(function($event) use ($request){
 				return [
 					'title'=> $request->user()->LanguageId == 1 ? ucfirst($event->name_en) : $event->name_ar,
@@ -161,6 +162,7 @@
 					'description'=> 'Venue : '.$venue = $request->user()->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
 					'backgroundColor'=> $event->type->color,
 					'textColor' => '#fff !important',
+					'businessHours'=> 	['start'=>date('H:m', strtotime($event->time_start)), 'end'=>date('H:m', strtotime( $event->time_end))]
 				];
 			});
 			return response()->json($events);
@@ -190,6 +192,10 @@
 							$event->permit->update(['permit_status'=>$request->status]);
 							$event->permit->comment()->create($request->all());
 						}
+
+						//SEND NOTIFICATION
+						$this->sendNotificationCompany($event, 'reject');
+
 						$result = ['success', ucfirst($event->name_en).'Rejected Successfully', 'Success'];
 						break;
 					case 'approved-unpaid':
@@ -203,6 +209,10 @@
 							]);
 						$request['type'] = $type = 1;
 						$event->comment()->create($request->all());
+
+						//SEND NOTIFICATION
+						$this->sendNotificationCompany($event, 'approve');
+
 						$result = ['success', ucfirst($event->name_en).' Approved Successfully', 'Success'];
 						break;
 					case 'need modification':
@@ -228,6 +238,10 @@
 								$event->additionalRequirements()->sync($requirement->requirement_id);
 							}
 						}
+
+						//SEND NOTIFICATION
+						$this->sendNotificationCompany($event, 'amend');
+
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
 					case 'need approval':
@@ -272,6 +286,11 @@
 											'type' => 0
 										]);
 									}
+
+									//SEND EMAIL NOTIFICATION
+									$this->sendNotificationApproval($event, User::whereHas('roles', function($q) use($role_id){
+										$q->where('roles.role_id', $role_id);
+									})->get());
 								}
 							}else{
 								if(in_array(5, $request->approver)){
@@ -281,6 +300,11 @@
 										'user_type' => 'admin',
 										'type' => 0
 									]);
+
+									//SEND EMAIL NOTIFICATION
+									$this->sendNotificationApproval($event, User::whereHas('roles', function($q) use($role_id){
+										$q->where('roles.role_id', $role_id);
+									})->get());
 								}
 							}
 						}
@@ -295,36 +319,7 @@
 
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
-
-					case 'approved' :
-
-						$comment = $event->comment()->where([
-		                    'action' => 'pending', 
-		                    'role_id' => $request->user()->roles()->first()->role_id
-		                ])->first();
-
-                  		$comment->update([
-                  			'action' => $request->action,
-                  			'comment' => $request->comment,
-                  			'user_id' => $request->user()->user_id
-                  		]);
-                  		$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
-						break;
-
-					case 'disapproved' :
-
-						$comment = $event->comment()->where([
-		                    'action' => 'pending', 
-		                    'role_id' => $request->user()->roles()->first()->role_id
-		                ])->first();
-
-                  		$comment->update([
-                  			'action' => $request->action,
-                  			'comment' => $request->comment,
-                  			'user_id' => $request->user()->user_id
-                  		]);
-                  		$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
-						break;
+					
 				}
 
 
@@ -336,6 +331,82 @@
 			}
 
 			return redirect(URL::signedRoute('admin.event.index') . '#new-request')->with('message', $result);
+		}
+
+		private function sendNotificationCompany($event, $type){
+
+			if($type == 'approve'){
+				$subject = $event->reference_number . ' - Application Approved';
+				$title = 'Application has been Approved';
+				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been approved. To view the details, please click the button below.';
+				$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'valid']);
+			}
+
+			if($type == 'amend'){
+				$subject = $event->reference_number . ' - Application Requires Amendment';
+				$title = 'Applications Requires Amendment';
+				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
+				$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+			}
+
+			if($type == 'reject'){
+				$subject = $event->reference_number . ' - Application Rejected';
+				$title = 'Application has been Rejected';
+				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been rejected. To view the details, please click the button below.';
+				$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+			}
+
+			$users = $event->owner->company->users;
+
+			foreach ($users as $user) {
+				$user->notify(new AllNotification([
+					'subject' => $subject,
+					'title' => $title,
+					'content' => $content,
+					'button' => 'View Application',
+					'url' => $url
+				]));
+			}
+		}
+
+		private function sendNotificationApproval($event, $users){
+
+			$subject = 'Event Permit For Approval';
+			$title = 'Event Permit For Approval';
+			$content = 'The event permit with reference number <b>' . $event->reference_number . '</b> needs to have an approval from your department. Please click the link below.';
+			$url = URL::signedRoute('admin.event.show', $event->event_id);
+
+			foreach ($users as $user) {
+				$user->notify(new AllNotification([
+					'subject' => $subject,
+					'title' => $title,
+					'content' => $content,
+					'button' => 'View Permit',
+					'url' => $url
+				]));
+			}
+		}
+
+		private function sendNotificationChecked($event, $users, $checked_by){
+
+			$subject = 'Event Permit Has Been Checked';
+			$title = 'Event Permit Has Been Checked';
+			$content = 'The event permit with reference number <b>' . $event->reference_number . '</b> has been checked by '. $checked_by->NameEn .'.';
+			$url = URL::signedRoute('admin.event.show', $event->event_id);
+
+			if($event->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
+                $url = URL::signedRoute('admin.event.application', $event->event_id);
+            }
+
+			foreach ($users as $user) {
+				$user->notify(new AllNotification([
+					'subject' => $subject,
+					'title' => $title,
+					'content' => $content,
+					'button' => 'View Permit',
+					'url' => $url
+				]));
+			}
 		}
 
 		public function updateLock(Request $request, Event $event)
@@ -720,6 +791,11 @@
                 if($event->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
                     $event->update(['status'=>'checked']);
                 }
+
+                //SEND NOTIFICATIONS TO ALL ADMIN
+                $this->sendNotificationChecked($event, User::whereHas('roles', function($q){
+					$q->where('roles.role_id', 1);
+				})->get(), $request->user());
 
           		$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
           		DB::commit();

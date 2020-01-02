@@ -15,8 +15,10 @@ use App\Http\Controllers\Controller;
 
 class CompanyController extends Controller
 {
-   public function index()
+   public function index(Request $request)
    {
+    if (!$request->hasValidSignature()) { abort(401); }
+
       $new_company = Company::where('status', 'new')->count();
 
       return view('admin.company.index',[ 
@@ -148,11 +150,24 @@ class CompanyController extends Controller
 
       return DataTables::of($requirements)
       ->addColumn('name',  function($companyRequirement) use ($request){
-         $name =  $request->user()->LanguageId == 1 ?  ucfirst($companyRequirement->requirement->requirement_name) : $companyRequirement->requirement->requirement_name_ar;
+        if($companyRequirement->type == 'requirement'){
+            $name =  $request->user()->LanguageId == 1 ? ucwords($companyRequirement->requirement->requirement_name) : ucwords($companyRequirement->requirement->requirement_name_ar);
+        }
+        else{
+          $name =  __('Other Upload');
+        }
+
+
          return '<a href="'.asset('/storage/'.$companyRequirement->path).'" data-caption="'.ucfirst($name).'" data-fancybox="gallery"  data-fancybox>'.ucfirst($name).'</a>';
       })
-      ->addColumn('requirement', function($companyRequirement) use ($array, $counter){
-       return ucfirst($companyRequirement->requirement->requirement_name);
+      ->addColumn('requirement', function($companyRequirement) use ($request){
+        if($companyRequirement->type == 'requirement'){
+            return $request->user()->LanguageId == 1 ? ucwords($companyRequirement->requirement->requirement_name) : ucwords($companyRequirement->requirement->requirement_name_ar);
+        }
+        else{
+          $name =  __('Other Upload');
+        }
+        return $name;
       })
       ->editColumn('issued_date', function($companyRequirement){
          return $companyRequirement->issued_date ? date('d-F-Y', strtotime($companyRequirement->issued_date)) : '-'; 
@@ -403,10 +418,17 @@ class CompanyController extends Controller
          return $request->user()->LanguageId == 1 ? ucfirst($company->type->name_en) : $company->type->name_ar; 
       })
       ->editColumn('registered_date', function($company){
-        return $company->registered_date->format('d-F-Y');
+        if($company->registered_date){
+          return $company->registered_date->format('d-F-Y');
+        }
+        return '-';
       })
        ->editColumn('registered_by', function($company) use ($request){
-        return $request->user()->LanguageId == 1 ? ucfirst($company->registeredBy->NameEn) : $company->registeredBy->NameAr;
+        if(!is_null($company->registered_by)){
+        return $request->user()->LanguageId == 1 ? ucfirst($company->registeredBy->NameEn) : $company->registeredBy->NameAr;  
+        }
+        return '-';
+        
       })
       ->editColumn('address', function($company) use ($request){
          $country = $request->user()->LanguageId == 1 ? ucfirst($company->country->name_en) : $company->country->name_ar;

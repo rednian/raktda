@@ -103,7 +103,7 @@ class UserController extends Controller
     	})->editColumn('CreatedAt', function($user){
     		return $user->CreatedAt->format('Y-m-d');
     	})->addColumn('actions', function($user){
-    		return '<button data-url="' . URL::signedRoute('user_management.details', ['user' => $user->user_id ]) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">Details</button>';
+    		return '<button data-url="' . URL::signedRoute('user_management.details', ['user' => $user->user_id ]) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('Details') . '</button>';
     	})->addColumn('show_url', function($user){
     		return URL::signedRoute('user_management.details', ['user' => $user->user_id ]);
     	})->addColumn('status', function($user){

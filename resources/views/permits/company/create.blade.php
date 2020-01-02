@@ -74,15 +74,11 @@
         <h4 class="text-center" style="margin: 2% 0">Create a company account</h4>
         <section class="row">
             <div class="col-md-6 col-md-offset-3">
-                @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
-                @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
+                @if (Session::has('error'))
+                   <div class="alert alert-danger alert-dismissible" role="alert">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                     <strong>Opps!</strong> {{Session::get('error')}}
+                   </div>
                 @endif
             </div>
         </section>
@@ -257,6 +253,8 @@
                         </div>
                     </section>
                     <div class="form-group">
+                        {{-- {!! NoCaptcha::display() !!} --}}
+
                         <div class="g-recaptcha" data-sitekey="6LdnLwgUAAAAAAIb9L3PQlHQgvSCi16sYgbMIMFR"></div>
                     </div>
                     <div class="form-group">
@@ -286,8 +284,10 @@
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
     <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
+         {{-- {!! NoCaptcha::renderJs() !!} --}}
     <script>
         $(document).ready(function(){
+
             $('select[name=company_type_id]').change(function(){
                 console.log($(this).val());
                 if($(this).val() == 1){

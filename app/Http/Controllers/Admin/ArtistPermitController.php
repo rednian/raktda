@@ -46,6 +46,9 @@ class ArtistPermitController extends Controller
 
     public function index(Request $request)
     {
+      // $now = Carbon::now();
+      // $date = Carbon::parse('2019-5-5');
+      // dd($date->diffInMonths($now));
       $permit = Permit::where('permit_status', 'active')->whereDate('expired_date', '<',Carbon::now()->format('Y-m-d'))->update(['permit_status'=>'expired']);
 
       $view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
@@ -133,6 +136,8 @@ class ArtistPermitController extends Controller
         ->where('permit_id', '!=', $permit->permit_id)
         ->where('permit_id', '<', $permit->permit_id)
         ->count();
+
+
       if(!$request->session()->has('user')){$request->session()->put('user', ['time_start'=> Carbon::now()]);}
 
         //UPDATE LOCK ARTIST PERMIT
@@ -145,7 +150,8 @@ class ArtistPermitController extends Controller
         	'page_title'=> 'artist permit details',
           'permit'=>$permit,
           'roles'=>Roles::where('type', 0)->get(),
-          'rivision'=>$revision
+          'rivision'=>$revision,
+
         ]);
     }
 
@@ -494,8 +500,9 @@ class ArtistPermitController extends Controller
 
     		return Datatables::of($artist_permit)
 			    ->addColumn('nationality', function($artist_permit){
-			    	if(!$artist_permit->country){ return null; }
-			    	return ucwords($artist_permit->country->nationality_en);
+			    	if($artist_permit->country()->exists()){ return ucwords($artist_permit->country->nationality_en); }
+            return null;
+			 
 			    })
 			    ->addColumn('age', function($artist_permit){
 			    	return $artist_permit->age;
@@ -521,6 +528,8 @@ class ArtistPermitController extends Controller
 			    ->addColumn('is_allowed_multiple_permit', function($artist_permit){
 			    	return $artist_permit->profession->is_multiple ? true : false;
 			    })
+          ->addColumn('active_permit', function($artist_permit){
+          })
 			    ->addColumn('existing_permit', function($artist_permit) use ($permit){
 
 			    	$existing_permit = Permit::whereHas('artistpermit', function($q) use ($artist_permit){
@@ -546,8 +555,22 @@ class ArtistPermitController extends Controller
 								<span class="kt-font-bolder  kt-font-transform-u">'.ucwords($profession).' </span>';
 			    })
           ->addColumn('action', function($artist_permit){
-            $html = '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">Document <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">'.($artist_permit->artistPermitDocument()->count()+1).'</span></button>';
-            $html .= '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">'.$artist_permit->comments()->count().'</span></button>';
+      
+
+            $html = '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">';
+            $html .=  __('Documents');
+            $html .=  '<span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
+            $html .=  ($artist_permit->artistPermitDocument()->count()+1);
+            $html .=  '</span>';
+            $html .= '</button>';
+            $html .= '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">';
+            $html .= __('Comments');
+            $html .= '<span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
+            $html .= $artist_permit->comments()->count();
+            $html .= '</span>';
+            $html .= '</button>';
+
+
             return $html;
           })
           ->addColumn('show_link', function($artist_permit) use($permit){
@@ -807,16 +830,12 @@ class ArtistPermitController extends Controller
         return DataTables::of($comments)
         ->addColumn('name', function($comment) use ($user){
           $role_name = $comment->role->NameEn;
+
+
+          if ($comment->role_id == 6) {
+             $role_name =  Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : ucwords($comment->government->government_name_ar);
+          }
    
-
-          // if ($comment->role_id != 6) {
-          //     return $comment->comment;
-          // }
-          // else{
-          //   return Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar;
-          // }
-
-
           if (is_null($comment->user_id)) {
             return profileName($role_name, '');
           }

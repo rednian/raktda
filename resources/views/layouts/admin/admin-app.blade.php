@@ -101,6 +101,21 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
+
+    $('form').submit(function(e) {
+      KTApp.block('body', {
+          overlayColor: '#000000',
+          type: 'v2',
+          state: 'success',
+          message: 'Please wait...'
+      });
+
+      // setTimeout(function() {
+      //     KTApp.unblock('#kt_blockui_1_content');
+      // }, 2000);
+
+    });
+
     @if (Session::has('message'))
     @if(Session::get('message')[0] == 'success')
     $.notify({
@@ -148,7 +163,27 @@
       max: $.validator.format( "رجاء إدخال عدد أقل من أو يساوي {0}" ),
       min: $.validator.format( "رجاء إدخال عدد أكبر من أو يساوي {0}" )
     });
+
+    //DATATABLE
+    $.extend( true, $.fn.dataTable.defaults, {
+        language:{
+          searchPlaceholder: '{{ __('Search') }}',
+          info: 'رض _START_ إلى _END_ للـــ _TOTAL_',
+          infoEmpty: 'رض _START_ إلى _END_ للـــ _TOTAL_',
+          infoFiltered: '',
+          emptyTable: 'لا يوجد بيانات في الجدول',
+          zeroRecords: 'لا يوجد بيانات في الجدول',
+        }
+    });
+
+    //BOOTBOX
+    bootbox.setDefaults({
+      locale: "ar",
+    });
+    
     @endif
+
+    
 
     $('span[data-lang=en]').click(function(){
       getLang(1);

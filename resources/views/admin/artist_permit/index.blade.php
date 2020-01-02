@@ -672,10 +672,10 @@
          columnDefs: [
            {targets: '_all', className: 'no-wrap'},
          ],
-         order: [[4, 'asc']],
+         order: [[3, 'asc']],
          responsive: true,
          columns: [
-           {render:function(){return  null;}},
+           // {render:function(){return  null;}},
            {data: 'reference_number'},
            {data: 'company_name'},
            {data: 'artist_number'},
