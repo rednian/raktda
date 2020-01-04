@@ -232,8 +232,6 @@
     </div>
 
 
-    @include('permits.artist.modals.view_artist')
-
     @include('permits.artist.modals.remove_artist', ['from' => 'new'])
 
     @include('permits.artist.modals.leave_page')
@@ -352,7 +350,7 @@
             var event_id = $('#event_id').val();
             if(event_id == 'add_new')
             {
-                window.location.href = "{{ route('event.create')}}";
+                window.location.replace = "{{ route('event.create')}}";
             }else{
                 checkFilled();
             }
@@ -418,29 +416,17 @@
                     success: function(result){
                         var Url = "{{ route('company.add_new_artist', [ 'id' => 1])}}";
                         Url = Url.replace(':id', permit_id);
-                        console.log(Url);
-                        window.location.href = Url;
+                        window.location.replace = Url;
                     }
             });
         }
 
-        $('#back_btn').click(function(){
+        $('#back_btn , #back_btn_sm').click(function(){
             $total_artists = $('#total_artist_details').val();
-
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{route('artist.index')}}#applied";
-            }
-        });
-
-        $('#back_btn_sm').click(function(){
-            $total_artists = $('#total_artist_details').val();
-
-            if($total_artists > 0) {
-                $('#back_btn_modal').modal('show');
-            } else {
-                window.location.href = "{{route('artist.index')}}#applied";
+                window.location.replace = "{{route('artist.index')}}#applied";
             }
         });
 
@@ -452,7 +438,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#applied";
+                        window.location.replace="{{route('artist.index')}}#applied";
                     }
             });
         }
@@ -464,7 +450,6 @@
             $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
             $('#warning_text').css('color', '#580000');
         }
-
 
 
         var permitValidator = $('#permit_details').validate({
@@ -481,43 +466,9 @@
 
         });
 
-        // $('#add_artist').click(function(){
-        //     var from = $('#permit_from').val();
-        //     var to = $('#permit_to').val();
-        //     var loc = $('#work_loc').val();
-        //     $.ajax({
-        //             url:"{{route('company.add_new_artist')}}",
-        //             type: "POST",
-        //             data: { from: from , to: to , loc: loc},
-        //             success: function(result){
-        //                 // window.location.href="{{url('company/add_new')}}";
-        //             }
-        //         });
-        // })
-
-        function getArtistDetails(id) {
-            $.ajax({
-                type: 'POST',
-                url: '{{route("company.fetch_artist_temp_data")}}',
-                data: {artist_temp_id:id},
-                success: function(data) {
-                    $('#detail-permit').empty();
-                    if(data)
-                    {
-                        $('#artist_details').modal('show');
-                        var code = data.person_code ? data.person_code : '';
-                        $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>  <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+ data.visa_type.visa_type_en + '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
-
-                    }
-                }
-            });
-        }
 
         $('#submit_btn').click((e) => {
-            // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-            // $('#draft_btn').css('pointer-events', 'none');
-            // $('#submit_btn').css('pointer-events', 'none');
-            
+
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
@@ -542,7 +493,7 @@
                         });
                     },
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#applied";
+                        window.location.replace="{{route('artist.index')}}#applied";
                         KTApp.unblockPage();
                     }
             });
@@ -574,7 +525,7 @@
                         });
                     },
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#draft";
+                        window.location.replace="{{route('artist.index')}}#draft";
                         KTApp.unblockPage();
                     }
                 });

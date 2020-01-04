@@ -20,7 +20,7 @@
         @foreach($event_types as $et)
         <div class="tab-pane {{$i == 1 ? 'active' : ''}}" id="kt_tabs_5_{{$i}}" role="tabpanel">
             <table class="table table-borderless table-sm">
-                <tr>
+                <tr class="kt-font-transform-u">
                     <th>#</th>
                     <th>{{__('Document Name')}}</th>
                     <th>{{__('Description')}}</th>

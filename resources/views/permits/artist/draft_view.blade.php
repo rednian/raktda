@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">View / Update Draft
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('View Draft Details')}}
             </h3>
         </div>
 
@@ -237,9 +237,6 @@
 
     </div>
 
-
-    @include('permits.artist.modals.view_artist')
-
     <!--begin::Modal-->
     <div class="modal fade" id="delartistmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -375,25 +372,25 @@
             $('#submit_btn').css('display', 'none');
         }
 
-        $('#back_btn').click(function(){
+        $('#back_btn , #back_btn_sm').click(function(){
             $total_artists = $('#total_artist_details').val();
 
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{url('artist.index')}}#draft";
+                window.location.replace = "{{url('artist.index')}}#draft";
             }
         });
 
-        $('#back_btn_sm').click(function(){
-            $total_artists = $('#total_artist_details').val();
+        // $('#back_btn_sm').click(function(){
+        //     $total_artists = $('#total_artist_details').val();
 
-            if($total_artists > 0) {
-                $('#back_btn_modal').modal('show');
-            } else {
-                window.location.href = "{{url('artist.index')}}#draft";
-            }
-        });
+        //     if($total_artists > 0) {
+        //         $('#back_btn_modal').modal('show');
+        //     } else {
+        //         window.location.href = "{{url('artist.index')}}#draft";
+        //     }
+        // });
 
         function go_back_confirm_function(){
             var temp_permit_id =  $('#temp_permit_id').val();
@@ -403,7 +400,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#draft";
+                        window.location.replace="{{route('artist.index')}}#draft";
                     }
             });
         }
@@ -416,8 +413,6 @@
             $('#warning_text').css('color', '#580000');
         }
 
-
-
         var permitValidator = $('#permit_details').validate({
             rules: {
                 permit_from: 'required',
@@ -429,7 +424,6 @@
                 permit_to: 'This field is required',
                 work_loc:  'This field is required'
             }
-
         });
        
 
@@ -437,7 +431,7 @@
             var event_id = $('#event_id').val();
             if(event_id == 'add_new')
             {
-                window.location.href = "{{ route('event.create')}}";
+                window.location.replace = "{{ route('event.create')}}";
             }else{
                 checkFilled();
             }
@@ -470,7 +464,7 @@
                         term: term
                     },
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#applied";
+                        window.location.replace="{{route('artist.index')}}#applied";
                         KTApp.unblockPage();
                     }
             });
@@ -501,7 +495,7 @@
                         });
                     },
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#draft";
+                        window.location.replace="{{route('artist.index')}}#draft";
                         KTApp.unblockPage();
                     }
                 });

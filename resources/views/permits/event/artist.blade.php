@@ -200,9 +200,6 @@
 
     </div>
 
-
-    @include('permits.artist.modals.view_artist')
-
     @include('permits.artist.modals.remove_artist', ['from' => 'new'])
 
     @include('permits.artist.modals.leave_page')
@@ -235,23 +232,13 @@
             });
         }
 
-        $('#back_btn').click(function(){
+        $('#back_btn, #back_btn_sm').click(function(){
             $total_artists = $('#total_artist_details').val();
 
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{route('event.index')}}#applied";
-            }
-        });
-
-        $('#back_btn_sm').click(function(){
-            $total_artists = $('#total_artist_details').val();
-
-            if($total_artists > 0) {
-                $('#back_btn_modal').modal('show');
-            } else {
-                window.location.href = "{{route('event.index')}}#applied";
+                window.location.replace = "{{route('event.index')}}#applied";
             }
         });
 
@@ -331,7 +318,7 @@
                     },
                     success: function(result){
                         $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                        window.location.href="{{route('artist.index')}}#applied";
+                        window.location.replace="{{route('artist.index')}}#applied";
                         KTApp.unblockPage();
                     }
             });

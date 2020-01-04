@@ -791,12 +791,12 @@ class EventController extends Controller
             // $rand_keys = array_rand($input, 2);
             // $rand_keys_d = array_rand($arr, 2);
             return [    
-                'title' => $user->LanguageId == 1 ? ucwords($event->name_en) : $event->name_ar,
+                'title' => $user->LanguageId == 1 ?  ucwords($event->name_en) : $event->name_ar,
                 'start' => date('Y-m-d', strtotime($event->issued_date)) . 'T' . date('H:i:s', strtotime($event->time_start)),
                 'end' => date('Y-m-d', strtotime($event->expired_date)) . 'T' . date('H:i:s', strtotime($event->time_end)),
                 'id' => $event->event_id,
-                'url' => $event->created_by == $user->user_id ? route('event.show', $event->event_id) . '?tab=calendar' : '#',
-                'description' => 'Venue : ' . $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
+                'url' => $event->created_by == $user->user_id ? URL::signedRoute('event.show',[ 'id' =>  $event->event_id, 'tab' => 'calendar'])  : '#',
+                'description' => 'Venue : ' . ( $user->LanguageId == 1  ? ucwords($event->venue_en) : $event->venue_ar )    ,
                 'backgroundColor' => '#8c272d !important',
                 'textColor' => '#fff !important',
             ];
@@ -1079,19 +1079,25 @@ class EventController extends Controller
         return $pdf->stream('Event Permit-' . $event_permit_no . '.pdf');
     }
 
-    public function fetch_applied()
+    public function fetch_applied(Request $request)
     {
-        return $this->datatable_function('applied');
+        if($request->ajax()) {
+            return $this->datatable_function('applied');
+        }
     }
 
-    public function fetch_valid()
+    public function fetch_valid(Request $request)
     {
-        return $this->datatable_function('valid');
+        if($request->ajax()) {
+            return $this->datatable_function('valid', '');
+        }
     }
 
-    public function fetch_draft()
+    public function fetch_draft(Request $request)
     {
-        return $this->datatable_function('draft');
+        if($request->ajax()) {
+            return $this->datatable_function('draft', '');
+        }
     }
 
 

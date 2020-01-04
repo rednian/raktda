@@ -6,7 +6,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">{{__('Renew Artist Permit')}}</h3>
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Renew Artist Permit')}}</h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$permit_details->permit_number}}
                 </strong>
@@ -70,7 +70,8 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('Permit Term')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{$permit_details->term}}
                             </span>
                         </div>
@@ -89,7 +90,7 @@
         <div class="table-responsive">
             <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                 <thead>
-                    <tr>
+                    <tr class="kt-font-transform-u">
                         <th>{{__('First Name')}}</th>
                         <th>{{__('Last Name')}}</th>
                         <th>{{__('Profession')}}</th>
@@ -152,9 +153,6 @@
         </div>
     </div>
 
-
-
-    @include('permits.artist.modals.view_artist')
 
     @include('permits.artist.modals.remove_artist' , ['from' => 'renew'])
 
@@ -219,23 +217,13 @@
     }
 
 
-    $('#back_btn').click(function(){
+    $('#back_btn, #back_btn_sm').click(function(){
         $total_artists = $('#total_artist_details').val();
 
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {
-            window.location.href = "{{route('artist.index')}}#valid";
-        }
-    });
-
-    $('#back_btn_sm').click(function(){
-        $total_artists = $('#total_artist_details').val();
-
-        if($total_artists > 0) {
-            $('#back_btn_modal').modal('show');
-        } else {
-            window.location.href = "{{route('artist.index')}}#valid";
+            window.location.replace = "{{route('artist.index')}}#valid";
         }
     });
 
@@ -247,12 +235,10 @@
                 data: { permit_id: temp_permit_id,from: 'renew'},
                 async: true,
                 success: function(result){
-                    window.location.href="{{route('artist.index')}}#valid";
+                    window.location.replace="{{route('artist.index')}}#valid";
                 }
         });
     }
-
-
 
     $('#submit_btn').click(function() {
         // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
@@ -284,7 +270,7 @@
             success: function(data) {
                 // console.log(data);
               if(data.message[0] == 'success') {
-                window.location.href="{{route('artist.index')}}#valid";
+                window.location.replace="{{route('artist.index')}}#valid";
                 KTApp.unblockPage();
               }
             }

@@ -11,7 +11,7 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
                 <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title">Make Payment
+                    <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Make Payment')}}
                     </h3>
                 </div>
 
@@ -71,7 +71,7 @@
                             </div>
                             @if($permit_details->event)
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Connected Event ?')}} :</span>
+                                <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
@@ -93,7 +93,7 @@
                         <table class="table table-striped border table-hover table-borderless"
                             id="applied-artists-table">
                             <thead>
-                                <tr>
+                                <tr class="kt-font-transform-u">
                                     <th>{{__('First Name')}}</th>
                                     <th>{{__('Last Name')}}</th>
                                     <th>{{__('Profession')}}</th>
@@ -156,11 +156,5 @@
 
                 </div>
             </div>
-
-
-
-
-
-
 
             @endsection

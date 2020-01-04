@@ -450,7 +450,7 @@
                     success: function (result) {
                         if(result) 
                         {
-                            window.location.href = "{{route('event.index')}}#applied";
+                            window.location.replace = "{{route('event.index')}}#applied";
                         }
                     }
 

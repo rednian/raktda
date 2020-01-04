@@ -708,8 +708,9 @@ select option:first-child {
 .artist--view-head-image img,
 .artist--view-head-image span {
     width: 100%;
-    padding: 10px;
-    border-radius: 15px;
+    padding: 5px;
+    border-radius: 0px;
+    border: 1px solid #ccc;
 }
 
 .artist--view-head-details {
@@ -722,7 +723,7 @@ select option:first-child {
 }
 
 .artist--view-head-details span {
-    padding-bottom: 15px;
+    /* padding-bottom: 15px; */
 }
 
 .artist--view-head-details span i {
@@ -784,4 +785,8 @@ select option:first-child {
 .nav-pills .nav-item .nav-link.active,
 .nav-pills .nav-item .nav-link.active:hover {
     background-color: #9b9b9c;
+}
+
+.cursor-text {
+    cursor: text !important;
 }
