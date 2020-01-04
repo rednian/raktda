@@ -99,30 +99,15 @@
 <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
 {{-- <script src="{{ asset('/assets/vendors/custom/datatables/dataTables.colVis.js') }}"></script> --}}
 <script type="text/javascript">
+
   $(document).ready(function() {
 
-    // $('form').validate({
-    //   submitHandler: function(){
-    //     KTApp.block('body', {
-    //         overlayColor: '#000000',
-    //         type: 'v2',
-    //         state: 'success',
-    //         message: 'Please wait...'
-    //     });
-    //   }
-    // });
-
-
-    //   // setTimeout(function() {
-    //   //     KTApp.unblock('#kt_blockui_1_content');
-    //   // }, 2000);
-
-    // });
-
-          $('span[data-lang=en]').click(function () {
-              getLang(1);
-          });
-          $('span[data-lang=ar]').click(function () {
+    $('span[data-lang=en]').click(function () {
+        getLang(1);
+    });
+    $('span[data-lang=ar]').click(function () {
+          getLang(2);
+    });
 
     @if(Auth::user()->LanguageId != 1)
     // JQUERY VALIDATOR LOCALIZATION AR
@@ -165,23 +150,43 @@
     
     @endif
 
+    // $('form').validate({
+    //   submitHandler: function(){
+    //     KTApp.block('body', {
+    //         overlayColor: '#000000',
+    //         type: 'v2',
+    //         state: 'success',
+    //         message: 'Please wait...'
+    //     });
+    //   }
+    // });
+
+
+    //   // setTimeout(function() {
+    //   //     KTApp.unblock('#kt_blockui_1_content');
+    //   // }, 2000);
+
+    // });
+
+       
+
+   
+
     
 
-    $('span[data-lang=en]').click(function(){
-      getLang(1);
-    });
-    $('span[data-lang=ar]').click(function(){
-      getLang(2);
-    });
-    function getLang(lang){
-      $.ajax({
-        url: '{{ route('admin.language') }}',
-        data: {lang: lang},
-        type: 'post'
-      }).done(function(response){
-        if(response.success) location.reload();
-      });
   });
+
+
+  function getLang(lang){
+    $.ajax({
+      url: '{{ route('admin.language') }}',
+      data: {lang: lang},
+      type: 'post'
+    }).done(function(response){
+      if(response.success) location.reload();
+    });
+  }
+  
 </script>
 @yield('script')
 </body>
