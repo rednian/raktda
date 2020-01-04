@@ -152,12 +152,32 @@
                                                     </div>
                                                  </td>
                                                  <td class="text-right no-wrap">
-                                                     <button style="width:100px" type="button" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u btnRemoveSub">
+                                                     <button data-type="fullremove" style="width:100px" type="button" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u btnRemoveSub">
                                                         <i class="la la-minus"></i>
                                                         {{ __('Remove') }}
                                                      </button>
                                                  </td>
                                              </tr>
+                                             @foreach($event_type->subType as $key => $sub)
+                                            <tr>
+                                                 <td>
+                                                     <div class="form-group form-group-sm">
+                                                        <input value="{{ $sub->sub_name_en }}" type="text" class="form-control form-control-sm sub_name_en sub_name" name="edit_sub[{{ $sub->event_type_sub_id }}][en]">
+                                                    </div>
+                                                 </td>
+                                                 <td>
+                                                     <div class="form-group form-group-sm">
+                                                        <input value="{{ $sub->sub_name_ar }}" dir="rtl" type="text" class="form-control form-control-sm sub_name_ar sub_name" name="edit_sub[{{ $sub->event_type_sub_id }}][ar]">
+                                                    </div>
+                                                 </td>
+                                                 <td class="text-right no-wrap">
+                                                     <button data-type="remove" data-id="{{ $sub->event_type_sub_id }}" style="width:100px" type="button" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u btnRemoveSub">
+                                                        <i class="la la-minus"></i>
+                                                        {{ __('Remove') }}
+                                                     </button>
+                                                 </td>
+                                             </tr>
+                                             @endforeach
                                          </tbody>
                                     </table>
                                 </div>
@@ -169,6 +189,7 @@
              
             <div class="requirements"></div>
             <div class="required_requirements"></div>
+            <div class="removed_subcategories"></div>
             <input type="hidden" name="submit_type">
         	</form>
 
@@ -213,6 +234,8 @@
     var requiredRequirements = {!! json_encode($required) !!};
     var requirementSelected = {!! json_encode($selected) !!};
 
+    var removedSub = [];
+
     $(document).ready(function () {
 
     	loadRequirements();
@@ -251,6 +274,55 @@
      		}
      	});
 
+        var subCount = 0;
+        $(document).on('click', '#btnAddSub', function(){
+
+            var $template = $('#clone'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('kt-hide')
+                                .removeAttr('id')
+                                .insertAfter($template);
+
+            $clone.find('input.sub_name_en').attr('name', 'sub_name['+subCount+'][en]');
+            $clone.find('input.sub_name_ar').attr('name', 'sub_name['+subCount+'][ar]');     
+
+            subCount++;              
+        });
+
+        $(document).on('click', '.btnRemoveSub', function(){
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+
+            if(type == 'remove'){
+
+                $(this).html('<i class="la la-rotate-right"></i>{{ __('Restore') }}');
+                $(this).closest('tr').css('background', '#CCC');
+                $(this).closest('tr').find('input').attr('disabled', true);
+
+                $(this).data('type', 'restore');
+                
+                removedSub.push(id);
+                console.log(removedSub);
+            }
+
+            if(type == 'restore'){    
+
+                $(this).html('<i class="la la-minus"></i>{{ __('Remove') }}');
+                $(this).closest('tr').css('background', 'none');
+                $(this).closest('tr').find('input').attr('disabled', false);
+                $(this).data('type', 'remove');
+
+                removedSub.splice( removedSub.indexOf(id), 1 );
+                console.log(removedSub);
+            }
+
+            if(type == 'fullremove'){
+                $(this).closest('tr').find('input.sub_name').rules('remove', 'required');
+                $(this).closest('tr').remove();
+            }
+        });
+
      	$('.btn-submit').click(function(){
 
      		var type = $(this).data('submittype');
@@ -280,6 +352,15 @@
                         .attr('type', 'hidden')
                         .attr('name', 'required[]')
                         .val(requirement_id)
+                );
+            });
+
+            $.each(removedSub, function(key, value){
+                $('#formAddEventType .removed_subcategories').append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'removed_subcategories[]')
+                        .val(value)
                 );
             });
 

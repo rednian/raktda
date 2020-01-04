@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EventType extends Model
 {
+    use SoftDeletes;
+    
     protected $table = 'event_type';
     protected $primaryKey = 'event_type_id';
     protected $fillable = ['name_en', 'name_ar', 'description_en', 'color', 'description_ar', 'amount', 'created_by', 'updated_by', 'deleted_by'];
