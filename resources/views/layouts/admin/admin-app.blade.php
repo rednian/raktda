@@ -102,6 +102,33 @@
 
   $(document).ready(function() {
 
+    @if (Session::has('message'))
+    @if(Session::get('message')[0] == 'success')
+    $.notify({
+        title: '{{Session::get('message')[2]}}',
+        message: '{{Session::get('message')[1]}}',
+    },{
+        type:'success',
+        animate: {
+            enter: 'animated zoomIn',
+            exit: 'animated zoomOut'
+        },
+    });
+    @else
+    $.notify({
+        title: '{{Session::get('message')[2]}}',
+        message: '{{Session::get('message')[1]}}',
+    },{
+        type:'danger',
+        animate: {
+            enter: 'animated zoomIn',
+            exit: 'animated zoomOut'
+        },
+    });
+    @endif
+    @endif
+
+
     $('span[data-lang=en]').click(function () {
         getLang(1);
     });
