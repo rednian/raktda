@@ -16,6 +16,23 @@
     }
 </style>
 <section id="tabs">
+    <?php
+     $artistAmount=\App\ArtistPermitTransaction::get()->sum('amount');
+     $eventamount=\App\EventTransaction::get()->sum('amount');
+     $totalAmountReceived=$artistAmount+$eventamount;
+    ?>
+   <div class="row">
+    <div class="container"><span style="float: right">Total Amount Received :
+        <span style="
+         background-color: #565656;
+         padding: 5px;
+         border: none;
+         border-radius: 3px;
+          color: white;
+          font-size: 11px;
+         box-shadow: 1px 4px 5px -2px #7b7b7b;">AED {{number_format($totalAmountReceived)}}</span></span>
+    </div>
+  </div>
     <div class="container">
         <div class="row">
             <div class="col-12 ">
@@ -42,7 +59,7 @@
                                 <th style="">NAME</th>
                                 <th style="">TRANSACTION TYPE</th>
                                 <th style="">VAT</th>
-                                <th style="">AMOUNT</th>
+                                <th style="">AMOUNT(dhs)</th>
                                 <th style="">TRANSACTION DATE</th>
                                 <th style="">COMPANY</th>
                                 <th style="">PERMIT NUMBER</th>
@@ -54,7 +71,7 @@
                                 <th style="">PASSPORT EXPIRE DATE</th>
                                 <th style="">UID NUMBER</th>
                                 <th style="">UID EXPIRE DATE</th>
-                                <th></th>
+
 
                             </tr>
                             </thead>
@@ -69,7 +86,7 @@
                                 <th style="">NAME</th>
                                 <th style="">TRANSACTION TYPE</th>
                                 <th style="">VAT</th>
-                                <th style="">AMOUNT</th>
+                                <th style="">AMOUNT(dhs)</th>
                                 <th style="">TRANSACTION DATE</th>
                                 <th style="">COMPANY</th>
                                 <th style="">EVENT VENUE</th>
@@ -78,8 +95,6 @@
                                 <th style="">FULL ADDRESS</th>
                                 <th style="">EVENT ISSUE DATE</th>
                                 <th style="">EVENT EXPIRE DATE</th>
-                                <th></th>
-
                             </tr>
                             </thead>
                         </table>
@@ -90,3 +105,4 @@
         </div>
     </div>
 </section>
+

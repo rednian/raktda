@@ -26,7 +26,7 @@
   <link href="{{ asset('/assets/vendors/custom/vendors/flaticon/flaticon.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/custom/vendors/flaticon2/flaticon.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
-  
+
   @if (Auth::user()->LanguageId == 1)
   <style type="text/css">
     #kt_aside{ box-shadow: 4px 0 5px -2px #888; }
@@ -99,81 +99,84 @@
 <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
 {{-- <script src="{{ asset('/assets/vendors/custom/datatables/dataTables.colVis.js') }}"></script> --}}
 <script type="text/javascript">
-  $(document).ready(function(){
+  $(document).ready(function() {
 
 
-    $('form').submit(function() {
-        KTApp.blockPage({
-            overlayColor: '#000000',
-            type: 'v2',
-            state: 'primary',
-            message: 'Please wait...'
-    });
+      $('form').submit(function () {
+          KTApp.blockPage({
+              overlayColor: '#000000',
+              type: 'v2',
+              state: 'primary',
+              message: 'Please wait...'
+          });
 
-    @if (Session::has('message'))
-    @if(Session::get('message')[0] == 'success')
-    $.notify({
-        title: '{{Session::get('message')[2]}}',
-        message: '{{Session::get('message')[1]}}',
-    },{
-        type:'success',
-        animate: {
-            enter: 'animated zoomIn',
-            exit: 'animated zoomOut'
-        },
-    });
-    @else
-    $.notify({
-        title: '{{Session::get('message')[2]}}',
-        message: '{{Session::get('message')[1]}}',
-    },{
-        type:'danger',
-        animate: {
-            enter: 'animated zoomIn',
-            exit: 'animated zoomOut'
-        },
-    });
-    @endif
-    @endif
+          @if (Session::has('message'))
+          @if(Session::get('message')[0] == 'success')
+          $.notify({
+              title: '{{Session::get('message')[2]}}',
+              message: '{{Session::get('message')[1]}}',
+          }, {
+              type: 'success',
+              animate: {
+                  enter: 'animated zoomIn',
+                  exit: 'animated zoomOut'
+              },
+          });
+          @else
+          $.notify({
+              title: '{{Session::get('message')[2]}}',
+              message: '{{Session::get('message')[1]}}',
+          }, {
+              type: 'danger',
+              animate: {
+                  enter: 'animated zoomIn',
+                  exit: 'animated zoomOut'
+              },
+          });
+          @endif
+          @endif
 
-    @if(Auth::user()->LanguageId != 1)
-    // JQUERY VALIDATOR LOCALIZATION AR
-    $.extend( $.validator.messages, {
-      required: "هذا الحقل إلزامي",
-      remote: "يرجى تصحيح هذا الحقل للمتابعة",
-      email: "رجاء إدخال عنوان بريد إلكتروني صحيح",
-      url: "رجاء إدخال عنوان موقع إلكتروني صحيح",
-      date: "رجاء إدخال تاريخ صحيح",
-      dateISO: "رجاء إدخال تاريخ صحيح (ISO)",
-      number: "رجاء إدخال عدد بطريقة صحيحة",
-      digits: "رجاء إدخال أرقام فقط",
-      creditcard: "رجاء إدخال رقم بطاقة ائتمان صحيح",
-      equalTo: "رجاء إدخال نفس القيمة",
-      extension: "رجاء إدخال ملف بامتداد موافق عليه",
-      maxlength: $.validator.format( "الحد الأقصى لعدد الحروف هو {0}" ),
-      minlength: $.validator.format( "الحد الأدنى لعدد الحروف هو {0}" ),
-      rangelength: $.validator.format( "عدد الحروف يجب أن يكون بين {0} و {1}" ),
-      range: $.validator.format( "رجاء إدخال عدد قيمته بين {0} و {1}" ),
-      max: $.validator.format( "رجاء إدخال عدد أقل من أو يساوي {0}" ),
-      min: $.validator.format( "رجاء إدخال عدد أكبر من أو يساوي {0}" )
-    });
-    @endif
+          @if(Auth::user()->LanguageId != 1)
+          // JQUERY VALIDATOR LOCALIZATION AR
+          $.extend($.validator.messages, {
+              required: "هذا الحقل إلزامي",
+              remote: "يرجى تصحيح هذا الحقل للمتابعة",
+              email: "رجاء إدخال عنوان بريد إلكتروني صحيح",
+              url: "رجاء إدخال عنوان موقع إلكتروني صحيح",
+              date: "رجاء إدخال تاريخ صحيح",
+              dateISO: "رجاء إدخال تاريخ صحيح (ISO)",
+              number: "رجاء إدخال عدد بطريقة صحيحة",
+              digits: "رجاء إدخال أرقام فقط",
+              creditcard: "رجاء إدخال رقم بطاقة ائتمان صحيح",
+              equalTo: "رجاء إدخال نفس القيمة",
+              extension: "رجاء إدخال ملف بامتداد موافق عليه",
+              maxlength: $.validator.format("الحد الأقصى لعدد الحروف هو {0}"),
+              minlength: $.validator.format("الحد الأدنى لعدد الحروف هو {0}"),
+              rangelength: $.validator.format("عدد الحروف يجب أن يكون بين {0} و {1}"),
+              range: $.validator.format("رجاء إدخال عدد قيمته بين {0} و {1}"),
+              max: $.validator.format("رجاء إدخال عدد أقل من أو يساوي {0}"),
+              min: $.validator.format("رجاء إدخال عدد أكبر من أو يساوي {0}")
+          });
+          @endif
 
-    $('span[data-lang=en]').click(function(){
-      getLang(1);
-    });
-    $('span[data-lang=ar]').click(function(){
-      getLang(2);
-    });
-    function getLang(lang){
-      $.ajax({
-        url: '{{ route('admin.language') }}',
-        data: {lang: lang},
-        type: 'post'
-      }).done(function(response){
-        if(response.success) location.reload();
+          $('span[data-lang=en]').click(function () {
+              getLang(1);
+          });
+          $('span[data-lang=ar]').click(function () {
+
+              getLang(2);
+          });
+
+          function getLang(lang) {
+              $.ajax({
+                  url: '{{ route('admin.language') }}',
+                  data: {lang: lang},
+                  type: 'post'
+              }).done(function (response) {
+                  if (response.success) location.reload();
+              });
+          }
       });
-    }
   });
 </script>
 @yield('script')

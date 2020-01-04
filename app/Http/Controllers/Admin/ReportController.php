@@ -181,7 +181,7 @@ class ReportController extends Controller
                    border-radius: 3px;
                    border: navajowhite;
                    box-shadow: 0px 2px 5px -2px #0c0c0c;' 
-                   class='btn btn-primary btn-sm button_modal{{$user->artist_id}}'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
+                   class='btn btn-primary btn-sm button_modal{{$user->artist_id}}'   data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
                  View</button>";
             })
             ->rawColumns(['person_code', 'artist_status', 'artist_name', 'artist_id', 'language_id', 'email'])

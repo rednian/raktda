@@ -24,6 +24,11 @@
             border-radius: 4px;
             background-color: black;
         }
+        @media print {
+            #DivToPrint {
+               background-color: red;
+            }
+        }
 
     </style>
 @endsection
@@ -39,14 +44,13 @@
         </div>
 
         <table class="table table-bordered container-fluid " id="DivToPrint" style="padding: 3px">
-
             <tr>
                 <th colspan="2">
                     <img style="width: 100%;margin-left: -8px" src="{{asset('img/raktdalogo.png')}}" alt="">
                 </th>
             </tr>
             <tr>
-                <th colspan="2" align="center" style="padding: 5px;border-bottom: 1px dashed grey">EVENTS DETAILS</th>
+                <th colspan="2" align="center" style="padding: 5px;height: 34px;border: 1px solid grey">EVENTS DETAILS</th>
             </tr>
             <tr>
                 <th width="35%">{{__('REFERENCE NUMBER')}}</th>
@@ -274,7 +278,6 @@
             newWin = window.open("");
             newWin.document.write(divToPrint.outerHTML);
             newWin.print();
-            newWin.close();
 
         })
     </script>

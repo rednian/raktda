@@ -16,10 +16,17 @@ class Transaction extends Model
     {
         return $this->hasMany(ArtistPermitTransaction::class, 'transaction_id');
     }
-
+    public function eventTransaction()
+    {
+        return $this->hasMany(EventTransaction::class, 'transaction_id');
+    }
     public function artistPermit()
     {
-        return $this->belongsToMany(ArtistPermit::class, 'artsit_permit_transaction', 'transaction_id', 'artist_permit_id')->withPivot('amount');
+        return $this->belongsToMany(ArtistPermit::class, 'artist_permit_transaction', 'transaction_id', 'artist_permit_id')->withPivot('amount');
+    }
+    public function company()
+    {
+        return $this->belongsTo(Company::class,'transaction_id');
     }
 
 }

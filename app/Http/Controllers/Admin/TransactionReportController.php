@@ -18,8 +18,11 @@ class TransactionReportController extends Controller
     {
         $transactions = ArtistPermitTransaction::with('artistPermit')->whereHas('artistPermit',function ($q){
         $q->with('artist')->with('permit');
-        })->with('transaction')->get();
-
+        })
+            ->whereHas('transaction',function ($query){
+                $query->with('company');
+            })->with('transaction')
+            ->get();
         return Datatables::of($transactions)
             ->addColumn('reference_number', function(ArtistPermitTransaction $user) {
                 return $user->transaction->reference_number;
@@ -28,7 +31,7 @@ class TransactionReportController extends Controller
                 return $user->transaction->transaction_type;
             })
             ->addColumn('company', function(ArtistPermitTransaction $user) {
-                return Auth()->user()->LanguageId == 1? ($user->company?$user->company->name_en:''):($user->company?$user->company->name_en:'');
+                return Auth()->user()->LanguageId == 1? ($user->transaction->company?$user->transaction->company->name_en:''):($user->transaction->company?$user->transaction->company->name_en:'');
             })
             ->addColumn('permit_status', function(ArtistPermitTransaction $user) {
                 return $user->permit?$user->permit->permit_status:'';
@@ -73,7 +76,7 @@ class TransactionReportController extends Controller
                 return   \Carbon\Carbon::parse($artist->transaction->transaction_date)->format('d/m/Y');
             })
 
-            ->addColumn('artist_permit_trans_id', function(ArtistPermitTransaction $user) {
+        /*    ->addColumn('artist_permit_trans_id', function(ArtistPermitTransaction $user) {
                 $artistDetails=ArtistPermitTransaction::where('artist_permit_trans_id',$user->artist_permit_trans_id)->first();
 
                 return "<button type='button' style='height: 25px;
@@ -82,13 +85,12 @@ class TransactionReportController extends Controller
                                border: navajowhite;
                                box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
                                View</button>";
-            })
-            ->rawColumns(['reference_number','transaction_type','permit_number','permit_status','company','artist_name','artist_permit_trans_id'])
+            })*/
+            ->rawColumns(['reference_number','transaction_type','permit_number','permit_status','company','artist_name'/*,'artist_permit_trans_id'*/])
             ->make(true);
     }
     public function eventTransaction()
     {
-
         $transactions = EventTransaction::with('event')->whereHas('event',function ($q){
             $q->with('type')->with('company')->with('emirate')->with('country');
         })->with('transaction')->get();
@@ -108,12 +110,10 @@ class TransactionReportController extends Controller
             })
             ->addColumn('amount', function(EventTransaction $artist) {
                 return $artist->amount;
-
             })
             ->addColumn('event_name', function(EventTransaction $artist) {
                 return Auth()->user()->LanguageId == 1 ? $artist->event->name_en  : $artist->event->name_ar ;
             })
-
             ->addColumn('description_en', function (EventTransaction $user) {
                 return Auth()->user()->LanguageId == 1 ? $user->event->description_en  : $user->event->description_ar ;
             })
@@ -139,7 +139,7 @@ class TransactionReportController extends Controller
                 return  \Carbon\Carbon::parse($artist->transaction->transaction_date)->format('d/m/Y');
             })
 
-            ->addColumn('event_transaction_id', function(EventTransaction $user) {
+     /*       ->addColumn('event_transaction_id', function(EventTransaction $user) {
                 $artistDetails=EventTransaction::where('event_transaction_id',$user->artist_permit_trans_id)->first();
 
                 return "<button type='button' style='height: 25px;
@@ -148,8 +148,8 @@ class TransactionReportController extends Controller
                                border: navajowhite;
                                box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
                                View</button>";
-            })
-            ->rawColumns(['reference_number','transaction_type','company','event_name','event_transaction_id'])
+            })*/
+            ->rawColumns(['reference_number','transaction_type','company','event_name'/*,'event_transaction_id'*/])
             ->make(true);
     }
 }
