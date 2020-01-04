@@ -13,7 +13,7 @@
             <h3 class="kt-portlet__head-title kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->name_en) : ucfirst($event->name_ar) }} - {{ __('DETAILS') }}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
-            <a href="{{ URL::signedRoute('admin.event.index') }}#{{ $tab }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
+            <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
                  <i class="la la-arrow-left"></i>
                  {{ __('BACK') }}
             </a>
@@ -220,7 +220,7 @@
                 </div>
                 <div class="kt-widget__details">
                   <span class="kt-widget__title">{{__('HAS LIQUOR')}}</span>
-                  <a href="#" class="kt-widget__value">{{$event->liquor()->count() > 0 ? 'YES' : 'NO'}}</a>
+                  <a href="#" class="kt-widget__value">{{$event->liquor()->exists() > 0 ? 'YES' : 'NO'}}</a>
                 </div>
               </div>
               <div class="kt-widget__item kt-padding-t-5">
@@ -303,7 +303,7 @@
                   </div>
                   <div class="kt-widget__body kt-margin-t-5">
                     <hr>
-                     <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
+                     <h6 class="kt-font-dark kt-font-transform-u">{{ __('Event Permit Information') }}</h6>
                      <table class="table table-sm table-hover table-borderless table-display">
                       <tr>
                           <td>{{ __('Applied Date') }} : </td>
@@ -335,36 +335,41 @@
                          </tr>      
                      </table>
                      <hr>
-                     <h6 class="kt-font-dark">{{__('Liquor Details')}}</h6>
-                     <table class="table table-sm table-hover table-borderless table-display">
-                       <tr>
-                        <tr>
-                          <td width="55%">{{__('Establishment Name')}} :</td>
-                          <td>{{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}</td>
-                        </tr>
-                         <td>{{__('Provided by venue')}} : </td>
-                         <td>{{$event->provided ? 'YES' : 'NO'}}</td>
-                         @if ($event->provided)
-                           <tr>
-                             <td>{{__('Liquor Permit Number: ')}}</td>
-                             <td>{{$event->liquor->liquor_permit_no}}</td>
-                           </tr>
-                           @else
-                           <tr>
-                             <td>{{__('Liquor Service')}} :</td>
-                             <td>{{$event->liquor->liquor_service}}</td>
-                           </tr>
-                           <tr>
-                             <td>{{__('Liquor Types')}} :</td>
-                             <td>{{$event->liquor->liquor_type}}</td>
-                           </tr>
-                           <tr>
-                             <td>{{__('Purchase Receipt Number')}} :</td>
-                             <td>{{$event->liquor->purchase_receipt}}</td>
-                           </tr>
-                         @endif
-                       </tr>
-                     </table>
+                     <h6 class="kt-font-dark kt-font-transform-u">{{__('Liquor Details')}}</h6>
+                     @if ($event->liquor()->exists())
+                       <table class="table table-sm table-hover table-borderless table-display">
+                         <tr>
+                          <tr>
+                            <td width="55%">{{__('Establishment Name')}} :</td>
+                            <td>{{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}</td>
+                          </tr>
+                           <td>{{__('Provided by venue')}} : </td>
+                           <td>{{$event->provided ? 'YES' : 'NO'}}</td>
+                           @if ($event->provided)
+                             <tr>
+                               <td>{{__('Liquor Permit Number: ')}}</td>
+                               <td>{{$event->liquor->liquor_permit_no}}</td>
+                             </tr>
+                             @else
+                             <tr>
+                               <td>{{__('Liquor Service')}} :</td>
+                               <td>{{$event->liquor->liquor_service}}</td>
+                             </tr>
+                             <tr>
+                               <td>{{__('Liquor Types')}} :</td>
+                               <td>{{$event->liquor->liquor_type}}</td>
+                             </tr>
+                             <tr>
+                               <td>{{__('Purchase Receipt Number')}} :</td>
+                               <td>{{$event->liquor->purchase_receipt}}</td>
+                             </tr>
+                           @endif
+                         </tr>
+                       </table>
+                       @else
+                      <small> {{__('No Liquor on this event.')}}</small>
+                     @endif
+                     
                      {{-- <div class="d-flex justify-content-center">
                       @if ($event->transaction()->exists())
                        <button type="button" class="btn btn-secondary btn-sm kt-margin-r-5">Download</button>
@@ -372,7 +377,7 @@
                       
                      </div> --}}
                      <hr>
-                      <h6 class="kt-font-dark">{{ __('Establishment Details') }}</h6>
+                      <h6 class="kt-font-dark kt-font-transform-u">{{ __('Establishment Details') }}</h6>
                       @if ($event->owner->company()->exists())
                         <table class="table table-borderless table-sm table-display">
                             <tr>
