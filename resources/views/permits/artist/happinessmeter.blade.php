@@ -17,7 +17,7 @@
 
 
             </div>
-            <div class="kt-portlet__body">
+            <div class="kt-portlet__body kt-padding-t-0">
 
                 <!--begin: Form Wizard Step 5-->
                 <div class="kt-wizard-v3__content py-5" data-ktwizard-type="step-content">

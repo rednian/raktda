@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">{{__('Add New Artist Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Add New Artist Permit')}}
             </h3>
         </div>
 
@@ -38,7 +38,7 @@
     @php
     $user_id = Auth::user()->user_id;
     @endphp
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-widget5__info px-4">
             <div class="pb-2">
                 <!--begin: Permit Details Wizard-->
@@ -426,7 +426,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.replace = "{{route('artist.index')}}#applied";
+                window.location.href = "{{route('artist.index')}}#applied";
             }
         });
 
@@ -438,7 +438,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.replace="{{route('artist.index')}}#applied";
+                        window.location.href="{{route('artist.index')}}#applied";
                     }
             });
         }

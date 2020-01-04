@@ -18,10 +18,6 @@ use App\Event;
 use App\Requirement;
 use App\EventRequirement;
 use App\EventTypeRequirement;
-use Yajra\Datatables\Datatables;
-use Carbon\Carbon;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\EventRequest;
 use App\Company;
 use App\EventLiquorTruckRequirement;
 use App\EventTruck;
@@ -32,6 +28,12 @@ use App\EventComment;
 use App\EventOtherUpload ;;
 use App\Happiness;
 use App\EventTypeSub;
+use App\ArtistTempData;
+use App\Permit;
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\EventRequest;
 use NumberToWords\NumberToWords;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -41,10 +43,19 @@ class EventController extends Controller
     public function index()
     {
         Event::whereDate('expired_date', '<', Carbon::now())->update(['status' => 'expired']);
-        \App\ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
-        \App\Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
-        $eventtypes = EventType::orderBy('name_en', 'asc')->get();
-        return view('permits.event.index', ['types' => $eventtypes]);
+        ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
+        Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
+        return view('permits.event.index');
+    }
+
+    public function eventPreloadData() {
+        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
+        $data['event_sub_types'] = EventTypeSub::all()->sortBy('sub_name_en');
+        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
+        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
+        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
+        $data['emirates'] = Emirates::all()->sortBy('name_en');
+        return $data;
     }
 
     public function create(Request $request)
@@ -52,15 +63,11 @@ class EventController extends Controller
         if(!$request->hasValidSignature()){
             return abort(401);
         }
-        EventLiquor::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
-        EventTruck::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
-        // $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
-        $data['event_sub_types'] = EventTypeSub::all()->sortBy('sub_name_en');
-        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
-        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
-        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
+        $data = $this->eventPreloadData();
+        $user_id = Auth::user()->user_id;
+        EventLiquor::whereNull('event_id')->where('created_by', $user_id)->delete();
+        EventTruck::whereNull('event_id')->where('created_by', $user_id)->delete();
+
         return view('permits.event.create', $data);
     }
 
@@ -746,13 +753,8 @@ class EventController extends Controller
         if(!$request->hasValidSignature()){
             return abort(401);
         }
-        // $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
-        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
-        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
+        $data = $this->eventPreloadData();
         $data['staff_comments'] = $event->comment()->where('type', 1)->get();
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
-        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
         $data['event'] = $event;
         if (! $event) {
             abort(401);
@@ -1028,10 +1030,10 @@ class EventController extends Controller
             return abort(401);
         }
 
-        $hasHappiness = Happiness::where('type', 'event')->where('application_id', $permit->permit_id)->exists();
+        $hasHappiness = Happiness::where('type', 'event')->where('application_id', $id)->exists();
         if(!$hasHappiness)
         {
-            return redirect(URL::signedRoute('company.happiness_center', ['id' => $permit->permit_id]));
+            return redirect(URL::signedRoute('company.happiness_center', ['id' => $id]));
         }
 
         $event_details = Event::with('type', 'country')->where('event_id', $id)->first();

@@ -49,9 +49,9 @@
 
     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-widget kt-widget--project-1">
-            <div class="kt-widget__body">
+            <div class="kt-widget__body kt-padding-l-0">
                 <div class="kt-widget__stats d-">
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
@@ -238,7 +238,7 @@
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {
-            window.location.replace = "{{route('artist.index')}}#valid";
+            window.location.href = "{{route('artist.index')}}#valid";
         }
     });
 
@@ -260,7 +260,7 @@
                 data: { permit_id: temp_permit_id, from: 'amend'},
                 async: true,
                 success: function(result){
-                    window.location.replace="{{route('artist.index')}}#valid";
+                    window.location.href="{{route('artist.index')}}#valid";
                 }
         });
     }

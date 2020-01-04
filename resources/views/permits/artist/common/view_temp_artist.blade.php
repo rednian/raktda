@@ -198,8 +198,8 @@
                         </td>
                         <td class="text-center">
                             <a href="{{asset('storage')}}{{'/'.$req->path}}" target="blank" ">
-                                                                <button class=" btn btn-sm
-                                btn-secondary">{{__('View')}}
+                                                                <button class=" btn btn-sm btn-secondary
+                                btn-hover-warning">{{__('View')}}
                                 </button></a>
                         </td>
                     </tr>

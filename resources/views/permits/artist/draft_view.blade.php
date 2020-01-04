@@ -48,7 +48,7 @@
     @php
     $user_id = Auth::user()->user_id;
     @endphp
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-widget5__info px-4">
             <div class="pb-2">
                 <!--begin: Permit Details Wizard-->
@@ -378,7 +378,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.replace = "{{url('artist.index')}}#draft";
+                window.location.href = "{{url('artist.index')}}#draft";
             }
         });
 
