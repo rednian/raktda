@@ -105,9 +105,71 @@
                     </div>
                 </div>
             </section>
+
+            <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus kt-margin-t-20" id="accordion-detail">
+                <div class="card">
+                    <div class="card-header" id="heading-detail">
+                        <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-detail" aria-expanded="true" aria-controls="collapse-detail">
+                            <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('EVENT SUBCATEGORIES') }}</h6>
+                        </div>
+                     </div>
+                     <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
+                        <div class="card-body">
+
+                            {{-- <div id="action-alert-unselected" class="alert d-none alert-outline-danger fade show" role="alert">
+                                    <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                    <div class="alert-text">{{ __('Please check atleast one requirement before taking action!') }}</div>
+                                    <div class="alert-close"></div>
+                            </div> --}}
+
+                            <div class="row kt-margin-t-10">
+                                <div class="col-md-12">
+                                    <table class="table table-borderless table-striped table-hover border" id="tblSubcategory">
+                                         <thead>
+                                             <tr>
+                                                <th>{{ __('SUBCATEGORY NAME') }} <span class="text-danger">*</span></th>
+                                                <th>{{ __('SUBCATEGORY NAME (AR)') }} <span class="text-danger">*</span></th>
+                                                <th class="text-right no-wrap">
+                                                    <button style="width:100px" type="button" id="btnAddSub" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u">
+                                                        <i class="la la-plus"></i>
+                                                        {{ __('Add') }}
+                                                     </button>
+                                                </th>
+                                             </tr>
+                                         </thead>
+                                         <tbody>
+                                             <tr id="clone" class="kt-hide">
+                                                 <td>
+                                                     <div class="form-group form-group-sm">
+                                                        <input type="text" class="form-control form-control-sm sub_name_en sub_name">
+                                                    </div>
+                                                 </td>
+                                                 <td>
+                                                     <div class="form-group form-group-sm">
+                                                        <input dir="rtl" type="text" class="form-control form-control-sm sub_name_ar sub_name">
+                                                    </div>
+                                                 </td>
+                                                 <td class="text-right no-wrap">
+                                                     <button style="width:100px" type="button" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u btnRemoveSub">
+                                                        <i class="la la-minus"></i>
+                                                        {{ __('Remove') }}
+                                                     </button>
+                                                 </td>
+                                             </tr>
+                                         </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+             </section>
+
             <div class="requirements"></div>
             <div class="required_requirements"></div>
             <input type="hidden" name="submit_type">
+
+
         	</form>
 			
 			<section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus kt-margin-t-20" id="accordion-detail">
@@ -165,26 +227,49 @@
 			}
 		});
 
-		//SUBMIT FORM
-		var validated_form = $('form#formAddEventType').validate({
-     		rules:{
-     			name_en:{
-     				required: true,
-					remote: {
-		                url: '{{ route('event_type.isexist') }}',
-		            }
-     			},
-     			name_ar:{
-     				required: true,
-					remote: {
-		                url: '{{ route('event_type.isexist') }}',
-		            }
-     			},
-     			amount:{
-     				required: true,
-     			}
-     		}
-     	});
+        //SUBMIT FORM
+        var validated_form = $('form#formAddEventType').validate({
+            ignore: [],
+            rules:{
+                name_en:{
+                    required: true,
+                    remote: {
+                        url: '{{ route('event_type.isexist') }}',
+                    }
+                },
+                name_ar:{
+                    required: true,
+                    remote: {
+                        url: '{{ route('event_type.isexist') }}',
+                    }
+                },
+                amount:{
+                    required: true,
+                }
+            }
+        });
+
+        //ADD SUB CATEGORY
+        var subCount = 0;
+        $(document).on('click', '#btnAddSub', function(){
+
+            var $template = $('#clone'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('kt-hide')
+                                .removeAttr('id')
+                                .insertAfter($template);
+
+            $clone.find('input.sub_name_en').attr('name', 'sub_name['+subCount+'][en]');
+            $clone.find('input.sub_name_ar').attr('name', 'sub_name['+subCount+'][ar]');     
+
+            subCount++;              
+        });
+
+        $(document).on('click', '.btnRemoveSub', function(){
+            $(this).closest('tr').find('input.sub_name').rules('remove', 'required');
+            $(this).closest('tr').remove();
+        });
 
      	$('.btn-submit').click(function(){
 
@@ -218,7 +303,13 @@
                 );
             });
 
-     		$('#formAddEventType').trigger('submit');
+            //ADD VALIDATION TO SUBCATEGORY
+            // $('input.sub_name').each(function() {
+            //     $(this).rules('add',  { required: true });
+            // });
+
+            $('#formAddEventType').trigger('submit');
+     		
      	});
 
         //IS REQUIRED REQUIREMENT

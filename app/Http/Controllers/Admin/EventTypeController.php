@@ -77,7 +77,6 @@ class EventTypeController extends Controller
 
     public function store(Request $request)
     {
-
         try{
             $event_type = EventType::create(array_merge($request->all(), ['created_by' => $request->user()->user_id ] ));
             $result = ['success', 'New Requirement has been added', 'Success'];
@@ -85,12 +84,24 @@ class EventTypeController extends Controller
             $requirements = [];
             foreach ($request->requirement_id as $key => $value) {
                 $requirements[$value] = [
-                    'is_mandatory' => in_array($value, $request->required) ? 1 : null
+                    'is_mandatory' => $request->has('required') && in_array($value, $request->required) ? 1 : null
                 ];
             }
 
             if($request->has('requirement_id')){
                 $event_type->requirements()->sync( (array) $requirements);
+            }
+
+            //SAVE SUB CATEGORIES
+            if($request->has('sub_name')){
+                foreach ($request->sub_name as $key => $value) {
+                    if($value['en'] != "" && $value['ar'] != ""){
+                        $event_type->subType()->create([
+                            'sub_name_en' => $value['en'],
+                            'sub_name_ar' => $value['ar']
+                        ]);
+                    }
+                }
             }
 
             if($request->submit_type == 'continue'){

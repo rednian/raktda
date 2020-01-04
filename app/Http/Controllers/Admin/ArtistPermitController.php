@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\Facades\DataTables;
+use App\Notifications\AllNotification;
 
 class ArtistPermitController extends Controller
 {   
@@ -168,17 +169,24 @@ class ArtistPermitController extends Controller
              case 'approved-unpaid':
               $permit->comment()->create($request->all());
               $permit->update(['permit_status'=>$request->action, 'approved_by'=>$request->user_id, 'approved_date'=> Carbon::now() ]);
+
+              // $this->sendNotificationCompany($permit, 'approve');
+
                break;
               case 'rejected';
                 $request['type'] = 1;
                  $permit->comment()->create($request->all());
                  $permit->update(['permit_status'=>$request->action]);
+
+                 // $this->sendNotificationCompany($permit, 'reject');
               break;
               case 'send_back':
                 $request['type'] = 1;
                 $request['action'] = 'modification request';
                 $permit->comment()->create($request->all());
                 $permit->update(['permit_status'=>$request->action]);
+
+                // $this->sendNotificationCompany($permit, 'amend');
               break;
               case 'need approval':
 
@@ -194,9 +202,16 @@ class ArtistPermitController extends Controller
                           'user_id'=> null,
                           'comment'=> null,
                         ]);
+
+                        //SEND EMAIL NOTIFICATION
+                        // $this->sendNotificationApproval($permit, User::whereHas('roles', function($q) use($role_id){
+                        //   $q->where('roles.role_id', $role_id);
+                        // })->get());
+
                     }else{//IF GOVERNMENT APPROVAL -> LOOP SELECTED GOVT DEPT
                         if($request->has('department')){
                             foreach ($request->department as $dep) {
+
                                 $permit->comment()->create([
                                   'action'=>'pending',
                                   'role_id'=>$role_id,
@@ -204,6 +219,11 @@ class ArtistPermitController extends Controller
                                   'comment'=> null,
                                   'government_id' => $dep
                                 ]);
+
+                                //SEND EMAIL NOTIFICATION
+                                // $this->sendNotificationApproval($permit, User::whereHas('roles', function($q) use($role_id){
+                                //   $q->where('roles.role_id', $role_id);
+                                // })->where('government_id', $dep)->get());
                             }
                         }
                     }
@@ -299,6 +319,85 @@ class ArtistPermitController extends Controller
 	      $result = ['error', $e->getMessage(), 'Error'];
       }
 	    return redirect(URL::signedRoute('admin.artist_permit.index'))->with('message', $result);
+    }
+
+    private function sendNotificationCompany($permit, $type){
+
+      if($type == 'approve'){
+        $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Approved';
+        $title = 'Artist Permit Application has been Approved';
+        $content = 'Your Artist Permit application with the reference number <b>' . $permit->reference_number . '</b> has been approved. To view the details, please click the button below.';
+        // $url = URL::signedRoute('event.show', ['event' => $permit->event_id, 'tab' => 'valid']);
+        $url = '#';
+      }
+
+      if($type == 'amend'){
+        $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Requires Amendment';
+        $title = 'Artist Permit Applications Requires Amendment';
+        $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
+        // $url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+        $url = '#';
+      }
+
+      if($type == 'reject'){
+        $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Rejected';
+        $title = 'Artist Permit Application has been Rejected';
+        $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been rejected. To view the details, please click the button below.';
+        //$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+        $url = '#';
+      }
+
+      $users = $permit->owner->company->users;
+
+      foreach ($users as $user) {
+        $user->notify(new AllNotification([
+          'subject' => $subject,
+          'title' => $title,
+          'content' => $content,
+          'button' => 'View Application',
+          'url' => $url
+        ]));
+      }
+    }
+
+    private function sendNotificationApproval($permit, $users){
+
+      $subject = 'Artist Permit For Approval';
+      $title = 'Artist Permit For Approval';
+      $content = 'The artist permit with reference number <b>' . $permit->reference_number . '</b> needs to have an approval from your department. Please click the link below.';
+      $url = URL::signedRoute('admin.event.show', $permit->event_id);
+
+      foreach ($users as $user) {
+        $user->notify(new AllNotification([
+          'subject' => $subject,
+          'title' => $title,
+          'content' => $content,
+          'button' => 'View Permit',
+          'url' => $url
+        ]));
+      }
+    }
+
+    private function sendNotificationChecked($event, $users, $checked_by){
+
+      $subject = 'Event Permit Has Been Checked';
+      $title = 'Event Permit Has Been Checked';
+      $content = 'The event permit with reference number <b>' . $event->reference_number . '</b> has been checked by '. $checked_by->NameEn .'.';
+      $url = URL::signedRoute('admin.event.show', $event->event_id);
+
+      if($event->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
+                $url = URL::signedRoute('admin.event.application', $event->event_id);
+            }
+
+      foreach ($users as $user) {
+        $user->notify(new AllNotification([
+          'subject' => $subject,
+          'title' => $title,
+          'content' => $content,
+          'button' => 'View Permit',
+          'url' => $url
+        ]));
+      }
     }
 
     public function checkActivePermit(Request $request, Permit $permit, Artist $artist)

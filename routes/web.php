@@ -260,6 +260,8 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
     Route::prefix('settings')->group(function () {
 
+        Route::get('checkoutsession', 'Admin\SettingController@checkoutsession')->name('admin.setting.checkout');
+
         Route::get('/', 'Admin\SettingController@index')->name('admin.setting.index');
         Route::post('general_settings/save', 'Admin\SettingController@saveGeneralSettings')->name('admin.setting.general_settings.save');
 

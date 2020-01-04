@@ -167,8 +167,6 @@
 			return response()->json($events);
 		}
 		
-
-
 		public function submit(Request $request, Event $event)
 		{
 			try {

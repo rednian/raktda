@@ -102,19 +102,19 @@
   $(document).ready(function(){
 
 
-    $('form').submit(function(e) {
-      KTApp.block('body', {
-          overlayColor: '#000000',
-          type: 'v2',
-          state: 'success',
-          message: 'Please wait...'
-      });
+    // $('form').submit(function(e) {
+    //   KTApp.block('body', {
+    //       overlayColor: '#000000',
+    //       type: 'v2',
+    //       state: 'success',
+    //       message: 'Please wait...'
+    //   });
 
-      // setTimeout(function() {
-      //     KTApp.unblock('#kt_blockui_1_content');
-      // }, 2000);
+    //   // setTimeout(function() {
+    //   //     KTApp.unblock('#kt_blockui_1_content');
+    //   // }, 2000);
 
-    });
+    // });
 
     @if (Session::has('message'))
     @if(Session::get('message')[0] == 'success')
