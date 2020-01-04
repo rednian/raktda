@@ -1,11 +1,12 @@
 @extends('layouts.admin.admin-app')
 @section('style')
     <style>
-        table{
+        table {
             text-align: left;
             font-size: 13px;
         }
-        .print_button{
+
+        .print_button {
             height: 27px;
             line-height: 2px;
             border: 2px solid #505050;
@@ -13,7 +14,8 @@
             border-radius: 4px;
             transition-duration: .3s;
         }
-        .print_button:hover{
+
+        .print_button:hover {
             height: 27px;
             line-height: 2px;
             box-shadow: 1px 7px 7px -6px black;
@@ -22,12 +24,18 @@
             border-radius: 4px;
             background-color: black;
         }
+        @media print {
+            #DivToPrint {
+               background-color: red;
+            }
+        }
 
     </style>
 @endsection
 @section('content')
 
-    <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet" style="padding: 20px">
+    <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet"
+             style="padding: 20px">
         <div>
             <div style="background-color: #f3e0eb;
             padding: 8px;
@@ -35,71 +43,74 @@
             font-family: arial;">{{__('EVENT DETAILS')}}</div>
         </div>
 
-       <table class="table table-bordered container-fluid " id="DivToPrint" style="padding: 3px">
-
-           <tr>
-               <th colspan="2">
-                   <img style="width: 100%;margin-left: -8px" src="{{asset('img/raktdalogo.png')}}" alt="">
-               </th>
-           </tr>
-<tr><th colspan="2"  align="center" style="padding: 5px;border-bottom: 1px dashed grey">EVENTS DETAILS</th></tr>
-        <tr>
-            <th width="35%">{{__('REFERENCE NUMBER')}}</th>
-            <td>{{$event->reference_number}}</td>
-        </tr>
-        <tr>
-            <th>{{__('NAME')}}</th>
-            <td>{{ucwords($event->name_en)}}</td>
-        </tr>
-        <tr>
-            <th>{{__('PERMIT NUMBER')}}</th>
-            <td class="col-6">{{$event->permit_number}}</td>
-        </tr>
-        <tr>
-            <th>{{__('COMPANY')}}</th>
-            <td>{{ucwords($event->company?$event->company->name_en:'')}}</td>
-        </tr>
-        <tr>
-            <th>{{__('VENUE')}}</th>
-            <td>{{$event->venue_en}}</td>
-        </tr>
-        <tr>
-            <th>{{__('DESCRIPTION')}}</th>
-            <td>{{$event->description_en}}</td>
-        </tr>
-        <tr>
-            <th>{{__('EMIRATE')}}</th>
-            <td >{{$event->emirate->name_en}}</td>
-        </tr>
-        <tr>
-            <th>{{__('ADDRESS')}}</th>
-            <td>{{$event->address}}</td>
-        </tr>
-        <tr>
-                    <th>{{__('ISSUED DATE')}}</th>
-            <td>{{$event->issued_date}}</td>
-        </tr>
-        <tr>
-            <th>{{__('EXPIRY DATE')}}</th>
-            <td>{{$event->expired_date}}</td>
-        </tr>
-        <tr>
-            <th>{{__('APPLICATION TYPE')}}</th>
-            <td>{{$event->firm}}</td>
-        </tr>
-        <tr>
-            <th>{{__('EVENT TYPE')}}</th>
-            <td>{{$event->type?$event->type->name_en:''}}</td>
-        </tr>
-            </table>
-            <div class="container" align="center">
+        <table class="table table-bordered container-fluid " id="DivToPrint" style="padding: 3px">
+            <tr>
+                <th colspan="2">
+                    <img style="width: 100%;margin-left: -8px" src="{{asset('img/raktdalogo.png')}}" alt="">
+                </th>
+            </tr>
+            <tr>
+                <th colspan="2" align="center" style="padding: 5px;height: 34px;border: 1px solid grey">EVENTS DETAILS</th>
+            </tr>
+            <tr>
+                <th width="35%">{{__('REFERENCE NUMBER')}}</th>
+                <td>{{$event->reference_number}}</td>
+            </tr>
+            <tr>
+                <th>{{__('NAME')}}</th>
+                <td>{{ucwords($event->name_en)}}</td>
+            </tr>
+            <tr>
+                <th>{{__('PERMIT NUMBER')}}</th>
+                <td class="col-6">{{$event->permit_number}}</td>
+            </tr>
+            <tr>
+                <th>{{__('COMPANY')}}</th>
+                <td>{{ucwords($event->company?$event->company->name_en:'')}}</td>
+            </tr>
+            <tr>
+                <th>{{__('VENUE')}}</th>
+                <td>{{$event->venue_en}}</td>
+            </tr>
+            <tr>
+                <th>{{__('DESCRIPTION')}}</th>
+                <td>{{$event->description_en}}</td>
+            </tr>
+            <tr>
+                <th>{{__('EMIRATE')}}</th>
+                <td>{{$event->emirate->name_en}}</td>
+            </tr>
+            <tr>
+                <th>{{__('ADDRESS')}}</th>
+                <td>{{$event->address}}</td>
+            </tr>
+            <tr>
+                <th>{{__('ISSUED DATE')}}</th>
+                <td>{{$event->issued_date}}</td>
+            </tr>
+            <tr>
+                <th>{{__('EXPIRY DATE')}}</th>
+                <td>{{$event->expired_date}}</td>
+            </tr>
+            <tr>
+                <th>{{__('APPLICATION TYPE')}}</th>
+                <td>{{$event->firm}}</td>
+            </tr>
+            <tr>
+                <th>{{__('EVENT TYPE')}}</th>
+                <td>{{$event->type?$event->type->name_en:''}}</td>
+            </tr>
+        </table>
+        <div class="container" align="center">
             <button class="btn print_button btn-sm" id="ClicktoPrintEvent" style="text-align: center">PRINT</button>
-            </div>
+        </div>
 
     </section>
 
     <section>
-        <iframe class="border kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 350px; width: 100%; margin-top: 1%; border-style: none;" >
+        <iframe class="border kt-padding-5" id='mapcanvas'
+                src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'
+                style="height: 350px; width: 100%; margin-top: 1%; border-style: none;">
         </iframe>
         </div>
         <div class="col-md-5">
@@ -108,9 +119,11 @@
                     <div class="kt-widget__head kt-margin-t-5">
                         <div class="kt-widget__media kt-margin-b-5">
                             @if ($event->thumbnail)
-                                <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}" class="kt-widget__img img-circle" alt="image">
+                                <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}"
+                                     class="kt-widget__img img-circle" alt="image">
                             @else
-                                <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
+                                <div
+                                    class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
                                     @php
                                         $name = explode(' ', $event->name_en);
                                         $name = strtoupper(substr($name[0], 0, 1));
@@ -127,7 +140,10 @@
                             </div>
                             @if ($event->status == 'cancelled')
                                 <div class="kt-widget__section">
-                                    <h6 class="kt-font-dark">{{ __('Cancel Reason') }}   <small title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}" class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small></h6>
+                                    <h6 class="kt-font-dark">{{ __('Cancel Reason') }} <small
+                                            title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}"
+                                            class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small>
+                                    </h6>
 
                                     <hr class="kt-margin-b-0 kt-margin-t-0">
                                     <p>
@@ -142,7 +158,7 @@
                         <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
                         <table class="table table-sm table-hover table-borderless table-display">
                             <tr>
-                                <td>{{ __('Applied Date') }} : </td>
+                                <td>{{ __('Applied Date') }} :</td>
                                 <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
                             </tr>
                             <tr>
@@ -151,7 +167,8 @@
                             </tr>
                             <tr>
                                 <td>{{ __('Permit Number') }} :</td>
-                                <td class="kt-font-dark"><code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
+                                <td class="kt-font-dark">
+                                    <code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
                             </tr>
                             <tr>
                                 <td>{{ __('Expected Audience') }} :</td>
@@ -178,7 +195,7 @@
                                 <td width="55%">{{__('Establishment Name')}} :</td>
                                 <td>{{Auth::user()->LanguageId == 1 ? ucfirst($event->liquor->company_name_en) : $event->liquor->company_name_ar}}</td>
                             </tr>
-                            <td>{{__('Provided by venue')}} : </td>
+                            <td>{{__('Provided by venue')}} :</td>
                             <td>{{$event->provided ? 'YES' : 'NO'}}</td>
                             @if ($event->provided)
                                 <tr>
@@ -212,15 +229,15 @@
                         @if ($event->owner->company()->exists())
                             <table class="table table-borderless table-sm table-display">
                                 <tr>
-                                    <td><span style="font-size: large;" class="flaticon-home"></span> : </td>
+                                    <td><span style="font-size: large;" class="flaticon-home"></span> :</td>
                                     <td>{{ ucwords(Auth::user()->LanguageId == 1 ? ucfirst($event->owner->company->name_en) : $event->owner->company->name_ar ) }}</td>
                                 </tr>
                                 <tr>
-                                    <td><span style="font-size: large;" class="flaticon-email"></span> : </td>
+                                    <td><span style="font-size: large;" class="flaticon-email"></span> :</td>
                                     <td>{{ $event->owner->company->company_email }}</td>
                                 </tr>
                                 <tr>
-                                    <td><span style="font-size: large;" class="la la-phone"></span> : </td>
+                                    <td><span style="font-size: large;" class="la la-phone"></span> :</td>
                                     <td>{{ $event->owner->company->phone_number }}</td>
                                 </tr>
                                 <tr>
@@ -249,12 +266,18 @@
         $('#ClicktoPrintEvent').click(function () {
 
             var divToPrint = document.getElementById('DivToPrint');
-            $(divToPrint).css({'font-size':'13px','color':'black','text-align':'left','border':'1px solid grey','padding':'4%','font-family':
-            'arial'})
+            $(divToPrint).css({
+                'font-size': '13px',
+                'color': 'black',
+                'text-align': 'left',
+                'border': '1px solid grey',
+                'padding': '4%',
+                'font-family':
+                    'arial'
+            })
             newWin = window.open("");
             newWin.document.write(divToPrint.outerHTML);
             newWin.print();
-            newWin.close();
 
         })
     </script>

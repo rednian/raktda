@@ -26,7 +26,7 @@
                   <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">
                     {{ __('Establishment Detail') }}
                   </a>
-                    @if ($event->status == 'active' || $event->status == 'expired')
+                    @if (in_array($event->status, ['active', 'expired']) && !is_null($event->approved_by))
                         {{-- <div class="dropdown-divider"></div> --}}
                         <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
                     @endif
@@ -365,12 +365,12 @@
                          @endif
                        </tr>
                      </table>
-                     <div class="d-flex justify-content-center">
+                     {{-- <div class="d-flex justify-content-center">
                       @if ($event->transaction()->exists())
                        <button type="button" class="btn btn-secondary btn-sm kt-margin-r-5">Download</button>
                       @endif
                       
-                     </div>
+                     </div> --}}
                      <hr>
                       <h6 class="kt-font-dark">{{ __('Establishment Details') }}</h6>
                       @if ($event->owner->company()->exists())
@@ -422,7 +422,7 @@
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
-                    <input type="checkbox" checked="checked" name="">
+                    <input type="checkbox" {{$event->is_display_all ?  'checked' : null }} name="is_display_all">
                     <span></span>
                   </label>
                 </span>
@@ -433,7 +433,7 @@
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
-                    <input type="checkbox" checked="checked" name="">
+                    <input type="checkbox" {{$event->is_display_web ?  'checked' : null }} name="is_display_web">
                     <span></span>
                   </label>
                 </span>
@@ -589,8 +589,11 @@
   var document_table = {}; 
   var comment_table = {}; 
   $(document).ready(function(){
+
     $('input[name=is_display_web]').change(function(){
+       
        var val = $(this).is(':checked') ? 1 : null;
+
        bootbox.confirm('Are you sure you want to show the event to the public website calendar?', function(result){
          if(result){
            $.ajax({
@@ -601,6 +604,7 @@
          }
        });
     });
+
 
     $('input[name=is_display_all]').change(function(){
       var el = $(this);
@@ -616,7 +620,10 @@
            });
          }
          else{
-          el.attr('checked', false);
+          var res = $('input[name=is_display_all]').removeAttr('checked', true);
+          console.log(res);
+          // el.removeAttr('checked', true);
+
          }
        });
       }

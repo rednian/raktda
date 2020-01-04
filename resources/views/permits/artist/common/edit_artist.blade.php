@@ -134,7 +134,7 @@
                                                 @if($req->dates_required == 1)
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
-                                                        title="Issue Date">@lang('words.issue_date')</label>
+                                                        title="Issue Date">{{__('Issued Date')}}</label>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="doc_issue_date_{{$i}}" data-date-end-date="0d"
                                                         id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
@@ -144,7 +144,7 @@
                                                 </div>
                                                 <div class="col-lg-2 col-sm-12">
                                                     <label for="" class="text--maroon kt-font-bold"
-                                                        title="Expiry Date">@lang('words.expired_date')</label>
+                                                        title="Expiry Date">{{__('Expired Date')}}</label>
                                                     <input type="text" class="form-control form-control-sm date-picker"
                                                         name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                         id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
@@ -175,26 +175,34 @@
                         <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
                         @php
                         $backUrl = '';
+                        $status = '';
+                        $route_back = '';
                         switch ($from) {
                         case 'amend':
-                        $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/amend';
+                        $status = 'amend';
                         break;
                         case 'renew':
-                        $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/renew';
+                        $status = 'renew';
                         break;
                         case 'edit':
-                        $backUrl = 'company/artist/permit/'.$artist_details->permit_id .'/edit';
-                        break;
-                        case 'new':
-                        $backUrl = 'company/artist/new/1';
-                        break;
-                        case 'event':
-                        $backUrl = 'company/event/add_artist/'.$artist_details->permit_id ;
+                        $status = 'edit';
                         break;
                         }
+
+                        $route_back = URL::signedRoute('artist.permit',[ 'id' => $permit_details->permit_id , 'status'=>
+                        $status]);
+
+                        if($from == 'new') {
+                        $route_back = URL::signedRoute('company.add_new_permit', [ 'id' => 1]);
+                        }
+
+                        if($from == 'event') {
+                        $route_back = URL::signedRoute('event.add_artist', [ 'id' => $permit_details->permit_id]);
+                        }
+
                         @endphp
 
-                        <a href="{{url($backUrl)}}">
+                        <a href="{{$route_back}}">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 {{__('Back')}}
                             </div>
@@ -841,7 +849,7 @@
         autoclose: true
     })
 
-    $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2, endDate:'-10Y'});
+    $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2});
 
     $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
     $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});

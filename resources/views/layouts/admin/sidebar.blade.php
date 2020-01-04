@@ -36,7 +36,7 @@
                    </a>
                </li> --}}
                <li class="kt-menu__item {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }} {{ Request::is('company_registration*') ? 'kt-menu__item--active': '' }}">
-                   <a href="{{ route('admin.company.index') }}" class="kt-menu__link ">
+                   <a href="{{ URL::signedRoute('admin.company.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Establishment') }}</span>
                    </a>
                </li>

@@ -435,6 +435,7 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="area_id"
                                                                 class=" col-form-label kt-font-bold text-right">{{__('Area')}}
+                                                                <span class="text-danger">*</span>
                                                             </label>
                                                             <select class="  form-control form-control-sm "
                                                                 name="area_id" id="area_id">
@@ -1218,7 +1219,8 @@
 
                 if (documentsValidator != '' ? documentsValidator.form() : 1 && hasFile ) {
 
-                    $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+                    // $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+
 
                     getImagePaths();
 
@@ -1238,10 +1240,19 @@
                                 imgPaths: img, 
                                 description: $('#description').val()
                             },
+                            beforeSend: function() {
+                                KTApp.blockPage({
+                                    overlayColor: '#000000',
+                                    type: 'v2',
+                                    state: 'success',
+                                    message: 'Please wait...'
+                                });
+                            },
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
                                     window.location.href = "{{route('event.index')}}#applied";
+                                    KTApp.unblockPage();
                                 }
                             }
                         });
@@ -1257,7 +1268,7 @@
 
                 if (documentsValidator != '' ? documentsValidator.form() : 1 && hasFile) {
 
-                    $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+                    // $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
                     getImagePaths();
                     var ed = localStorage.getItem('eventdetails');
@@ -1276,10 +1287,19 @@
                                 imgPaths: img, 
                                 description: $('#description').val()
                             },
+                            beforeSend: function() {
+                                KTApp.blockPage({
+                                    overlayColor: '#000000',
+                                    type: 'v2',
+                                    state: 'success',
+                                    message: 'Please wait...'
+                                });
+                            },
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
                                     window.location.href = "{{route('event.index')}}#draft";
+                                    KTApp.unblockPage();
                                 }
                             }
                         });

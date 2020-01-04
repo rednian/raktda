@@ -151,7 +151,7 @@
 
 		public function calendar(Request $request)
 		{
-			$events = Event::whereIn('status',['active', 'expired'])->get();
+			$events = Event::whereNotNull('approved_by')->get();
 			$events = $events->map(function($event) use ($request){
 				return [
 					'title'=> $request->user()->LanguageId == 1 ? ucfirst($event->name_en) : $event->name_ar,
@@ -162,6 +162,7 @@
 					'description'=> 'Venue : '.$venue = $request->user()->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
 					'backgroundColor'=> $event->type->color,
 					'textColor' => '#fff !important',
+					'businessHours'=> 	['start'=>date('H:m', strtotime($event->time_start)), 'end'=>date('H:m', strtotime( $event->time_end))]
 				];
 			});
 			return response()->json($events);
@@ -879,7 +880,7 @@
 				})
 				->addColumn('event_type', function($event) use ($request){
 					$type = $request->user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar;
-					$sub = $request->user()->LanguageId == 1 ?  ucfirst($event->subtype->name_en) : $event->subtype->name_ar;
+					$sub = $request->user()->LanguageId == 1 ?  ucfirst($event->subtype->sub_name_en) : $event->subtype->sub_name_ar;
 					$sub = !empty($sub) ? $sub : '-';
 					return type($type, $sub);
 				})

@@ -118,13 +118,14 @@
     padding-top: 0 !important;
 }
 
-.kt-widget.kt-widget--project-1
+/* .kt-widget.kt-widget--project-1
     .kt-widget__body
     .kt-widget__stats
     .kt-widget__item
     .kt-widget__date {
     padding-bottom: 0 !important;
-}
+} */
+
 .kt-widget.kt-widget--project-1
     .kt-widget__body
     .kt-widget__stats
@@ -747,7 +748,40 @@ select option:first-child {
 .fs-16 {
     font-size: 16px;
 }
-
+/* 
 .datepicker {
     z-index: 100 !important;
+} */
+
+.btn-secondary {
+    cursor: pointer !important;
+}
+
+.ajax-upload-dragdrop .btn-secondary {
+    background: linear-gradient(
+        to bottom,
+        #fff 0%,
+        #f5f5f5 49%,
+        #ececec 50%,
+        #eee 100%
+    ) !important;
+    border: 1px solid #ccc !important;
+}
+
+.ajax-upload-dragdrop .btn-secondary:hover {
+    border-color: #fa0 !important;
+    box-shadow: 0 0 2px #fa0 !important;
+}
+
+.work-location-column {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#permit-document-details .nav-pills .nav-item .nav-link:active,
+.nav-pills .nav-item .nav-link.active,
+.nav-pills .nav-item .nav-link.active:hover {
+    background-color: #9b9b9c;
 }

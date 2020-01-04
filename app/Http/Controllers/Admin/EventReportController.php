@@ -12,9 +12,71 @@ use Yajra\DataTables\Facades\DataTables;
 
 class EventReportController extends Controller
 {
-        public function event_reports()
-        {
-            $events=Event::with('company')->with('type')->get();
+    public function event_reports()
+    {
+        $events = Event::with('company')->with('type')->get();
+        return Datatables::of($events)
+            ->addColumn('reference_number', function (Event $user) {
+                return $user->reference_number;
+            })
+            ->addColumn('name_en', function (Event $user) {
+                return $user->name_en;
+            })
+            ->addColumn('description_en', function (Event $user) {
+                return str_limit($user->description_en, 50);
+            })
+            ->addColumn('venue_en', function (Event $user) {
+                return str_limit($user->venue_en, 50);
+            })
+            ->addColumn('address', function (Event $user) {
+                return $user->address;
+            })
+            ->addColumn('company_id', function (Event $user) {
+                return $user->company ? $user->company->name_en : ' -- ';
+            })
+            ->addColumn('issued_date', function (Event $user) {
+                return $user->issued_date;
+            })
+            ->addColumn('event_type_id', function (Event $user) {
+                return $user->type ? $user->type->name_en : '';
+            })
+            ->addColumn('application_type', function (Event $user) {
+                return $user->firm;
+            })
+            ->addColumn('status', function (Event $user) {
+                return strtoupper($user->status);
+            })
+            ->addColumn('event_id', function (Event $user) {
+                if ($user->status == 'active') {
+
+                    return "<button type='button' style='height: 25px;
+                    line-height: 4px;
+                    border-radius: 3px;
+                    border: navajowhite;
+                    box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                    class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    View</button>";
+                } else {
+                    return "<button type='button' style='height: 25px;
+                    line-height: 4px;
+                   border-radius: 3px;
+                   border: navajowhite;
+                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                   class='btn btn-danger btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 View</button>";
+                }
+            })
+            ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+            ->make(true);
+    }
+
+
+    public function events(Request $request)
+    {
+        if ($request->events == 'active') {
+            $events = Event::where('status', 'active')
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+
             return Datatables::of($events)
                 ->addColumn('reference_number', function (Event $user) {
 
@@ -24,22 +86,22 @@ class EventReportController extends Controller
                     return $user->name_en;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en,20);
+                    return str_limit($user->description_en, 50);
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en,20);
+                    return str_limit($user->venue_en, 50);
                 })
                 ->addColumn('address', function (Event $user) {
-                    return str_limit($user->address,20);
+                    return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ?$user->company->name_en:' -- ';
+                    return $user->company ? $user->company->name_en : ' -- ';
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type?$user->type->name_en:'';
+                    return $user->type ? $user->type->name_en : '';
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -47,602 +109,524 @@ class EventReportController extends Controller
                 ->addColumn('status', function (Event $user) {
                     return strtoupper($user->status);
                 })
-                ->addColumn('event_id', function(Event $user) {
-                    if($user->status=='active') {
-
+                ->addColumn('event_id', function (Event $user) {
                     return "<button type='button' style='height: 25px;
-                    line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                }
-                else{
-                    return "<button type='button' style='height: 25px;
-                    line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-danger btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                }
-                })
-
-                ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address','event_id'])
-                ->make(true);
-        }
-
-
-        public function events(Request $request){
-                if($request->events=='active') {
-                    $events = Event::where('status','active')
-                    ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
-
-                    return Datatables::of($events)
-                        ->addColumn('reference_number', function (Event $user) {
-
-                            return $user->reference_number;
-                        })
-                        ->addColumn('name_en', function (Event $user) {
-                            return $user->name_en;
-                        })
-                        ->addColumn('description_en', function (Event $user) {
-                            return str_limit($user->description_en, 20);
-                        })
-                        ->addColumn('venue_en', function (Event $user) {
-                            return str_limit($user->venue_en, 20);
-                        })
-                        ->addColumn('address', function (Event $user) {
-                            return str_limit($user->address, 50);
-                        })
-                        ->addColumn('company_id', function (Event $user) {
-                            return $user->company ? $user->company->name_en : ' -- ';
-                        })
-                        ->addColumn('issued_date', function (Event $user) {
-                            return $user->issued_date;
-                        })
-                        ->addColumn('event_type_id', function (Event $user) {
-                            return $user->type ? $user->type->name_en : '';
-                        })
-                        ->addColumn('application_type', function (Event $user) {
-                            return $user->firm;
-                        })
-                        ->addColumn('status', function (Event $user) {
-                            return strtoupper($user->status);
-                        })
-                        ->addColumn('event_id', function (Event $user) {
-                            return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
                    border: navajowhite;
                    box-shadow: 0px 2px 5px -2px #0c0c0c;' 
                    class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                 View</button>";
-                        })
-                        ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
-                        ->make(true);
-                }
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
+        }
 
-            if($request->events=='all') {
-                $events = Event::/*where('status','active')
-                    ->where('expired_date', '>', Carbon::now())->*/with('company')->with('type')->get();
-                return Datatables::of($events)
-                    ->addColumn('reference_number', function (Event $user) {
+        if ($request->events == 'all') {
+            $events = Event::/*where('status','active')
+                    ->where('expired_date', '>', Carbon::now())->*/ with('company')->with('type')->get();
+            return Datatables::of($events)
+                ->addColumn('reference_number', function (Event $user) {
 
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en, 20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en, 20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address, 50);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ? $user->company->name_en : ' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type ? $user->type->name_en : '';
-                    })
-                    ->addColumn('application_type', function (Event $user) {
-                        return $user->firm;
-                    })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                    ->addColumn('event_id', function (Event $user) {
-                        if($user->status=='active') {
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    if ($user->status == 'active') {
 
-                            return "<button type='button' style='height: 25px;
+                        return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
                    border: navajowhite;
                    box-shadow: 0px 2px 5px -2px #0c0c0c;'
                    class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
-                        }
-                        else{
-                            return "<button type='button' style='height: 25px;
+                    } else {
+                        return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
                    border: navajowhite;
                    box-shadow: 0px 2px 5px -2px #0c0c0c;'
                    class='btn btn-danger btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
-                        }
+                    }
 
-                    })
-
-                    ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
-                    ->make(true);
-            }
-
-            if($request->events=='+60') {
-                $end=Carbon::now()->subDays(-60);
-                $start=Carbon::now();
-                $events = Event::where('issued_date','>',$start )->where('issued_date','<',$end)->where('expired_date','>',$start)->where('status','active')->with('company')->with('type')->get();
-                return Datatables::of($events)
-                    ->addColumn('reference_number', function (Event $user) {
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en, 20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en, 20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address, 50);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ? $user->company->name_en : ' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type ? $user->type->name_en : '';
-                    })
-                    ->addColumn('application_type', function (Event $user) {
-                        return $user->firm;
-                    })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                    ->addColumn('event_id', function (Event $user) {
-                        return "<button type='button' style='height: 25px;
-                    line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                    })
-                    ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
-                    ->make(true);
-            }
-
-               if($request->events=='-30') {
-                $start = Carbon::now()->subDays(30);
-                $end = Carbon::now();
-                $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->with('company')->with('type')->get();
-
-                return Datatables::of($events)
-                    ->addColumn('reference_number', function (Event $user) {
-
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en, 20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en, 20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address, 50);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ? $user->company->name_en : ' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type ? $user->type->name_en : '';
-                    })
-                    ->addColumn('application_type', function (Event $user) {
-                        return $user->firm;
-                    })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                    ->addColumn('event_id', function (Event $user) {
-                        return "<button type='button' style='height: 25px;
-                    line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                    })
-                    ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
-                    ->make(true);
-            }
-
-            if($request->events=='+30') {
-                $end=Carbon::now()->subDays(-30);
-                $start=Carbon::now();
-                $events = Event::where('issued_date','>',$start )->where('issued_date','<',$end)->where('expired_date','>',$start)->where('status','active')->with('company')->with('type')->get();
-                return Datatables::of($events)
-                    ->addColumn('reference_number', function (Event $user) {
-
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en, 20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en, 20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address, 50);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ? $user->company->name_en : ' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type ? $user->type->name_en : '';
-                    })
-                    ->addColumn('application_type', function (Event $user) {
-                        return $user->firm;
-                    })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                    ->addColumn('event_id', function (Event $user) {
-                        return "<button type='button' style='height: 25px;
-                    line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                    })
-                    ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
-                    ->make(true);
-            }
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
         }
 
+        if ($request->events == '+60') {
+            $end = Carbon::now()->subDays(-60);
+            $start = Carbon::now();
+            $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->where('expired_date', '>', $start)->where('status', 'active')->with('company')->with('type')->get();
+            return Datatables::of($events)
+                ->addColumn('reference_number', function (Event $user) {
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
+                    line-height: 4px;
+                   border-radius: 3px;
+                   border: navajowhite;
+                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 View</button>";
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
+        }
 
-        public function applied_date(Request $request)
-        {
-            if($request->applied_date == 1) {
-            $users = Event::where('status','active')
+        if ($request->events == '-30') {
+            $start = Carbon::now()->subDays(30);
+            $end = Carbon::now();
+            $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->with('company')->with('type')->get();
+
+            return Datatables::of($events)
+                ->addColumn('reference_number', function (Event $user) {
+
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
+                    line-height: 4px;
+                   border-radius: 3px;
+                   border: navajowhite;
+                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 View</button>";
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
+        }
+
+        if ($request->events == '+30') {
+            $end = Carbon::now()->subDays(-30);
+            $start = Carbon::now();
+            $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->where('expired_date', '>', $start)->where('status', 'active')->with('company')->with('type')->get();
+            return Datatables::of($events)
+                ->addColumn('reference_number', function (Event $user) {
+
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
+                    line-height: 4px;
+                   border-radius: 3px;
+                   border: navajowhite;
+                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 View</button>";
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
+        }
+    }
+
+
+    public function applied_date(Request $request)
+    {
+        if ($request->applied_date == 1) {
+            $users = Event::where('status', 'active')
                 ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->whereDate('issued_date', Carbon::now())->with('type')->get();
-             return Datatables::of($users)
-                    ->addColumn('reference_number', function (Event $user) {
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en,20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en,20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ?$user->company->name_en:' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type?$user->type->name_en:'';
-                    })
-                 ->addColumn('application_type', function (Event $user) {
-                     return $user->firm;
-                 })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                 ->addColumn('event_id', function(Event $user) {
-                     return "<button type='button' style='height: 25px;
+            return Datatables::of($users)
+                ->addColumn('reference_number', function (Event $user) {
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
                  line-height: 4px;
                  border-radius: 3px;
                 border: navajowhite;
                    box-shadow: 0px 2px 5px -2px #0c0c0c;'
                    class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
-                 })
-                 ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address','event_id'])
-                    ->make(true);
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
 
 
         }
 
-            if($request->applied_date == 2) {
-                $users = Event::whereDate('issued_date', Carbon::yesterday())->where('status','active')
-                    ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
-                return Datatables::of($users)
-
-                    ->addColumn('reference_number', function (Event $user) {
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en,20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en,20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address,20);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ?$user->company->name_en:' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type?$user->type->name_en:'';
-                    })
-                    ->addColumn('application_type', function (Event $user) {
-                        return $user->firm;
-                    })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                    ->addColumn('event_id', function(Event $user) {
-                        return "<button type='button' style='height: 25px;
+        if ($request->applied_date == 2) {
+            $users = Event::whereDate('issued_date', Carbon::yesterday())->where('status', 'active')
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+            return Datatables::of($users)
+                ->addColumn('reference_number', function (Event $user) {
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
                    border: navajowhite;
                    box-shadow: 0px 2px 5px -2px #0c0c0c;'
                    class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
-                    })
-                    ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address','event_id'])
-                    ->make(true);
-            }
-
-            if($request->applied_date == 3) {
-                $date = new Carbon;
-                $date->subWeek();
-                $users = Event::where('issued_date', '>', $date->toDateTimeString() )->where('status','active')
-                    ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
-                return Datatables::of($users)
-
-                    ->addColumn('reference_number', function (Event $user) {
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en,20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en,20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address,20);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ?$user->company->name_en:' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type?$user->type->name_en:'';
-                    })
-                    ->addColumn('application_type', function (Event $user) {
-                        return $user->firm;
-                    })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                    ->addColumn('event_id', function(Event $user) {
-                        return "<button type='button' style='height: 25px;
-                 line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                    })
-
-                    ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address','event_id'])
-                    ->make(true);
-
-            }
-
-            if($request->applied_date == 4) {
-                $users = Event::whereDate('issued_date', '>', Carbon::now()->subDays(30))->where('status','active')
-                    ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
-                return Datatables::of($users)
-
-                    ->addColumn('reference_number', function (Event $user) {
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en,20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en,20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address,20);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ?$user->company->name_en:' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type?$user->type->name_en:'';
-                    })
-                    ->addColumn('application_type', function (Event $user) {
-                        return $user->firm;
-                    })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                    ->addColumn('event_id', function(Event $user) {
-                        return "<button type='button' style='height: 25px;
-                 line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                    })
-                    ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address','event_id'])
-                    ->make(true);
-            }
-
-            if($request->applied_date == 5) {
-                $date = Carbon::today()->subDays(2);
-                $users = Event::where('status','active')
-                    ->whereDate('expired_date', '>', Carbon::now())->with('company')->whereMonth('issued_date', Carbon::now()->month)->with('type')->whereYear('issued_date', Carbon::now()->year)->get();
-                return Datatables::of($users)
-
-                    ->addColumn('reference_number', function (Event $user) {
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en,20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en,20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address,20);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ?$user->company->name_en:' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type?$user->type->name_en:'';
-                    })
-                    ->addColumn('application_type', function (Event $user) {
-                        return $user->firm;
-                    })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                    ->addColumn('event_id', function(Event $user) {
-                        return "<button type='button' style='height: 25px;
-                 line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                    })
-                    ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address','event_id'])
-                    ->make(true);
-
-            }
-
-            if($request->applied_date == 6) {
-                $users = Event::where('issued_date', '<', (new Carbon)->submonths(1))->where('issued_date', '>', (new Carbon)->submonths(2))->with('type') ->get();
-                return Datatables::of($users)
-
-                    ->addColumn('reference_number', function (Event $user) {
-                        return $user->reference_number;
-                    })
-                    ->addColumn('name_en', function (Event $user) {
-                        return $user->name_en;
-                    })
-                    ->addColumn('description_en', function (Event $user) {
-                        return str_limit($user->description_en,20);
-                    })
-                    ->addColumn('venue_en', function (Event $user) {
-                        return str_limit($user->venue_en,20);
-                    })
-                    ->addColumn('address', function (Event $user) {
-                        return str_limit($user->address,20);
-                    })
-                    ->addColumn('company_id', function (Event $user) {
-                        return $user->company ?$user->company->name_en:' -- ';
-                    })
-                    ->addColumn('issued_date', function (Event $user) {
-                        return $user->issued_date;
-                    })
-
-                    ->addColumn('event_type_id', function (Event $user) {
-                        return $user->type?$user->type->name_en:'';
-                    })
-                    ->addColumn('application_type', function (Event $user) {
-                        return $user->firm;
-                    })
-                    ->addColumn('status', function (Event $user) {
-                        return strtoupper($user->status);
-                    })
-                    ->addColumn('event_id', function(Event $user) {
-                        return "<button type='button' style='height: 25px;
-                 line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                    })
-                    ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address','event_id'])
-                    ->make(true);
-            }
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
         }
+
+        if ($request->applied_date == 3) {
+            $date = new Carbon;
+            $date->subWeek();
+            $users = Event::where('issued_date', '>', $date->toDateTimeString())->where('status', 'active')
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+            return Datatables::of($users)
+                ->addColumn('reference_number', function (Event $user) {
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
+                 line-height: 4px;
+                   border-radius: 3px;
+                   border: navajowhite;
+                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 View</button>";
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
+
+        }
+
+        if ($request->applied_date == 4) {
+            $users = Event::whereDate('issued_date', '>', Carbon::now()->subDays(30))->where('status', 'active')
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+            return Datatables::of($users)
+                ->addColumn('reference_number', function (Event $user) {
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
+                 line-height: 4px;
+                   border-radius: 3px;
+                   border: navajowhite;
+                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 View</button>";
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
+        }
+
+        if ($request->applied_date == 5) {
+            $date = Carbon::today()->subDays(2);
+            $users = Event::where('status', 'active')
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->whereMonth('issued_date', Carbon::now()->month)->with('type')->whereYear('issued_date', Carbon::now()->year)->get();
+            return Datatables::of($users)
+                ->addColumn('reference_number', function (Event $user) {
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
+                 line-height: 4px;
+                   border-radius: 3px;
+                   border: navajowhite;
+                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 View</button>";
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
+
+        }
+
+        if ($request->applied_date == 6) {
+            $users = Event::where('issued_date', '<', (new Carbon)->submonths(1))->where('issued_date', '>', (new Carbon)->submonths(2))->with('type')->get();
+            return Datatables::of($users)
+                ->addColumn('reference_number', function (Event $user) {
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return $user->name_en;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return str_limit($user->description_en, 50);
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return str_limit($user->venue_en, 50);
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return $user->company ? $user->company->name_en : ' -- ';
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return $user->type ? $user->type->name_en : '';
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
+                 line-height: 4px;
+                   border-radius: 3px;
+                   border: navajowhite;
+                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 View</button>";
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
+        }
+    }
 
     public function application_type(Request $request)
     {
-    $data=  Event::where('status','active')
-        ->whereDate('expired_date', '>', Carbon::now())->with('company')->where('firm','LIKE' ,"%$request->application_type%")->with('type')->get();
+        $data = Event::where('status', 'active')
+            ->whereDate('expired_date', '>', Carbon::now())->with('company')->where('firm', 'LIKE', "%$request->application_type%")->with('type')->get();
         return Datatables::of($data)
-
             ->addColumn('reference_number', function (Event $user) {
                 return $user->reference_number;
             })
@@ -650,23 +634,22 @@ class EventReportController extends Controller
                 return $user->name_en;
             })
             ->addColumn('description_en', function (Event $user) {
-                return str_limit($user->description_en,20);
+                return str_limit($user->description_en, 50);
             })
             ->addColumn('venue_en', function (Event $user) {
-                return str_limit($user->venue_en,20);
+                return str_limit($user->venue_en, 50);
             })
             ->addColumn('address', function (Event $user) {
-                return str_limit($user->address,20);
+                return $user->address;
             })
             ->addColumn('company_id', function (Event $user) {
-                return $user->company ?$user->company->name_en:' -- ';
+                return $user->company ? $user->company->name_en : ' -- ';
             })
             ->addColumn('issued_date', function (Event $user) {
                 return $user->issued_date;
             })
-
             ->addColumn('event_type_id', function (Event $user) {
-                return $user->type?$user->type->name_en:'';
+                return $user->type ? $user->type->name_en : '';
             })
             ->addColumn('application_type', function (Event $user) {
                 return $user->firm;
@@ -674,7 +657,7 @@ class EventReportController extends Controller
             ->addColumn('status', function (Event $user) {
                 return strtoupper($user->status);
             })
-            ->addColumn('event_id', function(Event $user) {
+            ->addColumn('event_id', function (Event $user) {
                 return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
@@ -683,16 +666,15 @@ class EventReportController extends Controller
                    class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'   onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
             })
-            ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address','event_id'])
+            ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
             ->make(true);
     }
 
     public function status(Request $request)
     {
-        $data=  Event::where('status','active')
-            ->whereDate('expired_date', '>', Carbon::now())->with('company')->where('status','LIKE' ,"%$request->status%")->with('type')->get();
+        $data = Event::where('status', 'active')
+            ->whereDate('expired_date', '>', Carbon::now())->with('company')->where('status', 'LIKE', "%$request->status%")->with('type')->get();
         return Datatables::of($data)
-
             ->addColumn('reference_number', function (Event $user) {
                 return $user->reference_number;
             })
@@ -700,23 +682,22 @@ class EventReportController extends Controller
                 return $user->name_en;
             })
             ->addColumn('description_en', function (Event $user) {
-                return str_limit($user->description_en,20);
+                return str_limit($user->description_en, 50);
             })
             ->addColumn('venue_en', function (Event $user) {
-                return str_limit($user->venue_en,20);
+                return str_limit($user->venue_en, 50);
             })
             ->addColumn('address', function (Event $user) {
-                return str_limit($user->address,20);
+                return $user->address;
             })
             ->addColumn('company_id', function (Event $user) {
-                return $user->company ?$user->company->name_en:' -- ';
+                return $user->company ? $user->company->name_en : ' -- ';
             })
             ->addColumn('issued_date', function (Event $user) {
                 return $user->issued_date;
             })
-
             ->addColumn('event_type_id', function (Event $user) {
-                return $user->type?$user->type->name_en:'';
+                return $user->type ? $user->type->name_en : '';
             })
             ->addColumn('application_type', function (Event $user) {
                 return $user->firm;
@@ -724,7 +705,7 @@ class EventReportController extends Controller
             ->addColumn('status', function (Event $user) {
                 return strtoupper($user->status);
             })
-            ->addColumn('event_id', function(Event $user) {
+            ->addColumn('event_id', function (Event $user) {
                 return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
@@ -733,13 +714,15 @@ class EventReportController extends Controller
                    class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}' onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
             })
-            ->rawColumns(['reference_number','name_en', 'description_en','venue_en','address','event_id'])
+            ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
             ->make(true);
     }
-    public function getEvent($id){
-        $page_title='Reports Dashboard';
-        $event=Event::where('event_id',$id)->with('country')->with('type')->with('emirate')->first();
 
-        return view('admin.report.includes.eventShow',compact('event', 'page_title'));
+    public function getEvent($id)
+    {
+        $page_title = 'Reports Dashboard';
+        $event = Event::where('event_id', $id)->with('country')->with('type')->with('emirate')->first();
+
+        return view('admin.report.includes.eventShow', compact('event', 'page_title'));
     }
 }

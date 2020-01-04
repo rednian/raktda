@@ -83,7 +83,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
   //---------------------------------------------------------------------------------------------------------------
 	Route::get('/permit/artist', 'Admin\ArtistController@datatable')->name('admin.artist.datatable');
 	Route::get('/permit/artist/{artist}', 'Admin\ArtistController@show')->name('admin.artist.show');
-	Route::post('/permit/artist/{artist}/updatestatus', 'Admin\ArtistController@updatestatus')->name('admin.artist.update_status');
+	Route::post('/permit/artist/{artist}/updatestatus', 'Admin\ArtistController@updateStatus')->name('admin.artist.update_status');
 	Route::get('/permit/artist/{artist}/permithistory', 'Admin\ArtistController@permithistory')->name('admin.artist.permit.history');
 	Route::get('/permit/artist/{artist}/status_history', 'Admin\ArtistController@statusHistory')->name('admin.artist.status_history');
 //
@@ -203,6 +203,14 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
     Route::get('artist_reports/artist_permit_report/all_permit_report', 'Admin\ReportController@all_permit_report')
         ->name('admin.artist_permit_report.all_permit_report');
+
+    //Transactions
+    Route::get('artist_reports/artist_transaction_report', 'Admin\TransactionReportController@artistTransaction')
+        ->name('admin.artist_permit_report.artistTransaction');
+
+    Route::get('artist_reports/event_transaction_report', 'Admin\TransactionReportController@eventTransaction')
+        ->name('admin.artist_permit_report.eventTransaction');
+
 
 
 
