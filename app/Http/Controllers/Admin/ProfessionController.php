@@ -6,9 +6,20 @@ use App\Profession;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\URL;
 
 class ProfessionController extends Controller
 {
+	public function __construct(){
+		$this->middleware('signed')->except([
+            'datatable',
+			'isexist',
+			'store',
+			'update',
+			'destroy',
+        ]);
+	}
+
 	public function datatable(Request $request)
 	{
 		$user = Auth::user();
@@ -34,7 +45,7 @@ class ProfessionController extends Controller
 			return $user->LanguageId == 1 ? ucwords($args->createdBy->NameEn) : ucwords($args->createdBy->NameAr);
 		})
 		->addColumn('actions', function($args){
-			return '<button data-url="' . route('settings.profession.destroy', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">'.__('Delete').'</button> <button data-url="' . route('settings.profession.edit', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">'.__('Edit').'</button>';
+			return '<button data-url="' . route('settings.profession.destroy', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">'.__('Delete').'</button> <button data-url="' . URL::signedRoute('settings.profession.edit', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">'.__('Edit').'</button>';
 		})
 		->rawColumns(['actions'])
 		->make(true);
@@ -67,9 +78,8 @@ class ProfessionController extends Controller
 			$result = ['success', __('New profession has been added'), 'Success'];
 
 			if($request->submit_type == 'continue'){
-				return redirect('settings#profession')->with('message', $result);
+				return redirect(URL::signedRoute('admin.setting.index') . '#profession')->with('message', $result);
 			}
-
 		}catch(Exception $e){
 			$result = ['error', $e->getMessage(), 'Error'];
 		}
@@ -86,7 +96,7 @@ class ProfessionController extends Controller
 			$result = ['success', __('Profession has been saved successfully'), 'Success'];
 
 			if($request->submit_type == 'continue'){
-				return redirect('settings#profession')->with('message', $result);
+				return redirect(URL::signedRoute('admin.setting.index') . '#profession')->with('message', $result);
 			}
 
 		}catch(Exception $e){

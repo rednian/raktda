@@ -8,6 +8,10 @@
         font-size: 13px;
     }
 
+    #block-artist_filter {
+        margin-top: 9px;
+    }
+
     #event-report_filter {
         width: 42%;
         float: right;
@@ -237,11 +241,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             <tr style="font-size: 10px;text-align: left">
                                 <th style=";padding: 9px;width: 16%">{{__('PERSON CODE')}}</th>
                                 <th style=";padding: 9px;width: 14%">{{__('PROFESSION')}}</th>
-                                <th style=";padding: 9px;width: 14%">{{__('ammenedMnetKyu')}}</th>
+                                <th style=";padding: 9px;width: 14%">{{__('NATIONALITY')}}</th>
                                 <th style="padding: 9px;width: 20%">{{__('E-MAIL')}}E-MAIL</th>
                                 <th style=";padding: 9px;width:17%">{{__('PASSPORT NO.')}}</th>
                                 <th style="padding: 9px">{{__('PASSPORT EXPIRY DATE')}}</th>
-                                <th style="padding: 9px;width:12%;">{{__('VISA NO.')}}</th>
+                                <th style="padding: 9px;width:100px;"><span> {{__('VISA NO.')}}</span></th>
                             </tr>
                             <tr align="left">
                                 <td style=";padding: 9px;width: 16%">{{$artistWithThisId->artist->person_code}}</td>
@@ -374,7 +378,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
             table = $('#block-artist').DataTable({
                 dom: 'Bfrtip',
-                "searching": false,
+                "searching": true,
                 "columnDefs": [
                     {
                         "targets": [5, 6, 7, 8, 9, 10, 11],
@@ -1128,7 +1132,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [2, 4, 6,8, 9],
+                        "targets": [2, 4, 6, 8, 9],
                         "visible": false,
                         "searchable": false
                     },
@@ -1231,7 +1235,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {data: 'name_en', name: 'name_en'},
                     {data: 'description_en', name: 'description_en'},
                     {data: 'venue_en', name: 'venue_en'},
-                    {data: 'address',name: 'address'},
+                    {data: 'address', name: 'address'},
                     {data: 'company_id', name: 'company_id'},
                     {data: 'issued_date', name: 'issued_date'},
                     {data: 'event_type_id', name: 'event_type_id'},
@@ -3648,7 +3652,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             });
         });
 
-        // EVENT TRANSACTIONS
+        // EVENT TRANSACTIONs
+
+
         $('#event-transaction-tab').click(function () {
             var currentdate = new Date();
             var datetime = +currentdate.getDate() + "/"

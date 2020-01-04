@@ -7,9 +7,20 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\URL;
 
 class EventTypeController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('signed')->except([
+            'datatable',
+            'isexist',
+            'store',
+            'update',
+            'destroy',
+        ]);
+    }
 
     public function index()
     {
@@ -36,7 +47,7 @@ class EventTypeController extends Controller
 		    	return $user->LanguageId == 1 ? ucfirst($type->description_en) : $type->description_ar;
 		    })
             ->addColumn('actions', function($type){
-                return '<button data-url="' . route('event_type.destroy', $type->event_type_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">Delete</button> <button data-url="' . route('event_type.edit', $type->event_type_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">Edit</button>';
+                return '<button data-url="' . route('event_type.destroy', $type->event_type_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">' . __('Delete') . '</button> <button data-url="' . URL::signedRoute('event_type.edit', $type->event_type_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('Edit') . '</button>';
             })
             ->rawCOlumns(['actions'])
 		    ->setTotalRecords($totalRecords)
@@ -83,7 +94,7 @@ class EventTypeController extends Controller
             }
 
             if($request->submit_type == 'continue'){
-                return redirect('settings#event_types')->with('message', $result);
+                return redirect(URL::signedRoute('admin.setting.index') . '#event_types')->with('message', $result);
             }
         }catch(Exception $e){
             $result = ['error', $e->getMessage(), 'Error'];
@@ -138,7 +149,7 @@ class EventTypeController extends Controller
             }
 
             if($request->submit_type == 'continue'){
-                return redirect('settings#event_types')->with('message', $result);
+                return redirect(URL::signedRoute('admin.setting.index') . '#event_types')->with('message', $result);
             }
 
         }catch(Exception $e){

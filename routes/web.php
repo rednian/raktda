@@ -83,7 +83,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
   //---------------------------------------------------------------------------------------------------------------
 	Route::get('/permit/artist', 'Admin\ArtistController@datatable')->name('admin.artist.datatable');
 	Route::get('/permit/artist/{artist}', 'Admin\ArtistController@show')->name('admin.artist.show');
-	Route::post('/permit/artist/{artist}/updatestatus', 'Admin\ArtistController@updatestatus')->name('admin.artist.update_status');
+	Route::post('/permit/artist/{artist}/updatestatus', 'Admin\ArtistController@updateStatus')->name('admin.artist.update_status');
 	Route::get('/permit/artist/{artist}/permithistory', 'Admin\ArtistController@permithistory')->name('admin.artist.permit.history');
 	Route::get('/permit/artist/{artist}/status_history', 'Admin\ArtistController@statusHistory')->name('admin.artist.status_history');
 //

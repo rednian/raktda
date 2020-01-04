@@ -6,9 +6,9 @@
          <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - Application</h3>
       </div>
       <div class="kt-portlet__head-toolbar">
-         <a href="{{ route('admin.company.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
+         <a href="{{ URL::signedRoute('admin.company.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
             <i class="la la-arrow-left"></i>
-           {{__(' BACK TO ESTABLISHMENT LIST')}}
+           {{__(' BACK')}}
          </a>
       </div>
    </div>
@@ -388,8 +388,8 @@
                   <table class="table table-borderless table-striped table-hover border" id="requirement-table">
                      <thead>
                         <tr>
-                           <th>#</th>
                            <th>{{__('REQUIREMENT NAME')}}</th>
+                           <th>{{__('FILES')}}</th>
                            <th>{{__('ISSUED DATE')}}</th>
                            <th>{{__('EXPIRED DATE')}}</th>
                         </tr>
@@ -538,8 +538,10 @@
          columns: [
          // {data: 'requirement'},
          {data: 'name'},
-         {data: 'issued_date'},
-         {data: 'expired_date'}
+         {render:function(){return null;}},
+         {render:function(){return null;}},
+         {render:function(){return null;}},
+         // {data: 'expired_date'}
          ],
          "order": [[ 0, 'asc' ]],
            rowGroup: {
@@ -549,7 +551,7 @@
                          .append( '<td>'+rows.count()+'</td>' )
                          .append( '<td>'+row_data.issued_date+'</td>' )
                          .append( '<td>'+row_data.expired_date+'</td>' )
-                         .append( '<td></td>' )
+                         // .append( '<td></td>' )
                          // .append( '<td>'+row_data.action+'</td>' )
                          .append( '<tr/>' );
                },

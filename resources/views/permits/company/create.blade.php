@@ -108,8 +108,13 @@
                             </div>
                             <div class="form-group">
                                 <label>Establishment Name <span class="text-danger">*</span></label>
-                                <input value="{{old('name_en')}}" type="text" name="name_en" class="form-control"
+                                <input  value="{{old('name_en')}}" type="text" name="name_en" class="form-control @error('name_en') is-invalid @enderror"
                                     required autocomplete="off" autofocus>
+                                    @error('name_en')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                             </div>
                             <div class="form-group corporate">
                                 <label>Trade License Number <span class="text-danger">*</span></label>
@@ -251,6 +256,8 @@
                         </div>
                     </section>
                     <div class="form-group">
+                        {{-- {!! NoCaptcha::display() !!} --}}
+
                         <div class="g-recaptcha" data-sitekey="6LdnLwgUAAAAAAIb9L3PQlHQgvSCi16sYgbMIMFR"></div>
                     </div>
                     <div class="form-group">
@@ -280,8 +287,10 @@
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
     <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
+         {{-- {!! NoCaptcha::renderJs() !!} --}}
     <script>
         $(document).ready(function(){
+
             $('select[name=company_type_id]').change(function(){
                 console.log($(this).val());
                 if($(this).val() == 1){

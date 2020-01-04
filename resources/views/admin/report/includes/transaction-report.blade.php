@@ -1,45 +1,50 @@
 <style>
-    #event-transaction-table_filter
-    {
+    #event-transaction-table_filter {
         width: 42%;
         float: right;
     }
-    #artist-transaction-table_filter{
+
+    #artist-transaction-table_filter {
         width: 42%;
         float: right;
     }
-    #artist-transaction-table_wrapper .dt-buttons{
+
+    #artist-transaction-table_wrapper .dt-buttons {
         background-color: #f7f8fa;
     }
-    .dt-button-collection .button-page-length{
+
+    .dt-button-collection .button-page-length {
 
     }
 </style>
 <section id="tabs">
     <?php
-     $artistAmount=\App\ArtistPermitTransaction::get()->sum('amount');
-     $eventamount=\App\EventTransaction::get()->sum('amount');
-     $totalAmountReceived=$artistAmount+$eventamount;
+    $artistAmount = \App\ArtistPermitTransaction::get()->sum('amount');
+    $eventamount = \App\EventTransaction::get()->sum('amount');
+    $totalAmountReceived = $artistAmount + $eventamount;
     ?>
-   <div class="row">
-    <div class="container"><span style="float: right">Total Amount Received :
-        <span style="
+    <div class="row">
+        <div class="col">
+         <span style="float: right">Total Amount Received :
+         <span style="
          background-color: #565656;
          padding: 5px;
          border: none;
          border-radius: 3px;
-          color: white;
-          font-size: 11px;
+         color: white;
+         font-size: 11px;
          box-shadow: 1px 4px 5px -2px #7b7b7b;">AED {{number_format($totalAmountReceived)}}</span></span>
+        </div>
     </div>
-  </div>
+
     <div class="container">
         <div class="row">
             <div class="col-12 ">
                 <nav>
                     <div class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger"
                          id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active artist_transaction_tab" style="font-weight: 500;font-size: 11px"
+                        <a class="nav-item nav-link active artist_transaction_tab"
+                           style="font-weight: 500;font-size: 11px"
                            id="artist-transaction-tab" data-toggle="tab"
                            href="#artist-transaction-report" role="tab" aria-controls="artist-transaction-report"
                            aria-selected="true">{{__('ARTIST TRANSACTIONS')}}</a>
@@ -50,6 +55,7 @@
                     </div>
                 </nav>
                 <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+
                     <div class="tab-pane fade show active" id="artist-transaction-report" role="tabpanel"
                          aria-labelledby="artist-transaction-tab">
                         <table class="table table-striped table-hover" id="artist-transaction-table">

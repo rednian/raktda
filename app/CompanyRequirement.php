@@ -11,18 +11,23 @@ class CompanyRequirement extends Model
     // protected $connection = 'bls';
     protected $table = 'company_requirement';
     protected $primaryKey = 'company_requirement_id';
-    protected $fillable = ['company_id', 'issued_date', 'expired_date', 'path', 'requirement_id', 'page_number', 'is_submit'];
+    protected $fillable = ['company_id', 'issued_date', 'expired_date', 'path', 'requirement_id', 'page_number', 'is_submit', 'type', 'file_type'];
     protected $dates = ['issued_date', 'expired_date'];
 
 
-    public function setIssuedDateAttribute($date)
-    {
-         $this->attributes['issued_date'] =  Carbon::parse($date)->format('Y-m-d');
-    }
+    // public function setIssuedDateAttribute($date)
+    // {
+    //      $this->attributes['issued_date'] =  Carbon::parse($date)->format('Y-m-d');
+    // }
 
-    public function setExpiredDateAttribute($date)
+    // public function setExpiredDateAttribute($date)
+    // {
+    //      $this->attributes['expired_date'] =  Carbon::parse($date)->format('Y-m-d');
+    // }
+
+    public function other()
     {
-         $this->attributes['expired_date'] =  Carbon::parse($date)->format('Y-m-d');
+        return $this->belongsTo(CompanyOtherUpload::class, 'requirement_id', 'company_other_upload_id');
     }
 
     public function requirement()

@@ -192,14 +192,14 @@
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('SUBMITTED DATE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('EVENT START DATE') }}</th>
-              <th>{{ __('EVENT END DATE') }}</th>
+              <th>{{ __('START DATE') }}</th>
+              <th>{{ __('END DATE') }}</th>
               <th>{{ __('TIME') }}</th>
               <th>{{ __('OWNER NAME') }}</th>
-              <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-              <th>{{ __('HAS LIQUOR ? ') }}</th>
-              <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
-              <th>{{ __('HAS ARTIST ? ') }}</th>
+              <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR') }}</th>
+              <th>{{ __('FOOD TRUCK') }}</th>
+              <th>{{ __('HAS ARTIST PERMIT?') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -279,14 +279,14 @@
               <th>{{ __('SUBMITTED DATE') }}</th>
               <th>{{ __('STATUS') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('EVENT START DATE') }}</th>
-              <th>{{ __('EVENT END DATE') }}</th>
+              <th>{{ __('START DATE') }}</th>
+              <th>{{ __('END DATE') }}</th>
               <th>{{ __('TIME') }}</th>
               <th>{{ __('OWNER NAME') }}</th>
-              <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-              <th>{{ __('HAS LIQUOR ? ') }}</th>
-              <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
-              <th>{{ __('HAS ARTIST ? ') }}</th>
+              <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR') }}</th>
+              <th>{{ __('FOOD TRUCK') }}</th>
+              <th>{{ __('HAS ARTIST PERMIT?') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -367,14 +367,14 @@
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('STATUS') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('EVENT START DATE') }}</th>
-              <th>{{ __('EVENT END DATE') }}</th>
+              <th>{{ __('START DATE') }}</th>
+              <th>{{ __('END DATE') }}</th>
               <th>{{ __('TIME') }}</th>
               <th>{{ __('OWNER NAME') }}</th>
-              <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-              <th>{{ __('HAS LIQUOR ? ') }}</th>
-              <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
-              <th>{{ __('HAS ARTIST ? ') }}</th>
+              <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR') }}</th>
+              <th>{{ __('FOOD TRUCK') }}</th>
+              <th>{{ __('HAS ARTIST PERMIT?') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -455,14 +455,14 @@
             <th>{{ __('APPROVED DATE') }}</th>
             <th>{{ __('APPROVED BY') }}</th>
             <th>{{ __('PERMIT NUMBER') }}</th>
-            <th>{{ __('EVENT START DATE') }}</th>
-            <th>{{ __('EVENT END DATE') }}</th>
+            <th>{{ __('START DATE') }}</th>
+            <th>{{ __('END DATE') }}</th>
             <th>{{ __('TIME') }}</th>
             <th>{{ __('OWNER NAME') }}</th>
-            <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-            <th>{{ __('HAS LIQUOR ? ') }}</th>
-            <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
-            <th>{{ __('HAS ARTIST ? ') }}</th>
+            <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+            <th>{{ __('HAS LIQUOR') }}</th>
+            <th>{{ __('FOOD TRUCK') }}</th>
+            <th>{{ __('HAS ARTIST PERMIT?') }}</th>
             <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
             <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
             <th>{{ __('EVENT DETAILS') }}</th>
@@ -547,14 +547,14 @@
             <th>{{ __('APPROVED DATE') }}</th>
             <th>{{ __('APPROVED BY') }}</th>
             <th>{{ __('PERMIT NUMBER') }}</th>
-            <th>{{ __('EVENT START DATE') }}</th>
-            <th>{{ __('EVENT END DATE') }}</th>
+            <th>{{ __('START DATE') }}</th>
+            <th>{{ __('END DATE') }}</th>
             <th>{{ __('TIME') }}</th>
             <th>{{ __('OWNER NAME') }}</th>
-            <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-            <th>{{ __('HAS LIQUOR ? ') }}</th>
-            <th>{{ __('HAS TRUCK ? ') }}</th>
-            <th>{{ __('HAS ARTIST ? ') }}</th>
+            <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+            <th>{{ __('HAS LIQUOR') }}</th>
+            <th>{{ __('FOOD TRUCK') }}</th>
+            <th>{{ __('HAS ARTIST PERMIT?') }}</th>
             <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
             <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
             <th>{{ __('EVENT DETAILS') }}</th>
@@ -572,7 +572,7 @@
           <div class="card-header" id="heading-address">
             <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse"
               data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
-              <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT TYPE LEGEND') }}</h6>
+              <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT LEGEND') }}</h6>
             </div>
           </div>
           <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
@@ -1116,9 +1116,9 @@
                   listDay: { buttonText: '{{ __('Day List') }}' },
                   listWeek: { buttonText: '{{ __('Week List') }}' }
               },
-              defaultView: 'dayGridMonth',
-              // defaultDate: TODAY,
-              editable: true,
+              defaultView: 'listWeek',
+              defaultDate: TODAY,
+              editable: false,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
               events: {

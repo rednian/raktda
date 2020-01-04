@@ -21,7 +21,7 @@
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending ') }}</a>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending') }}</a>
                   <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                 </div>
                 <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ 0 }}</span>
@@ -35,7 +35,7 @@
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
                   <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Blacklisted') }}</a>
-                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
+                  <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
                 </div>
                 <span id="cancelled-count" class="kt-widget24__stats kt-font-default">{{ $blocked }}</span>
               </div>
@@ -47,8 +47,8 @@
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved ') }}</a>
-                  <small class="kt-widget24__desc">{{ __('Last 30 days') }}</small>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</a>
+                  <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
                 </div>
                 <span class="kt-widget24__stats kt-font-default">{{ $approved }}</span>
               </div>
@@ -168,8 +168,8 @@
                                <th>{{ __('EMAIL') }}</th>
                                <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
                                <th>{{ __('WEBSITE') }}</th>
-                               <th>{{ __('BUSINESSS LICENSE ISSUED DATE') }}</th>
-                               <th>{{ __('BUSINESSS LICENSE EXPIRY DATE') }}</th>
+                               <th>{{ __('BUSINESS LICENSE ISSUED DATE') }}</th>
+                               <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
                                <th>{{ __('BOUNCE BACK REASON') }}</th>
                            </tr>
                        </thead>
