@@ -96,7 +96,7 @@
                 <!--end: Head -->
                 <!--begin: Navigation -->
                 <div class="kt-notification">
-                    <a href="{{ route('admin.settings.account') }}" class="kt-notification__item">
+                    <a href="{{ URL::signedRoute('admin.settings.account') }}" class="kt-notification__item">
                         <div class="kt-notification__item-icon"> <i class="flaticon2-calendar-3 kt-font-dark"></i>
                         </div>
                         <div class="kt-notification__item-details">

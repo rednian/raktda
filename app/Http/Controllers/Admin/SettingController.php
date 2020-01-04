@@ -16,6 +16,8 @@ class SettingController extends Controller
 	public function __construct(){
 		$this->middleware('signed')->except([
             'saveGeneralSettings',
+            'excelTojson',
+            'checkoutsession'
         ]);
 	}
 
@@ -40,9 +42,53 @@ class SettingController extends Controller
 
 	public function excelTojson(Request $request){
 
-		$event = Event::find(25);
+		// $url = 'https://rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session';
+		$url= 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/52/merchant/NRSINFOWAYSL/session';
+		$postFields = array(
+		    'apiOperation' => 'CREATE_CHECKOUT_SESSION',
+		    'order' => array(
+		    	'id' => 'ORDER'.time(),
+		        'currency' => 'AED',
+		    ),
+		    'risk' => [
+		    	'bypassMerchantRiskRules' => 'ALL'
+		    ],
+		    'interaction' => array(
+		    	'action' => [
+		    		'3DSecure' => 'BYPASS'
+		    	],
+		        'operation' => 'PURCHASE',
+		    ),
+		);
 
-		dd($event->owner->company->users);
+		$username = "merchant.NRSINFOWAYSL";
+		$password = "294ddd6f4c0ebe800b899ee346f8a1b8";
+
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+			'Content-Type: application/json'
+		));
+		curl_setopt($curl, CURLOPT_USERPWD, $username . ":" . $password);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postFields));
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		$output = curl_exec($curl);
+		curl_close($curl);
+
+		$output = json_decode($output);
+
+		// dd($output);
+
+		return view('admin.settings.checkout', ['sessionId' => $output->session->id, 'merchantId' => $output->merchant, 'updateStatus' => $output->session->updateStatus, 'version' => $output->session->version]);
+		// return view('admin.settings.checkout');
+		
+		// $event = Event::find(25);
+
+		// dd($event->owner->company->users);
+
+
 
 		// $users = User::whereIn('email', ['dondelrosario93@gmail.com', 'chris@nrsinfoways.com'])->get();
 
@@ -78,5 +124,39 @@ class SettingController extends Controller
 		// 	});
 		// });
 		
+	}
+
+	public function checkoutsession(){
+
+		$url= 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/52/merchant/NRSINFOWAYSL/session';
+		$postFields = array(
+		    'apiOperation' => 'CREATE_CHECKOUT_SESSION',
+		    'order' => array(
+		    	'id' => 'ORDER'.time(),
+		        'currency' => 'AED',
+		    ),
+		    'interaction' => array(
+		        'operation' => 'PURCHASE',
+		    ),
+		);
+
+		$username = "merchant.NRSINFOWAYSL";
+		$password = "294ddd6f4c0ebe800b899ee346f8a1b8";
+
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+			'Content-Type: application/json'
+		));
+		curl_setopt($curl, CURLOPT_USERPWD, $username . ":" . $password);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postFields));
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		$output = curl_exec($curl);
+		curl_close($curl);
+
+		// $output = json_decode($output);
+		return $output;
 	}
 }

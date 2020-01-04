@@ -113,17 +113,9 @@
     // });
 
 
-    // $('form').submit(function(e) {
-    //   var form = $(this).validate();
-    //   if(form.valid()){
-    
-    //   }
-
-  
-
-      // setTimeout(function() {
-      //     KTApp.unblock('#kt_blockui_1_content');
-      // }, 2000);
+    //   // setTimeout(function() {
+    //   //     KTApp.unblock('#kt_blockui_1_content');
+    //   // }, 2000);
 
     // });
 
