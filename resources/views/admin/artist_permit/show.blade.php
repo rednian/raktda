@@ -75,7 +75,7 @@
           <div class="col-md-8">
             <div class="kt-widget kt-widget--project-1">
               <div class="kt-widget__body kt-padding-0">
-                <h6 class="kt-font-dark kt-font-bold kt-margin-b-15 kt-font-transform-u">{{ __('Permit Details') }}</h6>
+                <h6 class="kt-font-dark kt-font-bold kt-margin-b-15 kt-font-transform-u">{{ __('Artist Permit Details') }}</h6>
                 <div class="kt-widget__stats kt-padding-l-0 kt-margin-t-5 kt-padding-b-5 border-top border-bottom">
                   <div class="kt-widget__item">
                     <span class="kt-widget__subtitel">{{__('Permit Start Date')}}</span>
@@ -188,7 +188,7 @@
                     <span class="kt-widget__value">{{str_pad($permit->rivision_number, 3, 0, STR_PAD_LEFT)}}</span>
                   </div>
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Connected to an Event ?')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('CONNECTED TO AN EVENT')}}</span>
                     <span class="kt-widget__value">
                       @if ($permit->event()->exists())
                         <a href="{{URL::signedRoute('admin.event.show', $permit->event->event_id)}}" class="btn btn-sm btn-secondary">{{__('YES')}}</a>
@@ -253,7 +253,7 @@
                   </table>
 
 
-                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10 kt-margin-t-20">{{ __('Contact Person Details') }}</h6>
+                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10 kt-margin-t-20">{{ __('Contact Information') }}</h6>
                   <table class="table table-borderless table-sm table-display">
                     <tbody>
                       <tr>
@@ -332,7 +332,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_2_tab_content" role="tab" aria-selected="false">
-                       {{ __('ACTION HISTORY') }}
+                       {{ __('CHECKED HISTORY') }}
                     </a>
                 </li>
                 @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())

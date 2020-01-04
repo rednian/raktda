@@ -77,7 +77,7 @@
 			                            <span class="text-danger">*</span>
 			                        </label>
 				                    <div class="input-group date">
-										<input required name="holiday_start" type="text" class="form-control" id="kt_datetimepicker_start" placeholder="Select date and time"/>
+										<input required name="holiday_start" type="text" class="form-control" id="kt_datetimepicker_start" placeholder="{{ __('Select date & time') }}"/>
 										<div class="input-group-append">
 											<span class="input-group-text">
 												<i class="la la-calendar glyphicon-th"></i>
@@ -92,7 +92,7 @@
 			                            <span class="text-danger">*</span>
 			                        </label>
 				                    <div class="input-group date">
-										<input required name="holiday_end" type="text" class="form-control" id="kt_datetimepicker_end" placeholder="Select date and time"/>
+										<input required name="holiday_end" type="text" class="form-control" id="kt_datetimepicker_end" placeholder="{{ __('Select date & time') }}"/>
 										<div class="input-group-append">
 											<span class="input-group-text">
 												<i class="la la-calendar glyphicon-th"></i>

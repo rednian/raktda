@@ -461,7 +461,7 @@
 																						 </div>
 																					</div>
 																					<div class="col-3">
-																						<label class="kt-font-dark">{{ __('Registration Expired Date') }} <span class="text-danger">*</span></label>
+																						<label class="kt-font-dark">{{ __('Registration Expiry Date') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
 																							<input value="{{ date('d-F-Y', strtotime($truck->registration_expired_date)) }}" name="registration_expired_date" readonly="readonly" type="text"
 																											 class="form-control">

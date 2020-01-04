@@ -148,7 +148,7 @@
               </div>
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="new-event-type-sub-id" onchange="newEventTable.draw()">
-                  <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
                   @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->where('status', 'new');})->where('event_type_sub_id', '!=', 0)->get())
                     @foreach ($subs as $sub)
                       <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
@@ -235,7 +235,7 @@
               </div>
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="pending-event-type-sub-id" onchange="pendingEventTable.draw()">
-                  <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
                   @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['amended', 'checked']);})->where('event_type_sub_id', '!=', 0)->get())
                     @foreach ($subs as $sub)
                       <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
@@ -322,7 +322,7 @@
               </div>
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="processing-event-type-sub-id" onchange="eventProcessingTable.draw()">
-                  <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
                   @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['approved-unpaid', 'processing', 'need approval', 'need modification']);})->where('event_type_sub_id', '!=', 0)->get())
                     @foreach ($subs as $sub)
                       <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
@@ -410,7 +410,7 @@
               </div>
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="active-event-type-sub-id" onchange="eventActiveTable.draw()">
-                  <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
                   @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['active']);})->where('event_type_sub_id', '!=', 0)->get())
                     @foreach ($subs as $sub)
                       <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
@@ -463,8 +463,8 @@
             <th>{{ __('HAS LIQUOR') }}</th>
             <th>{{ __('FOOD TRUCK') }}</th>
             <th>{{ __('HAS ARTIST PERMIT?') }}</th>
-            <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
-            <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
+            <th>{{ __('SHOWN ON THE REGISTERED USERS\' CALENDARS') }}</th>
+            <th>{{ __('SHOWN ON PUBLIC WEBSITE CALENDAR') }}</th>
             <th>{{ __('EVENT DETAILS') }}</th>
             <th>{{ __('VENUE') }}</th>
             <th>{{ __('EVENT LOCATION') }}</th>
@@ -500,7 +500,7 @@
             </div>
             <div class="col-3">
               <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="archieve-event-type-sub-id" onchange="eventArchiveTable.draw()">
-                <option selected disabled>{{__('SUB-CATEGORY')}}</option>
+                <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
                 @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['cancelled', 'rejected', 'expired']);})->where('event_type_sub_id', '!=', 0)->get())
                   @foreach ($subs as $sub)
                     <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
