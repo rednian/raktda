@@ -1221,7 +1221,6 @@
 
                     // $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
-
                     getImagePaths();
 
                     var ed = localStorage.getItem('eventdetails');
@@ -1251,7 +1250,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}#applied";
+                                    window.location.replace = "{{route('event.index')}}#applied";
                                     KTApp.unblockPage();
                                 }
                             }
@@ -1298,7 +1297,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}#draft";
+                                    window.location.replace = "{{route('event.index')}}#draft";
                                     KTApp.unblockPage();
                                 }
                             }

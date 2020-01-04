@@ -12,11 +12,11 @@
 @section('content')
 
 @if(check_is_blocked()['status'] == 'rejected')
-@include('permits.artist.common.company-reject')
+@include('permits.artist.common.company_reject')
 @endif
 
 @if(check_is_blocked()['status'] == 'blocked')
-@include('permits.artist.common.company-block')
+@include('permits.artist.common.company_block')
 @endif
 
 

@@ -7,7 +7,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearPersonCode()">
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-danger kt-font-bolder">
                 {{__('This artist already exists in the permit')}}
             </div>
         </div>

@@ -10,14 +10,14 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--lg">
                 <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title">
+                    <h3 class="kt-portlet__head-title kt-font-transform-u">
                         {{__('Happiness Meter')}}
                     </h3>
                 </div>
 
 
             </div>
-            <div class="kt-portlet__body">
+            <div class="kt-portlet__body kt-padding-t-0">
 
                 <!--begin: Form Wizard Step 5-->
                 <div class="kt-wizard-v3__content py-5" data-ktwizard-type="step-content">
@@ -114,7 +114,7 @@
                             },
                             success: function (result) {
                                 if(result.message[0]){
-                                    window.location.href = "{{route('artist.index')}}#valid";
+                                    window.location.replace = "{{route('artist.index')}}#valid";
                                     KTApp.unblockPage();
                                 }
                             }

@@ -1,7 +1,9 @@
 @extends('layouts.admin.admin-app')
 @section('style')
 <style>
-  .widget-toolbar{ cursor: pointer; }
+  .widget-toolbar {
+    cursor: pointer;
+  }
 </style>
 {{-- <style>
   .twitter-typeahead {
@@ -43,139 +45,147 @@
 </style> --}}
 @endsection
 @section('content')
-	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
-			<div class="kt-portlet__body">
-        <section class="row kt-padding-b-20">
-          <div class="col-2">
-            <div class="kt-section kt-section--space-sm widget-toolbar">
-              <div class="kt-widget24 kt-widget24--solid">
-                <div class="kt-widget24__details">
-                  <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('New') }}</span>
-                    <small class="kt-widget24__desc">{{ __('All Request') }}</small>
-                  </div>
-                  <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
-                </div>
+<section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
+  <div class="kt-portlet__body">
+    <section class="row kt-padding-b-20">
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <span class="kt-widget24__title" title="Click to edit">{{ __('New') }}</span>
+                <small class="kt-widget24__desc">{{ __('All Request') }}</small>
               </div>
+              <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
             </div>
           </div>
-          <div class="col-2">
-            <div class="kt-section kt-section--space-sm widget-toolbar">
-              <div class="kt-widget24 kt-widget24--solid">
-                <div class="kt-widget24__details">
-                  <div class="kt-widget24__info">
-                    <span  class="kt-widget24__title" title="Click to edit">{{ __('Pending') }}</span>
-                    <small class="kt-widget24__desc">{{ __('All Request') }}</small>
-                  </div>
-                  <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
-                </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <span class="kt-widget24__title" title="Click to edit">{{ __('Pending') }}</span>
+                <small class="kt-widget24__desc">{{ __('All Request') }}</small>
               </div>
+              <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
             </div>
           </div>
-          <div class="col-2">
-            <div class="kt-section kt-section--space-sm widget-toolbar">
-              <div class="kt-widget24 kt-widget24--solid">
-                <div class="kt-widget24__details">
-                  <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('Cancelled') }}</span>
-                    <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
-                  </div>
-                  <span class="kt-widget24__stats kt-font-default">{{ $cancelled_permit }}</span>
-                </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <span class="kt-widget24__title" title="Click to edit">{{ __('Cancelled') }}</span>
+                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
+              <span class="kt-widget24__stats kt-font-default">{{ $cancelled_permit }}</span>
             </div>
           </div>
-          <div class="col-2">
-            <div class="kt-section kt-section--space-sm widget-toolbar">
-              <div class="kt-widget24 kt-widget24--solid">
-                <div class="kt-widget24__details">
-                  <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('Rejected') }}</span>
-                    <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
-                  </div>
-                  <span class="kt-widget24__stats kt-font-default">{{ $rejected_permit }}</span>
-                </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <span class="kt-widget24__title" title="Click to edit">{{ __('Rejected') }}</span>
+                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
+              <span class="kt-widget24__stats kt-font-default">{{ $rejected_permit }}</span>
             </div>
           </div>
-          <div class="col-2">
-            <div class="kt-section kt-section--space-sm widget-toolbar">
-              <div class="kt-widget24 kt-widget24--solid">
-                <div class="kt-widget24__details">
-                  <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</span>
-                    <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
-                  </div>
-                  <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
-                </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm widget-toolbar">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <span class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</span>
+                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
+              <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
             </div>
           </div>
-          <div class="col-2">
-            <div class="kt-section kt-section--space-sm">
-              <div class="kt-widget24 kt-widget24--solid">
-                <div class="kt-widget24__details">
-                  <div class="kt-widget24__info">
-                    <span class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</span>
-                    <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
-                    </div>
-                  <span class="kt-widget24__stats kt-font-default">{{ $active_permit }}</span>
-                </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="kt-section kt-section--space-sm">
+          <div class="kt-widget24 kt-widget24--solid">
+            <div class="kt-widget24__details">
+              <div class="kt-widget24__info">
+                <span class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</span>
+                <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
+              <span class="kt-widget24__stats kt-font-default">{{ $active_permit }}</span>
             </div>
           </div>
-        </section>
-				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
-						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#processing-permit">{{ __('Processing Permits') }}</a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit">{{ __('Permit Action') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }} </a></li>
-						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">{{ __('Artist List') }}</a></li>
-						{{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">{{ __('Blocked Artists') }}</a></li> --}}
-				 </ul>
-          <div class="form-row d-none" style="position: absolute; right: -80px; top: 23px; width: 30%">
-            <div class="col-12">
-                <div class="input-group input-group-sm">
-                    <div class="kt-input-icon kt-input-icon--right" id="search-application">
-                      <input name="value" autocomplete="off" type="text" class="form-control form-control-sm typeahead" aria-label="Text input with checkbox" placeholder="Search application or artist ...">
-                      <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                        <span><i class="la la-search"></i></span>
-                      </span>
-                    </div>
-              </div>
-            </div>
+        </div>
+      </div>
+    </section>
+    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist"
+      id="artist-permit-nav">
+      <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
+          data-target="#new-request">{{ __('New Request') }} <span
+            class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
+      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request"
+          data-target="#pending-request">{{ __('Pending Request') }} <span
+            class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
+      <li class="nav-item"><a class="nav-link" data-toggle="tab"
+          href="#processing-permit">{{ __('Processing Permits') }}</a></li>
+      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit">{{ __('Permit Action') }} <span
+            class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
+      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }} </a></li>
+      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">{{ __('Artist List') }}</a></li>
+      {{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">{{ __('Blocked Artists') }}</a>
+      </li> --}}
+    </ul>
+    <div class="form-row d-none" style="position: absolute; right: -80px; top: 23px; width: 30%">
+      <div class="col-12">
+        <div class="input-group input-group-sm">
+          <div class="kt-input-icon kt-input-icon--right" id="search-application">
+            <input name="value" autocomplete="off" type="text" class="form-control form-control-sm typeahead"
+              aria-label="Text input with checkbox" placeholder="Search application or artist ...">
+            <span class="kt-input-icon__icon kt-input-icon__icon--right">
+              <span><i class="la la-search"></i></span>
+            </span>
           </div>
+        </div>
+      </div>
+    </div>
 
-				 <div class="tab-content">
-						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
-								@include('admin.artist_permit.includes.new_request')
-						</div>
-            <div class="tab-pane show fade" id="pending-request" role="tabpanel">
-                @include('admin.artist_permit.includes.pending-permit')
-            </div>
-						<div class="tab-pane fade" id="processing-permit" role="tabpanel">
-								@include('admin.artist_permit.includes.processing')
-						</div>
-						<div class="tab-pane fade" id="active-permit" role="tabpanel">
-								@include('admin.artist_permit.includes.approved')
-						</div>
-						<div class="tab-pane fade" id="archive-permit" role="tabpanel">
-								@include('admin.artist_permit.includes.archive')
-						</div>
-						<div class="tab-pane fade" id="active-artist" role="tabpanel">
-								@include('admin.artist_permit.includes.active-artist')
-						</div>
-						<div class="tab-pane fade kt-hide" id="blocked-artist" role="tabpanel">
-							@include('admin.artist_permit.includes.block-artist')
-						</div>
-				 </div>
-			</div>
- </section>
+    <div class="tab-content">
+      <div class="tab-pane show fade active" id="new-request" role="tabpanel">
+        @include('admin.artist_permit.includes.new_request')
+      </div>
+      <div class="tab-pane show fade" id="pending-request" role="tabpanel">
+        @include('admin.artist_permit.includes.pending-permit')
+      </div>
+      <div class="tab-pane fade" id="processing-permit" role="tabpanel">
+        @include('admin.artist_permit.includes.processing')
+      </div>
+      <div class="tab-pane fade" id="active-permit" role="tabpanel">
+        @include('admin.artist_permit.includes.approved')
+      </div>
+      <div class="tab-pane fade" id="archive-permit" role="tabpanel">
+        @include('admin.artist_permit.includes.archive')
+      </div>
+      <div class="tab-pane fade" id="active-artist" role="tabpanel">
+        @include('admin.artist_permit.includes.active-artist')
+      </div>
+      <div class="tab-pane fade kt-hide" id="blocked-artist" role="tabpanel">
+        @include('admin.artist_permit.includes.block-artist')
+      </div>
+    </div>
+  </div>
+</section>
 @endsection
 @section('script')
 <script type="text/javascript">
-
   var artistPermit = {};
   var pendingPermit = {};
   var processingPermit = {};

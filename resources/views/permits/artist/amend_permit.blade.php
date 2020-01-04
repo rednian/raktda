@@ -6,7 +6,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">{{__('Amend Artist Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Amend Artist Permit')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$permit_details['permit_number']}}</strong></span>
@@ -49,9 +49,9 @@
 
     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-widget kt-widget--project-1">
-            <div class="kt-widget__body">
+            <div class="kt-widget__body kt-padding-l-0">
                 <div class="kt-widget__stats d-">
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
@@ -72,7 +72,8 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('Permit Term')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{$permit_details->term}}
                             </span>
                         </div>
@@ -80,36 +81,34 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('Reference Number')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{$permit_details->reference_number}}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Work Location')}}</span>
-                        <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
                             </span>
                         </div>
                     </div>
                     @if($permit_details->event)
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Connected Event ?')}} :</span>
+                        <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}
                             </span>
                         </div>
                     </div>
                     @endif
                 </div>
+                <div class="kt-widget__text kt-margin-t-10">
+                    <strong>{{__('Work Location')}} :</strong>
+                    {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
+                </div>
             </div>
 
             <div class="table-responsive">
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th>{{__('First Name')}}</th>
                             <th>{{__('Last Name')}}</th>
                             <th>{{__('Profession')}}</th>
@@ -142,10 +141,6 @@
                                     href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend'])}}">
                                     <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Replace')}}</button>
                                 </a>
-                                {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
-                                title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
-                                </a> --}}
                                 <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
                                     title="View">
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
@@ -175,8 +170,6 @@
                 </div>
             </div>
         </div>
-
-        @include('permits.artist.modals.view_artist')
 
         @include('permits.artist.modals.remove_artist', ['from' => 'amend'])
 
@@ -239,7 +232,7 @@
         // return 'Are you sure you want to leave?';
     }
 
-    $('#back_btn').click(function(){
+    $('#back_btn , #back_btn_sm').click(function(){
         $total_artists = $('#total_artist_details').val();
 
         if($total_artists > 0) {
@@ -249,15 +242,15 @@
         }
     });
 
-    $('#back_btn_sm').click(function(){
-        $total_artists = $('#total_artist_details').val();
+    // $('#back_btn_sm').click(function(){
+    //     $total_artists = $('#total_artist_details').val();
 
-        if($total_artists > 0) {
-            $('#back_btn_modal').modal('show');
-        } else {
-            window.location.href = "{{route('artist.index')}}#valid";
-        }
-    });
+    //     if($total_artists > 0) {
+    //         $('#back_btn_modal').modal('show');
+    //     } else {
+    //         window.location.href = "{{route('artist.index')}}#valid";
+    //     }
+    // });
 
     function go_back_confirm_function(){
         var temp_permit_id =  $('#permit_id').val();
@@ -272,24 +265,6 @@
         });
     }
 
-
-    function getArtistDetails(id) {
-        $.ajax({
-            type: 'POST',
-            url: '{{route("company.fetch_artist_temp_data")}}',
-            data: {artist_temp_id:id},
-            success: function(data) {
-                $('#detail-permit').empty();
-            if(data)
-            {
-                $('#artist_details').modal('show');
-                var code = data.person_code ? data.person_code : '';
-                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>  <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
-
-            }
-            }
-        });
-    }
 
     const showDocumentsFn = (doc) => {
         var base_url = window.location.origin;
@@ -323,7 +298,7 @@
                 if(result.message[0] == 'success')
                 {
                     $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                    window.location.href="{{route('artist.index')}}#applied";
+                    window.location.replace="{{route('artist.index')}}#applied";
                     KTApp.unblockPage();
                 }
             }

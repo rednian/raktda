@@ -484,7 +484,7 @@ $('#pay_btn').click(function(){
         var toUrl = "{{URL::signedRoute('company.happiness_center', ':id')}}";
         toUrl = toUrl.replace(':id', $('#permit_id').val());
         if(result.message[0]){
-        window.location.href = toUrl;
+        window.location.replace = toUrl;
         KTApp.unblockPage();
         }
         }

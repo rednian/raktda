@@ -1238,9 +1238,7 @@ class ArtistController extends Controller
             return abort(401);
         }
         $data['artist_details'] = ArtistTempData::with('Nationality', 'Profession', 'visaType', 'ArtistTempDocument.requirement')->where('id', $id)->first();
-        if(is_null($data['artist_details'])){
-            return abort(401);
-        }
+
         $data['from'] = $from;
         return view('permits.artist.common.view_temp_artist', $data);
     }
@@ -1692,9 +1690,7 @@ class ArtistController extends Controller
             ['status', 5],
             ['created_by', $user_id],
         ])->where('permit_id', $permit_id)->get();
-        if(is_null($data['draft_details'])){
-            return abort(401);
-        }
+      
         return view('permits.artist.view_draft_details', $data);
     }
 
