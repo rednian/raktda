@@ -217,6 +217,7 @@
     "Please check each artist with the action status of unchecked before taking action!":"يرجيى التأكد من كل فنان مع حالة القرار المتخذ قبل اتخذا القرار للذين لم يتم اختيارهم",
     "Approve Application and notify client for payment":"اعتماد الطلب وإخبار العميل بضرورة الدفع",
     "Select Action":"اختيار القرار",
+    "SELECT ACTION":"اختيار القرار",
     "-Select Action-":"اختيار القرار",
     "Bounce back to client for amendments the artist information":"إرجاع للعميل لتعديل بيانات الفنان",
     "Country":"الدولة",
@@ -226,6 +227,7 @@
     "Remarks (AR)":"الملاحظات باللغة العربية",
     "Approve Registration":"اعتماد التسجيل",
     "Bounce Back for Ammendments":"إرجاع للعميل للتعديل",
+    "Bounce Back for Amendments":"إرجاع للعميل للتعديل",
     "Establishment List":"قائمة الشركات",
     "WEBSITE":"الموقع الالكتروني",
     "Website":"الموقع الالكتروني",
@@ -801,6 +803,9 @@
 "BLOCK ESTABLISHMENT":"إيقاف منشأة",
 "Checked Permits":"التصاريح التي تم تدقيقها",
 "Last Action Taken":"آخر إجراء تم اتخاذه",
+"LAST ACTION TAKEN":"آخر إجراء تم اتخاذه",
 "Last Checked By":"آخر تدقيق من قبل",
-"Last Checked Date":" تاريخ آخر تدقيق"
+"LAST CHECKED BY":"آخر تدقيق من قبل",
+"Last Checked Date":" تاريخ آخر تدقيق",
+"LAST CHECKED DATE":" تاريخ آخر تدقيق"
 }
