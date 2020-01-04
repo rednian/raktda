@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>RAKTDA | Registration </title>
+    <title>RAKTDA | Establishment Registration </title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -258,13 +258,17 @@
                         </div>
                     </section>
                     <div class="form-group">
-                        {{-- {!! NoCaptcha::display() !!} --}}
+                        {!! NoCaptcha::display() !!}
+                        @if ($errors->has('g-recaptcha-response'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                            </span>
+                        @endif
 
-                        <div class="g-recaptcha" data-sitekey="6LdnLwgUAAAAAAIb9L3PQlHQgvSCi16sYgbMIMFR"></div>
                     </div>
                     <div class="form-group">
                         <label>
-                            <input name="agree" required type="checkbox" required=""> By clicking Register, you agree to
+                            <input name="term_condition" required type="checkbox" required=""> By clicking Register, you agree to
                             our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>, including
                             our <a href="#">Cookie Use</a>.
                         </label>
@@ -289,7 +293,7 @@
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
     <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
-         {{-- {!! NoCaptcha::renderJs() !!} --}}
+         {!! NoCaptcha::renderJs() !!}
     <script>
         $(document).ready(function(){
 
