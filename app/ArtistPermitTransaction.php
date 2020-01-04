@@ -12,4 +12,13 @@ class ArtistPermitTransaction extends Model
     protected $primaryKey = 'artist_permit_trans_id';
     protected $fillable = ['amount', 'vat', 'transaction_type', 'artist_permit_id', 'transaction_id'];
 
+    public function artistPermit()
+    {
+        return $this->belongsTo(ArtistPermit::class,'artist_permit_id');
+}
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class,'transaction_id');
+    }
+
 }

@@ -1,57 +1,76 @@
 <html>
     <head>
-        <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js"
-                data-error="errorCallback"
+
+        <script src="{{ asset('/js/mandatory.js') }}"></script>
+        <script src="{{ asset('/js/plugins.js') }}"></script>
+        <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('/js/custom-pages.js') }}"></script>
+        <script src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}"></script>
+        <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
+
+        {{-- {{ dd($sessionId) }} --}}
+        <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/52/checkout.js"
                 data-cancel="cancelCallback"
-         data-beforeRedirect="Checkout.saveFormFields"
-         data-afterRedirect="Checkout.restoreFormFields">
+                data-timeout="timeoutCallback"
+                data-complete="completeCallback"
+                data-error="errorCallback"
+                data-beforeRedirect="Checkout.saveFormFields"
+                data-afterRedirect="Checkout.restoreFormFields"
+                >
         </script>
 
         <script type="text/javascript">
+
             function errorCallback(error) {
-                  console.log(JSON.stringify(error));
-            }
-            function cancelCallback() {
-                  console.log('Payment cancelled');
+                console.log(error);
             }
 
+            function timeoutCallback(){
+                console.log('Timeout');
+            }
+
+            function completeCallback(data){
+                console.log(data);
+            }
+
+            function cancelCallback(data) {
+                console.log('Payment cancelled');
+            }
+
+            console.log('{{ $sessionId }}');
+//            'risk' => [
+//                 'bypassMerchantRiskRules' => 'ALL'
+//             ],
+// 'action' => [
+//                     '3DSecure' => 'BYPASS'
+//                 ],
             Checkout.configure({
-                merchant: 'NRSINFOWAYSL',
-                order: {
-                    amount: function() {
-                        //Dynamic calculation of amount
-                        return 784
-                    },
-                    currency: 'AED',
-                    description: 'Ordered goods',
-                    id: 'asdfdsge2342'
-                },
-                billing    : {
-                    address: {
-                        street       : '123 Customer Street',
-                        city         : 'Metropolis',
-                        postcodeZip  : '99999',
-                        stateProvince: 'NY',
-                        country      : 'USA'
-                    }
+                merchant: "NRSINFOWAYSL",
+                session: {
+                    id: '{{ $sessionId }}',
                 },
                 interaction: {
-                    operation: 'PURCHASE', // set this field to 'PURCHASE' for Hosted Checkout to perform a Pay Operation.
+                    operation: 'PURCHASE',
                     merchant: {
-                        name: 'Chris Olivo',
+                        name: "RAKTDA NRS Infoways",
                         address: {
                             line1: '200 Sample St',
                             line2: '1234 Example Town'            
-                        } , 
-                        email  : 'order@yourMerchantEmailAddress.com',
-                        phone  : '+1 123 456 789 012', 
-                    }
+                        } 
+                    },
+                },
+                order: {
+                    currency: 'AED',
+                    amount: function() {
+                        return 1 + 1;
+                    },
+                    description: "Ordered goods"
                 }
             });
         </script>
     </head>
-    <body>
-        <input type="button" value="Pay with Lightbox" onclick="Checkout.showLightbox();" />
-        <input type="button" value="Pay with Payment Page" onclick="Checkout.showPaymentPage();" />
+    <body>        
+        <input type="button" id="btnlight" value="Pay with Lightbox" onclick="Checkout.showLightbox();" />
+        <input type="button" id="btnredirect" value="Pay with Payment Page" onclick="Checkout.showPaymentPage();" />
     </body>
 </html>

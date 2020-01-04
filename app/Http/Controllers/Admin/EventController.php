@@ -168,8 +168,6 @@
 			return response()->json($events);
 		}
 		
-
-
 		public function submit(Request $request, Event $event)
 		{
 			try {
@@ -882,7 +880,7 @@
 				})
 				->addColumn('event_type', function($event) use ($request){
 					$type = $request->user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar;
-					$sub = $request->user()->LanguageId == 1 ?  ucfirst($event->subtype->name_en) : $event->subtype->name_ar;
+					$sub = $request->user()->LanguageId == 1 ?  ucfirst($event->subtype->sub_name_en) : $event->subtype->sub_name_ar;
 					$sub = !empty($sub) ? $sub : '-';
 					return type($type, $sub);
 				})

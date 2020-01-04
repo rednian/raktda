@@ -110,8 +110,13 @@
                             </div>
                             <div class="form-group">
                                 <label>Establishment Name <span class="text-danger">*</span></label>
-                                <input value="{{old('name_en')}}" type="text" name="name_en" class="form-control"
+                                <input  value="{{old('name_en')}}" type="text" name="name_en" class="form-control @error('name_en') is-invalid @enderror"
                                     required autocomplete="off" autofocus>
+                                    @error('name_en')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                             </div>
                             <div class="form-group corporate">
                                 <label>Trade License Number <span class="text-danger">*</span></label>

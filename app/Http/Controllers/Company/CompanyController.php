@@ -28,7 +28,26 @@ class CompanyController extends Controller
    {
       try {
          DB::beginTransaction();
-         // dd($request->all);
+         // dd($request->all());
+         $valid_data = $request->validate([
+          'name_en'=>'required|max:255',
+          'trade_license'=> 'required|max:255',
+          'trade_license_issued_date'=>'required|before_or_equal:'.Carbon::now().'',
+          'trade_license_expired_date'=>'required|after:'.Carbon::now().'',
+          'phone_number'=>'required|max:15',
+          'company_email'=>'required|email:rfc,strict,dns,spoof,filter',
+          'country_id'=>'required|integer',
+          'emirate_id'=>'required|integer',
+          'area_id'=>'required|integer',
+          'address'=>'required',
+          'NameEn'=>'required',
+          'email'=>'required|email:rfc,strict,dns,spoof,filter',
+          'mobile_number'=>'required|max:15',
+          'username'=>'required|max:255|min:5',
+         ]);
+
+         // dd($valid_data);
+
          $company = Company::create(array_merge($request->all(), ['status'=>'draft']));
          $request['password'] = Hash::make($request->password);
          $user = $company->user()->create(array_merge($request->all(), ['IsActive'=> 0, 'type'=> 1]));
@@ -341,6 +360,7 @@ class CompanyController extends Controller
       ->rawColumns(['file', 'action'])
       ->make(true);
    }
+   
 
 
    public function isexist(Request $request)
@@ -358,6 +378,7 @@ class CompanyController extends Controller
 
       return response()->json(['valid'=>$result]);
    }
+
 
    public function requirements(Request $request)
    {
