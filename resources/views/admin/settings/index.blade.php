@@ -253,7 +253,7 @@
 											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> 
 												{{ Auth::user()->LanguageId == 1 ? $type->schedule_type_name : $type->schedule_type_name_ar }}
 												@if($type->is_active)
-												&nbsp;&nbsp;&nbsp;&nbsp;<span class="kt-badge kt-badge--success kt-badge--inline">Active</span>
+												&nbsp;&nbsp;&nbsp;&nbsp;<span class="kt-badge kt-badge--success kt-badge--inline">{{ __('Active') }}</span>
 												@endif
 											</h6>
 										</div>

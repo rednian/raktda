@@ -28,7 +28,7 @@
                   </a>
                     @if (in_array($event->status, ['active', 'expired']) && !is_null($event->approved_by))
                         {{-- <div class="dropdown-divider"></div> --}}
-                        <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
+                        <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download Permit') }}</a>
                     @endif
                  </div>
             </div>
@@ -177,16 +177,16 @@
             {{Auth::user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-20">{{__('Sub-Category')}}</span>: 
+            <span class="kt-font-bold kt-margin-r-20">{{__('Event Subcategory')}}</span>: 
             {{ $event->subType()->exists() ? Auth::user()->LanguageId == 1 ? ucfirst($event->subType->name_en) : ucfirst($event->subType->name_ar) : '-'}}
           </p>
 
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-20">{{__('Event Start Date')}}</span>:
+            <span class="kt-font-bold kt-margin-r-20">{{__('Start Date')}}</span>:
             {{ date('d-F-Y', strtotime($event->issued_date)) }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-25">{{__('Event End Date')}}</span>: 
+            <span class="kt-font-bold kt-margin-r-25">{{__('End Date')}}</span>: 
             {{ date('d-F-Y', strtotime($event->expired_date)) }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">
@@ -303,7 +303,7 @@
                   </div>
                   <div class="kt-widget__body kt-margin-t-5">
                     <hr>
-                     <h6 class="kt-font-dark kt-font-transform-u">{{ __('Event Permit Information') }}</h6>
+                     <h6 class="kt-font-dark kt-font-transform-u">{{ __('Permit Information') }}</h6>
                      <table class="table table-sm table-hover table-borderless table-display">
                       <tr>
                           <td>{{ __('Applied Date') }} : </td>

@@ -74,7 +74,7 @@
         <th>{{ __('WORK LOCATION') }}</th>
         <th>{{ __('CONNECTED TO AN EVENT') }}</th>
         <th>{{ __('EVENT NAME') }}</th>
-        <th>{{ __('PERMIT RIVISION') }}</th>
+        <th>{{ __('PERMIT REVISION') }}</th>
      </tr>
      </thead>
 </table>
