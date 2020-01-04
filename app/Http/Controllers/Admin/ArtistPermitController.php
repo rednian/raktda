@@ -787,7 +787,11 @@ class ArtistPermitController extends Controller
 	         return __($type);
 	     })
       ->addColumn('action', function($permit){
+        if (in_array($permit->permit_status, ['active', 'expired']) && !is_null($permit->approved_by)) {
           return '<a href="'.URL::signedRoute('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary">' . __('Download') . '</a>';
+        }
+        return '-';
+         
       })
       ->addColumn('inspection_url', function($permit){
           return route('tasks.artist_permit.details', $permit->permit_id);

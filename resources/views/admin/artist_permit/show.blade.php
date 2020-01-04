@@ -19,8 +19,7 @@
                     <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
                         {{ __('Establishment Details') }}
                     </a>
-                    @if ($permit->permit_status == 'active' || $permit->permit_status == 'expired')
-                        {{-- <div class="dropdown-divider"></div> --}}
+                    @if (in_array($permit->permit_status, ['active', 'expired']) && !is_null($permit->approved_by))
                         <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.artist_permit.download', $permit->permit_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
                     @endif
                 </div>
