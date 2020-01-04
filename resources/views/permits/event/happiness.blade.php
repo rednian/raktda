@@ -37,7 +37,7 @@
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> {{__('Upload Documents')}}
+                                    <span>03</span> {{__('Upload Docs')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -489,6 +489,7 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="area_id"
                                                                 class=" col-form-label kt-font-bold text-right">{{__('Area')}}
+                                                                <span class="text-danger">*</span>
                                                             </label>
                                                             <select class="  form-control form-control-sm "
                                                                 name="area_id" id="area_id" disabled>
@@ -1816,12 +1817,12 @@
    
 
         $('#submit_btn').click((e) => {
-            $('#submit_btn').css('pointer-events', 'none');
             var rating = $('#rating').val();
             if(rating)
             {
                 if(happinessValidator.form())
                 {
+                    $('#submit_btn').css('pointer-events', 'none');
                     $.ajax({
                         url: "{{route('event.submit_happiness')}}",
                         type: "POST",
@@ -1830,9 +1831,18 @@
                             happiness: $('#rating').val(),
                             remarks: $('#remarks').val()
                         },
+                        beforeSend: function() {
+                            KTApp.blockPage({
+                                overlayColor: '#000000',
+                                type: 'v2',
+                                state: 'success',
+                                message: 'Please wait...'
+                            });
+                        },
                         success: function (result) {
                             if(result.message[0]){
                                 window.location.href = "{{route('event.index')}}#valid";
+                                KTApp.unblockPage();
                             }
                         }
                     });

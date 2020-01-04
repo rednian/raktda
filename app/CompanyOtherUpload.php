@@ -12,6 +12,6 @@ class CompanyOtherUpload extends Model
 
 	public function company()
 	{
-		return $this->hasMany(CompanyRequirement::class, 'company_requirement_id', 'company_other_upload_id');
+		return $this->hasMany(CompanyRequirement::class, 'company_other_upload_id', 'requirement_id');
 	}
 }

@@ -2,8 +2,7 @@
     <div class="kt-form__section kt-form__section--first">
         <div class="kt-wizard-v3__form">
             <!--begin::Accordion-->
-            <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                id="permit-fee-details">
+            <section class="accordion kt-margin-b-5 accordion-solid  border" id="permit-fee-details">
                 <div class="card">
                     <div class="card-header" id="headingThree6">
                         <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseThree6"
@@ -26,6 +25,25 @@
                                 </tr>
                                 @endforeach
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="accordion kt-margin-b-5 accordion-solid  border" id="permit-document-details">
+                <div class="card">
+                    <div class="card-header" id="headingFour6">
+                        <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseFour6"
+                            aria-expanded="false" aria-controls="collapseFour6">
+                            <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
+                                {{__('Documents Required')}}</h6>
+                        </div>
+                    </div>
+                    <div id="collapseFour6" class="collapse show" aria-labelledby="headingFour6"
+                        data-parent="#permit-document-details">
+                        <div class="card-body">
+
+                            @include('permits.event.common.documents_required',['event_types' =>
+                            $event_types])
                         </div>
                     </div>
                 </div>

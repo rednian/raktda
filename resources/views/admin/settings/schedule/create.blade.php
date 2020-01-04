@@ -14,7 +14,7 @@
 					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Add New Schedule Type</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
-					<a href="{{ url('settings#schedule_settings') }}" class="btn btn-sm btn-maroon btn-elevate kt-font-transform-u kt-margin-r-10">
+					<a href="{{ URL::signedRoute('admin.setting.index') }}#schedule_settings" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u kt-margin-r-10">
 						 <i class="la la-arrow-left"></i>
 						 {{ __('BACK TO SETTINGS') }}
 					</a>

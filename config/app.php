@@ -177,7 +177,8 @@ return [
         'A6digital\Image\DefaultProfileImageServiceProvider',
         Intervention\Image\ImageServiceProvider::class,
         MaddHatter\LaravelFullcalendar\ServiceProvider::class,
-        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
+        // Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
     ],
     /*
     |--------------------------------------------------------------------------
@@ -233,6 +234,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
+        // 'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
 
 
 

@@ -5,7 +5,7 @@
       <div class="kt-portlet__head-label">
          <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST DETAILS') }}</span></h3></div>
          <div class="kt-portlet__head-toolbar">
-            <button id="clickme" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
+            <button type="button" id="clickme" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
                <i class="la la-arrow-left"></i>{{ __('BACK') }}
             </button>
          </div>
@@ -20,7 +20,7 @@
             <div class="kt-widget kt-widget--user-profile-4 border">
                 <div class="kt-widget__head">
                   <div class="kt-widget__media">
-                    <img class="kt-widget__img" src="{{ asset('storage/'.$artistpermit->thumbnail) }}" alt="image">
+                    <img class="kt-widget__img img-thumbnail" src="{{ asset('storage/'.$artistpermit->thumbnail) }}" >
                   </div>
                   <div class="kt-widget__content">
                     <div class="kt-widget__section">
@@ -87,6 +87,43 @@
           </div>
         </div>
           <div class="col-md-8">
+            <div class="kt-widget kt-widget--user-profile-3">
+                
+                <div class="kt-widget__bottom kt-margin-t-0">
+                  
+                  <div class="kt-widget__item">
+                    <div class="kt-widget__icon">
+                      <i class="flaticon-confetti"></i>
+                    </div>
+                    <div class="kt-widget__details">
+                      <span class="kt-widget__title">{{__('ACTIVE PROFESSIONS')}}</span>
+                      <span class="kt-widget__value">
+                        @if ($artistpermits = $artist->artistPermit()->whereHas('permit', function($q){ $q->where('permit_status', 'active'); })->get())
+                          @foreach ($artistpermits as $artistpermit)
+                            <small>{{ $artistpermit->profession->name_en }} </small>
+                          @endforeach
+                        @endif
+                      </span>
+                    </div>
+                  </div>
+                  <div class="kt-widget__item">
+                    <div class="kt-widget__icon">
+                      <i class="flaticon-squares-4"></i>
+                    </div>
+                    <div class="kt-widget__details">
+                       @if ($permits = $artist->permit()->where('permit_status', 'active')->get())
+                      <span class="kt-widget__title">{{__('CURRENT ESTABLISHMENTS')}}</span>
+                      <span class="kt-widget__value">
+                          @foreach ($permits as $permit)
+                            <small>{{ucfirst(Auth::user()->LanguageId == 1 ? $permit->owner->company->name_en : $permit->owner->company->name_ar)}} </small>
+                          @endforeach
+                      </span>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <hr>
             <div class="accordion accordion-solid  accordion-toggle-plus" id="accordionExample6">
                   <div class="card border">
                     <div class="card-header " id="headingOne6">
@@ -115,9 +152,9 @@
                           <div class="form-group row">
                             <div class="col">
                               @if ($artist->artist_status == 'active')
-                              <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="blocked">{{ __('SUBMIT') }}</button>
+                              <button type="submit" class="btn btn-sm btn-maroon kt-transform-u" name="status" value="blocked">{{ __('SUBMIT') }}</button>
                               @else
-                              <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">{{ __('SUBMIT') }}</button>
+                              <button type="submit" class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">{{ __('SUBMIT') }}</button>
                               @endif
                             </div>
                           </div>
@@ -145,10 +182,10 @@
                                            <th>{{ __('ACTION') }}</th>
                                            <th>{{ __('REFERENCE NO.') }}</th>
                                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                                           <th>{{ __('PERMIT STATUS') }}</th>
                                            <th>{{ __('PERMIT NO.') }}</th>
                                            <th>{{ __('ISSUED DATE') }}</th>
                                            <th>{{ __('EXPIRED DATE') }}</th>
-                                           <th>{{ __('PERMIT STATUS') }}</th>
                                         </tr>
                                         </thead>
                                      </table>
@@ -199,12 +236,7 @@
             $('input#artist-status').attr();
         })
 
-          $('#clickme').click(function(reload) {
-
-             //     window.location.hash = '#kt_tabs_1_5';
-                 //  window.location.reload(true);
-              window.history.back();
-          });
+          $('#clickme').click(function(reload) {window.history.back(); });
          permitHistory();
          statusHistory();
 
@@ -218,6 +250,8 @@
             }
          });
       });
+
+
       function statusHistory() {
          $('table#status-history').DataTable({
             ajax: {
@@ -236,6 +270,7 @@
             ]
          });
       }
+
 
       function permitHistory() {
          $('table#artist-permit-history').DataTable({
@@ -257,10 +292,10 @@
             },
              {data: 'reference_number'},
              {data: 'company_name'},
+             {data: 'permit_status'},
              {data: 'permit_number'},
              {data: 'issued_date'},
              {data: 'expired_date'},
-             {data: 'permit_status'},
                
             ],
             createdRow: function(row, data, index){
@@ -275,6 +310,7 @@
             }
          });
       }
+
       
       function documents(data){
         console.log(data)

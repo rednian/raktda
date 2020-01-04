@@ -149,9 +149,9 @@
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="new-event-type-sub-id" onchange="newEventTable.draw()">
                   <option selected disabled>{{__('SUB-CATEGORY')}}</option>
-                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->where('status', 'new');})->get())
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->where('status', 'new');})->where('event_type_sub_id', '!=', 0)->get())
                     @foreach ($subs as $sub)
-                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
                     @endforeach
                   @endif
                 </select>
@@ -192,14 +192,14 @@
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('SUBMITTED DATE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('EVENT START DATE') }}</th>
-              <th>{{ __('EVENT END DATE') }}</th>
+              <th>{{ __('START DATE') }}</th>
+              <th>{{ __('END DATE') }}</th>
               <th>{{ __('TIME') }}</th>
               <th>{{ __('OWNER NAME') }}</th>
-              <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-              <th>{{ __('HAS LIQUOR ? ') }}</th>
-              <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
-              <th>{{ __('HAS ARTIST ? ') }}</th>
+              <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR') }}</th>
+              <th>{{ __('FOOD TRUCK') }}</th>
+              <th>{{ __('HAS ARTIST PERMIT?') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -236,9 +236,9 @@
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="pending-event-type-sub-id" onchange="pendingEventTable.draw()">
                   <option selected disabled>{{__('SUB-CATEGORY')}}</option>
-                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['amended', 'checked']);})->get())
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['amended', 'checked']);})->where('event_type_sub_id', '!=', 0)->get())
                     @foreach ($subs as $sub)
-                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
                     @endforeach
                   @endif
                 </select>
@@ -279,14 +279,14 @@
               <th>{{ __('SUBMITTED DATE') }}</th>
               <th>{{ __('STATUS') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('EVENT START DATE') }}</th>
-              <th>{{ __('EVENT END DATE') }}</th>
+              <th>{{ __('START DATE') }}</th>
+              <th>{{ __('END DATE') }}</th>
               <th>{{ __('TIME') }}</th>
               <th>{{ __('OWNER NAME') }}</th>
-              <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-              <th>{{ __('HAS LIQUOR ? ') }}</th>
-              <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
-              <th>{{ __('HAS ARTIST ? ') }}</th>
+              <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR') }}</th>
+              <th>{{ __('FOOD TRUCK') }}</th>
+              <th>{{ __('HAS ARTIST PERMIT?') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -323,9 +323,9 @@
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="processing-event-type-sub-id" onchange="eventProcessingTable.draw()">
                   <option selected disabled>{{__('SUB-CATEGORY')}}</option>
-                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['approved-unpaid', 'processing', 'need approval', 'need modification']);})->get())
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['approved-unpaid', 'processing', 'need approval', 'need modification']);})->where('event_type_sub_id', '!=', 0)->get())
                     @foreach ($subs as $sub)
-                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
                     @endforeach
                   @endif
                 </select>
@@ -367,14 +367,14 @@
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('STATUS') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('EVENT START DATE') }}</th>
-              <th>{{ __('EVENT END DATE') }}</th>
+              <th>{{ __('START DATE') }}</th>
+              <th>{{ __('END DATE') }}</th>
               <th>{{ __('TIME') }}</th>
               <th>{{ __('OWNER NAME') }}</th>
-              <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-              <th>{{ __('HAS LIQUOR ? ') }}</th>
-              <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
-              <th>{{ __('HAS ARTIST ? ') }}</th>
+              <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR') }}</th>
+              <th>{{ __('FOOD TRUCK') }}</th>
+              <th>{{ __('HAS ARTIST PERMIT?') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -411,9 +411,9 @@
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="active-event-type-sub-id" onchange="eventActiveTable.draw()">
                   <option selected disabled>{{__('SUB-CATEGORY')}}</option>
-                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['active']);})->get())
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['active']);})->where('event_type_sub_id', '!=', 0)->get())
                     @foreach ($subs as $sub)
-                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
                     @endforeach
                   @endif
                 </select>
@@ -455,14 +455,14 @@
             <th>{{ __('APPROVED DATE') }}</th>
             <th>{{ __('APPROVED BY') }}</th>
             <th>{{ __('PERMIT NUMBER') }}</th>
-            <th>{{ __('EVENT START DATE') }}</th>
-            <th>{{ __('EVENT END DATE') }}</th>
+            <th>{{ __('START DATE') }}</th>
+            <th>{{ __('END DATE') }}</th>
             <th>{{ __('TIME') }}</th>
             <th>{{ __('OWNER NAME') }}</th>
-            <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-            <th>{{ __('HAS LIQUOR ? ') }}</th>
-            <th>{{ __('HAS FOOD TRUCK ? ') }}</th>
-            <th>{{ __('HAS ARTIST ? ') }}</th>
+            <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+            <th>{{ __('HAS LIQUOR') }}</th>
+            <th>{{ __('FOOD TRUCK') }}</th>
+            <th>{{ __('HAS ARTIST PERMIT?') }}</th>
             <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
             <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
             <th>{{ __('EVENT DETAILS') }}</th>
@@ -501,9 +501,9 @@
             <div class="col-3">
               <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="archieve-event-type-sub-id" onchange="eventArchiveTable.draw()">
                 <option selected disabled>{{__('SUB-CATEGORY')}}</option>
-                @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['cancelled', 'rejected', 'expired']);})->get())
+                @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['cancelled', 'rejected', 'expired']);})->where('event_type_sub_id', '!=', 0)->get())
                   @foreach ($subs as $sub)
-                    <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->name_en) : ucfirst($sub->name_ar) }}</option>
+                    <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
                   @endforeach
                 @endif
               </select>
@@ -547,14 +547,14 @@
             <th>{{ __('APPROVED DATE') }}</th>
             <th>{{ __('APPROVED BY') }}</th>
             <th>{{ __('PERMIT NUMBER') }}</th>
-            <th>{{ __('EVENT START DATE') }}</th>
-            <th>{{ __('EVENT END DATE') }}</th>
+            <th>{{ __('START DATE') }}</th>
+            <th>{{ __('END DATE') }}</th>
             <th>{{ __('TIME') }}</th>
             <th>{{ __('OWNER NAME') }}</th>
-            <th>{{ __('EXPECTECD NUMBER OF AUDIENCE') }}</th>
-            <th>{{ __('HAS LIQUOR ? ') }}</th>
-            <th>{{ __('HAS TRUCK ? ') }}</th>
-            <th>{{ __('HAS ARTIST ? ') }}</th>
+            <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+            <th>{{ __('HAS LIQUOR') }}</th>
+            <th>{{ __('FOOD TRUCK') }}</th>
+            <th>{{ __('HAS ARTIST PERMIT?') }}</th>
             <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
             <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
             <th>{{ __('EVENT DETAILS') }}</th>
@@ -572,7 +572,7 @@
           <div class="card-header" id="heading-address">
             <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse"
               data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
-              <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT TYPE LEGEND') }}</h6>
+              <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT LEGEND') }}</h6>
             </div>
           </div>
           <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
@@ -1116,9 +1116,9 @@
                   listDay: { buttonText: '{{ __('Day List') }}' },
                   listWeek: { buttonText: '{{ __('Week List') }}' }
               },
-              defaultView: 'dayGridMonth',
-              // defaultDate: TODAY,
-              editable: true,
+              defaultView: 'listWeek',
+              defaultDate: TODAY,
+              editable: false,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
               events: {
