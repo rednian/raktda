@@ -103,17 +103,15 @@
                                         <label for="work_loc"
                                             class="col-form-label col-form-label-sm">{{__('Work Location')}}<span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control form-control-sm"
-                                            placeholder="Work Location" name="work_loc" id="work_loc"
-                                            onkeyup="checkFilled()"
+                                        <input type="text" class="form-control form-control-sm" name="work_loc"
+                                            id="work_loc" onkeyup="checkFilled()"
                                             value="{{count($artist_details) > 0 ? getLangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             {{__('Work Location - Ar')}} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control form-control-sm"
-                                            placeholder="{{__('Work Location - Ar')}}" name="work_loc_ar"
+                                        <input type="text" class="form-control form-control-sm" name="work_loc_ar"
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
@@ -184,29 +182,26 @@
                         @foreach($artist_details as $ad)
                         {{-- {{dd($ad)}} --}}
                         <tr>
-                            <td>{{$ad->firstname_en}}</td>
-                            <td>{{$ad->lastname_en}}</td>
-                            <td>{{$ad->profession['name_en']}}</td>
+                            <td>{{getLangId() == 1 ? ucwords($ad->firstname_en) : $ad->firstname_ar}}</td>
+                            <td>{{getLangId() == 1 ? ucwords($ad->lastname_en) : $ad->lastname_ar}}</td>
+                            <td>{{getLangId() == 1 ? ucwords($ad->profession['name_en']) : $ad->profession['name_ar']}}
+                            </td>
                             <td>{{$ad->mobile_number}}</td>
                             {{-- <td>{{$ad->email}}</td> --}}
-                            <td>{{$ad->artist_permit_status}}</td>
+                            <td>{{__($ad->artist_permit_status)}}</td>
                             <td class="d-flex justify-content-center">
-                                <a href="{{url('company/edit_artist_draft/'.$ad->id)}}" title="Edit">
-                                    <button class="btn btn-sm btn-secondary btn-elevate ">Edit</button>
+                                <a href="{{URL::signedRoute('company.edit_artist_draft',[ 'id' =>  $ad->id])}}">
+                                    <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Edit')}}</button>
                                 </a>
-                                {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$ad->id}})"
-                                title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
-                                </a> --}}
-                                <a href="{{route('temp_artist_details.view' , [ 'id' => $ad->id , 'from' => 'draft'])}}"
-                                    title="View">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">View</button>
+                                <a
+                                    href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $ad->id , 'from' => 'draft'])}}">
+                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
                                     onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
-                                    data-toggle="modal" data-target="#delartistmodal" title="Remove">
-                                    <button class="btn btn-sm btn-secondary btn-elevate ">Remove</button>
+                                    data-toggle="modal" data-target="#delartistmodal">
+                                    <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Remove')}}</button>
                                 </a>
                                 @endif
                             </td>
@@ -229,14 +224,14 @@
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
                 id="draft_btn">
                 <i class="la la-check"></i>
-                Update to Drafts
+                {{__('Update to Drafts')}}
             </button>
 
             <button
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
                 id="submit_btn">
                 <i class="la la-check"></i>
-                Apply Permit
+                {{__('Apply Permit')}}
             </button>
         </div>
 
@@ -318,7 +313,8 @@
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
-            orientation: "bottom left"
+            orientation: "bottom left",
+            zIndexOffset: 98
         });
         $('#permit_to').datepicker({
             format: 'dd-mm-yyyy',
@@ -379,22 +375,6 @@
             $('#submit_btn').css('display', 'none');
         }
 
-        // function setCokkie(){
-        //     var from = $('#permit_from').val();
-        //     var to = $('#permit_to').val();
-        //     var loc = $('#work_loc').val();
-        //     var permit_id = $('#temp_permit_id').val();
-        //     $.ajax({
-        //             url:"{{route('company.storePermitDetails')}}",
-        //             type: "POST",
-        //             data: { from: from , to:to, loc:loc },
-        //             async: true,
-        //             success: function(result){
-        //                 window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id;
-        //             }
-        //     });
-        // }
-
         $('#back_btn').click(function(){
             $total_artists = $('#total_artist_details').val();
 
@@ -451,39 +431,7 @@
             }
 
         });
-
-        // $('#add_artist').click(function(){
-        //     var from = $('#permit_from').val();
-        //     var to = $('#permit_to').val();
-        //     var loc = $('#work_loc').val();
-        //     $.ajax({
-        //             url:"{{route('company.add_new_artist')}}",
-        //             type: "POST",
-        //             data: { from: from , to: to , loc: loc},
-        //             success: function(result){
-        //                 // window.location.href="{{url('company/add_new')}}";
-        //             }
-        //         });
-        // })
-
-        function getArtistDetails(id) {
-            $.ajax({
-                type: 'POST',
-                url: '{{route("company.fetch_artist_temp_data")}}',
-                data: {artist_temp_id:id},
-                success: function(data) {
-                    // console.log(data);
-                    $('#detail-permit').empty();
-                if(data)
-                {
-                    $('#artist_details').modal('show');
-                    var code = data.person_code ? data.person_code : '';
-                    $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>  <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  data.nationality.nationality_en + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type.visa_type_en + '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
-
-                }
-                }
-            });
-        }
+       
 
         function check_Add_Event(){
             var event_id = $('#event_id').val();
@@ -497,9 +445,15 @@
 
 
         $('#submit_btn').click((e) => {
-            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-            $('#submit_btn').css('pointer-events', 'none');
-            $('#draft_btn').css('pointer-events', 'none');
+            // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            // $('#submit_btn').css('pointer-events', 'none');
+            // $('#draft_btn').css('pointer-events', 'none');
+            KTApp.blockPage({
+               overlayColor: '#000000',
+               type: 'v2',
+               state: 'success',
+               message: 'Please wait...'
+           });
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
@@ -517,14 +471,15 @@
                     },
                     success: function(result){
                         window.location.href="{{route('artist.index')}}#applied";
+                        KTApp.unblockPage();
                     }
             });
         });
 
         $('#draft_btn').click((e) => {
-            $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-            $('#submit_btn').css('pointer-events', 'none');
-            $('#draft_btn').css('pointer-events', 'none');
+            // $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            // $('#submit_btn').css('pointer-events', 'none');
+            // $('#draft_btn').css('pointer-events', 'none');
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
                     url:"{{route('artist.add_draft')}}",
@@ -537,8 +492,17 @@
                         loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val()
                     },
+                    beforeSend: function(){
+                        KTApp.blockPage({
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'success',
+                            message: 'Please wait...'
+                        });
+                    },
                     success: function(result){
                         window.location.href="{{route('artist.index')}}#draft";
+                        KTApp.unblockPage();
                     }
                 });
         });

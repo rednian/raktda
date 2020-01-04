@@ -2,6 +2,35 @@
     <div class="kt-form__section kt-form__section--first">
         <div class="kt-wizard-v3__form">
             <!--begin::Accordion-->
+            <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample61">
+                <div class="card">
+                    <div class="card-header" id="headingThree6">
+                        <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseThree6"
+                            aria-expanded="false" aria-controls="collapseThree6">
+                            <h6 class="kt-font-transform-u kt-font-bolder"> {{__('Permit Fee')}}</h6>
+                        </div>
+                    </div>
+                    <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
+                        data-parent="#accordionExample61">
+                        <div class="card-body">
+                            <table class="table table-borderless table-sm">
+                                <tr>
+                                    <th>{{__('Profession')}}</th>
+                                    <th>{{__('Fee')}} (AED)</th>
+                                </tr>
+                                @foreach($profession as $pt)
+                                <tr>
+                                    <td>{{getLangId() == 1 ? $pt->name_en : $pt->name_ar}}</td>
+                                    <td>{{number_format($pt->amount,2)}}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+
             <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample6">
 
                 <div class="card">
@@ -35,34 +64,7 @@
 
             </div>
             <br>
-            <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample61">
-                <div class="card">
-                    <div class="card-header" id="headingThree6">
-                        <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseThree6"
-                            aria-expanded="false" aria-controls="collapseThree6">
-                            <h6 class="kt-font-transform-u kt-font-bolder"> {{__('Permit Fee')}}</h6>
-                        </div>
-                    </div>
-                    <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
-                        data-parent="#accordionExample61">
-                        <div class="card-body">
-                            <table class="table table-borderless table-sm">
-                                <tr>
-                                    <th>{{__('Profession')}}</th>
-                                    <th>{{__('Fee')}} (AED)</th>
-                                </tr>
-                                @foreach($profession as $pt)
-                                <tr>
-                                    <td>{{getLangId() == 1 ? $pt->name_en : $pt->name_ar}}</td>
-                                    <td>{{number_format($pt->amount,2)}}</td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
+
             {{-- <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample62">
                 <div class="card">
                     <div class="card-header" id="headingFour6">

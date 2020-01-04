@@ -130,10 +130,10 @@ class ArtistController extends Controller
                          if($permit->event) {
                               if($permit->event->firm == 'government' || $permit->event->exempt_payment == 1)
                               {
-                                return '<a href="' . route('company.happiness_center', $permit->permit_id) . '"  title="Happiness"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Happiness').'</span></a>';
+                                return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.happiness_center', $permit->permit_id) . '" ><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Happiness').'</span></a>';
                               }
                          }
-                        return '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
+                        return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.make_payment', $permit->permit_id) . '" ><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
                     } else if ($permit->permit_status == 'new') { //&& $permit->lock == ''
                        
                     } else if ($permit->permit_status == 'modification request') {
@@ -142,13 +142,13 @@ class ArtistController extends Controller
                             if($permit->event) {
                                 if($permit->event->firm == 'government')
                                 {
-                                    $pay_btn = '<a href="' . route('company.happiness_center', $permit->permit_id) . '"  title="Happiness"><span class="kt-badge kt-badge--info kt-badge--inline">'.__('Happiness').'</span></a>';
+                                    $pay_btn = '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.happiness_center', $permit->permit_id) . '" ><span class="kt-badge kt-badge--info kt-badge--inline">'.__('Happiness').'</span></a>';
                                 }
                             }else {
-                                $pay_btn = '<a href="' . route('company.make_payment', $permit->permit_id) . '"  title="Payments"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
+                                $pay_btn = '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.make_payment', $permit->permit_id) . '"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
                             }
                         }
-                        return '<a href="' . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5" title="'.__('Payment').'">'.__('Edit').'</span></a>' . $pay_btn;
+                        return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a>' . $pay_btn;
                     } else if ($permit->permit_status == 'rejected') {
                         return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Rejected').'</span>';
                     } else if ($permit->permit_status == 'cancelled') {
@@ -161,8 +161,8 @@ class ArtistController extends Controller
                     $today = strtotime(date('Y-m-d 00:00:00'));
                     $diff = abs($today - $issued_date) / 60 / 60 / 24;
                     $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
-                    $amendBtn = ($diff < $amend_grace) ? '<a href="'  . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend']) .  '" title="Amend"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">'.__('Amend').'</span></a>' : '';
-                    $renewBtn = ($expDiff <= $renew_grace) ? '<a href="'  . route('artist.permit', ['id' => $permit->permit_id, 'status' => 'renew']) .  '" title="Renew"><span  class="kt-badge kt-badge--success kt-badge--inline">'.__('Renew').'</span></a>' : '';
+                    $amendBtn = ($diff < $amend_grace) ? '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend']) .  '"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">'.__('Amend').'</span></a>' : '';
+                    $renewBtn = ($expDiff <= $renew_grace) ? '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'renew']) .  '"><span  class="kt-badge kt-badge--success kt-badge--inline">'.__('Renew').'</span></a>' : '';
                     if($permit->permit_number)
                     {
                         $pn = Permit::where('permit_number', 'like', "$permit->permit_number%")->latest()->first();
@@ -180,7 +180,7 @@ class ArtistController extends Controller
         })->addColumn('permit_status', function ($permit) {
             $status = $permit->permit_status;
             $ret_status = '';
-            if($status == 'amended' || $status == 'new' || $status == 'need approval' || $status == 'processing') {
+            if($status == 'modified' || $status == 'new' || $status == 'need approval' || $status == 'processing') {
                 $ret_status = __('Pending'); 
             }else if($status == 'approved-unpaid') {
                 $ret_status = __('Approved');
@@ -200,14 +200,17 @@ class ArtistController extends Controller
                     $from = 'valid';
                     break;
             }
-            return '<a href="' . route('company.get_permit_details', $permit->permit_id) .  '?tab=' . $from . '" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_permit_details', [ 'id' =>$permit->permit_id , 'tab' => $from ]).'" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
             return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.download_permit', $permit) . '" target="_blank" title="'.__('Download Permit').'"><i class="fa fa-file-download fs-16"></i></a>';
         })->rawColumns(['action', 'details', 'download', 'permit_id'])->make(true);
     }
 
-    public function get_permit_details($id, Request $request)
+    public function get_permit_details(Request $request, $id)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'artistPermit.artistPermitDocument', 'event')->where('created_by', Auth::user()->user_id)->where('permit_id', $id)->first();
         if(is_null($data_bundle['permit_details'])){
             return abort(401);
@@ -226,15 +229,54 @@ class ArtistController extends Controller
             'birthdate' => Carbon::parse($request->dob)->toDateString()
         ])->with('artist', 'artistPermitDocument', 'Nationality', 'visaType');
 
+        $pro_ids = Profession::where('is_multiple', 0)->pluck('profession_id');
+        $has_single_permit = false;
+
         if ($query->exists()) {
             $data = $query->latest()->first();
+            $hasCond = false;
+            $artist_id = $data->artist_id;
+            if($artist_id)
+            {
+                foreach($pro_ids as $id){
+                    $has_valid_single_permit = ArtistPermit::with(['permit' => function($q){
+                        $q->where('permit_status', 'active');
+                    }])->where('artist_id', $artist_id)->where('profession_id', $id)->exists();
+                    if($has_valid_single_permit){
+                        $hasCond = true;
+                    }
+                }
+            }
+            if($hasCond == true){
+                $has_single_permit = true;
+            }
             $isArtist = true;
         } else {
             $data = [];
             $isArtist = false;
         }
 
-        return response()->json(['isArtist' => $isArtist, 'data' => $data]);
+        return response()->json(['isArtist' => $isArtist , 'has_single_permit' => $has_single_permit, 'data' => $data]);
+    }
+
+    public function checkArtistProfession(Request $request)
+    {
+        $artist_id = $request->artist_id;
+        $profession = $request->profession;
+
+        $permitExists = Permit::with(['artistPermit' => function($q) {
+            $q->where('artist_id', $artist_id);
+        }])->where('permit_status', 'active')->exists();
+
+        $pro_ids = Profession::where('is_multiple', 0)->pluck('profession_id')->toArray();   
+        
+        $action = 'allowed';
+        
+        if(in_array($profession, $pro_ids) && $permitExists) {
+            $action = 'notallowed';
+        }
+
+        return response()->json(['response' => $action]);
     }
 
     public function check_artist_exists_in_permit(Request $request)
@@ -324,6 +366,8 @@ class ArtistController extends Controller
         } else {
             session()->forget([$user_id . '_apn_event_id']);
         }
+ 
+        return;  
     }
 
     function makeSessionForgetPermitDetails()
@@ -382,8 +426,12 @@ class ArtistController extends Controller
 
     // To Apply New Permit Page
 
-    public function create($id = null)
+    public function create(Request $request, $id = null)
     {
+        // if(!$request->hasValidSignature()){
+        //     return abort(401);
+        // }
+        
         $last_page = URL::previous();
 
         $view_artist_url_check = str_contains($last_page, url('company/artist/temp/details'));
@@ -1076,8 +1124,11 @@ class ArtistController extends Controller
         return $status;
     }
 
-    public function add_artist_to_permit($from, $id)
+    public function add_artist_to_permit(Request $request,$from, $id)
     {
+        // if(!$request->hasValidSignature()){
+        //     return abort(401);
+        // }
         $data_bundle = $this->preLoadData();
         $data_bundle['permit_details'] = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->first();
         $data_bundle['permit_id'] = $id;
@@ -1104,11 +1155,40 @@ class ArtistController extends Controller
             ['created_by', $user_id],
             ['status' , '!=' , 1]
         ])->exists();
+
+        $pro_ids = Profession::where('is_multiple', 0)->pluck('profession_id');
+
         $artist_d = [];
+
+        $exists = true ;
+        $has_single_permit = false;
+
         if (!$code_exists) {
-            $artist_d = Artist::with('artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.Nationality', 'artistPermit.visaType')->where('person_code', $code)->first();
+            $exists = false ;
+            $artist_d = Artist::with('artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.Nationality', 'artistPermit.visaType')->where('person_code', $code)->latest()->first();
+            $hasCond = false;
+            if($artist_d)
+            {
+                $artist_id = $artist_d->artist_id;
+                if($artist_id)
+                {
+                    foreach($pro_ids as $id){
+                        $has_valid_single_permit = ArtistPermit::with(['permit' => function($q) use($permit_id){
+                            $q->where('permit_status', 'active');
+                        }])->where('artist_id', $artist_id)->where('profession_id', $id)->exists();
+                        if($has_valid_single_permit){
+                            $hasCond = true;
+                        }
+                    }
+                }
+                if($hasCond == true){
+                    $has_single_permit = true;
+                }
+            }
         }
-        return $artist_d;
+
+        return response()->json(['exists' => $exists , 'has_single_permit' => $has_single_permit, 'artist_d' => $artist_d]);
+        // return $artist_d;
     }
 
     public function download_file(Request $request)
@@ -1131,8 +1211,11 @@ class ArtistController extends Controller
         return $artistPermitDetails;
     }
 
-    public function get_artist_details($id, $from)
+    public function get_artist_details(Request $request, $id, $from)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $data['artist_details'] = ArtistPermit::with('artist', 'artistPermitDocument', 'profession', 'Nationality', 'visaType', 'area', 'language', 'religion', 'emirate', 'artistPermitDocument.requirement', 'permit.event')->where('created_by', Auth::user()->user_id)->where('artist_permit_id', $id)->first();
         if(is_null($data['artist_details'])){
             return abort(401);
@@ -1149,8 +1232,11 @@ class ArtistController extends Controller
         return $artist_documents;
     }
 
-    public function get_temp_artist_details($id, $from)
+    public function get_temp_artist_details(Request $request, $id, $from)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $data['artist_details'] = ArtistTempData::with('Nationality', 'Profession', 'visaType', 'ArtistTempDocument.requirement')->where('id', $id)->first();
         if(is_null($data['artist_details'])){
             return abort(401);
@@ -1186,27 +1272,30 @@ class ArtistController extends Controller
         // Artistpermit::where('artist_permit_id', $artist_permit_id)->update(['artist_permit_status' => 'inactive']);
         ArtistTempData::where('id', $temp_id)->where('created_by', Auth::user()->user_id)->update(['status' => 1]);
         $result = ['success', 'Artist Removed successfully ', 'Success'];
+
+        if($from == 'new') {
+            return redirect()->route(URL::signedRoute('company.add_new_permit', [ 'id' => 1]))->with('message', $result);
+        }
+
+        if($from == 'event') {
+            return redirect()->route(URL::signedRoute('event.add_artist', [ 'id' => $permit_id]))->with('message', $result);
+        }
+
         switch ($from) {
             case 'amend':
-                $route_back = 'company/artist/permit/' . $permit_id . '/amend';
+                $route_back = 'amend';
                 break;
             case 'renew':
-                $route_back = 'company/artist/permit/' . $permit_id . '/renew';
+                $route_back = 'renew';
                 break;
             case 'edit':
-                $route_back = 'company/artist/permit/' . $permit_id . '/edit';
-                break;
-            case 'new':
-                $route_back = 'company/artist/new/1';
-                break;
-            case 'event':
-                $route_back = 'company/event/add_artist/' . $permit_id;
+                $route_back = 'edit';
                 break;
             default:
                 break;
         }
         // dd($route_back);
-        return redirect(url($route_back))->with('message', $result);
+        return redirect()->route(URL::signedRoute('artist.permit',[ 'id' => $permit_id , 'status'=> $route_back]))->with('message', $result);
     }
 
     public function update_artist_temp(Request $request)
@@ -1372,8 +1461,11 @@ class ArtistController extends Controller
         return response()->json(['message' => $result]);
     }
 
-    public function permit($id, $status)
+    public function permit(Request $request, $id, $status)
     {
+        // if(!$request->hasValidSignature()){
+        //     return abort(401);
+        // }
         $permit_details = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.profession', 'event')->where('created_by', Auth::user()->user_id)->where('permit_id', $id)->first();
 
         if (empty($permit_details)) {
@@ -1524,8 +1616,11 @@ class ArtistController extends Controller
     }
 
 
-    public function edit_artist($id, $from)
+    public function edit_artist(Request $request , $id, $from)
     {
+        // if(!$request->hasValidSignature()){
+        //     return abort(401);
+        // }
         $permit_id = ArtistTempData::where('id', $id)->value('permit_id');
         $artist_permit_id = ArtistTempData::where('id', $id)->value('artist_permit_id');
         $data_bundle = $this->preLoadData();
@@ -1583,12 +1678,15 @@ class ArtistController extends Controller
             }
             return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>&emsp;<span onClick="delete_draft(' . $permit->permit_id . ')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">Delete</span>';
         })->addColumn('details', function ($permit) {
-            return '<a href="' . route('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
         })->rawColumns(['action', 'details'])->make(true);
     }
 
-    public function get_draft_details($permit_id)
+    public function get_draft_details(Request $request, $permit_id)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $user_id = Auth::user()->user_id;
         $data['draft_details'] = ArtistTempData::with('profession', 'event')->where([
             ['status', 5],
@@ -1619,8 +1717,11 @@ class ArtistController extends Controller
         return redirect()->route('artist.index')->with('message', $result);
     }
 
-    public function view_draft_details($id)
+    public function view_draft_details(Request $request, $id)
     {
+        // if(!$request->hasValidSignature()){
+        //     return abort(401);
+        // }
 
         $user_id = Auth::user()->user_id;
         $data['artist_details'] = ArtistTempData::with('profession', 'nationality', 'ArtistTempDocument', 'event')->where([
@@ -1629,10 +1730,6 @@ class ArtistController extends Controller
             ['created_by', $user_id],
             ['permit_id', $id],
         ])->get();
-
-        if(count($data['artist_details']) == 0){
-            return abort(401);
-        }
 
         $data['permit_id'] = $id;
         $data['events'] = \App\Event::where('created_by', Auth::user()->user_id)->whereDate('issued_date', '>=', date('Y-m-d'))->orderBy('name_en', 'asc')->get();
@@ -1677,8 +1774,12 @@ class ArtistController extends Controller
         return response()->json(['message' => $result]);
     }
 
-    public function edit_artist_draft($temp_id)
+    public function edit_artist_draft(Request $request, $temp_id)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
+
         $permit_id = ArtistTempData::where('id', $temp_id)->value('permit_id');
 
         $data_bundle = $this->preLoadData();
@@ -1940,6 +2041,12 @@ class ArtistController extends Controller
         if(!$request->hasValidSignature()){
             return abort(401);
         }
+
+        $hasHappiness = Happiness::where('type', 'artist')->where('application_id', $permit->permit_id)->exists();
+        if(!$hasHappiness)
+        {
+            return redirect(URL::signedRoute('company.happiness_center', ['id' => $permit->permit_id]));
+        }
         $data['company_details'] = Auth::user()->type == 1 ? Company::find(Auth::user()->EmpClientId) : [];
         $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'Nationality')->get();
         $data['permit_details'] = $permit;
@@ -1959,8 +2066,14 @@ class ArtistController extends Controller
 
     // Make Payment Function
 
-    public function make_payment($id)
+    public function make_payment(Request $request, $id)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession', 'event')->where('permit_id', $id)->first();
         return view('permits.artist.payment', $data_bundle);
     }
@@ -1968,8 +2081,11 @@ class ArtistController extends Controller
     // Payment Gateway
 
 
-    public function payment_gateway(Permit $permit)
+    public function payment_gateway(Request $request , Permit $permit)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $id = $permit->permit_id;
         $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->where('created_by', Auth::user()->user_id)->first();
         return view('permits.artist.payment_gateway', $data_bundle);
@@ -2110,9 +2226,12 @@ class ArtistController extends Controller
 
         return response()->json(['message' => $result]);
     }
-
-    public function happiness_center($id)
+ 
+    public function happiness_center(Request $request, $id)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         return view('permits.artist.happinessmeter', ['id' => $id]);
     }
 

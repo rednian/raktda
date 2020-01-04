@@ -36,7 +36,7 @@
                         <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
                             <div class="kt-wizard-v3__nav-body">
                                 <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> {{__('Upload Documents')}}
+                                    <span>03</span> {{__('Upload Docs')}}
                                 </div>
                                 <div class="kt-wizard-v3__nav-bar"></div>
                             </div>
@@ -486,6 +486,7 @@
                                                         <div class="col-md-4 form-group form-group-xs ">
                                                             <label for="area_id"
                                                                 class=" col-form-label kt-font-bold text-right">{{__('Area')}}
+                                                                <span class="text-danger">*</span>
                                                             </label>
                                                             <select class="  form-control form-control-sm "
                                                                 name="area_id" id="area_id" disabled>
@@ -632,246 +633,283 @@
 
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
-                            <div class="kt-wizard-v3__form">
-                                <form id="make_payment">
-                                    <div class="kt-widget5__info pb-4">
-                                        <div class="pb-2">
-                                            <span>{{__('From Date')}}:</span>&emsp;
-                                            <span class="kt-font-info">{{$event->issued_date}}
-                                                {{$event->time_start}}</span>&emsp;&emsp;
-                                            <span>{{__('To Date')}}:</span>&emsp;
-                                            <span class="kt-font-info">{{$event->expired_date}}
-                                                {{$event->time_end}}</span>&emsp;&emsp;
-                                            <span>{{__('Venue')}}:</span>&emsp;
-                                            <span
-                                                class="kt-font-info">{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}
-                                            </span>&emsp;&emsp;
-                                            <span>{{__('Ref NO.')}}:</span>&emsp;
-                                            <span class="kt-font-info">{{$event->reference_number}}</span>&emsp;&emsp;
+                            <form id="make_payment">
+                                <div class="kt-widget kt-widget--project-1">
+                                    <div class="kt-widget__body">
+                                        <div class="kt-widget__stats d-">
+                                            <div class="kt-widget__item">
+                                                <span class="kt-widget__date">{{__('From Date')}}</span>
+                                                <div class="kt-widget__label">
+                                                    <span class="btn btn-label-success btn-sm btn-bold btn-upper">
+                                                        {{date('d M,y',strtotime($event->issued_date))}}&nbsp;
+                                                        {{$event->time_start}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__item">
+                                                <span class="kt-widget__date">{{__('To Date')}}</span>
+                                                <div class="kt-widget__label">
+                                                    <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
+                                                        {{date('d M,y',strtotime($event->expired_date))}} &nbsp;
+                                                        {{$event->time_end}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__item">
+                                                <span class="kt-widget__date">{{__('Reference Number')}}</span>
+                                                <div class="kt-widget__label">
+                                                    <span
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        {{$event->reference_number}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__item">
+                                                <span class="kt-widget__date">{{__('Event Type')}}</span>
+                                                <div class="kt-widget__label">
+                                                    <span
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        {{$event->type['name_en']}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__item">
+                                                <span class="kt-widget__date">{{__('Event Name')}}</span>
+                                                <div class="kt-widget__label">
+                                                    <span
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        {{$event->name_en}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="kt-widget__text">
+                                            <strong>{{__('Venue')}} :</strong>
+                                            {{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}
                                         </div>
                                     </div>
-                                    {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
+                                </div>
+                                {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
 
-                                    @php
-                                    $issued_date = strtotime($event->issued_date);
-                                    $expired_date = strtotime($event->expired_date);
-                                    $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
-                                    $event_fee_total = 0;
-                                    $event_vat_total = 0;
-                                    $event_grand_total = 0;
-                                    $truck_fee = 0;
-                                    $liquor_fee = 0;
-                                    @endphp
-                                    <div class="table-responsive">
-                                        <table class="table table-borderless table-hover border table-striped">
+                                @php
+                                $issued_date = strtotime($event->issued_date);
+                                $expired_date = strtotime($event->expired_date);
+                                $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                                $event_fee_total = 0;
+                                $event_vat_total = 0;
+                                $event_grand_total = 0;
+                                $truck_fee = 0;
+                                $liquor_fee = 0;
+                                @endphp
+                                <div class="table-responsive">
+                                    <table class="table table-borderless table-hover border table-striped">
+                                        @if($event->request_type != 'amend')
+                                        <thead>
+                                            <tr>
+                                                <th>{{__('Event Name')}}</th>
+                                                <th>{{__('Event Type')}}</th>
+                                                <th class="text-right">{{__('Fee')}} (AED)</th>
+                                                <th class="text-right">{{__('VAT')}} (5%)</th>
+                                                <th class="text-right">{{__('Total')}} (AED) </th>
+                                            </tr>
+                                        </thead>
+                                        @else
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">#</th>
+                                                <th class="text-right">{{__('Fee')}} (AED)</th>
+                                                <th class="text-right">{{__('VAT')}} (5%)</th>
+                                                <th class="text-right">{{__('Total')}} (AED) </th>
+                                            </tr>
+                                        </thead>
+                                        @endif
+                                        <tbody>
                                             @if($event->request_type != 'amend')
-                                            <thead>
-                                                <tr>
-                                                    <th>{{__('Event Name')}}</th>
-                                                    <th>{{__('Event Type')}}</th>
-                                                    <th class="text-right">{{__('Fee')}} (AED)</th>
-                                                    <th class="text-right">{{__('VAT')}} (5%)</th>
-                                                    <th class="text-right">{{__('Total')}} (AED) </th>
-                                                </tr>
-                                            </thead>
-                                            @else
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2">#</th>
-                                                    <th class="text-right">{{__('Fee')}} (AED)</th>
-                                                    <th class="text-right">{{__('VAT')}} (5%)</th>
-                                                    <th class="text-right">{{__('Total')}} (AED) </th>
-                                                </tr>
-                                            </thead>
+                                            <tr>
+                                                <td class="text-left">
+                                                    {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
+                                                </td>
+                                                <td class="text-left">
+                                                    {{getLangId() == 1 ? $event->type['name_en'] : $event->type['name_ar']}}
+                                                </td>
+                                                @php
+                                                $event_fee = $event->type['amount'] * $noofdays;
+                                                $vat_amt = $event_fee * 0.05;
+                                                $event_total = $event_fee + $vat_amt ;
+                                                $event_fee_total += $event_fee;
+                                                $event_vat_total += $vat_amt;
+                                                $event_grand_total += $event_total;
+                                                @endphp
+                                                <td class="text-right">
+                                                    {{number_format($event_fee,2)}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{number_format($vat_amt , 2)}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{number_format($event_total, 2)}}
+                                                </td>
+                                            </tr>
                                             @endif
+                                            @if($event->is_truck == 1)
+                                            @if(isset($event->truck) && count($event->truck->where('paid', 0)) > 0)
+                                            <tr>
+                                                @php
+                                                $nooftrucks = count($event->truck->where('paid', 0));
+                                                $per_truck_fee = getSettings()->food_truck_fee;
+                                                $truck_fee += $noofdays * $per_truck_fee * $nooftrucks;
+                                                $event_fee_total += $truck_fee;
+                                                $event_grand_total += $truck_fee;
+                                                @endphp
+                                                <td colspan="2">{{__('Truck Fee')}}
+                                                    {{$nooftrucks ? ' X '.$nooftrucks : 0}}</td>
+                                                <td class="text-right">{{number_format($truck_fee, 2)}}</td>
+                                                <td class="text-right">0</td>
+                                                <td class="text-right">{{number_format($truck_fee, 2)}}</td>
+                                            </tr>
+                                            @endif
+                                            @endif
+                                            @if($event->is_liquor == 1 && isset($event->liquor) &&
+                                            $event->liquor->provided == 0 && $event->liquor->paid == 0)
+                                            <tr>
+                                                <td colspan="2">{{__('Liquor')}} </td>
+                                                @php
+                                                $per_liquor_fee = getSettings()->liquor_fee;
+                                                $liquor_fee += $noofdays * $per_liquor_fee;
+                                                $event_fee_total += $liquor_fee;
+                                                $event_grand_total += $liquor_fee;
+                                                @endphp
+                                                <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
+                                                <td class="text-right">0</td>
+                                                <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
+                                            </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <input type="hidden" id="truck_fee" value="{{$truck_fee}}">
+                                <input type="hidden" id="liquor_fee" value="{{$liquor_fee}}">
+
+                                <input type="hidden" id="event_total_amount" value="{{$event_fee_total}}">
+                                <input type="hidden" id="event_vat_total" value="{{$event_vat_total}}">
+                                <input type="hidden" id="event_grand_total" value="{{$event_grand_total}}">
+
+
+                                <input type="hidden" value="{{$containsApproved}}" id="containsApproved">
+                                <input type="hidden" value="{{$isPaid}}" id="isPaid">
+
+                                @php
+                                $artist_fee_total = 0;
+                                $artist_vat_total = 0;
+                                $artist_g_total = 0 ;
+                                @endphp
+
+                                @if($event->permit)
+                                <div class="table-responsive" id="artist_pay_table" style="display:none;">
+                                    <table class="table table-borderless border table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>{{__('Artist Name')}}</th>
+                                                <th>{{__('Artist Permit Type')}}</th>
+                                                <th class="text-right">{{__('Fee')}} (AED)</th>
+                                                <th class="text-right">{{__('VAT')}} (5%)</th>
+                                                <th class="text-right">{{__('Total')}} (AED) </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($event->permit->artistPermit as $ap)
+                                            @if($ap->artist_permit_status == 'approved' && $ap->is_paid == 0)
+                                            <tr>
+                                                <td>{{getLangId() == 1 ? $ap['firstname_en'] .' '.$ap['lastname_en'] : $ap['lastname_ar'] .' '.$ap['firstname_ar']}}
+                                                </td>
+                                                <td>
+                                                    {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
+                                                </td>
+                                                @php
+                                                $noofmonths = ceil($noofdays ? $noofdays : 1 / 30) ;
+                                                $artist_fee = $ap->profession['amount'] * $noofmonths;
+                                                $artist_vat = $artist_fee * 0.05;
+                                                $artist_total = $artist_fee + $artist_vat;
+                                                $artist_fee_total += $artist_fee;
+                                                $artist_vat_total += $artist_vat;
+                                                $artist_g_total += $artist_total;
+                                                @endphp
+                                                <td class="text-right">
+                                                    {{number_format($artist_fee,2)}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{number_format($artist_vat,2)}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{number_format($artist_total, 2)}}
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2" class="kt-font-bold">
+                                                    {{__('Total')}}
+                                                </td>
+                                                <td class="kt-font-bold text-right">
+                                                    {{number_format($artist_fee_total,2)}}
+                                                </td>
+
+                                                <td class="kt-font-bold text-right">
+                                                    {{number_format($artist_vat_total,2)}}
+                                                </td>
+                                                <td class="kt-font-bold text-right">
+                                                    {{number_format($artist_g_total,2)}}
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div style="display:none" id="is_event_pay_div">
+                                    <label class="kt-checkbox kt-checkbox--warning ml-2 mt-3">
+                                        <input type="checkbox" id="isEventPay" name="isEventPay"
+                                            onchange="check_permit()">
+                                        Do you wish to pay associated artist permit fee ?
+                                        <span></span>
+                                    </label>
+                                </div>
+                                @endif
+
+                                <input type="hidden" id="artist_fee_total" value="{{$artist_fee_total}}">
+                                <input type="hidden" id="artist_vat_total" value="{{$artist_vat_total}}">
+                                <input type="hidden" id="artist_g_total" value="{{$artist_g_total}}">
+
+                                <div class="table-responsive">
+                                    <div class="pull-right">
+                                        <table class=" table table-borderless">
                                             <tbody>
-                                                @if($event->request_type != 'amend')
                                                 <tr>
-                                                    <td class="text-left">
-                                                        {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
-                                                    </td>
-                                                    <td class="text-left">
-                                                        {{getLangId() == 1 ? $event->type['name_en'] : $event->type['name_ar']}}
-                                                    </td>
-                                                    @php
-                                                    $event_fee = $event->type['amount'] * $noofdays;
-                                                    $vat_amt = $event_fee * 0.05;
-                                                    $event_total = $event_fee + $vat_amt ;
-                                                    $event_fee_total += $event_fee;
-                                                    $event_vat_total += $vat_amt;
-                                                    $event_grand_total += $event_total;
-                                                    @endphp
-                                                    <td class="text-right">
-                                                        {{number_format($event_fee,2)}}
-                                                    </td>
-                                                    <td class="text-right">
-                                                        {{number_format($vat_amt , 2)}}
-                                                    </td>
-                                                    <td class="text-right">
-                                                        {{number_format($event_total, 2)}}
-                                                    </td>
-                                                </tr>
-                                                @endif
-                                                @if($event->is_truck == 1)
-                                                @if(isset($event->truck) && count($event->truck->where('paid', 0)) > 0)
-                                                <tr>
-                                                    @php
-                                                    $nooftrucks = count($event->truck->where('paid', 0));
-                                                    $per_truck_fee = getSettings()->food_truck_fee;
-                                                    $truck_fee += $noofdays * $per_truck_fee * $nooftrucks;
-                                                    $event_fee_total += $truck_fee;
-                                                    $event_grand_total += $truck_fee;
-                                                    @endphp
-                                                    <td colspan="2">{{__('Truck Fee')}}
-                                                        {{$nooftrucks ? ' X '.$nooftrucks : 0}}</td>
-                                                    <td class="text-right">{{number_format($truck_fee, 2)}}</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">{{number_format($truck_fee, 2)}}</td>
-                                                </tr>
-                                                @endif
-                                                @endif
-                                                @if($event->is_liquor == 1 && isset($event->liquor) &&
-                                                $event->liquor->provided == 0 && $event->liquor->paid == 0)
-                                                <tr>
-                                                    <td colspan="2">{{__('Liquor')}} </td>
-                                                    @php
-                                                    $per_liquor_fee = getSettings()->liquor_fee;
-                                                    $liquor_fee += $noofdays * $per_liquor_fee;
-                                                    $event_fee_total += $liquor_fee;
-                                                    $event_grand_total += $liquor_fee;
-                                                    @endphp
-                                                    <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
-                                                </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <input type="hidden" id="truck_fee" value="{{$truck_fee}}">
-                                    <input type="hidden" id="liquor_fee" value="{{$liquor_fee}}">
-
-                                    <input type="hidden" id="event_total_amount" value="{{$event_fee_total}}">
-                                    <input type="hidden" id="event_vat_total" value="{{$event_vat_total}}">
-                                    <input type="hidden" id="event_grand_total" value="{{$event_grand_total}}">
-
-
-                                    <input type="hidden" value="{{$containsApproved}}" id="containsApproved">
-                                    <input type="hidden" value="{{$isPaid}}" id="isPaid">
-
-                                    @php
-                                    $artist_fee_total = 0;
-                                    $artist_vat_total = 0;
-                                    $artist_g_total = 0 ;
-                                    @endphp
-
-                                    @if($event->permit)
-                                    <div class="table-responsive" id="artist_pay_table" style="display:none;">
-                                        <table class="table table-borderless border table-hover table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>{{__('Artist Name')}}</th>
-                                                    <th>{{__('Artist Permit Type')}}</th>
-                                                    <th class="text-right">{{__('Fee')}} (AED)</th>
-                                                    <th class="text-right">{{__('VAT')}} (5%)</th>
-                                                    <th class="text-right">{{__('Total')}} (AED) </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($event->permit->artistPermit as $ap)
-                                                @if($ap->artist_permit_status == 'approved' && $ap->is_paid == 0)
-                                                <tr>
-                                                    <td>{{getLangId() == 1 ? $ap['firstname_en'] .' '.$ap['lastname_en'] : $ap['lastname_ar'] .' '.$ap['firstname_ar']}}
-                                                    </td>
                                                     <td>
-                                                        {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
+                                                        {{__('Total Amount')}}
                                                     </td>
-                                                    @php
-                                                    $noofmonths = ceil($noofdays ? $noofdays : 1 / 30) ;
-                                                    $artist_fee = $ap->profession['amount'] * $noofmonths;
-                                                    $artist_vat = $artist_fee * 0.05;
-                                                    $artist_total = $artist_fee + $artist_vat;
-                                                    $artist_fee_total += $artist_fee;
-                                                    $artist_vat_total += $artist_vat;
-                                                    $artist_g_total += $artist_total;
-                                                    @endphp
-                                                    <td class="text-right">
-                                                        {{number_format($artist_fee,2)}}
-                                                    </td>
-                                                    <td class="text-right">
-                                                        {{number_format($artist_vat,2)}}
-                                                    </td>
-                                                    <td class="text-right">
-                                                        {{number_format($artist_total, 2)}}
-                                                    </td>
+                                                    <td id="total_amt" class="pull-right kt-font-bold"></td>
                                                 </tr>
-                                                @endif
-                                                @endforeach
-                                            </tbody>
-                                            <tfoot>
+                                                <tr style="border-bottom:1px solid black;">
+                                                    <td>{{__('Total Vat')}}</td>
+                                                    <td id="total_vat" class="pull-right kt-font-bold"></td>
+                                                </tr>
                                                 <tr>
-                                                    <td colspan="2" class="kt-font-bold">
-                                                        {{__('Total')}}
+                                                    <td class="kt-font-transform-u">
+                                                        {{__('Grand Total')}}
                                                     </td>
-                                                    <td class="kt-font-bold text-right">
-                                                        {{number_format($artist_fee_total,2)}}
-                                                    </td>
-
-                                                    <td class="kt-font-bold text-right">
-                                                        {{number_format($artist_vat_total,2)}}
-                                                    </td>
-                                                    <td class="kt-font-bold text-right">
-                                                        {{number_format($artist_g_total,2)}}
-                                                    </td>
+                                                    <td id="grand_total" class="pull-right kt-font-bold"></td>
                                                 </tr>
-                                            </tfoot>
+                                            </tbody>
                                         </table>
                                     </div>
-                                    <div style="display:none" id="is_event_pay_div">
-                                        <label class="kt-checkbox kt-checkbox--warning ml-2 mt-3">
-                                            <input type="checkbox" id="isEventPay" name="isEventPay"
-                                                onchange="check_permit()">
-                                            Do you wish to pay associated artist permit fee ?
-                                            <span></span>
-                                        </label>
-                                    </div>
-                                    @endif
+                                </div>
 
-                                    <input type="hidden" id="artist_fee_total" value="{{$artist_fee_total}}">
-                                    <input type="hidden" id="artist_vat_total" value="{{$artist_vat_total}}">
-                                    <input type="hidden" id="artist_g_total" value="{{$artist_g_total}}">
-
-                                    <div class="table-responsive">
-                                        <div class="pull-right">
-                                            <table class=" table table-borderless">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            {{__('Total Amount')}}
-                                                        </td>
-                                                        <td id="total_amt" class="pull-right kt-font-bold"></td>
-                                                    </tr>
-                                                    <tr style="border-bottom:1px solid black;">
-                                                        <td>{{__('Total Vat')}}</td>
-                                                        <td id="total_vat" class="pull-right kt-font-bold"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="kt-font-transform-u">
-                                                            {{__('Grand Total')}}
-                                                        </td>
-                                                        <td id="grand_total" class="pull-right kt-font-bold"></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <input type="hidden" id="amount">
-                                    <input type="hidden" id="vat">
-                                    <input type="hidden" id="total">
-                                </form>
-                            </div>
+                                <input type="hidden" id="amount">
+                                <input type="hidden" id="vat">
+                                <input type="hidden" id="total">
+                            </form>
                         </div>
                     </div>
 
@@ -889,20 +927,22 @@
                             </div>
                         </a>
 
-                        @if($event->firm == 'government')
+                        {{-- @if($event->firm == 'government')
 
                         <a href="{{route('event.happiness', [ 'id' => $event->event_id ])}}">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                                id="submit_next_btn">
-                                {{__('Next')}}
-                            </div>
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            id="submit_next_btn">
+                            {{__('Next')}}
+                        </div>
                         </a>
-                        @else
+                        @else --}}
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                             <i class="fa fa-check"></i>
                             {{__('Pay')}}
                         </div>
-                        @endif
+
+                        {{-- id="submit_btn" --}}
+                        {{-- @endif --}}
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
@@ -939,24 +979,19 @@
     </div>
 </div>
 
-<!--begin::Modal-->
-
-
-
-<!--end::Modal-->
 
 
 @include('permits.event.common.show_food_truck', ['truck_req'=>$truck_req])
 @include('permits.event.common.show_liquor', ['liquor_req'=>$liquor_req])
-
-
 @endsection
 
 
 @section('script')
+
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script src="{{asset('js/company/map.js')}}"></script>
+
 <script
     src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}&libraries=places&callback=initialize"
     async defer></script>
@@ -979,7 +1014,7 @@
         $('#back_btn').css('display', 'none');
         $('#next_btn').css('display', 'none');
         $('#submit_btn').css('display', 'block');
-        $('#submit_next_btn').css('display', 'block');
+        // $('#submit_next_btn').css('display', 'block');
         localStorage.clear();
         getRequirementsList();
         getAddtionalRequirementsList($('#event_id').val());
@@ -1339,7 +1374,7 @@
             $('#next_btn').css('display', next);
             $('#back_btn').css('display', back);
             $('#submit_btn').css('display', submit);
-            $('#submit_next_btn').css('display', submit);
+            // $('#submit_next_btn').css('display', submit);
         };
 
         const checkForTick = () => {
@@ -1382,7 +1417,7 @@
 
             if (wizard.currentStep == 3) {
                 $('#submit_btn').css('display', 'block');
-                $('#submit_next_btn').css('display', 'block');
+                // $('#submit_next_btn').css('display', 'block');
                 $('#next_btn').css('display', 'none');
             }
         });
@@ -1440,7 +1475,7 @@
                 $('#next_btn').css('display', 'block');
             }
             $('#submit_btn').css('display', 'none');
-            $('#submit_next_btn').css('display', 'none');
+            // $('#submit_next_btn').css('display', 'none');
         });
 
 
@@ -1738,12 +1773,22 @@
                         total: $('#total').val(),
                         paidArtistFee: paidArtistFee
                     },
+                    beforeSend: function() {
+                        KTApp.blockPage({
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'success',
+                            message: 'Please wait...'
+                        });
+                    },
                     success: function (result) {
                         var toUrl = "{{route('event.happiness', ':id')}}";
                         toUrl = toUrl.replace(':id', $('#event_id').val());
                         if(result.message[0]){
                             window.location.href = toUrl;
                         }
+                        console.log(result)
+                        KTApp.unblockPage();
                     }
                 });
                 

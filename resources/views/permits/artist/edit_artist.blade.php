@@ -157,6 +157,7 @@
                             data-ktwizard-type="action-prev" id="prev_btn">
                             {{__('Previous')}}
                         </div>
+
                         <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
 
                         <a href="{{url('company/artist/view_draft_details').'/'.$artist_details->permit_id}}">
@@ -724,7 +725,8 @@
 
         if(documentsValidator.form() && hasFile){
 
-            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+
         // var artist_permit_id = $('#artist_permit_id').val();
         var permit_id = $('#permit_id').val();
         var temp_id = $('#temp_id').val();
@@ -748,12 +750,21 @@
                     expiry_d: expiry_d,
                     from: 'draft'
                 },
+                beforeSend: function() {
+                    KTApp.blockPage({
+                        overlayColor: '#000000',
+                        type: 'v2',
+                        state: 'success',
+                        message: 'Please wait...'
+                    });
+                },
                 success: function(result){
                     // console.log(result)
                     if(result.message[0] == 'success')
                     {
                         localStorage.clear();
                         window.location.href="{{url('company/artist/view_draft_details')}}"+'/'+ permit_id;
+                        KTApp.unblockPage();
                     }
                 }
             });
