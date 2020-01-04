@@ -13,7 +13,7 @@
             <h3 class="kt-portlet__head-title kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->name_en) : ucfirst($event->name_ar) }} - {{ __('DETAILS') }}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
-            <a href="{{ URL::signedRoute('admin.event.index') }}#{{ $tab }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
+            <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
                  <i class="la la-arrow-left"></i>
                  {{ __('BACK') }}
             </a>
