@@ -176,7 +176,7 @@ class ArtistPermitController extends Controller
               $permit->comment()->create($request->all());
               $permit->update(['permit_status'=>$request->action, 'approved_by'=>$request->user_id, 'approved_date'=> Carbon::now() ]);
 
-              // $this->sendNotificationCompany($permit, 'approve');
+              $this->sendNotificationCompany($permit, 'approve');
 
                break;
               case 'rejected';
@@ -184,7 +184,7 @@ class ArtistPermitController extends Controller
                  $permit->comment()->create($request->all());
                  $permit->update(['permit_status'=>$request->action]);
 
-                 // $this->sendNotificationCompany($permit, 'reject');
+                 $this->sendNotificationCompany($permit, 'reject');
               break;
               case 'send_back':
                 $request['type'] = 1;
@@ -192,7 +192,7 @@ class ArtistPermitController extends Controller
                 $permit->comment()->create($request->all());
                 $permit->update(['permit_status'=>$request->action]);
 
-                // $this->sendNotificationCompany($permit, 'amend');
+                $this->sendNotificationCompany($permit, 'amend');
               break;
               case 'need approval':
 
@@ -210,9 +210,9 @@ class ArtistPermitController extends Controller
                         ]);
 
                         //SEND EMAIL NOTIFICATION
-                        // $this->sendNotificationApproval($permit, User::whereHas('roles', function($q) use($role_id){
-                        //   $q->where('roles.role_id', $role_id);
-                        // })->get());
+                        $this->sendNotificationApproval($permit, User::whereHas('roles', function($q) use($role_id){
+                          $q->where('roles.role_id', $role_id);
+                        })->get());
 
                     }else{//IF GOVERNMENT APPROVAL -> LOOP SELECTED GOVT DEPT
                         if($request->has('department')){
@@ -227,9 +227,9 @@ class ArtistPermitController extends Controller
                                 ]);
 
                                 //SEND EMAIL NOTIFICATION
-                                // $this->sendNotificationApproval($permit, User::whereHas('roles', function($q) use($role_id){
-                                //   $q->where('roles.role_id', $role_id);
-                                // })->where('government_id', $dep)->get());
+                                $this->sendNotificationApproval($permit, User::whereHas('roles', function($q) use($role_id){
+                                  $q->where('roles.role_id', $role_id);
+                                })->where('government_id', $dep)->get());
                             }
                         }
                     }
@@ -276,6 +276,11 @@ class ArtistPermitController extends Controller
                       $permit->update(['permit_status'=>'checked']);
                   }
 
+                  //SEND NOTIFICATION
+                  $this->sendNotificationChecked($permit, User::whereHas('roles', function($q){
+                    $q->where('roles.role_id', 1);
+                  })->get(), $request->user());
+
               break;
               case 'disapproved':
 
@@ -314,6 +319,11 @@ class ArtistPermitController extends Controller
                   if($permit->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
                       $permit->update(['permit_status'=>'checked']);
                   }
+
+                  //SEND NOTIFICATION
+                  $this->sendNotificationChecked($permit, User::whereHas('roles', function($q){
+                    $q->where('roles.role_id', 1);
+                  })->get(), $request->user());
 
               break;
            }
@@ -371,7 +381,7 @@ class ArtistPermitController extends Controller
       $subject = 'Artist Permit For Approval';
       $title = 'Artist Permit For Approval';
       $content = 'The artist permit with reference number <b>' . $permit->reference_number . '</b> needs to have an approval from your department. Please click the link below.';
-      $url = URL::signedRoute('admin.event.show', $permit->event_id);
+      $url = URL::signedRoute('admin.artist_permit.applicationdetails', ['permit' => $permit->permit_id]);
 
       foreach ($users as $user) {
         $user->notify(new AllNotification([
@@ -384,16 +394,16 @@ class ArtistPermitController extends Controller
       }
     }
 
-    private function sendNotificationChecked($event, $users, $checked_by){
+    private function sendNotificationChecked($permit, $users, $checked_by){
 
-      $subject = 'Event Permit Has Been Checked';
-      $title = 'Event Permit Has Been Checked';
-      $content = 'The event permit with reference number <b>' . $event->reference_number . '</b> has been checked by '. $checked_by->NameEn .'.';
-      $url = URL::signedRoute('admin.event.show', $event->event_id);
+      $subject = 'Artist Permit Has Been Checked';
+      $title = 'Artist Permit Has Been Checked';
+      $content = 'The artist permit with reference number <b>' . $permit->reference_number . '</b> has been checked by '. $checked_by->NameEn .'.';
+      $url = URL::signedRoute('admin.artist_permit.show', $permit->permit_id);
 
-      if($event->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
-                $url = URL::signedRoute('admin.event.application', $event->event_id);
-            }
+      if($permit->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
+          $url = URL::signedRoute('admin.artist_permit.applicationdetails', $permit->permit_id);
+      }
 
       foreach ($users as $user) {
         $user->notify(new AllNotification([

@@ -27,8 +27,51 @@
             @endif
         </div>
     </div>
+  
+
+
     <div class="kt-portlet__body kt-padding-t-5">
         <section class="row">
+          <div class="col-md-12 kt-padding-b-10">
+            {{-- LAST ACTION TAKEN --}}
+            @if(Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+            @if($permit->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
+            @php
+                $action = $permit->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first();
+            @endphp
+            <div class="alert alert-outline-danger fade show" role="alert" style="margin-bottom:0px">
+                <div class="alert-text">
+                  <h6 class="alert-heading text-danger kt-font-transform-u">{{ __('Last Action Taken') }}</h6>
+                  <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>{{ __('Checked By') }}</th>
+                        <th>{{ __('Checked Date') }}</th>
+                        <th>{{ __('Remarks') }}</th>
+                        <th class="text-right">{{ __('Action') }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ $action->user->NameEn }}</td>
+                        <td>{{ $action->updated_at }}</td>
+                        <td>
+                            {{ $action->comment }}
+                            @if($action->exempt_payment)
+                              <br><span class="kt-badge kt-badge--warning kt-badge--inline">{{ __('Exempted for Payment') }}</span>
+                            @endif
+                        </td>
+                        <td class="text-right">{!! permitStatus($action->action) !!}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                   <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_1_2_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
+                   </a>
+                </div>
+            </div>
+            @endif
+            @endif
+          </div>
           <div class="col-md-8">
             <div class="kt-widget kt-widget--project-1">
               <div class="kt-widget__body kt-padding-0">
@@ -270,44 +313,6 @@
         </section>
         @endif
         
-        @if(Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
-        @if($permit->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
-        @php
-            $action = $permit->comment()->where('action', '!=', 'pending')->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first();
-        @endphp
-        <div class="alert alert-outline-danger fade show" role="alert" style="margin-bottom:0px">
-            <div class="alert-text">
-              <h6 class="alert-heading text-danger kt-font-transform-u">{{ __('Last Action Taken') }}</h6>
-              <table class="table table-hover table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th>{{ __('Checked By') }}</th>
-                    <th>{{ __('Checked Date') }}</th>
-                    <th>{{ __('Remarks') }}</th>
-                    <th class="text-right">{{ __('Action') }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{{ $action->user->NameEn }}</td>
-                    <td>{{ $action->updated_at }}</td>
-                    <td>
-                        {{ $action->comment }}
-                        @if($action->exempt_payment)
-                          <br><span class="kt-badge kt-badge--warning kt-badge--inline">{{ __('Exempted for Payment') }}</span>
-                        @endif
-                    </td>
-                    <td class="text-right">{!! permitStatus($action->action) !!}</td>
-                  </tr>
-                </tbody>
-              </table>
-               <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_1_2_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
-               </a>
-            </div>
-        </div>
-        @endif
-        @endif
-
         <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
             <div class="card kt-hide">
                 <div class="card-header" id="headingOne5">
