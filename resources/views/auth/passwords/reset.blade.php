@@ -51,7 +51,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-info active">
+                                <button type="submit" class="btn btn-brand">
                                     {{ __('Reset Password') }}
                                 </button>
                             </div>
@@ -66,7 +66,7 @@
 @section('script')
 <script type="text/javascript">
     $(document).ready(function(){
-        // $('form[name=frm_reset]').validate({});
+        $('form[name=frm_reset]').validate({});
     });
 </script>
 @endsection

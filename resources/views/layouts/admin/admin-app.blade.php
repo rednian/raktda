@@ -101,14 +101,25 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
+    $('form').validate({
+      submitHandler: function(){
+        KTApp.block('body', {
+            overlayColor: '#000000',
+            type: 'v2',
+            state: 'success',
+            message: 'Please wait...'
+        });
+      }
+    });
 
-    $('form').submit(function(e) {
-      KTApp.block('body', {
-          overlayColor: '#000000',
-          type: 'v2',
-          state: 'success',
-          message: 'Please wait...'
-      });
+
+    // $('form').submit(function(e) {
+    //   var form = $(this).validate();
+    //   if(form.valid()){
+    
+    //   }
+
+  
 
       // setTimeout(function() {
       //     KTApp.unblock('#kt_blockui_1_content');

@@ -124,7 +124,7 @@
                         @foreach ($permit->artistPermit as $number => $artist_permit)
                           @if ($number < 6)
                             <a href="{{ URL::signedRoute('admin.artist.show', $artist_permit->artist->artist_id) }}" class="kt-badge__pic" data-original-title="{{ ucwords($artist_permit->fullname) }}" data-toggle="kt-tooltip" data-skin="brand" data-placement="top">
-                              <img src="{{ asset('storage/'.$artist_permit->thumbnail) }}" alt="image">
+                              <img src="{{ asset('storage/'.$artist_permit->thumbnail) }}" alt="image" class="img-thumbnail">
                             </a>
                             @else
                             <a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
