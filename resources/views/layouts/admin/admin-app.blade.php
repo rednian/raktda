@@ -26,7 +26,7 @@
   <link href="{{ asset('/assets/vendors/custom/vendors/flaticon/flaticon.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/custom/vendors/flaticon2/flaticon.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
-  
+
   @if (Auth::user()->LanguageId == 1)
   <style type="text/css">
     #kt_aside{ box-shadow: 4px 0 5px -2px #888; }
@@ -99,7 +99,7 @@
 <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
 {{-- <script src="{{ asset('/assets/vendors/custom/datatables/dataTables.colVis.js') }}"></script> --}}
 <script type="text/javascript">
-  $(document).ready(function(){
+  $(document).ready(function() {
 
     // $('form').validate({
     //   submitHandler: function(){
@@ -127,31 +127,10 @@
 
     // });
 
-    @if (Session::has('message'))
-    @if(Session::get('message')[0] == 'success')
-    $.notify({
-        title: '{{Session::get('message')[2]}}',
-        message: '{{Session::get('message')[1]}}',
-    },{
-        type:'success',
-        animate: {
-            enter: 'animated zoomIn',
-            exit: 'animated zoomOut'
-        },
-    });
-    @else
-    $.notify({
-        title: '{{Session::get('message')[2]}}',
-        message: '{{Session::get('message')[1]}}',
-    },{
-        type:'danger',
-        animate: {
-            enter: 'animated zoomIn',
-            exit: 'animated zoomOut'
-        },
-    });
-    @endif
-    @endif
+          $('span[data-lang=en]').click(function () {
+              getLang(1);
+          });
+          $('span[data-lang=ar]').click(function () {
 
     @if(Auth::user()->LanguageId != 1)
     // JQUERY VALIDATOR LOCALIZATION AR
@@ -210,7 +189,6 @@
       }).done(function(response){
         if(response.success) location.reload();
       });
-    }
   });
 </script>
 @yield('script')
