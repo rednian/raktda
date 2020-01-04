@@ -3,12 +3,12 @@
 <section class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
    <div class="kt-portlet__head kt-portlet__head--sm">
       <div class="kt-portlet__head-label">
-         <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - Application</h3>
+         <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - {{ __('Application') }}</h3>
       </div>
       <div class="kt-portlet__head-toolbar">
          <a href="{{ URL::signedRoute('admin.company.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
             <i class="la la-arrow-left"></i>
-           {{__(' BACK')}}
+           {{__('BACK')}}
          </a>
       </div>
    </div>
@@ -179,7 +179,7 @@
                               </div>
                            </div>
                            <div class="col-sm-6">
-                              <label class="kt-font-dark">{{ __('Establishment Website') }}</label>
+                              <label class="kt-font-dark">{{ __('Website') }}</label>
                               <div class="input-group input-group-sm">
                                <input value="{{ $company->website ? $company->website : 'N/A' }}" name="name_ar" readonly="readonly" type="text"
                                             class="form-control">
@@ -271,7 +271,7 @@
          <div class="card">
             <div class="card-header" id="heading-address">
                <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
-                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('ESTABLISHMENT CONTACT PERSON DETAILS') }}</h6>
+                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('CONTACT INFORMATION') }}</h6>
                </div>
              </div>
              <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
@@ -293,7 +293,7 @@
                           </div>
                      </div>
                      <div class="col-sm-6">
-                         <label class="kt-font-dark">{{ __(' Name (AR)') }} </label>
+                         <label class="kt-font-dark">{{ __('Name (AR)') }} </label>
                           <div class="input-group input-group-sm">
                            <input value="{{ ucfirst($company->contact->contact_name_ar) }}" name="event_type" readonly="readonly" type="text"
                                         class="form-control">
@@ -380,7 +380,7 @@
          <div class="card">
             <div class="card-header" id="heading-requirement">
                <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
-                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('UPLOADED REQUIREMENTS ') }}</h6>
+                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('UPLOADED DOCUMENTS') }}</h6>
                </div>
              </div>
              <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement">
@@ -391,7 +391,7 @@
                            <th>{{__('REQUIREMENT NAME')}}</th>
                            <th>{{__('FILES')}}</th>
                            <th>{{__('ISSUED DATE')}}</th>
-                           <th>{{__('EXPIRED DATE')}}</th>
+                           <th>{{__('EXPIRY DATE')}}</th>
                         </tr>
                      </thead>
                   </table>
@@ -409,7 +409,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_2_tab_content" role="tab">
-                {{__('ACTION HISTORY')}}
+                {{__('CHECKED HISTORY')}}
                 <span class="kt-badge kt-badge--outline kt-badge--warning">{{ $company->comment()->count() }}</span>
               </a>
             </li>
@@ -420,11 +420,11 @@
                  @csrf
                  <div class="form-group row">
                   <div class="col-6">
-                    <label class="kt-font-dark">Remarks</label>
+                    <label class="kt-font-dark">{{ __('Remarks') }}</label>
                     <textarea name="comment_en" maxlength="255" class="form-control form-control-sm" rows="5"></textarea>
                   </div>
                   <div class="col-6">
-                    <label class="kt-font-dark">Remarks (AR)</label>
+                    <label class="kt-font-dark">{{ __('Remarks (AR)') }}</label>
                     <textarea name="comment_ar" maxlength="255" class="form-control form-control-sm" rows="5"></textarea>
                   </div>
                    
@@ -432,21 +432,21 @@
                  <div class="form-group">
                     <div class="kt-radio-inline">
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-                          <input value="active" type="radio" name="status"> Approve Registration
+                          <input value="active" type="radio" name="status"> {{ __('Approve Registration') }}
                           <span></span>
                        </label>
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-                          <input value="back" type="radio" name="status"> Bounce Back for Ammendments
+                          <input value="back" type="radio" name="status"> {{ __('Bounce Back for Amendments') }}
                           <span></span>
                        </label>
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-                          <input value="rejected" type="radio" name="status"> Reject Application
+                          <input value="rejected" type="radio" name="status"> {{ __('Reject Application') }}
                           <span></span>
                        </label>
                     </div>
                  </div>
                  <div class="form-group form-group-sm">
-                    <button type="submit" class="btn btn-maroon kt-font-transform-u btn-sm">Submit</button>
+                    <button type="submit" class="btn btn-maroon kt-font-transform-u btn-sm">{{ __('Submit') }}</button>
                  </div>
               </form>
             </div>
@@ -455,7 +455,7 @@
                 <thead>
                   <tr>
                     <th>{{__('NAME')}}</th>
-                    <th>{{__('REMAKS')}}</th>
+                    <th>{{__('REMARKS')}}</th>
                     <th>{{__('ACTION')}}</th>
                     <th>{{__('CHECKED DATE')}}</th>
                   </tr>
