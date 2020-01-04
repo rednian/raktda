@@ -16,7 +16,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
-                        <thead>
+                        <thead class="kt-font-transform-u">
                             <th>#</th>
                             <th>{{__('Establishment Name')}}</th>
                             <th>{{__('Establishment Name (AR)')}}</th>

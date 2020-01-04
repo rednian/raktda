@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">{{__('Event Permit Details')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Event Permit Details')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$event->permit_number}}
@@ -234,7 +234,7 @@
                                 {{-- <td class="text-center">{{date('d-M-Y', strtotime($truck->registration_expired_date))}}
                                 </td> --}}
                                 <td class="text-center">
-                                    <a class="btn btn-secondary"
+                                    <a class="btn btn-secondary btn-hover-warning"
                                         onclick="viewThisTruck({{$truck->event_truck_id}})">{{__('View')}}</a>
                                 </td>
                             </tr>
@@ -273,7 +273,7 @@
                                 <td>{{$liquor->liquor_service}}
                                 </td>
                                 <td class="text-center">
-                                    <a class="btn btn-secondary"
+                                    <a class="btn btn-secondary btn-hover-warning"
                                         onclick="viewLiquor('{{$liquor->event_liquor_id}}')">{{__('View')}}</a>
                                 </td>
                             </tr>
@@ -310,18 +310,20 @@
                     <tbody>
                         @foreach ($artist->artistPermit as $at)
                         <tr>
-                            <td>{{$at->firstname_en}}</td>
-                            <td>{{$at->lastname_en}}</td>
-                            <td>{{$at->profession['name_en']}}</td>
+                            <td>{{ getLangId() == 1 ? ucwords($at->firstname_en) : $at->firstname_ar}}</td>
+                            <td>{{ getLangId() == 1 ? ucwords($at->lastname_en) : $at->lastname_ar}}</td>
+                            <td>{{ getLangId() == 1 ? ucwords($at->profession['name_en']) : $at->profession['name_ar']}}
+                            </td>
                             <td>{{$at->mobile_number}}</td>
                             <td>
-                                {{ucwords($at->artist_permit_status)}}
+                                {{__(ucwords($at->artist_permit_status))}}
                             </td>
 
                             <td class="text-center"> <a
                                     href="{{URL::signedRoute('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
                                     title="View">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('View')}}</button>
                                 </a></td>
                         </tr>
                         @endforeach
@@ -346,7 +348,8 @@
                     <tbody>
                         @foreach($eventReq as $req)
                         <tr>
-                            <td style="width:50%;">{{$req->requirement_name}}</td>
+                            <td style="width:50%;">
+                                {{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}</td>
                             <td class="text-center">
                                 {{$req->pivot['issued_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['issued_date'])) : ''}}
                             </td>
@@ -355,7 +358,7 @@
                             </td>
                             <td class="text-center">
                                 <a href="{{asset('storage')}}{{'/'.$req->pivot['path']}}" target="blank" ">
-                                    <button class=" btn btn-sm btn-secondary">{{__('View')}}
+                                    <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
                                     </button></a>
                             </td>
                         </tr>

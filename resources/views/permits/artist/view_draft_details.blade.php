@@ -5,7 +5,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">{{__('Artist Permit Details')}}</h3>
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Artist Permit Details')}}</h3>
         </div>
 
         <div class="kt-portlet__head-toolbar">
@@ -28,7 +28,7 @@
 
         <div class="kt-widget kt-widget--project-1">
             <div class="kt-widget__body">
-                <div class="kt-widget__stats d-">
+                <div class="kt-widget__stats ">
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
                         <div class="kt-widget__label">
@@ -45,19 +45,12 @@
                             </span>
                         </div>
                     </div>
-                    <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Permit Term')}}</span>
-                        <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                {{$draft_details[0]->term}}
-                            </span>
-                        </div>
-                    </div>
                     @if($draft_details[0]->event)
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Connected Event ?')}} :</span>
+                        <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{ getLangId() == 1 ? $draft_details[0]->event->name_en : $draft_details[0]->event->name_ar }}
                             </span>
                         </div>
@@ -75,7 +68,7 @@
             <div class="table-responsive">
                 <table class="table table-striped table-borderless border" id="applied-artists-table">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th>{{__('First Name')}}</th>
                             <th>{{__('Last Name')}}</th>
                             <th>{{__('Profession')}}</th>
@@ -107,30 +100,6 @@
                 </table>
             </div>
         </div>
-
-
-
-
-        <!--begin::Modal-->
-        <div class="modal fade" id="artist_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">{{__('Artist Details')}}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body" id="detail-permit">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--end::Modal-->
-
-
-
 
     </div>
 

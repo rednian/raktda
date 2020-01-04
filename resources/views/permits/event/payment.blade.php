@@ -1785,7 +1785,7 @@
                         var toUrl = "{{route('event.happiness', ':id')}}";
                         toUrl = toUrl.replace(':id', $('#event_id').val());
                         if(result.message[0]){
-                            window.location.href = toUrl;
+                            window.location.replace = toUrl;
                         }
                         console.log(result)
                         KTApp.unblockPage();

@@ -10,7 +10,5 @@ class ArtistPermitRevision extends Model
     protected $primaryKey = 'artist_permit_revision_id';
     protected $fillable = ['artist_permit_comment_id', 'artist_permit_id', 'fieldname', 'old_value', 'ischeck', 'step'];
 
-    
 
-    
 }
