@@ -686,6 +686,8 @@
     var liquorDetails = {};
     var liquorNames = {};
     var truckDocNames = {};
+    var truckDocumentsValidator ;
+    var liquorDocumentsValidator ;
 
 
     $(document).ready(function(){
@@ -1088,7 +1090,7 @@
 
         function call_this_to_submit(isArtist = null){
             var hasFile = docValidation();
-                if (documentsValidator ? documentsValidator.form() : '' &&  hasFile ) {
+                if ((documentsValidator != '' ? documentsValidator.form() : 1) &&  hasFile ) {
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
                     $('#submit--btn-group').css('pointer-events', 'none');
                     var ed = localStorage.getItem('eventdetails');
@@ -1146,8 +1148,7 @@
 
         $('#draft_btn').click((e) => {
             var hasFile = docValidation();
-                if (documentsValidator != '' ? documentsValidator.form() : 1 && hasFile) {
-
+                if ((documentsValidator != '' ? documentsValidator.form() : 1) && hasFile) {
                     $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
                     $('#submit--btn-group').css('pointer-events', 'none');
@@ -1406,16 +1407,33 @@
             return hasFile;
         }
 
-        // truckDocRules = {};
-        // truckDocMessages = {};
+        var truckDocRules = {};
+        var truckDocMessages = {};
 
-        // for(var i = 1; i <= $('#truck_document_count').val(); i++)
-        // {
-        //     truckDocRules['truck_doc_issue_date_'+i] = 'required';
-        //     truckDocRules['truck_doc_exp_date_'+i] = 'required';
-        //     truckDocMessages['truck_doc_issue_date_'+i] = '';
-        //     truckDocMessages['truck_doc_exp_date_'+i] = '';
-        // }
+        for(var i = 1; i <= $('#truck_document_count').val(); i++)
+        {
+            if($('#truckdatesRequiredCheck_'+i).val() == 1)
+            {
+                truckDocRules['truck_doc_issue_date_'+i] = 'required';
+                truckDocRules['truck_doc_exp_date_'+i] = 'required';
+                truckDocMessages['truck_doc_issue_date_'+i] = '';
+                truckDocMessages['truck_doc_exp_date_'+i] = '';
+            }
+        }
+
+        var liquorDocRules = {};
+        var liquorDocMessages = {};
+
+        for(var i = 1; i <= $('#liquor_document_count').val(); i++)
+        {
+            if($('#liquordatesRequiredCheck_'+i).val() == 1)
+            {
+                liquorDocRules['liquor_doc_issue_date_'+i] = 'required';
+                liquorDocRules['liquor_doc_exp_date_'+i] = 'required';
+                liquorDocMessages['liquor_doc_issue_date_'+i] = '';
+                liquorDocMessages['liquor_doc_exp_date_'+i] = '';
+            }
+        }
         
         function go_back_truck_list()
         {
@@ -1499,6 +1517,10 @@
                         $('#regis_expiry_date').val(moment(result.registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
                         $('#this_event_truck_id').val(result.event_truck_id);
                         $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
+                        truckDocumentsValidator = $('#truck_upload_form').validate({
+                            rules: truckDocRules,
+                            messages: truckDocMessages
+                        });
                         truckDocUpload();
                     }
                 }
@@ -1506,7 +1528,7 @@
         }
 
         $('#add_new_truck').click(function(){
-            $('#this_event_truck_id').val();
+            $('#this_event_truck_id').val('');
             $('#edit_one_food_truck').modal('show');
             // $('#edit_one_food_truck').on('shown.bs.modal', function(){
             //     alert('fdf');
@@ -1518,12 +1540,16 @@
             $('#add_new_td').show();
             $('#edit_food_truck').modal('hide');
             $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
+            truckDocumentsValidator = $('#truck_upload_form').validate({
+                rules: truckDocRules,
+                messages: truckDocMessages
+            });
             truckDocUpload();
         });
 
         $('#add_new_td').click(function(){
             var hasFile = truckDocValidation();
-            if(truckValidator.form() && hasFile)
+            if((truckDocumentsValidator != '' ? truckDocumentsValidator.form() : 1 ) && truckValidator.form() && hasFile)
             {
                 var truck_details = {
                     company_name_en: $('#company_name_en').val(),
@@ -1562,7 +1588,7 @@
 
         $('#update_this_td').click(function(){
             var hasFile = truckDocValidation();
-            if(truckValidator.form() && hasFile)
+            if((truckDocumentsValidator != '' ? truckDocumentsValidator.form() : 1 ) && truckValidator.form() && hasFile)
             {
                 var truck_details = {
                     company_name_en: $('#company_name_en').val(),
@@ -1629,11 +1655,13 @@
                     },
                     downloadCallback: function (files, pd) {
                         let file_path = files.filepath;
+                        if(file_path) {
                             let path = file_path.replace('public/','');
-                            window.open(
-                        "{{url('storage')}}"+'/' + path,
-                        '_blank'
-                        );
+                                window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                            );
+                        }
                     },
                     onLoad:function(obj)
                     {
@@ -1911,7 +1939,7 @@
         $('#update_lq').click(function(){
             var hasFile = liqourDocValidation();
             var type = $("input:radio[name='isLiquorVenue']:checked").val();
-            if(type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form())
+            if(type == 0 ? (liquorDocumentsValidator != '' ? liquorDocumentsValidator.form() : 1) && liquorValidator.form() && hasFile : liquorProvidedValidator.form())
             {
                 if(type == 0)
                 {
@@ -1992,6 +2020,10 @@
                             $('#liquor_service').val(data.liquor_service);
                             changeLiquorService();
                             $('#liquor_types').val(data.liquor_types);
+                            liquorDocumentsValidator = $('#liquor_upload_form').validate({
+                                rules: liquorDocRules,
+                                messages: liquorDocMessages
+                            });
                             liquorDocUpload();
                         }
                     }

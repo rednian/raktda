@@ -416,7 +416,7 @@
                     success: function(result){
                         var Url = "{{ route('company.add_new_artist', [ 'id' => 1])}}";
                         Url = Url.replace(':id', permit_id);
-                        window.location.replace = Url;
+                        window.location.href = Url;
                     }
             });
         }
