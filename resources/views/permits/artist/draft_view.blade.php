@@ -461,7 +461,8 @@
                         loc: $('#work_loc').val(),
                         loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val(),
-                        term: term
+                        term: term,
+                        fromWhere: 'draft'
                     },
                     success: function(result){
                         window.location.href="{{route('artist.index')}}#applied";

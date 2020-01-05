@@ -779,6 +779,9 @@ class ArtistController extends Controller
 
     public function store(Request $request)
     {
+
+        try {
+            DB::beginTransaction();
         
         $temp_permit_id = $request->temp_permit_id;
         $user_id = Auth::user()->user_id;
@@ -788,7 +791,9 @@ class ArtistController extends Controller
         $artist_temp_data = ArtistTempData::where([
             ['permit_id', $temp_permit_id],
             ['created_by', $user_id]
-        ])->get();
+        ])->when($request->fromWhere == 'new' || $request->fromWhere == 'event', function ($q) use ($request){
+            $q->where('status', '!=', '5');
+          })->get();
 
         $artists_total = count($artist_temp_data);
 
@@ -1056,13 +1061,14 @@ class ArtistController extends Controller
                 ArtistTempDocument::where('temp_data_id', $temps)->delete();
             }
         }
-
-        if ($permit) {
+            DB::commit();
             $this->makeSessionForgetPermitDetails();
             $result = ['success', __('Artist Permit Applied Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
+
 
         return response()->json(['message' => $result]);
     }
@@ -1263,13 +1269,20 @@ class ArtistController extends Controller
 
     public function delete_artist(Request $request)
     {
+        try {
+            DB::beginTransaction();
         $from = $request->del_artist_from;
         $permit_id = $request->del_permit_id;
         $temp_id = $request->del_temp_id;
 
         // Artistpermit::where('artist_permit_id', $artist_permit_id)->update(['artist_permit_status' => 'inactive']);
         ArtistTempData::where('id', $temp_id)->where('created_by', Auth::user()->user_id)->update(['status' => 1]);
-        $result = ['success', 'Artist Removed successfully ', 'Success'];
+        DB::commit();
+            $result = ['success', __('Artist Removed successfully'), 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
+        }
 
         if($from == 'new') {
             return redirect()->route(URL::signedRoute('company.add_new_permit', [ 'id' => 1]))->with('message', $result);
@@ -1298,6 +1311,9 @@ class ArtistController extends Controller
 
     public function update_artist_temp(Request $request)
     {
+        try {
+            DB::beginTransaction();
+
         $temp_id = $request->temp_id;
         $artistDetails = json_decode($request->artistD, true);
         $documentDetails = json_decode($request->documentD, true);
@@ -1449,12 +1465,18 @@ class ArtistController extends Controller
                 }
             }
         }
-
-        if ($artists) {
-            $result = ['success', __('Artist Updated Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+            DB::commit();
+            $result = ['success', __('Artist Updated successfully'), 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
+
+        // if ($artists) {
+        //     $result = ['success', __(' Successfully'), 'Success'];
+        // } else {
+        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
+        // }
 
         return response()->json(['message' => $result]);
     }
@@ -1674,7 +1696,7 @@ class ArtistController extends Controller
             if(check_is_blocked()['status'] == 'blocked'){
                 return ;
             }
-            return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>&emsp;<span onClick="delete_draft(' . $permit->permit_id . ')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">Delete</span>';
+            return '<a href="' . route('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">'.__('View').'</span></a>&emsp;<span onClick="delete_draft(' . $permit->permit_id . ')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">'.__('Remove').'</span>';
         })->addColumn('details', function ($permit) {
             return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
         })->rawColumns(['action', 'details'])->make(true);
@@ -1786,6 +1808,9 @@ class ArtistController extends Controller
 
     public function update_permit(Request $request)
     {
+        try {
+            DB::beginTransaction();
+
         $permit_id = $request->permit_id;
 
         $artist_temp_data = ArtistTempData::with('ArtistTempDocument')->where('permit_id', $permit_id)->get();
@@ -1988,6 +2013,8 @@ class ArtistController extends Controller
             $result = Permit::where('permit_id', $permit_id)->update(['permit_status' => 'new', 'is_edit' => 0]);
         }
 
+        
+
         if ($result) {
             ArtistTempData::where('permit_id', $permit_id)->delete();
             ArtistTempDocument::where('permit_id', $permit_id)->delete();
@@ -1998,11 +2025,15 @@ class ArtistController extends Controller
             } else {
                 $message = ['success', __('Artist Permit Added Successfully'), 'Success'];
             }
-        } else {
-            $message = ['error', __('Error, Please Try Again'), 'Error'];
+        } 
+            DB::commit();
+            $result = $message ;
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
 
-        return response()->json(['message' => $message]);
+        return response()->json(['message' => $result]);
     }
 
     public function get_temp_photo_temp_id($id)
@@ -2089,6 +2120,9 @@ class ArtistController extends Controller
 
     public function payment(Request $request)
     {
+        try {
+            DB::beginTransaction();
+
         $permit_id = $request->permit_id;
         $amount = $request->amount;
         $vat = $request->vat;
@@ -2214,11 +2248,19 @@ class ArtistController extends Controller
             $permit->update(['permit_number' => $permit_number]);
         }
 
-        if ($transArr) {
+        // if ($transArr) {
+        //     $result = ['success', __('Payment Done Successfully'), 'Success'];
+        // } else {
+        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
+        // }
+
+            DB::commit();
             $result = ['success', __('Payment Done Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
+
 
         return response()->json(['message' => $result]);
     }
@@ -2233,6 +2275,9 @@ class ArtistController extends Controller
 
     public function submit_happiness(Request $request)
     {
+        try {
+            DB::beginTransaction();
+
         $permit_id = $request->permit_id ;
         $updateArray = array(
             'type' => 'artist',
@@ -2292,8 +2337,13 @@ class ArtistController extends Controller
                 }
             }
         }
+            DB::commit();
+            $result = ['success', __('Thank you for your Feedback'), 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
+        }
 
-        $result = ['success', __('Thank you for your Feedback'), 'Success'];
         return response()->json(['message' => $result]);
     }
 

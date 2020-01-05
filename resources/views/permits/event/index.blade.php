@@ -405,7 +405,7 @@
                 },
             ],
             language: {
-                emptyTable: "No Event Permit Drafts",
+                emptyTable: "{{__('No Event Permit Drafts')}}",
                 searchPlaceholder: "{{__('Search')}}"
             }
 

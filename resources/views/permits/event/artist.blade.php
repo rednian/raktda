@@ -312,7 +312,8 @@
                         loc: $('#work_loc').val(),
                         loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val(),
-                        term: term
+                        term: term,
+                        fromWhere: 'event'
                     },
                     success: function(result){
                         $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');

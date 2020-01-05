@@ -174,7 +174,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="pp_expiry"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Expiry Date')}}
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Expiry')}}
                                                                         <span class="text-danger hd-uae">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -1661,15 +1661,11 @@ $language_id = Auth::user()->LanguageId;
                         });
                     },
                     success: function(result){
-                        // console.log(result)
-                        if(result.message[0] == 'success')
-                        {
-                            localStorage.clear();
-                            let toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => 'amend'])}}";;
-                            toUrl = toUrl.replace(':id', permit_id);
-                            window.location.href= toUrl ;
-                            KTApp.unblockPage();
-                        }
+                        localStorage.clear();
+                        let toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => 'amend'])}}";;
+                        toUrl = toUrl.replace(':id', permit_id);
+                        window.location.href= toUrl ;
+                        KTApp.unblockPage();
                     }
                 });
             }

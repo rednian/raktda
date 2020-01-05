@@ -73,6 +73,9 @@ class EventController extends Controller
 
     public function add_update_truck(Request $request)
     {
+        try {
+            DB::beginTransaction();
+
         $event_id = $request->event_id;
         $truck_id = $request->truck_id;
         $truck_details = json_decode($request->truckDetails, true);
@@ -205,24 +208,35 @@ class EventController extends Controller
             }
         }
 
-        if(isset($request->from) && $request->from == "amend")
-        {
-            Event::where('event_id', $request->event_id)->update([
-                    'status' => 'amended'
-                ]);
+            if(isset($request->from) && $request->from == "amend")
+            {
+                Event::where('event_id', $request->event_id)->update([
+                        'status' => 'amended'
+                    ]);
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
         }
 
        return;
+    
     }
 
     public function add_liquor(Request $request)
     {
+       
         $liquor_details = $request->liquorDetails;
         $liquorDocDetails = json_decode($request->liquorDocDetails,  true);
         $type = $request->type;
         $event_liquor_id = '';
 
         $old_event_liquor_id = $request->event_liquor_id;
+
+        try {
+            DB::beginTransaction();
 
         if ($liquor_details) {
             $lq = $liquor_details;
@@ -346,12 +360,19 @@ class EventController extends Controller
 
             }
         }
-
-        if ($event_liquor) {
-            $result = ['success', __('Liquor Details Added Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+            DB::commit();
+            if($old_event_liquor_id)
+            {
+                $result = ['success', __('Liquor Details Updated Successfully'), 'Success'];
+            }else {
+                $result = ['success', __('Liquor Details Added Successfully'), 'Success'];
+            }
+            
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
+
 
         return response()->json(['message' => $result, 'event_liquor_id' => $event_liquor_id]);
     }
@@ -360,7 +381,8 @@ class EventController extends Controller
     {
         $event_id = $request->eventId;
         $from = $request->from;
-
+        try {
+            DB::beginTransaction();
        if($event_id) {      
             if($from == 'liquor')
             {
@@ -386,6 +408,11 @@ class EventController extends Controller
        {
             Event::where('event_id', $event_id)->update(['is_truck' => 0]);
        }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
 
        return;
 
@@ -440,13 +467,18 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-
+        
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
         $lq = json_decode($request->lq, true);
         $from = $request->from;
         $cid = Auth::user()->type == 1 ? Auth::user()->EmpClientId : '';
         $userid = Auth::user()->user_id;
+
+        $event_id = '';
+
+        try {
+            DB::beginTransaction();
 
         $input_Array = array(
             'name_en' => $evd['name'],
@@ -691,14 +723,12 @@ class EventController extends Controller
 
         }
 
-        $this->insertEventImages($event_id, $request->description);
-
-        
-
-        if ($event) {
+            $this->insertEventImages($event_id, $request->description);
+            DB::commit();
             $result = ['success', __('Event Permit Applied Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
 
         return response()->json(['message' => $result, 'event_id' => $event_id]);
