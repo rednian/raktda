@@ -1980,21 +1980,21 @@ $language_id = Auth::user()->LanguageId;
                             {
                                 URL = "{{ route('company.view_draft_details', [ 'id' => ':id'])}}";
                                 URL = URL.replace(':id' , permit_id);
-                                window.location.replace = URL;
+                                window.location.href = URL;
                             }else if(from == 'event'){
                                 URL = "{{ route('event.add_artist', [ 'id' => ':id'])}}";
                                 URL = URL.replace(':id' , permit_id);
-                                window.location.replace = URL;
+                                window.location.href = URL;
                             }else {
                                 URL = "{{ route('company.add_new_permit', [ 'id' => ':id'])}}";
                                 URL = URL.replace(':id' , permit_id);
-                                window.location.replace = URL;
+                                window.location.href = URL;
                             }
                         }else if(id == 2){
                             // window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id;
                             URL = "{{ route('company.add_new_artist', [ 'id' => ':id'])}}";
                             URL = URL.replace(':id' , permit_id);
-                            window.location.replace = URL;
+                            window.location.href = URL;
                         }
                         KTApp.unblockPage();
                     }

@@ -796,7 +796,7 @@
                         if(fromPage == 'new')
                         {
                             toUrl = "{{url('company/artist/new')}}";
-                            window.location.replace= toUrl +'/'+ permit_id;
+                            window.location.href= toUrl +'/'+ permit_id;
                         } else {
                             toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => ':from'])}}";;
                             if(fromPage == 'amend'){
@@ -811,7 +811,7 @@
                                 toUrl = toUrl.replace(':from', 'event');
                             }
                             toUrl = toUrl.replace(':id', permit_id);
-                            window.location.replace= toUrl ;
+                            window.location.href= toUrl ;
                         }
 
                     }

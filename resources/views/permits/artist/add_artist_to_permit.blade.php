@@ -1704,7 +1704,7 @@ function checkVisaRequired(){
                         toUrl = toUrl.replace(':from', 'renew');
                     }
                     toUrl = toUrl.replace(':id', permit_id);
-                    window.location.replace= toUrl ;
+                    window.location.href= toUrl ;
                     KTApp.unblockPage();
                 }
             });

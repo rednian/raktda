@@ -270,7 +270,7 @@
             success: function(data) {
                 // console.log(data);
               if(data.message[0] == 'success') {
-                window.location.replace="{{route('artist.index')}}#valid";
+                window.location.href="{{route('artist.index')}}#valid";
                 KTApp.unblockPage();
               }
             }

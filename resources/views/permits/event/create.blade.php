@@ -1121,14 +1121,14 @@
                                     {
                                         var hrefUrl = "{{route('event.add_artist', ':id')}}";
                                         hrefUrl = hrefUrl.replace(':id', 0);
-                                        window.location.replace =  hrefUrl;
+                                        window.location.href =  hrefUrl;
                                     } else
                                     {
-                                        window.location.replace = "{{route('event.index')}}#applied";
+                                        window.location.href = "{{route('event.index')}}#applied";
                                     }
                                     localStorage.clear();
                                 }else {
-                                    window.location.replace = "{{route('event.index')}}#applied";
+                                    window.location.href = "{{route('event.index')}}#applied";
                                 }
                                 KTApp.unblockPage();
                             }
@@ -1177,7 +1177,7 @@
                         },
                         success: function (result) {
                             if(result.message[0]){
-                                window.location.replace = "{{route('event.index')}}#draft";
+                                window.location.href = "{{route('event.index')}}#draft";
                                 localStorage.clear();
                             }
                         }

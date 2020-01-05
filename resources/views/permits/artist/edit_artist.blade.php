@@ -765,7 +765,7 @@
                         localStorage.clear();
                         var url = "{{route('company.view_draft_details', [ 'id' => ':id'])}}";
                         url = url.replace(':id',permit_id);
-                        window.location.replace=url;
+                        window.location.href=url;
                         KTApp.unblockPage();
                     }
                 }

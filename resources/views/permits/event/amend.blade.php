@@ -529,7 +529,7 @@
                         console.log(result);
                         if(result) 
                         {
-                            window.location.replace = "{{route('event.index')}}#applied";
+                            window.location.href = "{{route('event.index')}}#applied";
                         }
                     }
 

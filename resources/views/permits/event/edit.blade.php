@@ -1244,7 +1244,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.replace = "{{route('event.index')}}";
+                                    window.location.href = "{{route('event.index')}}";
                                     KTApp.unblockPage();
                                 }
                             }
