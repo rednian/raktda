@@ -288,10 +288,13 @@
 									//SEND EMAIL NOTIFICATION
 									$this->sendNotificationApproval($event, User::whereHas('roles', function($q) use($role_id){
 										$q->where('roles.role_id', $role_id);
+									})->when($role_id == 6, function($q) use($request){
+										$q->whereIn('government_id', $request->department);
 									})->get());
 								}
 							}else{
 								if(in_array(5, $request->approver)){
+
 									$event->comment()->create([
 										'action' => 'pending',
 										'role_id' => 5,
@@ -300,8 +303,8 @@
 									]);
 
 									//SEND EMAIL NOTIFICATION
-									$this->sendNotificationApproval($event, User::whereHas('roles', function($q) use($role_id){
-										$q->where('roles.role_id', $role_id);
+									$this->sendNotificationApproval($event, User::whereHas('roles', function($q){
+										$q->where('roles.role_id', 5);
 									})->get());
 								}
 							}
@@ -333,18 +336,21 @@
 
 		private function sendNotificationCompany($event, $type){
 
+			$buttonText = 'View Application';
+			
 			if($type == 'approve'){
 				$subject = $event->reference_number . ' - Application Approved';
 				$title = 'Application has been Approved';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been approved. To view the details, please click the button below.';
-				$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'valid']);
+				$url = URL::signedRoute('company.event.payment', ['event' => $event->event_id]);
+				$buttonText = 'Make Payment';
 			}
 
 			if($type == 'amend'){
 				$subject = $event->reference_number . ' - Application Requires Amendment';
 				$title = 'Applications Requires Amendment';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
-				$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+				$url = URL::signedRoute('event.amend', ['event' => $event->event_id]);
 			}
 
 			if($type == 'reject'){
@@ -361,7 +367,7 @@
 					'subject' => $subject,
 					'title' => $title,
 					'content' => $content,
-					'button' => 'View Application',
+					'button' => $buttonText,
 					'url' => $url
 				]));
 			}

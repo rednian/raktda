@@ -339,20 +339,20 @@ class ArtistPermitController extends Controller
 
     private function sendNotificationCompany($permit, $type){
 
+      $buttonText = 'View Application';
       if($type == 'approve'){
         $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Approved';
         $title = 'Artist Permit Application has been Approved';
         $content = 'Your Artist Permit application with the reference number <b>' . $permit->reference_number . '</b> has been approved. To view the details, please click the button below.';
-        // $url = URL::signedRoute('event.show', ['event' => $permit->event_id, 'tab' => 'valid']);
-        $url = '#';
+        $url = URL::signedRoute('company.make_payment', $permit->permit_id);
+        $buttonText = 'Make Payment';
       }
 
       if($type == 'amend'){
         $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Requires Amendment';
         $title = 'Artist Permit Applications Requires Amendment';
         $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
-        // $url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
-        $url = '#';
+        $url = URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend']);
       }
 
       if($type == 'reject'){
@@ -370,7 +370,7 @@ class ArtistPermitController extends Controller
           'subject' => $subject,
           'title' => $title,
           'content' => $content,
-          'button' => 'View Application',
+          'button' => $buttonText,
           'url' => $url
         ]));
       }

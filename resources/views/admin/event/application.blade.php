@@ -980,9 +980,9 @@
 												  												@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
 												  										 ->get() as $role)
 												  										 			{{-- SHOW ONLY INSPECTOR AND MANGER --}}
-												  										 			@if($role->role_id != 6)
+												  										 			{{-- @if($role->role_id != 6) --}}
 												  													 	<option value="{{ $role->role_id }}">{{ ucwords($role->NameEn) }}</option>
-												  													@endif
+												  													{{-- @endif --}}
 												  												@endforeach
 												  										 @endif
 												  							 </select>
@@ -996,7 +996,7 @@
 																			</div>
 												  						</div> --}}
 												  					</div>
-												  					{{-- <div class="col-md-6">
+												  					<div class="col-md-6">
 												  						<div class="form-group form-group kt-hide">
 												  							<label for="" class="kt-font-dark">{{ __('Government Entities') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-department" name="department[]" multiple="multiple" id="" class="form-control">
@@ -1007,7 +1007,7 @@
 																				@endif
 												  							 </select>
 												  						</div>
-												  					</div> --}}
+												  					</div>
 												  				</section>
 												  				<section class="row d-none" id="select-additional">
 												  					<div class="col">

@@ -46,11 +46,13 @@
                    </a>
                </li>
                @endif
+               @if(!Auth::user()->roles()->whereIn('roles.role_id', [6])->exists())
                <li class="kt-menu__item {{ Request::is('artist_permit*') ? 'kt-menu__item--active': '' }} {{ Request::is('permit*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="kt-menu__link">
                        <span class="kt-menu__link-text">{{ __('Artist Permit') }}</span>
                    </a>
                </li>
+               @endif
                <li class="kt-menu__item {{ Request::is('event*') ? 'kt-menu__item--active': '' }}">
                    <a href="{{ URL::signedRoute('admin.event.index') }}" class="kt-menu__link ">
                        <span class="kt-menu__link-text">{{ __('Event Permit') }}</span>
