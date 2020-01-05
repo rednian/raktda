@@ -271,7 +271,7 @@ $language_id = \Auth::user()->LanguageId;
                                                 <div class="form-group form-group-sm row">
                                                     <label for="pp_expiry"
                                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
-                                                        {{__('Passport Expiry Date')}}<span
+                                                        {{__('Passport Expiry')}}<span
                                                             class="text-danger hd-uae">*</span>
                                                     </label>
                                                     <div class="col-lg-8">

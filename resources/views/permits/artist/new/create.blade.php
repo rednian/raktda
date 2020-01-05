@@ -482,7 +482,8 @@
                         loc: $('#work_loc').val(),
                         loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val(),
-                        term: term
+                        term: term,
+                        fromWhere: 'new'
                     },
                     beforeSend: function() {
                         KTApp.blockPage({

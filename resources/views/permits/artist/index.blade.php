@@ -371,7 +371,7 @@
                 },
             ],
             language: {
-                emptyTable: "No Artist Drafts Added",
+                emptyTable: "{{__('No Artist Drafts Added')}}",
                 searchPlaceholder: "{{__('Search')}}"
             }
         });

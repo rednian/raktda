@@ -759,15 +759,11 @@
                     });
                 },
                 success: function(result){
-                    // console.log(result)
-                    if(result.message[0] == 'success')
-                    {
-                        localStorage.clear();
-                        var url = "{{route('company.view_draft_details', [ 'id' => ':id'])}}";
-                        url = url.replace(':id',permit_id);
-                        window.location.href=url;
-                        KTApp.unblockPage();
-                    }
+                    localStorage.clear();
+                    var url = "{{route('company.view_draft_details', [ 'id' => ':id'])}}";
+                    url = url.replace(':id',permit_id);
+                    window.location.href=url;
+                    KTApp.unblockPage();
                 }
             });
         }
