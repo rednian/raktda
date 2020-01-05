@@ -143,7 +143,7 @@
 																<div class="col-sm-6">
 																 <label class="kt-font-dark">{{ __('Event Subcategory') }} </label>
 																  <div class="input-group input-group-sm">
-																 	<input value="{{ ucfirst(Auth::user()->Language == 1 ? $event->subType->name_en : $event->subType->name_ar) }}" name="event_type" readonly="readonly" type="text"
+																 	<input value="{{ ucfirst(Auth::user()->LanguageId == 1 ? $event->subType->sub_name_en : $event->subType->sub_name_ar) }}" name="event_type" readonly="readonly" type="text"
 																 					 class="form-control">
 																 	<div class="input-group-append">
 																 		<span class="input-group-text">
@@ -500,12 +500,12 @@
 																	 @if ($event->liquor->provided)
 																	 <p class=" kt-font-bold">
 																	 	<span class="kt-font-danger">Note: </span>
-																	 	Liquor will be provided by the venue.
+																	 	{{__('Liquor will be provided by the venue.')}}
 																	 </p>
 																	 @else
 																	 <p class=" kt-font-bold">
 																	 	<span class="kt-font-danger">Note: </span>
-																	 	Liquor will be purchase to license store.
+																	 	{{__('Liquor will be purchased to a license store.')}}
 																	 </p>
 																	 @endif
 																	
@@ -1606,7 +1606,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {

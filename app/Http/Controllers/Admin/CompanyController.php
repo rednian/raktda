@@ -22,7 +22,7 @@ class CompanyController extends Controller
       $new_company = Company::where('status', 'new')->count();
 
       return view('admin.company.index',[ 
-         'page_title'=> 'Company',
+         'page_title'=> __('Establishment'),
          'new_company'=> Company::where('status', 'new')->count(),
          'approved'=> Company::where('status', 'active')->count(),
          'blocked'=> Company::where('status', 'blocked')->count(),
@@ -46,18 +46,18 @@ class CompanyController extends Controller
       	      	$request['action'] = 'approved';
       	      	$company->comment()->create($request->all());
       	      	
-      	      	$result = ['success', ucfirst($company->name_en).'has been successfully checked & approved .', 'Success'];
+      	      	$result = ['success', '', 'Success'];
       	      break;
       	   case 'back':
       	      $company->update(['status'=>$request->status]);
 
       	      $company->comment()->create($request->all());
-      	      $result = ['success', ucfirst($company->name_en).'has been successfully checked & bounce back successfully.', 'Success'];
+      	      $result = ['success',' ', 'Success'];
       	      break; 
       	   case 'rejected':
       	      $company->update(['status'=>$request->status]);
       	      $company->comment()->create($request->all());
-      	      $result = ['success', ucfirst($company->name_en).' has been successfully checked & approved successfully.', 'Success'];
+      	      $result = ['success','', 'Success'];
       	      break;   	
       	     
       	}
@@ -83,7 +83,7 @@ class CompanyController extends Controller
       $request['user_id'] = $request->user()->user_id;
       $request['action'] = $request->status;
       $company->comment()->create($request->all());
-       $result = ['success', ucfirst($company->name_en).' has been '.$request->status.' successfully.', 'Success'];
+       $result = ['success', ' ', 'Success'];
       DB::commit();
     } catch (Exception $e) {
       $result = ['danger', $e->getMessage(), 'Error'];
@@ -123,7 +123,7 @@ class CompanyController extends Controller
      if (!$request->hasValidSignature()) { abort(401); }
       return view('admin.company.application', [
          'company'=>$company,
-         'page_title'=> ucfirst($request->user()->LanguageId == 1 ? $company->name_en : $company->name_ar).' | application'
+         'page_title'=> ucfirst($request->user()->LanguageId == 1 ? $company->name_en : $company->name_ar).' | '.__('Application')
       ]);
    }
 

@@ -118,7 +118,7 @@
                     </span>
                   </div>
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Artist')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Artists')}}</span>
                     <div class="kt-badge kt-badge__pics">
                       @if ($permit->artistPermit()->exists())
                         @foreach ($permit->artistPermit as $number => $artist_permit)
@@ -307,6 +307,17 @@
 <script type="text/javascript">
   var artist = {};
   $(document).ready(function () {
+
+    $('select[name=action]').change(function(){
+      if($(this).val() == 'approved-unpaid'){
+        $('form#permit-action').find('textarea[name=comment]').removeAttr('required',true).removeClass('is-invalid');
+        $('form#permit-action').find('#comment-error').hide();
+      }
+      else{
+         $('form#permit-action').find('textarea[name=comment]').attr('required', true).addClass('is-invalid');
+          $('form#permit-action').find('#comment-error').show();
+      }
+    });
     hasUrl();
     submitAction();
     artistTable();
@@ -579,7 +590,7 @@
       });
   }
 
-     function hasUrl(){
+  function hasUrl(){
      var hash = window.location.hash;
      hash && $('ul.nav a[href="' + hash + '"]').tab('show');
      $('.nav-tabs a').click(function (e) {

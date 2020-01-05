@@ -72,14 +72,14 @@
 
 			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
 
-			$event_type = EventType::whereDoesntHave('event', function($q){
-				return $q->where('status', 'draft');
-			})->toSql();
+			// $event_type = EventType::whereDoesntHave('event', function($q){
+			// 	return $q->where('status', 'draft');
+			// })->toSql();
 
-			// dd($event_type);
+			// // dd($event_type);
 
 			return view($view, [
-				'page_title' => 'Event Permit',
+				'page_title' => __('Event Permit'),
 				'types'=> EventType::all(),
 				'new_request'=>Event::where('status', 'new')->count(),
 				'pending_request'=>Event::whereIn('status', ['amended', 'checked'])->count(),
@@ -688,14 +688,15 @@
 			->make(true);
 
 			$data = $requirements->getData(true);
-
+				if ($event->logo_thumbnail) {
 				$data['data'][] = [
 				    'name' => 'Event Logo',
 				    'files' => '<a class="kt-padding-l-20" href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">event logo.'.fileName($event->logo_thumbnail).'</a>',
 				    'issued_date'=> 'Not Required',
 				    'expired_date'=> 'Not Required',
 				];
-
+				}
+			
 				 return response()->json($data);
 
 			return $requirements;
@@ -707,7 +708,7 @@
 			->editColumn('path', function($image){
 
 				$html = '<a href="'.asset('/storage/'.$image->path).'" data-type="image" data-type="ajax" data-fancybox>';
-				$html .= '<img  src="'.asset('storage/'.$image->thumbnail).'" class="img img-responsive img-thumbnail center-block" style="max-height: 260px;">';
+				$html .= '<img  src="'.asset('storage/'.$image->thumbnail).'" class="img img-responsive img-thumbnail center-block" style="width: 60px;">';
 				$html .= '</a>';
 				return $html;
 			})

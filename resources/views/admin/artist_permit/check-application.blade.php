@@ -250,7 +250,7 @@
 				}
 			});
 
-			var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
+			var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 			wizard.on("beforeNext", function(wizardObj) {
 				@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 				if(wizardObj.currentStep == 1){

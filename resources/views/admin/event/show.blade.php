@@ -425,11 +425,11 @@
             <textarea style="resize: both;" readonly rows="4" class="form-control">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}</textarea>
           </div>
         </div>
-        @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+        @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists() && (in_array($event->status, ['active', 'expired']) && !is_null($event->approved_by)))
         <div class="col-md-5">
           <form class=" kt-padding-5 kt-margin-t-10">
             <div class="form-group row form-group-sm">
-              <label class="col-10 col-form-label">{{ __('Show event to all registered company calendar') }}</label>
+            <label class="col-10 col-form-label">{{ __('Show event to all registered company calendar') }}</label>
               <div class="col-2">
                 <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                   <label class="kt-margin-b-0">
