@@ -234,7 +234,7 @@
         <thead>
             <tr>
                 <th>Notes</th>
-                <th>ملحوظة</th>
+                <th>الملاحظات</th>
             </tr>
         </thead>
         <tbody>

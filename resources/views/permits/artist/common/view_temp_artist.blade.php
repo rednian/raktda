@@ -61,7 +61,7 @@
                 <div class="artist--view-head-image">
                     @if($artist_details->thumbnail == '')
                     <span
-                        class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden-">
+                        class="kt-widget__pic kt-widget__pic--danger kt-font-dark kt-font-boldest kt-font-light kt-hidden-">
                         {{ucwords($artist_details->firstname_en[0])}}{{ucwords($artist_details->lastname_en[0])}}
                     </span>
                     @else
@@ -69,22 +69,20 @@
                     @endif
                 </div>
                 <div class="artist--view-head-details">
-                    <span href="#" class="kt-font-bolder form-control-plaintext">
-                        <i class="flaticon2-user text-warning"></i>
+                    <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0">
+                        <i class="fa fa-user-alt la-2x text-muted"></i>
                         {{getLangId() == 1 ? ucwords($artist_details->firstname_en).' '.ucwords($artist_details->lastname_en) : ucwords($artist_details->firstname_ar).' '.ucwords($artist_details->lastname_ar)}}
                     </span>
                     @if($artist_details->person_code)
-                    <span href="#" class="kt-font-bolder form-control-plaintext">
-                        <i class="flaticon2-calendar-3 text-warning"></i>
+                    <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0">
+                        <i class="fa fa-id-card-alt fa-2x text-muted"></i>
                         {{$artist_details->person_code}}
                     </span>
                     @endif
-                    <span href="#" class="kt-font-bolder form-control-plaintext"><i
-                            class="flaticon2-new-email text-warning"></i>{{$artist_details->email}}</span>
-                    <span href="#" class="kt-font-bolder form-control-plaintext"><i
-                            class="flaticon2-phone text-warning"></i>{{$artist_details->mobile_number}}</span>
-                    <span href="#" class="kt-font-bolder form-control-plaintext">
-                        <i class="flaticon2-placeholder text-warning"></i>
+                    <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0"><i
+                            class="fa fa-envelope fa-2x text-muted"></i>{{$artist_details->email}}</span>
+                    <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0">
+                        <i class="fa fa-flag fa-2x text-muted"></i>
                         {{ getLangId() == 1 ? ucwords($artist_details->Nationality['nationality_en']) : $artist_details->Nationality['nationality_ar']}}
                     </span>
                 </div>
@@ -122,9 +120,9 @@
                         </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Phone Number')}}</label>
+                        <label class="col col-md-6 col-form-label">{{__('Mobile Number')}}</label>
                         <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                            {{$artist_details->phone_number ? $artist_details->phone_number : ''}}</p>
+                            {{$artist_details->mobile_number }}</p>
                     </div>
 
                 </div>
@@ -160,17 +158,23 @@
                             {{$artist_details->uid_expire_date != '0000-00-00' ? date('d-M-Y', strtotime($artist_details->uid_expire_date)) : ''}}
                         </p>
                     </div>
+                    <div class="col-md-4 col-sm-12 row">
+                        <label class="col col-md-6 col-form-label">{{__('Phone Number')}}</label>
+                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                            {{$artist_details->phone_number ? $artist_details->phone_number : ''}}</p>
+                    </div>
 
                     {{-- <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 ">{{__('Sponsor Name')}}</label>
                     <p class="col col-md-6 form-control-plaintext kt-font-bolder">
                         {{$artist_details->sponsor_name_en}}</p>
                 </div> --}}
-                <div class="col-md-4 col-sm-12 row">
-                    <label class="col col-md-6 col-form-label">{{__('Address')}}</label>
-                    <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                        {{$artist_details->address_en}}</p>
-                </div>
+
+            </div>
+            <div class="row">
+                <label class="col col-md-2 col-form-label kt-padding-r-0">{{__('Address')}}</label>
+                <p class="col form-control-plaintext kt-font-bolder kt-padding-l-0">
+                    {{$artist_details->address_en}}</p>
             </div>
         </div>
         @if(count($artist_details->ArtistTempDocument) > 0)
