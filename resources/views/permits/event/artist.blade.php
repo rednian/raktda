@@ -316,7 +316,7 @@
                     },
                     success: function(result){
                         $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                        window.location.replace="{{route('artist.index')}}#applied";
+                        window.location.href="{{route('artist.index')}}#applied";
                         KTApp.unblockPage();
                     }
             });

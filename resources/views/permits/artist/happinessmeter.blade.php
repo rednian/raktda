@@ -114,7 +114,7 @@
                             },
                             success: function (result) {
                                 if(result.message[0]){
-                                    window.location.replace = "{{route('artist.index')}}#valid";
+                                    window.location.href = "{{route('artist.index')}}#valid";
                                     KTApp.unblockPage();
                                 }
                             }

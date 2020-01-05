@@ -1667,7 +1667,7 @@ $language_id = Auth::user()->LanguageId;
                             localStorage.clear();
                             let toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => 'amend'])}}";;
                             toUrl = toUrl.replace(':id', permit_id);
-                            window.location.replace= toUrl ;
+                            window.location.href= toUrl ;
                             KTApp.unblockPage();
                         }
                     }

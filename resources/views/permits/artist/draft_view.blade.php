@@ -400,7 +400,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.replace="{{route('artist.index')}}#draft";
+                        window.location.href="{{route('artist.index')}}#draft";
                     }
             });
         }
@@ -431,7 +431,7 @@
             var event_id = $('#event_id').val();
             if(event_id == 'add_new')
             {
-                window.location.replace = "{{ route('event.create')}}";
+                window.location.href = "{{ route('event.create')}}";
             }else{
                 checkFilled();
             }
@@ -464,7 +464,7 @@
                         term: term
                     },
                     success: function(result){
-                        window.location.replace="{{route('artist.index')}}#applied";
+                        window.location.href="{{route('artist.index')}}#applied";
                         KTApp.unblockPage();
                     }
             });
@@ -495,7 +495,7 @@
                         });
                     },
                     success: function(result){
-                        window.location.replace="{{route('artist.index')}}#draft";
+                        window.location.href="{{route('artist.index')}}#draft";
                         KTApp.unblockPage();
                     }
                 });

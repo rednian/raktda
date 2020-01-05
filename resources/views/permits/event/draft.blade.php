@@ -1250,7 +1250,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.replace = "{{route('event.index')}}#applied";
+                                    window.location.href = "{{route('event.index')}}#applied";
                                     KTApp.unblockPage();
                                 }
                             }
@@ -1297,7 +1297,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.replace = "{{route('event.index')}}#draft";
+                                    window.location.href = "{{route('event.index')}}#draft";
                                     KTApp.unblockPage();
                                 }
                             }
