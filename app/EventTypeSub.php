@@ -8,7 +8,7 @@ class EventTypeSub extends Model
 {
 	protected $table = 'event_type_sub';
 	protected $primaryKey = 'event_type_sub_id';
-	protected $fillable = ['event_type_id', 'name_en', 'name_ar'];
+	protected $fillable = ['event_type_id', 'sub_name_en', 'sub_name_ar'];
 
 	public function type()
 	{

@@ -46,7 +46,7 @@
                     <div class="kt-form__section kt-form__section--first">
                         <div class="kt-wizard-v3__form">
                             <form id="permit_details" method="POST" autocomplete="off">
-                                <div class=" row">
+                                <div class="row">
                                     <div class="form-group col-lg-2 kt-margin-b-0">
                                         <label for="permit_from"
                                             class="col-form-label col-form-label-sm ">{{__('From Date')}} <span
@@ -92,16 +92,14 @@
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             {{__('Work Location')}} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control form-control-sm"
-                                            placeholder="{{__('Work Location')}}" name="work_loc" id="work_loc"
-                                            onkeyup="checkFilled()"
+                                        <input type="text" class="form-control form-control-sm" name="work_loc"
+                                            id="work_loc" onkeyup="checkFilled()"
                                             value="{{count($artist_details) > 0 ? getlangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control form-control-sm"
-                                            placeholder="{{__('Work Location (AR)')}}" name="work_loc_ar"
+                                        <input type="text" class="form-control form-control-sm" name="work_loc_ar"
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
@@ -189,7 +187,7 @@
                                     title="{{__('Edit')}}">
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
                                 </a>
-                                <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'new'])}}"
+                                <a href="{{URL::signedRoute('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'new'])}}"
                                     title="{{__('View')}}">
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                                 </a>
@@ -260,11 +258,12 @@
                 $('#events_div').css('display', 'none');
             }
             checkFilled();
+            
         }
 
         $(document).ready(function(){
             $('#add_artist').attr('disabled', true);
-            checkFilled();
+            checkFilled();  
             var artiststartafter = $('#artiststartafter').val();
             var today = moment().toDate();
             var startDate = moment(today).add(artiststartafter, 'days').toDate();
@@ -281,8 +280,10 @@
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
-            orientation: "bottom left"
+            orientation: "bottom left",
+            zIndexOffset: 98
         });
+       
         $('#permit_to').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,
@@ -415,7 +416,10 @@
                     data: { from: from , to:to, loc:loc,loc_ar:loc_ar, eventId:eventId, isEvent: isEvent },
                     async: true,
                     success: function(result){
-                        window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id;
+                        var Url = "{{ route('company.add_new_artist', [ 'id' => 1])}}";
+                        Url = Url.replace(':id', permit_id);
+                        console.log(Url);
+                        window.location.href = Url;
                     }
             });
         }
@@ -510,9 +514,10 @@
         }
 
         $('#submit_btn').click((e) => {
-            $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-            $('#draft_btn').css('pointer-events', 'none');
-            $('#submit_btn').css('pointer-events', 'none');
+            // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            // $('#draft_btn').css('pointer-events', 'none');
+            // $('#submit_btn').css('pointer-events', 'none');
+            
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
@@ -528,16 +533,26 @@
                         event_id: $('#event_id').val(),
                         term: term
                     },
+                    beforeSend: function() {
+                        KTApp.blockPage({
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'success',
+                            message: 'Please wait...'
+                        });
+                    },
                     success: function(result){
                         window.location.href="{{route('artist.index')}}#applied";
+                        KTApp.unblockPage();
                     }
             });
         });
 
         $('#draft_btn').click((e) => {
-            $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-            $('#draft_btn').css('pointer-events', 'none');
-            $('#submit_btn').css('pointer-events', 'none');
+            // $('#draft_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+            // $('#draft_btn').css('pointer-events', 'none');
+            // $('#submit_btn').css('pointer-events', 'none');
+
             var temp_permit_id = $('#temp_permit_id').val();
             $.ajax({
                     url:"{{route('artist.add_draft')}}",
@@ -550,8 +565,17 @@
                         loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val()
                     },
+                    beforeSend: function() {
+                        KTApp.blockPage({
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'success',
+                            message: 'Please wait...'
+                        });
+                    },
                     success: function(result){
                         window.location.href="{{route('artist.index')}}#draft";
+                        KTApp.unblockPage();
                     }
                 });
         });

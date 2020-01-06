@@ -319,7 +319,7 @@
                             </td>
 
                             <td class="text-center"> <a
-                                    href="{{route('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
+                                    href="{{URL::signedRoute('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
                                     title="View">
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                                 </a></td>

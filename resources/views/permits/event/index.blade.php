@@ -1,7 +1,32 @@
 @extends('layouts.app')
 
 @section('title', __('Event Permit'))
+@section('style')
+<style>
+    .fc-unthemed .fc-event .fc-title,
+    .fc-unthemed .fc-event-dot .fc-title {
+        color: #fff;
+    }
 
+    .fc-unthemed .fc-event .fc-time,
+    .fc-unthemed .fc-event-dot .fc-time {
+        color: #fff;
+    }
+
+    .fc-content .fc-title .fc-description {
+        color: #fff;
+    }
+
+    /* .fc-button-active {
+        background: rgba(140, 39, 45, 0.5) !important;
+        border: 1px solid #74788d !important;
+    } */
+
+    .widget-toolbar {
+        cursor: pointer;
+    }
+</style>
+@endsection
 @section('content')
 
 @if(check_is_blocked()['status'] == 'rejected')
@@ -36,7 +61,7 @@
                     @if(check_is_blocked()['status'] != 'blocked' && check_is_blocked()['status'] != 'rejected')
                     <span class="nav-item"
                         style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                        <a href="{{ route('event.create')}}">
+                        <a href="{{ URL::signedRoute('event.create')}}">
                             <button class="btn btn--yellow kt-font-transform-u btn-sm" id="nav--new-permit-btn">
                                 <i class="la la-plus"></i>
                                 {{__('Add New')}}
@@ -278,8 +303,8 @@
             columns: [
                 { data: 'reference_number', name: 'reference_number' },
                 { data: 'type_name', name: 'type_name' },
-                { data: 'issued_date', name: 'issued_date' },
-                { data: 'expired_date', name: 'expired_date' },
+                { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
+                { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
                 { data: 'name_en', name: 'name_en' },
                 // { data: 'venue_en', name: 'venue_en' },          
                 { data: 'permit_status', name: 'permit_status' },
@@ -324,8 +349,8 @@
             columns: [
                 { data: 'permit_number', name: 'permit_number' },
                 { data: 'type_name', name: 'type_name' },
-                { data: 'issued_date', name: 'issued_date' },
-                { data: 'expired_date', name: 'expired_date' },
+                { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
+                { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
                 { data: 'name_en', name: 'name_en' },
                 // { data: 'venue_en', name: 'venue_en' },
                 // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
@@ -353,12 +378,12 @@
                 request.setRequestHeader("token", token);
             },
             columns: [
-                { data: 'issued_date', name: 'issued_date' },       
-                { data: 'expired_date', name: 'expired_date' },
+                { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},       
+                { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
                 { data: 'name_en', name: 'name_en' },
                 // { data: 'venue_en', name: 'venue_en' },
-                { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                { data: 'action', name: 'action' ,  className: "text-center"},
+                { data: 'created_at', defaultContent: 'None', name: 'created_at' , },
+                { data: 'action', name: 'action' ,  className: "text-center",  className: 'no-wrap'},
                 { data: 'details', name: 'details' ,  className: "text-center"},
             ],
             columnDefs: [
@@ -495,21 +520,23 @@
                   listDay: { buttonText: '{{ __('Day List') }}' },
                   listWeek: { buttonText: '{{ __('Week List') }}' }
               },
-              defaultView: 'dayGridMonth',
+            //   defaultView: 'dayGridMonth',
+            defaultView: 'listWeek',
               // defaultDate: TODAY,
               editable: false,
               eventLimit: true, // allow "more" link when too many events
               navLinks: true,
               events: {
                   url: '{{ route('company.event.calendar') }}',
-                  textColor: '#000'
+                  textColor: '#fff !important'
               },
               eventRender: function(info) {
                     var element = $(info.el);
-
+                    element.find('.fc-time').html(moment(info.event.start).format('LT'));
+                    element.find('.fc-title').html('&emsp;'+info.event.title.toUpperCase());
                     if (info.event.extendedProps && info.event.extendedProps.description) {
                         if (element.hasClass('fc-day-grid-event')) {
-                            element.data('content', info.event.extendedProps.description);
+                            element.data('content', 'VENUE: '+info.event.extendedProps.description);
                             element.data('placement', 'top');
                             KTApp.initPopover(element);
                         } else if (element.hasClass('fc-time-grid-event')) {

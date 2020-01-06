@@ -51,6 +51,37 @@ $language_id = \Auth::user()->LanguageId;
                             <div class="kt-wizard-v3__form">
                                 <!--begin::Accordion-->
                                 <div class="accordion accordion-solid accordion-toggle-plus border"
+                                    id="accordionExample61">
+                                    <div class="card">
+                                        <div class="card-header" id="headingThree6">
+                                            <div class="card-title collapsed" data-toggle="collapse"
+                                                data-target="#collapseThree6" aria-expanded="false"
+                                                aria-controls="collapseThree6">
+                                                <h6 class="kt-font-transform-u kt-font-bolder"> {{__('Permit Fee')}}
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
+                                            data-parent="#accordionExample61">
+                                            <div class="card-body">
+                                                <table class="table table-borderless table-sm">
+                                                    <tr>
+                                                        <th>{{__('Profession')}}</th>
+                                                        <th>{{__('Fee')}} (AED)</th>
+                                                    </tr>
+                                                    @foreach($profession as $pt)
+                                                    <tr>
+                                                        <td>{{getLangId() == 1 ? $pt->name_en : $pt->name_ar}}</td>
+                                                        <td>{{number_format($pt->amount,2)}}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="accordion accordion-solid accordion-toggle-plus border"
                                     id="accordionExample6">
 
                                     <div class="card">
@@ -86,37 +117,7 @@ $language_id = \Auth::user()->LanguageId;
 
                                 </div>
                                 <br>
-                                <div class="accordion accordion-solid accordion-toggle-plus border"
-                                    id="accordionExample61">
-                                    <div class="card">
-                                        <div class="card-header" id="headingThree6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseThree6" aria-expanded="false"
-                                                aria-controls="collapseThree6">
-                                                <h6 class="kt-font-transform-u kt-font-bolder"> {{__('Permit Fee')}}
-                                                </h6>
-                                            </div>
-                                        </div>
-                                        <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
-                                            data-parent="#accordionExample61">
-                                            <div class="card-body">
-                                                <table class="table table-borderless table-sm">
-                                                    <tr>
-                                                        <th>{{__('Profession')}}</th>
-                                                        <th>{{__('Fee')}} (AED)</th>
-                                                    </tr>
-                                                    @foreach($profession as $pt)
-                                                    <tr>
-                                                        <td>{{getLangId() == 1 ? $pt->name_en : $pt->name_ar}}</td>
-                                                        <td>{{number_format($pt->amount,2)}}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
+
                                 {{-- <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample62">
                                     <div class="card">
                                         <div class="card-header" id="headingFour6">
@@ -202,7 +203,7 @@ $language_id = \Auth::user()->LanguageId;
                                                             <input type="text" class="form-control form-control-sm "
                                                                 name="fname_en" id="fname_en"
                                                                 placeholder="{{__('First Name')}}"
-                                                                onchange="checkforArtist()">
+                                                                onchange="checkforArtistKeyUp()">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -215,7 +216,7 @@ $language_id = \Auth::user()->LanguageId;
                                                             <input type="text" class="form-control form-control-sm "
                                                                 name="lname_en" id="lname_en"
                                                                 placeholder="{{__('Last Name')}}"
-                                                                onchange="checkforArtist()">
+                                                                onchange="checkforArtistKeyUp()">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -759,14 +760,14 @@ $language_id = \Auth::user()->LanguageId;
     </div>
     @php
     if($from == 'amend'){
-    $route_back = $permit_details->permit_id.'/amend';
+    $route_back = 'amend';
     } elseif($from == 'edit') {
-    $route_back = $permit_details->permit_id.'/edit';
+    $route_back = 'edit';
     } elseif($from == 'renew') {
-    $route_back = $permit_details->permit_id.'/renew';
+    $route_back = 'renew';
     }
     @endphp
-    <a href="{{url('company/artist/permit/'.$route_back)}}">
+    <a href="{{URL::signedRoute('artist.permit',[ 'id' => $permit_details->permit_id , 'status'=> $route_back])}}">
         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
             {{__('Back')}}
         </div>
@@ -1335,11 +1336,41 @@ function checkVisaRequired(){
             }
         }
 
-        $('#code').change(function() {
-            searchCode();
-        });
+        $('#code').keyup(function (e) {
+            var code = $('#code').val();
+            if(code.length >= 4)
+            {
+                searchCode();
+            }
+        }); 
 
-        function searchCode(e) {
+        function checkforArtistKeyUp(){
+          setTimeout( checkforArtist(),4000);
+        }
+
+        function checkTheArtistProfession() {
+            let artist_id = $('#artist_id').val();
+            let profession = $('#profession').val();
+            if(artist_id){
+                $.ajax({
+                        url:"{{route('artist.checkArtistProfession')}}",
+                        type: 'POST',
+                        data: {
+                            artist_id: artist_id,
+                            profession: profession
+                        },
+                        success: function (data) {
+                            if(data.response == 'notallowed') {
+                                $('#professionWarning').modal('show');
+                                $('#profession').val('')
+                                return ;
+                            }
+                        }
+                });
+            }
+        }
+
+        function searchCode() {
             let code = $('#code').val();
             var permit_id = $('#permit_id').val();
             if (code) {
@@ -1351,19 +1382,40 @@ function checkVisaRequired(){
                         permit_id: permit_id
                     },
                     success: function (data) {
-                    $('#artist_exists').modal({
-                        backdrop: 'static',
-                        keyboard: false,
-                        show: true
-                    });
-                    $('#person_code_modal').empty();
-                    if(data.artist_status == 'blocked')
-                    {
-                        $('#person_code_modal').append('<div class="kt-font-dark kt-font-bold">Sorry This Artist is blocked ! Please Select a New Artist</div>');
-                        return ;
-                    }
-                    if(data.artist_permit) {
-                        let total_aps = data.artist_permit.length;
+
+                        if(data.has_single_permit)
+                        {
+                            $('#singlePermitWarning').modal('show');
+                            $('#code').val('');
+                            return ;
+                        }
+
+                        $('#person_code_modal').empty();
+
+                        $('#artist_exists').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+
+                        if(data.artist_d == null)
+                        {
+                            $('#person_code_modal').append('<p class="text-center text-danger text-font-bolder"><span class="text--maroon kt-font-bold">This is an Optional field</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
+                            $('#not_artist_personcode').html(code);
+                        }
+
+
+                        if(data.artist_d.artist_status == 'blocked')
+                        {
+                            $('#person_code_modal').append('<div class="kt-font-dark kt-font-bold">{!!__("Sorry This Artist is blocked ! Please Select a New Artist")!!}</div>');
+                            return ;
+                        }
+
+                        data = data.artist_d ;
+
+                        if(data.artist_permit.length > 0) {
+
+                            let total_aps = data.artist_permit.length;
                             let j = total_aps - 1 ;
                             if(total_aps > 0) {
                                 $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>{!!__('Name')!!}:</th> <td id="ex_artist_en_name"></td> </tr>  <tr> <th>{!!__('Birthdate')!!}:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>{!!__('Gender')!!}:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>{!!__('Mobile Number')!!}:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>{!!__('Email')!!}:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>{!!__('Nationality')!!}:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(1)" data-dismiss="modal">{!!__('Select this artist')!!}</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">{!!__('Not this artist')!!}</button> </div>');
@@ -1618,7 +1670,8 @@ function checkVisaRequired(){
         var permit_to = $('#permit_to').val();
         var permit_id = $('#permit_id').val();
         var from_page = $('#from_page').val();
-        $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+        // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+       
         $.ajaxSetup({
             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
         });
@@ -1631,7 +1684,15 @@ function checkVisaRequired(){
                     permit_id: permit_id,
                     from: permit_from,
                     to: permit_to
-                  },
+                },
+                beforeSend: function() {
+                KTApp.blockPage({
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: 'Please wait...'
+                });
+                },
                 success: function(result){
                     localStorage.clear();
                     let toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => ':from'])}}";;
@@ -1644,6 +1705,7 @@ function checkVisaRequired(){
                     }
                     toUrl = toUrl.replace(':id', permit_id);
                     window.location.href= toUrl ;
+                    KTApp.unblockPage();
                 }
             });
         }

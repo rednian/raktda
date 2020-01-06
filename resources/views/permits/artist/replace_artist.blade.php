@@ -103,7 +103,7 @@ $language_id = Auth::user()->LanguageId;
                                                                                 class="form-control form-control-sm "
                                                                                 name="fname_en" id="fname_en"
                                                                                 placeholder="{{__('First Name')}}"
-                                                                                onchange="checkforArtist()">
+                                                                                onchange="checkforArtistKeyUp()">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -117,7 +117,7 @@ $language_id = Auth::user()->LanguageId;
                                                                                 class="form-control form-control-sm "
                                                                                 name="lname_en" id="lname_en"
                                                                                 placeholder="{{__('Last Name')}}"
-                                                                                onchange="checkforArtist()">
+                                                                                onchange="checkforArtistKeyUp()">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -161,21 +161,20 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="profession"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport')}}
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Number')}}
                                                                         <span class="text-danger hd-uae">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
                                                                         <div class="input-group input-group-sm">
                                                                             <input type="text"
                                                                                 class="form-control form-control-sm "
-                                                                                name="passport" id="passport"
-                                                                                placeholder="@lang('words.passport_number')">
+                                                                                name="passport" id="passport">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="pp_expiry"
-                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Expiry')}}
+                                                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Expiry Date')}}
                                                                         <span class="text-danger hd-uae">*</span>
                                                                     </label>
                                                                     <div class="col-lg-8">
@@ -694,7 +693,9 @@ $language_id = Auth::user()->LanguageId;
                     </div>
                     <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
                     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
-                    <a href="{{url('company/artist/permit/'.$permit_details->permit_id .'/amend')}}">
+                    {{-- <a href="{{url('company/artist/permit/'.$permit_details->permit_id .'/amend')}}"> --}}
+                    <a
+                        href="{{URL::signedRoute('artist.permit',['id' => $permit_details->permit_id , 'status' => 'amend'])}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                             {{__('Back')}}
                         </div>
@@ -1226,7 +1227,7 @@ $language_id = Auth::user()->LanguageId;
         }
         $('.date-picker').datepicker({ format: 'dd-mm-yyyy', autoclose: true});
 
-        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2, endDate:'-10Y'});
+        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2});
 
         $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
         $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
@@ -1248,9 +1249,42 @@ $language_id = Auth::user()->LanguageId;
                 });
           }
         }
-        $('#code').change(function() {
-            searchCode();
-        });
+       
+        $('#code').keyup(function (e) {
+            var code = $('#code').val();
+            if(code.length >= 4)
+            {
+                searchCode(e);
+            }
+        }); 
+
+        function checkforArtistKeyUp(){
+          setTimeout( checkforArtist(),4000);
+        }
+
+        function checkTheArtistProfession() {
+            let artist_id = $('#artist_id').val();
+            let profession = $('#profession').val();
+            if(artist_id){
+                $.ajax({
+                        url:"{{route('artist.checkArtistProfession')}}",
+                        type: 'POST',
+                        data: {
+                            artist_id: artist_id,
+                            profession: profession
+                        },
+                        success: function (data) {
+                            if(data.response == 'notallowed') {
+                                $('#professionWarning').modal('show');
+                                $('#profession').val('')
+                                return ;
+                            }
+                        }
+                });
+            }
+        }
+
+
         function searchCode(){
             let code = $('#code').val();
             var permit_id = $('#permit_id').val();
@@ -1263,18 +1297,38 @@ $language_id = Auth::user()->LanguageId;
                         permit_id: permit_id
                     },
                     success: function(data){
+
+                        if(data.has_single_permit)
+                        {
+                            $('#singlePermitWarning').modal('show');
+                            $('#code').val('');
+                            return ;
+                        }
+
+                        $('#person_code_modal').empty();
+
                         $('#artist_exists').modal({
                             backdrop: 'static',
                             keyboard: false,
                             show: true
                         });
-                        $('#person_code_modal').empty();
-                        if(data.artist_status == 'blocked')
+
+                        if(data.artist_d == null)
                         {
-                            $('#person_code_modal').append('<div class="kt-font-dark kt-font-bold">Sorry This Artist is blocked ! Please Select a New Artist</div>');
+                            $('#person_code_modal').append('<p class="text-center text-danger text-font-bolder"><span class="text--maroon kt-font-bold">This is an Optional field</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
+                            $('#not_artist_personcode').html(code);
+                        }
+
+                        if(data.artist_d.artist_status == 'blocked')
+                        {
+                            $('#person_code_modal').append('<div class="kt-font-dark kt-font-bold">{!!__("Sorry This Artist is blocked ! Please Select a New Artist")!!}</div>');
                             return ;
                         }
-                        if(data.artist_permit){
+                        
+                        data = data.artist_d ;
+
+                        if(data.artist_permit.length > 0) {
+
                             let total_aps = data.artist_permit.length;
                             let j = total_aps - 1 ;
                             if(total_aps > 0) {
@@ -1516,6 +1570,14 @@ $language_id = Auth::user()->LanguageId;
                     dob: dob
                 },
                 success: function (result) {
+
+                    if(result.has_single_permit){
+                        $('#singlePermitWarning').modal('show');
+                        $('#code').val('');
+                        return ;
+                    }
+
+
                     if (result.isArtist) {
                         var data = result.data;
                         $('#person_code_modal').empty();
@@ -1563,8 +1625,9 @@ $language_id = Auth::user()->LanguageId;
                 messages: docMessages
             });
             if(documentsValidator.form() && hasFile){
-                $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                $('#submit_btn').css('pointer-events','none');
+                // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+                // $('#submit_btn').css('pointer-events','none');
+             
             var artist_permit_id = $('#artist_permit_id').val();
             var permit_id = $('#permit_id').val();
             var ad = localStorage.getItem('artistDetails');
@@ -1589,6 +1652,14 @@ $language_id = Auth::user()->LanguageId;
                         temp_id: $('#temp_id').val(),
                         from: fromPage
                     },
+                    beforeSend: function() {
+                        KTApp.blockPage({
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'success',
+                            message: 'Please wait...'
+                        });
+                    },
                     success: function(result){
                         // console.log(result)
                         if(result.message[0] == 'success')
@@ -1597,6 +1668,7 @@ $language_id = Auth::user()->LanguageId;
                             let toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => 'amend'])}}";;
                             toUrl = toUrl.replace(':id', permit_id);
                             window.location.href= toUrl ;
+                            KTApp.unblockPage();
                         }
                     }
                 });

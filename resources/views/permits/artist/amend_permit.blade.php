@@ -19,17 +19,26 @@
                     <i class="la la-arrow-left"></i>
                     {{__('Back')}}
                 </button>
-                <a href="{{url('/company/artist/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
+
+                {{-- <a href="{{url('/company/artist/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
+                class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
+                <i class="la la-plus"></i>
+                {{__('Add Artist')}}
+                </a> --}}
+
+                <a href="{{route('company.add_artist_to_permit', ['from' => 'amend', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     {{__('Add Artist')}}
                 </a>
+
+
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
                 <button id="back_btn_sm" class="btn btn--maroon btn-sm kt-font-bold">
                     <i class="la la-arrow-left"></i>
                 </button>
-                <a href="{{url('/company/artist/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
+                <a href="{{route('company.add_artist_to_permit', ['from' => 'amend', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u ">
                     <i class="la la-plus"></i>
                 </a>
@@ -41,109 +50,145 @@
     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
     <div class="kt-portlet__body">
-        <div class="kt-widget5__info py-4">
-            <div class="pb-2">
-                <span class="kt-font-dark">{{__('Permit Term')}}:</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->term}}</span>&emsp;&emsp;
-                <span class="kt-font-dark">{{__('From Date')}}:</span>&emsp;
-                <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->issued_date))}}</span>&emsp;&emsp;
-                <span class="kt-font-dark">{{__('To Date')}}:</span>&emsp;
-                <span class="kt-font-info">{{date('d-M-Y',strtotime($permit_details->expired_date))}}</span>&emsp;&emsp;
-                <span class="kt-font-dark">{{__('Work Location')}}:</span>&emsp;
-                <span
-                    class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
-                <span class="kt-font-dark">{{__('Reference No.')}}:</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->reference_number}}</span>&emsp;&emsp;
-                @if($permit_details->event)
-                <span>{{__('Connected Event ?')}} :</span>&emsp;
-                <span
-                    class="kt-font-info">{{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}</span>
-                @endif
+        <div class="kt-widget kt-widget--project-1">
+            <div class="kt-widget__body">
+                <div class="kt-widget__stats d-">
+                    <div class="kt-widget__item">
+                        <span class="kt-widget__date">{{__('From Date')}}</span>
+                        <div class="kt-widget__label">
+                            <span class="btn btn-label-success btn-sm btn-bold btn-upper">
+                                {{date('d M, y',strtotime($permit_details->issued_date))}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="kt-widget__item">
+                        <span class="kt-widget__date">{{__('To Date')}}</span>
+                        <div class="kt-widget__label">
+                            <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
+                                {{date('d M, y',strtotime($permit_details->expired_date))}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="kt-widget__item">
+                        <span class="kt-widget__date">{{__('Permit Term')}}</span>
+                        <div class="kt-widget__label">
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                {{$permit_details->term}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="kt-widget__item">
+                        <span class="kt-widget__date">{{__('Reference Number')}}</span>
+                        <div class="kt-widget__label">
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                {{$permit_details->reference_number}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="kt-widget__item">
+                        <span class="kt-widget__date">{{__('Work Location')}}</span>
+                        <div class="kt-widget__label">
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
+                            </span>
+                        </div>
+                    </div>
+                    @if($permit_details->event)
+                    <div class="kt-widget__item">
+                        <span class="kt-widget__date">{{__('Connected Event ?')}} :</span>
+                        <div class="kt-widget__label">
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                {{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}
+                            </span>
+                        </div>
+                    </div>
+                    @endif
+                </div>
             </div>
-        </div>
 
-        <div class="table-responsive">
-            <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
-                <thead>
-                    <tr>
-                        <th>{{__('First Name')}}</th>
-                        <th>{{__('Last Name')}}</th>
-                        <th>{{__('Profession')}}</th>
-                        <th>{{__('Mobile Number')}}</th>
-                        <th>{{__('Status')}}</th>
-                        <th class="text-center">{{__('Action')}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                    $i = 0 ;
-                    @endphp
-                    <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
-                    @foreach ($artist_details as $artist_detail)
-                    <tr>
-                        <td>{{  getLangId() == 1 ? ucwords($artist_detail->firstname_en) : $artist_detail->firstname_ar }}
-                        </td>
-                        <td>{{ getLangId() == 1 ? ucwords($artist_detail->lastname_en) : $artist_detail->lastname_ar }}
-                        </td>
-                        <td style="width:20%;">
-                            {{ getLangId() == 1 ? ucwords($artist_detail->profession['name_en']) : ucwords($artist_detail->profession['name_ar'])}}
-                        </td>
-                        <td>{{$artist_detail->mobile_number}}</td>
-                        {{-- <td>{{$artist_detail->email}}</td> --}}
-                        <td>
-                            {{__(ucwords($artist_detail->artist_permit_status))}}
-                        </td>
-                        <td class="d-flex justify-content-center">
-                            <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend'])}}">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Replace')}}</button>
-                            </a>
-                            {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
-                            title="View">
-                            <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
-                            </a> --}}
-                            <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
-                                title="View">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
-                            </a>
-                            @if(count($artist_details) > 1)
-                            <a href="#"
-                                onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
-                                data-toggle="modal" data-target="#delartistmodal">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Remove')}}</button>
-                            </a>
-                            @endif
-
-                        </td>
-                        <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
+                    <thead>
+                        <tr>
+                            <th>{{__('First Name')}}</th>
+                            <th>{{__('Last Name')}}</th>
+                            <th>{{__('Profession')}}</th>
+                            <th>{{__('Mobile Number')}}</th>
+                            <th>{{__('Status')}}</th>
+                            <th class="text-center">{{__('Action')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @php
-                        $i++;
+                        $i = 0 ;
                         @endphp
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="d-flex justify-content-end">
-            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                <i class="la la-check"></i>
-                {{__('Submit')}}
+                        <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
+                        @foreach ($artist_details as $artist_detail)
+                        <tr>
+                            <td>{{  getLangId() == 1 ? ucwords($artist_detail->firstname_en) : $artist_detail->firstname_ar }}
+                            </td>
+                            <td>{{ getLangId() == 1 ? ucwords($artist_detail->lastname_en) : $artist_detail->lastname_ar }}
+                            </td>
+                            <td style="width:20%;">
+                                {{ getLangId() == 1 ? ucwords($artist_detail->profession['name_en']) : ucwords($artist_detail->profession['name_ar'])}}
+                            </td>
+                            <td>{{$artist_detail->mobile_number}}</td>
+                            {{-- <td>{{$artist_detail->email}}</td> --}}
+                            <td>
+                                {{__(ucwords($artist_detail->artist_permit_status))}}
+                            </td>
+                            <td class="d-flex justify-content-center">
+                                <a
+                                    href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend'])}}">
+                                    <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Replace')}}</button>
+                                </a>
+                                {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
+                                title="View">
+                                <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
+                                </a> --}}
+                                <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
+                                    title="View">
+                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                                </a>
+                                @if(count($artist_details) > 1)
+                                <a href="#"
+                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
+                                    data-toggle="modal" data-target="#delartistmodal">
+                                    <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Remove')}}</button>
+                                </a>
+                                @endif
+
+                            </td>
+                            <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
+                            @php
+                            $i++;
+                            @endphp
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end">
+                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+                    <i class="la la-check"></i>
+                    {{__('Submit')}}
+                </div>
             </div>
         </div>
+
+        @include('permits.artist.modals.view_artist')
+
+        @include('permits.artist.modals.remove_artist', ['from' => 'amend'])
+
+        @include('permits.artist.modals.leave_page')
+
     </div>
 
-    @include('permits.artist.modals.view_artist')
+    @endsection
 
-    @include('permits.artist.modals.remove_artist', ['from' => 'amend'])
-
-    @include('permits.artist.modals.leave_page')
-
-</div>
-
-@endsection
-
-@section('script')
-<script>
-    $.ajaxSetup({
+    @section('script')
+    <script>
+        $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
@@ -260,22 +305,31 @@
     }
 
     $('#submit_btn').click( function() {
-        $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-        $('#submit_btn').css('pointer-events', 'none');
+        // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+        // $('#submit_btn').css('pointer-events', 'none');
         $.ajax({
             type: 'POST',
             url: '{{route("artist.update_permit")}}',
             data: {permit_id: $('#permit_id').val()},
+            beforeSend: function() {
+                KTApp.blockPage({
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: 'Please wait...'
+                });
+            },
             success: function(result) {
                 if(result.message[0] == 'success')
                 {
                     $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
                     window.location.href="{{route('artist.index')}}#applied";
+                    KTApp.unblockPage();
                 }
             }
         });
     });
 
 
-</script>
-@endsection
+    </script>
+    @endsection

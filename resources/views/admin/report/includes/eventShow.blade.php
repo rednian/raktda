@@ -33,7 +33,6 @@
     </style>
 @endsection
 @section('content')
-
     <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet"
              style="padding: 20px">
         <div>
@@ -50,7 +49,7 @@
                 </th>
             </tr>
             <tr>
-                <th colspan="2" align="center" style="padding: 5px;height: 34px;border: 1px solid grey">EVENTS DETAILS</th>
+                <th colspan="2" align="center" style="padding: 5px;height: 34px">EVENTS DETAILS</th>
             </tr>
             <tr>
                 <th width="35%">{{__('REFERENCE NUMBER')}}</th>
@@ -114,6 +113,7 @@
         </iframe>
         </div>
         <div class="col-md-5">
+            <a href=""><button class="btn btn-secondary pull-right"><-BACK</button></a>
             <div class="border kt-padding-10">
                 <div class="kt-widget kt-widget--user-profile-4">
                     <div class="kt-widget__head kt-margin-t-5">
@@ -277,7 +277,10 @@
             })
             newWin = window.open("");
             newWin.document.write(divToPrint.outerHTML);
+            newWin.focus();
             newWin.print();
+            newWin.close();
+
 
         })
     </script>

@@ -8,6 +8,11 @@ use Hash;
 
 class AccountSettingsController extends Controller
 {
+    public function __construct(){
+        $this->middleware('signed')->except([
+            'store'
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -61,6 +66,7 @@ class AccountSettingsController extends Controller
         } catch (\Exception $e) {
             $result = ['error', $e->getMessage(), 'Error'];
         }
+        
         return redirect()->back()->with('message', $result);
     }
 

@@ -18,17 +18,23 @@
                     <i class="la la-arrow-left"></i>
                     {{__('Back')}}
                 </button>
-                <a href="{{url('company/artist/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
+                {{-- <a href="{{url('company/artist/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
+                class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
+                <i class="la la-plus"></i>
+                {{__('Add Artist')}}
+                </a> --}}
+                <a href="{{route('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     {{__('Add Artist')}}
                 </a>
+
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
                 <button id="back_btn_sm" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                 </button>
-                <a href="{{url('company/artist/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
+                <a href="{{route('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                 </a>
@@ -39,32 +45,46 @@
 
     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
-    <div class="kt-portlet__body pt-0">
-        <div class="kt-widget5__info py-4">
-            <div class="pb-2">
-                <span class="kt-font-dark">{{__('Permit Term')}}:</span>&emsp;
-                <span class="kt-font-info">{{$permit_details->term}}</span>&emsp;&emsp;
-                <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
-                <span class="kt-font-dark">{{__('From Date')}}:</span>&emsp;
-                <span
-                    class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->issue_date))}}</span>&emsp;&emsp;
-                <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
-                {{-- @php
-                $to_date = date('d-M-Y', strtotime('+31 days', strtotime($permit_details->expired_date)));
-                $db_to_date = date('Y-m-d', strtotime('+31 days', strtotime($permit_details->expired_date)));
-                @endphp --}}
-                <span class="kt-font-dark">{{__('To Date')}}:</span>&emsp;
-                <span
-                    class="kt-font-info">{{date('d-M-Y',strtotime($artist_details[0]->expiry_date))}}</span>&emsp;&emsp;
-                <input type="hidden" id="expired_date" value="{{$artist_details[0]->expiry_date}}">
-                <span class="kt-font-dark">{{__('Work Location')}}:</span>&emsp;
-                <span
-                    class="kt-font-info">{{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}</span>&emsp;&emsp;
-                <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
-                <input type="hidden" id="work_location_ar" value="{{$permit_details->work_location_ar}}">
-
+    <div class="kt-portlet__body">
+        <div class="kt-widget kt-widget--project-1">
+            <div class="kt-widget__body">
+                <div class="kt-widget__stats d-">
+                    <div class="kt-widget__item">
+                        <span class="kt-widget__date">{{__('From Date')}}</span>
+                        <div class="kt-widget__label">
+                            <span class="btn btn-label-success btn-sm btn-bold btn-upper">
+                                {{date('d M, y',strtotime($artist_details[0]->issue_date))}}
+                            </span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="issued_date" value="{{$artist_details[0]->issue_date}}">
+                    <div class="kt-widget__item">
+                        <span class="kt-widget__date">{{__('To Date')}}</span>
+                        <div class="kt-widget__label">
+                            <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
+                                {{date('d M, y',strtotime($artist_details[0]->expiry_date))}}
+                            </span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="expired_date" value="{{$artist_details[0]->expiry_date}}">
+                    <div class="kt-widget__item">
+                        <span class="kt-widget__date">{{__('Permit Term')}}</span>
+                        <div class="kt-widget__label">
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                {{$permit_details->term}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kt-widget__text kt-margin-t-10">
+                    <strong>{{__('Work Location')}} :</strong>
+                    {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
+                </div>
             </div>
+            <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
+            <input type="hidden" id="work_location_ar" value="{{$permit_details->work_location_ar}}">
         </div>
+
 
         <div class="table-responsive">
             <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
@@ -102,11 +122,7 @@
                                 title="{{__('Edit')}}">
                                 <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Edit')}}</button>
                             </a>
-                            {{-- <a href="#" data-toggle="modal" onclick="getArtistDetails({{$artist_detail->id}})"
-                            title="View">
-                            <button class="btn btn-sm btn-secondary btn-elevate ">View</button>
-                            </a> --}}
-                            <a href="{{route('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
+                            <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
                                 title="{{__('View')}}">
                                 <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
                             </a>
@@ -237,28 +253,11 @@
     }
 
 
-    function getArtistDetails(id) {
-        $.ajax({
-            type: 'POST',
-            url: '{{route("company.fetch_artist_temp_data")}}',
-            data: {artist_temp_id:id},
-            success: function(data) {
-                // console.log(data)
-                $('#detail-permit').empty();
-            if(data)
-            {
-                $('#artist_details').modal('show');
-                var code = data.person_code ? data.person_code : '';
-                $('#detail-permit').append('<table class="w-100  table  table-bordered"> <tr>  <th>First Name</th> <td >' + data.firstname_en + '</td>  <th>Last Name</th> <td>' + data.lastname_en + '</td></tr> <tr>  <th>First Name (AR)</th> <td >' + data.firstname_ar + '</td>  <th>Last Name (AR)</th> <td>' + data.lastname_ar + '</td></tr><tr><th>Profession</th> <td >' + data.profession.name_en + '</td>  <th>Nationality</th> <td >' +  ( data.nationality ? data.nationality.nationality_en : '' ) + '</td> </tr> <tr><th>Email</th> <td>' + data.email + '</td>  <th>Mobile Number</th> <td >' + data.mobile_number + '</td></tr><tr><th>Passsport</th> <td >' + data.passport_number + '</td><th>Passsport Exp</th> <td >' +moment(data.passport_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td></tr><tr><th>BirthDate</th><td >' + moment(data.birthdate, 'YYYY/MM/DD').format('DD-MM-YYYY') + '</td> <th>Visa Type</th><td>'+data.visa_type+ '</td></tr><tr><th>Visa Number</th> <td >' + data.visa_number + '</td> <th>Visa Expiry</th> <td>'+moment(data.visa_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr><tr><th>UID Number</th> <td >' + data.uid_number + '</td> <th>UID Expiry</th> <td>'+moment(data.uid_expire_date, 'YYYY/MM/DD').format('DD-MM-YYYY') +'</td></tr></table>');
-
-            }
-            }
-        });
-    }
 
     $('#submit_btn').click(function() {
-        $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-        $('#submit_btn').css('pointer-events', 'none');
+        // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
+        // $('#submit_btn').css('pointer-events', 'none');
+       
         var temp_permit_id = $('#permit_id').val();
         var noofdays = dayCount($('#issued_date').val(), $('#expired_date').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
@@ -274,10 +273,19 @@
                 term: term, 
                 fromWhere: 'renew'
             },
+            beforeSend: function() {
+                KTApp.blockPage({
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: 'Please wait...'
+                });
+            },
             success: function(data) {
                 // console.log(data);
               if(data.message[0] == 'success') {
                 window.location.href="{{route('artist.index')}}#valid";
+                KTApp.unblockPage();
               }
             }
         });

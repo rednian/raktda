@@ -5,7 +5,7 @@
       <div class="kt-portlet__head-label">
          <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST DETAILS') }}</span></h3></div>
          <div class="kt-portlet__head-toolbar">
-            <button type="button" id="clickme" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
+            <button type="button" onclick="window.history.back()" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
                <i class="la la-arrow-left"></i>{{ __('BACK') }}
             </button>
          </div>
@@ -226,17 +226,8 @@
 
     var is_checked = false;
       $(document).ready(function () {
-         $('button#btn-action').click(function(){
-            $('#kt_modal_1').modal('show');
-         });
+  
 
-        $('input#artist-status').change(function(){  });
-
-        $('#kt_modal_1').on('hidden.bs.modal', function () {
-            $('input#artist-status').attr();
-        })
-
-          $('#clickme').click(function(reload) {window.history.back(); });
          permitHistory();
          statusHistory();
 
