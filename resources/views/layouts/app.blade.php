@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @if(Auth::check()) dir="{{ Auth::user()->LanguageId != 1 ?  'rtl' : null }}" @endif>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @if(Auth::check())
+    dir="{{ Auth::user()->LanguageId != 1 ?  'rtl' : null }}" @endif>
 
 <head>
     <meta charset="UTF-8">
@@ -15,14 +16,14 @@
     </script>
     <!--begin::Page Vendors Styles(used by this page) -->
     @if (Auth::check())
-        @if (Auth::user()->LanguageId == 1)
-        <link href="{{ asset('/css/custom-vendor.css') }}" rel="stylesheet" type="text/css" />
-        @else
-        <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.rtl.min.css') }}" rel="stylesheet"
-            type="text/css" />
-        @endif
+    @if (Auth::user()->LanguageId == 1)
+    <link href="{{ asset('/css/custom-vendor.css') }}" rel="stylesheet" type="text/css" />
+    @else
+    <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.rtl.min.css') }}" rel="stylesheet"
+        type="text/css" />
     @endif
-   
+    @endif
+
 
     <link href="{{ asset('/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet"
         type="text/css" />
@@ -43,23 +44,23 @@
         type="text/css" />
 
     @if (Auth::check())
-        @if (Auth::user()->LanguageId == 1)
-        <style type="text/css">
-            #kt_aside {
-                box-shadow: 4px 0 5px -2px #888;
-            }
-        </style>
-        <link href="{{ asset('/css/mandatory.css') }}" rel="stylesheet" type="text/css" />
-        @else
-        <link href="{{ asset('/css/mandatory-arabic.css') }}" rel="stylesheet" type="text/css" />
-        <style type="text/css">
-            #kt_aside {
-                box-shadow: 4px 0 5px 4px #888 !important;
-            }
-        </style>
-        @endif
+    @if (Auth::user()->LanguageId == 1)
+    <style type="text/css">
+        #kt_aside {
+            box-shadow: 4px 0 5px -2px #888;
+        }
+    </style>
+    <link href="{{ asset('/css/mandatory.css') }}" rel="stylesheet" type="text/css" />
     @else
-        <link href="{{ asset('/css/mandatory.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/css/mandatory-arabic.css') }}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        #kt_aside {
+            box-shadow: 4px 0 5px 4px #888 !important;
+        }
+    </style>
+    @endif
+    @else
+    <link href="{{ asset('/css/mandatory.css') }}" rel="stylesheet" type="text/css" />
     @endif
 
     <link href="{{asset('./assets/css/wizard-3.css')}}" rel="stylesheet" type="text/css" />
@@ -89,31 +90,31 @@
     <!-- end::Page Loader -->
     <!-- begin:: Header Mobile -->
     @if (Auth::check())
-        <div id="kt_header_mobile" class="kt-header-mobile kt-header-mobile--fixed ">
-            <div class="kt-header-mobile__logo">
-                <a href="#">
-                    @if (Auth::user()->LanguageId == 1)
-                    <img alt="Logo" src="{{ asset('/img/logo-en.svg') }}" />
-                    @else
-                    <img alt="Logo" src="{{ asset('/img/logo-ar.svg') }}" />
-                    @endif
-                </a>
-            </div>
-            <div class="kt-header-mobile__toolbar">
-                <button class="kt-header-mobile__toggler kt-header-mobile__toggler--left"
-                    id="kt_aside_mobile_toggler"><span></span></button>
-                <button class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler"><i
-                        class="flaticon-more"></i></button>
-            </div>
+    <div id="kt_header_mobile" class="kt-header-mobile kt-header-mobile--fixed ">
+        <div class="kt-header-mobile__logo">
+            <a href="#">
+                @if (Auth::user()->LanguageId == 1)
+                <img alt="Logo" src="{{ asset('/img/logo-en.svg') }}" />
+                @else
+                <img alt="Logo" src="{{ asset('/img/logo-ar.svg') }}" />
+                @endif
+            </a>
         </div>
+        <div class="kt-header-mobile__toolbar">
+            <button class="kt-header-mobile__toggler kt-header-mobile__toggler--left"
+                id="kt_aside_mobile_toggler"><span></span></button>
+            <button class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler"><i
+                    class="flaticon-more"></i></button>
+        </div>
+    </div>
     @endif
 
     <!-- end:: Header Mobile -->
     <div class="kt-grid kt-grid--hor kt-grid--root">
         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
-          @if(Auth::check())  @include('layouts.sidebar') @endif
+            @if(Auth::check()) @include('layouts.sidebar') @endif
             <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
-              @if(Auth::check())   @include('layouts.header') @endif
+                @if(Auth::check()) @include('layouts.header') @endif
                 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
                     <!-- begin:: Content -->
                     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
@@ -130,9 +131,9 @@
         </div>
     </div>
     @if (Auth::check())
-        <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
+    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
-        <input type="hidden" id="getLangid" value="{{getLangId()}}">
+    <input type="hidden" id="getLangid" value="{{getLangId()}}">
     @endif
 
     <script src="{{ asset('/js/mandatory.js') }}"></script>
@@ -189,6 +190,8 @@
                 }
         @endif
     });
+
+    $('.card-title').addClass('kt-padding-t-10').addClass('kt-padding-b-5');
 </script>
 <!-- end::Body -->
 

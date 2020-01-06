@@ -24,10 +24,10 @@
             </div>
         </div>
     </div>
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-0">
 
         <div class="kt-widget kt-widget--project-1">
-            <div class="kt-widget__body">
+            <div class="kt-widget__body kt-padding-l-0">
                 <div class="kt-widget__stats ">
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>

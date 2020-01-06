@@ -2098,9 +2098,6 @@ class ArtistController extends Controller
         if(!$request->hasValidSignature()){
             return abort(401);
         }
-        if(!$request->hasValidSignature()){
-            return abort(401);
-        }
         $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession', 'event')->where('permit_id', $id)->first();
         return view('permits.artist.payment', $data_bundle);
     }
@@ -2120,8 +2117,7 @@ class ArtistController extends Controller
 
     public function payment(Request $request)
     {
-        try {
-            DB::beginTransaction();
+       
 
         $permit_id = $request->permit_id;
         $amount = $request->amount;
@@ -2129,12 +2125,21 @@ class ArtistController extends Controller
         $total = $request->total;
         $paidEventFee = $request->paidEventFee;
         $noofdays = $request->noofdays;
+        $transaction_id = $request->transactionId;
+        $receipt = $request->receipt; 
+        $order_id = $request->orderId;
+        try {
+            DB::beginTransaction();
 
         $transArr = Transaction::create([
             'reference_number' => getTransactionReferNumber(),
             'transaction_type' => 'artist',
             'transaction_date' => Carbon::now(),
-            'created_by' => Auth::user()->user_id
+            'created_by' => Auth::user()->user_id,
+            'company_id' => Auth::user()->EmpClientId,
+            'payment_transaction_id' => $transaction_id,
+            'payment_receipt_no' => $receipt,
+            'payment_order_id' => $order_id
         ]);
 
         $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
@@ -2267,9 +2272,9 @@ class ArtistController extends Controller
  
     public function happiness_center(Request $request, $id)
     {
-        if(!$request->hasValidSignature()){
-            return abort(401);
-        }
+        // if(!$request->hasValidSignature()){
+        //     return abort(401);
+        // }
         return view('permits.artist.happinessmeter', ['id' => $id]);
     }
 
