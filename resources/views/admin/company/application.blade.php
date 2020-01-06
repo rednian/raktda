@@ -166,7 +166,7 @@
                            <div class="col-sm-6">
                               <label class="kt-font-dark">{{ __('Establishment Email') }} </label>
                               <div class="input-group input-group-sm">
-                               <input value="{{ $company->email }}" name="name_ar" readonly="readonly" type="text"
+                               <input value="{{ $company->company_email }}" name="name_ar" readonly="readonly" type="text"
                                             class="form-control">
                                <div class="input-group-append">
                                   <span class="input-group-text">

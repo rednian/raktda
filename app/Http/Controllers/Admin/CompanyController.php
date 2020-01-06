@@ -35,9 +35,11 @@ class CompanyController extends Controller
 
    public function submit(Request $request, Company $company)
    {
+
   	DB::beginTransaction();
       try {
       		$request['user_id'] = $request->user()->user_id;
+           // dd($request->all());
       	switch ($request->status) {
       	   case 'active':
 
@@ -69,7 +71,7 @@ class CompanyController extends Controller
       	
       }
 
-      return redirect()->route('admin.company.index')->with('message', $result);
+      return redirect(URL::signedRoute('admin.company.index'))->with('message', $result);
       
    }
 

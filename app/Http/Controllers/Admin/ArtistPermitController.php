@@ -804,8 +804,8 @@ class ArtistPermitController extends Controller
       ->addColumn('artist_number', function($permit){
         $total = $permit->artistpermit()->count();
         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
-        if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
-        return 'Checked '.$check.' of '.$total;
+        if(in_array($permit->permit_status, ['active', 'expired'])){ return  __('Approved ').$check.' of '.$total; }
+        return  __('Checked ').$check.' of '.$total;
       })
       ->editColumn('permit_status', function($permit){ return permitStatus($permit->permit_status); })
 	    ->editColumn('reference_number', function($permit){ return '<span class="kt-font-bold">'.$permit->reference_number.'</span>'; })

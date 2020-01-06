@@ -54,9 +54,16 @@
                 <div class="tab-pane active" id="company-edit" role="tabpanel">
                     <div class="kt-form kt-form--label-right">
                       @if ($company->status == 'draft')
-                        <div class="alert alert-warning alert-elevate fade show" role="alert">
+                        <div class="alert alert-outline-danger alert-elevate fade show" role="alert">
                           <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                          <div class="alert-text">{{__('Please complete the required fields below to register your company and enjoy the full services of RAKTDA. ')}}</div>
+                          <div class="alert-text">
+                            <ul>
+                              <li>{{__('Please complete the required fields below to register your company and enjoy the full services of RAKTDA. ')}}</li>
+                            {{--   @if (!$valid)
+                                <li>{{__('Please upload the required documents.')}}</li>
+                              @endif --}}
+                            </ul>
+                          </div>
                           <div class="alert-close">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                               <span aria-hidden="true"><i class="la la-close"></i></span>
@@ -70,10 +77,10 @@
                                 <div class="kt-section__body">
                                   
                                   @if ($company->status == 'back' || $company->status == 'rejected' )
-                                    <div class="alert alert-danger kt-padding-t-5 kt-padding-b-5" role="alert">
+                                    <div class="alert alert-outline-danger kt-padding-t-5 kt-padding-b-5" role="alert">
                                         <div class="alert-text">
                                            @if ($company->status == 'back')
-                                        <h4 class="alert-heading">{{__('Check the comment below.')}}</h4>
+                                        <h6 class="alert-heading">{{__('Please check the comment below update the information required.')}}</h6>
                                            @endif
                                           
                                        
@@ -83,12 +90,12 @@
                                            @endif 
 
                                           </p>
-                                          <hr>
-                                          <p>{{ucfirst(Auth::user()->LanguageId == 1 ? $company->comment()->latest()->first()->comment_en :  $company->comment()->latest()->first()->comment_ar )}}</p>
+                                          <hr class="kt-margin-b-0">
+                                          <p class="kt-margin-b-5">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->comment()->latest()->first()->comment_en :  $company->comment()->latest()->first()->comment_ar )}}</p>
                                         </div>
                                       </div>
                                   @endif
-                                  @if ($company->status == 'active' || $company->event()->count() < 0 || $company->permit()->count() < 0)
+                                  @if ($company->status == 'active' && $company->event()->count() < 0 || $company->permit()->count() < 0)
                                     <div class="alert alert-success" role="alert">
                                        <div class="alert-text">
                                          <h4 class="alert-heading">Congratulation your establishment is registered successfully!</h4>
@@ -100,7 +107,7 @@
                                   @endif
 
                                   @if ($company->status == 'new' || $company->status == 'pending')
-                                    <div class="alert alert-success" role="alert">
+                                    <div class="alert alert-success kt-padding-b-5" role="alert">
                                        <div class="alert-text">
                                          <h4 class="alert-heading">Registration successfully submitted!</h4>
                                          <p>Your registration will be check by RAKTDA and notify you as soon as possible.</p>
@@ -166,11 +173,11 @@
                                                                <div class="row form-group form-group-sm">
                                                                    <div class="col-sm-6">
                                                                        <label >Trade License Issued Date<span class="text-danger">*</span></label>
-                                                                       <input name="trade_license_issued_date"  autocomplete="off" class="date-picker start form-control form-control-sm" type="text" value="{{$company->trade_license_issued_date ? $company->trade_license_issued_date->format('d-F-Y') :  null }}">
+                                                                       <input required name="trade_license_issued_date"  autocomplete="off" class="date-picker start form-control form-control-sm" type="text" value="{{$company->trade_license_issued_date ? $company->trade_license_issued_date->format('d-m-Y') :  null }}">
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                       <label >Trade License Expired Date<span class="text-danger">*</span></label>
-                                                                      <input name="trade_license_expired_date"  autocomplete="off" class="date-picker end form-control form-control-sm" type="text" value="{{$company->trade_license_expired_date ? $company->trade_license_expired_date->format('d-F-Y') :  null }}"> 
+                                                                      <input required name="trade_license_expired_date"  autocomplete="off" class="date-picker end form-control form-control-sm" type="text" value="{{$company->trade_license_expired_date ? $company->trade_license_expired_date->format('d-m-Y') :  null }}"> 
                                                                    </div>
                                                                </div>
                                                               
@@ -179,13 +186,13 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                            <label >{{__('Establishment Email')}}<span class="text-danger">*</span></label>
-                                                               <input name="company_email" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->company_email}}">
+                                                               <input required name="company_email" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->company_email}}">
                                                            </div>
                                                            <div class="col-md-6">
                                                                <div class="row form-group form-group-sm">
                                                                    <div class="col-sm-6">
                                                                        <label >Phone Number<span class="text-danger">*</span></label>
-                                                                       <input name="phone_number" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->phone_number}}">
+                                                                       <input required name="phone_number" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->phone_number}}">
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                       <label >Website</label>
@@ -204,7 +211,7 @@
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                       <label >Country <span class="text-danger">*</span></label>
-                                                                      <select name="country_id" class="form-control form-control-sm select2">
+                                                                      <select required name="country_id" class="form-control form-control-sm select2">
                                                                           @if (App\Country::orderBy('name_en')->count() > 0)
                                                                               @foreach (App\Country::orderBy('name_en')->get() as $country)
                                                                               <option  {{ $country->country_id == $company->country_id ? 'selected': null }} value="{{$country->country_id}}">{{ucfirst($country->name_en)}}</option>
@@ -219,7 +226,7 @@
                                                                <div class="row form-group form-group-sm">
                                                                    <div class="col-sm-6">
                                                                        <label >Emirate<span class="text-danger">*</span></label>
-                                                                       <select name="emirate_id"  class="select2 form-control form-control-sm">
+                                                                       <select required name="emirate_id"  class="select2 form-control form-control-sm">
                                                                           @if (App\Emirates::orderBy('name_en')->count() > 0)
                                                                               @foreach (App\Emirates::orderBy('name_en')->get() as $emirate)
                                                                               <option {{ $emirate->id == $company->emirate_id ? 'selected': null }} value="{{$emirate->id}}">{{ucfirst($emirate->name_en)}}</option>
@@ -244,11 +251,11 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>Establishment Details<span class="text-danger">*</span></label>
-                                                               <textarea rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_en">{{$company->company_description_en}}</textarea>
+                                                               <textarea required rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_en">{{$company->company_description_en}}</textarea>
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label >Establishment Details (AR)<span class="text-danger">*</span></label>
-                                                               <textarea dir="rtl" rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_ar">{{$company->company_description_ar}}</textarea>
+                                                               <textarea required dir="rtl" rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_ar">{{$company->company_description_ar}}</textarea>
                                                            </div>
                                                        </section>
                                                        
@@ -272,7 +279,7 @@
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label >{{__('Name (AR)')}}<span class="text-danger">*</span></label>
-                                                               <input dir="rtl" name="contact_name_ar" autocomplete="off" required class="form-control form-control-sm" type="text" value="{{$company->contact->contact_name_ar}}">
+                                                               <input required dir="rtl" name="contact_name_ar" autocomplete="off" required class="form-control form-control-sm" type="text" value="{{$company->contact->contact_name_ar}}">
                                                            </div>
                                                        </section>
                                                        <section class="row form-group form-group-sm">
@@ -282,7 +289,7 @@
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label>{{__('Designation (AR)')}} <span class="text-danger">*</span></label>
-                                                               <input dir="rtl" name="designation_ar" autocomplete="off" required class="form-control form-control-sm" type="text" value="{{$company->contact->designation_en}}">
+                                                               <input required dir="rtl" name="designation_ar" autocomplete="off" required class="form-control form-control-sm" type="text" value="{{$company->contact->designation_en}}">
                                                            </div>
                                                        </section>
                                                        
@@ -290,28 +297,28 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>{{__('Email Address')}} <span class="text-danger">*</span></label>
-                                                               <input autocomplete="off" name="email" class="form-control form-control-sm" type="email" value="{{$company->contact->email}}">
+                                                               <input required autocomplete="off" name="email" class="form-control form-control-sm" type="email" value="{{$company->contact->email}}">
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label>{{__('Mobile Number')}} <span class="text-danger">*</span></label>
-                                                               <input autocomplete="off" name="mobile_number" class="form-control form-control-sm" type="text" value="{{$company->contact->mobile_number}}">
+                                                               <input required autocomplete="off" name="mobile_number" class="form-control form-control-sm" type="text" value="{{$company->contact->mobile_number}}">
                                                            </div>
                                                        </section>
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>{{__('Emirates ID')}} <span class="text-danger">*</span></label>
-                                                               <input autocomplete="off" name="emirate_identification" class="form-control form-control-sm" type="text" value="{{$company->contact->emirate_identification}}">
+                                                               <input required autocomplete="off" name="emirate_identification" class="form-control form-control-sm" type="text" value="{{$company->contact->emirate_identification}}">
                                                            </div>
                                                            <div class="col-md-6">
                                                                <div class="form-group row">
                                                                    <div class="col-sm-6">
                                                                        <label>{{__('Emirates ID Issued Date')}} <span class="text-danger">*</span></label>
-                                                                       <input autocomplete="off" autocomplete="off" name="emirate_id_issued_date" class="date-picker start form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-F-Y') : null }}">
+                                                                       <input required autocomplete="off" autocomplete="off" name="emirate_id_issued_date" class="date-picker start form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-m-Y') : null }}">
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                     <input type="hidden" name="reference_number" value="123456789">
                                                                        <label>{{__('Emirates ID EXpired Date')}} <span class="text-danger">*</span></label>
-                                                                       <input autocomplete="off" name="emirate_id_expired_date" class="date-picker end form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-F-Y') :  null }}">
+                                                                       <input required  autocomplete="off" name="emirate_id_expired_date" class="date-picker end form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-m-Y') :  null }}">
                                                                    </div>
                                                                </div>
                                                            </div>
@@ -324,14 +331,14 @@
                                            <div class="card border">
                                                <div class="card-header" id="heading-requirement">
                                                    <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
-                                                       <h6 class="kt-font-dark "><span class="kt-font-transform-u">Upload Requirements</span> 
+                                                       <h6 class="kt-font-dark "><span class="kt-font-transform-u">{{__('Document Requirements')}}</span> 
                                                         {{-- <small>Please upload the required documents.</small> --}}
                                                       </h6>
                                                    </div>
                                                </div>
                                                <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement">
                                                    <div class="card-body">
-                                                    <div class="alert alert-outline-danger fade show kt-padding-t-0 kt-padding-b-0" role="alert">
+                                                    <div class="alert alert-outline-primary fade kt-margin-b-20 show kt-padding-t-0 kt-padding-b-0" role="alert">
                                                       <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
                                                       <div class="alert-text kt-font-dark">
                                                         <span class="kt-font-danger kt-font-bold">Note:</span>
@@ -347,6 +354,10 @@
                                                         </button>
                                                       </div>
                                                     </div>
+
+                                                     
+                                                    
+
 
                                                     <section class="row form-group form-group-xs" id="upload-row">
                                                       <div class="col-md-3">
@@ -365,9 +376,9 @@
                                                         <label>{{__('Expiry Date')}} <span class="text-danger">*</span></label>
                                                         <input id="upload-date-end"  name="expired_date" type="text" multiple class="form-control date-picker end">
                                                       </div>
-                                                      <div class="col-md-1">
+                                                      <div class="col-md-1 kt-margin-l-0 kt-margin-r-0 kt-padding-0">
                                                         <label> </label>
-                                                        <button autocomplete="off" type="button" id="btn-save" class="kt-margin-t-5 btn btn-warning kt-font-transform-u">{{__('Save')}}</button>
+                                                        <button autocomplete="off" type="button" id="btn-save" class="kt-margin-t-5 btn btn-warning kt-font-transform-u">{{__('Upload')}}</button>
                                                       </div>
                                                     </section>
 
@@ -577,16 +588,17 @@
       // });
 
 
-      $('form').submit(function() {
-           KTApp.blockPage({
-               overlayColor: '#000000',
-               type: 'v2',
-               state: 'success',
-               message: 'Please wait...'
-           });
-       });
 
-      $('form[name=edit_company]').validate();
+
+      $('form[name=edit_company]').validate({
+        invalidHandler: function(){
+          KTUtil.scrollTop();
+        },
+      });
+
+
+
+
       $('.select2').select2();
 
       $('#btn-save').click(function(){
@@ -757,6 +769,9 @@
 
              if(xhr.status == 200){ 
               $('#upload-row').find('input').val('');
+              $('#upload-row').find('input').removeClass('is-valid');
+              $('#upload-row').find('select[name=requirement_id]').removeClass('is-valid');
+              $('#upload-row').find('select[name=requirement_id]')[0].selectedIndex = 0;
               requirementTable.ajax.reload();
                KTApp.unblockPage();
               files = []; 
@@ -954,7 +969,8 @@
             todayHighlight: true,
             orientation: "bottom left",
              startDate: date,
-            templates: arrows
+            templates: arrows,
+            format:'dd-mm-yyyy'
         });
 
        $('.date-picker.start').datepicker({
@@ -962,7 +978,8 @@
             todayHighlight: true,
             orientation: "bottom left",
             endDate: '+0d',
-            templates: arrows
+            templates: arrows,
+            format:'dd-mm-yyyy'
         });
     }
 </script>

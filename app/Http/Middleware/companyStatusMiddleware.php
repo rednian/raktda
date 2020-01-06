@@ -15,7 +15,7 @@ class companyStatusMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if(in_array($request->user()->company->status, ['draft', 'new', 'pending'])){
+        if(in_array($request->user()->company->status, ['draft', 'new', 'pending','back'])){
              return redirect(URL::signedRoute('company.edit', ['company' => $request->user()->company->company_id]));
         }
         return $next($request);

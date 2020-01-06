@@ -44,7 +44,6 @@ class CompanyController extends Controller
      'g-recaptcha-response' => 'required|captcha',
      'term_condition' => 'required'
     ]);
-
       try {
          DB::beginTransaction();
 
@@ -65,8 +64,30 @@ class CompanyController extends Controller
       foreach ($company->requirement()->whereNull('is_submit')->get() as $requirement) {
           Storage::delete('public/'.$requirement->path);
       }
-      $company->requirement()->whereNull('is_submit')->delete();
-       return view('permits.company.edit', ['company'=>$company, 'page_title'=> '']); 
+       
+       $company->requirement()->whereNull('is_submit')->delete();
+
+        $requirements = Requirement::where('requirement_type', 'company')->get();
+        $array = [];
+        $data = null;
+        if (!is_null($requirements)) {
+          foreach ($requirements as $requirement) {
+            // $data = Requirement::whereDoesntHave('company', function($q) use ($requirement, $company){ 
+            //   $q->where(['requirement_id'=>$requirement->requirement_id, 'company_id'=>$company->company_id]); 
+            // })->where('requirement_type', 'company')->get();
+            // $data = $company->requirement()->doesntHave('requirement')->toSql();
+            // array_push($array, $company->requirement()->where('requirement_id', $requirement->requirement_id)->exists());
+          }
+        }
+        // dd( $company->requirement()->doesntHave('requirement')->get() );
+
+
+       return view('permits.company.edit', [
+        'company'=>$company, 
+        // 'page_title'=> $request->user()->LanguageId == 1 ? ucfirst($company->name_en) : ucfirst($company->name_ar), 
+        'valid'=> in_array(false, $array),
+        'requirement'=>$data
+      ]); 
    }
 
    public function updateUser(Request $request, Company $company) {
@@ -126,6 +147,7 @@ class CompanyController extends Controller
     if ($company->status == 'rejected') {
       return redirect()->back();
     }
+    // dd($request->all());
       try {
 
          DB::beginTransaction();
@@ -237,7 +259,7 @@ class CompanyController extends Controller
     try {
       DB::beginTransaction();
 
-      $path = 'public/'.$company->company_id;
+      $path = 'public/company/'.$company->company_id;
       $requirement_name = explode(' ', $request->requirement_name);
       $requirement_name = strtolower(implode('_', $requirement_name));
 
@@ -256,7 +278,7 @@ class CompanyController extends Controller
 
                  Storage::putFileAs($path, $file, $filename);
 
-                 $request['path'] = $company->company_id.'/'.$filename;
+                 $request['path'] = 'company/'.$company->company_id.'/'.$filename;
                  $request['type'] = 'other';
                   $request['file_type'] = $file->getClientMimeType();
                  $request['requirement_id'] = 1;
@@ -286,7 +308,7 @@ class CompanyController extends Controller
 
                  Storage::putFileAs($path, $file, $filename);
 
-                 $request['path'] = $company->company_id.'/'.$filename;
+                 $request['path'] = 'company/'.$company->company_id.'/'.$filename;
                  $request['type'] = 'requirement';
                  $request['file_type'] = $file->getClientMimeType();
                  $request['page_number'] = $page_number+1;

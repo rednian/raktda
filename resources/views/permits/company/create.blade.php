@@ -71,13 +71,16 @@
     <!-- begin #page-container -->
     <div id="page-container">
         <img class="center-block" style="width: 15%" src="{{ asset('img/small.png') }}">
-        <h4 class="text-center" style="margin: 2% 0">Create a company account</h4>
+        <h4 class="text-center" style="margin-top: 2% 0">Create a company account</h4>
+        <div class="m-t-10 m-b-20 p-b-40 text-center text-inverse">
+            Already a member? Click <a class="text-success" href="{{ route('login') }}">here</a> to login.
+        </div>
         <section class="row">
             <div class="col-md-6 col-md-offset-3">
-                @if (Session::has('error'))
+                @if (session('error'))
                    <div class="alert alert-danger alert-dismissible" role="alert">
                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                     <strong>Opps!</strong> {{Session::get('error')}}
+                     <strong>Opps!</strong> {{session('error')}}
                    </div>
                 @endif
             </div>
@@ -207,7 +210,7 @@
                             </section>
                         </div>
                     </section>
-                    <section class="panel panel-default">
+                    <section class="panel panel-default" style="margin-bottom: 0">
                         <div class="panel-heading">
                             User Information
                         </div>
@@ -257,30 +260,35 @@
                             </section>
                         </div>
                     </section>
-                    <div class="form-group">
-                        {!! NoCaptcha::display() !!}
-                        @if ($errors->has('g-recaptcha-response'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                            </span>
-                        @endif
-
-                    </div>
-                    <div class="form-group">
-                        <label>
-                            <input name="term_condition" required type="checkbox" required=""> By clicking Register, you agree to
-                            our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>, including
-                            our <a href="#">Cookie Use</a>.
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <div class="login-buttons">
-                            <button type="submit" class="btn btn-success btn-block">Register</button>
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                {!! NoCaptcha::display() !!}
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('g-recaptcha-response') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input name="term_condition" required type="checkbox" required=""> By clicking Register, you agree to
+                                    our <a href="javacript:void(0)">Terms</a> and that you have read our <a href="javacript:void(0)">Data Policy</a>, including
+                                    our <a href="javacript:void(0)">Cookie Use</a>.
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <div class="login-buttons">
+                                    <button type="submit" class="btn btn-success btn-block">Register</button>
+                                </div>
+                            </div>
+                            
                         </div>
-                    </div>
-                    <div class="m-t-20 m-b-40 p-b-40 text-inverse">
-                        Already a member? Click <a href="{{ route('login') }}">here</a> to login.
-                    </div>
+                    </section>
+                    
+                    
+                    
+                    
                 </form>
             </div>
         </section>

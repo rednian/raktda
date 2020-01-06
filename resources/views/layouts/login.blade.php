@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>RAKTDA | Login </title>
+    <title>RAKTDA | {{__('Login')}} </title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -91,12 +91,12 @@
                         {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
                         <h4 style="margin-top: 10%;" class="text-center">Login to your Account</h4>
                     </div>
-                    @if (Session::has('success'))
+                    @if (session('success'))
                         <section class="row">
                             <div class="col-sm-12">
                                 <div style="margin-bottom: 0px;" class="alert alert-success alert-dismissible" role="alert">
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  <strong>Success!</strong> {{Session::get('success')}}
+                                  <strong>Success!</strong> {{session('success')}}
                                 </div>
                             </div>   
                         </section>
@@ -117,7 +117,7 @@
                                 placeholder="Email or username" required />
                             @error('username')
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
+                                <strong class="text-danger">{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
@@ -127,7 +127,7 @@
                                 placeholder="Password" required />
                             @error('password')
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
+                                <strong class="text-danger">{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
