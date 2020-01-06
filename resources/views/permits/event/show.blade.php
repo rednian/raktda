@@ -78,7 +78,7 @@
                     <div class="kt-widget kt-widget--user-profile-4">
                         <div class="kt-widget__head kt-margin-t-5">
                             <div class="kt-widget__media kt-margin-b-5">
-                                @if ($event->thumbnail)
+                                @if ($event->logo_thumbnail)
                                 <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}"
                                     class="kt-widget__img img-circle" alt="image">
                                 @else

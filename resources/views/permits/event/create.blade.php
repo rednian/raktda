@@ -1312,7 +1312,7 @@
             var prev = $('#prev_val_isTruck').val();
             if (id == 1) {
                editTruck();
-            } else if(id == 0) {
+            } else if(id == 0 && prev == 1) {
                 $('#notSaveModal').modal({
                         backdrop: 'static',
                         keyboard: false,
@@ -1437,13 +1437,22 @@
         
         function go_back_truck_list()
         {
-            $('#edit_food_truck').modal('show');
+            $('#edit_food_truck').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
             $('#edit_one_food_truck').modal('hide');
         }
 
 
         function editTruck(){
-            $('#edit_food_truck').modal('show');
+            // $('#edit_food_truck').modal('show');
+            $('#edit_food_truck').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
             $.ajax({    
                 url:  "{{route('event.fetch_truck_details')}}",
                 type:'POST',
@@ -1534,6 +1543,7 @@
             //     alert('fdf');
             // });
             $('#truck_details_form').trigger('reset');
+            $('#truck_upload_form').trigger('reset');
             $('#edit_truck_title').hide();
             $('#update_this_td').hide();
             $('#add_truck_title').show();
@@ -1576,7 +1586,11 @@
                             {
                                 editTruck();
                                 $('#edit_one_food_truck').modal('hide');
-                                $('#edit_food_truck').modal('show');
+                                $('#edit_food_truck').modal({
+                                    backdrop: 'static',
+                                    keyboard: false,
+                                    show: true
+                                });
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
@@ -1615,7 +1629,11 @@
                             if(result) 
                             {
                                 editTruck();
-                                $('#edit_food_truck').modal('show');
+                                $('#edit_food_truck').modal({
+                                    backdrop: 'static',
+                                    keyboard: false,
+                                    show: true
+                                });
                                 $('#edit_one_food_truck').modal('hide');
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
@@ -1985,7 +2003,7 @@
             if(id == 1){
                 editLiquor();
             }
-            if(id == 0) {
+            if(id == 0 && prev == 1) {
                 // alert('The Added data will be lost');
                 $('#notSaveModal').modal({
                             backdrop: 'static',
@@ -2003,36 +2021,43 @@
                 url:  "{{route('event.fetch_liquor_details')}}",
                 type: 'POST',
                 success: function (data) {
-                    if(data) 
+                    if(data.trim()) 
                     {
-                        $('#liquor_details .ajax-file-upload-red').trigger('click');
-                        $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
                         if(data.provided == 1)
                         {
                             checkLiquorVenue(1);
                             $('#liquor_permit_no').val(data.liquor_permit_no);
+                            $("input:radio[name='isLiquorVenue'][value='1']").attr('checked', true);
                         }else {
                             checkLiquorVenue(0);
+                            $("input:radio[name='isLiquorVenue'][value='0']").attr('checked', true)
                             $('#l_company_name_en').val(data.company_name_en);
                             $('#l_company_name_ar').val(data.company_name_ar);
                             $('#purchase_receipt').val(data.purchase_receipt);
                             $('#liquor_service').val(data.liquor_service);
                             changeLiquorService();
                             $('#liquor_types').val(data.liquor_types);
-                            liquorDocumentsValidator = $('#liquor_upload_form').validate({
-                                rules: liquorDocRules,
-                                messages: liquorDocMessages
-                            });
-                            liquorDocUpload();
+                           
                         }
                     }
+                    $('#liquor_details').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                    $('#liquor_details .ajax-file-upload-red').trigger('click');
+                    liquorDocumentsValidator = $('#liquor_upload_form').validate({
+                        rules: liquorDocRules,
+                        messages: liquorDocMessages
+                    });
+                    liquorDocUpload();
                    
                 }
             });
         }
 
-        
+            
        function changeData()
        {
             var fromSection = $('#fromSection').val();
@@ -2044,8 +2069,10 @@
                     $('#notSaveModal').modal('hide');
                     if(fromSection == 'truck'){
                         $('#truckEditBtn').hide();
+                        $('input[name="isTruck"]').filter('[value=0]').prop('checked', true);
                     }else if(fromSection == 'liquor'){
                         $('#liquorEditBtn').hide();
+                        $('input[name="isLiquor"]').filter('[value=0]').prop('checked', true);
                     }
                     
                 }

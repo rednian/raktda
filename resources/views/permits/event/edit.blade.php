@@ -1287,7 +1287,7 @@
             var prev = $('#prev_val_isTruck').val();
             if (id == 1) {
                editTruck();
-            } else if(id == 0) {
+            } else if(id == 0 && prev == 1) {
                 $('#notSaveModal').modal({
                         backdrop: 'static',
                         keyboard: false,
@@ -1401,7 +1401,11 @@
         
         function go_back_truck_list()
         {
-            $('#edit_food_truck').modal('show');
+            $('#edit_food_truck').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
             $('#edit_one_food_truck').modal('hide');
         }
 
@@ -1417,7 +1421,11 @@
                     {
                         $('#food_truck_list').empty();
                         // console.log(result);
-                        $('#edit_food_truck').modal('show');
+                        $('#edit_food_truck').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
@@ -1489,6 +1497,7 @@
         $('#add_new_truck').click(function(){
             $('#edit_one_food_truck').modal('show');
             $('#truck_details_form').trigger('reset');
+            $('#truck_upload_form').trigger('reset');
             $('#edit_truck_title').hide();
             $('#update_this_td').hide();
             $('#add_truck_title').show();
@@ -1532,7 +1541,11 @@
                             {
                                 editTruck();
                                 $('#edit_one_food_truck').modal('hide');
-                                $('#edit_food_truck').modal('show');
+                                $('#edit_food_truck').modal({
+                                    backdrop: 'static',
+                                    keyboard: false,
+                                    show: true
+                                });
                                 $('#truckEditBtn').show();
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
@@ -1571,7 +1584,11 @@
                             if(result) 
                             {
                                 editTruck();
-                                $('#edit_food_truck').modal('show');
+                                $('#edit_food_truck').modal({
+                                    backdrop: 'static',
+                                    keyboard: false,
+                                    show: true
+                                });
                                 $('#edit_one_food_truck').modal('hide');
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
@@ -1947,7 +1964,7 @@
             if(id == 1){
                 editLiquor();
             }
-            if(id == 0) {
+            if(id == 0 && prev == 1) {
                 // alert('The Added data will be lost');
                 $('#notSaveModal').modal({
                             backdrop: 'static',
@@ -1965,10 +1982,8 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data) 
+                    if(data.trim()) 
                     {
-                        $('#liquor_details .ajax-file-upload-red').trigger('click');
-                        $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
                         if(data.provided == 1)
                         {
@@ -1984,13 +1999,22 @@
                             $('#liquor_service').val(data.liquor_service);
                             changeLiquorService();
                             $('#liquor_types').val(data.liquor_types);
-                            liquorDocumentsValidator = $('#liquor_upload_form').validate({
-                                rules: liquorDocRules,
-                                messages: liquorDocMessages
-                            });
-                            liquorDocUpload();
+                           
                         }
                     }
+                    // $('#liquor_details').modal('show');
+                    $('#liquor_details').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                    $('#liquor_details .ajax-file-upload-red').trigger('click');
+                    liquorDocumentsValidator = $('#liquor_upload_form').validate({
+                        rules: liquorDocRules,
+                        messages: liquorDocMessages
+                    });
+                    liquorDocUpload();
+                }
                 }
             });
         }
@@ -2008,8 +2032,10 @@
                     $('#notSaveModal').modal('hide');
                     if(fromSection == 'truck'){
                         $('#truckEditBtn').hide();
+                        $('input[name="isTruck"]').filter('[value=0]').prop('checked', true);
                     }else if(fromSection == 'liquor'){
                         $('#liquorEditBtn').hide();
+                        $('input[name="isLiquor"]').filter('[value=0]').prop('checked', true);
                     }
                 }
             });

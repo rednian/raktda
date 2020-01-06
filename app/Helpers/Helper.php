@@ -383,4 +383,40 @@ function check_is_blocked()
     return $data ;
 }
 
+function getPaymentOrderId($from, $id)
+{
+    $pre =  $from == 'artist' ?  'AP' : 'EP' ;
+    $last_transaction = \App\Transaction::latest()->first();
+    $payment_no = '';
+    // dd($last_transaction);
+    if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
+        $payment_no = sprintf("%07d",  1);
+    } else {
+        $last_trn = explode('-',$last_transaction->payment_order_id);
+        $last_year = $last_trn[1];
+        if($last_year == date('Y'))
+        {
+            $n = $last_trn[2];
+            $f = substr($n, 0, 1);
+            $l = substr($n, -1, 1);
+            $x = 7;
+            if ($f == 9 && $l == 9) {
+                $x++;
+            }
+            $payment_no = sprintf("%0" . $x . "d", (int) $n + 1);
+        }else {
+            $payment_no = sprintf("%07d",  1);
+        }
+        
+    }
+    if($from == 'event'){
+        $times = \App\EventTransaction::where('event_id', $id)->distinct('transaction_id')->count('transaction_id');
+        $times += 1;
+    }else {
+        $times = \App\ArtistPermitTransaction::where('artist_permit_id', $id)->distinct('transaction_id')->count('transaction_id');
+        $times += 1;
+    }
+    return $pre.'-'.date('Y').'-'.$payment_no.'-'.$times;
+}
+
 
