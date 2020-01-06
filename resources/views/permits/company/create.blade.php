@@ -176,6 +176,7 @@
                                     <div class="form-group">
                                         <label>Emirate <span class="text-danger">*</span></label>
                                         <select required name="emirate_id" class="form-control">
+                                            <option selected disabled>{{__('Select Emirate')}}</option>
                                             @if (App\Emirates::orderBy('name_en')->count() > 0)
                                             @foreach (App\Emirates::orderBy('name_en')->get() as $emirate)
                                             <option {{ $emirate->name_en == 'Ras Al Khaimah' ? 'selected': null }}
@@ -191,6 +192,7 @@
                                     <div class="form-group">
                                         <label>Area <span class="text-danger">*</span></label>
                                         <select required name="area_id" class="form-control">
+                                            <option selected disabled>{{__('Select Area')}}</option>
                                             @if (App\Areas::where('emirates_id', 5)->orderBy('area_en')->count() > 0)
                                             @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as
                                             $area)
@@ -203,7 +205,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Address <span class="text-danger">*</span></label>
-                                        <input required value="{{old('company_email')}}" type="text" name="address"
+                                        <input required value="{{old('address')}}" type="text" name="address"
                                             class="form-control" autocomplete="off">
                                     </div>
                                 </div>
@@ -377,6 +379,14 @@
            } 
         }
       },
+      trade_license_issued_date:{
+        validators:{
+            date:{
+
+            }
+        }
+      },
+
       password: {
         validators: {
           notEmpty: {

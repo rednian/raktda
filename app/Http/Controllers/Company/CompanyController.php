@@ -26,12 +26,13 @@ class CompanyController extends Controller
 
    public function store(Request $request)
    {
+     // dd($request->all());
     $valid_data = $request->validate([
-     'name_en'=>'required|max:255',
-     'trade_license'=> 'required|max:255',
-     'trade_license_issued_date'=>'required|before_or_equal:'.Carbon::now().'',
-     'trade_license_expired_date'=>'required|after:'.Carbon::now().'',
-     'phone_number'=>'required|max:15',
+     // 'name_en'=>'required|max:255',
+     // 'trade_license'=> 'required|max:255',
+     // 'trade_license_issued_date'=>'required|before_or_equal:'.Carbon::now().'',
+     // 'trade_license_expired_date'=>'required|after:'.Carbon::now().'',
+     // 'phone_number'=>'required|max:15',
      // 'company_email'=>'required|email:rfc,strict,dns,spoof,filter',
      // 'country_id'=>'required|integer',
      // 'emirate_id'=>'required|integer',
@@ -44,12 +45,16 @@ class CompanyController extends Controller
      'g-recaptcha-response' => 'required|captcha',
      'term_condition' => 'required'
     ]);
+
+    // dd($valid_data);
+
       try {
          DB::beginTransaction();
 
          $company = Company::create(array_merge($request->all(), ['status'=>'draft']));
          $request['password'] = Hash::make($request->password);
          $user = $company->user()->create(array_merge($request->all(), ['IsActive'=> 0, 'type'=> 1]));
+         $user->roles()->sync(2);
          DB::commit();
          return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))
          ->with('success', 'Registration successful. Please login and verify your email.');

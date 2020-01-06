@@ -80,13 +80,13 @@
                                     <div class="alert alert-outline-danger kt-padding-t-5 kt-padding-b-5" role="alert">
                                         <div class="alert-text">
                                            @if ($company->status == 'back')
-                                        <h6 class="alert-heading">{{__('Please check the comment below update the information required.')}}</h6>
+                                        <h6 class="alert-heading">{{__('Please check the comment below and update the information needed.')}}</h6>
                                            @endif
                                           
                                        
                                           @if ($company->status == 'rejected')
                                         <h4 class="alert-heading">{{__('Sorry your application was rejected.')}}</h4>
-                                             <span>Your application is rejected and can no longer proceed. Please contact RAKTDA.</span>
+                                             <span>Your application was rejected and can no longer proceed. Please contact RAKTDA.</span>
                                            @endif 
 
                                           </p>
