@@ -410,7 +410,7 @@
             <li class="nav-item">
               <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_2_tab_content" role="tab">
                 {{__('CHECKED HISTORY')}}
-                <span class="kt-badge kt-badge--outline kt-badge--warning">{{ $company->comment()->count() }}</span>
+                <span class="kt-badge kt-badge--outline kt-badge--info">{{ $company->comment()->count() }}</span>
               </a>
             </li>
           </ul>

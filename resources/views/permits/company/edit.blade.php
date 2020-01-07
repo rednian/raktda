@@ -53,15 +53,27 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="company-edit" role="tabpanel">
                     <div class="kt-form kt-form--label-right">
+                      @if ($company->status == 'active' && (!$company->event()->exists() || !$company->artist()->exists()) )
+                        <div class="alert alert-success kt-padding-b-5 kt-padding-t-5 kt-margin-b-5" role="alert">
+                             <div class="alert-text">
+                               <h4 class="alert-heading">Congratulation your establishment is registered successfully!</h4>
+                               <p>You can now apply an <a href="{{ URL::signedRoute('event.create') }}" class="btn btn-sm btn--maroon">EVENT PERMIT</a> or  
+                                <a href="{{ URL::signedRoute('company.add_new_permit', 1) }}" class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
+                               
+                               
+                             </div>
+                           </div>
+                      @endif
+                      
                       @if ($company->status == 'draft')
-                        <div class="alert alert-outline-danger alert-elevate fade show" role="alert">
+                        <div class="alert alert-outline-danger alert-elevate fade show kt-padding-b-5 kt-padding-t-5" role="alert">
                           <div class="alert-icon"><i class="flaticon-warning"></i></div>
                           <div class="alert-text">
                             <ul>
-                              <li>{{__('Please complete the required fields below to register your company and enjoy the full services of RAKTDA. ')}}</li>
-                            {{--   @if (!$valid)
-                                <li>{{__('Please upload the required documents.')}}</li>
-                              @endif --}}
+                              <li>{{__('Please complete the required fields below and submit for approval and enjoy the full services of RAKTDA. ')}}</li>
+                              @if ($invalid)
+                                <li>{{__('Please make sure all documents are uploaded before submitting.')}}</li>
+                              @endif
                             </ul>
                           </div>
                           <div class="alert-close">
@@ -71,12 +83,31 @@
                           </div>
                         </div>
                       @endif
+
+                    {{--   @if ($company->status == 'draft')
+                        <div class="alert alert-outline-danger alert-elevate fade show kt-padding-b-5 kt-padding-t-5" role="alert">
+                          <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                          <div class="alert-text">
+                            <ul>
+                              <li>{{__('Please complete the required fields below and submit for approval and enjoy the full services of RAKTDA. ')}}</li>
+                              @if ($invalid)
+                                <li>{{__('Please make sure all documents are uploaded before submitting.')}}</li>
+                              @endif
+                            </ul>
+                          </div>
+                          <div class="alert-close">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true"><i class="la la-close"></i></span>
+                            </button>
+                          </div>
+                        </div>
+                      @endif --}}
                       
                         <div class="kt-form__body">
                             <div class="kt-section kt-section--first">
                                 <div class="kt-section__body">
-                                  
-                                  @if ($company->status == 'back' || $company->status == 'rejected' )
+                  
+                                  @if ($company->status == 'back'  )
                                     <div class="alert alert-outline-danger kt-padding-t-5 kt-padding-b-5" role="alert">
                                         <div class="alert-text">
                                            @if ($company->status == 'back')
@@ -84,10 +115,6 @@
                                            @endif
                                           
                                        
-                                          @if ($company->status == 'rejected')
-                                        <h4 class="alert-heading">{{__('Sorry your application was rejected.')}}</h4>
-                                             <span>Your application was rejected and can no longer proceed. Please contact RAKTDA.</span>
-                                           @endif 
 
                                           </p>
                                           <hr class="kt-margin-b-0">
@@ -148,13 +175,14 @@
                                                        <section class="row form-group form-group-sm">
                                                         @php
                                                           if ($company->status == 'active' || $company->status == 'blocked') {
-                                                            $disabled = 'disabled';
+                                                            $disabled = 'readonly';
                                                           }
                                                           else{
                                                             $disabled = null;
                                                           }
                                                         @endphp
                                                            <div class="col-md-6">
+                                                            <input type="hidden" name="has_document" value="{{$invalid}}">
                                                                <label >Establishment Name <span class="text-danger">*</span></label>
                                                                 <input name="company_type_id" type="hidden" value="{{App\CompanyType::where('name_en', 'corporate')->first()->company_type_id}}">
                                                                <input {{$disabled}}  name="name_en" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->name_en}}">
@@ -344,6 +372,7 @@
                                                         <span class="kt-font-danger kt-font-bold">Note:</span>
                                                         <ul>
                                                           <li class="kt-font-danger">{{__('Uploaded files will be deleted if not submitted or saved as draft.')}}</li>
+                                                          <li>{{__('Uploading file not in the list? Please use the Other upload option.')}}</li>
                                                           <li>{{__('The maximum file size for uploads is 5MB.')}}</li>
                                                           <li>{{__('File Upload (JPG, PNG & PDF) only allowed.')}}</li>
                                                         </ul>
@@ -408,7 +437,7 @@
                                             @if ($company->status == 'draft')
                                                <button style="padding: 0.5rem 1rem;" type="submit" name="submit" value="draft" class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark">Save as Draft</button>
                                             @endif
-                                               <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">{{ $company->application ? 'Update Application' : 'Submit Application'}}</button>
+                                               <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">{{ $company->application_date ? 'Update Information' : 'Submit Application'}}</button>
                                            </div>
                                            
                                        </div>

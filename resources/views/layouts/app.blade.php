@@ -118,6 +118,26 @@
                 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
                     <!-- begin:: Content -->
                     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
+
+                    
+                        @if (Auth::check() &&
+                            (Auth::user()->company->trade_license_expired_date->diffInDays(Carbon\Carbon::now()) <=10) 
+                            && !is_null(Auth::user()->company->registered_by) 
+                            )
+                          <div class="alert alert-warning fade show kt-margin-b-5" role="alert">
+                              <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                              <div class="alert-text">{{__('Your Business Trade License will expire ')}} 
+                                 <span title="{{Auth::user()->company->trade_license_expired_date->format('d-F-Y') }}" class="text-underline kt-font-bold">{{ humanDate(Auth::user()->company->trade_license_expired_date) }}</span>. <br>
+                              {{__('Please update your Business Trade License before the expiry date to avoid inconvenient in applying RAKTDA Services.')}}</div>
+                              <div class="alert-close">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                      <span aria-hidden="true"><i class="la la-close"></i></span>
+                                  </button>
+                              </div>
+                          </div>
+                        @endif
+                        
+
                         <section class="row">
                             <div class="col">
                                 @yield('content')
@@ -157,6 +177,8 @@
 @yield('script')
 <script type="text/javascript">
     $(document).ready(function(){
+
+
         @if (Auth::check())
             @if (Session::has('message'))
             $.notify({

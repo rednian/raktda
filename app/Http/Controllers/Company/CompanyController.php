@@ -72,26 +72,9 @@ class CompanyController extends Controller
        
        $company->requirement()->whereNull('is_submit')->delete();
 
-        $requirements = Requirement::where('requirement_type', 'company')->get();
-        $array = [];
-        $data = null;
-        if (!is_null($requirements)) {
-          foreach ($requirements as $requirement) {
-            // $data = Requirement::whereDoesntHave('company', function($q) use ($requirement, $company){ 
-            //   $q->where(['requirement_id'=>$requirement->requirement_id, 'company_id'=>$company->company_id]); 
-            // })->where('requirement_type', 'company')->get();
-            // $data = $company->requirement()->doesntHave('requirement')->toSql();
-            // array_push($array, $company->requirement()->where('requirement_id', $requirement->requirement_id)->exists());
-          }
-        }
-        // dd( $company->requirement()->doesntHave('requirement')->get() );
-
-
        return view('permits.company.edit', [
         'company'=>$company, 
-        // 'page_title'=> $request->user()->LanguageId == 1 ? ucfirst($company->name_en) : ucfirst($company->name_ar), 
-        'valid'=> in_array(false, $array),
-        'requirement'=>$data
+        'invalid'=> $this->hasRequirement($company),
       ]); 
    }
 
@@ -147,12 +130,29 @@ class CompanyController extends Controller
       return redirect()->back()->with(['message'=> $result]);
    }
 
+
+   private function hasRequirement($company)
+   {
+    $requirements = Requirement::where('requirement_type', 'company')->get();
+    $array = [];
+    $data = null;
+    if (!is_null($requirements)) {
+      foreach ($requirements as $requirement) {
+        array_push($array, $company->requirement()->where('requirement_id', $requirement->requirement_id)->exists());
+      }
+    }
+    return in_array(false, $array);
+   }
+
+
    public function update(Request $request, Company $company)
    {
     if ($company->status == 'rejected') {
       return redirect()->back();
     }
-    // dd($request->all());
+    if ($this->hasRequirement($company)) {
+      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error']);
+    }
       try {
 
          DB::beginTransaction();
@@ -177,7 +177,9 @@ class CompanyController extends Controller
 
 
             if (Company::exists()) {
-               $last_reference = Company::where('company_id', '!=', $company->company_id)->where('status', '!=', 'draft')->orderBy('company_id', 'desc')->first()->reference_number;
+               $last_reference = Company::where('company_id', '!=', $company->company_id)
+               ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')
+               ->first()->reference_number;
                $reference_number = explode('-', $last_reference);
                // dd($reference_number);
                $reference_number = $reference_number[2]+1 ;
@@ -187,6 +189,7 @@ class CompanyController extends Controller
               $reference_number = 'EST-'.date('Y').'-0001';
              } 
 
+             // dd($request->all());
             $company = Company::find($company->company_id);
             $company->company_type_id = $request->company_type_id;
             $company->company_email = $request->company_email;
