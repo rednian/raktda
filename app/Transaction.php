@@ -10,7 +10,7 @@ class Transaction extends Model
     use SoftDeletes;
     protected $table = 'transaction';
     protected $primaryKey = 'transaction_id';
-    protected $fillable = ['reference_number', 'transaction_type', 'transaction_date', 'company_id', 'user_id', 'created_by'];
+    protected $fillable = ['reference_number', 'transaction_type', 'transaction_date', 'company_id', 'user_id', 'created_by', 'payment_transaction_id', 'payment_receipt_no', 'payment_order_id'];
 
     public function artistPermitTransaction()
     {

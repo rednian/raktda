@@ -18,10 +18,6 @@ use App\Event;
 use App\Requirement;
 use App\EventRequirement;
 use App\EventTypeRequirement;
-use Yajra\Datatables\Datatables;
-use Carbon\Carbon;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\EventRequest;
 use App\Company;
 use App\EventLiquorTruckRequirement;
 use App\EventTruck;
@@ -32,6 +28,12 @@ use App\EventComment;
 use App\EventOtherUpload ;;
 use App\Happiness;
 use App\EventTypeSub;
+use App\ArtistTempData;
+use App\Permit;
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\EventRequest;
 use NumberToWords\NumberToWords;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -41,10 +43,19 @@ class EventController extends Controller
     public function index()
     {
         Event::whereDate('expired_date', '<', Carbon::now())->update(['status' => 'expired']);
-        \App\ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
-        \App\Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
-        $eventtypes = EventType::orderBy('name_en', 'asc')->get();
-        return view('permits.event.index', ['types' => $eventtypes]);
+        ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
+        Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
+        return view('permits.event.index');
+    }
+
+    public function eventPreloadData() {
+        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
+        $data['event_sub_types'] = EventTypeSub::all()->sortBy('sub_name_en');
+        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
+        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
+        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
+        $data['emirates'] = Emirates::all()->sortBy('name_en');
+        return $data;
     }
 
     public function create(Request $request)
@@ -52,20 +63,19 @@ class EventController extends Controller
         if(!$request->hasValidSignature()){
             return abort(401);
         }
-        EventLiquor::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
-        EventTruck::whereNull('event_id')->where('created_by',Auth::user()->user_id)->delete();
-        // $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
-        $data['event_sub_types'] = EventTypeSub::all()->sortBy('sub_name_en');
-        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
-        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
-        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
+        $data = $this->eventPreloadData();
+        $user_id = Auth::user()->user_id;
+        EventLiquor::whereNull('event_id')->where('created_by', $user_id)->delete();
+        EventTruck::whereNull('event_id')->where('created_by', $user_id)->delete();
+
         return view('permits.event.create', $data);
     }
 
     public function add_update_truck(Request $request)
     {
+        try {
+            DB::beginTransaction();
+
         $event_id = $request->event_id;
         $truck_id = $request->truck_id;
         $truck_details = json_decode($request->truckDetails, true);
@@ -198,24 +208,35 @@ class EventController extends Controller
             }
         }
 
-        if(isset($request->from) && $request->from == "amend")
-        {
-            Event::where('event_id', $request->event_id)->update([
-                    'status' => 'amended'
-                ]);
+            if(isset($request->from) && $request->from == "amend")
+            {
+                Event::where('event_id', $request->event_id)->update([
+                        'status' => 'amended'
+                    ]);
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
         }
 
        return;
+    
     }
 
     public function add_liquor(Request $request)
     {
+       
         $liquor_details = $request->liquorDetails;
         $liquorDocDetails = json_decode($request->liquorDocDetails,  true);
         $type = $request->type;
         $event_liquor_id = '';
 
         $old_event_liquor_id = $request->event_liquor_id;
+
+        try {
+            DB::beginTransaction();
 
         if ($liquor_details) {
             $lq = $liquor_details;
@@ -339,12 +360,19 @@ class EventController extends Controller
 
             }
         }
-
-        if ($event_liquor) {
-            $result = ['success', __('Liquor Details Added Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+            DB::commit();
+            if($old_event_liquor_id)
+            {
+                $result = ['success', __('Liquor Details Updated Successfully'), 'Success'];
+            }else {
+                $result = ['success', __('Liquor Details Added Successfully'), 'Success'];
+            }
+            
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
+
 
         return response()->json(['message' => $result, 'event_liquor_id' => $event_liquor_id]);
     }
@@ -353,7 +381,8 @@ class EventController extends Controller
     {
         $event_id = $request->eventId;
         $from = $request->from;
-
+        try {
+            DB::beginTransaction();
        if($event_id) {      
             if($from == 'liquor')
             {
@@ -379,6 +408,11 @@ class EventController extends Controller
        {
             Event::where('event_id', $event_id)->update(['is_truck' => 0]);
        }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
 
        return;
 
@@ -433,13 +467,18 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-
+        
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
         $lq = json_decode($request->lq, true);
         $from = $request->from;
         $cid = Auth::user()->type == 1 ? Auth::user()->EmpClientId : '';
         $userid = Auth::user()->user_id;
+
+        $event_id = '';
+
+        try {
+            DB::beginTransaction();
 
         $input_Array = array(
             'name_en' => $evd['name'],
@@ -684,14 +723,12 @@ class EventController extends Controller
 
         }
 
-        $this->insertEventImages($event_id, $request->description);
-
-        
-
-        if ($event) {
+            $this->insertEventImages($event_id, $request->description);
+            DB::commit();
             $result = ['success', __('Event Permit Applied Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
 
         return response()->json(['message' => $result, 'event_id' => $event_id]);
@@ -746,13 +783,8 @@ class EventController extends Controller
         if(!$request->hasValidSignature()){
             return abort(401);
         }
-        // $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
-        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
-        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
+        $data = $this->eventPreloadData();
         $data['staff_comments'] = $event->comment()->where('type', 1)->get();
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
-        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
         $data['event'] = $event;
         if (! $event) {
             abort(401);
@@ -791,12 +823,12 @@ class EventController extends Controller
             // $rand_keys = array_rand($input, 2);
             // $rand_keys_d = array_rand($arr, 2);
             return [    
-                'title' => $user->LanguageId == 1 ? ucwords($event->name_en) : $event->name_ar,
+                'title' => $user->LanguageId == 1 ?  ucwords($event->name_en) : $event->name_ar,
                 'start' => date('Y-m-d', strtotime($event->issued_date)) . 'T' . date('H:i:s', strtotime($event->time_start)),
                 'end' => date('Y-m-d', strtotime($event->expired_date)) . 'T' . date('H:i:s', strtotime($event->time_end)),
                 'id' => $event->event_id,
-                'url' => $event->created_by == $user->user_id ? route('event.show', $event->event_id) . '?tab=calendar' : '#',
-                'description' => 'Venue : ' . $user->LanguageId == 1 ? $event->venue_en : $event->venue_ar,
+                'url' => $event->created_by == $user->user_id ? URL::signedRoute('event.show',[ 'id' =>  $event->event_id, 'tab' => 'calendar'])  : '#',
+                'description' => 'Venue : ' . ( $user->LanguageId == 1  ? ucwords($event->venue_en) : $event->venue_ar )    ,
                 'backgroundColor' => '#8c272d !important',
                 'textColor' => '#fff !important',
             ];
@@ -811,6 +843,9 @@ class EventController extends Controller
 
     public function update_event(Request $request)
     {
+        try {
+            DB::beginTransaction();
+
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
         $dnd = json_decode($request->documentNames, true);
@@ -971,11 +1006,19 @@ class EventController extends Controller
             }
         }
 
-        if ($event) {
+            DB::commit();
             $result = ['success', __('Event Permit Updated Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
+
+
+        // if ($event) {
+        //     $result = ['success', __('Event Permit Updated Successfully'), 'Success'];
+        // } else {
+        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
+        // }
 
         return response()->json(['message' => $result]);
     }
@@ -1028,10 +1071,10 @@ class EventController extends Controller
             return abort(401);
         }
 
-        $hasHappiness = Happiness::where('type', 'event')->where('application_id', $permit->permit_id)->exists();
+        $hasHappiness = Happiness::where('type', 'event')->where('application_id', $id)->exists();
         if(!$hasHappiness)
         {
-            return redirect(URL::signedRoute('company.happiness_center', ['id' => $permit->permit_id]));
+            return redirect(URL::signedRoute('company.happiness_center', ['id' => $id]));
         }
 
         $event_details = Event::with('type', 'country')->where('event_id', $id)->first();
@@ -1079,19 +1122,25 @@ class EventController extends Controller
         return $pdf->stream('Event Permit-' . $event_permit_no . '.pdf');
     }
 
-    public function fetch_applied()
+    public function fetch_applied(Request $request)
     {
-        return $this->datatable_function('applied');
+        if($request->ajax()) {
+            return $this->datatable_function('applied');
+        }
     }
 
-    public function fetch_valid()
+    public function fetch_valid(Request $request)
     {
-        return $this->datatable_function('valid');
+        if($request->ajax()) {
+            return $this->datatable_function('valid', '');
+        }
     }
 
-    public function fetch_draft()
+    public function fetch_draft(Request $request)
     {
-        return $this->datatable_function('draft');
+        if($request->ajax()) {
+            return $this->datatable_function('draft', '');
+        }
     }
 
 
@@ -1221,7 +1270,8 @@ class EventController extends Controller
 
     public function applyAmend(Request $request)
     {
-
+        try {
+            DB::beginTransaction();
         $liquor_details = $request->liquorDetails;
         $liquorDocDetails = json_decode($request->liquorDocDetails,  true);
         $event_liquor_id = $request->event_liquor_id;
@@ -1346,13 +1396,20 @@ class EventController extends Controller
                 }
             }
         }
+
+        DB::commit();
+        $result = ['success', __('Event Permit Amended successfully'), 'Success'];
+    } catch (Exception $e) {
+        DB::rollBack();
+        $result = ['error', __($e->getMessage()), 'Error'];
+    }
             
 
-        if ($event) {
-            $result = ['success', __('Event Permit Amended Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
-        }
+        // if ($event) {
+        //     $result = ['success', __('Event Permit Amended Successfully'), 'Success'];
+        // } else {
+        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
+        // }
 
         return response()->json(['message' => $result]);
     }
@@ -1415,6 +1472,9 @@ class EventController extends Controller
 
     public function add_draft(Request $request)
     {
+        try {
+            DB::beginTransaction();
+
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
 
@@ -1619,12 +1679,18 @@ class EventController extends Controller
 
         Storage::deleteDirectory('public/' . Auth::user()->user_id . '/event/temp/');
 
-
-        if ($event) {
-            $result = ['success', __('Event Permit Draft Saved Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+            DB::commit();
+            $result = ['success', __('Event Permit Draft Saved successfully'), 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
+
+        // if ($event) {
+        //     $result = ['success', __('Event Permit Draft Saved Successfully'), 'Success'];
+        // } else {
+        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
+        // }
 
         return response()->json(['message' => $result]);
     }
@@ -1674,6 +1740,9 @@ class EventController extends Controller
 
     public function update_draft(Request $request)
     {
+        try {
+            DB::beginTransaction();
+
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
         $dnd = json_decode($request->documentN, true);
@@ -1843,12 +1912,18 @@ class EventController extends Controller
 
         Storage::deleteDirectory('public/' . $userid . '/event/temp/');
 
-
-        if ($event) {
+        DB::commit();
             $result = ['success', __('Draft Updated Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
+
+        // if ($event) {
+        //     $result = ['success', __('Draft Updated Successfully'), 'Success'];
+        // } else {
+        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
+        // }
 
         return response()->json(['message' => $result]);
     }
@@ -1927,12 +2002,19 @@ class EventController extends Controller
         $paidArtistFee = $request->paidArtistFee;
         $truck_fee = $request->truck_fee;
         $liquor_fee = $request->liquor_fee;
+        $transactionId = $request->transactionId;
+        $receipt = $request->receipt;
+        $orderId = $request->orderId;
 
         $trnx_id = Transaction::create([
             'reference_number' => getTransactionReferNumber(),
             'transaction_type' => 'event',
             'created_by' => Auth::user()->user_id,
-            'transaction_date' => Carbon::now()->format('Y-m-d')
+            'company_id' => Auth::user()->EmpClientId,
+            'transaction_date' => Carbon::now(),
+            'payment_transaction_id' => $transactionId,
+            'payment_receipt_no' => $receipt,
+            'payment_order_id' => $orderId
         ]);
         
         if ($trnx_id)
@@ -2031,9 +2113,9 @@ class EventController extends Controller
 
     public function happiness(Request $request, Event $event)
     {
-        if(!$request->hasValidSignature()){
-            return abort(401);
-        }
+        // if(!$request->hasValidSignature()){
+        //     return abort(401);
+        // }
         // $data['event_types'] = EventType::all()->sortBy('name_en');
         $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();

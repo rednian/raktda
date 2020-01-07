@@ -12,11 +12,12 @@
             <div class="modal-body">
                 <div class="d-flex pull-right kt-margin-b-10">
                     <button class="btn btn-sm btn--yellow" id="add_new_truck">{{__('Add New')}}</button>
-                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal">{{__('Done')}}</button>
+                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal"
+                        onclick="changeIsTruck()">{{__('Done')}}</button>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
-                        <thead>
+                        <thead class="kt-font-transform-u">
                             <th>#</th>
                             <th>{{__('Establishment Name')}}</th>
                             <th>{{__('Establishment Name (AR)')}}</th>
@@ -118,7 +119,7 @@
                             <div id="truckuploader_{{$i}}">{{__('Upload')}}
                             </div>
                         </div>
-                        <input type="hidden" id="datesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
+                        <input type="hidden" id="truckdatesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
                         @if($req->dates_required == 1)
                         <div class="col-lg-2 col-sm-12">
                             <label for="" class="text--maroon kt-font-bold"

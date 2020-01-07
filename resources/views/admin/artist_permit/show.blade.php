@@ -75,7 +75,7 @@
           <div class="col-md-8">
             <div class="kt-widget kt-widget--project-1">
               <div class="kt-widget__body kt-padding-0">
-                <h6 class="kt-font-dark kt-font-bold kt-margin-b-15 kt-font-transform-u">{{ __('Permit Details') }}</h6>
+                <h6 class="kt-font-dark kt-font-bold kt-margin-b-15 kt-font-transform-u">{{ __('Artist Permit Details') }}</h6>
                 <div class="kt-widget__stats kt-padding-l-0 kt-margin-t-5 kt-padding-b-5 border-top border-bottom">
                   <div class="kt-widget__item">
                     <span class="kt-widget__subtitel">{{__('Permit Start Date')}}</span>
@@ -188,7 +188,7 @@
                     <span class="kt-widget__value">{{str_pad($permit->rivision_number, 3, 0, STR_PAD_LEFT)}}</span>
                   </div>
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Connected to an Event ?')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('CONNECTED TO AN EVENT')}}</span>
                     <span class="kt-widget__value">
                       @if ($permit->event()->exists())
                         <a href="{{URL::signedRoute('admin.event.show', $permit->event->event_id)}}" class="btn btn-sm btn-secondary">{{__('YES')}}</a>
@@ -253,7 +253,7 @@
                   </table>
 
 
-                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10 kt-margin-t-20">{{ __('Contact Person Details') }}</h6>
+                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10 kt-margin-t-20">{{ __('Contact Information') }}</h6>
                   <table class="table table-borderless table-sm table-display">
                     <tbody>
                       <tr>
@@ -328,16 +328,16 @@
             </div>
             <ul id="tabDetails" class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_1_tab_content" role="tab" aria-selected="true">{{ __('ARTIST LIST') }}</a>
+                    <a class="nav-link active" data-toggle="tab" href="#artist-tab" role="tab" aria-selected="true">{{ __('ARTIST LIST') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_2_tab_content" role="tab" aria-selected="false">
-                       {{ __('ACTION HISTORY') }}
+                    <a class="nav-link" data-toggle="tab" href="#comment-history" role="tab" aria-selected="false">
+                       {{ __('CHECKED HISTORY') }}
                     </a>
                 </li>
                 @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content" role="tab" aria-selected="false">
+                    <a class="nav-link" data-toggle="tab" href="#permit-history" role="tab" aria-selected="false">
                                     {{ __('PERMIT HISTORY') }}
                                     <span class="kt-badge kt-badge--outline kt-badge--info">{{$rivision}}</span>
                                 </a>
@@ -345,7 +345,7 @@
                 @endif
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="kt_portlet_base_demo_1_1_tab_content" role="tabpanel">
+                <div class="tab-pane active" id="artist-tab" role="tabpanel">
                     <table class="table table-hover border table-borderless table-striped table-sm" id="artist-table">
                            <thead>
                            <tr>
@@ -360,7 +360,7 @@
                            </thead>
                     </table>
                 </div>
-                <div class="tab-pane" id="kt_portlet_base_demo_1_2_tab_content" role="tabpanel">
+                <div class="tab-pane" id="comment-history" role="tabpanel">
 
                     @if ($permit->comment()->count() > 0)
                      <div class="card">
@@ -416,7 +416,7 @@
                     @endif
                 </div>
                 @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
-                <div class="tab-pane" id="kt_portlet_base_demo_1_3_tab_content" role="tabpanel">
+                <div class="tab-pane" id="permit-history" role="tabpanel">
                    <table class="table table-striped table-borderless table-hover" id="table-permit-history">
                      <thead>
                        <tr>
@@ -455,6 +455,15 @@
       
       artistTable();
       permitHistory();
+      hasUrl();
+
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var current_tab = $(e.target).attr('href');
+
+        // if('#approver-tab' == current_tab ){ permitComment(); }
+        if('#permit-history' == current_tab ){ permitHistory(); }
+      });
+
 
        $('form[name=frm_cancel]').validate();
 
@@ -586,5 +595,16 @@
           });
        });
     }
+
+  function hasUrl(){
+     var hash = window.location.hash;
+     hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+     $('.nav-tabs a').click(function (e) {
+       $(this).tab('show');
+       var scrollmem = $('body').scrollTop();
+       window.location.hash = this.hash;
+       // $('html,body').scrollTop(scrollmem);
+     });
+   }
 </script>
 @endsection

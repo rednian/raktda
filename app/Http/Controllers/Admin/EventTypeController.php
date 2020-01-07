@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\DB;
 use App\EventType;
 use Auth;
 use Illuminate\Http\Request;
@@ -139,9 +140,10 @@ class EventTypeController extends Controller
     public function update(Request $request, EventType $event_type)
     {
         try{
-            $event_type->update(array_merge($request->all(), ['udpated_by', Auth::user()->user_id] ));
-            $result = ['success', 'Event Type has been saved successfully', 'Success'];
+            DB::beginTransaction();
 
+            $event_type->update(array_merge($request->all(), ['udpated_by', Auth::user()->user_id] ));
+            
             if($request->has('requirement_id')){
 
                 $requirements = [];
@@ -159,12 +161,50 @@ class EventTypeController extends Controller
                 $event_type->requirements()->sync([]);
             }
 
+            //SAVE NEW SUB CATEGORIES
+            if($request->has('sub_name')){
+                foreach ($request->sub_name as $key => $value) {
+                    if($value['en'] != "" && $value['ar'] != ""){
+                        $event_type->subType()->create([
+                            'sub_name_en' => $value['en'],
+                            'sub_name_ar' => $value['ar']
+                        ]);
+                    }
+                }
+            }
+
+            //SAVE OLD SUB CATEGORIES
+            if($request->has('edit_sub')){
+                foreach ($request->edit_sub as $key => $value) {
+
+                    if($request->has('removed_subcategories')){
+                        if(in_array($key, $request->removed_subcategories)){
+                            continue;
+                        }
+                    }
+
+                    $event_type->subType()->where('event_type_sub_id', $key)->update([
+                        'sub_name_en' => $value['en'],
+                        'sub_name_ar' => $value['ar']
+                    ]);
+                }
+            }
+
+            //REMOVED SUB CATEGORIES
+            if($request->has('removed_subcategories')){
+                $event_type->subType()->whereIn('event_type_sub_id', $request->removed_subcategories)->delete();
+            }
+
+            $result = ['success', 'Event Type has been saved successfully', 'Success'];
+            DB::commit();
+
             if($request->submit_type == 'continue'){
                 return redirect(URL::signedRoute('admin.setting.index') . '#event_types')->with('message', $result);
             }
 
         }catch(Exception $e){
-            $result = ['error', $e->getMessage(), 'Error'];
+            DB::rollBack();
+            $result = ['danger', $e->getMessage(), 'Error'];
         }
         return redirect()->back()->with('message',$result);
     }

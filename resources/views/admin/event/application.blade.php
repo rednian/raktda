@@ -143,7 +143,7 @@
 																<div class="col-sm-6">
 																 <label class="kt-font-dark">{{ __('Event Subcategory') }} </label>
 																  <div class="input-group input-group-sm">
-																 	<input value="{{ ucfirst(Auth::user()->Language == 1 ? $event->subType->name_en : $event->subType->name_ar) }}" name="event_type" readonly="readonly" type="text"
+																 	<input value="{{ ucfirst(Auth::user()->LanguageId == 1 ? $event->subType->sub_name_en : $event->subType->sub_name_ar) }}" name="event_type" readonly="readonly" type="text"
 																 					 class="form-control">
 																 	<div class="input-group-append">
 																 		<span class="input-group-text">
@@ -461,7 +461,7 @@
 																						 </div>
 																					</div>
 																					<div class="col-3">
-																						<label class="kt-font-dark">{{ __('Registration Expired Date') }} <span class="text-danger">*</span></label>
+																						<label class="kt-font-dark">{{ __('Registration Expiry Date') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
 																							<input value="{{ date('d-F-Y', strtotime($truck->registration_expired_date)) }}" name="registration_expired_date" readonly="readonly" type="text"
 																											 class="form-control">
@@ -500,12 +500,12 @@
 																	 @if ($event->liquor->provided)
 																	 <p class=" kt-font-bold">
 																	 	<span class="kt-font-danger">Note: </span>
-																	 	Liquor will be provided by the venue.
+																	 	{{__('Liquor will be provided by the venue.')}}
 																	 </p>
 																	 @else
 																	 <p class=" kt-font-bold">
 																	 	<span class="kt-font-danger">Note: </span>
-																	 	Liquor will be purchase to license store.
+																	 	{{__('Liquor will be purchased to a license store.')}}
 																	 </p>
 																	 @endif
 																	
@@ -980,9 +980,9 @@
 												  												@foreach(App\Roles::where('Type', 0)->where('NameEn', '!=', 'admin')->where('NameEn', '!=', 'admin assistant')
 												  										 ->get() as $role)
 												  										 			{{-- SHOW ONLY INSPECTOR AND MANGER --}}
-												  										 			@if($role->role_id != 6)
+												  										 			{{-- @if($role->role_id != 6) --}}
 												  													 	<option value="{{ $role->role_id }}">{{ ucwords($role->NameEn) }}</option>
-												  													@endif
+												  													{{-- @endif --}}
 												  												@endforeach
 												  										 @endif
 												  							 </select>
@@ -996,7 +996,7 @@
 																			</div>
 												  						</div> --}}
 												  					</div>
-												  					{{-- <div class="col-md-6">
+												  					<div class="col-md-6">
 												  						<div class="form-group form-group kt-hide">
 												  							<label for="" class="kt-font-dark">{{ __('Government Entities') }} <span class="text-danger">*</span></label>
 												  							<select disabled required id="select-department" name="department[]" multiple="multiple" id="" class="form-control">
@@ -1007,7 +1007,7 @@
 																				@endif
 												  							 </select>
 												  						</div>
-												  					</div> --}}
+												  					</div>
 												  				</section>
 												  				<section class="row d-none" id="select-additional">
 												  					<div class="col">
@@ -1606,7 +1606,7 @@
 			}
      });
 
-	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
+	 var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 	 wizard.on("beforeNext", function(wizardObj) {
 	 	if(wizardObj.currentStep == 1){
 	 		$('input[type=checkbox][data-step=step-1]').each(function () {

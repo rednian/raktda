@@ -8,12 +8,19 @@ Route::get('/test', function(){
     dd($permit);
 });
 
+Route::get('/link', function () {
+return phpinfo();
+     //Artisan::call('storage:link');
+     //return redirect()->back();
+});
+
+
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:cache');
     return "Cache is cleared";
 });
-
+    
 Route::get('/shutdown', function () {
     return Artisan::call('down');
 });

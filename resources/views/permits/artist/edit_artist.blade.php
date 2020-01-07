@@ -759,13 +759,11 @@
                     });
                 },
                 success: function(result){
-                    // console.log(result)
-                    if(result.message[0] == 'success')
-                    {
-                        localStorage.clear();
-                        window.location.href="{{url('company/artist/view_draft_details')}}"+'/'+ permit_id;
-                        KTApp.unblockPage();
-                    }
+                    localStorage.clear();
+                    var url = "{{route('company.view_draft_details', [ 'id' => ':id'])}}";
+                    url = url.replace(':id',permit_id);
+                    window.location.href=url;
+                    KTApp.unblockPage();
                 }
             });
         }

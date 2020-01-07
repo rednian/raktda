@@ -108,7 +108,7 @@
                     <span class="kt-widget__value">{{str_pad($permit->rivision_number, 3, 0, STR_PAD_LEFT)}}</span>
                   </div>
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('CONNECTED TO AN EVENT?')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('CONNECTED TO AN EVENT')}}</span>
                     <span class="kt-widget__value">
                       @if ($permit->event()->exists())
                         <a href="{{URL::signedRoute('admin.event.show', $permit->event->event_id)}}" class="btn btn-sm btn-secondary">{{__('YES')}}</a>
@@ -118,7 +118,7 @@
                     </span>
                   </div>
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Artist')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Artists')}}</span>
                     <div class="kt-badge kt-badge__pics">
                       @if ($permit->artistPermit()->exists())
                         @foreach ($permit->artistPermit as $number => $artist_permit)
@@ -246,7 +246,7 @@
                          <th>{{ __('AGE') }}</th>
                          <th>{{ __('PROFESSION') }}</th>
                          <th>{{ __('NATIONALITY') }}</th>
-                         <th>{{ __('CHECKED STATUS') }}</th>
+                         <th>{{ __('STATUS') }}</th>
                          <th>{{ __('ACTION') }}</th>
                       </tr>
                       </thead>
@@ -271,7 +271,7 @@
                  <table class="table table-striped table-borderless table-hover" id="table-permit-history">
                    <thead>
                      <tr>
-                       <th>{{ __('RIVISION NO.') }}</th>
+                       <th>{{ __('REVISION NUMBER') }}</th>
                        <th>{{ __('REFERENCE NO.') }}</th>
                        <th>{{ __('PERMIT NO.') }}</th>
                        <th>{{ __('NO. OF ARTIST') }}</th>
@@ -307,6 +307,17 @@
 <script type="text/javascript">
   var artist = {};
   $(document).ready(function () {
+
+    $('select[name=action]').change(function(){
+      if($(this).val() == 'approved-unpaid'){
+        $('form#permit-action').find('textarea[name=comment]').removeAttr('required',true).removeClass('is-invalid');
+        $('form#permit-action').find('#comment-error').hide();
+      }
+      else{
+         $('form#permit-action').find('textarea[name=comment]').attr('required', true).addClass('is-invalid');
+          $('form#permit-action').find('#comment-error').show();
+      }
+    });
     hasUrl();
     submitAction();
     artistTable();
@@ -579,7 +590,7 @@
       });
   }
 
-     function hasUrl(){
+  function hasUrl(){
      var hash = window.location.hash;
      hash && $('ul.nav a[href="' + hash + '"]').tab('show');
      $('.nav-tabs a').click(function (e) {

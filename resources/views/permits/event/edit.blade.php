@@ -651,13 +651,12 @@
     var truckDetails = {};
     var truckDocDetails = {};   
     var liquorDocDetails = {};
-    var liquorDocRules = {};
-    var liquorDocMessages = {};
-    var liquorDocValidator ;
     var liquorDetails = {};
     let documentNames = {};
     var liquorNames  = {};
     var truckDocNames = {}; 
+    var truckDocumentsValidator ;
+    var liquorDocumentsValidator ;
 
     $(document).ready(function(){
         setWizard();
@@ -974,8 +973,6 @@
             localStorage.setItem('eventdetails', JSON.stringify(eventdetails));
         }
 
-        
-
 
         const docValidation = () => {
             var hasFile = true;
@@ -1290,7 +1287,7 @@
             var prev = $('#prev_val_isTruck').val();
             if (id == 1) {
                editTruck();
-            } else if(id == 0) {
+            } else if(id == 0 && prev == 1) {
                 $('#notSaveModal').modal({
                         backdrop: 'static',
                         keyboard: false,
@@ -1375,21 +1372,40 @@
             return hasFile;
         }
 
-        
-        // truckDocRules = {};
-        // truckDocMessages = {};
 
-        // for(var i = 1; i <= $('#truck_document_count').val(); i++)
-        // {
-        //     docRules['truck_doc_issue_date_'+i] = 'required';
-        //     docRules['truck_doc_exp_date_'+i] = 'required';
-        //     docMessages['truck_doc_issue_date_'+i] = '';
-        //     docMessages['truck_doc_exp_date_'+i] = '';
-        // }
+
+        for(var i = 1; i <= $('#truck_document_count').val(); i++)
+        {
+            if($('#truckdatesRequiredCheck_'+i).val() == 1)
+            {
+                truckDocRules['truck_doc_issue_date_'+i] = 'required';
+                truckDocRules['truck_doc_exp_date_'+i] = 'required';
+                truckDocMessages['truck_doc_issue_date_'+i] = '';
+                truckDocMessages['truck_doc_exp_date_'+i] = '';
+            }
+        }
+
+        var liquorDocRules = {};
+        var liquorDocMessages = {};
+
+        for(var i = 1; i <= $('#liquor_document_count').val(); i++)
+        {
+            if($('#liquordatesRequiredCheck_'+i).val() == 1)
+            {
+                liquorDocRules['liquor_doc_issue_date_'+i] = 'required';
+                liquorDocRules['liquor_doc_exp_date_'+i] = 'required';
+                liquorDocMessages['liquor_doc_issue_date_'+i] = '';
+                liquorDocMessages['liquor_doc_exp_date_'+i] = '';
+            }
+        }
         
         function go_back_truck_list()
         {
-            $('#edit_food_truck').modal('show');
+            $('#edit_food_truck').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
             $('#edit_one_food_truck').modal('hide');
         }
 
@@ -1405,7 +1421,11 @@
                     {
                         $('#food_truck_list').empty();
                         // console.log(result);
-                        $('#edit_food_truck').modal('show');
+                        $('#edit_food_truck').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
@@ -1464,6 +1484,10 @@
                         $('#regis_expiry_date').val(moment(result.registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
                         $('#this_event_truck_id').val(result.event_truck_id);
                         $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
+                        truckDocumentsValidator = $('#truck_upload_form').validate({
+                            rules: truckDocRules,
+                            messages: truckDocMessages
+                        });
                         truckDocUpload();
                     }
                 }
@@ -1473,6 +1497,7 @@
         $('#add_new_truck').click(function(){
             $('#edit_one_food_truck').modal('show');
             $('#truck_details_form').trigger('reset');
+            $('#truck_upload_form').trigger('reset');
             $('#edit_truck_title').hide();
             $('#update_this_td').hide();
             $('#add_truck_title').show();
@@ -1480,12 +1505,16 @@
             $('#add_new_td').show();
             $('#edit_food_truck').modal('hide');
             $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
+            truckDocumentsValidator = $('#truck_upload_form').validate({
+                rules: truckDocRules,
+                messages: truckDocMessages
+            });
             truckDocUpload();
         });
 
         $('#add_new_td').click(function(){
             var hasFile = truckDocValidation();
-            if(truckValidator.form() && hasFile)
+            if((truckDocumentsValidator != '' ? truckDocumentsValidator.form() : 1 ) && truckValidator.form() && hasFile)
             {
                 var truck_details = {
                     company_name_en: $('#company_name_en').val(),
@@ -1512,7 +1541,11 @@
                             {
                                 editTruck();
                                 $('#edit_one_food_truck').modal('hide');
-                                $('#edit_food_truck').modal('show');
+                                $('#edit_food_truck').modal({
+                                    backdrop: 'static',
+                                    keyboard: false,
+                                    show: true
+                                });
                                 $('#truckEditBtn').show();
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
@@ -1525,7 +1558,7 @@
 
         $('#update_this_td').click(function(){
             var hasFile = truckDocValidation();
-            if(truckValidator.form() && hasFile)
+            if((truckDocumentsValidator != '' ? truckDocumentsValidator.form() : 1 ) && truckValidator.form() && hasFile)
             {
                 var truck_details = {
                     company_name_en: $('#company_name_en').val(),
@@ -1551,7 +1584,11 @@
                             if(result) 
                             {
                                 editTruck();
-                                $('#edit_food_truck').modal('show');
+                                $('#edit_food_truck').modal({
+                                    backdrop: 'static',
+                                    keyboard: false,
+                                    show: true
+                                });
                                 $('#edit_one_food_truck').modal('hide');
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
@@ -1880,7 +1917,7 @@
         $('#update_lq').click(function(){
             var hasFile = liqourDocValidation();
             var type = $("input:radio[name='isLiquorVenue']:checked").val();
-            if(type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form())
+            if(type == 0 ? (liquorDocumentsValidator != '' ? liquorDocumentsValidator.form() : 1) && liquorValidator.form() && hasFile : liquorProvidedValidator.form())
             {
                 if(type == 0)
                 {
@@ -1927,7 +1964,7 @@
             if(id == 1){
                 editLiquor();
             }
-            if(id == 0) {
+            if(id == 0 && prev == 1) {
                 // alert('The Added data will be lost');
                 $('#notSaveModal').modal({
                             backdrop: 'static',
@@ -1945,10 +1982,8 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data) 
+                    if(data.trim()) 
                     {
-                        $('#liquor_details .ajax-file-upload-red').trigger('click');
-                        $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
                         if(data.provided == 1)
                         {
@@ -1964,9 +1999,22 @@
                             $('#liquor_service').val(data.liquor_service);
                             changeLiquorService();
                             $('#liquor_types').val(data.liquor_types);
-                            liquorDocUpload();
+                           
                         }
                     }
+                    // $('#liquor_details').modal('show');
+                    $('#liquor_details').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                    $('#liquor_details .ajax-file-upload-red').trigger('click');
+                    liquorDocumentsValidator = $('#liquor_upload_form').validate({
+                        rules: liquorDocRules,
+                        messages: liquorDocMessages
+                    });
+                    liquorDocUpload();
+                }
                 }
             });
         }
@@ -1984,8 +2032,10 @@
                     $('#notSaveModal').modal('hide');
                     if(fromSection == 'truck'){
                         $('#truckEditBtn').hide();
+                        $('input[name="isTruck"]').filter('[value=0]').prop('checked', true);
                     }else if(fromSection == 'liquor'){
                         $('#liquorEditBtn').hide();
+                        $('input[name="isLiquor"]').filter('[value=0]').prop('checked', true);
                     }
                 }
             });

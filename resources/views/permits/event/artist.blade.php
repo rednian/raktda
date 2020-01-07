@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">{{__('Add Artist to Event Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Add Artist to Event Permit')}}
             </h3>
         </div>
 
@@ -38,7 +38,7 @@
     @php
     $user_id = Auth::user()->user_id;
     @endphp
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-widget5__info px-4">
             <div class="pb-2">
                 <!--begin: Permit Details Wizard-->
@@ -47,7 +47,7 @@
                         <div class="kt-wizard-v3__form">
                             <form id="permit_details" method="POST" autocomplete="off">
                                 <div class=" row">
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-2 kt-margin-b-0">
                                         <label for="permit_from"
                                             class="col-form-label col-form-label-sm ">{{__('From Date')}} <span
                                                 class="text-danger">*</span></label>
@@ -65,7 +65,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-2 kt-margin-b-0">
                                         <label for="permit_to"
                                             class="col-form-label col-form-label-sm">{{__('To Date')}} <span
                                                 class="text-danger">*</span></label>
@@ -82,23 +82,21 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             {{__('Work Location')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm mk-disabled"
                                             placeholder="Location" name="work_loc" id="work_loc"
                                             value="{{$event->venue_en}}" />
                                     </div>
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm mk-disabled"
                                             placeholder="{{__('Work Location (AR)')}}" name="work_loc_ar"
                                             id="work_loc_ar" dir="rtl" value="{{$event->venue_ar}}" />
                                     </div>
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-2 kt-margin-b-0">
                                         <label for=""
                                             class="col-form-label col-form-label-sm">{{__('Connected Event ?')}}
                                         </label>
@@ -115,7 +113,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-3">
+                                    <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
                                             {{__('Select Event')}} <span class="text-danger">*</span></label>
                                         <select type="text" class="form-control form-control-sm mk-disabled"
@@ -200,9 +198,6 @@
 
     </div>
 
-
-    @include('permits.artist.modals.view_artist')
-
     @include('permits.artist.modals.remove_artist', ['from' => 'new'])
 
     @include('permits.artist.modals.leave_page')
@@ -235,17 +230,7 @@
             });
         }
 
-        $('#back_btn').click(function(){
-            $total_artists = $('#total_artist_details').val();
-
-            if($total_artists > 0) {
-                $('#back_btn_modal').modal('show');
-            } else {
-                window.location.href = "{{route('event.index')}}#applied";
-            }
-        });
-
-        $('#back_btn_sm').click(function(){
+        $('#back_btn, #back_btn_sm').click(function(){
             $total_artists = $('#total_artist_details').val();
 
             if($total_artists > 0) {
@@ -327,7 +312,8 @@
                         loc: $('#work_loc').val(),
                         loc_ar: $('#work_loc_ar').val(),
                         event_id: $('#event_id').val(),
-                        term: term
+                        term: term,
+                        fromWhere: 'event'
                     },
                     success: function(result){
                         $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');

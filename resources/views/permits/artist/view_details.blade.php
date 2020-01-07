@@ -5,8 +5,8 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">{{__('Artist Permit Details')}}</h3>
-            <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Artist Permit Details')}}</h3>
+            <span class=" text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$permit_details->permit_number}}
                 </strong>
             </span>
@@ -29,9 +29,9 @@
         </div>
     </div>
 
-    <div class="kt-portlet__body pt-0">
+    <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-widget kt-widget--project-1">
-            <div class="kt-widget__body">
+            <div class="kt-widget__body kt-padding-l-0">
                 <div class="kt-widget__stats d-">
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
@@ -52,7 +52,8 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('Permit Term')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{$permit_details->term}}
                             </span>
                         </div>
@@ -60,16 +61,18 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('Reference Number')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{$permit_details->reference_number}}
                             </span>
                         </div>
                     </div>
                     @if($permit_details->event)
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Connected Event ?')}} :</span>
+                        <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}
                             </span>
                         </div>
@@ -86,7 +89,7 @@
             <div class="table-responsive">
                 <table class="table table-striped table-hover border table-borderless  " id="applied-artists-table">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th>{{__('First Name')}}</th>
                             <th>{{__('Last Name')}}</th>
                             <th>{{__('Profession')}}</th>
@@ -124,12 +127,6 @@
                 </table>
             </div>
         </div>
-
-
-
-
-        @include('permits.artist.modals.view_artist')
-
 
 
     </div>

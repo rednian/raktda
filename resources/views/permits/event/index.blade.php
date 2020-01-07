@@ -30,11 +30,11 @@
 @section('content')
 
 @if(check_is_blocked()['status'] == 'rejected')
-@include('permits.artist.common.company-reject')
+@include('permits.artist.common.company_reject')
 @endif
 
 @if(check_is_blocked()['status'] == 'blocked')
-@include('permits.artist.common.company-block')
+@include('permits.artist.common.company_block')
 @endif
 
 <input type="hidden" id="lang_id" value="{{getLangId()}}">
@@ -80,7 +80,8 @@
 
         <div class="tab-content">
             <div class="tab-pane show fade active" id="applied" role="tabpanel">
-                <table class="table table-striped table-hover table-borderless border" id="applied-events-table">
+
+                <table class="table table-striped table-borderless border" id="applied-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
                             <th class="kt-font-transform-u">{{__('REFERENCE NO.')}}</th>
@@ -95,8 +96,8 @@
                         </tr>
                     </thead>
                 </table>
-
             </div>
+
             <div class="tab-pane fade" id="valid" role="tabpanel">
                 <table class="table table-striped table-borderless border" id="existing-events-table">
                     <thead>
@@ -110,7 +111,6 @@
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                             <th></th>
-
                         </tr>
                     </thead>
 
@@ -332,9 +332,8 @@
                 emptyTable: "No Applied Event Permits",
                 searchPlaceholder: "{{__('Search')}}"
             }
+            
         });
-
-
 
         var table2 = $('#existing-events-table').DataTable({
             responsive: true,
@@ -342,7 +341,7 @@
             serverSide: true,
             searching: true,
             deferRender: true,
-            ajax:'{{route("company.event.fetch_valid")}}',
+            ajax: '{{route("company.event.fetch_valid")}}',
             beforeSend: function (request) {
                 request.setRequestHeader("token", token);
             },
@@ -406,7 +405,7 @@
                 },
             ],
             language: {
-                emptyTable: "No Event Permit Drafts",
+                emptyTable: "{{__('No Event Permit Drafts')}}",
                 searchPlaceholder: "{{__('Search')}}"
             }
 

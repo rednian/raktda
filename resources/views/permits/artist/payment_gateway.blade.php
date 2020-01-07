@@ -32,9 +32,9 @@
                 </div>
             </div>
 
-            <div class="kt-portlet__body">
+            <div class="kt-portlet__body kt-padding-t-0">
                 <div class="kt-widget kt-widget--project-1">
-                    <div class="kt-widget__body">
+                    <div class="kt-widget__body kt-padding-l-0">
                         <div class="kt-widget__stats d-">
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('From Date')}}</span>
@@ -320,9 +320,8 @@
 
 
                     <div class="d-flex justify-content-end">
-                        <button onclick="onclick=" Checkout.showLightbox()"
-                            class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u"
-                            id="pay_btn">{{__('PAY')}}</button>
+                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
+                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
                         {{-- onclick="Checkout.showPaymentPage()" --}}
                         {{-- <a href="{{route('artist.gateway', ['id' => $permit_details->permit_id ])}}"></a> --}}
                         {{-- <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
@@ -334,83 +333,181 @@
         </div>
     </div>
 
+
     <?php
-$url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session';
-$postFields = array(
-    'apiOperation' => 'CREATE_CHECKOUT_SESSION',
-    'order' => array(
-        'currency' => 'AED',
-        'id' => '5678'
-    ),
-    'interaction' => array(
-        'operation' => 'VERIFY'
-    ),
-    'transaction' => array( 
-        'source' => 'INTERNET'
-    )
-);
-$username = 'merchant.NRSINFOWAYSL';
-$password = 'aabf38b7ab511335ba2fb786206b1dc0';
-$curl = curl_init();
-curl_setopt($curl, CURLOPT_URL, $url);
-// curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-// 'Content-Type: application/json'
-// ));
-curl_setopt($curl, CURLOPT_USERPWD, $username . ":" . $password);
-curl_setopt($curl, CURLOPT_POST, true);
-curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postFields));
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-$output = curl_exec($curl);
-curl_close($curl);
-$output = json_decode($output);
-// dd($output);
-?>
+    $url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session';
+    $postFields = array(
+        'apiOperation' => 'CREATE_CHECKOUT_SESSION',
+        'order' => array(
+            'currency' => 'AED',
+            'id' => getPaymentOrderId('artist', $permit_details->permit_id) 
+        ),
+        'interaction' => array(
+            'operation' => 'PURCHASE'
+        ),
+    );
+    $username = "merchant.NRSINFOWAYSL";
+    $password = "aabf38b7ab511335ba2fb786206b1dc0";
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    // curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    // 'Content-Type: application/json'
+    // ));
+    curl_setopt($curl, CURLOPT_USERPWD, $username . ":" . $password);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postFields));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    $output = curl_exec($curl);
+    curl_close($curl);
+    $output = json_decode($output);
+    // dd($output); 
+    ?>
+
+    <!-- begin::Scrolltop -->
+    <div id="kt_scrolltop" class="kt-scrolltop">
+        <i class="fa fa-arrow-up"></i>
+    </div>
+    <!-- end::Scrolltop -->
+
+    <div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-body">
+            <div id="ajax_loader" style="min-height: 100vh;">
+                <img src="{{asset('/img/ajax-loader.gif')}}" style="position: absolute; top:50%; left: 50%;">
+            </div>
+        </div>
+    </div>
 
     @endsection
 
+
     @section('script')
+
+
     <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js"
         data-error="errorCallback" data-cancel="cancelCallback" data-complete="completedCallback">
-        // data-complete="completedCallback"
+        //
     </script>
-    <script type="text/javascript">
+    <script>
         function errorCallback(error) {
-            console.log(JSON.stringify(error));
+                // console.log(JSON.stringify(error));
+            $.notify({
+            title: 'Error',
+            message: "{{__('Payment cancelled ! Please Try Again')}}",
+            },{
+                type:'danger',
+                animate: {
+                    enter: 'animated zoomIn',
+                    exit: 'animated zoomOut'
+                },
+            });
         }
-
         function cancelCallback() {
-            console.log('Payment cancelled');
+            // console.log('Payment cancelled');
+            $.notify({
+                title: 'Error',
+                message: "{{__('Payment cancelled ! Please Try Again')}}",
+            },{
+                type:'danger',
+                animate: {
+                    enter: 'animated zoomIn',
+                    exit: 'animated zoomOut'
+                },
+            });
         }
-
-        function completedCallback(x, y) {
-            console.log('test')
-        }
-
+      
+    
+        var sessionId = "{{$output->session->id}}";
+    
+        var successIndicator = "{{$output->successIndicator}}";
+    
+        // console.log(sessionId);
+                
         Checkout.configure({
             merchant: 'NRSINFOWAYSL',
             order: {
                 amount: function() {
-                    return  $('#total').val();
+                    return $('#total').val();
                 },
                 currency: 'AED',
-                description: 'Permit payment',
-                id: '5678'
-            },
-            interaction: {
-                operation:'AUTHORIZE',
-                merchant: {
-                    name: 'RAKTDA NRS Infoways'
-                },
-                displayControl: {
-                    billingAddress :'HIDE'
-                }
+                description: 'Artist Permit Payment'
             },
             session: {
-                id: "{{$output->session->id}}"
+                id: sessionId
+            },
+            interaction: {
+                merchant: {
+                    name: 'RAKTDA NRS Infoways',
+                    // logo: "{{asset('/img/print_tda_logo.png')}}"
+                },
+                displayControl: {
+                    billingAddress  : 'HIDE',
+                }
             }
         });
-
+    
+        function completedCallback(resultIndicator, sessionVersion) {
+            var transactionID, receipt ;
+            if(successIndicator == resultIndicator)
+            {
+                var username = "merchant.NRSINFOWAYSL";
+                var password = "aabf38b7ab511335ba2fb786206b1dc0";
+                var url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/order/{{getPaymentOrderId("artist", $permit_details->permit_id)}}';
+                $.ajax({
+                    url: url,
+                    type: 'GET',    
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
+                    },
+                    success: function(res) {
+                        transactionID = res.transaction[0].transaction.acquirer.transactionId;
+                        receipt = res.transaction[0].transaction.receipt;
+                        paymentDoneUpdation(transactionID,receipt);
+                    }
+                })
+            }
+        }
+    
+    
+        function paymentDoneUpdation(transactionID,receipt) {
+            var paidArtistFee = 0;
+            var paidEventFee = 0;
+            if($('#isEventPay').prop("checked")){
+                paidEventFee = 1;
+            }
+            KTApp.blockPage({
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: 'Please wait...'
+                });
+            $.ajax({
+                url: "{{route('company.payment')}}",
+                type: "POST",
+                data: {
+                permit_id:$('#permit_id').val(),
+                amount: $('#amount').val(),
+                vat: $('#vat').val(),
+                total: $('#total').val(),
+                noofdays: $('#noofdays').val(),
+                paidEventFee: paidEventFee,
+                transactionId: transactionID,
+                receipt: receipt, 
+                orderId: '{{getPaymentOrderId("artist", $permit_details->permit_id)}}'
+                },
+                success: function (result) {
+                var toUrl = "{{route('company.happiness_center', ':id')}}";
+                toUrl = toUrl.replace(':id', $('#permit_id').val());
+                if(result.message[0]){
+                window.location.replace(toUrl);
+                KTApp.unblockPage();
+                }
+                }
+            });
+        }
+    
     </script>
     <script>
         $(document).ready(function(){
@@ -458,64 +555,6 @@ $output = json_decode($output);
         }
     }
 
-$('#pay_btn').click(function(){
-    var paidEventFee = 0;
-    if($('#isEventPay').prop("checked")){
-        paidEventFee = 1;
-    }
-    KTApp.blockPage({
-               overlayColor: '#000000',
-               type: 'v2',
-               state: 'success',
-               message: 'Please wait...'
-           });
-    $.ajax({
-        url: "{{route('company.payment')}}",
-        type: "POST",
-        data: {
-        permit_id:$('#permit_id').val(),
-        amount: $('#amount').val(),
-        vat: $('#vat').val(),
-        total: $('#total').val(),
-        noofdays: $('#noofdays').val(),
-        paidEventFee: paidEventFee
-        },
-        success: function (result) {
-        var toUrl = "{{URL::signedRoute('company.happiness_center', ':id')}}";
-        toUrl = toUrl.replace(':id', $('#permit_id').val());
-        if(result.message[0]){
-        window.location.href = toUrl;
-        KTApp.unblockPage();
-        }
-        }
-    });
-});
-
-function completeCallback(resultIndicator, sessionVersion) {
-        var paidEventFee = 0;
-        if($('#isEventPay').prop("checked")){
-            paidEventFee = 1;
-        }
-        $.ajax({
-            url: "{{route('company.payment')}}",
-            type: "POST",
-            data: {
-                permit_id:$('#permit_id').val(),
-                amount: $('#amount').val(),
-                vat: $('#vat').val(),
-                total: $('#total').val(),
-                noofdays: $('#noofdays').val(),
-                paidEventFee: paidEventFee
-            },
-            success: function (result) {
-                var toUrl = "{{URL::signedRoute('company.happiness_center', ':id')}}";
-                toUrl = toUrl.replace(':id', $('#permit_id').val());
-                if(result.message[0]){
-                    window.location.href = toUrl;
-                }
-            }
-    });
-}
 
 
     </script>

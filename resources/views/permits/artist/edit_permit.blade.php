@@ -9,7 +9,7 @@
 <div class="kt-portlet kt-portlet--mobile" style="z-index:1;">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title">{{__('Edit Artist Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Edit Artist Permit')}}
             </h3>
 
         </div>
@@ -47,9 +47,9 @@
 
     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-widget kt-widget--project-1">
-            <div class="kt-widget__body">
+            <div class="kt-widget__body kt-padding-l-0">
                 <div class="kt-widget__stats d-">
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
@@ -70,7 +70,8 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('Permit Term')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{$permit_details->term}}
                             </span>
                         </div>
@@ -78,16 +79,18 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('Reference Number')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{$permit_details->reference_number}}
                             </span>
                         </div>
                     </div>
                     @if($permit_details->event)
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Connected Event ?')}} :</span>
+                        <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                            <span
+                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
                                 {{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}
                             </span>
                         </div>
@@ -104,7 +107,7 @@
             <div class="table-responsive">
                 <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th>{{__('First Name')}}</th>
                             <th>{{__('Last Name')}}</th>
                             <th>{{__('Profession')}}</th>
@@ -179,8 +182,6 @@
 
     @include('permits.artist.modals.leave_page')
 
-    @include('permits.artist.modals.view_artist')
-
     @include('permits.artist.modals.remove_artist', ['from' => 'edit'])
 
 
@@ -189,7 +190,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Comments on Artist</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{__('Comments on Artist')}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -261,7 +262,7 @@
         }
 
 
-    $('#back_btn').click(function(){
+    $('#back_btn , #back_btn_sm').click(function(){
         $total_artists = $('#total_artist_details').val();
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
@@ -270,14 +271,6 @@
         }
     });
 
-    $('#back_btn_sm').click(function(){
-        $total_artists = $('#total_artist_details').val();
-        if($total_artists > 0) {
-            $('#back_btn_modal').modal('show');
-        } else {
-            window.location.href = "{{route('artist.index')}}#applied";
-        }
-    })
 
     function go_back_confirm_function(){
         var temp_permit_id =  $('#permit_id').val();
@@ -335,9 +328,12 @@
             success: function(result) {
                 let comm = result.comments;
                 $('#artistpermitcomment').empty();
-                $('#artist_permit_modal').modal('show');
-                for(const com of comm){
-                    $('#artistpermitcomment').append(com.comment);
+                if(comm.length)
+                {
+                    $('#artist_permit_modal').modal('show');
+                    for(const com of comm){
+                        $('#artistpermitcomment').append(com.comment);
+                    }
                 }
             }
         });

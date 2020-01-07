@@ -70,7 +70,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     }
     public function roles()
     {
-        return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id');
+        return $this->belongsToMany(Roles::class, 'roleuser', 'user_id', 'role_id')->withTimestamps();
     }
 
     public function workschedule(){
