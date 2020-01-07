@@ -53,7 +53,7 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="company-edit" role="tabpanel">
                     <div class="kt-form kt-form--label-right">
-                      @if ($company->status == 'active' && (!$company->event()->exists() || !$company->artist()->exists()) )
+                      @if ($company->status == 'active' && (!$company->event()->exists() || !$company->permit()->exists()) )
                         <div class="alert alert-success kt-padding-b-5 kt-padding-t-5 kt-margin-b-5" role="alert">
                              <div class="alert-text">
                                <h4 class="alert-heading">Congratulation your establishment is registered successfully!</h4>

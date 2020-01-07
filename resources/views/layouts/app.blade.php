@@ -121,7 +121,7 @@
 
                     
                         @if (Auth::check() &&
-                            (Auth::user()->company->trade_license_expired_date->diffInDays(Carbon\Carbon::now()) <=10) 
+                            (Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now()->addDays(10)) 
                             && !is_null(Auth::user()->company->registered_by) 
                             )
                           <div class="alert alert-warning fade show kt-margin-b-5" role="alert">
