@@ -9,8 +9,9 @@ Route::get('/test', function(){
 });
 
 Route::get('/link', function () {
-     Artisan::call('storage:link');
-     return redirect()->back();
+return phpinfo();
+     //Artisan::call('storage:link');
+     //return redirect()->back();
 });
 
 

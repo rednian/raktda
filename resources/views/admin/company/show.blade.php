@@ -119,20 +119,20 @@
               <div class="form-group form-group-xs row">
                 <label class="col-5 col-form-label">{{__('Emirates ID Issued Date')}}:</label>
                 <div class="col-7">
-                  <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_issued_date->format('d-F-Y')}}</span>
+                  <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-F-Y') : null }}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
                 <label class="col-5 col-form-label">{{__('Emirates ID Expiry Date')}}:</label>
                 <div class="col-7">
-                  <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_expired_date->format('d-F-Y')}}</span>
+                  <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-F-Y') : null}}</span>
                 </div>
               </div>
 
             </section>
           </div>
         </section>
-
+    
         <div class="kt-widget kt-widget--user-profile-3">
           
           <div class="kt-widget__bottom">
