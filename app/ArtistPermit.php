@@ -120,10 +120,13 @@ class ArtistPermit extends Model implements Auditable
         return $this->firstname_en . ' ' . $this->lastname_en;
     }
 
-    public function getAgeAttribute()
-    {
+      public function getAgeAttribute()
+      {
         return Carbon::parse($this->attributes['birthdate'])->age;
-    }
+      }
 
-    
+       public function artistPermitTransaction(){
+        return $this->hasMany(ArtistPermitTransaction::class,'artist_permit_id');
+ }
+
 }

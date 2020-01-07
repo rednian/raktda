@@ -398,27 +398,105 @@
 			$content = 'The event permit with reference number <b>' . $event->reference_number . '</b> has been checked by '. $checked_by->NameEn .'.';
 			$url = URL::signedRoute('admin.event.show', $event->event_id);
 
-			if($event->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0){
-                $url = URL::signedRoute('admin.event.application', $event->event_id);
+
             }
 
-			foreach ($users as $user) {
-				$user->notify(new AllNotification([
-					'subject' => $subject,
-					'title' => $title,
-					'content' => $content,
-					'button' => 'View Permit',
-					'url' => $url
-				]));
-			}
-		}
 
-		public function updateLock(Request $request, Event $event)
-		{
-			if ($request->ajax()) {
-				$event->update(['last_check_by' => $request->user()->user_id, 'lock' => Carbon::now()]);
-			}
-		}
+            DB::commit();
+
+        } catch (Exception $e) {
+            $result = ['danger', $e->getMessage(), 'Error'];
+            DB::rollBack();
+        }
+
+        return redirect(URL::signedRoute('admin.event.index') . '#new-request')->with('message', $result);
+    }
+
+    private function sendNotificationCompany($event, $type)
+    {
+
+        if ($type == 'approve') {
+            $subject = $event->reference_number . ' - Application Approved';
+            $title = 'Application has been Approved';
+            $content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been approved. To view the details, please click the button below.';
+            $url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'valid']);
+        }
+
+        if ($type == 'amend') {
+            $subject = $event->reference_number . ' - Application Requires Amendment';
+            $title = 'Applications Requires Amendment';
+            $content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
+            $url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+        }
+
+        if ($type == 'reject') {
+            $subject = $event->reference_number . ' - Application Rejected';
+            $title = 'Application has been Rejected';
+            $content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been rejected. To view the details, please click the button below.';
+            $url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+        }
+
+        $users = $event->owner->company->users;
+
+        foreach ($users as $user) {
+            $user->notify(new AllNotification([
+                'subject' => $subject,
+                'title' => $title,
+                'content' => $content,
+                'button' => 'View Application',
+                'url' => $url
+            ]));
+        }
+    }
+
+    private function sendNotificationApproval($event, $users)
+    {
+
+        $subject = 'Event Permit For Approval';
+        $title = 'Event Permit For Approval';
+        $content = 'The event permit with reference number <b>' . $event->reference_number . '</b> needs to have an approval from your department. Please click the link below.';
+        $url = URL::signedRoute('admin.event.show', $event->event_id);
+
+        foreach ($users as $user) {
+            $user->notify(new AllNotification([
+                'subject' => $subject,
+                'title' => $title,
+                'content' => $content,
+                'button' => 'View Permit',
+                'url' => $url
+            ]));
+        }
+    }
+
+    private function sendNotificationChecked($event, $users, $checked_by)
+    {
+
+        $subject = 'Event Permit Has Been Checked';
+        $title = 'Event Permit Has Been Checked';
+        $content = 'The event permit with reference number <b>' . $event->reference_number . '</b> has been checked by ' . $checked_by->NameEn . '.';
+        $url = URL::signedRoute('admin.event.show', $event->event_id);
+
+        if ($event->comment()->where('action', 'pending')->whereNull('user_id')->count() == 0) {
+            $url = URL::signedRoute('admin.event.application', $event->event_id);
+        }
+
+        foreach ($users as $user) {
+            $user->notify(new AllNotification([
+                'subject' => $subject,
+                'title' => $title,
+                'content' => $content,
+                'button' => 'View Permit',
+                'url' => $url
+            ]));
+        }
+    }
+
+    public function updateLock(Request $request, Event $event)
+    {
+        if ($request->ajax()) {
+            $event->update(['last_check_by' => $request->user()->user_id, 'lock' => Carbon::now()]);
+        }
+    }
 
 		public function download(Event $event)
 		{
@@ -439,12 +517,12 @@
 			if($event->truck()->exists()){
 			    $data['truck'] = $event->truck()->get();
 			}
-			
+
 			$pdf = PDF::loadView('permits.event.print', $data, [], [
 			    'title' => 'Event Permit',
 			    'default_font_size' => 10
 			]);
-			
+
 			if($event->truck()->exists()){
 				$pdf->getMpdf()->AddPage();
 				$pdf->getMpdf()->WriteHTML(\View::make('permits.event.truckprint')->with($data)->render());
@@ -463,7 +541,7 @@
 			//     'default_font_size' => 10
 			// ]);
 			 return $pdf->stream('Event-Permit.pdf');
-		} 
+		}
 
 
 		public function application(Request $request, Event $event)
@@ -564,7 +642,7 @@
 
 		public function artistDatatable(Request $request, Event $event)
 		{
-		
+
 			if (!is_null($event->permit)) {
 				$permit = $event->permit->artistPermit()->get();
 			}
@@ -576,9 +654,9 @@
 
 			return DataTables::of($permit)
 			->addColumn('name', function($artist) use ($request){
-				$fname = $request->user()->LanguageId == 1 ? ucfirst($artist->firstname_en) : $artist->firstname_ar; 
+				$fname = $request->user()->LanguageId == 1 ? ucfirst($artist->firstname_en) : $artist->firstname_ar;
 				$lastname = $request->user()->LanguageId == 1 ? ucfirst($artist->lastname_en) : $artist->lastname_ar;
-				return profileName($fname.' '.$lastname, $artist->artist->artist_status); 
+				return profileName($fname.' '.$lastname, $artist->artist->artist_status);
 			})
 			->addColumn('profession', function($artist) use ($request){
 				return $request->user()->LanguageId == 1 ? ucfirst($artist->profession->name_en) : $artist->profession->name_ar;
@@ -628,7 +706,7 @@
 		{
 			return DataTables::of($eventtruck->upload()->get())
 			->addColumn('name', function($truck) use ($request){
-				return $request->user()->LanguageId == 1 ? ucwords($truck->requirement->requirement_name) : $truck->requirement->requirement_name_ar;			
+				return $request->user()->LanguageId == 1 ? ucwords($truck->requirement->requirement_name) : $truck->requirement->requirement_name_ar;
 			})
 			->addColumn('issued_date', function($truck){
 				 return $truck->requirement->dates_required == 1 ? date('d-M-Y',strtotime($truck->issued_date)) : 'Not Required';
@@ -648,7 +726,7 @@
 		{
 			return DataTables::of($event->liquor->upload()->get())
 			->addColumn('name', function($liquor) use ($request){
-				return $request->user()->LanguageId == 1 ? ucwords($liquor->requirement->requirement_name) : $liquor->requirement->requirement_name_ar;			
+				return $request->user()->LanguageId == 1 ? ucwords($liquor->requirement->requirement_name) : $liquor->requirement->requirement_name_ar;
 			})
 			->addColumn('issued_date', function($liquor){
 				 return $liquor->requirement->dates_required == 1 ? date('d-M-Y',strtotime($liquor->issued_date)) : 'Not Required';
@@ -672,7 +750,7 @@
 			$requirements = DataTables::of($requirements)
 			->addColumn('name', function($requirement) use ($request){
 				return $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
-				
+
 			})
 			->addColumn('issued_date', function($requirement){
 				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
@@ -774,7 +852,7 @@
 		                'government_id' => $request->user()->government_id
 		            ])->latest()->first();
 		        }
-				
+
 				$comment->update([
           			'action' => $request->action,
           			'comment' => $request->comment,
@@ -846,7 +924,7 @@
 				})
 				->whereNotIn('status', ['draft'])
 				->get();
-				
+
 
 				$table =  DataTables::of($events)
 				->addColumn('establishment_name', function($event) use ($user){
@@ -860,7 +938,7 @@
 					return Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
 				})
 				->addColumn('expected_audience', function($event){ return $event->audience_number; })
-				->addColumn('owner',function($event) use ($request){ 
+				->addColumn('owner',function($event) use ($request){
 					return $request->user()->LanguageId == 1 ? ucfirst($event->owner_name_en) : $event->owner_name_ar;
 				})
 				->editColumn('approved_date', function($event){
@@ -875,13 +953,13 @@
 				->addColumn('has_liquor', function($event){ return $event->liquor()->exists() ? __('YES') : __('NO'); })
 				->addColumn('has_truck', function($event){ return $event->truck()->exists() ? __('YES') : __('NO'); })
 				->addColumn('has_artist', function($event){ return $event->permit()->exists() ? $event->permit->artistPermit()->count() : __('NO'); })
-				->addColumn('location',function($event) use ($request){ 
+				->addColumn('location',function($event) use ($request){
 					return ucfirst($event->full_address);
 				})
-				->addColumn('description',function($event) use ($user){ 
+				->addColumn('description',function($event) use ($user){
 					return $user->LanguageId == 1 ? ucfirst($event->description_en) : ucfirst($event->description_ar);
 				})
-				
+
 				->addColumn('website', function($event){
 					return $event->is_display_web ? __('YES'): __('NO');
 				})
@@ -895,12 +973,12 @@
 					return $user->LanguageId == 1 ? ucfirst($event->venue_en) : ucfirst($event->venue_ar);
 				})
 				->addColumn('show', function($event){
-					$display = $event->is_display_all ? __('YES'): __('NO');	
+					$display = $event->is_display_all ? __('YES'): __('NO');
 				})
 				->addColumn('event_name', function($event) use ($user){
 					if ($user->LanguageId == 1) {return ucfirst($event->name_en);} return ucfirst($event->name_ar); })
-				->addColumn('type', function($event){ 
-					return ucwords(__($event->firm)); 
+				->addColumn('type', function($event){
+					return ucwords(__($event->firm));
 				})
 				->editColumn('updated_at', function($event){
 					return '<span title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-original-title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" class="text-underline">'.humanDate($event->updated_at).'</span>';
@@ -974,7 +1052,7 @@
 			}
 
 			if(count($timeSlots) > 0){
-				
+
 				foreach ($timeSlots as $time_key => $time) {
 
 					$start = $day->format('Y-m-d') . ' ' . $time['start'];
@@ -1021,7 +1099,7 @@
 
 						//CHECK IF INSPECTOR HAS LESS THAN 3 APPOINTMENTS TODAY
 						if($count < 3){
-							
+
 							//ADD APPOINTMENT TO INSPECTOR
 							$this->saveAppointment($inspector, [
 								'schedule_date_start' => $start,
@@ -1057,7 +1135,7 @@
 			try {
 				$inspector->appointments()->create($data);
 			} catch (\Exception $e) {
-				
+
 			}
 		}
 

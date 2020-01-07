@@ -220,6 +220,28 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
 
 
+    Route::get('artist_reports/eventSevenDaysReport', 'Admin\TransactionReportController@sevenDaysEvent')
+        ->name('admin.artist_permit_report.sevenDaysEvent');
+
+    Route::get('artist_reports/thirtyDaysEvent', 'Admin\TransactionReportController@thirtyDaysEvent')
+        ->name('admin.artist_permit_report.thirtyDaysEvent');
+
+
+    Route::post('artist_reports/customEventDate', 'Admin\TransactionReportController@customEventDate')
+        ->name('admin.artist_permit_report.customEventDate');
+
+
+    Route::get('artist_reports/artistSevenDaysReport', 'Admin\TransactionReportController@sevenDaysArtist')
+        ->name('admin.artist_permit_report.sevenDaysArtist');
+
+    Route::get('artist_reports/thirtyDaysArtist', 'Admin\TransactionReportController@thirtyDaysArtist')
+        ->name('admin.artist_permit_report.thirtyDaysArtist');
+
+
+    Route::post('artist_reports/customArtistDate', 'Admin\TransactionReportController@customArtistDate')
+        ->name('admin.artist_permit_report.customArtistDate');
+
+
 
 
 
