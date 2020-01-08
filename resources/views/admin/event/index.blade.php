@@ -1126,6 +1126,7 @@
                 textColor : '#ffffff',
               },
               eventRender: function(info) {
+                // console.log(info);
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {
                       if (element.hasClass('fc-day-grid-event')) {
