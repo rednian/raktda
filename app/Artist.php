@@ -32,6 +32,9 @@ class Artist extends Model implements Auditable
         return $this->belongsToMany(Permit::class, 'artist_permit', 'artist_id', 'permit_id');
     }
 
-
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'company_artist', 'artist_id', 'company_id');
+    } 
 
 }

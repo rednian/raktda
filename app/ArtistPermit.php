@@ -51,7 +51,6 @@ class ArtistPermit extends Model implements Auditable
         return $this->hasMany(ArtistChecklist::class, 'artist_permit_id');
     }
 
-
     public function permit()
     {
         return $this->belongsTo(Permit::class, 'permit_id');
@@ -125,5 +124,9 @@ class ArtistPermit extends Model implements Auditable
         return Carbon::parse($this->attributes['birthdate'])->age;
     }
 
-    
+    public function artistPermitTransaction()
+    {
+        return $this->hasMany(ArtistPermitTransaction::class,'artist_permit_id');
+    }
+
 }

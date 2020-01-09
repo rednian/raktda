@@ -67,7 +67,10 @@ class ReportController extends Controller
 
     public function show($id)
     {
-        dd($id);
+        
+        $data['transaction'] = Transaction::with('artistPermitTransaction', 'eventTransaction')->where('transaction_id', $id)->latest()->first();
+
+        return view('permits.reports.view_transaction', $data );
     }
 
 }

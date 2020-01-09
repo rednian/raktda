@@ -950,6 +950,7 @@
                             {{__('Next')}}
                         </div>
 
+
                     </div>
 
                 </div>
@@ -994,6 +995,7 @@ curl_close($curl);
 $output = json_decode($output);
 // dd($output); 
 ?>
+
 
 <!-- begin::Scrolltop -->
 <div id="kt_scrolltop" class="kt-scrolltop">
@@ -1084,27 +1086,61 @@ $output = json_decode($output);
         }
     });
 
-    function completedCallback(resultIndicator, sessionVersion) {
-        var transactionID, receipt ;
-        if(successIndicator == resultIndicator)
-        {
-            var username = "merchant.NRSINFOWAYSL";
-            var password = "aabf38b7ab511335ba2fb786206b1dc0";
-            var url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/order/{{getPaymentOrderId("event", $event->event_id)}}';
+    /*
+
+     beforeSend: function (xhr) {
+                    xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
+                },
+
+                      /* var url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/order/{{getPaymentOrderId("event", $event->event_id)}}';
             $.ajax({
                 url: url,
                 type: 'GET',    
                 dataType: 'json',
                 contentType: 'application/json',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
+                headers: {
+                    "Authorization": "Basic "+btoa(username + ":" + password),
+                    'Access-Control-Allow-Origin' : '*',
+                    'Access-Control-Allow-Headers':'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+                    'Access-Control-Allow-Credentials' : true,
                 },
+               
                 success: function(res) {
+                    console.log(res);
                     transactionID = res.transaction[0].transaction.acquirer.transactionId;
                     receipt = res.transaction[0].transaction.receipt;
-                    paymentDoneUpdation(transactionID,receipt);
+                    // paymentDoneUpdation(transactionID,receipt);
                 }
-            })
+            })*/
+
+
+
+    function completedCallback(resultIndicator, sessionVersion) {
+        var transactionID, receipt ;
+        console.log(sessionVersion);
+        if(successIndicator == resultIndicator)
+        {
+            var username = "merchant.NRSINFOWAYSL";
+            var password = "aabf38b7ab511335ba2fb786206b1dc0";
+            var orderId = '{{getPaymentOrderId("event", $event->event_id)}}';
+
+            $.ajax({
+                url: 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/order/'+ orderId,
+                type: 'GET',
+                dataType:'json',
+                contentType: 'application/json',
+                headers: {
+                    "Authorization": "Basic "+btoa(username + ":" + password),
+                    'Access-Control-Allow-Origin' : '*',
+                },
+                success: function(res){
+                    console.log('response: ')
+                    console.log(res);
+                    // transactionID = res.transaction[0].transaction.acquirer.transactionId;
+                    // receipt = res.transaction[0].transaction.receipt;
+                }
+            });
+
         }
     }
 
@@ -1152,7 +1188,7 @@ $output = json_decode($output);
 
 </script>
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}&libraries=places&callback=initialize"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
     async defer></script>
 <script>
     $.ajaxSetup({

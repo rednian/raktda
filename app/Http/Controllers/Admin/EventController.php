@@ -72,14 +72,14 @@
 
 			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
 
-			$event_type = EventType::whereDoesntHave('event', function($q){
-				return $q->where('status', 'draft');
-			})->toSql();
+			// $event_type = EventType::whereDoesntHave('event', function($q){
+			// 	return $q->where('status', 'draft');
+			// })->toSql();
 
-			// dd($event_type);
+			// // dd($event_type);
 
 			return view($view, [
-				'page_title' => 'Event Permit',
+				'page_title' => __('Event Permit'),
 				'types'=> EventType::all(),
 				'new_request'=>Event::where('status', 'new')->count(),
 				'pending_request'=>Event::whereIn('status', ['amended', 'checked'])->count(),
@@ -288,10 +288,13 @@
 									//SEND EMAIL NOTIFICATION
 									$this->sendNotificationApproval($event, User::whereHas('roles', function($q) use($role_id){
 										$q->where('roles.role_id', $role_id);
+									})->when($role_id == 6, function($q) use($request){
+										$q->whereIn('government_id', $request->department);
 									})->get());
 								}
 							}else{
 								if(in_array(5, $request->approver)){
+
 									$event->comment()->create([
 										'action' => 'pending',
 										'role_id' => 5,
@@ -300,8 +303,8 @@
 									]);
 
 									//SEND EMAIL NOTIFICATION
-									$this->sendNotificationApproval($event, User::whereHas('roles', function($q) use($role_id){
-										$q->where('roles.role_id', $role_id);
+									$this->sendNotificationApproval($event, User::whereHas('roles', function($q){
+										$q->where('roles.role_id', 5);
 									})->get());
 								}
 							}
@@ -333,18 +336,21 @@
 
 		private function sendNotificationCompany($event, $type){
 
+			$buttonText = 'View Application';
+			
 			if($type == 'approve'){
 				$subject = $event->reference_number . ' - Application Approved';
 				$title = 'Application has been Approved';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been approved. To view the details, please click the button below.';
-				$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'valid']);
+				$url = URL::signedRoute('company.event.payment', ['event' => $event->event_id]);
+				$buttonText = 'Make Payment';
 			}
 
 			if($type == 'amend'){
 				$subject = $event->reference_number . ' - Application Requires Amendment';
 				$title = 'Applications Requires Amendment';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
-				$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+				$url = URL::signedRoute('event.amend', ['event' => $event->event_id]);
 			}
 
 			if($type == 'reject'){
@@ -361,7 +367,7 @@
 					'subject' => $subject,
 					'title' => $title,
 					'content' => $content,
-					'button' => 'View Application',
+					'button' => $buttonText,
 					'url' => $url
 				]));
 			}
@@ -682,14 +688,15 @@
 			->make(true);
 
 			$data = $requirements->getData(true);
-
+				if ($event->logo_thumbnail) {
 				$data['data'][] = [
 				    'name' => 'Event Logo',
 				    'files' => '<a class="kt-padding-l-20" href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">event logo.'.fileName($event->logo_thumbnail).'</a>',
 				    'issued_date'=> 'Not Required',
 				    'expired_date'=> 'Not Required',
 				];
-
+				}
+			
 				 return response()->json($data);
 
 			return $requirements;
@@ -701,7 +708,7 @@
 			->editColumn('path', function($image){
 
 				$html = '<a href="'.asset('/storage/'.$image->path).'" data-type="image" data-type="ajax" data-fancybox>';
-				$html .= '<img  src="'.asset('storage/'.$image->thumbnail).'" class="img img-responsive img-thumbnail center-block" style="max-height: 260px;">';
+				$html .= '<img  src="'.asset('storage/'.$image->thumbnail).'" class="img img-responsive img-thumbnail center-block" style="width: 60px;">';
 				$html .= '</a>';
 				return $html;
 			})

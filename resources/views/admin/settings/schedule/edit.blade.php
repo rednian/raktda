@@ -11,7 +11,7 @@
 	<section class="kt-portlet  kt-portlet--head-sm kt-portlet--responsive-mobile">
 		<div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
 			 <div class="kt-portlet__head-label">
-					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">Edit Schedule Type</h3>
+					<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Edit Schedule Type') }}</h3>
 			 </div>
 			 <div class="kt-portlet__head-toolbar">
 					<a href="{{ URL::signedRoute('admin.setting.index') }}#schedule_settings" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u kt-margin-r-10">

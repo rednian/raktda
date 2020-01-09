@@ -138,7 +138,7 @@
                             </td>
                             <td class="d-flex justify-content-center">
                                 <a
-                                    href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend'])}}">
+                                    href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend'])}}">
                                     <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Replace')}}</button>
                                 </a>
                                 <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
@@ -297,8 +297,7 @@
             success: function(result) {
                 if(result.message[0] == 'success')
                 {
-                    $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                    window.location.href="{{route('artist.index')}}#applied";
+                    window.location.href= result.toURL;
                     KTApp.unblockPage();
                 }
             }

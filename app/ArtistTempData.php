@@ -57,9 +57,4 @@ class ArtistTempData extends Model
     {
         return $this->belongsTo(Event::class, 'event_id');
     }
-    
-    public function artistcomment()
-    {
-        return $this->belongsToMany(PermitComment::class, 'artist_permit_comment', 'artist_permit_id', 'permit_comment_id');
-    }
 }

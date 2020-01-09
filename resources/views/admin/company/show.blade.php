@@ -119,20 +119,20 @@
               <div class="form-group form-group-xs row">
                 <label class="col-5 col-form-label">{{__('Emirates ID Issued Date')}}:</label>
                 <div class="col-7">
-                  <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_issued_date->format('d-F-Y')}}</span>
+                  <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-F-Y') : null }}</span>
                 </div>
               </div>
               <div class="form-group form-group-xs row">
                 <label class="col-5 col-form-label">{{__('Emirates ID Expiry Date')}}:</label>
                 <div class="col-7">
-                  <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_expired_date->format('d-F-Y')}}</span>
+                  <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-F-Y') : null}}</span>
                 </div>
               </div>
 
             </section>
           </div>
         </section>
-
+    
         <div class="kt-widget kt-widget--user-profile-3">
           
           <div class="kt-widget__bottom">
@@ -204,7 +204,7 @@
                        <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
                        <div class="alert-text">This company is currently blocked. 
                          <span title="{{$company->comment()->latest()->first()->created_at->format('l h:i A | d-F-Y')}}" class="text-underline">{{ humanDate($company->comment()->latest()->first()->created_at) }}</span><br>
-                         <span>{{__('Please see the ACTION HISTORY for the remarks...')}}</span>
+                         <span>{{__('Please see the ACTION HISTORY...')}}</span>
                        </div>
                        <div class="alert-close">
                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">

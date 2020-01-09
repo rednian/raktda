@@ -176,6 +176,9 @@ function permitStatus($status)
     if ($status == 'need approval') {
         $classname = 'warning';
     }
+    if ($status == 'draft') {
+        $classname = 'warning';
+    }
     if ($status == 'modification request') {
         $status = 'need modification';
     }
@@ -385,12 +388,12 @@ function check_is_blocked()
 
 function getPaymentOrderId($from, $id)
 {
-    $pre =  $from == 'artist' ?  'AP' : 'EP' ;
+    $pre =  $from == 'artist' ?  'POID1' : 'POID2' ;
     $last_transaction = \App\Transaction::latest()->first();
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  1);
+        $payment_no = sprintf("%07d",  44);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];

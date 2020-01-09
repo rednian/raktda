@@ -14,7 +14,9 @@ class EventReportController extends Controller
 {
     public function event_reports()
     {
-        $events = Event::with('company')->with('type')->get();
+        $events = Event::where('status', 'active')
+            ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+
         return Datatables::of($events)
             ->addColumn('reference_number', function (Event $user) {
                 return $user->reference_number;
@@ -37,6 +39,9 @@ class EventReportController extends Controller
             ->addColumn('issued_date', function (Event $user) {
                 return $user->issued_date;
             })
+            ->addColumn('expired_date', function (Event $user) {
+                return $user->expired_date;
+            })
             ->addColumn('event_type_id', function (Event $user) {
                 return $user->type ? $user->type->name_en : '';
             })
@@ -52,16 +57,16 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                     line-height: 4px;
                     border-radius: 3px;
-                    border: navajowhite;
-                    box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                    class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                     
+                     '
+                    class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                     View</button>";
                 } else {
                     return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
+                    
+                    '
                    class='btn btn-danger btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 }
@@ -100,6 +105,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -113,9 +121,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;' 
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    ' 
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                 View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -125,6 +133,7 @@ class EventReportController extends Controller
         if ($request->events == 'all') {
             $events = Event::/*where('status','active')
                     ->where('expired_date', '>', Carbon::now())->*/ with('company')->with('type')->get();
+
             return Datatables::of($events)
                 ->addColumn('reference_number', function (Event $user) {
 
@@ -148,6 +157,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -158,25 +170,13 @@ class EventReportController extends Controller
                     return strtoupper($user->status);
                 })
                 ->addColumn('event_id', function (Event $user) {
-                    if ($user->status == 'active') {
-
                         return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
-                    } else {
-                        return "<button type='button' style='height: 25px;
-                    line-height: 4px;
-                   border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-danger btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
-                 View</button>";
-                    }
-
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
                 ->make(true);
@@ -208,6 +208,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -221,9 +224,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -258,6 +261,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -271,9 +277,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -307,6 +313,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -320,9 +329,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -358,6 +367,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -371,9 +383,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                  line-height: 4px;
                  border-radius: 3px;
-                border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -407,6 +419,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -420,9 +435,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -456,6 +471,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -469,9 +487,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -504,6 +522,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -517,9 +538,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -552,6 +573,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -565,9 +589,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -599,6 +623,9 @@ class EventReportController extends Controller
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
+                ->addColumn('expired_date', function (Event $user) {
+                    return $user->expired_date;
+                })
                 ->addColumn('event_type_id', function (Event $user) {
                     return $user->type ? $user->type->name_en : '';
                 })
@@ -612,9 +639,9 @@ class EventReportController extends Controller
                     return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 })
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -648,6 +675,9 @@ class EventReportController extends Controller
             ->addColumn('issued_date', function (Event $user) {
                 return $user->issued_date;
             })
+            ->addColumn('expired_date', function (Event $user) {
+                return $user->expired_date;
+            })
             ->addColumn('event_type_id', function (Event $user) {
                 return $user->type ? $user->type->name_en : '';
             })
@@ -661,9 +691,9 @@ class EventReportController extends Controller
                 return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}'   onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'   onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
             })
             ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
@@ -696,6 +726,9 @@ class EventReportController extends Controller
             ->addColumn('issued_date', function (Event $user) {
                 return $user->issued_date;
             })
+            ->addColumn('expired_date', function (Event $user) {
+                return $user->expired_date;
+            })
             ->addColumn('event_type_id', function (Event $user) {
                 return $user->type ? $user->type->name_en : '';
             })
@@ -709,9 +742,9 @@ class EventReportController extends Controller
                 return "<button type='button' style='height: 25px;
                  line-height: 4px;
                    border-radius: 3px;
-                   border: navajowhite;
-                   box-shadow: 0px 2px 5px -2px #0c0c0c;'
-                   class='btn btn-primary btn-sm event_button_modal{{$user->event_id}}' onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}' onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
             })
             ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])

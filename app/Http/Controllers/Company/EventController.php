@@ -40,8 +40,11 @@ use Intervention\Image\ImageManagerStatic as Image;
 class EventController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         Event::whereDate('expired_date', '<', Carbon::now())->update(['status' => 'expired']);
         ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
         Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
@@ -214,14 +217,15 @@ class EventController extends Controller
                         'status' => 'amended'
                     ]);
             }
-
+            $status = 'done';
             DB::commit();
 
         } catch (Exception $e) {
+            $status = 'notdone';
             DB::rollBack();
         }
 
-       return;
+       return response()->json(['status' => $status]);
     
     }
 
@@ -475,7 +479,7 @@ class EventController extends Controller
         $cid = Auth::user()->type == 1 ? Auth::user()->EmpClientId : '';
         $userid = Auth::user()->user_id;
 
-        $event_id = '';
+        $event_id = ''; $toURL = '';
 
         try {
             DB::beginTransaction();
@@ -518,7 +522,16 @@ class EventController extends Controller
             $input_Array['created_at'] = Carbon::now();
             $event = Event::create($input_Array);
             $event_id = $event->event_id;
+            if($request->artist == 1){
+                $toURL = URL::signedRoute('event.add_artist', [ 'id' => 0]);
+            }else {
+                $toURL = URL::signedRoute('event.index').'#applied';
+            }
+            
         } else if ($from == 'draft') {
+
+            $toURL = URL::signedRoute('event.index').'#draft';
+
             $input_Array['issued_date'] = Carbon::parse($evd['issued_date'])->toDateTimeString();
             $input_Array['expired_date'] = Carbon::parse($evd['expired_date'])->toDateTimeString();
             $input_Array['time_start'] = Carbon::parse($evd['time_start'])->toDateTimeString();
@@ -731,7 +744,7 @@ class EventController extends Controller
             $result = ['error', __($e->getMessage()), 'Error'];
         }
 
-        return response()->json(['message' => $result, 'event_id' => $event_id]);
+        return response()->json(['message' => $result, 'event_id' => $event_id, 'toURL' => $toURL]);
     }
 
     public function get_uploaded_eventImages($id){
@@ -740,11 +753,19 @@ class EventController extends Controller
 
     public function delete_truck_details($id)
     {
-        EventTruck::where('event_truck_id', $id)->update([
-            'status' => 1
-        ]);
-
-        return;
+        try {
+            DB::beginTransaction();
+            EventTruck::where('event_truck_id', $id)->update([
+                'status' => 1
+            ]);
+            DB::commit();
+            $status = 'done';
+        } catch (Exception $e) {
+            DB::rollBack();
+            $status = 'notdone';
+        }
+        
+        return response()->json(['status' => $status]);
     }
 
     public function fetch_this_truck_details($id)
@@ -1734,7 +1755,7 @@ class EventController extends Controller
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
         }
-        return redirect()->route('event.index')->with('message', $result);
+        return redirect(URL::signedRoute('event.index').'#draft')->with('message', $result);
     }
 
 
@@ -2113,9 +2134,9 @@ class EventController extends Controller
 
     public function happiness(Request $request, Event $event)
     {
-        // if(!$request->hasValidSignature()){
-        //     return abort(401);
-        // }
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         // $data['event_types'] = EventType::all()->sortBy('name_en');
         $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();

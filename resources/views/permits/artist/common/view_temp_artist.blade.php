@@ -14,7 +14,7 @@
         if($from == 'new')
         {
         // $routeBack = url('company/artist/new/1');
-        $routeBack = route('company.add_new_permit', ['id' => 1]);
+        $routeBack = URL::signedRoute('company.add_new_permit', ['id' => 1]);
         }
         else if($from == 'draft')
         {
@@ -34,7 +34,7 @@
         }
         else {
         // $routeBack = url('company/artist/permit/'.$artist_details->permit_id.'/'.$from);
-        $routeBack = route('artist.permit',['id' => $artist_details->permit_id , 'status' =>$from]);
+        $routeBack = URL::signedRoute('artist.permit',['id' => $artist_details->permit_id , 'status' =>$from]);
         }
         @endphp
 

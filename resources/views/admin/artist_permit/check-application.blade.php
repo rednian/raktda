@@ -197,11 +197,11 @@
 							<div class="dropdown" data-ktwizard-type="action-submit">
 								<button class="btn btn-warning btn-sm btn-wide kt-font-bold kt-font-transform-u dropdown-toggle" type="button"
 												id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									{{ __('Take Action & Finish') }}
+									{{ __('Take Action ') }}
 								</button>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
 									<button type="submit" name="artist_permit_status" value="approved" class="dropdown-item">{{ __('Approve Artist') }}</button>
-									<button type="submit" name="artist_permit_status" value="rejected" class="dropdown-item">{{ __('Reject Artist') }}</button>
+									<button type="submit" id="btn-reject" name="artist_permit_status" value="rejected" class="dropdown-item">{{ __('Reject Artist') }}</button>
 								</div>
 							</div>
 							@endif
@@ -226,6 +226,15 @@
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function () {
+			$('button[name=artist_permit_status]#btn-reject').click(function(e){
+				var comment = $('form#kt_form').find('textarea[name=comment]').val();
+				if (comment == null) {
+					e.preventDefault();
+					// alert()
+					$('form#kt_form').find('textarea[name=comment]').addClass('is-invalid');
+				}
+			});
+
 			$('textarea[name=comment]').keyup(function(){
 				if($(this).val().length == 255){
 					$('#memo-error1').removeClass('d-none');
@@ -250,7 +259,7 @@
 				}
 			});
 
-			var wizard = new KTWizard("kt_wizard_v3", {startStep: 2});
+			var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
 			wizard.on("beforeNext", function(wizardObj) {
 				@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 				if(wizardObj.currentStep == 1){

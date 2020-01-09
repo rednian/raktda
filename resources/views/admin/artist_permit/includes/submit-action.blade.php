@@ -73,7 +73,7 @@
 								</div>
 	  						</div>
 							<div class="form-group row">
-								<label class="col-sm-2 col-form-label">{{ __('Notes') }} <span class="text-danger">*</span></label>
+								<label class="col-sm-2 col-form-label">{{ __('Remarks') }} <span class="text-danger">*</span></label>
 								<div class="col-sm-8">
 									<textarea required name="comment" rows="4" class="form-control-sm form-control"></textarea>
 								</div>

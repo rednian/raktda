@@ -8,12 +8,19 @@ Route::get('/test', function(){
     dd($permit);
 });
 
+Route::get('/link', function () {
+return phpinfo();
+     //Artisan::call('storage:link');
+     //return redirect()->back();
+});
+
+
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:cache');
     return "Cache is cleared";
 });
-
+    
 Route::get('/shutdown', function () {
     return Artisan::call('down');
 });
@@ -34,7 +41,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
 
     Route::get('/dashboard', function () {
-        return redirect(URL::signedRoute('admin.event.index'));
+        return redirect(URL::signedRoute('admin.company.index'));
     })->name('admin.dashboard');
   //---------------------------------------------------------------------------------------------------------------
   // Company Registration
@@ -211,6 +218,28 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('artist_reports/event_transaction_report', 'Admin\TransactionReportController@eventTransaction')
         ->name('admin.artist_permit_report.eventTransaction');
 
+
+
+    Route::get('artist_reports/eventSevenDaysReport', 'Admin\TransactionReportController@sevenDaysEvent')
+        ->name('admin.artist_permit_report.sevenDaysEvent');
+
+    Route::get('artist_reports/thirtyDaysEvent', 'Admin\TransactionReportController@thirtyDaysEvent')
+        ->name('admin.artist_permit_report.thirtyDaysEvent');
+
+
+    Route::post('artist_reports/customEventDate', 'Admin\TransactionReportController@customEventDate')
+        ->name('admin.artist_permit_report.customEventDate');
+
+
+    Route::get('artist_reports/artistSevenDaysReport', 'Admin\TransactionReportController@sevenDaysArtist')
+        ->name('admin.artist_permit_report.sevenDaysArtist');
+
+    Route::get('artist_reports/thirtyDaysArtist', 'Admin\TransactionReportController@thirtyDaysArtist')
+        ->name('admin.artist_permit_report.thirtyDaysArtist');
+
+
+    Route::post('artist_reports/customArtistDate', 'Admin\TransactionReportController@customArtistDate')
+        ->name('admin.artist_permit_report.customArtistDate');
 
 
 

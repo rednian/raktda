@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EventTypeSub extends Model
 {
+	use SoftDeletes;
+
 	protected $table = 'event_type_sub';
 	protected $primaryKey = 'event_type_sub_id';
 	protected $fillable = ['event_type_id', 'sub_name_en', 'sub_name_ar'];
