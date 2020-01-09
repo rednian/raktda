@@ -6,12 +6,14 @@ use DB;
 use Auth;
 use App\User;
 use App\Company;
+use Validator;
 use Carbon\Carbon;
 use App\CompanyRequirement;
 use App\CompanyOtherUpload;
 use App\Requirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Hash;
@@ -26,41 +28,31 @@ class CompanyController extends Controller
 
    public function store(Request $request)
    {
-     // dd($request->all());
     $valid_data = $request->validate([
-     // 'name_en'=>'required|max:255',
-     // 'trade_license'=> 'required|max:255',
-     // 'trade_license_issued_date'=>'required|before_or_equal:'.Carbon::now().'',
-     // 'trade_license_expired_date'=>'required|after:'.Carbon::now().'',
-     // 'phone_number'=>'required|max:15',
-     // 'company_email'=>'required|email:rfc,strict,dns,spoof,filter',
-     // 'country_id'=>'required|integer',
-     // 'emirate_id'=>'required|integer',
-     // 'area_id'=>'required|integer',
-     // 'address'=>'required',
-     // 'NameEn'=>'required',
-     // 'email'=>'required|email:rfc,strict,dns,spoof,filter',
-     // 'mobile_number'=>'required|max:15',
-     // 'username'=>'required|max:255|min:5',
      'g-recaptcha-response' => 'required|captcha',
      'term_condition' => 'required'
     ]);
-
-    // dd($valid_data);
 
       try {
          DB::beginTransaction();
 
          $company = Company::create(array_merge($request->all(), ['status'=>'draft']));
+
          $request['password'] = Hash::make($request->password);
+
          $user = $company->user()->create(array_merge($request->all(), ['IsActive'=> 0, 'type'=> 1]));
          $user->roles()->sync(2);
+
          DB::commit();
+
          return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))
          ->with('success', 'Registration successful. Please login and verify your email.');
+
       } catch (Exception $e) {
+
          DB::rollBack();
          return redirect()->back()->with('error', $e->getMessage());
+
       }
    }
 
@@ -145,85 +137,72 @@ class CompanyController extends Controller
    }
 
 
+
    public function update(Request $request, Company $company)
    {
     if ($company->status == 'rejected') {
       return redirect()->back();
     }
-    if ($this->hasRequirement($company)) {
-      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error']);
-    }
+    // if ($this->hasRequirement($company) && $request->submit != 'draft') {
+    //   return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error']);
+    // }
       try {
 
+        $validate = Validator::make($request->all(), [
+          'name_en'=> 'required|max:255',
+          'name_ar'=> 'required|max:255',
+          'trade_license'=> 'required|max:255',
+          'trade_license_issued_date'=> 'required|max:255|date',
+          'trade_license_expired_date'=> 'required|max:255|date',
+          'company_email'=> 'required|max:255|email',
+          'phone_number'=> 'required|max:255',
+          'website'=> 'nullable|max:255',
+          'address'=> 'required|max:255',
+          'address'=> 'required|max:255',
+          'area_id'=> 'required|max:255',
+          'company_description_en'=> 'required|max:255',
+          'company_description_ar'=> 'required|max:255',
+          'contact_name_en'=> 'required|max:255',
+          'contact_name_ar'=> 'required|max:255',
+          'designation_en'=> 'required|max:255',
+          'designation_ar'=> 'required|max:255',
+          'email'=> 'required|max:255|email',
+          'mobile_number'=> 'required|max:255',
+          'emirate_identification'=> 'required|max:255',
+          'emirate_id_issued_date'=> 'required|max:255',
+          'submit'=> 'required|max:255',
+           'emirate_id_expired_date'=> 'required|max:255',
+        ]
+      )->validate();
+
+        dd($validate);
+        
+
+        
          DB::beginTransaction();
           $company->requirement()->update(['is_submit'=>1]);
 
-         if ($request->company_type_id == 1) {
-           $request['trade_license'] = null;
-           $request['trade_license_issued_date'] = null;
-           $request['trade_license_expired_date'] = null;
-         }
-         else{
-          $request['trade_license_issued_date'] =  date('Y-m-d', strtotime($request->trade_license_issued_date));
-          $request['trade_license_expired_date'] = date('Y-m-d', strtotime($request->trade_license_expired_date));
-         }
-
          switch ($request->submit) {
            case 'draft':
-               $company->update($request->all());
-                 $result = ['success', '', 'Success'];
+                $company->update($validate);
              break;
           case 'submitted':
 
-
-            if (Company::exists()) {
-               $last_reference = Company::where('company_id', '!=', $company->company_id)
-               ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')
-               ->first()->reference_number;
-               $reference_number = explode('-', $last_reference);
-               // dd($reference_number);
-               $reference_number = $reference_number[2]+1 ;
-               $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
-             }
-             else{
-              $reference_number = 'EST-'.date('Y').'-0001';
-             } 
-
-             // dd($request->all());
-            $company = Company::find($company->company_id);
-            $company->company_type_id = $request->company_type_id;
-            $company->company_email = $request->company_email;
-            $company->phone_number = $request->phone_number;
-            $company->website = $request->website;
-            $company->address = $request->address;
-            $company->country_id = $request->country_id;
-            $company->emirate_id = $request->emirate_id;
-            $company->area_id = $request->area_id;
-            $company->trade_license = $request->trade_license;
-            $company->trade_license_issued_date = $request->trade_license_issued_date;
-            $company->trade_license_expired_date = $request->trade_license_expired_date;
-            $company->company_description_en = $request->company_description_en;
-            $company->company_description_ar = $request->company_description_ar;
-            $company->name_en = $request->name_en;
-            $company->name_ar = $request->name_ar;
-
-            if (empty($company->reference_number)) {
-            $company->reference_number = $reference_number;
-            }
-
-            $company->status =  $company->application_date ? 'pending': 'new';
-            $company->application_date = $company->application_date ? $company->application_date : Carbon::now();
-            $company->save();
-
-            $result = ['success', '', 'Success'];
+            $company->update(array_merge(
+              $request->all(), 
+              [
+                'reference_number'=> empty($company->reference_number) ?  $this->getReferenceNumber($company) : $company->reference_number,
+                'status'=> $company->application_date ? 'pending': 'new',
+                'application_date'=> empty($company->application_date ) ? Carbon::now() : $company->application_date
+              ],
+              $this->addressRelated()
+            ));
 
             break;
          }
 
 
-
          if($company->contact()->exists()){
-             
              $company->contact()->update([
                  'contact_name_en'=>$request->contact_name_en,
                  'contact_name_ar'=>$request->contact_name_ar,
@@ -406,6 +385,24 @@ class CompanyController extends Controller
          $result =  User::where('mobile_number', $request->mobile_number)->exists() ?  false : true;
       }
 
+      if($request->name_en){
+         $result =  Company::where('name_en', $request->name_en)
+         ->where('status', '!=', 'rejected')
+         ->exists() ?  false : true;
+      }
+
+      if($request->name_ar){
+         $result =  Company::where('name_en', $request->name_ar)
+         ->where('status', '!=', 'rejected')
+         ->exists() ?  false : true;
+      }
+
+      if($request->trade_license){
+         $result =  Company::where('trade_license', $request->trade_license)
+         ->where('status', '!=', 'rejected')
+         ->exists() ?  false : true;
+      }
+
       return response()->json(['valid'=>$result]);
    }
 
@@ -415,4 +412,31 @@ class CompanyController extends Controller
       $requirement = Requirement::where('requirement_type', 'company')->orderBy('requirement_name')->get();
       return response()->json($requirement);
    }
+
+   private function addressRelated()
+   {
+    return [
+      'emirate_id'=>App\Emirates::where('name_en' ,'Ras Al Khaimah')->first()->id,
+      'country_id'=>App\Country::where('name_en' ,'United Arab Emirates')->first()->country_id,
+      'company_type_id'=>App\Country::where('name_en' ,'corporate')->first()->company_type_id,
+    ];
+   }
+
+   private function getReferenceNumber($company)
+   {
+    if (Company::exists()) {
+         $last_reference = Company::where('company_id', '!=', $company->company_id)
+         ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')
+         ->first()->reference_number;
+         $reference_number = explode('-', $last_reference);
+         // dd($reference_number);
+         $reference_number = $reference_number[2]+1 ;
+         $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
+       }
+       else{
+        $reference_number = 'EST-'.date('Y').'-0001';
+       }
+       return $reference_number;
+   }
+
 }

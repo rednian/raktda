@@ -13,7 +13,7 @@ class Company extends Model
     protected $primaryKey = 'company_id';
     protected $fillable = [
         'name_en', 'name_ar', 'logo_original', 'logo_thumbnail', 'status', 'company_email', 'phone_number', 'website', 'trade_license', 
-        'trade_license_issued_date', 'trade_license_expired_date', 'aread_id', 'emirate_id', 'country_id', 'address', 'application_date'. 
+        'trade_license_issued_date', 'trade_license_expired_date', 'area_id', 'emirate_id', 'country_id', 'address', 'application_date', 
         'reference_number', 'company_type_id', 'registered_date', 'registered_by', 'company_description_ar','company_description_en'
     ];
     

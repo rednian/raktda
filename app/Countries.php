@@ -14,4 +14,9 @@ class Countries extends Model
     {
         return $this->hasMany(ArtistPermit::class, 'country_id');
     }
+
+    public function scopeDefaultCountry($q)
+    {
+    	$q->where('name_en', 'United Arab Emirates')->first();
+    }
 }

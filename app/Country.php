@@ -14,4 +14,5 @@ class Country extends Model
     {
     	return $this->hasMany(ArtistPermit::class, 'country_id');
     }
+
 }
