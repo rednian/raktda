@@ -810,6 +810,7 @@ class ArtistController extends Controller
     public function store(Request $request)
     {
         $toURL = '';
+
         try {
 
             DB::beginTransaction();
@@ -944,11 +945,13 @@ class ArtistController extends Controller
                                 'created_at' => $currentDateTime,
                                 'created_by' => $user_id
                             ]);
-                           
+
                             $artist_id = $artistTable->artist_id;
+
                             // $artistTable->companies()->sync($request->user()->company->company_id); 
                             // $request->user()->company->artist()->sync($artist_id); 
                             // $request->user()->company->artists()->where('artist_id', '!=', $artist_id)->attach($artist_id);
+
                         } else {
                             $artist_id = $data->artist_id;
                         }

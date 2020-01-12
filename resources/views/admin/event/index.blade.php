@@ -1107,7 +1107,6 @@
               allDaySlot: true,
               contentHeight: 450,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
-              // nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo
               views: {
                   dayGridMonth: { buttonText: '{{ __('Month') }}' },
@@ -1126,6 +1125,7 @@
                 textColor : '#ffffff',
               },
               eventRender: function(info) {
+                console.log(info);
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {
                       if (element.hasClass('fc-day-grid-event')) {

@@ -1,7 +1,10 @@
 <?php
 //if comapany is not yet active 
 Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function(){
+
   Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
+  Route::get('/{company}/profile', 'Company\CompanyController@show')->name('company.show')->middleware('signed');
+  Route::get('/{company}/profile-databtable', 'Company\CompanyController@commentDatatable')->name('company.comment.datatable');
   Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');
   Route::post('/{company}/updateUser', 'Company\CompanyController@updateUser')->name('company.updateUser');
   Route::post('/{company}/changePassword', 'Company\CompanyController@changePassword')->name('company.changePassword');

@@ -361,8 +361,44 @@
            remote: {
              url: '{{ route('company.isexist') }}',
              type: 'get',
-             data: {email: $(this).val()},
+             data: {mobile_number: $(this).val()},
              message: 'The mobile number is already exist.',
+             delay: 1000
+           } 
+        }
+      },
+
+      name_en:{
+        validators:{
+           remote: {
+             url: '{{ route('company.isexist') }}',
+             type: 'get',
+             data: {name_en: $(this).val()},
+             message: 'The establishment already exist.',
+             delay: 1000
+           } 
+        }
+      },
+
+      name_ar:{
+        validators:{
+           remote: {
+             url: '{{ route('company.isexist') }}',
+             type: 'get',
+             data: {name_ar: $(this).val()},
+             message: 'The establishment already exist.',
+             delay: 1000
+           } 
+        }
+      },
+
+      trade_license:{
+        validators:{
+           remote: {
+             url: '{{ route('company.isexist') }}',
+             type: 'get',
+             data: {trade_license: $(this).val()},
+             message: 'The business license number is already exist.',
              delay: 1000
            } 
         }
@@ -456,5 +492,4 @@
 });
     </script>
 </body>
-
 </html>
