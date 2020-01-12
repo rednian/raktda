@@ -302,20 +302,13 @@
        {
             var table2 = $('#existing-artists-table').DataTable({
                 responsive: true,
-                // beforeSend: function (request) {
-                //     request.setRequestHeader("token", token);
-                // },
                 processing: true,
                 serverSide: true,
                 searching: true,
                 ordering: false,
-                // pageLength: 5,
-                deferRender: true,
                 search: {
                     caseInsensitive: false
                 },
-                // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-                // order:[[6,'desc']],
                 ajax:'{{route("company.fetch_existing_artists")}}',
                 columns: [
                     { data: 'reference_number', name: 'reference_number' },
@@ -330,6 +323,7 @@
                     { data: 'details', name: 'details' ,  className: "text-center" },
                 ],
                 columnDefs: [
+                    {targets:'_all' ,className:'no-wrap'},
                     {
                         targets:-4,
                         className:'text-center',

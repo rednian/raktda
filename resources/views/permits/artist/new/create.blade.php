@@ -350,7 +350,7 @@
             var event_id = $('#event_id').val();
             if(event_id == 'add_new')
             {
-                window.location.href = "{{ route('event.create')}}";
+                window.location.href = "{{URL::signedRoute('event.create')}}";
             }else{
                 checkFilled();
             }
@@ -411,12 +411,10 @@
             $.ajax({
                     url:"{{route('company.storePermitDetails')}}",
                     type: "POST",
-                    data: { from: from , to:to, loc:loc,loc_ar:loc_ar, eventId:eventId, isEvent: isEvent },
+                    data: { from: from , to:to, loc:loc,loc_ar:loc_ar, eventId:eventId, isEvent: isEvent , permitId: permit_id, fromPage: 'artist'},
                     async: true,
                     success: function(result){
-                        var Url = "{{ URL::signedRoute('company.add_new_artist', [ 'id' => 1])}}";
-                        Url = Url.replace(':id', permit_id);
-                        window.location.href = Url;
+                        window.location.href = result.toURL;
                     }
             });
         }
@@ -426,7 +424,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{route('artist.index')}}#applied";
+                window.location.href = "{{URL::signedRoute('artist.index')}}#applied";
             }
         });
 
@@ -438,7 +436,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#applied";
+                        window.location.href=result.toURL;
                     }
             });
         }

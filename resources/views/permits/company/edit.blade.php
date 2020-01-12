@@ -107,7 +107,7 @@
                                     <div class="alert alert-success" role="alert">
                                        <div class="alert-text">
                                          <h4 class="alert-heading">Congratulation your establishment is registered successfully!</h4>
-                                         <p>You can now apply an <a href="{{ route('event.create') }}" class="btn btn-sm btn--maroon">EVENT PERMIT</a> or  <a href="{{ route('artist.create') }}" class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
+                                         <p>You can now apply an <a href="{{ URL::signedRoute('event.create') }}" class="btn btn-sm btn--maroon">EVENT PERMIT</a> or  <a href="{{ URL::signedRoute('artist.create') }}" class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
                                          {{-- <hr> --}}
                                          {{-- <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p> --}}
                                        </div>

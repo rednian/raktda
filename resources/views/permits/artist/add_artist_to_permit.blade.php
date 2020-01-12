@@ -1671,7 +1671,9 @@ function checkVisaRequired(){
                     documentD: dd ,
                     permit_id: permit_id,
                     from: permit_from,
-                    to: permit_to
+                    to: permit_to,
+                    btnOption: 1,
+                    fromPage: from_page
                 },
                 beforeSend: function() {
                 KTApp.blockPage({
@@ -1683,16 +1685,16 @@ function checkVisaRequired(){
                 },
                 success: function(result){
                     localStorage.clear();
-                    let toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => ':from'])}}";;
-                    if(from_page == 'amend'){
-                        toUrl = toUrl.replace(':from', 'amend');
-                    }else if(from_page == 'edit') {
-                        toUrl = toUrl.replace(':from', 'edit');
-                    } else if(from_page == 'renew') {
-                        toUrl = toUrl.replace(':from', 'renew');
-                    }
-                    toUrl = toUrl.replace(':id', permit_id);
-                    window.location.href= toUrl ;
+                    // let toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => ':from'])}}";;
+                    // if(from_page == 'amend'){
+                    //     toUrl = toUrl.replace(':from', 'amend');
+                    // }else if(from_page == 'edit') {
+                    //     toUrl = toUrl.replace(':from', 'edit');
+                    // } else if(from_page == 'renew') {
+                    //     toUrl = toUrl.replace(':from', 'renew');
+                    // }
+                    // toUrl = toUrl.replace(':id', permit_id);
+                    window.location.href= result.toURL ;
                     KTApp.unblockPage();
                 }
             });

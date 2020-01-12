@@ -162,16 +162,20 @@
                         <td>{{__(ucwords($ad->artist_permit_status))}}</td>
                         <td class="d-flex justify-content-center">
                             <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'event'])}}">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Edit')}}</button>
                             </a>
-                            <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'event'])}}">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                            <a
+                                href="{{URL::signedRoute('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'event'])}}">
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('View')}}</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
                                 data-toggle="modal" data-target="#delartistmodal">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
                             </a>
                             @endif
                         </td>
@@ -222,10 +226,10 @@
             $.ajax({
                     url:"{{route('company.storePermitDetails')}}",
                     type: "POST",
-                    data: { from: from , to:to, loc:loc, eventId:eventId, isEvent: isEvent },
+                    data: { from: from , to:to, loc:loc, eventId:eventId, isEvent: isEvent , fromPage: 'event', permitId: permit_id},
                     async: true,
                     success: function(result){
-                        window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id + '/event';
+                        window.location.href= result.toURL;
                     }
             });
         }
@@ -236,7 +240,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{route('event.index')}}#applied";
+                window.location.href = "{{URL::signedRoute('event.index')}}#applied";
             }
         });
 
@@ -248,7 +252,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{route('event.index')}}#applied";
+                        window.location.href=result.toURL;
                     }
             });
         }

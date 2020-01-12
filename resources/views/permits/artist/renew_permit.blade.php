@@ -23,7 +23,7 @@
                 <i class="la la-plus"></i>
                 {{__('Add Artist')}}
                 </a> --}}
-                <a href="{{route('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
+                <a href="{{URL::signedRoute('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     {{__('Add Artist')}}
@@ -34,7 +34,7 @@
                 <button id="back_btn_sm" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                 </button>
-                <a href="{{route('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
+                <a href="{{URL::signedRoute('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                 </a>
@@ -235,7 +235,7 @@
                 data: { permit_id: temp_permit_id,from: 'renew'},
                 async: true,
                 success: function(result){
-                    window.location.href="{{route('artist.index')}}#valid";
+                    window.location.href=result.toURL;
                 }
         });
     }

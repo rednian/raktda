@@ -15,7 +15,13 @@ class ArtistPermitTransaction extends Model
     public function artistPermit()
     {
         return $this->belongsTo(ArtistPermit::class,'artist_permit_id');
-}
+    }
+
+    public function permit()
+    {
+        return $this->belongsTo(Permit::class,'permit_id');
+    }
+
     public function transaction()
     {
         return $this->belongsTo(Transaction::class,'transaction_id');

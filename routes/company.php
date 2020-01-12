@@ -162,7 +162,9 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('event/get_event_sub_types/{id}', 'Company\EventController@get_event_sub_types')->name('event.get_event_sub_types');
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 
+    Route::get('event/getpaymentdetails/{orderid}', 'Company\EventController@get_payment_details')->name('company.getpaymentdetails');
+
     Route::get('reports', 'Company\ReportController@index')->name('company.reports');
     Route::get('transactions', 'Company\ReportController@transactions')->name('company.transactions');
-    Route::get('transaction/view/{id}', 'Company\ReportController@show')->name('report.view');
+    Route::get('reports/transaction/view/{id}', 'Company\ReportController@show')->name('report.view');
 });

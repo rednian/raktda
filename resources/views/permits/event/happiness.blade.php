@@ -1841,7 +1841,7 @@
                         },
                         success: function (result) {
                             if(result.message[0]){
-                                window.location.href = "{{route('event.index')}}#valid";
+                                window.location.href = result.toURL;
                                 KTApp.unblockPage();
                             }
                         }

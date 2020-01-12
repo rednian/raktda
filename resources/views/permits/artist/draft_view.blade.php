@@ -400,7 +400,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#draft";
+                        window.location.href=result.toURL;
                     }
             });
         }
@@ -431,7 +431,7 @@
             var event_id = $('#event_id').val();
             if(event_id == 'add_new')
             {
-                window.location.href = "{{ route('event.create')}}";
+                window.location.href = "{{URL::signedRoute('event.create')}}";
             }else{
                 checkFilled();
             }
