@@ -67,7 +67,7 @@
                         <span class="kt-menu__link-text">{{__('Reports')}}</span>
                     </a>
                 </li>
-                <li class="kt-menu__item {{\Request::is('company/*') ? 'kt-menu__item--active' : '' }}">
+                <li class="kt-menu__item">
                     <a href="{{ URL::signedRoute('company.show', Auth::user()->company->company_id) }}" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{__('Profile')}}</span>
                     </a>

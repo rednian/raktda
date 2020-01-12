@@ -449,7 +449,7 @@
 
             var status = $('select#archive-permit-status').val();
             d.request_type = $('select#archive-request-type').val();
-            d.status = status != null ? [status] : ['rejected', 'expired', 'unprocessed'];
+            d.status = status != null ? [status] : ['rejected', 'expired', 'unprocessed', 'cancelled'];
             d.date = $('#archive-applied-date').val()  ? selected_date : null;
            }
          },
