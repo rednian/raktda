@@ -119,8 +119,8 @@
                     <!-- begin:: Content -->
                     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
 
-                        @if (
-                        Auth::check() &&
+
+                        {{-- @if (Auth::check() &&
                         (Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now()->addDays(10))
                             && !is_null(Auth::user()->company->registered_by)
                             )
@@ -130,59 +130,53 @@
                                 $words = Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now() ?
                                     __('already expired ') : __(' will expire ') 
                               @endphp
-                              <div class="alert-text">{{__('Your Business Trade License '.$words)}} 
-                                 <span title="{{Auth::user()->company->trade_license_expired_date->format('d-F-Y') }}" class="text-underline kt-font-bold">{{ humanDate(Auth::user()->company->trade_license_expired_date) }}</span>. <br>
-                              {{__('Please update your Business Trade License before the expiry date to avoid inconvenient in applying RAKTDA Services.')}}</div>
-                              <div class="alert-close">
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                      <span aria-hidden="true"><i class="la la-close"></i></span>
-                                  </button>
-                              </div>
-                          </div>
-                        @endif
-                
-                            {{-- <section class="row">
-                                <div class="col">
-                                    @yield(' content')</div> </section> </div> <!-- end:: Content -->
-                            </div> --}}
+                              <div class="alert-text">{{__('Your Business Trade License '.$words)}}
+                        <span title="{{Auth::user()->company->trade_license_expired_date->format('d-F-Y') }}"
+                            class="text-underline kt-font-bold">{{ humanDate(Auth::user()->company->trade_license_expired_date) }}</span>.
+                        <br>
+                        {{__('Please update your Business Trade License before the expiry date to avoid inconvenient in applying RAKTDA Services.')}}
+                    </div>
+                    <div class="alert-close">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-close"></i></span>
+                        </button>
+                    </div>
+                </div>
+                @endif --}}
 
-                            <section class="row">
-                                <div class="col">
-                                    @yield(' content') @yield('content') </div> </section>
-                                    {{-- @include('layouts.admin.footer') --}} </div> </div> </div> @if (Auth::check())
-                                    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
-                                    <input type="hidden" id="getLangid" value="{{getLangId()}}">
-                                    @endif
+                <section class="row">
+                    <div class="col">@yield('content') </div>
+                </section>
+                {{-- @include('layouts.admin.footer') --}} </div>
+        </div>
+    </div> @if (Auth::check())
+    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
-                                    <script src="{{ asset('/js/mandatory.js') }}"></script>
-                                    <script src="{{ asset('/js/plugins.js') }}"></script>
-                                    <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}"
-                                        type="text/javascript"></script>
-                                    <script src="{{ asset('/js/custom-pages.js') }}"></script>
-                                    <script
-                                        src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}">
-                                    </script>
+    <input type="hidden" id="getLangid" value="{{getLangId()}}">
+    @endif
 
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}">
-                                    </script>
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/js/plugins/sortable.js') }}">
-                                    </script>
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}">
-                                    </script>
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}">
-                                    </script>
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/themes/explorer-fas/theme.js') }}">
-                                    </script>
-                                    {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
-                                    --}}
-                                    <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
-                                    <!--end::Page Vendors -->
+    <script src="{{ asset('/js/mandatory.js') }}"></script>
+    <script src="{{ asset('/js/plugins.js') }}"></script>
+    <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/js/custom-pages.js') }}"></script>
+    <script src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}">
+    </script>
+
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}">
+    </script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/sortable.js') }}">
+    </script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}">
+    </script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}">
+    </script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/explorer-fas/theme.js') }}">
+    </script>
+    {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
+    --}}
+    <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
+    <!--end::Page Vendors -->
 
 </body>
 @yield('script')
