@@ -269,7 +269,6 @@
         });
         
         $(document).ready(function(){
-
             calendarEvents();
             applied();
             valid();
@@ -301,6 +300,7 @@
                 processing: true,
                 serverSide: true,
                 searching: true,
+                fixedHeader: true,
                 // order:[[6,'desc']],
                 ajax:'{{route("company.event.fetch_applied")}}',
                 columns: [
