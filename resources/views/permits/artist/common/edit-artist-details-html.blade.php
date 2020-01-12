@@ -27,24 +27,10 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <section class="kt-form--label-right">
-                                            <div class="form-group form-group-sm row">
-                                                <label for="artist_number"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Person Code')}}</label>
-                                                <input type="hidden" id="artist_number" value={{1}}>
-                                                <div class="col-lg-5">
-                                                    <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            name="code" id="code" placeholder="{{__('Person Code')}}"
-                                                            value="{{$artist_details->person_code != 0 ? $artist_details->person_code : ''}}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <span id="changeArtistLabel"
-                                                        class="kt-badge  kt-badge--danger kt-badge--inline d-none"
-                                                        onclick="removeSelectedArtist()">{{__('Change')}}
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            <input type="hidden" id="artist_number" value={{1}}>
+                                            <input type="hidden" class="form-control form-control-sm" name="code"
+                                                id="code"
+                                                value="{{$artist_details->person_code != 0 ? $artist_details->person_code : ''}}">
                                             <div class="form-group form-group-sm row">
                                                 <label for="fname_en"
                                                     class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
@@ -117,7 +103,7 @@
 
                                             <div class="form-group form-group-sm row">
                                                 <label for="profession"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Number')}}
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport No.')}}
                                                     <span class="text-danger hd-uae">*</span>
                                                 </label>
                                                 <div class="col-lg-8">
@@ -162,7 +148,7 @@
 
                                             <div class="form-group form-group-sm row">
                                                 <label for="dob"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry')}}
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry Date')}}
                                                     <span class="text-danger hd-uae">*</span>
                                                 </label>
                                                 <div class="col-lg-8">
@@ -197,27 +183,19 @@
                                                 </div>
                                             </div>
 
-
-
-
-                                        </section>
-                                    </div>
-                                    <div class="col-6">
-                                        <section class="kt-form--label-right">
-                                            <input type="hidden" id="artist_permit_num">
-                                            <div class="form-group form-group-sm row">
-                                                <label for="profession"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Profession')}}
-                                                    <span class="text-danger">*</span></label>
+                                            <div class=" form-group form-group-sm row">
+                                                <label for="language"
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Language')}}
+                                                </label>
                                                 <div class="col-lg-8">
                                                     <div class="input-group input-group-sm">
-                                                        <select class="form-control form-control-sm " name="profession"
-                                                            id="profession" placeholder="{{__('Profession')}}">
-                                                            <option value="">{{__('Select')}}</option>
-                                                            @foreach ($profession as $pt)
-                                                            <option value="{{$pt->profession_id}}"
-                                                                <?php if($pt->profession_id == $artist_details->profession_id){ echo 'selected' ;}?>>
-                                                                {{ucwords(getLangId() == 1 ? $pt->name_en : $pt->name_ar)}}
+                                                        <select class=" form-control form-control-sm " name="language"
+                                                            id="language">
+                                                            <option value=" ">{{__('Select')}}</option>
+                                                            @foreach ($languages as $lang)
+                                                            <option value={{$lang->id}}
+                                                                {{$lang->id == $artist_details->language ? 'selected' : ''}}>
+                                                                {{getLangId() == 1 ? $lang->name_en : $lang->name_ar}}
                                                             </option>
                                                             @endforeach
                                                         </select>
@@ -226,6 +204,11 @@
                                             </div>
 
 
+                                        </section>
+                                    </div>
+                                    <div class="col-6">
+                                        <section class="kt-form--label-right">
+                                            <input type="hidden" id="artist_permit_num">
 
                                             <div class="form-group form-group-sm row">
                                                 <label for="fname_ar"
@@ -237,7 +220,6 @@
                                                         <input type="text"
                                                             class="form-control form-control-sm text-left text-lg-right "
                                                             name="fname_ar" id="fname_ar"
-                                                            placeholder="{{__('First Name (AR)')}} "
                                                             value="{{$artist_details->firstname_ar}}">
                                                     </div>
                                                 </div>
@@ -251,11 +233,32 @@
                                                     <div class="input-group input-group-sm">
                                                         <input type="text" dir="rtl"
                                                             class="form-control form-control-sm" name="lname_ar"
-                                                            id="lname_ar" placeholder="{{__('Last Name (AR)')}}"
-                                                            value="{{$artist_details->lastname_ar}}">
+                                                            id="lname_ar" value="{{$artist_details->lastname_ar}}">
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group form-group-sm row">
+                                                <label for="profession"
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Profession')}}
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group input-group-sm">
+                                                        <select class="form-control form-control-sm " name="profession"
+                                                            id="profession" placeholder="{{__('Profession')}}">
+                                                            <option value="">{{__('Select')}}</option>
+                                                            @foreach ($profession as $pt)
+                                                            <option value="{{$pt->profession_id}}"
+                                                                <?php if($pt->profession_id == $artist_details->profession_id){ echo 'selected' ;}?>>
+                                                                {{getLangId() == 1 ? ucwords($pt->name_en) : $pt->name_ar}}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
                                             <div class="form-group form-group-sm row">
                                                 <label for="gender"
                                                     class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Gender')}}
@@ -337,13 +340,13 @@
 
                                             <div class="form-group form-group-sm row">
                                                 <label for="id_no"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Identification
-                                                    No')}} <span class="text-danger sh-uae">*</span></label>
+                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Identification No')}}
+                                                    <span class="text-danger sh-uae">*</span></label>
                                                 <div class="col-lg-8">
                                                     <div class="input-group input-group-sm">
                                                         <input type="text" class="form-control form-control-sm "
-                                                            name="id_no" id="id_no" placeholder="{{__('Identification
-                                                            No')}}" value="{{$artist_details->emirates_id}}">
+                                                            name="id_no" id="id_no"
+                                                            value="{{$artist_details->emirates_id}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -361,31 +364,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
-                                            <div class=" form-group form-group-sm row">
-                                                <label for="language"
-                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Language')}}
-                                                </label>
-                                                <div class="col-lg-8">
-                                                    <div class="input-group input-group-sm">
-                                                        <select class=" form-control form-control-sm " name="language"
-                                                            id="language">
-                                                            <option value=" ">{{__('Select')}}</option>
-                                                            @foreach ($languages as $lang)
-                                                            <option value={{$lang->id}}
-                                                                {{$lang->id == $artist_details->language ? 'selected' : ''}}>
-                                                                {{getLangId() == 1 ? $lang->name_en : $lang->name_ar}}
-                                                            </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-
 
 
                                     </div>

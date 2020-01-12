@@ -158,7 +158,7 @@
         <input type="hidden" id="temp_permit_id" value="{{$permit_id}}">
 
         <div class="col-md-12 kt-margin-t-10">
-            <div class="table-responsive">
+            <div class="table-responsive-sm">
                 <table class="table table-striped border table-hover table-borderless">
                     <thead>
                         <tr>
@@ -183,7 +183,7 @@
                             {{-- <td>{{$ad->email}}</td> --}}
                             <td>{!! __($ad->artist_permit_status) !!}</td>
                             <td class="d-flex justify-content-center">
-                                <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
+                                <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
                                     title="{{__('Edit')}}">
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
                                 </a>
@@ -414,7 +414,7 @@
                     data: { from: from , to:to, loc:loc,loc_ar:loc_ar, eventId:eventId, isEvent: isEvent },
                     async: true,
                     success: function(result){
-                        var Url = "{{ route('company.add_new_artist', [ 'id' => 1])}}";
+                        var Url = "{{ URL::signedRoute('company.add_new_artist', [ 'id' => 1])}}";
                         Url = Url.replace(':id', permit_id);
                         window.location.href = Url;
                     }
@@ -494,7 +494,8 @@
                         });
                     },
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#applied";
+                        // window.location.href="{{route('artist.index')}}#applied";
+                        window.location.href= result.toURL;
                         KTApp.unblockPage();
                     }
             });
@@ -526,7 +527,7 @@
                         });
                     },
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#draft";
+                        window.location.href=result.toURL;
                         KTApp.unblockPage();
                     }
                 });

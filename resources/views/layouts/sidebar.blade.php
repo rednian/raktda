@@ -51,19 +51,19 @@
                 <li
                     class="kt-menu__item {{ (\Request::is('company/artist/*') || \Request::is('company/artist'))  ? 'kt-menu__item--active' : ''}}">
 
-                    <a href="{{url('company/artist')}}" class="kt-menu__link">
+                    <a href="{{URL::signedRoute('artist.index')}}" class="kt-menu__link">
                         <span class="kt-menu__link-text">{{__('Artist Permit')}}</span>
                     </a>
                 </li>
                 <li
                     class="kt-menu__item {{ (\Request::is('company/event/*') || \Request::is('company/event')) ? 'kt-menu__item--active' : ''}}">
-                    <a href="{{url('company/event')}}" class="kt-menu__link ">
+                    <a href="{{URL::signedRoute('event.index')}}" class="kt-menu__link ">
 
                         <span class="kt-menu__link-text">{{__('Event Permit')}}</span>
                     </a>
                 </li>
-                <li class="kt-menu__item">
-                    <a href="javascript:void(0)" class="kt-menu__link ">
+                <li class="kt-menu__item {{ \Request::is('company/reports') ? 'kt-menu__item--active' : ''}}">
+                    <a href="{{route('company.reports')}}" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{__('Reports')}}</span>
                     </a>
                 </li>

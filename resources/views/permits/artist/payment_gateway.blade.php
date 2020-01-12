@@ -438,6 +438,10 @@
             interaction: {
                 merchant: {
                     name: 'RAKTDA NRS Infoways',
+                    address: {
+                        line1: '200 Sample St',
+                        line2: '1234 Example Town'            
+                    }  
                     // logo: "{{asset('/img/print_tda_logo.png')}}"
                 },
                 displayControl: {
@@ -458,10 +462,16 @@
                     type: 'GET',    
                     dataType: 'json',
                     contentType: 'application/json',
+                    // headers: {
+                    //     'Access-Control-Allow-Origin': '*',
+                    //     'X-CSRF-TOKEN': jQuery(`meta[name="csrf-token"]`).attr("content"),
+                    //     'Authorization':"Basic " + btoa(username + ":" + password)
+                    // },
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
                     },
                     success: function(res) {
+                        console.log('success')
                         transactionID = res.transaction[0].transaction.acquirer.transactionId;
                         receipt = res.transaction[0].transaction.receipt;
                         paymentDoneUpdation(transactionID,receipt);
@@ -477,15 +487,18 @@
             if($('#isEventPay').prop("checked")){
                 paidEventFee = 1;
             }
-            KTApp.blockPage({
-                    overlayColor: '#000000',
-                    type: 'v2',
-                    state: 'success',
-                    message: 'Please wait...'
-                });
+           
             $.ajax({
                 url: "{{route('company.payment')}}",
                 type: "POST",
+                beforeSend: function() {
+                    KTApp.blockPage({
+                        overlayColor: '#000000',
+                        type: 'v2',
+                        state: 'success',
+                        message: 'Please wait...'
+                    });
+                },
                 data: {
                 permit_id:$('#permit_id').val(),
                 amount: $('#amount').val(),
@@ -498,10 +511,8 @@
                 orderId: '{{getPaymentOrderId("artist", $permit_details->permit_id)}}'
                 },
                 success: function (result) {
-                var toUrl = "{{route('company.happiness_center', ':id')}}";
-                toUrl = toUrl.replace(':id', $('#permit_id').val());
                 if(result.message[0]){
-                window.location.replace(toUrl);
+                window.location.href = result.toURL;
                 KTApp.unblockPage();
                 }
                 }

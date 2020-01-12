@@ -267,152 +267,154 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        $('#kt_tabs_list a').click(function(e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
-
-        // $('ul .nav-tabs > li > a').on('shown.bs.tab', function(e) {
-        //     var id = $(e.target).attr("href").substr(1);
-        //     window.location.hash = id;
-        // });
-
-        // var hash = window.location.hash;
-        // $('#kt_tabs_list a[href="' + hash + '"]').tab('show');
-
-
+        
         $(document).ready(function(){
-            var hash = window.location.hash;
-            hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-            $('.nav-tabs a').click(function (e) {
-            $(this).tab('show');
-            var scrollmem = $('body').scrollTop();
-            window.location.hash = this.hash;
-            $('html,body').scrollTop(scrollmem);
-            });
 
             calendarEvents();
+            applied();
+            valid();
+            draft();
+            setInterval(function(){ applied(); valid();}, 100000);
+            var hash = window.location.hash;
+            hash && $('ul.nav a[href="' + hash + '"]').tab('show');
 
-        var table1 = $('#applied-events-table').DataTable({
-            responsive: true,
-            processing: true,
-            serverSide: true,
-            searching: true,
-            // order:[[6,'desc']],
-            ajax:'{{route("company.event.fetch_applied")}}',
-            columns: [
-                { data: 'reference_number', name: 'reference_number' },
-                { data: 'type_name', name: 'type_name' },
-                { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
-                { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
-                { data: 'name_en', name: 'name_en' },
-                // { data: 'venue_en', name: 'venue_en' },          
-                { data: 'permit_status', name: 'permit_status' },
-                { data: 'action', name: 'action' ,  className: "text-center"},
-                { data: 'details', name: 'details' ,  className: "text-center"},
-            ],
-            columnDefs: [
-                // {
-                //     targets:4,
-                //     className: 'dt-body-nowrap dt-head-nowrap',
-                //     render: function(data, type, full, meta) {
-				// 		return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span>${full.name_ar}</span>`;
-				// 	}
-                // },
-                {
-                    targets:-3,
-                    width: '10%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-transform-c text-center">${data}</span>`;
-					}
+            $('.nav-tabs a').click(function (e) {
+                $(this).tab('show');
+                var scrollmem = $('body').scrollTop();
+                window.location.hash = this.hash;
+                $('html,body').scrollTop(scrollmem);
+            });
+
+            $('.nav-tabs a').on('shown.bs.tab', function (event) {
+                var current_tab = $(event.target).attr('href');
+                if (current_tab == '#applied' ) {  applied(); }
+                if (current_tab == '#valid' ) { valid(); }
+                if (current_tab == '#calendar') { calendarEvents(); }
+                if (current_tab == '#draft' ) { draft(); }
+            });
+
+        })
+
+       function applied(){
+            var table1 = $('#applied-events-table').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                searching: true,
+                // order:[[6,'desc']],
+                ajax:'{{route("company.event.fetch_applied")}}',
+                columns: [
+                    { data: 'reference_number', name: 'reference_number' },
+                    { data: 'type_name', name: 'type_name' },
+                    { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
+                    { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
+                    { data: 'name_en', name: 'name_en' },
+                    // { data: 'venue_en', name: 'venue_en' },          
+                    { data: 'permit_status', name: 'permit_status' },
+                    { data: 'action', name: 'action' ,  className: "text-center"},
+                    { data: 'details', name: 'details' ,  className: "text-center"},
+                ],
+                columnDefs: [
+                    {
+                        targets:-3,
+                        width: '10%',
+                        className: 'text-center',
+                        render: function(data, type, full, meta) {
+                            return `<span class="kt-font-transform-c text-center">${data}</span>`;
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: "No Applied Event Permits",
+                    searchPlaceholder: "{{__('Search')}}"
                 }
-            ],
-            language: {
-                emptyTable: "No Applied Event Permits",
-                searchPlaceholder: "{{__('Search')}}"
-            }
-            
-        });
+                
+            });
+       }
 
-        var table2 = $('#existing-events-table').DataTable({
-            responsive: true,
-            processing: true,
-            serverSide: true,
-            searching: true,
-            deferRender: true,
-            ajax: '{{route("company.event.fetch_valid")}}',
-            beforeSend: function (request) {
-                request.setRequestHeader("token", token);
-            },
-            columns: [
-                { data: 'permit_number', name: 'permit_number' },
-                { data: 'type_name', name: 'type_name' },
-                { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
-                { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
-                { data: 'name_en', name: 'name_en' },
-                // { data: 'venue_en', name: 'venue_en' },
-                // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                { data: 'action', name: 'action',  className: "text-center" },
-                { data: 'download', name: 'download',  className: "text-center" },
-                { data: 'details', name: 'details' ,  className: "text-center"},
-            ],
-            columnDefs: [
-            ],
-            language: {
-                emptyTable: "No Valid Event Permits",
-                searchPlaceholder: "{{__('Search')}}"
-            }
-        });
-
-        var table3 = $('#drafts-events-table').DataTable({
-            responsive: true,
-            processing: true,
-            serverSide: true,
-            searching: true,
-            deferRender: true,
-            order:[[4,'desc']],
-            ajax:   '{{route("company.event.fetch_draft")}}',
-            beforeSend: function (request) {
-                request.setRequestHeader("token", token);
-            },
-            columns: [
-                { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},       
-                { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
-                { data: 'name_en', name: 'name_en' },
-                // { data: 'venue_en', name: 'venue_en' },
-                { data: 'created_at', defaultContent: 'None', name: 'created_at' , },
-                { data: 'action', name: 'action' ,  className: "text-center",  className: 'no-wrap'},
-                { data: 'details', name: 'details' ,  className: "text-center"},
-            ],
-            columnDefs: [
-                {
-                    targets:-3,
-                    width: '12%',
-                    render: function(data, type, full, meta) {
-                        return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
-
-					}
+        function valid()
+        {
+            var table2 = $('#existing-events-table').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                searching: true,
+                deferRender: true,
+                ajax: '{{route("company.event.fetch_valid")}}',
+                beforeSend: function (request) {
+                    request.setRequestHeader("token", token);
                 },
-                {
-                    targets: 4,
-                    width: '10%',
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-                        return $('#lang_id').val() == 1 ?  '<span >'+ data +'</span>' : '<span >'+ full.name_ar +'</span>';
+                columns: [
+                    { data: 'permit_number', name: 'permit_number' },
+                    { data: 'type_name', name: 'type_name' },
+                    { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
+                    { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
+                    { data: 'name_en', name: 'name_en' },
+                    // { data: 'venue_en', name: 'venue_en' },
+                    // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
+                    { data: 'action', name: 'action',  className: "text-center" },
+                    { data: 'download', name: 'download',  className: "text-center" },
+                    { data: 'details', name: 'details' ,  className: "text-center"},
+                ],
+                columnDefs: [
+                ],
+                language: {
+                    emptyTable: "No Valid Event Permits",
+                    searchPlaceholder: "{{__('Search')}}"
+                }
+            });
+        }
 
-					}
+        function draft() {
+            var table3 = $('#drafts-events-table').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                searching: true,
+                deferRender: true,
+                order:[[4,'desc']],
+                ajax:   '{{route("company.event.fetch_draft")}}',
+                beforeSend: function (request) {
+                    request.setRequestHeader("token", token);
                 },
-            ],
-            language: {
-                emptyTable: "{{__('No Event Permit Drafts')}}",
-                searchPlaceholder: "{{__('Search')}}"
-            }
+                columns: [
+                    { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},       
+                    { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
+                    { data: 'name_en', name: 'name_en' },
+                    // { data: 'venue_en', name: 'venue_en' },
+                    { data: 'created_at', defaultContent: 'None', name: 'created_at' , },
+                    { data: 'action', name: 'action' ,  className: "text-center",  className: 'no-wrap'},
+                    { data: 'details', name: 'details' ,  className: "text-center"},
+                ],
+                columnDefs: [
+                    {
+                        targets:-3,
+                        width: '12%',
+                        render: function(data, type, full, meta) {
+                            return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
-        });
+                        }
+                    },
+                    {
+                        targets: 4,
+                        width: '10%',
+                        className:'text-center',
+                        render: function(data, type, full, meta) {
+                            return $('#lang_id').val() == 1 ?  '<span >'+ data +'</span>' : '<span >'+ full.name_ar +'</span>';
+
+                        }
+                    },
+                ],
+                language: {
+                    emptyTable: "{{__('No Event Permit Drafts')}}",
+                    searchPlaceholder: "{{__('Search')}}"
+                }
+
+            });
+        }
 
 
-    });
+   
 
     const cancel_permit = (id, refno, permit_no) => {
         var url = "{{route('company.event.get_status', ':id')}}";

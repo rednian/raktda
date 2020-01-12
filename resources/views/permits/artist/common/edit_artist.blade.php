@@ -794,28 +794,28 @@
                 },
                 success: function(result){
 
-                        localStorage.clear(); let toUrl = '';
-                        if(fromPage == 'new')
-                        {
-                            toUrl = "{{url('company/artist/new')}}";
-                            window.location.href= toUrl +'/'+ permit_id;
-                        } else {
-                            toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => ':from'])}}";;
-                            if(fromPage == 'amend'){
-                                toUrl = toUrl.replace(':from', 'amend');
-                            }else if(fromPage == 'edit') {
-                                toUrl = toUrl.replace(':from', 'edit');
-                            } else if(fromPage == 'renew') {
-                                toUrl = toUrl.replace(':from', 'renew');
-                            } else if(fromPage == 'draft') {
-                                toUrl = toUrl.replace(':from', 'draft');
-                            }  else if(fromPage == 'event') {
-                                toUrl = toUrl.replace(':from', 'event');
-                            }
-                            toUrl = toUrl.replace(':id', permit_id);
-                            window.location.href= toUrl ;
-                        }
-
+                        localStorage.clear(); 
+                        // if(fromPage == 'new')
+                        // {
+                        //     toUrl = "{{url('company/artist/new')}}";
+                        //     window.location.href= toUrl +'/'+ permit_id;
+                        // } else {
+                        //     toUrl= "{{route('artist.permit',[ 'id' => ':id' , 'from' => ':from'])}}";;
+                        //     if(fromPage == 'amend'){
+                        //         toUrl = toUrl.replace(':from', 'amend');
+                        //     }else if(fromPage == 'edit') {
+                        //         toUrl = toUrl.replace(':from', 'edit');
+                        //     } else if(fromPage == 'renew') {
+                        //         toUrl = toUrl.replace(':from', 'renew');
+                        //     } else if(fromPage == 'draft') {
+                        //         toUrl = toUrl.replace(':from', 'draft');
+                        //     }  else if(fromPage == 'event') {
+                        //         toUrl = toUrl.replace(':from', 'event');
+                        //     }
+                        //     toUrl = toUrl.replace(':id', permit_id);
+                        //     window.location.href= toUrl ;
+                        // }
+                        window.location.href= result.toURL;
                         KTApp.unblockPage();
                 }
             });

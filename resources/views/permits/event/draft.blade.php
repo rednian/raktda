@@ -651,7 +651,7 @@
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script src="{{asset('js/company/map.js')}}"></script>
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}&libraries=places&callback=initialize"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
     async defer></script>
 <script>
     $.ajaxSetup({
@@ -1459,11 +1459,13 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="editThisTruck('+result[s].event_truck_id+', '+k+')">Edit</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
+       
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <span onclick="editThisTruck('+result[s].event_truck_id+', '+k+')"><i class="fa fa-pen fnt-16 text-info"></i></span>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
-                           if(result.length > 1){
-                               $('#append_'+s+'').append('<button class="btn btn-secondary" onclick="deleteThisTruck('+result[s].event_truck_id+')">Remove</button>');
-                           }
+                            if(result.length > 1){
+                                $('#append_'+s+'').append('<span onclick="deleteThisTruck('+result[s].event_truck_id+')"><i class="fa fa-trash fnt-16 text-danger"></i></span>');
+                            }
+
                         
                         }
 
@@ -1480,7 +1482,7 @@
             $.ajax({
                 url:  url,
                 success: function (result) {
-                    if(result) 
+                    if(result.status.trim() == 'done') 
                     {
                         editTruck();
                         $('#disp_mess').html('<h5 class="text-danger py-2">Food Truck Details Deleted successfully</h5>');
@@ -1505,7 +1507,11 @@
                         $('#add_truck_title').hide();
                         $('#update_this_td').show();
                         $('#add_new_td').hide();
-                        $('#edit_one_food_truck').modal('show');
+                        $('#edit_one_food_truck').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
                         $('#company_name_en').val(result.company_name_en);
                         $('#company_name_ar').val(result.company_name_ar);
                         $('#plate_no').val(result.plate_number);
@@ -1524,7 +1530,11 @@
         }
 
         $('#add_new_truck').click(function(){
-            $('#edit_one_food_truck').modal('show');
+            $('#edit_one_food_truck').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
             $('#truck_details_form').trigger('reset');
             $('#truck_upload_form').trigger('reset');
             $('#edit_truck_title').hide();
@@ -1566,7 +1576,7 @@
                             truck_id: ''
                         },
                         success: function (result) {
-                            if(result)
+                            if(result.status.trim() == 'done')
                             {
                                 editTruck();
                                 $('#edit_one_food_truck').modal('hide');
@@ -1575,6 +1585,7 @@
                                     keyboard: false,
                                     show: true
                                 });
+                                $('#prev_val_isTruck').val(1);
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
@@ -1609,7 +1620,7 @@
                             eventId: $('#event_id').val()
                         },
                         success: function (result) {
-                            if(result) 
+                            if(result.status.trim() == 'done')
                             {
                                 editTruck();
                                 $('#edit_food_truck').modal({
@@ -1618,6 +1629,7 @@
                                     show: true
                                 });
                                 $('#edit_one_food_truck').modal('hide');
+                                $('#prev_val_isTruck').val(1);
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
@@ -1981,6 +1993,7 @@
                             {
                                 $('#event_liquor_id').val(result.event_liquor_id);
                                 $('#liquorEditBtn').show();
+                                $('#prev_val_isLiquor').val(1);
                             }
                         }
                 });
@@ -2013,7 +2026,7 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data.trim()) 
+                    if(data.length) 
                     {
                         $('#event_liquor_id').val(data.event_liquor_id);
                         if(data.provided == 1)

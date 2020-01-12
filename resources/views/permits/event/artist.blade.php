@@ -161,7 +161,7 @@
                         {{-- <td>{{$ad->email}}</td> --}}
                         <td>{{__(ucwords($ad->artist_permit_status))}}</td>
                         <td class="d-flex justify-content-center">
-                            <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'event'])}}">
+                            <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'event'])}}">
                                 <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
                             </a>
                             <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'event'])}}">
@@ -292,19 +292,21 @@
         // })
 
         $('#submit_btn').click((e) => {
-            // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-            KTApp.blockPage({
-               overlayColor: '#000000',
-               type: 'v2',
-               state: 'success',
-               message: 'Please wait...'
-           });
+
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",
+                    beforeSend: function() {
+                        KTApp.blockPage({
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'success',
+                            message: 'Please wait...'
+                        });
+                    },
                     data: {
                         temp_permit_id:temp_permit_id ,
                         from: $('#permit_from').val() ,
@@ -316,8 +318,8 @@
                         fromWhere: 'event'
                     },
                     success: function(result){
-                        $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                        window.location.href="{{route('artist.index')}}#applied";
+                        // window.location.href="{{route('artist.index')}}#applied";
+                        window.location.href= result.toURL;
                         KTApp.unblockPage();
                     }
             });

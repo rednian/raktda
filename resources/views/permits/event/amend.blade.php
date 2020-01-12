@@ -176,8 +176,8 @@
                         <th>#</th>
                         <th>{{__('Establishment Name')}}</th>
                         <th>{{__('Establishment Name (AR)')}}</th>
-                        <th>{{__('Food Services')}}</th>
                         <th>{{__('Traffic Plate No')}}</th>
+                        <th>{{__('Food Services')}}</th>
                         <th></th>
                     </thead>
                     <tbody id="food_truck_list">
@@ -631,17 +631,6 @@
         }
 
         
-        // truckDocRules = {};
-        // truckDocMessages = {};
-
-        // for(var i = 1; i <= $('#truck_document_count').val(); i++)
-        // {
-        //     docRules['truck_doc_issue_date_'+i] = 'required';
-        //     docRules['truck_doc_exp_date_'+i] = 'required';
-        //     docMessages['truck_doc_issue_date_'+i] = '';
-        //     docMessages['truck_doc_exp_date_'+i] = '';
-        // }
-        
         function go_back_truck_list()
         {
             $('#edit_food_truck').modal('show');
@@ -664,16 +653,15 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr class="text-center"><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].food_type+'</td><td>'+ result[s].plate_number+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="editThisTruck('+result[s].event_truck_id+', '+k+')">Edit</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
+                           $('#food_truck_list').append('<tr class="text-center"><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <span onclick="editThisTruck('+result[s].event_truck_id+', '+k+')"><i class="fa fa-pen fnt-16 text-info"></i></span></button>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
                            if(result[s].paid == 0){
-                               $('#append_'+s+'').append('<a class="btn btn-secondary" data-target="#removeModal" data-toggle="modal">Remove</a>');
+                               $('#append_'+s+'').append('<a class="btn btn-secondary" data-target="#removeModal" data-toggle="modal"><i class="fa fa-trash fnt-16 text-danger"></i></a>');
                                $('#remove_truck_id').val(result[s].event_truck_id);
                            }
-                        
-                        }
 
                         
+                        }
                     }
                 }
             });
@@ -687,7 +675,7 @@
             $.ajax({
                 url:  url,
                 success: function (result) {
-                    if(result) 
+                    if(result.status.trim() == 'done') 
                     {
                         editTruck();
                         $('#removeModal').modal('hide');
@@ -713,7 +701,11 @@
                         $('#add_truck_title').hide();
                         $('#update_this_td').show();
                         $('#add_new_td').hide();
-                        $('#edit_one_food_truck').modal('show');
+                        $('#edit_one_food_truck').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
                         $('#company_name_en').val(result.company_name_en);
                         $('#company_name_ar').val(result.company_name_ar);
                         $('#plate_no').val(result.plate_number);
@@ -734,7 +726,11 @@
 
         $('#add_new_truck').click(function(){
             $('#this_event_truck_id').val('');
-            $('#edit_one_food_truck').modal('show');
+            $('#edit_one_food_truck').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
             $('#truck_details_form').trigger('reset');
             $('#edit_truck_title').hide();
             $('#update_this_td').hide();
@@ -774,7 +770,7 @@
                             truck_id: ''
                         },
                         success: function (result) {
-                            if(result)
+                            if(result.status.trim() == 'done')
                             {
                                 editTruck();
                                 $('#edit_one_food_truck').modal('hide');
@@ -814,7 +810,7 @@
                             from: 'amend'
                         },
                         success: function (result) {
-                            if(result) 
+                            if(result.status.trim() == 'done') 
                             {
                                 editTruck();
                                 $('#edit_food_truck').modal('show');
@@ -1147,7 +1143,7 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data) 
+                    if(data.length) 
                     {
                         $('#liquor_details .ajax-file-upload-red').trigger('click');
                         $('#liquor_details').modal('show');

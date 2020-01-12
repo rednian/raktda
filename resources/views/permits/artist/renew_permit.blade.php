@@ -119,7 +119,7 @@
                             {{__(ucwords($artist_detail->artist_permit_status))}}
                         </td>
                         <td class="d-flex justify-content-center">
-                            <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
+                            <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
                                 title="{{__('Edit')}}">
                                 <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Edit')}}</button>
                             </a>
@@ -270,7 +270,7 @@
             success: function(data) {
                 // console.log(data);
               if(data.message[0] == 'success') {
-                window.location.href="{{route('artist.index')}}#valid";
+                window.location.href= data.toURL;
                 KTApp.unblockPage();
               }
             }

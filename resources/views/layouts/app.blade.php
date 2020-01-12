@@ -81,7 +81,7 @@
     <!-- begin::Page loader -->
     <div class="kt-page-loader kt-page-loader--base">
         <div class="blockui">
-            <span>Please wait...</span>
+            <span>{{__('Please wait...')}}</span>
             <span>
                 <div class="kt-spinner kt-spinner--danger"></div>
             </span>
@@ -118,7 +118,6 @@
                 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
                     <!-- begin:: Content -->
                     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
-
                     
                         @if (
                             Auth::check() &&
@@ -146,7 +145,14 @@
                             <div class="col">
                                 @yield('content')
                             </div>
-                        </section>
+                            @endif
+
+
+                            <section class="row">
+                                <div class="col">
+                                    @yield('content')
+                                </div>
+                            </section>
                     </div>
                     <!-- end:: Content -->
                 </div>

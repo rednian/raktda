@@ -134,9 +134,8 @@
                             <td>
                                 {{ ucwords($artist_detail->artist_permit_status)}}
                             </td>
-
                             <td class="d-flex justify-content-center">
-                                <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
+                                <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                     title="Edit">
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
                                 </a>
@@ -151,11 +150,11 @@
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
                                 </a>
                                 @endif
-                                @if(count($staff_comments) > 0)
+                                {{-- @if(count($staff_comments) > 0)
                                 <a href="#" onclick="getArtistComments({{$artist_detail->artist_permit_id}})">
-                                    <i class="la la-comment la-2x pl-4"></i>
+                                <i class="la la-comment la-2x pl-4"></i>
                                 </a>
-                                @endif
+                                @endif --}}
                             </td>
                             <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
                             @php
@@ -304,8 +303,7 @@
             success: function(result) {
                 if(result.message[0] == 'success')
                 {
-                    $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                    window.location.href="{{route('artist.index')}}#applied";
+                    window.location.href=result.toURL;
                     KTApp.unblockPage();
                 }
             }

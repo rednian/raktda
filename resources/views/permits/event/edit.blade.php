@@ -545,7 +545,7 @@
                             @component('permits.components.eventcomments', ['staff_comments' => $staff_comments])
                             @endcomponent
                             @include('permits.components.requirements')
-                            <input type="hidden" id="requirements_count" />
+                            <input type="hidden" id="requirements_count" value="0" />
                             <form id="documents_required" novalidate>
 
                             </form>
@@ -620,10 +620,10 @@
     </div>
 </div>
 
-@include('permits.event.common.show_warning_modal', ['day_count' => getSettings()->event_start_after]);
-@include('permits.event.common.edit_food_truck', [ 'truck_req'=>$truck_req]);
-@include('permits.event.common.liquor', ['liquor_req' => $liquor_req]);
-@include('permits.event.common.sure_to_remove');
+@include('permits.event.common.show_warning_modal', ['day_count' => getSettings()->event_start_after])
+@include('permits.event.common.edit_food_truck', [ 'truck_req'=>$truck_req])
+@include('permits.event.common.liquor', ['liquor_req' => $liquor_req])
+@include('permits.event.common.sure_to_remove')
 
 @endsection
 
@@ -633,7 +633,7 @@
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script src="{{asset('js/company/map.js')}}"></script>
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}&libraries=places&callback=initialize"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
     async defer></script>
 <script>
     $.ajaxSetup({
@@ -665,16 +665,15 @@
         $('#back_btn').css('display', 'none');
         localStorage.clear();
         setEventDetails();
-        let event_id = $('#event_id').val();
+
         getRequirementsList();
-        getAddtionalRequirementsList(event_id);
-        uploadFunction();
         picUploadFunction();
         imageUploadFunction();
-
         setSubTypes($('#event_type_id').val());
 
         $('#submit_btn').css('display', 'none');
+
+        var getLangid = $('#getLangid').val();
 
         var isTruck = $('#prev_val_isTruck').val();
         if(isTruck == 0){
@@ -938,8 +937,6 @@
         }
         });
 
-     
-
         function setEventDetails(){
             eventdetails = {
                 event_type_id: $('#event_type_id').val(),
@@ -1112,22 +1109,23 @@
                 type: 'POST',
                 data: {id: id, firm: firm},
                 success: function (result) {
-                 if(result){
+                 if(result)
+                 {
                     $('#documents_required').empty();
                      var res = result;
                      $('#requirements_count').val(res.length);
+                     // fetching the additional requirements
+                     getAddtionalRequirementsList($('#event_id').val());
                      $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+toCapitalize(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+(res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon text-capitalize">'+( getLangid == 1 ? res[i].requirement_name : res[i].requirement_name_ar ) +' <span id="cnd_'+j+'"></span></label><p for="" class="reqName text-capitalize">'+(getLangid == 1 ? res[i].requirement_description : res[i].requirement_description_ar)+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
                             $('#issue_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
                             $('#exp_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
                          }
-
-                         
                          if(res[i].event_type_requirements[0].is_mandatory == 1)
                          {
                             $('#cnd_'+j).html(' * ');
@@ -1140,20 +1138,14 @@
                             $('#cnd_'+j).html(' ');
                             $('#cnd_'+j).removeClass('text-danger').addClass('text-muted');
                          }
-
-                        
-
-
-                            documentsValidator = $('#documents_required').validate({
-                                    rules: docRules,
-                                    messages: docMessages
-                            });
+                        documentsValidator = $('#documents_required').validate({
+                                rules: docRules,
+                                messages: docMessages
+                        });
 
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
-
                      }
                      uploadFunction();
-                     picUploadFunction();
                  }else {
                     $('#documents_required').empty();
                  }
@@ -1174,31 +1166,33 @@
                      var res = result.additional_requirements;
                      $('#addi_requirements_count').val(res.length);
                      var j =  parseInt($('#requirements_count').val()) + 1 ;
-                     if(j != NaN){
-                     for(var i = 0; i < res.length; i++){
-                         $('#addi_documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+res[i].requirement_name.toUpperCase()+'<span class="text-danger"> * </span></label><p for="" class="reqName">'+(res[i].requirement_description ? res[i].requirement_description : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="1"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                     if(j != NaN)
+                     {
+                        for(var i = 0; i < res.length; i++){
 
-                         if(res[i].dates_required == "1")
-                         {
-                            $('#issue_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
-                            $('#exp_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
-                         }
+                            $('#addi_documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon text-capitalize">'+( getLangid == 1 ? res[i].requirement_name : res[i].requirement_name_ar )+'<span class="text-danger"> * </span></label><p for="" class="reqName text-capitalize">'+(getLangid == 1 ? res[i].requirement_description : res[i].requirement_description_ar)+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="1"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
-                            docRules['doc_issue_date_' + j] = 'required';
-                            docRules['doc_exp_date_' + j] = 'required';
-                            docMessages['doc_issue_date_' + j] = '';
-                            docMessages['doc_exp_date_' + j] = '';
+                            if(res[i].dates_required == "1")
+                            {
+                                $('#issue_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Issue Date">Issue Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_'+j+'" data-date-end-date="0d" id="doc_issue_date_'+j+'" placeholder="DD-MM-YYYY"/>');
+                                $('#exp_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
 
+                                docRules['doc_issue_date_' + j] = 'required';
+                                docRules['doc_exp_date_' + j] = 'required';
+                                docMessages['doc_issue_date_' + j] = '';
+                                docMessages['doc_exp_date_' + j] = '';
+
+                            }
                             addiDocumentsValidator = $('#addi_documents_required').validate({
-                                    rules: docRules,
-                                    messages: docMessages
-                                });
+                                rules: docRules,
+                                messages: docMessages
+                            });
                                 j++;
-                         $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+                            $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
 
-                     }
-                     }
-                     uploadFunction();
+                        }
+                        uploadFunction();
+                    }
                  }
                 }
             });
@@ -1210,7 +1204,7 @@
 
             var hasFile = docValidation();
 
-                if (documentsValidator != '' ? documentsValidator.form() : 1 && hasFile) {
+                if ((documentsValidator != '' ? documentsValidator.form() : 1) && (addiDocumentsValidator != '' ? addiDocumentsValidator.form() : 1) && hasFile) {
 
                     // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
                     // $('#submit_btn').css('pointer-events', 'none');
@@ -1429,11 +1423,12 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="editThisTruck('+result[s].event_truck_id+', '+k+')">Edit</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
-                           if(result.length > 1){
-                               $('#append_'+s+'').append('<button class="btn btn-secondary" onclick="deleteThisTruck('+result[s].event_truck_id+')">Remove</button>');
-                           }
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <span onclick="editThisTruck('+result[s].event_truck_id+', '+k+')"><i class="fa fa-pen fnt-16 text-info"></i></span>&emsp;<span id="append_'+s+'"></span></td></tr>');
+
+                            if(result.length > 1){
+                                $('#append_'+s+'').append('<span onclick="deleteThisTruck('+result[s].event_truck_id+')"><i class="fa fa-trash fnt-16 text-danger"></i></span>');
+                            }
                         
                         }
 
@@ -1450,7 +1445,7 @@
             $.ajax({
                 url:  url,
                 success: function (result) {
-                    if(result) 
+                    if(result.status.trim() == 'done') 
                     {
                         editTruck();
                         $('#disp_mess').html('<h5 class="text-danger py-2">Food Truck Details Deleted successfully</h5>');
@@ -1475,7 +1470,11 @@
                         $('#add_truck_title').hide();
                         $('#update_this_td').show();
                         $('#add_new_td').hide();
-                        $('#edit_one_food_truck').modal('show');
+                        $('#edit_one_food_truck').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
                         $('#company_name_en').val(result.company_name_en);
                         $('#company_name_ar').val(result.company_name_ar);
                         $('#plate_no').val(result.plate_number);
@@ -1495,7 +1494,11 @@
         }
 
         $('#add_new_truck').click(function(){
-            $('#edit_one_food_truck').modal('show');
+            $('#edit_one_food_truck').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
             $('#truck_details_form').trigger('reset');
             $('#truck_upload_form').trigger('reset');
             $('#edit_truck_title').hide();
@@ -1537,7 +1540,7 @@
                             truck_id: ''
                         },
                         success: function (result) {
-                            if(result)
+                            if(result.status.trim() == 'done')
                             {
                                 editTruck();
                                 $('#edit_one_food_truck').modal('hide');
@@ -1547,6 +1550,7 @@
                                     show: true
                                 });
                                 $('#truckEditBtn').show();
+                                $('#prev_val_isTruck').val(1);
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
@@ -1581,7 +1585,7 @@
                             eventId: $('#event_id').val()
                         },
                         success: function (result) {
-                            if(result) 
+                            if(result.status.trim() == 'done') 
                             {
                                 editTruck();
                                 $('#edit_food_truck').modal({
@@ -1590,6 +1594,7 @@
                                     show: true
                                 });
                                 $('#edit_one_food_truck').modal('hide');
+                                $('#prev_val_isTruck').val(1);
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
                             }
@@ -1950,6 +1955,7 @@
                             {
                                 $('#event_liquor_id').val(result.event_liquor_id);
                                 $('#liquorEditBtn').show();
+                                $('#prev_val_isLiquor').val(1);
                             }
                         }
                 });
@@ -1982,7 +1988,7 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data.trim()) 
+                    if(data.length) 
                     {
                         $('#event_liquor_id').val(data.event_liquor_id);
                         if(data.provided == 1)
@@ -2014,7 +2020,6 @@
                         messages: liquorDocMessages
                     });
                     liquorDocUpload();
-                }
                 }
             });
         }
@@ -2049,7 +2054,7 @@
                 var paths = [];
                 for (var i = 1; i <= reqCount; i++) 
                 {
-                    let src = $('#image-file-upload > .ajax-file-upload-statusbar:nth-child('+i+') img').attr('src').split('/').slice(4, ).join('/');;
+                    let src = $('#image-file-upload > .ajax-file-upload-statusbar:nth-child('+i+') img').attr('src').split('/').slice(4, ).join('/');
                     paths.push(src);
                 }
                 localStorage.setItem('imagePaths', JSON.stringify(paths));
