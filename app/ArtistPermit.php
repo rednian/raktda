@@ -126,7 +126,7 @@ class ArtistPermit extends Model implements Auditable
       }
 
        public function artistPermitTransaction(){
-        return $this->hasMany(ArtistPermitTransaction::class,'artist_permit_id');
+        return $this->belongsTo(ArtistPermitTransaction::class,'artist_permit_id');
  }
 
 }

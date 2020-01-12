@@ -9,6 +9,7 @@ use App\ArtistPermitTransaction;
 use App\ConstantValue;
 use App\Country;
 use App\Event;
+use App\EventTransaction;
 use App\Gender;
 use App\Permit;
 use App\Profession;
@@ -46,7 +47,9 @@ class ReportController extends Controller
         })->get();
 
         $artistPermit = ArtistPermit::with('artist')->has('permit')->with('country')->with('profession')->get();
-
+        $artisttransactions = ArtistPermitTransaction::with('transaction')->orderBy('created_at', 'desc')->get();
+        $eventtransactions = EventTransaction::with('transaction')->orderBy('created_at', 'desc')->get();
+        $transactions = $artisttransactions->merge($eventtransactions);
 
         return view('admin.report.index', [
             'page_title' => 'Reports Dashboard',
@@ -58,6 +61,8 @@ class ReportController extends Controller
             'visas' => $visa,
             'artistPermit' => $artistPermit,
 
+
+          'transactions'=> $transactions,
             'professions' => Profession::has('artistpermit')->get(),
             'countries' => Country::has('artistpermit')->get(),
             'new_request' => Permit::has('artist')->where('permit_status', 'new')->count(),
@@ -102,7 +107,7 @@ class ReportController extends Controller
             })
             ->addColumn('profession', function (Artist $user) {
                 foreach ($user->artistPermit as $artist) {
-                    return $artist->profession->name_en;
+                    return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                 }
             })
             ->addColumn('nationality', function (Artist $user) {
@@ -139,7 +144,7 @@ class ReportController extends Controller
             ->addColumn('address_en', function (Artist $user) {
                 if ($user->artistPermit) {
                     foreach ($user->artistPermit as $artist) {
-                        return $artist->address_en;
+                        return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                     }
                 }
                 return '';
@@ -147,7 +152,7 @@ class ReportController extends Controller
             ->addColumn('language_id', function (Artist $user) {
                 if ($user->artistPermit) {
                     foreach ($user->artistPermit as $artist) {
-                        return $artist->language->name_en;
+                        return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                     }
                 }
                 return '';
@@ -171,7 +176,7 @@ class ReportController extends Controller
             ->addColumn('emirate_id', function (Artist $user) {
                 if ($user->artistPermit) {
                     foreach ($user->artistPermit as $artist) {
-                        return $artist->emirate->name_en;
+                        return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                     }
                 }
                 return '';
@@ -212,7 +217,7 @@ class ReportController extends Controller
                         })
                         ->addColumn('profession', function (Artist $user) {
                             foreach ($user->artistPermit as $artist) {
-                                return $artist->profession->name_en;
+                                return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                             }
                         })
                         ->addColumn('nationality', function (Artist $user) {
@@ -250,7 +255,7 @@ class ReportController extends Controller
                         ->addColumn('address_en', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             }
                             return '';
@@ -258,7 +263,7 @@ class ReportController extends Controller
                         ->addColumn('language_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->language->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                 }
                             }
                             return '';
@@ -282,7 +287,7 @@ class ReportController extends Controller
                         ->addColumn('emirate_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->emirate->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                 }
                             }
                             return '';
@@ -329,7 +334,7 @@ class ReportController extends Controller
                         })
                         ->addColumn('profession', function (Artist $user) {
                             foreach ($user->artistPermit as $artist) {
-                                return $artist->profession->name_en;
+                                return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                             }
                         })
                         ->addColumn('nationality', function (Artist $user) {
@@ -367,7 +372,7 @@ class ReportController extends Controller
                         ->addColumn('address_en', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             }
                             return '';
@@ -375,7 +380,7 @@ class ReportController extends Controller
                         ->addColumn('language_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->language->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                 }
                             }
                             return '';
@@ -399,7 +404,7 @@ class ReportController extends Controller
                         ->addColumn('emirate_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->emirate->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                 }
                             }
                             return '';
@@ -446,7 +451,7 @@ class ReportController extends Controller
                         })
                         ->addColumn('profession', function (Artist $user) {
                             foreach ($user->artistPermit as $artist) {
-                                return $artist->profession->name_en;
+                                return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                             }
                         })
                         ->addColumn('nationality', function (Artist $user) {
@@ -484,7 +489,7 @@ class ReportController extends Controller
                         ->addColumn('address_en', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             }
                             return '';
@@ -492,7 +497,7 @@ class ReportController extends Controller
                         ->addColumn('language_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->language->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                 }
                             }
                             return '';
@@ -516,7 +521,7 @@ class ReportController extends Controller
                         ->addColumn('emirate_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->emirate->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                 }
                             }
                             return '';
@@ -560,7 +565,7 @@ class ReportController extends Controller
                         })
                         ->addColumn('profession', function (Artist $user) {
                             foreach ($user->artistPermit as $artist) {
-                                return $artist->profession->name_en;
+                                return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                             }
                         })
                         ->addColumn('nationality', function (Artist $user) {
@@ -598,7 +603,7 @@ class ReportController extends Controller
                         ->addColumn('address_en', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             }
                             return '';
@@ -606,7 +611,7 @@ class ReportController extends Controller
                         ->addColumn('language_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->language->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                 }
                             }
                             return '';
@@ -630,7 +635,7 @@ class ReportController extends Controller
                         ->addColumn('emirate_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->emirate->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                 }
                             }
                             return '';
@@ -675,7 +680,7 @@ class ReportController extends Controller
                         })
                         ->addColumn('profession', function (Artist $user) {
                             foreach ($user->artistPermit as $artist) {
-                                return $artist->profession->name_en;
+                                return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                             }
                         })
                         ->addColumn('nationality', function (Artist $user) {
@@ -713,7 +718,7 @@ class ReportController extends Controller
                         ->addColumn('address_en', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             }
                             return '';
@@ -721,7 +726,7 @@ class ReportController extends Controller
                         ->addColumn('language_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->language->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                 }
                             }
                             return '';
@@ -745,7 +750,7 @@ class ReportController extends Controller
                         ->addColumn('emirate_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->emirate->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                 }
                             }
                             return '';
@@ -798,7 +803,7 @@ class ReportController extends Controller
                             })
                             ->addColumn('profession', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->profession->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                                 }
                             })
                             ->addColumn('nationality', function (Artist $user) {
@@ -828,13 +833,13 @@ class ReportController extends Controller
                             })
                             ->addColumn('address_en', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             })
                             ->addColumn('language_id', function (Artist $user) {
                                 if ($user->artistPermit) {
                                     foreach ($user->artistPermit as $artist) {
-                                        return $artist->language->name_en;
+                                        return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                     }
                                 }
                                 return '';
@@ -858,7 +863,7 @@ class ReportController extends Controller
                             ->addColumn('emirate_id', function (Artist $user) {
                                 if ($user->artistPermit) {
                                     foreach ($user->artistPermit as $artist) {
-                                        return $artist->emirate->name_en;
+                                        return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                     }
                                 }
                                 return '';
@@ -905,7 +910,7 @@ class ReportController extends Controller
                             })
                             ->addColumn('profession', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->profession->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                                 }
                             })
                             ->addColumn('nationality', function (Artist $user) {
@@ -935,13 +940,13 @@ class ReportController extends Controller
                             })
                             ->addColumn('address_en', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             })
                             ->addColumn('language_id', function (Artist $user) {
                                 if ($user->artistPermit) {
                                     foreach ($user->artistPermit as $artist) {
-                                        return $artist->language->name_en;
+                                        return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                     }
                                 }
                                 return '';
@@ -965,7 +970,7 @@ class ReportController extends Controller
                             ->addColumn('emirate_id', function (Artist $user) {
                                 if ($user->artistPermit) {
                                     foreach ($user->artistPermit as $artist) {
-                                        return $artist->emirate->name_en;
+                                        return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                     }
                                 }
                                 return '';
@@ -1014,7 +1019,7 @@ class ReportController extends Controller
                             })
                             ->addColumn('profession', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->profession->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                                 }
                             })
                             ->addColumn('nationality', function (Artist $user) {
@@ -1044,17 +1049,17 @@ class ReportController extends Controller
                             })
                             ->addColumn('address_en', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             })
                             ->addColumn('language_id', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->language->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                 }
                             })
                             ->addColumn('emirate_id', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->emirate->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                 }
                             })
                             ->addColumn('po_box', function (Artist $user) {
@@ -1135,7 +1140,7 @@ class ReportController extends Controller
                         })
                         ->addColumn('profession', function (Artist $user) {
                             foreach ($user->artistPermit as $artist) {
-                                return $artist->profession->name_en;
+                                return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                             }
                         })
                         ->addColumn('nationality', function (Artist $user) {
@@ -1173,7 +1178,7 @@ class ReportController extends Controller
                         ->addColumn('address_en', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             }
                             return '';
@@ -1181,7 +1186,7 @@ class ReportController extends Controller
                         ->addColumn('language_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->language->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                 }
                             }
                             return '';
@@ -1205,7 +1210,7 @@ class ReportController extends Controller
                         ->addColumn('emirate_id', function (Artist $user) {
                             if ($user->artistPermit) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->emirate->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                 }
                             }
                             return '';
@@ -1248,7 +1253,7 @@ class ReportController extends Controller
                             })
                             ->addColumn('profession', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->profession->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                                 }
                             })
                             ->addColumn('nationality', function (Artist $user) {
@@ -1278,17 +1283,17 @@ class ReportController extends Controller
                             })
                             ->addColumn('address_en', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             })
                             ->addColumn('language_id', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->language->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                 }
                             })
                             ->addColumn('emirate_id', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->emirate->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                 }
                             })
                             ->addColumn('po_box', function (Artist $user) {
@@ -1336,7 +1341,7 @@ class ReportController extends Controller
                             })
                             ->addColumn('profession', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->profession->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->profession->name_en:$artist->profession->name_ar;
                                 }
                             })
                             ->addColumn('nationality', function (Artist $user) {
@@ -1366,17 +1371,17 @@ class ReportController extends Controller
                             })
                             ->addColumn('address_en', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->address_en;
+                                    return Auth()->user()->LanguageId==1?$artist->address_en:$artist->address_ar;
                                 }
                             })
                             ->addColumn('language_id', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->language->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->language->name_en:$artist->language->name_ar;
                                 }
                             })
                             ->addColumn('emirate_id', function (Artist $user) {
                                 foreach ($user->artistPermit as $artist) {
-                                    return $artist->emirate->name_en;
+                                    return Auth()->user()->LanguageId==1?$artist->emirate->name_en:$artist->emirate->name_ar;
                                 }
                             })
                             ->addColumn('po_box', function (Artist $user) {

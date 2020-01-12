@@ -23,7 +23,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Notifications\AllNotification;
 
 class ArtistPermitController extends Controller
-{   
+{
 
     public function __construct(){
         $this->middleware('signed')->except([
@@ -67,7 +67,7 @@ class ArtistPermitController extends Controller
             'active_permit'=> Permit::lastMonth(['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count(),
             'active'=> Permit::where('permit_status', 'active')->count()
         ]);
-    
+
 }
     public function search(Request $request)
     {
@@ -99,9 +99,9 @@ class ArtistPermitController extends Controller
           $request['checked_date'] = Carbon::now();
           $permit->comment()->create($request->all());
           $permit->update([
-            'cancel_reason'=>$request->comment, 
-            'cancel_by'=>$request->user_id, 
-            'cancel_date'=>$request->checked_date, 
+            'cancel_reason'=>$request->comment,
+            'cancel_by'=>$request->user_id,
+            'cancel_date'=>$request->checked_date,
             'permit_status'=>$request->action
           ]);
         DB::commit();
@@ -339,20 +339,20 @@ class ArtistPermitController extends Controller
 
     private function sendNotificationCompany($permit, $type){
 
-      $buttonText = 'View Application';
       if($type == 'approve'){
         $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Approved';
         $title = 'Artist Permit Application has been Approved';
         $content = 'Your Artist Permit application with the reference number <b>' . $permit->reference_number . '</b> has been approved. To view the details, please click the button below.';
-        $url = URL::signedRoute('company.make_payment', $permit->permit_id);
-        $buttonText = 'Make Payment';
+        // $url = URL::signedRoute('event.show', ['event' => $permit->event_id, 'tab' => 'valid']);
+        $url = '#';
       }
 
       if($type == 'amend'){
         $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Requires Amendment';
         $title = 'Artist Permit Applications Requires Amendment';
         $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
-        $url = URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend']);
+        // $url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+        $url = '#';
       }
 
       if($type == 'reject'){
@@ -370,7 +370,7 @@ class ArtistPermitController extends Controller
           'subject' => $subject,
           'title' => $title,
           'content' => $content,
-          'button' => $buttonText,
+          'button' => 'View Application',
           'url' => $url
         ]));
       }
@@ -609,9 +609,9 @@ class ArtistPermitController extends Controller
 
     		return Datatables::of($artist_permit)
 			    ->addColumn('nationality', function($artist_permit){
-			    	if($artist_permit->country()->exists()){ return ucwords($artist_permit->country->nationality_en); }
+			    	if($artist_permit->country()->exists()){ return Auth()->user()->LanguageId==1? ucwords($artist_permit->country->nationality_en):$artist_permit->country->nationalty_ar; }
             return null;
-			 
+
 			    })
 			    ->addColumn('age', function($artist_permit){
 			    	return $artist_permit->age;
@@ -621,7 +621,7 @@ class ArtistPermitController extends Controller
 			    })
 			    ->addColumn('profession', function($artist_permit){
 			    	if(!$artist_permit->profession){ return null; }
-			    	return ucwords($artist_permit->profession->name_en);
+			    return Auth()->user()->LanguageId? ucwords($artist_permit->profession->name_en):$artist_permit->name_ar;
 			    })
 			    ->addColumn('person_code', function($artist_permit){
 			    	return $artist_permit->artist->person_code;
@@ -664,7 +664,7 @@ class ArtistPermitController extends Controller
 								<span class="kt-font-bolder  kt-font-transform-u">'.ucwords($profession).' </span>';
 			    })
           ->addColumn('action', function($artist_permit){
-      
+
 
             $html = '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">';
             $html .=  __('Documents');
@@ -706,7 +706,7 @@ class ArtistPermitController extends Controller
 
 
     	return DataTables::of($permits)
-		    ->addColumn('applied_date', function($permit){  
+		    ->addColumn('applied_date', function($permit){
 		    	return '<span class="text-underline" title="'.$permit->updated_at->format('l h:i A | d-F-Y').'">'.humanDate($permit->updated_at).'</span>';
 		    })
 		    ->editColumn('issued_date', function($permit){
@@ -804,8 +804,8 @@ class ArtistPermitController extends Controller
       ->addColumn('artist_number', function($permit){
         $total = $permit->artistpermit()->count();
         $check = $permit->artistpermit()->where('artist_permit_status', '!=', 'unchecked')->count();
-        if(in_array($permit->permit_status, ['active', 'expired'])){ return  __('Approved ').$check.' of '.$total; }
-        return  __('Checked ').$check.' of '.$total;
+        if($permit->permit_status == 'active' || $permit->permit_status == 'expired'){ return 'Active '.$check.' of '.$total; }
+        return 'Checked '.$check.' of '.$total;
       })
       ->editColumn('permit_status', function($permit){ return permitStatus($permit->permit_status); })
 	    ->editColumn('reference_number', function($permit){ return '<span class="kt-font-bold">'.$permit->reference_number.'</span>'; })
@@ -839,15 +839,15 @@ class ArtistPermitController extends Controller
         return $date.$day;
       })
       ->editColumn('approved_date', function($permit){
-        return $permit->approved_date ? $permit->approved_date->format('d-F-Y') : '- '; 
+        return $permit->approved_date ? $permit->approved_date->format('d-F-Y') : '- ';
       })
       ->editColumn('approved_by', function($permit) use ($request){
         if ($permit->approved_by) {
           $name = $request->user()->LanguageId == 1 ?  ucwords($permit->approvedBy->NameEn) : ucwords($permit->approvedBy->NameAr);
           $role = $request->user()->LanguageId == 1 ?ucwords($permit->approvedBy->roles()->first()->NameEn) : ucwords($permit->approvedBy->roles()->first()->NameAr);
           return profileName($name, $role);
-        }
-        return '-';
+                                 }
+                                   return '-';
 
       })
       ->addColumn('has_event', function($permit){
@@ -858,8 +858,8 @@ class ArtistPermitController extends Controller
             $name = $request->user()->LanguageId == 1 ? ucfirst($permit->event->name_en) : ucfirst($permit->event->name_ar);
             $type = $request->user()->LanguageId == 1 ? ucfirst($permit->event->type->name_en) : ucfirst($permit->event->type->name_ar);
             return profileName($name, $type);
-        }
-        return '-';
+                                 }
+                    return '-';
       })
       ->addColumn('company_name', function($permit) use ($request){
           return $request->user()->LanguageId == 1 ? ucfirst($permit->owner->company->name_en) : ucfirst($permit->owner->company->name_ar);
@@ -872,7 +872,7 @@ class ArtistPermitController extends Controller
       })
       ->addColumn('location', function($permit) use ($request){
            return $request->user()->LanguageId == 1 ? ucfirst($permit->work_location) : $permit->work_location_ar;
-         
+
       })
       ->addColumn('application_link', function($permit){
         return URL::signedRoute('admin.artist_permit.applicationdetails', ['permit' => $permit->permit_id]);
@@ -900,7 +900,7 @@ class ArtistPermitController extends Controller
           return '<a href="'.URL::signedRoute('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary">' . __('Download') . '</a>';
         }
         return '-';
-         
+
       })
       ->addColumn('inspection_url', function($permit){
           return route('tasks.artist_permit.details', $permit->permit_id);
@@ -914,7 +914,7 @@ class ArtistPermitController extends Controller
           if($permit->comment()->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->latest()->first()){
               return $permit->comment()->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->latest()->first()->user->NameEn;
           }
-          
+
       })
       ->addColumn('last_action_taken', function($permit) use($request){
           if($permit->comment()->where('action', '!=', 'pending')->where('role_id', $request->user()->roles()->first()->role_id)->latest()->first()){
@@ -948,7 +948,7 @@ class ArtistPermitController extends Controller
           if ($comment->role_id == 6) {
              $role_name =  Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : ucwords($comment->government->government_name_ar);
           }
-   
+
           if (is_null($comment->user_id)) {
             return profileName($role_name, '');
           }
@@ -982,10 +982,10 @@ class ArtistPermitController extends Controller
         return Datatables::of($artist_permit)
 	        ->editColumn('profession', function($artist_permit){
           if(!$artist_permit->permitType) return null;
-          return ucwords($artist_permit->profession->name_en);
+          return Auth()->user()->LanguageId? ucwords($artist_permit->profession->name_en):$artist_permit->name_ar;
        })
 	        ->editColumn('nationality', function($artist_permit){
-            return ucwords($artist_permit->artist->country->nationality_en);
+            return Auth()->user()->LanguageId==1? ucwords($artist_permit->artist->country->nationality_en):$artist_permit->artist->country->nationality_ar;
       })
 	        ->editColumn('person_code', function($artist_permit){
              return ucwords($artist_permit->artist->person_code);

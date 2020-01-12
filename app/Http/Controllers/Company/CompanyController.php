@@ -26,35 +26,31 @@ class CompanyController extends Controller
 
    public function store(Request $request)
    {
-     // dd($request->all());
-    $valid_data = $request->validate([
-     // 'name_en'=>'required|max:255',
-     // 'trade_license'=> 'required|max:255',
-     // 'trade_license_issued_date'=>'required|before_or_equal:'.Carbon::now().'',
-     // 'trade_license_expired_date'=>'required|after:'.Carbon::now().'',
-     // 'phone_number'=>'required|max:15',
-     // 'company_email'=>'required|email:rfc,strict,dns,spoof,filter',
-     // 'country_id'=>'required|integer',
-     // 'emirate_id'=>'required|integer',
-     // 'area_id'=>'required|integer',
-     // 'address'=>'required',
-     // 'NameEn'=>'required',
-     // 'email'=>'required|email:rfc,strict,dns,spoof,filter',
-     // 'mobile_number'=>'required|max:15',
-     // 'username'=>'required|max:255|min:5',
-     'g-recaptcha-response' => 'required|captcha',
-     'term_condition' => 'required'
-    ]);
-
-    // dd($valid_data);
-
       try {
          DB::beginTransaction();
+         // dd($request->all());
+         $valid_data = $request->validate([
+          'name_en'=>'required|max:255',
+          'trade_license'=> 'required|max:255',
+          'trade_license_issued_date'=>'required|before_or_equal:'.Carbon::now().'',
+          'trade_license_expired_date'=>'required|after:'.Carbon::now().'',
+          'phone_number'=>'required|max:15',
+          'company_email'=>'required|email:rfc,strict,dns,spoof,filter',
+          'country_id'=>'required|integer',
+          'emirate_id'=>'required|integer',
+          'area_id'=>'required|integer',
+          'address'=>'required',
+          'NameEn'=>'required',
+          'email'=>'required|email:rfc,strict,dns,spoof,filter',
+          'mobile_number'=>'required|max:15',
+          'username'=>'required|max:255|min:5',
+         ]);
+
+         // dd($valid_data);
 
          $company = Company::create(array_merge($request->all(), ['status'=>'draft']));
          $request['password'] = Hash::make($request->password);
          $user = $company->user()->create(array_merge($request->all(), ['IsActive'=> 0, 'type'=> 1]));
-         $user->roles()->sync(2);
          DB::commit();
          return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))
          ->with('success', 'Registration successful. Please login and verify your email.');
@@ -69,30 +65,8 @@ class CompanyController extends Controller
       foreach ($company->requirement()->whereNull('is_submit')->get() as $requirement) {
           Storage::delete('public/'.$requirement->path);
       }
-       
-       $company->requirement()->whereNull('is_submit')->delete();
-
-        $requirements = Requirement::where('requirement_type', 'company')->get();
-        $array = [];
-        $data = null;
-        if (!is_null($requirements)) {
-          foreach ($requirements as $requirement) {
-            // $data = Requirement::whereDoesntHave('company', function($q) use ($requirement, $company){ 
-            //   $q->where(['requirement_id'=>$requirement->requirement_id, 'company_id'=>$company->company_id]); 
-            // })->where('requirement_type', 'company')->get();
-            // $data = $company->requirement()->doesntHave('requirement')->toSql();
-            // array_push($array, $company->requirement()->where('requirement_id', $requirement->requirement_id)->exists());
-          }
-        }
-        // dd( $company->requirement()->doesntHave('requirement')->get() );
-
-
-       return view('permits.company.edit', [
-        'company'=>$company, 
-        // 'page_title'=> $request->user()->LanguageId == 1 ? ucfirst($company->name_en) : ucfirst($company->name_ar), 
-        'valid'=> in_array(false, $array),
-        'requirement'=>$data
-      ]); 
+      $company->requirement()->whereNull('is_submit')->delete();
+       return view('permits.company.edit', ['company'=>$company, 'page_title'=> '']); 
    }
 
    public function updateUser(Request $request, Company $company) {
@@ -152,7 +126,6 @@ class CompanyController extends Controller
     if ($company->status == 'rejected') {
       return redirect()->back();
     }
-    // dd($request->all());
       try {
 
          DB::beginTransaction();
@@ -264,7 +237,7 @@ class CompanyController extends Controller
     try {
       DB::beginTransaction();
 
-      $path = 'public/company/'.$company->company_id;
+      $path = 'public/'.$company->company_id;
       $requirement_name = explode(' ', $request->requirement_name);
       $requirement_name = strtolower(implode('_', $requirement_name));
 
@@ -283,7 +256,7 @@ class CompanyController extends Controller
 
                  Storage::putFileAs($path, $file, $filename);
 
-                 $request['path'] = 'company/'.$company->company_id.'/'.$filename;
+                 $request['path'] = $company->company_id.'/'.$filename;
                  $request['type'] = 'other';
                   $request['file_type'] = $file->getClientMimeType();
                  $request['requirement_id'] = 1;
@@ -313,7 +286,7 @@ class CompanyController extends Controller
 
                  Storage::putFileAs($path, $file, $filename);
 
-                 $request['path'] = 'company/'.$company->company_id.'/'.$filename;
+                 $request['path'] = $company->company_id.'/'.$filename;
                  $request['type'] = 'requirement';
                  $request['file_type'] = $file->getClientMimeType();
                  $request['page_number'] = $page_number+1;

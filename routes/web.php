@@ -20,7 +20,7 @@ Route::get('/clear-cache', function () {
     Artisan::call('config:cache');
     return "Cache is cleared";
 });
-    
+
 Route::get('/shutdown', function () {
     return Artisan::call('down');
 });
@@ -210,6 +210,10 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
     Route::get('artist_reports/artist_permit_report/all_permit_report', 'Admin\ReportController@all_permit_report')
         ->name('admin.artist_permit_report.all_permit_report');
+
+    Route::get('artist_reports/artist_permit_report/transactionShow/{id}', 'Admin\TransactionReportController@transactionShow')
+        ->name('admin.artist_permit_report.transaction');
+
 
     //Transactions
     Route::get('artist_reports/artist_transaction_report', 'Admin\TransactionReportController@artistTransaction')

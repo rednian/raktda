@@ -22,7 +22,7 @@ class CompanyController extends Controller
       $new_company = Company::where('status', 'new')->count();
 
       return view('admin.company.index',[ 
-         'page_title'=> __('Establishment'),
+         'page_title'=> 'Company',
          'new_company'=> Company::where('status', 'new')->count(),
          'approved'=> Company::where('status', 'active')->count(),
          'blocked'=> Company::where('status', 'blocked')->count(),
@@ -35,11 +35,9 @@ class CompanyController extends Controller
 
    public function submit(Request $request, Company $company)
    {
-
   	DB::beginTransaction();
       try {
       		$request['user_id'] = $request->user()->user_id;
-           // dd($request->all());
       	switch ($request->status) {
       	   case 'active':
 
@@ -48,18 +46,18 @@ class CompanyController extends Controller
       	      	$request['action'] = 'approved';
       	      	$company->comment()->create($request->all());
       	      	
-      	      	$result = ['success', '', 'Success'];
+      	      	$result = ['success', ucfirst($company->name_en).'has been successfully checked & approved .', 'Success'];
       	      break;
       	   case 'back':
       	      $company->update(['status'=>$request->status]);
 
       	      $company->comment()->create($request->all());
-      	      $result = ['success',' ', 'Success'];
+      	      $result = ['success', ucfirst($company->name_en).'has been successfully checked & bounce back successfully.', 'Success'];
       	      break; 
       	   case 'rejected':
       	      $company->update(['status'=>$request->status]);
       	      $company->comment()->create($request->all());
-      	      $result = ['success','', 'Success'];
+      	      $result = ['success', ucfirst($company->name_en).' has been successfully checked & approved successfully.', 'Success'];
       	      break;   	
       	     
       	}
@@ -71,7 +69,7 @@ class CompanyController extends Controller
       	
       }
 
-      return redirect(URL::signedRoute('admin.company.index'))->with('message', $result);
+      return redirect()->route('admin.company.index')->with('message', $result);
       
    }
 
@@ -85,7 +83,7 @@ class CompanyController extends Controller
       $request['user_id'] = $request->user()->user_id;
       $request['action'] = $request->status;
       $company->comment()->create($request->all());
-       $result = ['success', ' ', 'Success'];
+       $result = ['success', ucfirst($company->name_en).' has been '.$request->status.' successfully.', 'Success'];
       DB::commit();
     } catch (Exception $e) {
       $result = ['danger', $e->getMessage(), 'Error'];
@@ -125,7 +123,7 @@ class CompanyController extends Controller
      if (!$request->hasValidSignature()) { abort(401); }
       return view('admin.company.application', [
          'company'=>$company,
-         'page_title'=> ucfirst($request->user()->LanguageId == 1 ? $company->name_en : $company->name_ar).' | '.__('Application')
+         'page_title'=> ucfirst($request->user()->LanguageId == 1 ? $company->name_en : $company->name_ar).' | application'
       ]);
    }
 

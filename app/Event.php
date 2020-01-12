@@ -24,7 +24,7 @@ class Event extends Model
 
     public function approved()
     {
-        return $this->belongsTo(User::class, 'approved_by', 'user_id')->withDefault(['NameEn'=> null,'NameAr'=>null]);     
+        return $this->belongsTo(User::class, 'approved_by', 'user_id')->withDefault(['NameEn'=> null,'NameAr'=>null]);
     }
 
 
@@ -36,6 +36,10 @@ class Event extends Model
     }
 
     public function transaction()
+    {
+        return $this->hasMany(EventTransaction::class, 'event_id');
+    }
+    public function eventTransaction()
     {
         return $this->hasMany(EventTransaction::class, 'event_id');
     }
