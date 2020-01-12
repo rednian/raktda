@@ -118,17 +118,16 @@
                 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
                     <!-- begin:: Content -->
                     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
-
+                    
                         @if (
-                        Auth::check() &&
-                        (Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now()->addDays(10))
-                            && !is_null(Auth::user()->company->registered_by)
+                            Auth::check() &&
+                            (Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now()->addDays(10)) 
+                            && !is_null(Auth::user()->company->registered_by) 
                             )
-                            <div class="alert alert-warning fade show kt-margin-b-5" role="alert">
-                                <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                                @php
-                                $words = Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now() ?
-                                    __('already expired ') : __(' will expire ') 
+                          <div class="alert alert-warning fade show kt-margin-b-5" role="alert">
+                              <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                              @php
+                              $words = Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now() ? __('already expired ') : __('will expire ') 
                               @endphp
                               <div class="alert-text">{{__('Your Business Trade License '.$words)}} 
                                  <span title="{{Auth::user()->company->trade_license_expired_date->format('d-F-Y') }}" class="text-underline kt-font-bold">{{ humanDate(Auth::user()->company->trade_license_expired_date) }}</span>. <br>
@@ -141,48 +140,40 @@
                           </div>
                         @endif
                 
-                            {{-- <section class="row">
-                                <div class="col">
-                                    @yield(' content')</div> </section> </div> <!-- end:: Content -->
-                            </div> --}}
-
                             <section class="row">
                                 <div class="col">
-                                    @yield(' content') @yield('content') </div> </section>
-                                    {{-- @include('layouts.admin.footer') --}} </div> </div> </div> @if (Auth::check())
-                                    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
+                                    @yield('content')
+                                </div>
+                            </section>
+                    </div>
+                    <!-- end:: Content -->
+                </div>
+                {{-- @include('layouts.admin.footer') --}}
+            </div>
+        </div>
+    </div>
+    @if (Auth::check())
+    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
-                                    <input type="hidden" id="getLangid" value="{{getLangId()}}">
-                                    @endif
+    <input type="hidden" id="getLangid" value="{{getLangId()}}">
+    @endif
 
-                                    <script src="{{ asset('/js/mandatory.js') }}"></script>
-                                    <script src="{{ asset('/js/plugins.js') }}"></script>
-                                    <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}"
-                                        type="text/javascript"></script>
-                                    <script src="{{ asset('/js/custom-pages.js') }}"></script>
-                                    <script
-                                        src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}">
-                                    </script>
+    <script src="{{ asset('/js/mandatory.js') }}"></script>
+    <script src="{{ asset('/js/plugins.js') }}"></script>
+    <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/js/custom-pages.js') }}"></script>
+    <script src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}"></script>
 
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}">
-                                    </script>
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/js/plugins/sortable.js') }}">
-                                    </script>
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}">
-                                    </script>
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}">
-                                    </script>
-                                    <script type="text/javascript"
-                                        src="{{ asset('assets/vendors/custom/fileupload/themes/explorer-fas/theme.js') }}">
-                                    </script>
-                                    {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
-                                    --}}
-                                    <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
-                                    <!--end::Page Vendors -->
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/sortable.js') }}">
+    </script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/explorer-fas/theme.js') }}">
+    </script>
+    {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script> --}}
+    <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
+    <!--end::Page Vendors -->
 
 </body>
 @yield('script')
