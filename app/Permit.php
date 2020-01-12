@@ -19,6 +19,12 @@ class Permit extends Model
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock', 'approved_date', 'cancel_date'];
 
+
+    public function transaction()
+    {
+        return $this->hasMany(ArtistPermitTransaction::class, 'permit_id');
+    }
+
     public function scopeLastMonth($q, $status = [])
     {
         return $q->has('artist')->whereHas('comment', function($q) use ($status){
@@ -119,5 +125,10 @@ class Permit extends Model
 
     public function getPermitApproval(){
         return $this->hasMany(Approval::class, 'inspection_id', 'permit_id')->where('type', 'artist');
+    }
+
+    public function artistPermitTransaction()
+    {
+        return $this->hasMany(ArtistPermitTransaction::class, 'permit_id');
     }
 }

@@ -41,7 +41,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
 
     Route::get('/dashboard', function () {
-        return redirect(URL::signedRoute('admin.event.index'));
+        return redirect(URL::signedRoute('admin.company.index'));
     })->name('admin.dashboard');
   //---------------------------------------------------------------------------------------------------------------
   // Company Registration

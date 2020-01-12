@@ -25,7 +25,7 @@
                 <i class="la la-plus"></i>
                 {{__('Add Artist')}}
                 </a> --}}
-                <a href="{{route('company.add_artist_to_permit',['from' => 'edit', 'id' => $permit_details->permit_id])}}"
+                <a href="{{URL::signedRoute('company.add_artist_to_permit',['from' => 'edit', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     {{__('Add Artist')}}
@@ -36,7 +36,7 @@
                 <button id="back_btn_sm" class="btn btn--maroon btn-sm">
                     <i class="la la-arrow-left"></i>
                 </button>
-                <a href="{{route('company.add_artist_to_permit',['from' => 'edit', 'id' => $permit_details->permit_id])}}"
+                <a href="{{URL::signedRoute('company.add_artist_to_permit',['from' => 'edit', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                 </a>
@@ -134,9 +134,8 @@
                             <td>
                                 {{ ucwords($artist_detail->artist_permit_status)}}
                             </td>
-
                             <td class="d-flex justify-content-center">
-                                <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
+                                <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                     title="Edit">
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
                                 </a>
@@ -151,11 +150,11 @@
                                     <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
                                 </a>
                                 @endif
-                                @if(count($staff_comments) > 0)
+                                {{-- @if(count($staff_comments) > 0)
                                 <a href="#" onclick="getArtistComments({{$artist_detail->artist_permit_id}})">
-                                    <i class="la la-comment la-2x pl-4"></i>
+                                <i class="la la-comment la-2x pl-4"></i>
                                 </a>
-                                @endif
+                                @endif --}}
                             </td>
                             <input type="hidden" id="temp_id_{{$i}}" value="{{$artist_detail->id}}">
                             @php
@@ -267,7 +266,7 @@
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {
-            window.location.href = "{{route('artist.index')}}#applied";
+            window.location.href = "{{URL::signedRoute('artist.index')}}#applied";
         }
     });
 
@@ -280,7 +279,7 @@
                 data: { permit_id: temp_permit_id, from: 'edit'},
                 async: true,
                 success: function(result){
-                    window.location.href="{{route('artist.index')}}#applied";
+                    window.location.href= result.toURL;
                 }
         });
     }
@@ -304,8 +303,7 @@
             success: function(result) {
                 if(result.message[0] == 'success')
                 {
-                    $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                    window.location.href="{{route('artist.index')}}#applied";
+                    window.location.href=result.toURL;
                     KTApp.unblockPage();
                 }
             }

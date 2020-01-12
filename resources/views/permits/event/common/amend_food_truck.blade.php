@@ -107,7 +107,6 @@
                     @endphp
                     @endforeach
                 </form>
-                <small id="truck_warning_text" class="text-center text-danger "></small>
                 <div class="d-flex justify-content-between kt-margin-t-10 pull-right">
                     <button class="btn btn-sm btn--maroon" id="update_this_td">{{__('Update')}}</button>
                     <button class="btn btn-sm btn--maroon" id="add_new_td">{{__('Add')}}</button>

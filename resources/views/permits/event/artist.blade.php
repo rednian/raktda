@@ -161,17 +161,21 @@
                         {{-- <td>{{$ad->email}}</td> --}}
                         <td>{{__(ucwords($ad->artist_permit_status))}}</td>
                         <td class="d-flex justify-content-center">
-                            <a href="{{route('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'event'])}}">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
+                            <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'event'])}}">
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Edit')}}</button>
                             </a>
-                            <a href="{{route('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'event'])}}">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                            <a
+                                href="{{URL::signedRoute('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'event'])}}">
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('View')}}</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
                                 onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
                                 data-toggle="modal" data-target="#delartistmodal">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
                             </a>
                             @endif
                         </td>
@@ -222,10 +226,10 @@
             $.ajax({
                     url:"{{route('company.storePermitDetails')}}",
                     type: "POST",
-                    data: { from: from , to:to, loc:loc, eventId:eventId, isEvent: isEvent },
+                    data: { from: from , to:to, loc:loc, eventId:eventId, isEvent: isEvent , fromPage: 'event', permitId: permit_id},
                     async: true,
                     success: function(result){
-                        window.location.href="{{url('company/artist/add_new')}}"+ '/'+permit_id + '/event';
+                        window.location.href= result.toURL;
                     }
             });
         }
@@ -236,7 +240,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{route('event.index')}}#applied";
+                window.location.href = "{{URL::signedRoute('event.index')}}#applied";
             }
         });
 
@@ -248,7 +252,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{route('event.index')}}#applied";
+                        window.location.href=result.toURL;
                     }
             });
         }
@@ -292,19 +296,21 @@
         // })
 
         $('#submit_btn').click((e) => {
-            // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-            KTApp.blockPage({
-               overlayColor: '#000000',
-               type: 'v2',
-               state: 'success',
-               message: 'Please wait...'
-           });
+
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",
+                    beforeSend: function() {
+                        KTApp.blockPage({
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'success',
+                            message: 'Please wait...'
+                        });
+                    },
                     data: {
                         temp_permit_id:temp_permit_id ,
                         from: $('#permit_from').val() ,
@@ -316,8 +322,8 @@
                         fromWhere: 'event'
                     },
                     success: function(result){
-                        $('#submit_btn').removeClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-                        window.location.href="{{route('artist.index')}}#applied";
+                        // window.location.href="{{route('artist.index')}}#applied";
+                        window.location.href= result.toURL;
                         KTApp.unblockPage();
                     }
             });

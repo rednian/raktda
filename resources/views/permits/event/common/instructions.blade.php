@@ -13,15 +13,16 @@
                     <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
                         data-parent="#permit-fee-details">
                         <div class="card-body">
-                            <table class="table table-borderless">
+                            <table class="table table-borderless table-sm">
                                 <tr>
-                                    <th>{{__('Event Type')}}</th>
-                                    <th class="text-right">{{__('Fee')}} / {{__('Day')}} (AED)</th>
+                                    <th style="width:50%" class="kt-font-transform-u">{{__('Event Type')}}</th>
+                                    <th style="width:50%" class="kt-font-transform-u">{{__('Fee')}} / {{__('Day')}}
+                                        (AED)</th>
                                 </tr>
                                 @foreach($event_types as $pt)
                                 <tr>
                                     <td>{{$pt->name_en}}</td>
-                                    <td class="text-right">{{number_format($pt->amount,2)}}</td>
+                                    <td>{{number_format($pt->amount,2)}}</td>
                                 </tr>
                                 @endforeach
                             </table>

@@ -400,7 +400,7 @@
                     data: { permit_id: temp_permit_id, from: 'add_new'},
                     async: true,
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#draft";
+                        window.location.href=result.toURL;
                     }
             });
         }
@@ -431,7 +431,7 @@
             var event_id = $('#event_id').val();
             if(event_id == 'add_new')
             {
-                window.location.href = "{{ route('event.create')}}";
+                window.location.href = "{{URL::signedRoute('event.create')}}";
             }else{
                 checkFilled();
             }
@@ -439,21 +439,21 @@
 
 
         $('#submit_btn').click((e) => {
-            // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-            // $('#submit_btn').css('pointer-events', 'none');
-            // $('#draft_btn').css('pointer-events', 'none');
-            KTApp.blockPage({
-               overlayColor: '#000000',
-               type: 'v2',
-               state: 'success',
-               message: 'Please wait...'
-           });
+
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
             if(noofdays < 30) { term = 'short'; } else { term='long';}
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",
+                    beforeSend: function() {
+                        KTApp.blockPage({
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'success',
+                            message: 'Please wait...'
+                        });  
+                    },
                     data: {
                         temp_permit_id:temp_permit_id,
                         from: $('#permit_from').val() ,
@@ -465,7 +465,8 @@
                         fromWhere: 'draft'
                     },
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#applied";
+                        // window.location.href="{{route('artist.index')}}#applied";
+                        window.location.href= result.toURL;
                         KTApp.unblockPage();
                     }
             });
@@ -496,7 +497,7 @@
                         });
                     },
                     success: function(result){
-                        window.location.href="{{route('artist.index')}}#draft";
+                        window.location.href= result.toURL;
                         KTApp.unblockPage();
                     }
                 });

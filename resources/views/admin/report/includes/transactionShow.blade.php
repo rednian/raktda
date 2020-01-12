@@ -33,8 +33,7 @@
 
     <div id="accordion">
         <span>
-                        Total Amount Received On Transaction Id <span style="font-weight: bold">{{$transaction->reference_number}} is <span>{{$arr1+$arr2}}</span></span>
-
+                        {{__('Total Amount Received On Transaction Id ')}}<span style="font-weight: bold">{{$transaction->reference_number}} {{__(' is ')}} <span>{{$arr1+$arr2}}</span></span>
        </span>
         <div class="card">
             <div class="card-header" id="headingOne">

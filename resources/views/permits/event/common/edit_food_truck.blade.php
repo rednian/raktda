@@ -6,18 +6,20 @@
                 <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck List')}}&emsp;<i
                         class="fa fa-truck"></i>
                 </h5>
+                <div class="d-flex" style="position: absolute;right: 5rem;">
+                    <button class="btn btn-sm btn--yellow" id="add_new_truck"><i class="fa fa-plus"></i>
+                        {{__('Add New')}}</button>
+                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal" onclick="changeIsTruck()"><i
+                            class="fa fa-check"></i> {{__('Done')}}</button>
+                </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button>
             </div>
             <div class="modal-body">
-                <div class="d-flex pull-right kt-margin-b-10">
-                    <button class="btn btn-sm btn--yellow" id="add_new_truck">{{__('Add New')}}</button>
-                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal"
-                        onclick="changeIsTruck()">{{__('Done')}}</button>
-                </div>
+
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
-                        <thead class="kt-font-transform-u">
+                        <thead class="kt-font-transform-u no-wrap">
                             <th>#</th>
                             <th>{{__('Establishment Name')}}</th>
                             <th>{{__('Establishment Name (AR)')}}</th>
@@ -44,8 +46,10 @@
                 </h5>
                 <h5 class="modal-title" id="add_truck_title">{{__('Add Food Truck')}}
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
-                </button>
+                <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()"><i class="la la-arrow-left"></i>
+                    {{__('Back')}}</button>
+                {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
+                </button> --}}
             </div>
             <div class="modal-body">
                 <form class="col-md-12" id="truck_details_form">
@@ -142,11 +146,9 @@
                     @endphp
                     @endforeach
                 </form>
-                <small id="truck_warning_text" class="text-center text-danger "></small>
-                <div class="d-flex justify-content-between kt-margin-t-10">
-                    <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">{{__('Back')}}</button>
-                    <button class="btn btn-sm btn--maroon" id="update_this_td">{{__('Update')}}</button>
-                    <button class="btn btn-sm btn--maroon" id="add_new_td">{{__('Add')}}</button>
+                <div class="d-flex justify-content-end kt-margin-t-10">
+                    <button class="btn btn-sm btn--maroon btn-wide" id="update_this_td">{{__('Update')}}</button>
+                    <button class="btn btn-sm btn--maroon btn-wide" id="add_new_td">{{__('Add')}}</button>
                 </div>
             </div>
         </div>

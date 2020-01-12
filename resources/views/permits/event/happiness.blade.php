@@ -969,7 +969,7 @@
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script src="{{asset('js/company/map.js')}}"></script>
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}&libraries=places&callback=initialize"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
     async defer></script>
 <script>
     $.ajaxSetup({
@@ -1763,7 +1763,7 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data) 
+                    if(data.length) 
                     {
                         $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
@@ -1841,7 +1841,7 @@
                         },
                         success: function (result) {
                             if(result.message[0]){
-                                window.location.href = "{{route('event.index')}}#valid";
+                                window.location.href = result.toURL;
                                 KTApp.unblockPage();
                             }
                         }

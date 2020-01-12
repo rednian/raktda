@@ -38,8 +38,11 @@ use Intervention\Image\ImageManagerStatic as Image;
 class EventController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         Event::whereDate('expired_date', '<', Carbon::now())->update(['status' => 'expired']);
         \App\ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
         \App\Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
@@ -198,6 +201,7 @@ class EventController extends Controller
             }
         }
 
+<<<<<<< HEAD
         if(isset($request->from) && $request->from == "amend")
         {
             Event::where('event_id', $request->event_id)->update([
@@ -206,6 +210,24 @@ class EventController extends Controller
         }
 
        return;
+=======
+            if(isset($request->from) && $request->from == "amend")
+            {
+                Event::where('event_id', $request->event_id)->update([
+                        'status' => 'amended'
+                    ]);
+            }
+            $status = 'done';
+            DB::commit();
+
+        } catch (Exception $e) {
+            $status = 'notdone';
+            DB::rollBack();
+        }
+
+       return response()->json(['status' => $status]);
+    
+>>>>>>> 517bec8b041b55deb9617a2f733d8f292594e056
     }
 
     public function add_liquor(Request $request)
@@ -441,6 +463,14 @@ class EventController extends Controller
         $cid = Auth::user()->type == 1 ? Auth::user()->EmpClientId : '';
         $userid = Auth::user()->user_id;
 
+<<<<<<< HEAD
+=======
+        $event_id = ''; $toURL = '';
+
+        try {
+            DB::beginTransaction();
+
+>>>>>>> 517bec8b041b55deb9617a2f733d8f292594e056
         $input_Array = array(
             'name_en' => $evd['name'],
             'name_ar' => $evd['name_ar'],
@@ -479,7 +509,16 @@ class EventController extends Controller
             $input_Array['created_at'] = Carbon::now();
             $event = Event::create($input_Array);
             $event_id = $event->event_id;
+            if($request->artist == 1){
+                $toURL = URL::signedRoute('event.add_artist', [ 'id' => 0]);
+            }else {
+                $toURL = URL::signedRoute('event.index').'#applied';
+            }
+            
         } else if ($from == 'draft') {
+
+            $toURL = URL::signedRoute('event.index').'#draft';
+
             $input_Array['issued_date'] = Carbon::parse($evd['issued_date'])->toDateTimeString();
             $input_Array['expired_date'] = Carbon::parse($evd['expired_date'])->toDateTimeString();
             $input_Array['time_start'] = Carbon::parse($evd['time_start'])->toDateTimeString();
@@ -694,7 +733,7 @@ class EventController extends Controller
             $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
-        return response()->json(['message' => $result, 'event_id' => $event_id]);
+        return response()->json(['message' => $result, 'event_id' => $event_id, 'toURL' => $toURL]);
     }
 
     public function get_uploaded_eventImages($id){
@@ -703,11 +742,19 @@ class EventController extends Controller
 
     public function delete_truck_details($id)
     {
-        EventTruck::where('event_truck_id', $id)->update([
-            'status' => 1
-        ]);
-
-        return;
+        try {
+            DB::beginTransaction();
+            EventTruck::where('event_truck_id', $id)->update([
+                'status' => 1
+            ]);
+            DB::commit();
+            $status = 'done';
+        } catch (Exception $e) {
+            DB::rollBack();
+            $status = 'notdone';
+        }
+        
+        return response()->json(['status' => $status]);
     }
 
     public function fetch_this_truck_details($id)
@@ -779,8 +826,9 @@ class EventController extends Controller
         ])->get();
     }
 
-    public function calendarFn()
+    public function calendarFn(Request $request)
     {
+        
         $user = Auth::user();
         $allEvents = Event::where('is_display_all', 1);
         $events = Event::whereIn('status', ['active', 'expired'])->where('created_by', Auth::user()->user_id)->union($allEvents)->get();
@@ -977,7 +1025,18 @@ class EventController extends Controller
             $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
+<<<<<<< HEAD
         return response()->json(['message' => $result]);
+=======
+
+        // if ($event) {
+        //     $result = ['success', __('Event Permit Updated Successfully'), 'Success'];
+        // } else {
+        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
+        // }
+
+        return response()->json(['message' => $result, 'toURL' => URL::signedRoute('event.index').'#applied']);
+>>>>>>> 517bec8b041b55deb9617a2f733d8f292594e056
     }
 
     public function cancel(Request $request)
@@ -999,7 +1058,7 @@ class EventController extends Controller
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
         }
-        return redirect()->route('event.index')->with('message', $result);
+        return redirect(URL::signedRoute('event.index').'#draft')->with('message', $result);
     }
 
     public function get_status($id)
@@ -1348,6 +1407,7 @@ class EventController extends Controller
         }
             
 
+<<<<<<< HEAD
         if ($event) {
             $result = ['success', __('Event Permit Amended Successfully'), 'Success'];
         } else {
@@ -1355,6 +1415,9 @@ class EventController extends Controller
         }
 
         return response()->json(['message' => $result]);
+=======
+        return response()->json(['message' => $result , 'toURL' =>  URL::signedRoute('event.index').'#applied']);
+>>>>>>> 517bec8b041b55deb9617a2f733d8f292594e056
     }
 
     public function fetch_truck_req($id)
@@ -1668,7 +1731,7 @@ class EventController extends Controller
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
         }
-        return redirect()->route('event.index')->with('message', $result);
+        return redirect(URL::signedRoute('event.index').'#draft')->with('message', $result);
     }
 
 
@@ -1850,7 +1913,17 @@ class EventController extends Controller
             $result = ['error', __('Error, Please Try Again'), 'Error'];
         }
 
+<<<<<<< HEAD
         return response()->json(['message' => $result]);
+=======
+        // if ($event) {
+        //     $result = ['success', __('Draft Updated Successfully'), 'Success'];
+        // } else {
+        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
+        // }
+
+        return response()->json(['message' => $result , 'toURL' => URL::signedRoute('event.index').'#draft']);
+>>>>>>> 517bec8b041b55deb9617a2f733d8f292594e056
     }
 
     function checkImagePaths($imgPaths, $event_id, $desc)
@@ -1920,6 +1993,7 @@ class EventController extends Controller
 
     public function make_payment(Request $request)
     {
+
         $event_id = $request->event_id;
         $amount = $request->amount;
         $vat = $request->vat;
@@ -1927,6 +2001,12 @@ class EventController extends Controller
         $paidArtistFee = $request->paidArtistFee;
         $truck_fee = $request->truck_fee;
         $liquor_fee = $request->liquor_fee;
+
+        $toURL = '';
+
+        try {
+
+            DB::beginTransaction();
 
         $trnx_id = Transaction::create([
             'reference_number' => getTransactionReferNumber(),
@@ -2020,13 +2100,22 @@ class EventController extends Controller
             ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
         }
 
-        if ($trnx_id) {
-            $result = ['success', __('Payment Done Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
-        }
+        DB::commit();
 
-        return response()->json(['message' => $result]);
+        $result = ['success', __('Payment Done Successfully'), 'Success'];
+
+        $toURL = URL::signedRoute('event.happiness', [ 'id' => $event_id]);
+
+    } catch (Exception $e) {
+		DB::rollBack();
+		
+        $toURL = '';
+		$result = ['error', __($e->getMessage()), 'Error'];
+    }
+    
+
+
+        return response()->json(['message' => $result, 'toURL' => $toURL]);
     }
 
     public function happiness(Request $request, Event $event)
@@ -2049,29 +2138,42 @@ class EventController extends Controller
 
     public function submit_happiness(Request $request)
     {
-        $event_id = $request->event_id;
-        $updateArray = array(
-            'type' => 'event',
-            'application_id' =>  $event_id,
-            'rating' => $request->happiness,
-            'remarks' => $request->remarks,
-            'created_by' => Auth::user()->user_id
-        );
-        Happiness::create($updateArray);
+        try {
 
-        $event_firm = Event::where('event_id', $event_id)->first()->firm;
+            DB::beginTransaction();
+            $event_id = $request->event_id;
+            $updateArray = array(
+                'type' => 'event',
+                'application_id' =>  $event_id,
+                'rating' => $request->happiness,
+                'remarks' => $request->remarks,
+                'created_by' => Auth::user()->user_id
+            );
+            Happiness::create($updateArray);
 
-        if($event_firm == 'government') 
-        {
-            Event::where('event_id', $event_id)->update([
-                'status' => 'active',
-                'permit_number' => generateEventPermitNumber()
-            ]);
+            $event_firm = Event::where('event_id', $event_id)->first()->firm;
+
+            if($event_firm == 'government') 
+            {
+                Event::where('event_id', $event_id)->update([
+                    'status' => 'active',
+                    'permit_number' => generateEventPermitNumber()
+                ]);
+            }
+
+            $result = ['success', __('Thank you For your Feedback'), 'Success'];
+
+            DB::commit();
+            
+        
+        } catch (Exception $e) {
+            DB::rollBack();
+            
+
+            $result = ['error', __($e->getMessage()), 'Error'];
         }
 
-        $result = ['success', __('Thank you For your Feedback'), 'Success'];
-
-        return response()->json(['message' => $result]);
+        return response()->json(['message' => $result, 'toURL' => URL::signedRoute('event.index').'#valid']);
     }
 
     public function uploadDocument(Request $request)
@@ -2330,6 +2432,26 @@ class EventController extends Controller
             $data['artist_details'] = [];
         }
         return view('permits.event.artist', $data);
+    }
+
+    public function get_payment_details($orderid)
+    {
+        $url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/order/'+$orderid;
+        $username = "merchant.NRSINFOWAYSL";
+        $password = "aabf38b7ab511335ba2fb786206b1dc0";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json'
+        ));
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_USERPWD, $username . ":" . $password);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $output = curl_exec($curl);
+        curl_close($curl);
+        $output = json_decode($output);
+        return $output;
     }
 
 }

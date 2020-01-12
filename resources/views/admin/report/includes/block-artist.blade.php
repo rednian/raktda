@@ -162,7 +162,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 <option value="17">{{__('Minor')}}</option>
                 <option value="18">{{__('Adult')}}</option>
             </select></th>
-        <th><select type="text" id="search_by_nationality"
+        <th colspan="1"><select type="text" id="search_by_nationality"
                     class="form-control form-control-sm custom-select-sm custom-select" style="width: 90%"
                     name="search_artist">
                 <option value="">{{__('Nationality')}}</option>
@@ -172,23 +172,13 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         value="{{$nationality->country_id}}">{{Auth()->user()->LanguageId==1? $nationality->nationality_en:$nationality->nationality_ar}}</option>
                 @endforeach
             </select></th>
-        <th>
+        <th colspan="2">
             <select type="text" id="search_by_profession" style="width: 99px"
                     class="form-control form-control-sm custom-select-sm custom-select" name="search_artist">
                 <option value="">{{__('Profession')}}</option>
                 @foreach($profession as $key => $nationality)
                     <option
                         value="{{$nationality->profession_id}}">{{Auth()->user()->LanguageId==1? $nationality->name_en:$nationality->name_ar}}</option>
-                @endforeach
-            </select>
-        </th>
-        <th colspan="2">
-            <select type="text" id="search_by_visa" style="width:97px"
-                    class="form-control form-control-sm custom-select-sm custom-select" name="search_artist">
-                <option value="">{{__('Visa Type')}}</option>
-                @foreach($visas as $key => $visa)
-                    <option
-                        value="{{$visa->id}}">{{Auth()->user()->LanguageId==1? $visa->visa_type_en:$visa->visa_type_ar}}</option>
                 @endforeach
             </select>
         </th>

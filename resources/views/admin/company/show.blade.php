@@ -204,7 +204,7 @@
                        <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
                        <div class="alert-text">This company is currently blocked. 
                          <span title="{{$company->comment()->latest()->first()->created_at->format('l h:i A | d-F-Y')}}" class="text-underline">{{ humanDate($company->comment()->latest()->first()->created_at) }}</span><br>
-                         <span>{{__('Please see the ACTION HISTORY for the remarks...')}}</span>
+                         <span>{{__('Please see the ACTION HISTORY...')}}</span>
                        </div>
                        <div class="alert-close">
                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">

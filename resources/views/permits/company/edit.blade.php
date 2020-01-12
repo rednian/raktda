@@ -53,15 +53,27 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="company-edit" role="tabpanel">
                     <div class="kt-form kt-form--label-right">
+                      @if ($company->status == 'active' && (!$company->event()->exists() || !$company->permit()->exists()) )
+                        <div class="alert alert-success kt-padding-b-5 kt-padding-t-5 kt-margin-b-5" role="alert">
+                             <div class="alert-text">
+                               <h4 class="alert-heading">Congratulation your establishment is registered successfully!</h4>
+                               <p>You can now apply an <a href="{{ URL::signedRoute('event.create') }}" class="btn btn-sm btn--maroon">EVENT PERMIT</a> or  
+                                <a href="{{ URL::signedRoute('company.add_new_permit', 1) }}" class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
+                               
+                               
+                             </div>
+                           </div>
+                      @endif
+                      
                       @if ($company->status == 'draft')
-                        <div class="alert alert-outline-danger alert-elevate fade show" role="alert">
+                        <div class="alert alert-outline-danger alert-elevate fade show kt-padding-b-5 kt-padding-t-5" role="alert">
                           <div class="alert-icon"><i class="flaticon-warning"></i></div>
                           <div class="alert-text">
                             <ul>
-                              <li>{{__('Please complete the required fields below to register your company and enjoy the full services of RAKTDA. ')}}</li>
-                            {{--   @if (!$valid)
-                                <li>{{__('Please upload the required documents.')}}</li>
-                              @endif --}}
+                              <li>{{__('Please complete the required fields below and submit for approval and enjoy the full services of RAKTDA. ')}}</li>
+                              @if ($invalid)
+                                <li>{{__('Please make sure all documents are uploaded before submitting.')}}</li>
+                              @endif
                             </ul>
                           </div>
                           <div class="alert-close">
@@ -72,11 +84,11 @@
                         </div>
                       @endif
                       
-                        <div class="kt-form__body">
+                        <div class="kt-form__body kt-font-dark">
                             <div class="kt-section kt-section--first">
                                 <div class="kt-section__body">
-                                  
-                                  @if ($company->status == 'back' || $company->status == 'rejected' )
+                  
+                                  @if ($company->status == 'back'  )
                                     <div class="alert alert-outline-danger kt-padding-t-5 kt-padding-b-5" role="alert">
                                         <div class="alert-text">
                                            @if ($company->status == 'back')
@@ -84,10 +96,6 @@
                                            @endif
                                           
                                        
-                                          @if ($company->status == 'rejected')
-                                        <h4 class="alert-heading">{{__('Sorry your application was rejected.')}}</h4>
-                                             <span>Your application was rejected and can no longer proceed. Please contact RAKTDA.</span>
-                                           @endif 
 
                                           </p>
                                           <hr class="kt-margin-b-0">
@@ -99,7 +107,7 @@
                                     <div class="alert alert-success" role="alert">
                                        <div class="alert-text">
                                          <h4 class="alert-heading">Congratulation your establishment is registered successfully!</h4>
-                                         <p>You can now apply an <a href="{{ route('event.create') }}" class="btn btn-sm btn--maroon">EVENT PERMIT</a> or  <a href="{{ route('artist.create') }}" class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
+                                         <p>You can now apply an <a href="{{ URL::signedRoute('event.create') }}" class="btn btn-sm btn--maroon">EVENT PERMIT</a> or  <a href="{{ URL::signedRoute('artist.create') }}" class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services of RAKTDA.</p>
                                          {{-- <hr> --}}
                                          {{-- <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p> --}}
                                        </div>
@@ -116,6 +124,7 @@
                                        </div>
                                      </div>
                                     @else
+
                                     <form name="edit_company" action="{{ route('company.update', $company->company_id) }}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                                        {{-- @method('PUT') --}}
                                         @csrf
@@ -148,36 +157,67 @@
                                                        <section class="row form-group form-group-sm">
                                                         @php
                                                           if ($company->status == 'active' || $company->status == 'blocked') {
-                                                            $disabled = 'disabled';
+                                                            $disabled = 'readonly';
                                                           }
                                                           else{
                                                             $disabled = null;
                                                           }
-                                                        @endphp
+                                                        @endphp 
                                                            <div class="col-md-6">
+                                                            <input type="hidden" name="empty_document" value="{{$invalid}}">
                                                                <label >Establishment Name <span class="text-danger">*</span></label>
-                                                                <input name="company_type_id" type="hidden" value="{{App\CompanyType::where('name_en', 'corporate')->first()->company_type_id}}">
-                                                               <input {{$disabled}}  name="name_en" required autocomplete="off"  class="form-control form-control-sm" type="text" value="{{$company->name_en}}">
+                                                               <input required {{$disabled}}   name="name_en"   autocomplete="off"  
+                                                               class=" @error('name_en') is-invalid @enderror form-control form-control-sm" 
+                                                               type="text" 
+                                                               value="{{old( 'name_en',$company->name_en)}}"
+                                                               >
+                                                               @if ($errors->has('name_en'))
+                                                                 <div class="invalid-feedback">{{$errors->first('name_en')}}</div>
+                                                               @endif
+                                                              
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label >Establishment Name (AR)<span class="text-danger">*</span></label>
-                                                               <input {{$disabled}} dir="rtl" name="name_ar" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->name_ar}}">
+                                                               <input required {{$disabled}} dir="rtl" name="name_ar"  autocomplete="off" 
+                                                               class="@error('name_ar') is-invalid @enderror form-control form-control-sm" 
+                                                               type="text" value="{{old('name_ar', $company->name_ar)}}">
+                                                                @if ($errors->has('name_ar'))
+                                                                 <div class="invalid-feedback">{{$errors->first('name_ar')}}</div>
+                                                                @endif
                                                            </div>
                                                        </section>
                                                        <section id="trade-license-container" class="row form-group form-group-sm license {{ $company->company_type_id == 1 ? 'kt-hide': null }}">
                                                            <div class="col-md-6">
                                                                <label >Trade License Number <span class="text-danger">*</span></label>
-                                                               <input name="trade_license"  autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->trade_license}}">
+                                                               <input required name="trade_license"  autocomplete="off" 
+                                                               class="form-control form-control-sm @error('trade_license') is-invalid @enderror" 
+                                                               type="text" value="{{old('trade_license',$company->trade_license)}}">
+                                                               @if ($errors->has('trade_license'))
+                                                                <div class="invalid-feedback">{{$errors->first('trade_license')}}</div>
+                                                               @endif 
                                                            </div>
                                                            <div class="col-md-6">
                                                                <div class="row form-group form-group-sm">
                                                                    <div class="col-sm-6">
                                                                        <label >Trade License Issued Date<span class="text-danger">*</span></label>
-                                                                       <input required name="trade_license_issued_date"  autocomplete="off" class="date-picker start form-control form-control-sm" type="text" value="{{$company->trade_license_issued_date ? $company->trade_license_issued_date->format('d-m-Y') :  null }}">
+                                                                       <input required name="trade_license_issued_date"  autocomplete="off" 
+                                                                       class="date-picker start form-control form-control-sm 
+                                                                       @error('trade_license_issued_date') is-invalid @enderror" 
+                                                                       type="text" 
+                                                                       value="{{$company->trade_license_issued_date ? $company->trade_license_issued_date->format('d-m-Y') :  null }}">
+                                                                       @if ($errors->has('trade_license_issued_date'))
+                                                                        <div class="invalid-feedback"> {{$errors->first('trade_license_issued_date')}}</div>
+                                                                       @endif
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                       <label >Trade License Expired Date<span class="text-danger">*</span></label>
-                                                                      <input required name="trade_license_expired_date"  autocomplete="off" class="date-picker end form-control form-control-sm" type="text" value="{{$company->trade_license_expired_date ? $company->trade_license_expired_date->format('d-m-Y') :  null }}"> 
+                                                                      <input required name="trade_license_expired_date"  autocomplete="off" 
+                                                                      class="date-picker end form-control form-control-sm 
+                                                                      @error('trade_license_expired_date') is-invalid @enderror" 
+                                                                      type="text" value="{{$company->trade_license_expired_date ? $company->trade_license_expired_date->format('d-m-Y') :  null }}"> 
+                                                                      @if ($errors->has('trade_license_expired_date'))
+                                                                       <div class="invalid-feedback"> {{$errors->first('trade_license_expired_date')}}</div>
+                                                                      @endif
                                                                    </div>
                                                                </div>
                                                               
@@ -186,18 +226,29 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                            <label >{{__('Establishment Email')}}<span class="text-danger">*</span></label>
-                                                               <input required name="company_email" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->company_email}}">
+                                                               <input required name="company_email"  autocomplete="off" 
+                                                               class="form-control form-control-sm 
+                                                               @error('company_email') is-invalid @enderror" 
+                                                               type="text" value="{{old('company_email', $company->company_email)}}">
+                                                               @if ($errors->has('company_email'))
+                                                                <div class="invalid-feedback"> {{$errors->first('company_email')}}</div>
+                                                               @endif
                                                            </div>
                                                            <div class="col-md-6">
                                                                <div class="row form-group form-group-sm">
                                                                    <div class="col-sm-6">
                                                                        <label >Phone Number<span class="text-danger">*</span></label>
-                                                                       <input required name="phone_number" required autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->phone_number}}">
+                                                                       <input required name="phone_number"  autocomplete="off" class="form-control form-control-sm" type="text" value="{{old('phone_number', $company->phone_number)}}">
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                       <label >Website</label>
-                                                                      <input name="website" autocomplete="off" class="form-control form-control-sm" type="text" value="{{$company->website}}"> 
+                                                                      <input name="website" autocomplete="off" 
+                                                                      class="form-control form-control-sm @error('website') is-invalid @enderror" 
+                                                                      type="text" value="{{old('website', $company->website)}}"> 
                                                                    </div>
+                                                                   @if ($errors->has('website'))
+                                                                    <div class="invalid-feedback"> {{$errors->first('website')}}</div>
+                                                                   @endif
                                                                </div>
                                                               
                                                            </div>
@@ -205,45 +256,35 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <div class="row form-group form-group-sm">
-                                                                   <div class="col-sm-6">
-                                                                       <label >Address<span class="text-danger">*</span></label>
-                                                                       <input name="address" required autocomplete="off"  class="form-control" type="text" value="{{$company->address}}">
-                                                                   </div>
-                                                                   <div class="col-sm-6">
-                                                                      <label >Country <span class="text-danger">*</span></label>
-                                                                      <select required name="country_id" class="form-control form-control-sm select2">
-                                                                          @if (App\Country::orderBy('name_en')->count() > 0)
-                                                                              @foreach (App\Country::orderBy('name_en')->get() as $country)
-                                                                              <option  {{ $country->country_id == $company->country_id ? 'selected': null }} value="{{$country->country_id}}">{{ucfirst($country->name_en)}}</option>
+                                                                <div class="col-sm-12">
+                                                                      <label>Area<span class="text-danger">*</span></label>
+                                                                      <select required name="area_id" class="select2 form-control form-control-sm 
+                                                                      @error('area_id') is-invalid @enderror">
+                                                                        <option></option>
+                                                                          @if (App\Areas::where('emirates_id', 5)->orderBy('area_en')->count() > 0)
+                                                                              @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as $area)
+                                                                              <option {{ $area->id == $company->area_id ? 'selected': null }}  
+                                                                                value="{{old('area_id',$area->id)}}">{{ucfirst($area->area_en)}}</option>
                                                                               @endforeach
                                                                           @endif
                                                                       </select>
+                                                                      @if ($errors->has('area_id'))
+                                                                       <div class="invalid-feedback"> {{$errors->first('area_id')}}</div>
+                                                                      @endif
                                                                    </div>
                                                                </div>
                                                               
                                                            </div>
                                                            <div class="col-md-6">
                                                                <div class="row form-group form-group-sm">
-                                                                   <div class="col-sm-6">
-                                                                       <label >Emirate<span class="text-danger">*</span></label>
-                                                                       <select required name="emirate_id"  class="select2 form-control form-control-sm">
-                                                                          @if (App\Emirates::orderBy('name_en')->count() > 0)
-                                                                              @foreach (App\Emirates::orderBy('name_en')->get() as $emirate)
-                                                                              <option {{ $emirate->id == $company->emirate_id ? 'selected': null }} value="{{$emirate->id}}">{{ucfirst($emirate->name_en)}}</option>
-                                                                              @endforeach
-                                                                          @endif
-                                                                       </select>
+                                                                   <div class="col-sm-12">
+                                                                       <label >Address in Ras Al Khaimah<span class="text-danger">*</span></label>
+                                                                       <textarea required name="address" autocomplete="off"  rows="2" class="form-control @error('address') is-invalid @enderror">{{old('address', $company->address)}}</textarea>
+                                                                       @if ($errors->has('address'))
+                                                                        <div class="invalid-feedback"> {{$errors->first('address')}}</div>
+                                                                       @endif
                                                                    </div>
-                                                                   <div class="col-sm-6">
-                                                                      <label>Area<span class="text-danger">*</span></label>
-                                                                      <select required name="area_id" class="select2 form-control form-control-sm">
-                                                                          @if (App\Areas::where('emirates_id', 5)->orderBy('area_en')->count() > 0)
-                                                                              @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as $area)
-                                                                              <option {{ $area->id == $company->area_id ? 'selected': null }}  value="{{$area->id}}">{{ucfirst($area->area_en)}}</option>
-                                                                              @endforeach
-                                                                          @endif
-                                                                      </select>
-                                                                   </div>
+                                                                   
                                                                </div>
                                                               
                                                            </div>
@@ -251,11 +292,18 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>Establishment Details<span class="text-danger">*</span></label>
-                                                               <textarea required rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_en">{{$company->company_description_en}}</textarea>
+                                                               <textarea required  rows="3" autocomplete="off"  class="form-control form-control-sm 
+                                                               @error('company_description_en') is-invalid @enderror" name="company_description_en">{{old('company_description_en',$company->company_description_en)}}</textarea>
+                                                               @if ($errors->has('company_description_en'))
+                                                                <div class="invalid-feedback"> {{$errors->first('company_description_en')}}</div>
+                                                               @endif
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label >Establishment Details (AR)<span class="text-danger">*</span></label>
-                                                               <textarea required dir="rtl" rows="4" autocomplete="off" required class="form-control form-control-sm" name="company_description_ar">{{$company->company_description_ar}}</textarea>
+                                                               <textarea required dir="rtl" rows="3" autocomplete="off"  class="form-control form-control-sm @error('company_description_ar') is-invalid @enderror" name="company_description_ar">{{old('company_description_ar', $company->company_description_ar)}}</textarea>
+                                                               @if ($errors->has('company_description_ar'))
+                                                                <div class="invalid-feedback"> {{$errors->first('company_description_ar')}}</div>
+                                                               @endif
                                                            </div>
                                                        </section>
                                                        
@@ -275,21 +323,33 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>{{__('Name')}} <span class="text-danger">*</span></label>
-                                                               <input autocomplete="off" required name="contact_name_en" class="form-control form-control-sm" type="text" value="{{$company->contact->contact_name_en}}">
+                                                               <input required autocomplete="off"  name="contact_name_en" class="form-control form-control-sm @error('contact_name_en') is-invalid @enderror" type="text" value="{{old('contact_name_en', $company->contact->contact_name_en)}}">
+                                                               @if ($errors->has('contact_name_en'))
+                                                                <div class="invalid-feedback"> {{$errors->first('contact_name_en')}}</div>
+                                                               @endif
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label >{{__('Name (AR)')}}<span class="text-danger">*</span></label>
-                                                               <input required dir="rtl" name="contact_name_ar" autocomplete="off" required class="form-control form-control-sm" type="text" value="{{$company->contact->contact_name_ar}}">
+                                                               <input required dir="rtl" name="contact_name_ar" autocomplete="off"  class="form-control form-control-sm @error('contact_name_ar') is-invalid @enderror" type="text" value="{{old('contact_name_ar', $company->contact->contact_name_ar)}}">
+                                                               @if ($errors->has('contact_name_ar'))
+                                                                <div class="invalid-feedback"> {{$errors->first('contact_name_ar')}}</div>
+                                                               @endif
                                                            </div>
                                                        </section>
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>{{__('Designation')}} <span class="text-danger">*</span></label>
-                                                               <input autocomplete="off" required name="designation_en" class="form-control form-control-sm" type="text" value="{{$company->contact->designation_en}}">
+                                                               <input required autocomplete="off"  name="designation_en" class="form-control form-control-sm @error('designation_en') is-invalid @enderror" type="text" value="{{old('designation_en' ,$company->contact->designation_en)}}">
+                                                               @if ($errors->has('designation_en'))
+                                                                <div class="invalid-feedback"> {{$errors->first('designation_en')}}</div>
+                                                               @endif
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label>{{__('Designation (AR)')}} <span class="text-danger">*</span></label>
-                                                               <input required dir="rtl" name="designation_ar" autocomplete="off" required class="form-control form-control-sm" type="text" value="{{$company->contact->designation_en}}">
+                                                               <input  dir="rtl" name="designation_ar" autocomplete="off"  class="form-control form-control-sm @error('designation_ar') is-invalid @enderror" type="text" value="{{old('designation_ar', $company->contact->designation_ar)}}">
+                                                               @if ($errors->has('designation_ar'))
+                                                                <div class="invalid-feedback"> {{$errors->first('designation_ar')}}</div>
+                                                               @endif
                                                            </div>
                                                        </section>
                                                        
@@ -297,28 +357,46 @@
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>{{__('Email Address')}} <span class="text-danger">*</span></label>
-                                                               <input required autocomplete="off" name="email" class="form-control form-control-sm" type="email" value="{{$company->contact->email}}">
+                                                               <input required  autocomplete="off" name="email" class="form-control form-control-sm @error('email') is-invalid @enderror" type="email" value="{{old('email' ,$company->contact->email)}}">
+                                                               @if ($errors->has('email'))
+                                                                <div class="invalid-feedback"> {{$errors->first('email')}}</div>
+                                                               @endif
                                                            </div>
                                                            <div class="col-md-6">
                                                                <label>{{__('Mobile Number')}} <span class="text-danger">*</span></label>
-                                                               <input required autocomplete="off" name="mobile_number" class="form-control form-control-sm" type="text" value="{{$company->contact->mobile_number}}">
+                                                               <input required  autocomplete="off" name="mobile_number" class="form-control form-control-sm @error('mobile_number') is-invalid @enderror" type="text" value="{{old('mobile_number', $company->contact->mobile_number)}}">
+                                                               @if ($errors->has('mobile_number'))
+                                                                <div class="invalid-feedback"> {{$errors->first('mobile_number')}}</div>
+                                                               @endif
                                                            </div>
                                                        </section>
                                                        <section class="row form-group form-group-sm">
                                                            <div class="col-md-6">
                                                                <label>{{__('Emirates ID')}} <span class="text-danger">*</span></label>
-                                                               <input required autocomplete="off" name="emirate_identification" class="form-control form-control-sm" type="text" value="{{$company->contact->emirate_identification}}">
+                                                               <input required autocomplete="off" name="emirate_identification" class="form-control form-control-sm @error('emirate_identification') is-invalid @enderror" type="text" 
+                                                               value="{{old('emirate_identification', $company->contact->emirate_identification)}}">
+                                                               @if ($errors->has('emirate_identification'))
+                                                                <div class="invalid-feedback"> {{$errors->first('emirate_identification')}}</div>
+                                                               @endif
                                                            </div>
                                                            <div class="col-md-6">
                                                                <div class="form-group row">
                                                                    <div class="col-sm-6">
                                                                        <label>{{__('Emirates ID Issued Date')}} <span class="text-danger">*</span></label>
-                                                                       <input required autocomplete="off" autocomplete="off" name="emirate_id_issued_date" class="date-picker start form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-m-Y') : null }}">
+                                                                       <input  required autocomplete="off" autocomplete="off" name="emirate_id_issued_date" class="date-picker start form-control form-control-sm @error('emirate_id_issued_date') is-invalid @enderror" type="text" value="{{$company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-m-Y') : null }}">
+                                                                       @if ($errors->has('emirate_id_issued_date'))
+                                                                        <div class="invalid-feedback"> {{$errors->first('emirate_id_issued_date')}}</div>
+                                                                       @endif
                                                                    </div>
                                                                    <div class="col-sm-6">
                                                                     <input type="hidden" name="reference_number" value="123456789">
                                                                        <label>{{__('Emirates ID EXpired Date')}} <span class="text-danger">*</span></label>
-                                                                       <input required  autocomplete="off" name="emirate_id_expired_date" class="date-picker end form-control form-control-sm" type="text" value="{{$company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-m-Y') :  null }}">
+                                                                       <input required  autocomplete="off" name="emirate_id_expired_date" 
+                                                                       class="date-picker end form-control form-control-sm @error('emirate_id_expired_date') is-invalid @enderror" 
+                                                                       type="text" value="{{$company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-m-Y') :  null }}">
+                                                                       @if ($errors->has('emirate_id_expired_date'))
+                                                                        <div class="invalid-feedback"> {{$errors->first('emirate_id_expired_date')}}</div>
+                                                                       @endif
                                                                    </div>
                                                                </div>
                                                            </div>
@@ -332,7 +410,7 @@
                                                <div class="card-header" id="heading-requirement">
                                                    <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
                                                        <h6 class="kt-font-dark "><span class="kt-font-transform-u">{{__('Document Requirements')}}</span> 
-                                                        {{-- <small>Please upload the required documents.</small> --}}
+                                                        {{-- <small>Please upload the  documents.</small> --}}
                                                       </h6>
                                                    </div>
                                                </div>
@@ -344,6 +422,7 @@
                                                         <span class="kt-font-danger kt-font-bold">Note:</span>
                                                         <ul>
                                                           <li class="kt-font-danger">{{__('Uploaded files will be deleted if not submitted or saved as draft.')}}</li>
+                                                          <li>{{__('Uploading file not in the list? Please use the Other upload option.')}}</li>
                                                           <li>{{__('The maximum file size for uploads is 5MB.')}}</li>
                                                           <li>{{__('File Upload (JPG, PNG & PDF) only allowed.')}}</li>
                                                         </ul>
@@ -408,7 +487,7 @@
                                             @if ($company->status == 'draft')
                                                <button style="padding: 0.5rem 1rem;" type="submit" name="submit" value="draft" class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark">Save as Draft</button>
                                             @endif
-                                               <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">{{ $company->application ? 'Update Application' : 'Submit Application'}}</button>
+                                               <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">{{ $company->application_date ? 'Update Information' : 'Submit Application'}}</button>
                                            </div>
                                            
                                        </div>
@@ -599,7 +678,10 @@
 
 
 
-      $('.select2').select2();
+      $('.select2').select2({
+        placeholder: '{{__('Please select Area in Ras Al Khaimah')}}',
+        allowClear: true
+      });
 
       $('#btn-save').click(function(){
         var name = $('#upload-row').find('select').val();
@@ -962,24 +1044,26 @@
         }
 
         var date = new Date();
-        date.setDate(date.getDate()-1);
+        date.setDate(date.getDate()+1);
 
       $('.date-picker.end').datepicker({
             rtl: KTUtil.isRTL(),
+            autoclose: true,
             todayHighlight: true,
             orientation: "bottom left",
-             startDate: date,
+            startDate: date,
             templates: arrows,
-            format:'dd-mm-yyyy'
+            format:'dd-mm-yyyy',
         });
 
        $('.date-picker.start').datepicker({
             rtl: KTUtil.isRTL(),
             todayHighlight: true,
+            autoclose: true,
             orientation: "bottom left",
             endDate: '+0d',
             templates: arrows,
-            format:'dd-mm-yyyy'
+            format:'dd-mm-yyyy',
         });
     }
 </script>

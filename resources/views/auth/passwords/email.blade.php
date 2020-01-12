@@ -33,7 +33,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <a href="{{ route('login') }}" class="btn btn-clean btn-sm  active"><i class="la la-arrow-left"></i> {{__('BACK')}}</a>
-                                <button type="submit" class="btn btn-brand">
+                                <button type="submit" class="btn btn-brand btn-sm">
                                     {{ __('Send Password Reset Link') }}
                                 </button>
 

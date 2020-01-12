@@ -871,7 +871,7 @@
                                     <label class="kt-checkbox kt-checkbox--warning ml-2 mt-3">
                                         <input type="checkbox" id="isEventPay" name="isEventPay"
                                             onchange="check_permit()">
-                                        Do you wish to pay associated artist permit fee ?
+                                        {{__('Do you wish to pay associated artist permit fee ?')}}
                                         <span></span>
                                     </label>
                                 </div>
@@ -921,7 +921,7 @@
                         </div>
 
 
-                        <a href="{{route('event.index')}}#applied">
+                        <a href="{{URL::signedRoute('event.index')}}#applied">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 {{__('Back')}}
                             </div>
@@ -950,6 +950,7 @@
                             {{__('Next')}}
                         </div>
 
+
                     </div>
 
                 </div>
@@ -965,6 +966,7 @@
 <!-- end:: Content -->
 
 <?php
+
 $url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session';
 $postFields = array(
     'apiOperation' => 'CREATE_CHECKOUT_SESSION',
@@ -992,7 +994,7 @@ curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 $output = curl_exec($curl);
 curl_close($curl);
 $output = json_decode($output);
-// dd($output); 
+
 ?>
 
 <!-- begin::Scrolltop -->
@@ -1028,7 +1030,6 @@ $output = json_decode($output);
 </script>
 <script>
     function errorCallback(error) {
-            // console.log(JSON.stringify(error));
         $.notify({
         title: 'Error',
         message: "{{__('Payment cancelled ! Please Try Again')}}",
@@ -1041,7 +1042,6 @@ $output = json_decode($output);
         });
     }
     function cancelCallback() {
-        // console.log('Payment cancelled');
         $.notify({
             title: 'Error',
             message: "{{__('Payment cancelled ! Please Try Again')}}",
@@ -1053,13 +1053,12 @@ $output = json_decode($output);
             },
         });
     }
-  
 
+        
     var sessionId = "{{$output->session->id}}";
 
     var successIndicator = "{{$output->successIndicator}}";
-
-    // console.log(sessionId);
+  
             
     Checkout.configure({
         merchant: 'NRSINFOWAYSL',
@@ -1076,7 +1075,6 @@ $output = json_decode($output);
         interaction: {
             merchant: {
                 name: 'RAKTDA NRS Infoways',
-                // logo: "{{asset('/img/print_tda_logo.png')}}"
             },
             displayControl: {
                 billingAddress  : 'HIDE',
@@ -1084,33 +1082,30 @@ $output = json_decode($output);
         }
     });
 
+
     function completedCallback(resultIndicator, sessionVersion) {
         var transactionID, receipt ;
         if(successIndicator == resultIndicator)
         {
-            var username = "merchant.NRSINFOWAYSL";
-            var password = "aabf38b7ab511335ba2fb786206b1dc0";
-            var url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/order/{{getPaymentOrderId("event", $event->event_id)}}';
+            var orderId = '{{getPaymentOrderId("event", $event->event_id)}}';
+            var url = "{{route('company.getpaymentdetails', ['orderid' => ':orderId'])}}";
+            url = url.replace(':orderId', orderId);
             $.ajax({
                 url: url,
-                type: 'GET',    
-                dataType: 'json',
-                contentType: 'application/json',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
-                },
-                success: function(res) {
-                    transactionID = res.transaction[0].transaction.acquirer.transactionId;
-                    receipt = res.transaction[0].transaction.receipt;
-                    paymentDoneUpdation(transactionID,receipt);
+                type: 'GET',
+                success: function(res){
+                    console.log(res);
+                    var transactionId = res.transaction[0].transaction.acquirer.transactionId;
+                    var receipt = res.transaction[0].transaction.receipt;
+                    paymentDoneUpdation(transactionId, receipt);
                 }
-            })
+            });
         }
     }
 
     // console.log('{{getPaymentOrderId("event", $event->event_id)}}');
 
-    function paymentDoneUpdation(transactionID,receipt) {
+    function paymentDoneUpdation(transactionId,receipt) {
         var paidArtistFee = 0;
         if($('#isEventPay').prop("checked")){
             paidArtistFee = 1;
@@ -1126,7 +1121,7 @@ $output = json_decode($output);
                 liquor_fee: $('#liquor_fee').val(),
                 total: $('#total').val(),
                 paidArtistFee: paidArtistFee,
-                transactionId: transactionID,
+                transactionId: transactionId,
                 receipt: receipt, 
                 orderId: '{{getPaymentOrderId("event", $event->event_id)}}'
             },
@@ -1139,12 +1134,9 @@ $output = json_decode($output);
                 });
             },
             success: function (result) {
-                var toUrl = "{{route('event.happiness', ':id')}}";
-                toUrl = toUrl.replace(':id', $('#event_id').val());
                 if(result.message[0]){
-                    window.location.replace(toUrl);
+                    window.location.href = result.toURL ;
                 }
-                console.log(result)
                 KTApp.unblockPage();
             }
         });
@@ -1152,7 +1144,7 @@ $output = json_decode($output);
 
 </script>
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}&libraries=places&callback=initialize"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
     async defer></script>
 <script>
     $.ajaxSetup({

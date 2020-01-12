@@ -23,7 +23,7 @@
                 <i class="la la-plus"></i>
                 {{__('Add Artist')}}
                 </a> --}}
-                <a href="{{route('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
+                <a href="{{URL::signedRoute('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     {{__('Add Artist')}}
@@ -34,7 +34,7 @@
                 <button id="back_btn_sm" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                 </button>
-                <a href="{{route('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
+                <a href="{{URL::signedRoute('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                 </a>
@@ -119,7 +119,7 @@
                             {{__(ucwords($artist_detail->artist_permit_status))}}
                         </td>
                         <td class="d-flex justify-content-center">
-                            <a href="{{route('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
+                            <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
                                 title="{{__('Edit')}}">
                                 <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Edit')}}</button>
                             </a>
@@ -235,7 +235,7 @@
                 data: { permit_id: temp_permit_id,from: 'renew'},
                 async: true,
                 success: function(result){
-                    window.location.href="{{route('artist.index')}}#valid";
+                    window.location.href=result.toURL;
                 }
         });
     }
@@ -270,7 +270,7 @@
             success: function(data) {
                 // console.log(data);
               if(data.message[0] == 'success') {
-                window.location.href="{{route('artist.index')}}#valid";
+                window.location.href= data.toURL;
                 KTApp.unblockPage();
               }
             }

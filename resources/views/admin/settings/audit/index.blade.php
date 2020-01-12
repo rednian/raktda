@@ -3,27 +3,30 @@
 <section class="row">
     <div class="col-xl-12">
         <div class="kt-portlet kt-portlet--height-fluid">
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">Artist Permit Type</h3>
-                    </div>
-                    <div class="kt-portlet__head-toolbar">
-                        <a href="{{ route('artist_type.create') }}" style="margin-bottom: 2%" class="btn btn-outline-primary btn-elevate btn-icon-sm pull-right btn-sm">New Artist Permit Type</a>
-                    </div>
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">Artist Permit Type</h3>
                 </div>
-                <div class="kt-portlet__body">
-                    <table class="table table-striped- table-bordered table-condensed table-hover table-checkable" id="artist-profession">
-                        <thead>
-                            <tr>
-                                <th>Artist Code</th>
-                                <th>Artist Permit Name</th>
-                                <th>Permit Fee</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                    </table>
+                <div class="kt-portlet__head-toolbar">
+                    <a href="{{ route('artist_type.create') }}" style="margin-bottom: 2%"
+                        class="btn btn-outline-primary btn-elevate btn-icon-sm pull-right btn-sm">New Artist Permit
+                        Type</a>
                 </div>
             </div>
+            <div class="kt-portlet__body">
+                <table class="table table-striped- table-bordered table-condensed table-hover table-checkable"
+                    id="artist-profession">
+                    <thead>
+                        <tr>
+                            <th>Artist Code</th>
+                            <th>Artist Permit Name</th>
+                            <th>Permit Fee</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
     </div>
 </section>
 @endsection

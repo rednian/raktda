@@ -17,14 +17,15 @@
 
                 <div class="kt-portlet__head-toolbar">
                     <div class="my-auto float-right permit--action-bar">
-                        <a href="{{route('artist.index')}}#applied"
+                        <a href="{{URL::signedRoute('artist.index')}}#applied"
                             class="btn btn--maroon kt-font-bold kt-font-transform-u btn-sm">
                             <i class="la la-arrow-left"></i>
                             {{__('Back')}}
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
-                        <a href="{{route('artist.index')}}#applied" class="btn btn--maroon btn-elevate btn-sm">
+                        <a href="{{URL::signedRoute('artist.index')}}#applied"
+                            class="btn btn--maroon btn-elevate btn-sm">
                             <i class="la la-arrow-left"></i>
                         </a>
                     </div>

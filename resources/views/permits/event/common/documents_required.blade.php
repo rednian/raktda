@@ -2,7 +2,7 @@
     <section class="row">
         <div class="col-md-3">
             <div class="border kt-padding-5">
-                <ul class="nav nav-pills nav-fill nav-flex-column" role="tablist">
+                <ul class="nav nav-pills nav-fill nav-flex-column kt-margin-b-0" role="tablist">
                     @php
                     $i = 1;
                     @endphp

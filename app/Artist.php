@@ -17,6 +17,11 @@ class Artist extends Model implements Auditable
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'birthdate'];
 
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'company_artist', 'artist_id', 'company_id');
+    }
+
     public function action()
     {
         return $this->hasMany(ArtistAction::class, 'artist_id');
@@ -31,7 +36,6 @@ class Artist extends Model implements Auditable
     {
         return $this->belongsToMany(Permit::class, 'artist_permit', 'artist_id', 'permit_id');
     }
-
 
 
 }

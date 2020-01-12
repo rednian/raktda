@@ -81,7 +81,7 @@
     <!-- begin::Page loader -->
     <div class="kt-page-loader kt-page-loader--base">
         <div class="blockui">
-            <span>Please wait...</span>
+            <span>{{__('Please wait...')}}</span>
             <span>
                 <div class="kt-spinner kt-spinner--danger"></div>
             </span>
@@ -118,19 +118,39 @@
                 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
                     <!-- begin:: Content -->
                     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
-                        <section class="row">
-                            <div class="col">
-                                @yield('content')
-                            </div>
-                        </section>
+
+
+                        {{-- @if (Auth::check() &&
+                        (Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now()->addDays(10))
+                            && !is_null(Auth::user()->company->registered_by)
+                            )
+                            <div class="alert alert-warning fade show kt-margin-b-5" role="alert">
+                                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                @php
+                                $words = Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now() ?
+                                    __('already expired ') : __(' will expire ') 
+                              @endphp
+                              <div class="alert-text">{{__('Your Business Trade License '.$words)}}
+                        <span title="{{Auth::user()->company->trade_license_expired_date->format('d-F-Y') }}"
+                            class="text-underline kt-font-bold">{{ humanDate(Auth::user()->company->trade_license_expired_date) }}</span>.
+                        <br>
+                        {{__('Please update your Business Trade License before the expiry date to avoid inconvenient in applying RAKTDA Services.')}}
                     </div>
-                    <!-- end:: Content -->
+                    <div class="alert-close">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-close"></i></span>
+                        </button>
+                    </div>
                 </div>
-                {{-- @include('layouts.admin.footer') --}}
-            </div>
+                @endif --}}
+
+
+                <section class="row">
+                    <div class="col">@yield('content') </div>
+                </section>
+                {{-- @include('layouts.admin.footer') --}} </div>
         </div>
-    </div>
-    @if (Auth::check())
+    </div> @if (Auth::check())
     <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
     <input type="hidden" id="getLangid" value="{{getLangId()}}">
@@ -140,16 +160,21 @@
     <script src="{{ asset('/js/plugins.js') }}"></script>
     <script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/custom-pages.js') }}"></script>
-    <script src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}"></script>
+    <script src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}">
+    </script>
 
-    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}">
+    </script>
     <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/sortable.js') }}">
     </script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}">
+    </script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}">
+    </script>
     <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/explorer-fas/theme.js') }}">
     </script>
-    {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script> --}}
+    {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
+    --}}
     <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
     <!--end::Page Vendors -->
 
@@ -157,6 +182,8 @@
 @yield('script')
 <script type="text/javascript">
     $(document).ready(function(){
+
+
         @if (Auth::check())
             @if (Session::has('message'))
             $.notify({

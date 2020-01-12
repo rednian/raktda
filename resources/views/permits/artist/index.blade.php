@@ -32,7 +32,7 @@
                     @if(check_is_blocked()['status'] != 'blocked' && check_is_blocked()['status'] != 'rejected')
                     <span class="nav-item"
                         style="position:absolute; {{    Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
-                        <a href="{{ route('company.add_new_permit', ['id' => 1])}}">
+                        <a href="{{ URL::signedRoute('company.add_new_permit', ['id' => 1])}}">
                             <button class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                                 id="nav--new-permit-btn">
                                 <i class="la la-plus"></i>{{__('Add New')}}
@@ -218,166 +218,185 @@
 
     @section('script')
     <script>
-        $(document).ready(function(){
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
-        var hash = window.location.hash;
+
+        $(document).ready(function(){
+
+            var getLangid = $('#getLangid').val();
+
+            applied();
+            valid();
+            draft();
+            
+            setInterval(function(){ applied(); valid();}, 100000);
+            var hash = window.location.hash;
             hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+
             $('.nav-tabs a').click(function (e) {
-            $(this).tab('show');
-            var scrollmem = $('body').scrollTop();
-            window.location.hash = this.hash;
-            $('html,body').scrollTop(scrollmem);
+                $(this).tab('show');
+                var scrollmem = $('body').scrollTop();
+                window.location.hash = this.hash;
+                $('html,body').scrollTop(scrollmem);
+            });
+
+            $('.nav-tabs a').on('shown.bs.tab', function (event) {
+                var current_tab = $(event.target).attr('href');
+                if (current_tab == '#applied' ) {  applied(); }
+                if (current_tab == '#valid' ) { valid(); }
+                if (current_tab == '#draft' ) { draft(); }
+            });
+
         });
 
-        var getLangid = $('#getLangid').val();
-
-        var table1 = $('#applied-artists-table').DataTable({
-            responsive: true,
-            processing: true,
-            serverSide: true,
-            searching: true,
-            ordering: false,
-            search: {
-                caseInsensitive: false
-            },
-            // pageLength: 5,
-            // order:[[5,'desc']],
-            // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            ajax:'{{route("company.fetch_applied_artists")}}',
-            columns: [
-                { data: 'reference_number', name: 'reference_number' },
-                { data: 'term', name: 'term' },
-                { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
-                { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
-                { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
-                { data: 'permit_id', name: 'permit_id', className: 'no-wrap' },
-                { data: 'permit_status', name: 'permit_status' },
-                { data: 'action', name: 'action',  className: "text-center" },
-                { data: 'details', name: 'details' ,  className: "text-center"},
-            ],
-            columnDefs: [
-                {
-                    targets:5,
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-                        var artistPermit = JSON.parse(data);  
-						return artistPermit.length;
-					}
-                }
-            ],
-            language: {
-                emptyTable: "No Applied Artist Permits",
-                searchPlaceholder: "{{__('Search')}}"
-            }
-        });
-
-
-
-        var table2 = $('#existing-artists-table').DataTable({
-            responsive: true,
-            // beforeSend: function (request) {
-            //     request.setRequestHeader("token", token);
-            // },
-            processing: true,
-            serverSide: true,
-            searching: true,
-            ordering: false,
-            // pageLength: 5,
-            deferRender: true,
-            search: {
-                caseInsensitive: false
-            },
-            // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            // order:[[6,'desc']],
-            ajax:'{{route("company.fetch_existing_artists")}}',
-            columns: [
-                { data: 'reference_number', name: 'reference_number' },
-                { data: 'term', name: 'term' },
-                { data: 'permit_number', name: 'permit_number' },
-                { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
-                { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
-                { data: 'work_location', name: 'work_location' , className: 'work-location-column'},
-                { data: 'permit_id', name: 'permit_id' , className: 'no-wrap'},
-                { data: 'action', name: 'action' ,  className: "text-center"},
-                { data: 'download', name: 'download' ,  className: "text-center" },
-                { data: 'details', name: 'details' ,  className: "text-center" },
-            ],
-            columnDefs: [
-                {
-                    targets:-4,
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-                        var artistPermit = JSON.parse(data);  
-                        var total = artistPermit.length;
-                        var noofapproved = 0 ;
-                        for (var i = 0 ;i < total; i++) {
-                            if (artistPermit[i].artist_permit_status == 'approved') {
-                                noofapproved++;
-                            }
+       function applied()
+       {
+            var table1 = $('#applied-artists-table').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ordering: false,
+                search: {
+                    caseInsensitive: false
+                },
+                // pageLength: 5,
+                // order:[[5,'desc']],
+                // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+                ajax:'{{route("company.fetch_applied_artists")}}',
+                columns: [
+                    { data: 'reference_number', name: 'reference_number' },
+                    { data: 'term', name: 'term' },
+                    { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
+                    { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
+                    { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
+                    { data: 'permit_id', name: 'permit_id', className: 'no-wrap' },
+                    { data: 'permit_status', name: 'permit_status' },
+                    { data: 'action', name: 'action',  className: "text-center" },
+                    { data: 'details', name: 'details' ,  className: "text-center"},
+                ],
+                columnDefs: [
+                    {
+                        targets:5,
+                        className:'text-center',
+                        render: function(data, type, full, meta) {
+                            var artistPermit = JSON.parse(data);  
+                            return artistPermit.length;
                         }
-                        return "{{__('Approved')}} " + noofapproved + ' of ' + total;
                     }
-                },
-                {
-                    targets:-1,
-                    width: '5%',
-                    className:'text-center',
-                    render: function(data, type, full, meta) {
-						return data;
-					}
+                ],
+                language: {
+                    emptyTable: "No Applied Artist Permits",
+                    searchPlaceholder: "{{__('Search')}}"
                 }
-            ],
-            language: {
-                emptyTable: "No Valid Artist Permits",
-                searchPlaceholder: "{{__('Search')}}"
-            }
-        });
+            });
+       }
 
-        var table3 = $('#drafts-artists-table').DataTable({
-            responsive: true,
-            processing: true,
-            serverSide: true,
-            searching: true,
-            search: {
-                caseInsensitive: false
-            },
-            // ordering: false,
-            // pageLength: 5,
-            deferRender: true,
-            // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
-            order:[[3,'desc']],
-            ajax:'{{route("company.fetch_existing_drafts")}}',
-            columns: [
-                { data: 'issued_date', name: 'issued_date' },
-                { data: 'expired_date', name: 'expired_date' },
-                { data: 'work_location', name: 'work_location' },
-                { data: 'created_at', defaultContent: 'None', name: 'created_at' },
-                { data: 'action', name: 'action', className: "text-center"},
-                { data: 'details', name: 'details',  className: "text-center"},
-            ],
-            columnDefs: [
-                {
-                    targets:-3,
-                    render: function(data, type, full, meta) {
-                        return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
 
-					}
+
+       function valid()
+       {
+            var table2 = $('#existing-artists-table').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ordering: false,
+                search: {
+                    caseInsensitive: false
                 },
-            ],
-            language: {
-                emptyTable: "{{__('No Artist Drafts Added')}}",
-                searchPlaceholder: "{{__('Search')}}"
-            }
-        });
+                ajax:'{{route("company.fetch_existing_artists")}}',
+                columns: [
+                    { data: 'reference_number', name: 'reference_number' },
+                    { data: 'term', name: 'term' },
+                    { data: 'permit_number', name: 'permit_number' },
+                    { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
+                    { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
+                    { data: 'work_location', name: 'work_location' , className: 'work-location-column'},
+                    { data: 'permit_id', name: 'permit_id' , className: 'no-wrap'},
+                    { data: 'action', name: 'action' ,  className: "text-center"},
+                    { data: 'download', name: 'download' ,  className: "text-center" },
+                    { data: 'details', name: 'details' ,  className: "text-center" },
+                ],
+                columnDefs: [
+                    {targets:'_all' ,className:'no-wrap'},
+                    {
+                        targets:-4,
+                        className:'text-center',
+                        render: function(data, type, full, meta) {
+                            var artistPermit = JSON.parse(data);  
+                            var total = artistPermit.length;
+                            var noofapproved = 0 ;
+                            for (var i = 0 ;i < total; i++) {
+                                if (artistPermit[i].artist_permit_status == 'approved') {
+                                    noofapproved++;
+                                }
+                            }
+                            return "{{__('Approved')}} " + noofapproved + ' of ' + total;
+                        }
+                    },
+                    {
+                        targets:-1,
+                        width: '5%',
+                        className:'text-center',
+                        render: function(data, type, full, meta) {
+                            return data;
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: "No Valid Artist Permits",
+                    searchPlaceholder: "{{__('Search')}}"
+                }
+            });
+       }
+
+       function draft()
+       {
+            var table3 = $('#drafts-artists-table').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                searching: true,
+                search: {
+                    caseInsensitive: false
+                },
+                // ordering: false,
+                // pageLength: 5,
+                deferRender: true,
+                // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+                order:[[3,'desc']],
+                ajax:'{{route("company.fetch_existing_drafts")}}',
+                columns: [
+                    { data: 'issued_date', name: 'issued_date' },
+                    { data: 'expired_date', name: 'expired_date' },
+                    { data: 'work_location', name: 'work_location' },
+                    { data: 'created_at', defaultContent: 'None', name: 'created_at' },
+                    { data: 'action', name: 'action', className: "text-center"},
+                    { data: 'details', name: 'details',  className: "text-center"},
+                ],
+                columnDefs: [
+                    {
+                        targets:-3,
+                        render: function(data, type, full, meta) {
+                            return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
+
+                        }
+                    },
+                ],
+                language: {
+                    emptyTable: "{{__('No Artist Drafts Added')}}",
+                    searchPlaceholder: "{{__('Search')}}"
+                }
+            });
+       }
 
 
-    });
+ 
 
     const cancel_permit = (id,  refno) => {
         var url = "{{route('company.artist.get_status', ':id')}}";

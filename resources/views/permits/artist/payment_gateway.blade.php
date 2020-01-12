@@ -144,7 +144,7 @@
                                 @endif
                                 @endforeach
                                 {{-- @if($permit_details->request_type == 'amend')
-                            <tr>
+                                <tr>
                                 <td colspan="2">{{__('Amendment Fee')}}
                                 </td>
                                 @php
@@ -322,10 +322,6 @@
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
                             onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
-                        {{-- onclick="Checkout.showPaymentPage()" --}}
-                        {{-- <a href="{{route('artist.gateway', ['id' => $permit_details->permit_id ])}}"></a> --}}
-                        {{-- <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                        onclick="Checkout.showLightbox()">{{__('PAY')}}</button> --}}
                     </div>
 
                 </div>
@@ -361,7 +357,6 @@
     $output = curl_exec($curl);
     curl_close($curl);
     $output = json_decode($output);
-    // dd($output); 
     ?>
 
     <!-- begin::Scrolltop -->
@@ -386,14 +381,13 @@
 
     <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js"
         data-error="errorCallback" data-cancel="cancelCallback" data-complete="completedCallback">
-        //
     </script>
     <script>
         function errorCallback(error) {
-                // console.log(JSON.stringify(error));
+            console.log(JSON.stringify(error));
             $.notify({
             title: 'Error',
-            message: "{{__('Payment cancelled ! Please Try Again')}}",
+            message: "{{__('Payment Error ! Please Try Again')}}",
             },{
                 type:'danger',
                 animate: {
@@ -403,7 +397,6 @@
             });
         }
         function cancelCallback() {
-            // console.log('Payment cancelled');
             $.notify({
                 title: 'Error',
                 message: "{{__('Payment cancelled ! Please Try Again')}}",
@@ -438,7 +431,6 @@
             interaction: {
                 merchant: {
                     name: 'RAKTDA NRS Infoways',
-                    // logo: "{{asset('/img/print_tda_logo.png')}}"
                 },
                 displayControl: {
                     billingAddress  : 'HIDE',
@@ -450,23 +442,19 @@
             var transactionID, receipt ;
             if(successIndicator == resultIndicator)
             {
-                var username = "merchant.NRSINFOWAYSL";
-                var password = "aabf38b7ab511335ba2fb786206b1dc0";
-                var url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/order/{{getPaymentOrderId("artist", $permit_details->permit_id)}}';
+                var orderId = '{{getPaymentOrderId("artist", $permit_details->permit_id)}}';
+                var url = "{{route('company.getpaymentdetails', ['orderid' => ':orderId'])}}";
+                url = url.replace(':orderId', orderId);
                 $.ajax({
                     url: url,
-                    type: 'GET',    
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
-                    },
-                    success: function(res) {
-                        transactionID = res.transaction[0].transaction.acquirer.transactionId;
-                        receipt = res.transaction[0].transaction.receipt;
-                        paymentDoneUpdation(transactionID,receipt);
+                    type: 'GET',
+                    success: function(res){
+                        console.log(res);
+                        var transactionId = res.transaction[0].transaction.acquirer.transactionId;
+                        var receipt = res.transaction[0].transaction.receipt;
+                        paymentDoneUpdation(transactionId, receipt);
                     }
-                })
+                });
             }
         }
     
@@ -477,15 +465,18 @@
             if($('#isEventPay').prop("checked")){
                 paidEventFee = 1;
             }
-            KTApp.blockPage({
-                    overlayColor: '#000000',
-                    type: 'v2',
-                    state: 'success',
-                    message: 'Please wait...'
-                });
+           
             $.ajax({
                 url: "{{route('company.payment')}}",
                 type: "POST",
+                beforeSend: function() {
+                    KTApp.blockPage({
+                        overlayColor: '#000000',
+                        type: 'v2',
+                        state: 'success',
+                        message: 'Please wait...'
+                    });
+                },
                 data: {
                 permit_id:$('#permit_id').val(),
                 amount: $('#amount').val(),
@@ -498,10 +489,8 @@
                 orderId: '{{getPaymentOrderId("artist", $permit_details->permit_id)}}'
                 },
                 success: function (result) {
-                var toUrl = "{{route('company.happiness_center', ':id')}}";
-                toUrl = toUrl.replace(':id', $('#permit_id').val());
                 if(result.message[0]){
-                window.location.replace(toUrl);
+                window.location.href = result.toURL;
                 KTApp.unblockPage();
                 }
                 }

@@ -129,7 +129,6 @@
                     @endphp
                     @endforeach
                 </form>
-                <small id="truck_warning_text" class="text-center text-danger "></small>
                 <div class="d-flex justify-content-between kt-margin-t-10">
                     <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">{{__('Back')}}</button>
                 </div>

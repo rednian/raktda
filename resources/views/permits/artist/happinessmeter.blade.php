@@ -94,7 +94,7 @@
 
                 if(value)
                 {
-                    if(happinessValidator.form())
+                    if(happinessValidator.form())   
                     {
                         $.ajax({
                             url: "{{route('artist.submit_happiness')}}",
@@ -114,7 +114,7 @@
                             },
                             success: function (result) {
                                 if(result.message[0]){
-                                    window.location.href = "{{route('artist.index')}}#valid";
+                                    window.location.href =result.toURL;
                                     KTApp.unblockPage();
                                 }
                             }

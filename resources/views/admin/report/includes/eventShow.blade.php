@@ -35,13 +35,6 @@
 @section('content')
     <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet"
              style="padding: 20px">
-        <div>
-            <div style="background-color: #f3e0eb;
-            padding: 8px;
-            color: #6f6f6f;
-            font-family: arial;">{{__('EVENT DETAILS')}}</div>
-        </div>
-
         <table class="table table-bordered container-fluid " id="DivToPrint" style="padding: 3px">
             <tr>
                 <th colspan="2">
@@ -49,7 +42,7 @@
                 </th>
             </tr>
             <tr>
-                <th colspan="2" align="center" style="padding: 5px;height: 34px">EVENTS DETAILS</th>
+                <th colspan="2" align="center" style="padding: 5px;height: 34px">{{__('EVENTS DETAILS')}}</th>
             </tr>
             <tr>
                 <th width="35%">{{__('REFERENCE NUMBER')}}</th>
@@ -113,7 +106,7 @@
         </iframe>
         </div>
         <div class="col-md-5">
-            <a href=""><button class="btn btn-secondary pull-right"><-BACK</button></a>
+            <a href="{{route('admin.artist_permit_reports.reports')}}"><button style="    background-color: #b45454; color: white; box-shadow: -1px 2px 7px -3px black; border: none; border-radius: 3px;" class="btn blue-gradient pull-right"><-BACK</button></a>
             <div class="border kt-padding-10">
                 <div class="kt-widget kt-widget--user-profile-4">
                     <div class="kt-widget__head kt-margin-t-5">
@@ -163,7 +156,7 @@
                             </tr>
                             <tr>
                                 <td>{{ __('Reference No.') }} :</td>
-                                <td class="kt-font-dark"><code style="">{{ $event->reference_number }}</code></td>
+                                <td class="kt-font-dark"><code style="">{{ $event->reference_number?$event->reference_number:'' }}</code></td>
                             </tr>
                             <tr>
                                 <td>{{ __('Permit Number') }} :</td>
@@ -268,12 +261,12 @@
             var divToPrint = document.getElementById('DivToPrint');
             $(divToPrint).css({
                 'font-size': '13px',
-                'color': 'black',
+
                 'text-align': 'left',
                 'border': '1px solid grey',
                 'padding': '4%',
                 'font-family':
-                    'arial'
+               'arial'
             })
             newWin = window.open("");
             newWin.document.write(divToPrint.outerHTML);

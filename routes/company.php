@@ -1,7 +1,10 @@
 <?php
 //if comapany is not yet active 
 Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function(){
+
   Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
+  Route::get('/{company}/profile', 'Company\CompanyController@show')->name('company.show')->middleware('signed');
+  Route::get('/{company}/profile-databtable', 'Company\CompanyController@commentDatatable')->name('company.comment.datatable');
   Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');
   Route::post('/{company}/updateUser', 'Company\CompanyController@updateUser')->name('company.updateUser');
   Route::post('/{company}/changePassword', 'Company\CompanyController@changePassword')->name('company.changePassword');
@@ -37,13 +40,8 @@ Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function()
 
 Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_status']], function () {
     Route::get('/dashboard', function () {
-        return redirect()->route('artist.index');
+        return redirect(URL::signedRoute('artist.index'));
     })->name('company.dashboard');
-
-
-    // Route::get('{company_name}/dashboard', function () {
-    //     return redirect()->route('artist.index');
-    // })->name('company.dashboard');
 
     Route::resource('artist', 'Company\ArtistController');
     Route::get('artist/new/{id}', 'Company\ArtistController@create')->name('company.add_new_permit');
@@ -101,8 +99,6 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('artist/check_artist_exists_in_permit', 'Company\ArtistController@check_artist_exists_in_permit')->name('artist.check_artist_exists_in_permit');
     Route::post('artist/draft/delete', 'Company\ArtistController@delete_draft')->name('artist.delete_draft');
     Route::post('artist/checkArtistProfession', 'Company\ArtistController@checkArtistProfession')->name('artist.checkArtistProfession');
-
-    
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
@@ -165,4 +161,10 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     // Route::get('event/eventpics/{id}', 'Company\EventController@eventpics')->name('event.eventpics');
     Route::get('event/get_event_sub_types/{id}', 'Company\EventController@get_event_sub_types')->name('event.get_event_sub_types');
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
+
+    Route::get('event/getpaymentdetails/{orderid}', 'Company\EventController@get_payment_details')->name('company.getpaymentdetails');
+
+    Route::get('reports', 'Company\ReportController@index')->name('company.reports');
+    Route::get('transactions', 'Company\ReportController@transactions')->name('company.transactions');
+    Route::get('reports/transaction/view/{id}', 'Company\ReportController@show')->name('report.view');
 });
