@@ -19,10 +19,6 @@ class Company extends Model
     
     protected $dates = ['created_at', 'updated_at', 'application_date', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date'];
 
-    public function artists()
-    {
-        return $this->belongsToMany(Artist::class, 'company_artist', 'company_id', 'artist_id');
-    } 
 
     public function registeredBy()
     {
