@@ -10,7 +10,7 @@ class ArtistPermitTransaction extends Model
     use SoftDeletes;
     protected $table = 'artist_permit_transaction';
     protected $primaryKey = 'artist_permit_trans_id';
-    protected $fillable = ['amount', 'vat', 'transaction_type', 'artist_permit_id', 'transaction_id'];
+    protected $fillable = ['amount', 'vat', 'transaction_type', 'artist_permit_id', 'transaction_id', 'permit_id'];
 
     public function artistPermit()
     {

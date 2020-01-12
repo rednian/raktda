@@ -30,10 +30,10 @@
                 <div class="kt-header__topbar-user">
                     @php
                     if (Auth::user()->type == 1) {
-                    $company_name = getLangId() == 1 ? Auth::user()->company->name_en : Auth::user()->company->name_ar;
+                        $company_name = getLangId() == 1 ? Auth::user()->company->name_en : Auth::user()->company->name_ar;
                     }
                     else{
-                    $company_name = null;
+                        $company_name = null;
                     }
 
                     $name = Auth::user()->NameEn;
@@ -71,17 +71,17 @@
                 <!--begin: Navigation -->
                 <div class="kt-notification">
                     @if (Auth::user()->type == 1)
-                    <a href="{{ URL::signedRoute('company.edit', ['company'=>Auth::user()->company->company_id]) }}"
-                        class="kt-notification__item">
-                        <div class="kt-notification__item-icon"> <i class="flaticon2-calendar-3 kt-font-success"></i>
-                        </div>
-                        <div class="kt-notification__item-details">
-                            <div class="kt-notification__item-title kt-font-bold"> {{__('Account Settings')}} </div>
-                            {{-- <div class="kt-notification__item-time"> Account settings and more </div> --}}
-                        </div>
-                    </a>
+                     <a href="{{ URL::signedRoute('company.edit', ['company'=>Auth::user()->company->company_id]) }}"
+                         class="kt-notification__item">
+                         <div class="kt-notification__item-icon"> <i class="flaticon2-calendar-3 kt-font-success"></i>
+                         </div>
+                         <div class="kt-notification__item-details">
+                             <div class="kt-notification__item-title kt-font-bold"> {{__('Account Settings')}} </div>
+                             {{-- <div class="kt-notification__item-time"> Account settings and more </div> --}}
+                         </div>
+                     </a>   
                     @endif
-
+                    
                     <div class="kt-notification__custom kt-space-between pull-right">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();"
