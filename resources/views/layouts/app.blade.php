@@ -139,15 +139,7 @@
                               </div>
                           </div>
                         @endif
-                        
-
-                        <section class="row">
-                            <div class="col">
-                                @yield('content')
-                            </div>
-                            @endif
-
-
+                
                             <section class="row">
                                 <div class="col">
                                     @yield('content')
