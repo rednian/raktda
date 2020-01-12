@@ -24,12 +24,6 @@ class Company extends Model
         return $this->belongsToMany(Artist::class, 'company_artist', 'company_id', 'artist_id');
     } 
 
-    public function artists()
-    {
-        return $this->belongsToMany(Artist::class, 'company_artist', 'company_id', 'artist_id');
-    }
-
-
     public function registeredBy()
     {
         return $this->belongsTo(User::class, 'registered_by', 'user_id');
