@@ -779,7 +779,6 @@ class ArtistController extends Controller
 
     public function store(Request $request)
     {
-
         try {
             DB::beginTransaction();
         
@@ -902,8 +901,11 @@ class ArtistController extends Controller
                                 'created_at' => $currentDateTime,
                                 'created_by' => $user_id
                             ]);
-                           
+
                             $artist_id = $artistTable->artist_id;
+
+                          
+
                            
                         } else {
                             $artist_id = $data->artist_id;

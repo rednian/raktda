@@ -26,6 +26,11 @@ class CompanyController extends Controller
       return view('permits.company.create');
    }
 
+   public function show(Request $request ,Company $company)
+   {
+    return view('permits.company.show', ['company'=>$company]);
+   }
+
    public function store(Request $request)
    {
     $valid_data = $request->validate([
@@ -41,7 +46,7 @@ class CompanyController extends Controller
          $request['password'] = Hash::make($request->password);
 
          $user = $company->user()->create(array_merge($request->all(), ['IsActive'=> 0, 'type'=> 1]));
-         $user->roles()->sync(2);
+         $user->roles()->attach(2);
 
          DB::commit();
 
@@ -406,6 +411,24 @@ class CompanyController extends Controller
       return response()->json(['valid'=>$result]);
    }
 
+   public function commentDatatable(Request $request, Company $company)
+   {
+    return DataTables::of($company->comment()->latest())
+   
+    ->addColumn('remark', function($comment) use ($request){
+      return $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar; 
+    })
+    ->editColumn('action', function($comment){
+      return ucfirst($comment->action);
+    })
+    ->addColumn('date', function($comment){
+      return '<span class="text-underline"  title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
+    })
+    ->rawColumns(['date'])
+    ->make(true);
+   }
+
+
 
    public function requirements(Request $request)
    {
@@ -438,5 +461,7 @@ class CompanyController extends Controller
        }
        return $reference_number;
    }
+
+
 
 }
