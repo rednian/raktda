@@ -16,14 +16,14 @@
         </div>
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{route('event.index')}}#{{$tab}}"
+                <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                     {{__('Back')}}
                 </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{route('event.index')}}#{{$tab}}"
+                <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                 </a>

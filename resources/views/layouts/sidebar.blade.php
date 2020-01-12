@@ -62,8 +62,9 @@
                         <span class="kt-menu__link-text">{{__('Event Permit')}}</span>
                     </a>
                 </li>
-                <li class="kt-menu__item {{ \Request::is('company/reports') ? 'kt-menu__item--active' : ''}}">
-                    <a href="{{route('company.reports')}}" class="kt-menu__link ">
+                <li
+                    class="kt-menu__item {{ (\Request::is('company/reports') || \Request::is('company/reports/*')) ? 'kt-menu__item--active' : ''}}">
+                    <a href="{{URL::signedRoute('company.reports')}}" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{__('Reports')}}</span>
                     </a>
                 </li>

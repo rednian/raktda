@@ -15,13 +15,16 @@
         <div class="table-responsive">
             <table class="table table-striped table-hover border table-borderless" id="transaction-details-table">
                 <thead>
-                    <tr class="kt-font-transform-u">
+                    <tr class="kt-font-transform-u text-center">
                         <th>#</th>
                         <th>{{__('Transaction ID')}}</th>
-                        <th>{{__('Amount')}}</th>
-                        <th>{{__('VAT')}}</th>
-                        <th>{{__('Total')}}</th>
+                        <th>{{__('Transaction No')}}</th>
+                        <th>{{__('Amount')}}(AED)</th>
+                        <th>{{__('VAT')}}(AED)</th>
+                        <th>{{__('Total')}}(AED)</th>
+                        <th>{{__('From')}}</th>
                         <th>{{__('Added On')}}</th>
+
                         <th>{{__('View')}}</th>
                         {{-- <th class="text-center">{{__('Action')}}</th> --}}
                     </tr>
@@ -54,36 +57,26 @@
             processing: true,
             serverSide: true,
             searching: true,
+            ordering: false,
             // order:[[6,'desc']],
             ajax:'{{route("company.transactions")}}',
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'transaction_id', name: 'transaction_id' },
-                { data: 'amount', name: 'amount' },
-                { data: 'vat', name: 'vat' , className: 'no-wrap'},
-                { data: 'total', name: 'total' , className: 'no-wrap'},
+                { data: 'receipt_no', name: 'receipt_no' },
+                { data: 'amount', name: 'amount' , className:"no-wrap text-right" },
+                { data: 'vat', name: 'vat' , className: 'no-wrap text-right'},
+                { data: 'total', name: 'total' , className: 'no-wrap text-right'},
+                { data: 'from', name: 'from' , className: 'no-wrap'},
                 { data: 'created_at', name: 'created_at' , className: 'no-wrap'},
+                
                 { data: 'action', name: 'action' ,  className: "text-center"},
             ],
             columnDefs: [
-                // {
-                //     targets:4,
-                //     className: 'dt-body-nowrap dt-head-nowrap',
-                //     render: function(data, type, full, meta) {
-				// 		return $('#lang_id').val() == 1 ? `<span >${data}</span>` : `<span>${full.name_ar}</span>`;
-				// 	}
-                // },
-                {
-                    targets:-3,
-                    width: '10%',
-                    className: 'text-center',
-                    render: function(data, type, full, meta) {
-						return `<span class="kt-font-transform-c text-center">${data}</span>`;
-					}
-                }
+                { className: "text-center", targets: "_all" },
             ],
             language: {
-                emptyTable: "No Transactions",
+                emptyTable: "{{__('No Transactions')}}",
                 searchPlaceholder: "{{__('Search')}}"
             }
             

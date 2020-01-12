@@ -579,7 +579,7 @@
                             {{__('Previous')}}
                         </div>
 
-                        <a href="{{route('event.index')}}#draft">
+                        <a href="{{URL::signedRoute('event.index')}}#draft">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 {{__('Back')}}
                             </div>
@@ -1250,7 +1250,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}#applied";
+                                    window.location.href = result.toURL;
                                     KTApp.unblockPage();
                                 }
                             }
@@ -1297,7 +1297,7 @@
                             success: function (result) {
                                 if(result.message[0]){
                                     localStorage.clear();
-                                    window.location.href = "{{route('event.index')}}#draft";
+                                    window.location.href = result.toURL;
                                     KTApp.unblockPage();
                                 }
                             }

@@ -25,7 +25,10 @@
         } else if($from == 'payment') {
         $backUrl = URL::signedRoute('company.make_payment', [ 'id' => $artist_details->permit_id ]);
         } else if($from == 'event') {
-        $backUrl = URL::signedRoute('company.event',[ 'id' => $artist_details->permit->event_id , 'tab' => 'applied']);
+        $backUrl = URL::signedRoute('event.show',[ 'id' => $artist_details->permit->event_id , 'tab' => 'applied']);
+        } else if($from == 'transaction') {
+        $backUrl = URL::signedRoute('report.view',[ 'id' => $artist_details->artistPermitTransaction[0]->transaction_id
+        ]);
         }
 
         @endphp

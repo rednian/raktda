@@ -29,7 +29,6 @@
         </div>
     </div>
 
-
     <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-container kt-padding-l-0">
             <div class="col-md-12 ">
@@ -71,12 +70,81 @@
                 </div>
             </div>
 
-            @if($transaction->transaction_type == 'artist')
+
+
+            @if($transaction->artistPermitTransaction()->exists())
             <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Artist Permit Details')}}
             </h5>
+            <div class="col-md-12">
+                <table class="table table-hover table-borderless border table-striped">
+                    <thead>
+                        <tr class="kt-font-transform-u">
+                            <th class="text-center">#</th>
+                            <th>{{__('Artist Name')}}</th>
+                            <th>{{__('Profession')}}</th>
+                            <th>{{__('Mobile No.')}}</th>
+                            <th>{{__('Email')}}</th>
+                            <th class="text-center">{{__('View')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($transaction->artistPermitTransaction as $at)
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td>
+                                {{getLangId() == 1 ? ucfirst($at->artistPermit->firstname_en).' '. ucfirst($at->artistPermit->lastname_en) : $at->artistPermit->lastname_ar.' '.$at->artistPermit->firstname_ar}}
+                            </td>
+                            <td>
+                                {{getLangId() == 1 ? ucfirst($at->artistPermit->profession->name_en) : $at->artistPermit->profession->name_ar}}
+                            </td>
+                            <td>
+                                {{$at->artistPermit->mobile_number}}
+                            </td>
+                            <td>
+                                {{$at->artistPermit->email}}
+                            </td>
+                            <td>
+                                <a
+                                    href="{{URL::signedRoute('artist_details.view', ['id' => $at->artistPermit->artist_permit_id , 'from' => 'transaction'])}}">
+                                    <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
+                                    </button></a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-            {{-- {{dd($transaction->artistPermitTransaction)}} --}}
             @endif
+
+            @if($transaction->eventTransaction()->exists())
+            <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Event Permit Details')}}
+            </h5>
+            <div class="col-md-12">
+                <table class="table table-hover table-borderless border table-striped">
+                    <thead>
+                        <tr class="kt-font-transform-u">
+                            <th class="text-center">#</th>
+                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('From')}}</th>
+                            <th>{{__('To')}}</th>
+                            <th>{{__('Type')}}</th>
+                            <th class="text-center">{{__('View')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($transaction->eventTransaction as $et)
+                        <tr>
+
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            @endif
+
+
         </div>
     </div>
 

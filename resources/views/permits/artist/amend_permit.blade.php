@@ -26,7 +26,7 @@
                 {{__('Add Artist')}}
                 </a> --}}
 
-                <a href="{{route('company.add_artist_to_permit', ['from' => 'amend', 'id' => $permit_details->permit_id])}}"
+                <a href="{{URL::signedRoute('company.add_artist_to_permit', ['from' => 'amend', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
                     {{__('Add Artist')}}
@@ -38,7 +38,7 @@
                 <button id="back_btn_sm" class="btn btn--maroon btn-sm kt-font-bold">
                     <i class="la la-arrow-left"></i>
                 </button>
-                <a href="{{route('company.add_artist_to_permit', ['from' => 'amend', 'id' => $permit_details->permit_id])}}"
+                <a href="{{URL::signedRoute('company.add_artist_to_permit', ['from' => 'amend', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u ">
                     <i class="la la-plus"></i>
                 </a>
@@ -238,19 +238,11 @@
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {
-            window.location.href = "{{route('artist.index')}}#valid";
+            window.location.href = "{{URL::signedRoute('artist.index')}}#valid";
         }
     });
 
-    // $('#back_btn_sm').click(function(){
-    //     $total_artists = $('#total_artist_details').val();
 
-    //     if($total_artists > 0) {
-    //         $('#back_btn_modal').modal('show');
-    //     } else {
-    //         window.location.href = "{{route('artist.index')}}#valid";
-    //     }
-    // });
 
     function go_back_confirm_function(){
         var temp_permit_id =  $('#permit_id').val();
@@ -260,7 +252,7 @@
                 data: { permit_id: temp_permit_id, from: 'amend'},
                 async: true,
                 success: function(result){
-                    window.location.href="{{route('artist.index')}}#valid";
+                    window.location.href=result.toURL;
                 }
         });
     }

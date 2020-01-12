@@ -1952,7 +1952,7 @@
                     documentD: dd,
                     permitD: permitD,
                     permit_id: permit_id,
-                    from: from,
+                    fromPage: from,
                     btnOption: id
                 },
                 beforeSend: function() {

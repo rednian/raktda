@@ -120,4 +120,9 @@ class Permit extends Model
     public function getPermitApproval(){
         return $this->hasMany(Approval::class, 'inspection_id', 'permit_id')->where('type', 'artist');
     }
+
+    public function artistPermitTransaction()
+    {
+        return $this->hasMany(ArtistPermitTransaction::class, 'permit_id');
+    }
 }

@@ -19,7 +19,7 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{route('event.index')}}#{{$tab}}"
+                <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                     {{__('Back')}}
@@ -27,7 +27,7 @@
 
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{route('event.index')}}#{{$tab}}"
+                <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                 </a>
@@ -524,12 +524,21 @@
                         liquorDocDetails: JSON.stringify(liquorDocDetails),
                         liquorNames: JSON.stringify(liquorNames),
                         event_liquor_id: $('#event_liquor_id').val()
-                    },  
+                    }, 
+                    beforeSend: function() {
+                        KTApp.blockPage({
+                            overlayColor: '#000000',
+                            type: 'v2',
+                            state: 'success',
+                            message: 'Please wait...'
+                        });
+                    },
                     success: function (result) {
                         console.log(result);
+                        KTApp.unblockPage();
                         if(result) 
                         {
-                            window.location.href = "{{route('event.index')}}#applied";
+                            window.location.href = result.toURL;
                         }
                     }
 

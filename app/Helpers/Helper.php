@@ -389,11 +389,11 @@ function check_is_blocked()
 function getPaymentOrderId($from, $id)
 {
     $pre =  $from == 'artist' ?  'POID1' : 'POID2' ;
-    $last_transaction = \App\Transaction::latest()->first();
+    $last_transaction = \App\Transaction::where('transaction_type', $from)->latest()->first();
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  44);
+        $payment_no = sprintf("%07d",  150);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];

@@ -375,8 +375,12 @@ class ArtistController extends Controller
         } else {
             session()->forget([$user_id . '_apn_event_id']);
         }
+
+        $fromPage = $request->fromPage;
+        $permit_id = $request->permitId;
+        $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id , 'from' => $fromPage]);
  
-        return;  
+        return response()->json(['toURL' => $toURL]);
     }
 
     function makeSessionForgetPermitDetails()
@@ -575,12 +579,18 @@ class ArtistController extends Controller
 
         $toURL = '';
         try {
-            
+                    
             if($request->btnOption == 1){
-                if($request->from  == 'draft'){
+                if($request->fromPage  == 'draft'){
                     $toURL = URL::signedRoute('company.view_draft_details', [ 'id' => $permit_id]) ;
-                }else if ($request->event == 'event') {
+                }else if ($request->fromPage == 'event') {
                     $toURL = URL::signedRoute('event.add_artist', [ 'id' => $permit_id]) ;
+                }else if($request->fromPage == 'amend') {
+                    $toURL = URL::signedRoute('artist.permit', [ 'id' => $permit_id , 'from' => 'amend']);
+                }else if($request->fromPage == 'edit') {
+                    $toURL = URL::signedRoute('artist.permit', [ 'id' => $permit_id , 'from' => 'edit']);
+                }else if($request->fromPage == 'renew') {
+                    $toURL = URL::signedRoute('artist.permit', [ 'id' => $permit_id , 'from' => 'renew']);
                 }else {
                     $toURL = URL::signedRoute('company.add_new_permit', [ 'id' => $permit_id]);
                 }
@@ -781,6 +791,10 @@ class ArtistController extends Controller
         $from = $request->from;
         $user_id = Auth::user()->user_id;
 
+        try {
+
+            DB::beginTransaction();
+
         if ($from == 'amend' || $from == 'renew' || $from == 'edit') {
             $rows = ArtistTempData::where('permit_id', $permit_id)->where('created_by', $user_id)->get();
             $temp_ids = [];
@@ -804,7 +818,25 @@ class ArtistController extends Controller
             }
         }
 
-        return;
+        DB::commit();
+        
+        $result = ['success', __('Event Permit Applied Successfully'), 'Success'];
+	} catch (Exception $e) {
+		DB::rollBack();
+		
+
+		$result = ['error', __($e->getMessage()), 'Error'];
+    }
+    $too = '';
+    if ($from == 'amend' || $from == 'renew' || $from == 'edit') {
+        $too = '#valid';
+    } else if ($from == 'add_new') {
+        $too = '#draft';
+    }
+    
+    $toURL = URL::signedRoute('artist.index').$too;
+
+        return response()->json(['toURL' => $toURL]);
     }
 
     public function store(Request $request)
@@ -1181,9 +1213,9 @@ class ArtistController extends Controller
 
     public function add_artist_to_permit(Request $request,$from, $id)
     {
-        // if(!$request->hasValidSignature()){
-        //     return abort(401);
-        // }
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
         $data_bundle = $this->preLoadData();
         $data_bundle['permit_details'] = Permit::with('artist', 'artistPermit', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->first();
         $data_bundle['permit_id'] = $id;
@@ -1381,6 +1413,8 @@ class ArtistController extends Controller
                 $toURL = URL::signedRoute('artist.permit', [ 'id' => $request->permit_id , 'from' => 'renew']);
             }else if($request->from == 'new') {
                 $toURL = URL::signedRoute('company.add_new_permit', [ 'id' => $request->permit_id]);
+            } else if($request->from == 'event') {
+                $toURL= URL::signedRoute('artist.permit', [ 'id' => $request->permit_id , 'from' => 'event']);
             }
 
         $temp_id = $request->temp_id;
