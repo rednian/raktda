@@ -993,6 +993,7 @@
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
         for (var i = 1; i <= $('#requirements_count').val(); i++) {
+            var requiredID = $('#req_id_' + i).val();
             fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
                 // headers: {
                 //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1058,6 +1059,18 @@
                         });
                     }
 
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_files_in_session')}}",
+                            type: 'POST',
+                            data: {requiredID : requiredID},
+                            success: function (data) {
+                               
+                            }
+                    });
                 },
                 onError: function (files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
@@ -1130,6 +1143,17 @@
                     });
                 }
 
+            }, 
+            deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+            {
+                $.ajax({
+                        cache: false,
+                        url: "{{route('company.delete_pic_files_in_session')}}",
+                        type: 'POST',
+                        success: function (data) {
+                            
+                        }
+                });
             },
         });
         $('#pic_uploader div').attr('id', 'pic-upload');

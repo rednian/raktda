@@ -783,6 +783,7 @@ $language_id = Auth::user()->LanguageId;
         // console.log($('#artist_number_doc').val());
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
+            var reqId = $('#req_id_'+i).val();
             fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
                 headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -836,6 +837,18 @@ $language_id = Auth::user()->LanguageId;
                             }
                         });
                     }
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_files_in_session')}}",
+                            type: 'POST',
+                            data: {requiredID : reqId},
+                            success: function (data) {
+                               
+                            }
+                    });
                 },
                 onError: function(files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
@@ -913,7 +926,19 @@ $language_id = Auth::user()->LanguageId;
                 onError: function (files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
                     pd.statusbar.hide();
-                }
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+				{
+					$.ajax({
+							cache: false,
+							url: "{{route('company.delete_pic_files_in_session')}}",
+							type: 'POST',
+							success: function (data) {
+								
+							}
+					});
+				},
+                
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');

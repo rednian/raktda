@@ -174,7 +174,7 @@ class EventController extends Controller
 
                             if (Storage::exists(session($userid  . '_truck_file_'  . $l)[$k])) {
 
-                                $ext = session($userid . '_truck_ext_'  . $l)[$k];
+                                $ext_t = session($userid . '_truck_ext_'  . $l)[$k];
 
                                 $check_path = 'public/' . $userid . '/event/temp/truck/' . $truck_id . '/' . $l;
 
@@ -186,7 +186,7 @@ class EventController extends Controller
                                     $next_file_no = $file_count + 1;
                                 }
 
-                                $newPathLink = $userid . '/event/temp/truck/' . $truck_id . '/'  . $l . '/' . $next_file_no . '_' . $date . '.' . $ext;
+                                $newPathLink = $userid . '/event/temp/truck/' . $truck_id . '/'  . $l . '/' . $next_file_no . '_' . $date . '.' . $ext_t;
 
                                 if(!Storage::exists('public/'.$newPathLink))
                                 {
@@ -1488,6 +1488,8 @@ class EventController extends Controller
 
     public function add_draft(Request $request)
     {
+
+        $toURL = '';
         try {
             DB::beginTransaction();
 
@@ -1702,13 +1704,15 @@ class EventController extends Controller
             $result = ['error', __($e->getMessage()), 'Error'];
         }
 
+        $toURL = URL::signedRoute('event.index'). '#draft';
+
         // if ($event) {
         //     $result = ['success', __('Event Permit Draft Saved Successfully'), 'Success'];
         // } else {
         //     $result = ['error', __('Error, Please Try Again'), 'Error'];
         // }
 
-        return response()->json(['message' => $result]);
+        return response()->json(['message' => $result , 'toURL' => $toURL]);
     }
 
     public function view_draft(Request $request, Event $event)
@@ -2369,7 +2373,10 @@ class EventController extends Controller
         return json_encode($file);
     }
 
-
+    public function delete_logo_in_session(Request $request)
+    {
+        $request->session()->forget([$user_id . '_event_pic_file', $user_id . '_event_ext', $user_id . '_event_thumb_file']);
+    }
 
     public function get_uploaded_logo($id)
     {
