@@ -818,6 +818,17 @@
                         '_blank'
                         );
                         }
+                    },
+                    deleteCallback: function(data,pd)
+                    {
+                        $.ajax({
+                            url: "{{route('event.deleteUploadedfile')}}",
+                            type: 'POST',
+                            data: {path: data.filepath, ext: data.ext, id: data.id},
+                            success: function (result) {
+                                console.log('success');
+                            }
+                        });
                     }
                 });
                 $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
@@ -848,6 +859,17 @@
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+				{
+					$.ajax({
+							cache: false,
+							url: "{{route('event.delete_logo_in_session')}}",
+							type: 'POST',
+							success: function (data) {
+								
+							}
+					});
+				},
                 onLoad: function (obj) {
                     var url = "{{route('event.get_uploaded_logo',':id')}}" ;
                     url = url.replace(':id', $('#event_id').val() );

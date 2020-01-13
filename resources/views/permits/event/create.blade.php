@@ -794,6 +794,17 @@
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+				{
+					$.ajax({
+							cache: false,
+							url: "{{route('event.delete_logo_in_session')}}",
+							type: 'POST',
+							success: function (data) {
+								
+							}
+					});
+				},
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
@@ -1682,40 +1693,39 @@
                         var ev_tr_id = $('#this_event_truck_id').val();
                         if(ev_tr_id){
                             $.ajax({
-                            url: "{{route('event.fetch_this_truck_docs')}}",
-                            type: 'POST',
-                            data: {
-                                truckId: ev_tr_id,
-                                reqId: $('#truck_req_id_'+i).val(),
-                            },
-                            dataType: "json",
-                            success: function(data)
-                            {
-                                if (data) {
-                                    let j = 1 ;
-                                   for(data of data) {
-                                        if(j <= 2 ){
-                                        let id = obj[0].id;
-                                        let number = id.split("_");
-                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                                        const d = data["path"].split("/");
-                                        // var cc = d.splice(4,5);
-                                        // let docName =  cc.length > 1 ? cc.join('/') : cc ;
-                                        let docName = d[d.length - 1];
-                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
-                                        if (formatted_issue_date != NaN - NaN - NaN) {
-                                            $('#truck_doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
-                                            $('#truck_doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
-                                        }
-                                        }
-                                    j++;
-                                   }
+                                url: "{{route('event.fetch_this_truck_docs')}}",
+                                type: 'POST',
+                                data: {
+                                    truckId: ev_tr_id,
+                                    reqId: $('#truck_req_id_'+i).val(),
+                                },
+                                dataType: "json",
+                                success: function(data)
+                                {
+                                    if (data) {
+                                        let j = 1 ;
+                                    for(data of data) {
+                                            if(j <= 2 ){
+                                            let id = obj[0].id;
+                                            let number = id.split("_");
+                                            let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                            let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                            const d = data["path"].split("/");
+                                            // var cc = d.splice(4,5);
+                                            // let docName =  cc.length > 1 ? cc.join('/') : cc ;
+                                            let docName = d[d.length - 1];
+                                            obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                            if (formatted_issue_date != NaN - NaN - NaN) {
+                                                $('#truck_doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
+                                                $('#truck_doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
+                                            }
+                                            }
+                                        j++;
+                                    }
+                                    }
                                 }
-                            }
-                        });
-                    }
-                       
+                            });
+                        }
                     },
                     deleteCallback: function(data,pd)
                     {

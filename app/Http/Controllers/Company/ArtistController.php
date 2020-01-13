@@ -378,7 +378,13 @@ class ArtistController extends Controller
 
         $fromPage = $request->fromPage;
         $permit_id = $request->permitId;
-        $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id , 'from' => $fromPage]);
+        if($fromPage == 'artist')
+        {
+            $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id ]);
+        }else {
+            $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id , 'from' => $fromPage]);
+        }
+       
  
         return response()->json(['toURL' => $toURL]);
     }
@@ -464,6 +470,8 @@ class ArtistController extends Controller
         $add_artist_url = URL::signedRoute('company.add_new_artist' , [ 'id' => $id ]);
         $add_permit_url = URL::signedRoute('company.add_new_permit' , [ 'id' => $id]);
 
+        // dd($add_artist_url , $last_page, $add_permit_url);
+
         if ($add_permit_url != $last_page && $last_page != $add_artist_url && !$view_artist_url_check && !$edit_artist_url_check) {
             ArtistTempData::where('permit_id', 1)->where('status', '!=', 5)->where('created_by', Auth::user()->user_id)->delete();
             $this->makeSessionForgetPermitDetails();
@@ -522,6 +530,13 @@ class ArtistController extends Controller
         return json_encode($file);
     }
 
+    public function delete_pic_files_in_session(Request $request){
+        $user_id = Auth::user()->user_id;
+        $reqId = $request->requiredID;
+        $request->session()->forget([$user_id . '_pic_file' , $user_id . '_ext' ,  $user_id . '_thumb_file']);
+        return;
+    }
+
     public function uploadDocument(Request $request)
     {
         // $name = str_replace(" ", "_", $request->reqName);
@@ -535,6 +550,14 @@ class ArtistController extends Controller
 
         return response()->json(['filepath' => $path, 'id' => $reqId]);
         // return json_encode($file);
+    }
+
+    public function delete_files_in_session(Request $request) 
+    {
+        $user_id = Auth::user()->user_id;
+        $reqId = $request->requiredID;
+        $request->session()->forget([$user_id . '_doc_file_' . $reqId, $user_id . '_ext_' . $reqId]);
+        return;
     }
 
 
@@ -1376,11 +1399,11 @@ class ArtistController extends Controller
         }
 
         if($from == 'new') {
-            return redirect()->route(URL::signedRoute('company.add_new_permit', [ 'id' => 1]))->with('message', $result);
+            return redirect(URL::signedRoute('company.add_new_permit', [ 'id' => 1]))->with('message', $result);
         }
 
         if($from == 'event') {
-            return redirect()->route(URL::signedRoute('event.add_artist', [ 'id' => $permit_id]))->with('message', $result);
+            return redirect(URL::signedRoute('event.add_artist', [ 'id' => $permit_id]))->with('message', $result);
         }
 
         switch ($from) {
@@ -1397,7 +1420,7 @@ class ArtistController extends Controller
                 break;
         }
         // dd($route_back);
-        return redirect()->route(URL::signedRoute('artist.permit',[ 'id' => $permit_id , 'status'=> $route_back]))->with('message', $result);
+        return redirect(URL::signedRoute('artist.permit',[ 'id' => $permit_id , 'status'=> $route_back]))->with('message', $result);
     }
 
     public function update_artist_temp(Request $request)
@@ -1921,8 +1944,10 @@ class ArtistController extends Controller
         $data_bundle = $this->preLoadData();
         $data_bundle['artist_details'] = ArtistTempData::with('Nationality', 'Profession')->where('id', $temp_id)->first();
         $data_bundle['permit_details'] = ArtistPermit::with('artist', 'permit', 'artistPermitDocument', 'profession')->where('permit_id', $permit_id)->first();
+        $data_bundle['from'] = 'draft';
         return view('permits.artist.edit_artist', $data_bundle);
     }
+
 
     public function update_permit(Request $request)
     {

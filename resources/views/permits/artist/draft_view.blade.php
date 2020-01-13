@@ -122,12 +122,13 @@
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(1)" value="1"
-                                                    {{$artist_details[0]->event ? 'checked' : ''}}> {{__('Yes')}}
+                                                    {{$artist_details[0]->event ? 'checked' : ''}} disabled>
+                                                {{__('Yes')}}
                                                 <span></span>
                                             </label>
                                             <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(0)"
-                                                    {{$artist_details[0]->event ? '' : 'checked'}} value="0">
+                                                    {{$artist_details[0]->event ? '' : 'checked'}} value="0" disabled>
                                                 {{__('No')}}
                                                 <span></span>
                                             </label>
@@ -378,7 +379,7 @@
             if($total_artists > 0) {
                 $('#back_btn_modal').modal('show');
             } else {
-                window.location.href = "{{url('artist.index')}}#draft";
+                window.location.href = "{{URL::signedRoute('artist.index')}}#draft";
             }
         });
 
