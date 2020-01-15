@@ -327,14 +327,18 @@
                              <td>{{ __('Expected Audience') }} :</td>
                               <td class="kt-font-dark">{{$event->audience_number}}</td>
                          </tr>
-                         <tr>
-                             <td>{{ __('Approved By') }} :</td>
-                              <td class="kt-font-dark"></td>
-                         </tr>
-                         <tr>
+                         @if (!empty($event->approved_by))
+                           <tr>
+                               <td>{{ __('Approved By') }} :</td>
+                                <td class="kt-font-dark">{{ucwords($event->approved->NameEn)}}</td>
+                           </tr>
+                           <tr>
                              <td>{{ __('Approved Date') }} :</td>
-                              <td class="kt-font-dark"></td>
+                              <td class="kt-font-dark"><span title="{{$event->approved_date->format('h:i A | d-F-Y')}}" class="text-underline">{{humanDate($event->approved_date)}}</span></td>
                          </tr>
+                         @endif
+                         
+                         
                          <tr>
                              <td>{{ __('Printed Note') }} :</td>
                               <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->note_en) : $event->note_ar }}</td>

@@ -198,7 +198,8 @@
 							'status'=>$request->status, 
 							'note_en'=>$request->note_en, 
 							'note_ar'=>$request->note_ar,
-							 'approved_by'=>$request->user()->user_id
+							 'approved_by'=>$request->user()->user_id,
+							 'approved_date'=> $request->approved_date
 							]);
 						$request['type'] = $type = 1;
 						$event->comment()->create($request->all());
