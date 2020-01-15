@@ -221,7 +221,9 @@
 
     $('.card-title').addClass('kt-padding-t-10').addClass('kt-padding-b-5');
 
-    
+    if($('.ajax-file-upload-error').length){
+        setTimeout($('.ajax-file-upload-error').hide(), 2000);
+    }
 </script>
 <!-- end::Body -->
 

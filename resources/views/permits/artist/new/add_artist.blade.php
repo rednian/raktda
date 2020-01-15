@@ -1028,8 +1028,12 @@
                 },               
                 onLoad: function (obj) {
                     var code = $('#code').val();
-                    if(code || $('#artist_permit_id').val())
-                    {
+                        $.ajax({
+                            url: "{{route('artist.reset_req_in_session')}}",
+                            type: 'POST',
+                            data: { id: $('#req_id_'+i).val()}
+                        })
+
                         $.ajax({
                             cache: false,
                             url: "{{route('company.get_files_uploaded')}}",
@@ -1053,13 +1057,7 @@
                                 }
                             }
                         });
-                    }else {
-                        $.ajax({
-                            url: "{{route('artist.reset_req_in_session')}}",
-                            type: 'POST',
-                            data: { id: $('#req_id_'+i).val()}
-                        })
-                    }
+                    
 
                 },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
