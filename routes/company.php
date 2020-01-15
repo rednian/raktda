@@ -164,6 +164,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('event/delete_logo_in_session', 'Company\EventController@delete_logo_in_session')->name('event.delete_logo_in_session');
     Route::post('event/deleteUploadedEventPic', 'Company\EventController@deleteUploadedEventPic')->name('event.deleteUploadedEventPic');
     Route::post('event/forgotEventPicsSession', 'Company\EventController@forgotEventPicsSession')->name('event.forgotEventPicsSession');
+
+    Route::post('event/removeUploadedDocumentInSession', 'Company\EventController@removeUploadedDocumentInSession')->name('event.removeUploadedDocumentInSession');
     
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 

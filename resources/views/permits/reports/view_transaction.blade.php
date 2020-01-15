@@ -155,7 +155,11 @@
 
             {{-- {{dd($transaction->eventTransaction)}} --}}
 
+
+
             @if($transaction->eventTransaction()->exists())
+
+
             {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Event Permit Details')}}
             </h5> --}}
             <div class="col-md-12">
@@ -174,8 +178,10 @@
                         @foreach($transaction->eventTransaction as $et)
                         @if($transaction->transaction_type == 'event')
                         <tr>
-                            <td>{{$et->event->name_en}}</td>
-                            <td>{{$et->event->type->name_en}}</td>
+                            <td>{{getLangId() == 1 ? ucwords($et->event->name_en) : $et->event->name_ar}}
+                            </td>
+                            <td>{{getLangId() == 1 ? ucwords($et->event->type->name_en) : $et->event->type->name_en }}
+                            </td>
                             <td class="text-right">{{number_format($et->amount,2)}}</td>
                             <td class="text-right">{{number_format($et->vat,2)}}</td>
                             @php
@@ -239,14 +245,15 @@
                                 <td id="total_amt" class="pull-right kt-font-bold">{{number_format($feetotal,2)}}</td>
                             </tr>
                             <tr style="border-bottom:1px solid black;">
-                                <td>{{__('Total Vat')}}</td>
+                                <td>{{__('Total Vat')}} (5%)</td>
                                 <td id="total_vat" class="pull-right kt-font-bold">{{number_format($vattotal,2)}}</td>
                             </tr>
                             <tr>
                                 <td class="kt-font-transform-u">
-                                    {{__('Grand Total')}}
+                                    {{__('Grand Total')}} (AED)
                                 </td>
-                                <td id="grand_total" class="pull-right kt-font-bold">{{number_format($grandtotal,2)}}
+                                <td id="grand_total" class="pull-right kt-font-bold">
+                                    {{number_format($grandtotal,2)}}
                                 </td>
                             </tr>
                         </tbody>
