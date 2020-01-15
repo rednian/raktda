@@ -325,10 +325,8 @@
 
 
                     <div class="d-flex justify-content-end">
-                        {{-- <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button> --}}
                         <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                            onclick="paymentDoneUpdation('x', 'y')">{{__('PAY')}}</button>
+                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
 
                         <a
                             href="{{URL::signedRoute('company.happiness_center', [ 'id' => $permit_details->permit_id])}}"><button

@@ -928,43 +928,39 @@
                         </div>
                         </a>
                         @else --}}
-                        {{-- <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+
+
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             onclick="Checkout.showLightbox()" id="submit_btn" data-ktwizard-type="action-submit">
                             <i class="fa fa-check"></i>
                             {{__('Pay')}}
-                    </div> --}}
+                        </div>
 
-                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                        onclick="paymentDoneUpdation('x', 'y')" id="submit_btn" data-ktwizard-type="action-submit">
-                        <i class="fa fa-check"></i>
-                        {{__('Pay')}}
+
+
+                        <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
+                            class="kt-hide">
+                            <button class="btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u"
+                                data-ktwizard-type="action-submit">{{__('Next')}}</button>
+                        </a>
+
+                        {{-- id="submit_btn" --}}
+                        {{-- @endif --}}
+
+                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-next" id="next_btn">
+                            {{__('Next')}}
+                        </div>
+
+
                     </div>
-
-
-
-                    <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
-                        class="kt-hide">
-                        <button class="btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-submit">{{__('Next')}}</button>
-                    </a>
-
-                    {{-- id="submit_btn" --}}
-                    {{-- @endif --}}
-
-                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                        data-ktwizard-type="action-next" id="next_btn">
-                        {{__('Next')}}
-                    </div>
-
 
                 </div>
 
+
             </div>
-
-
         </div>
     </div>
-</div>
 </div>
 </div>
 </div>
