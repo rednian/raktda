@@ -28,19 +28,19 @@ class ReportController extends Controller
         $artist = Artist::all();
         $country = Country::wherehas('artistPermit.permit', function ($query) {
             $query->where('permit_status', 'active');
-        })->get();
+        })->latest();
 
         $profession = Profession::wherehas('artistPermit.permit', function ($query) {
             $query->where('permit_status', 'active');
-        })->get();
+        })->latest();
 
         $areas = Areas::wherehas('artistPermit.permit', function ($query) {
             $query->where('permit_status', 'active');
-        })->get();
+        })->latest();
 
         $visa = VisaType::wherehas('artistPermit.permit', function ($query) {
             $query->where('permit_status', 'active');
-        })->get();
+        })->latest();
 
         $gender = Gender::wherehas('artistPermit.permit', function ($query) {
             $query->where('permit_status', 'active');
@@ -48,7 +48,7 @@ class ReportController extends Controller
 
         $artistPermit = ArtistPermit::with('artist')->has('permit')->with('country')->with('profession')->get();
         $artisttransactions = ArtistPermitTransaction::with('transaction')->orderBy('created_at', 'desc')->get();
-        $eventtransactions = EventTransaction::with('transaction')->orderBy('created_at', 'desc')->get();
+        $eventtransactions = EventTransaction::with('transaction')->orderBy('created_at', 'desc')->latest();
         $transactions = $artisttransactions->merge($eventtransactions);
 
         return view('admin.report.index', [
@@ -60,11 +60,9 @@ class ReportController extends Controller
             'gender' => $gender,
             'visas' => $visa,
             'artistPermit' => $artistPermit,
-
-
           'transactions'=> $transactions,
-            'professions' => Profession::has('artistpermit')->get(),
-            'countries' => Country::has('artistpermit')->get(),
+            'professions' => Profession::has('artistpermit')->latest(),
+            'countries' => Country::has('artistpermit')->latest(),
             'new_request' => Permit::has('artist')->where('permit_status', 'new')->count(),
             'pending_request' => Permit::has('artist')->where('permit_status', 'modified')->count(),
             'approved_permit' => Permit::lastMonth(['active'])->count(),
@@ -81,7 +79,7 @@ class ReportController extends Controller
         $all = [];
         $artists = Artist::has('permit')->has('artistPermit')->with(['permit' => function ($q) {
             $q->where('permit_status', 'active');
-        }])->get();
+        }])->latest();
         foreach ($artists as $artist) {
             if ($artist->permit->count() > 0) {
                 array_push($all, $artist);
@@ -201,7 +199,7 @@ class ReportController extends Controller
             if ($request->filter_search != '' && $request->search_artist != '') {
                 if ($request->filter_search == ConstantValue::STATUS) {
 
-                    $artist = Artist::whereHas('artistPermit')->whereHas('permit')->where('artist_status', $request->search_artist)->get();
+                    $artist = Artist::whereHas('artistPermit')->whereHas('permit')->where('artist_status', $request->search_artist)->latest();
 
                     return Datatables::of($artist)
                         ->addColumn('person_code', function (Artist $user) {
@@ -296,7 +294,7 @@ class ReportController extends Controller
                             foreach ($user->artistPermit as $artist)
                                 $permit=Permit::wherehas('artistPermit',function ($q) use ($user){
                                     $q->where('artist_id',$user->artist_id);
-                                  })->where('permit_status','active')->get()->count();
+                                  })->where('permit_status','active')->latest()->count();
 
                             return "<button type='button' style='height: 22px;
                            line-height: 4px;
@@ -317,7 +315,7 @@ class ReportController extends Controller
                         $q->whereHas('artistPermit', function ($query) use ($request) {
                             $query->where('gender_id', $request->search_artist);
                         });
-                    })->get();
+                    })->latest();
 
 
                     return Datatables::of($artist)
@@ -435,7 +433,7 @@ class ReportController extends Controller
                         $q->whereHas('artistPermit', function ($query) use ($request) {
                             $query->where('firstname_en', 'LIKE', "%{$request->search_artist}%");
                         });
-                    })->get();
+                    })->latest();
 
                     return Datatables::of($artist)
                         ->addColumn('person_code', function (Artist $user) {
@@ -549,7 +547,7 @@ class ReportController extends Controller
                         $q->whereHas('artistPermit', function ($query) use ($request) {
                             $query->where('profession_id', 'LIKE', "%{$request->search_artist}%");
                         });
-                    })->get();
+                    })->latest();
 
                     return Datatables::of($artist)
                         ->addColumn('person_code', function (Artist $user) {
@@ -657,7 +655,7 @@ class ReportController extends Controller
                 if ($request->filter_search == ConstantValue::NATIONALITY) {
                     $artist = ArtistPermit::where('country_id', $request->search_artist)->has('permit')->with(['permit' => function ($q) {
                         $q->where('permit_status', 'active');
-                    }])->with('artist')->with('country')->get();
+                    }])->with('artist')->with('country')->latest();
 
                     $artist = Artist::wherehas('permit', function ($query) {
                         $query->where('permit_status', 'active');
@@ -665,7 +663,7 @@ class ReportController extends Controller
                         $q->whereHas('artistPermit', function ($query) use ($request) {
                             $query->where('country_id', 'LIKE', "%{$request->search_artist}%");
                         });
-                    })->get();
+                    })->latest();
                     return Datatables::of($artist)
                         ->addColumn('person_code', function (Artist $user) {
                             return $user->person_code;
@@ -781,7 +779,7 @@ class ReportController extends Controller
 
                         $artists = Artist::wherehas('artistPermit.permit', function ($query) {
                             $query->where('permit_status', 'active');
-                        })->with('permit')->get();
+                        })->with('permit')->latest();
                         foreach ($artists as $artist) {
                             if ($artist->permit->count() == 1) {
                                 array_push($single, $artist);
@@ -887,7 +885,7 @@ class ReportController extends Controller
 
                         $artists = Artist::wherehas('artistPermit.permit', function ($query) {
                             $query->where('permit_status', 'active');
-                        })->get();
+                        })->latest();
 
                         foreach ($artists as $artist) {
                             if ($artist->permit->count() > 1) {
@@ -996,7 +994,7 @@ class ReportController extends Controller
 
                         $artists = Artist::wherehas('artistPermit.permit', function ($query) {
                             $query->where('permit_status', 'active');
-                        })->get();
+                        })->latest();
 
                         foreach ($artists as $artist) {
                             if ($artist->permit->count() > 0) {
@@ -1088,7 +1086,7 @@ class ReportController extends Controller
                     }
 
 
-                    $artist = ArtistPermit::where('country_id', $request->search_artist)->with('artist')->with('country')->get();
+                    $artist = ArtistPermit::where('country_id', $request->search_artist)->with('artist')->with('country')->latest();
                     return Datatables::of($artist)
                         ->addColumn('person_code', function (ArtistPermit $user) {
                             return $user->artist->person_code;
@@ -1125,7 +1123,7 @@ class ReportController extends Controller
                         $q->whereHas('artistPermit', function ($query) use ($request) {
                             $query->where('visa_type_id', 'LIKE', "%{$request->search_artist}%");
                         });
-                    })->get();
+                    })->latest();
                     return Datatables::of($artist)
                         ->addColumn('person_code', function (Artist $user) {
                             return $user->person_code;
@@ -1237,7 +1235,7 @@ class ReportController extends Controller
                             $query->where('permit_status', 'active');
                         })->wherehas('artistPermit', function ($q) {
                             $q->where('birthdate', '>', date('Y-m-d', strtotime('-18 years')));
-                        })->with('artistPermit')->get();
+                        })->with('artistPermit')->latest();
 
                         return Datatables::of($artist)
                             ->addColumn('person_code', function (Artist $user) {
@@ -1325,7 +1323,7 @@ class ReportController extends Controller
                             $query->where('permit_status', 'active');
                         })->wherehas('artistPermit', function ($q) {
                             $q->where('birthdate', '<=', date('Y-m-d', strtotime('-18 years')));
-                        })->with('artistPermit')->get();
+                        })->with('artistPermit')->latest();
 
                         return Datatables::of($artist)
                             ->addColumn('person_code', function (Artist $user) {
@@ -1411,7 +1409,7 @@ class ReportController extends Controller
                        }
 
                 if ($request->filter_search == ConstantValue::AREA) {
-                    $artist = ArtistPermit::where('area_id', $request->search_artist)->with('artist')->with('country')->get();
+                    $artist = ArtistPermit::where('area_id', $request->search_artist)->with('artist')->with('country')->latest();
 
                     return Datatables::of($artist)
                         ->addColumn('person_code', function (ArtistPermit $user) {
@@ -1549,7 +1547,7 @@ class ReportController extends Controller
 
     public function all_artist_permits(Request $request, Permit $permit, Artist $artist)
     {
-        $artist = ArtistPermit::whereHas('permit')->get();
+        $artist = ArtistPermit::whereHas('permit')->latest();
 
         return Datatables::of($artist)
             ->editColumn('reference_number', function ($artist) {
