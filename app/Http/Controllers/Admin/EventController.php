@@ -72,11 +72,6 @@
 
 			$view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.event.inspection_index' : 'admin.event.index';
 
-			// $event_type = EventType::whereDoesntHave('event', function($q){
-			// 	return $q->where('status', 'draft');
-			// })->toSql();
-
-			// // dd($event_type);
 
 			return view($view, [
 				'page_title' => __('Event Permit'),
@@ -489,8 +484,8 @@
 
 		public function show(Request $request, Event $event)
 		{
-			// dd($event->permits);
-			return view('admin.event.show', ['page_title' => '', 'event'=>$event, 'tab'=>$request->tab]);
+			$name = $request->user()->LanguageId === 1 ? ucfirst($event->name_en) : $event->name_ar; 
+			return view('admin.event.show', ['page_title' => $name.' - '.__('Detail'), 'event'=>$event, 'tab'=>$request->tab]);
 		}
 
 		public function uploadedRequirement(Request $request, Event $event)

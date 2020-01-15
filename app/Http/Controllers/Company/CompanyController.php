@@ -6,6 +6,9 @@ use DB;
 use Auth;
 use App\User;
 use App\Company;
+use App\Country;
+use App\Emirates;
+use App\CompanyType;
 use Validator;
 use Carbon\Carbon;
 use App\CompanyRequirement;
@@ -33,20 +36,34 @@ class CompanyController extends Controller
 
    public function store(Request $request)
    {
-    $valid_data = $request->validate([
-     'g-recaptcha-response' => 'required|captcha',
-     'term_condition' => 'required'
-    ]);
+
+      $company = Validator::make($request->all(), [
+        'name_en'=> 'required|max:255',
+        'trade_license'=> 'required|max:255',
+        'trade_license_issued_date'=> 'required|max:255|date',
+        'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::parse($request->trade_license_issued_date)->addYear(),
+        'company_email'=> 'required|max:255|email',
+        'phone_number'=> 'required|max:255',
+        'address'=> 'required|max:255',
+        'area_id'=> 'required|max:255',
+        'company_description_en'=> 'required|max:255', 
+        'g-recaptcha-response' => 'required|captcha',
+        'term_condition' => 'required'     ]
+    )->validate();
+
 
       try {
          DB::beginTransaction();
+         // dd($request->all());
 
-         $company = Company::create(array_merge($request->all(), ['status'=>'draft']));
+         $request['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
+         $company = Company::create(array_merge($request->all(), ['status'=>'draft'], $this->addressRelated() ));
 
          $request['password'] = Hash::make($request->password);
 
          $user = $company->user()->create(array_merge($request->all(), ['IsActive'=> 0, 'type'=> 1]));
          $user->roles()->attach(2);
+         $user->sendEmailVerificationNotification();
 
          DB::commit();
 
@@ -148,9 +165,9 @@ class CompanyController extends Controller
     if ($company->status == 'rejected') {
       return redirect()->back();
     }
-    // if ($this->hasRequirement($company) && $request->submit != 'draft') {
-    //   return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error']);
-    // }
+    if ($this->hasRequirement($company) && $request->submit != 'draft') {
+      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error']);
+    }
       try {
 
         $validate = Validator::make($request->all(), [
@@ -158,7 +175,7 @@ class CompanyController extends Controller
           'name_ar'=> 'required|max:255',
           'trade_license'=> 'required|max:255',
           'trade_license_issued_date'=> 'required|max:255|date',
-          'trade_license_expired_date'=> 'required|max:255|date',
+          'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::parse($request->trade_license_issued_date)->addYear(),
           'company_email'=> 'required|max:255|email',
           'phone_number'=> 'required|max:255',
           'website'=> 'nullable|max:255',
@@ -179,17 +196,14 @@ class CompanyController extends Controller
            'emirate_id_expired_date'=> 'required|max:255',
         ]
       )->validate();
-
-        dd($validate);
-        
-
         
          DB::beginTransaction();
           $company->requirement()->update(['is_submit'=>1]);
 
          switch ($request->submit) {
            case 'draft':
-                $company->update($validate);
+                $company->update($request->all());
+                 $result = ['success', 'Draft saved!', 'Success'];
              break;
           case 'submitted':
 
@@ -202,6 +216,7 @@ class CompanyController extends Controller
               ],
               $this->addressRelated()
             ));
+            $result = ['success', 'Successfully submitted!', 'Success'];
 
             break;
          }
@@ -226,7 +241,7 @@ class CompanyController extends Controller
 
 
          DB::commit();
-        $result = ['success', '', 'Success'];
+       
       } catch (Exception $e) {
          DB::rollBack();
          $result = ['danger', $e->getMessage(), 'Error'];
@@ -439,9 +454,9 @@ class CompanyController extends Controller
    private function addressRelated()
    {
     return [
-      'emirate_id'=>App\Emirates::where('name_en' ,'Ras Al Khaimah')->first()->id,
-      'country_id'=>App\Country::where('name_en' ,'United Arab Emirates')->first()->country_id,
-      'company_type_id'=>App\Country::where('name_en' ,'corporate')->first()->company_type_id,
+      'emirate_id'=>Emirates::where('name_en' ,'Ras Al Khaimah')->first()->id,
+      'country_id'=>Country::where('name_en' ,'United Arab Emirates')->first()->country_id,
+      'company_type_id'=>CompanyType::where('name_en' ,'corporate')->first()->company_type_id,
     ];
    }
 

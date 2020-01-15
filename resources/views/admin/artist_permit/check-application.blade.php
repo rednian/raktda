@@ -1,7 +1,7 @@
 @extends('layouts.admin.admin-app')
 @section('style')
 	<link href="{{ asset('/assets/css/wizard-3.css') }}" rel="stylesheet" type="text/css"/>
-	
+
 	<style>
 		@if(Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 		.input-group-append{
@@ -259,7 +259,7 @@
 				}
 			});
 
-			var wizard = new KTWizard("kt_wizard_v3", {startStep: 3});
+			var wizard = new KTWizard("kt_wizard_v3", {startStep: 1});
 			wizard.on("beforeNext", function(wizardObj) {
 				@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 				if(wizardObj.currentStep == 1){

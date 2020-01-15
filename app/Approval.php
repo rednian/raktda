@@ -40,3 +40,4 @@ class Approval extends Model
     }
 
 }
+

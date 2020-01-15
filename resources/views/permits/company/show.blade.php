@@ -29,9 +29,10 @@
           </div>
           <div class="kt-widget__info row">
             <div class="col-md-8">
-              @if ($company->description_en)
+              @if ($company->company_description_en)
                 <div class="kt-widget__desc border-top border-bottom kt-padding-t-5 kt-padding-b-5">
-                   {{$user_lang == 1  ? ucfirst($company->description_en) : ucfirst($company->description_ar)}}
+                  <h6>{{__('Establishment Details')}}</h6>
+                   {{$user_lang == 1  ? ucfirst($company->company_description_en) : ucfirst($company->company_description_ar)}}
                 </div>
               @endif
               <div class="kt-widget__stats">

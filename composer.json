@@ -14,7 +14,6 @@
         "barryvdh/laravel-cors": "^1.0",
         "carlos-meneses/laravel-mpdf": "^2.1",
         "chumper/zipper": "^1.0",
-        "davejamesmiller/laravel-breadcrumbs": "5.x",
         "dougsisk/laravel-country-state": "^2.1",
         "fideloper/proxy": "^4.0",
         "hoyvoy/laravel-cross-database-subqueries": "^5.6",
