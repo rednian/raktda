@@ -3,7 +3,7 @@
 Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function(){
 
   Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
-  Route::get('/{company}/profile', 'Company\CompanyController@show')->name('company.show')->middleware('signed');
+  Route::get('/profile/{company}', 'Company\CompanyController@show')->name('company.show')->middleware('signed');
   Route::get('/{company}/profile-databtable', 'Company\CompanyController@commentDatatable')->name('company.comment.datatable');
   Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');
   Route::post('/{company}/updateUser', 'Company\CompanyController@updateUser')->name('company.updateUser');
@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('artist/add_draft',  'Company\ArtistController@add_draft')->name('artist.add_draft');
     Route::get('artist/get_draft_details/{id}',  'Company\ArtistController@get_draft_details')->name('company.get_draft_details');
     Route::get('artist/edit/{id}/{from}',  'Company\ArtistController@edit_artist')->name('artist.edit_artist');
-    Route::get('edit_artist_draft/{id}',  'Company\ArtistController@edit_artist_draft')->name('company.edit_artist_draft');
+    Route::get('artist/edit_artist_draft/{id}',  'Company\ArtistController@edit_artist_draft')->name('company.edit_artist_draft');
     Route::get('update_checklist/{id}',  'Company\ArtistController@update_checklist')->name('company.update_checklist');
     Route::get('artist/permit/{id}/{status}',  'Company\ArtistController@permit')->name('artist.permit');
     Route::get('artist/make_payment/{id?}',  'Company\ArtistController@make_payment')->name('company.make_payment');
@@ -99,6 +99,9 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('artist/check_artist_exists_in_permit', 'Company\ArtistController@check_artist_exists_in_permit')->name('artist.check_artist_exists_in_permit');
     Route::post('artist/draft/delete', 'Company\ArtistController@delete_draft')->name('artist.delete_draft');
     Route::post('artist/checkArtistProfession', 'Company\ArtistController@checkArtistProfession')->name('artist.checkArtistProfession');
+    Route::post('artist/delete_files_in_session', 'Company\ArtistController@delete_files_in_session')->name('company.delete_files_in_session');
+    Route::post('artist/delete_pic_files_in_session', 'Company\ArtistController@delete_pic_files_in_session')->name('company.delete_pic_files_in_session');
+    Route::post('artist/reset_req_in_session', 'Company\ArtistController@reset_req_in_session')->name('artist.reset_req_in_session');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
@@ -144,8 +147,6 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('event/fetch_truck_details', 'Company\EventController@fetch_truck_details')->name('event.fetch_truck_details');
     Route::get('event/fetch_truck_details_by_event_id/{id}', 'Company\EventController@fetch_truck_details_by_event_id')->name('event.fetch_truck_details_by_event_id');
 
-    Route::get('event/deleteEventPic/{id}', 'Company\EventController@deleteEventPic')->name('event.deleteEventPic');
-
     Route::get('event/delete_truck_details/{id}', 'Company\EventController@delete_truck_details')->name('event.delete_truck_details');
 
     Route::post('event/deleteTruckLiquor', 'Company\EventController@deleteTruckLiquor')->name('event.deleteTruckLiquor');
@@ -160,6 +161,10 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('event/draft/delete', 'Company\EventController@delete_draft')->name('event.delete_draft');
     // Route::get('event/eventpics/{id}', 'Company\EventController@eventpics')->name('event.eventpics');
     Route::get('event/get_event_sub_types/{id}', 'Company\EventController@get_event_sub_types')->name('event.get_event_sub_types');
+    Route::post('event/delete_logo_in_session', 'Company\EventController@delete_logo_in_session')->name('event.delete_logo_in_session');
+    Route::post('event/deleteUploadedEventPic', 'Company\EventController@deleteUploadedEventPic')->name('event.deleteUploadedEventPic');
+    Route::post('event/forgotEventPicsSession', 'Company\EventController@forgotEventPicsSession')->name('event.forgotEventPicsSession');
+    
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 
     Route::get('event/getpaymentdetails/{orderid}', 'Company\EventController@get_payment_details')->name('company.getpaymentdetails');
@@ -167,4 +172,9 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('reports', 'Company\ReportController@index')->name('company.reports');
     Route::get('transactions', 'Company\ReportController@transactions')->name('company.transactions');
     Route::get('reports/transaction/view/{id}', 'Company\ReportController@show')->name('report.view');
+    Route::get('reports/event/view/{id}', 'Company\ReportController@showevent')->name('report.view_event');
+    Route::get('reports/transaction/print/{id}', 'Company\ReportController@transactionprint')->name('transaction.print');
+
+    
+    
 });

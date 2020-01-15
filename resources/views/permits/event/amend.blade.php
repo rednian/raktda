@@ -530,7 +530,7 @@
                             overlayColor: '#000000',
                             type: 'v2',
                             state: 'success',
-                            message: 'Please wait...'
+                            message: '{{__("Please wait...")}}'
                         });
                     },
                     success: function (result) {
@@ -547,6 +547,14 @@
                 $('#liquor_details').modal('hide');
             }
            
+        });
+
+         
+        $('#regis_issue_date , #regis_expiry_date').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            orientation: "bottom left"
         });
 
           /* Truck Script */

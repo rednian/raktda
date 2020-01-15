@@ -202,8 +202,8 @@
 
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="fname_en"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name')}}<span
-                                                                        class="text-danger">*</span>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name')}}
+                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
@@ -217,8 +217,8 @@
                                                             </div>
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="fname_en"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Last Name')}}<span
-                                                                        class="text-danger">*</span></label>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Last Name')}}
+                                                                    <span class="text-danger">*</span></label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
                                                                         <input type="text"
@@ -255,8 +255,8 @@
                                                             <input type="hidden" id="nationality_cont">
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="dob"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Birthdate')}}<span
-                                                                        class="text-danger">*</span>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Birthdate')}}
+                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
@@ -287,8 +287,8 @@
 
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="pp_expiry"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Passport Expiry')}}<span
-                                                                        class="text-danger hd-uae">*</span>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Passport Expiry')}}
+                                                                    <span class="text-danger hd-uae">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
@@ -319,8 +319,8 @@
 
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="uid_expiry"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('UID Expiry Date')}}<span
-                                                                        class="text-danger hd-uae">*</span>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('UID Expiry Date')}}
+                                                                    <span class="text-danger hd-uae">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
@@ -383,8 +383,8 @@
 
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="fname_ar"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name (AR)')}}<span
-                                                                        class="text-danger">*</span>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name (AR)')}}
+                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
@@ -396,8 +396,8 @@
                                                             </div>
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="lname_ar"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right ">{{__('Last Name (AR)')}}<span
-                                                                        class="text-danger">*</span>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right ">{{__('Last Name (AR)')}}
+                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
@@ -459,8 +459,8 @@
 
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="visa_type"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Visa Type')}}<span
-                                                                        class="text-danger hd-uae hd-eu">*</span>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Visa Type')}}
+                                                                    <span class="text-danger hd-uae hd-eu">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
@@ -498,8 +498,8 @@
 
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="visa_expiry"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Visa Expiry Date')}}<span
-                                                                        class="text-danger hd-uae hd-eu">*</span>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Visa Expiry Date')}}
+                                                                    <span class="text-danger hd-uae hd-eu">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
@@ -572,8 +572,8 @@
 
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="mobile"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Mobile Number')}}<span
-                                                                        class="text-danger">*</span>
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Mobile Number')}}
+                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
@@ -977,6 +977,11 @@
             KTUtil.scrollTop();
         });
 
+        $.ajax({
+            url: "{{route('company.delete_pic_files_in_session')}}",
+            type: 'POST'
+        })
+
         /* required fields css*/
 
         $('.sh-uae').hide();
@@ -993,6 +998,7 @@
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
         for (var i = 1; i <= $('#requirements_count').val(); i++) {
+            var requiredID = $('#req_id_' + i).val();
             fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
                 // headers: {
                 //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1047,17 +1053,26 @@
                                 }
                             }
                         });
-                    }else{
-                        var loadUrl = "{{route('company.resetUploadsSession', ':id')}}";
-                        loadUrl = loadUrl.replace(':id', $('#req_id_' + i).val());
+                    }else {
                         $.ajax({
-                            url: loadUrl,
-                            success: function(data)
-                            {
-                            }
-                        });
+                            url: "{{route('artist.reset_req_in_session')}}",
+                            type: 'POST',
+                            data: { id: $('#req_id_'+i).val()}
+                        })
                     }
 
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_files_in_session')}}",
+                            type: 'POST',
+                            data: {requiredID : requiredID},
+                            success: function (data) {
+                               
+                            }
+                    });
                 },
                 onError: function (files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
@@ -1130,6 +1145,14 @@
                     });
                 }
 
+            }, 
+            deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+            {
+                $.ajax({
+                        cache: false,
+                        url: "{{route('company.delete_pic_files_in_session')}}",
+                        type: 'POST'
+                });
             },
         });
         $('#pic_uploader div').attr('id', 'pic-upload');
@@ -1498,11 +1521,7 @@
 
         $('#prev_btn').click(function (e) {
             wizard = new KTWizard("kt_wizard_v3");
-            // console.log(wizard.currentStep);
-            // console.log(detailsValidator)
-            // console.log(detailsValidator.resetForm())
             if (wizard.currentStep == 2) {
-                // detailsValidator.resetForm();
                 $('#prev_btn').css('display', 'none');
                 $('#back_btn').css('display', 'block');
             } else {
@@ -1512,22 +1531,6 @@
             $('#submit_btn').css('display', 'none');
             $('#submit--btn-group').css('display','none');
         });
-
-
-       /* const isExpiry = (num) => {
-            let val = $('#doc_type_' + num).val();
-            if ((val == 'photograph')) {
-                $('#doc_exp_date_' + num).css('display', 'none');
-                $('#doc_issue_date_' + num).css('display', 'none');
-                $('#doc_exp_date_' + num).removeAttr("required");
-                $('#doc_issue_date_' + num).removeAttr("required");
-            } else {
-                $('#doc_exp_date_' + num).css('display', 'block');
-                $('#doc_issue_date_' + num).css('display', 'block');
-                $('#doc_exp_date_' + num).prop('required', true);
-                $('#doc_issue_date_' + num).prop('required', true);
-            }
-        };*/
 
 
         $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
@@ -1960,7 +1963,7 @@
                         overlayColor: '#000000',
                         type: 'v2',
                         state: 'success',
-                        message: 'Please wait...'
+                        message: '{{__("Please wait...")}}'
                     });
                 },
                 success: function (result) {

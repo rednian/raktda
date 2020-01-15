@@ -81,15 +81,14 @@
         <div class="tab-content">
             <div class="tab-pane show fade active" id="applied" role="tabpanel">
 
-                <table class="table table-striped table-borderless border" id="applied-events-table">
+                <table class="table table-striped table-borderless border display nowrap" id="applied-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th class="kt-font-transform-u">{{__('REFERENCE NO.')}}</th>
+                            <th>{{__('REFERENCE NO.')}}</th>
                             <th>{{__('Event Type')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To')}} </th>
                             <th>{{__('Name')}}</th>
-                            {{-- <th>{{__('Venue')}}</th> --}}
                             <th class="text-center">{{__('STATUS')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
@@ -107,7 +106,6 @@
                             <th style="width:11%;" class="text-center">{{__('From')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To')}} </th>
                             <th>{{__('Event Name')}}</th>
-                            {{-- <th>{{__('Venue')}}</th> --}}
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                             <th></th>
@@ -132,7 +130,6 @@
                             <th>{{__('From')}} </th>
                             <th>{{__('To')}} </th>
                             <th>{{__('Event Name')}}</th>
-                            {{-- <th>{{__('Venue')}}</th> --}}
                             <th>{{__('ADDED ON')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
@@ -292,15 +289,14 @@
                 if (current_tab == '#draft' ) { draft(); }
             });
 
-        })
+        }) 
 
-       function applied(){
+       async function  applied(){
             var table1 = $('#applied-events-table').DataTable({
-                responsive: true,
                 processing: true,
                 serverSide: true,
                 searching: true,
-                fixedHeader: true,
+                ordering: false,
                 // order:[[6,'desc']],
                 ajax:'{{route("company.event.fetch_applied")}}',
                 columns: [
@@ -308,13 +304,15 @@
                     { data: 'type_name', name: 'type_name' },
                     { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
                     { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
-                    { data: 'name_en', name: 'name_en' },
-                    // { data: 'venue_en', name: 'venue_en' },          
+                    { data: 'name_en', name: 'name_en' },        
                     { data: 'permit_status', name: 'permit_status' },
                     { data: 'action', name: 'action' ,  className: "text-center"},
                     { data: 'details', name: 'details' ,  className: "text-center"},
                 ],
+                responsive: true,
                 columnDefs: [
+                    { responsivePriority: 1, targets: 1 },
+                    { targets: '_all', className:'no-wrap'},
                     {
                         targets:-3,
                         width: '10%',
@@ -335,11 +333,10 @@
         function valid()
         {
             var table2 = $('#existing-events-table').DataTable({
-                responsive: true,
                 processing: true,
                 serverSide: true,
                 searching: true,
-                deferRender: true,
+                ordering: false,
                 ajax: '{{route("company.event.fetch_valid")}}',
                 beforeSend: function (request) {
                     request.setRequestHeader("token", token);
@@ -350,12 +347,11 @@
                     { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
                     { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
                     { data: 'name_en', name: 'name_en' },
-                    // { data: 'venue_en', name: 'venue_en' },
-                    // { data: 'created_at', defaultContent: 'None', name: 'created_at' },
                     { data: 'action', name: 'action',  className: "text-center" },
                     { data: 'download', name: 'download',  className: "text-center" },
                     { data: 'details', name: 'details' ,  className: "text-center"},
                 ],
+                responsive: true,
                 columnDefs: [
                 ],
                 language: {

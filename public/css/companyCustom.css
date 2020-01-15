@@ -799,3 +799,16 @@ select option:first-child {
 .text-capitalize {
     text-transform: capitalize;
 }
+
+img.ajax-file-upload-preview {
+    margin-bottom: 5px;
+}
+
+.kt-label-bg-color-1 {
+    background: linear-gradient(45deg, #f2f2f2, #eee);
+    border: 1px solid #f2f2f2;
+}
+
+.ajax-file-upload-error {
+    color: #a00101;
+}

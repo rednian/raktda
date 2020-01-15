@@ -308,7 +308,7 @@
                             overlayColor: '#000000',
                             type: 'v2',
                             state: 'success',
-                            message: 'Please wait...'
+                            message: '{{__("Please wait...")}}'
                         });
                     },
                     data: {

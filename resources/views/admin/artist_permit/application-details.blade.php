@@ -451,7 +451,7 @@
         columnDefs: [
            {targets: '_all', className: 'no-wrap'}
         ],
-        columns: [
+        columns: [  
            {data: 'person_code'},
            {
               render: function (type, data, full, meta) {

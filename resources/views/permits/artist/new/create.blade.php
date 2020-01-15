@@ -488,7 +488,7 @@
                             overlayColor: '#000000',
                             type: 'v2',
                             state: 'success',
-                            message: 'Please wait...'
+                            message: '{{__("Please wait...")}}'
                         });
                     },
                     success: function(result){
@@ -521,7 +521,7 @@
                             overlayColor: '#000000',
                             type: 'v2',
                             state: 'success',
-                            message: 'Please wait...'
+                            message: '{{__("Please wait...")}}'
                         });
                     },
                     success: function(result){

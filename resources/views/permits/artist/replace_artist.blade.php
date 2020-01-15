@@ -603,7 +603,8 @@ $language_id = Auth::user()->LanguageId;
                             <div class="kt-form__section kt-form__section--first">
                                 <div class="row">
                                     <div class="col-lg-4 col-sm-12">
-                                        <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}}
+                                        <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}} <span
+                                                class="text-danger">*</span>
                                         </label>
                                         <p for="" class="reqName " title="{{__('Artist Photo')}}">
                                             {{__('Use Passport size picture with white background')}} </p>
@@ -730,22 +731,26 @@ $language_id = Auth::user()->LanguageId;
     <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{__('Message')}} !</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Warning')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <div class="modal-body">
-                <p>{{__('please select a artist with')}} <span class="text--maroon">{{__('SAME PROFESSION')}}</span> !
-                </p>
-                <button class="btn btn--yellow btn-wide kt-font-transform-u float-right"
-                    data-dismiss="modal">{{__('Close')}}</button>
+            <div class="modal-body text-danger kt-font-bolder text-center">
+                {{__('Please select a artist with same profession')}}
+                <div class="text-center">
+                    <button class="btn btn-sm btn--yellow btn-wide kt-margin-t-10"
+                        data-dismiss="modal">{{__('OK')}}</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <!--end::Modal-->
 
-@include('permits.artist.modals.artist_in_permit');
+@include('permits.artist.modals.artist_in_permit')
+@include('permits.artist.modals.single_permit_artist_warning_modal')
+@include('permits.artist.modals.artist_profession_warning_modal')
+
 
 
 @endsection
@@ -754,6 +759,10 @@ $language_id = Auth::user()->LanguageId;
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script src="{{asset('js/company/artist.js')}}"></script>
 <script>
+    $.ajaxSetup({
+            headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
+    });
+    
     var fileUploadFns = [];
     var picUploader ;
     var artistDetails = new Object();
@@ -767,12 +776,18 @@ $language_id = Auth::user()->LanguageId;
         getAreas(5);
         $('.sh-uae').hide();
         $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
             type: "GET",
             url:"{{route('clear_the_temp')}}"
         });
+
+        $.ajax({
+            url: "{{route('company.delete_pic_files_in_session')}}",
+            type: 'POST',
+            success: function(){
+                console.log('session-reset-successfully')
+            }
+        })
+
         wizard = new KTWizard("kt_wizard_v3");
         wizard.goTo(2);
         $('#back_btn').css('display', 'none');
@@ -783,6 +798,7 @@ $language_id = Auth::user()->LanguageId;
         // console.log($('#artist_number_doc').val());
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
+            var reqId = $('#req_id_'+i).val();
             fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
                 headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -835,7 +851,26 @@ $language_id = Auth::user()->LanguageId;
                                 }
                             }
                         });
+                    }else {
+                        $.ajax({
+                            url: "{{route('artist.reset_req_in_session')}}",
+                            type: 'POST',
+                            data: { id: $('#req_id_'+i).val()}
+                        });
+                    
                     }
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_files_in_session')}}",
+                            type: 'POST',
+                            data: {requiredID : reqId},
+                            success: function (data) {
+                               
+                            }
+                    });
                 },
                 onError: function(files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
@@ -886,7 +921,7 @@ $language_id = Auth::user()->LanguageId;
                 maxFileCount:1,
                 showPreview:true,
                 showDelete: true,
-                showDownload: true,
+                // showDownload: true,
                 uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
@@ -913,7 +948,16 @@ $language_id = Auth::user()->LanguageId;
                 onError: function (files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
                     pd.statusbar.hide();
-                }
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+				{
+					$.ajax({
+							cache: false,
+							url: "{{route('company.delete_pic_files_in_session')}}",
+							type: 'POST',
+					});
+				},
+                
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
@@ -1247,28 +1291,6 @@ $language_id = Auth::user()->LanguageId;
           setTimeout( checkforArtist(),4000);
         }
 
-        function checkTheArtistProfession() {
-            let artist_id = $('#artist_id').val();
-            let profession = $('#profession').val();
-            if(artist_id){
-                $.ajax({
-                        url:"{{route('artist.checkArtistProfession')}}",
-                        type: 'POST',
-                        data: {
-                            artist_id: artist_id,
-                            profession: profession
-                        },
-                        success: function (data) {
-                            if(data.response == 'notallowed') {
-                                $('#professionWarning').modal('show');
-                                $('#profession').val('')
-                                return ;
-                            }
-                        }
-                });
-            }
-        }
-
 
         function searchCode(){
             let code = $('#code').val();
@@ -1440,6 +1462,7 @@ $language_id = Auth::user()->LanguageId;
         }
 
        const setArtistDetails = (from) => {
+
             $('.ajax-file-upload-red').trigger('click');
             let ad = $('#artistDetailswithcode').val();
             ad = JSON.parse(ad);
@@ -1480,6 +1503,12 @@ $language_id = Auth::user()->LanguageId;
 
         function setDataIntoArtistDetails(apd)
         {
+            if(apd.profession_id != $('#profession').val())
+            {
+                $('#alert_profession').modal('show');
+                $('#code').val('');
+                return ;
+            }
             $('#is_old_artist').val(2);
 
             var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
@@ -1630,6 +1659,7 @@ $language_id = Auth::user()->LanguageId;
                     // data: { permitDetails: pd},
                     data: {
                         permitId: permit_id,
+                        permit_id: permit_id,
                         artistD: ad ,
                         documentD: dd,
                         issue_d: issue_d,
@@ -1642,7 +1672,7 @@ $language_id = Auth::user()->LanguageId;
                             overlayColor: '#000000',
                             type: 'v2',
                             state: 'success',
-                            message: 'Please wait...'
+                            message: '{{__("Please wait...")}}'
                         });
                     },
                     success: function(result){

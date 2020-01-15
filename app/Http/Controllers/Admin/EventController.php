@@ -488,8 +488,8 @@ class EventController extends Controller
 
 		public function show(Request $request, Event $event)
 		{
-			// dd($event->permits);
-			return view('admin.event.show', ['page_title' => '', 'event'=>$event, 'tab'=>$request->tab]);
+			$name = $request->user()->LanguageId === 1 ? ucfirst($event->name_en) : $event->name_ar;
+			return view('admin.event.show', ['page_title' => $name.' - '.__('Detail'), 'event'=>$event, 'tab'=>$request->tab]);
 		}
 
 		public function uploadedRequirement(Request $request, Event $event)

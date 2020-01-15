@@ -467,6 +467,7 @@
     "today": "اليوم",
     "Total Amount": "إجمالي المبلغ",
     "Total Vat": "إجمالي مبلغ الضريبة",
+    "Total": "إجمالي المبلغ",
     "Trade License Number": "رقم الرخصة",
     "Trade License Expired Date": "تاريخ انتهاء الرخصة",
     "Trade License Issued Date": "تالايخ إصدار الرخصة",
@@ -487,6 +488,7 @@
     "Valid Artist Permit": "تصريح فنانين ساري المفعول",
     "vat": "مبلغ الضريبة",
     "Vat": "مبلغ الضريبة",
+    "VAT": "مبلغ الضريبة",
     "Vehicle Registration Expiry Date": "تاريخ انتهاء تسجيل المركبة",
     "Vehicle Registration Issue Date": "تاريخ إصدار تسجيل المركبة",
     "Venue (AR)": "الموقع بالللغة العربية",
@@ -566,5 +568,6 @@
     "Save as Draft": "حفظ كمسودة",
     "Event Permit Applied Successfully": "تم تقديم تصريح الفعالية بنجاح",
     "Business Name": "الاسم الاقتصادي",
-    "permit date": "تاريخ التصريح"
+    "permit date": "تاريخ التصريح",
+    "Please wait...": "أرجو الإنتظار..."
 }

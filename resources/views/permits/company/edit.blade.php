@@ -669,11 +669,22 @@
 
 
 
-      $('form[name=edit_company]').validate({
-        invalidHandler: function(){
-          KTUtil.scrollTop();
-        },
-      });
+      // $('form[name=edit_company]').validate({
+      //   submitHandler: function(form){
+      //     KTApp.block('.kt-portlet', {
+      //            overlayColor: '#000000',
+      //            type: 'v2',
+      //            state: 'success',
+      //            message: 'Please wait...'
+      //        });
+      //   },
+
+      //   invalidHandler: function(){
+      //     KTApp.unblock('.kt-portlet');
+      //     KTUtil.scrollTop();
+      //   },
+       
+      // });
 
 
 
@@ -804,7 +815,7 @@
                     overlayColor: '#000000',
                     type: 'v2',
                     state: 'success',
-                    message: 'Please wait...'
+                    message: '{{__("Please wait...")}}'
                 });
               }
             }).done(function(response, textStatus, xhr){
@@ -844,7 +855,7 @@
                 overlayColor: '#000000',
                 type: 'v2',
                 state: 'success',
-                message: 'Please wait...'
+                message: '{{__("Please wait...")}}'
             });
            },
          }).done(function(response, textStatus, xhr){

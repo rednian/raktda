@@ -91,18 +91,17 @@
                         {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
                         <h4 style="margin-top: 10%;" class="text-center">Login to your Account</h4>
                     </div>
-                    @if (session('success'))
-                        <section class="row">
-                            <div class="col-sm-12">
-                                <div style="margin-bottom: 0px;" class="alert alert-success alert-dismissible" role="alert">
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  <strong>Success!</strong> {{session('success')}}
-                                </div>
-                            </div>   
-                        </section>
+                     @if (Session::has('error'))
+                     <section class="row">
+                         <div class="col-sm-12">
+                             <div style="margin-bottom: 0px;" class="alert alert-success alert-dismissible" role="alert">
+                               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                               <strong>Success!</strong> {{Session::get('message')[1]}}
+                             </div>
+                         </div>   
+                     </section>
                     @endif
                     <div class="icon">
-
                         <i class="fa fa-sign-in"></i>
                     </div>
                 </div>

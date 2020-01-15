@@ -332,15 +332,33 @@
                                 }
                             }
                         });
+                    }else {
+                        $.ajax({
+                            url: "{{route('artist.reset_req_in_session')}}",
+                            type: 'POST',
+                            data: { id: $('#req_id_'+i).val()}
+                        })
                     }
 
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_files_in_session')}}",
+                            type: 'POST',
+                            data: {requiredID : requiId},
+                            success: function (data) {
+                               
+                            }
+                    });
                 },
                 downloadCallback:function(files,pd)
                 {
                     if(files[0]) {
                         let user_id = $('#user_id').val();
                         let artistId = $('#temp_artist_id').val();
-                        let this_url = user_id + '/artist/' + artistId +'/'+files;
+                        let this_url = user_id + '/artist/temp/' + artistId +'/'+files;
                         window.open(
                         "{{url('storage')}}"+'/' + this_url,
                         '_blank'
@@ -405,6 +423,14 @@
                         });
                     }
 
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_pic_files_in_session')}}",
+                            type: 'POST'
+                    });
                 },
                 onError: function (files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
@@ -789,7 +815,7 @@
                         overlayColor: '#000000',
                         type: 'v2',
                         state: 'success',
-                        message: 'Please wait...'
+                        message: '{{__("Please wait...")}}'
                     });
                 },
                 success: function(result){

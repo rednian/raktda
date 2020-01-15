@@ -244,5 +244,10 @@ class TransactionReportController extends Controller
                     })
             ->rawColumns(['action','transaction_id','amount','vat','transaction_date'])->make(true);
    }
+   public function transactionShow($id){
+        $page_title='Transaction Report';
+       $transaction=Transaction::where('transaction_id',$id)->with('eventTransaction')->with('artistPermitTransaction')->first();
+       return view('admin.report.includes.transactionShow',compact('transaction','page_title'));
+   }
 
 }

@@ -827,6 +827,7 @@ $language_id = \Auth::user()->LanguageId;
         // console.log($('#artist_number_doc').val());
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
+            var reqId = $('#req_id_'+i).val() ;
             fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
                 headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -878,13 +879,25 @@ $language_id = \Auth::user()->LanguageId;
                                 }
                             }
                         });
-                    }else{
-                        var loadUrl = "{{route('company.resetUploadsSession', ':id')}}";
-                        loadUrl = loadUrl.replace(':id', $('#req_id_' + i).val());
+                    }else {
                         $.ajax({
-                            url: loadUrl
-                        });
+                            url: "{{route('artist.reset_req_in_session')}}",
+                            type: 'POST',
+                            data: { id: $('#req_id_'+i).val()}
+                        })
                     }
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_files_in_session')}}",
+                            type: 'POST',
+                            data: {requiredID : reqId},
+                            success: function (data) {
+                               
+                            }
+                    });
                 },
                 downloadCallback:function(files,pd)
                 {
@@ -928,6 +941,14 @@ $language_id = \Auth::user()->LanguageId;
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_pic_files_in_session')}}",
+                            type: 'POST',
+                    });
                 },
                 onLoad:function(obj)
                 {
@@ -1680,7 +1701,7 @@ function checkVisaRequired(){
                     overlayColor: '#000000',
                     type: 'v2',
                     state: 'success',
-                    message: 'Please wait...'
+                    message: '{{__("Please wait...")}}'
                 });
                 },
                 success: function(result){

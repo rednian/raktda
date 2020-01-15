@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 
 use Auth;
+use PDF;
 use App\Transaction;
 use App\EventTransaction;
 use App\ArtistPermitTransaction;
@@ -27,23 +28,52 @@ class ReportController extends Controller
     {
         if($request->ajax())
         {
+            $made_from = $request->made_from;
+            $date = $request->date;
             $company = Auth::user()->EmpClientId;
             $user = Auth::user()->user_id;
-            $artisttransactions = ArtistPermitTransaction::with(['transaction' => function($q) use($company, $user){
-                $q->where([
-                    'company_id' => $company,
-                    'created_by' => $user
-                    ]);
-            }])->orderBy('created_at', 'desc')->get();
+            // $artisttransactions = ArtistPermitTransaction::with(['transaction' => function($q) use($company, $user){
+            //     $q->where([
+            //         'company_id' => $company,
+            //         'created_by' => $user
+            //         ]);
+            // }])->when($made_from, function($q) use ($made_from){
+            //     $q->whereHas('transaction', function($q) use ($made_from){
+            //         $q->where('transaction_type', $made_from);
+            //     });
+            // })->when($date, function ($q) use ($date){
+            //     $q->whereHas('transaction', function($q) use ($date){
+            //     $q->whereDate('created_at', '>=', Carbon::parse($date['start'])->startOfDay()->toDateTimeString())
+            //         ->whereDate('created_at', '<=', Carbon::parse($date['end'])->endOfDay()->toDateTimeString());
+            //     });
+            // })->orderBy('created_at', 'desc')->get();
 
-            $eventtransactions = EventTransaction::with(['transaction' => function($q) use($company, $user){
-                $q->where([
-                    'company_id' => $company,
-                    'created_by' => $user
-                    ]);
-            }])->orderBy('created_at', 'desc')->get();
+            // $eventtransactions = EventTransaction::with(['transaction' => function($q) use($company, $user){
+            //     $q->where([
+            //         'company_id' => $company,
+            //         'created_by' => $user
+            //         ]);
+            // }])->when($made_from, function($q) use ($made_from){
+            //     $q->whereHas('transaction', function($q) use ($made_from){
+            //         $q->where('transaction_type', $made_from);
+            //     });
+            // })->when($date, function ($q) use ($date){
+            //     $q->whereHas('transaction', function($q) use ($date){
+            //         $q->whereDate('created_at', '>=', Carbon::parse($date['start'])->startOfDay()->toDateTimeString())
+            //         ->whereDate('created_at', '<=', Carbon::parse($date['end'])->endOfDay()->toDateTimeString());
+            //     });
+            // })->orderBy('created_at', 'desc')->get();
 
-            $transactions = $artisttransactions->merge($eventtransactions);
+            // $transactions = $artisttransactions->merge($eventtransactions);
+
+            $transactions = Transaction::with('artistPermitTransaction', 'eventTransaction')->when($made_from, function($q) use ($made_from){
+                    $q->where('transaction_type', $made_from);
+            })->when($date, function ($q) use ($date){
+                $q->whereDate('created_at', '>=', Carbon::parse($date['start'])->startOfDay()->toDateTimeString())
+                    ->whereDate('created_at', '<=', Carbon::parse($date['end'])->endOfDay()->toDateTimeString());
+            })->where('company_id', $company)->where('created_by', $user)->orderBy('created_at', 'desc')->get();
+
+            // dd($transactions);
 
             return Datatables::of($transactions)->editColumn('transaction_date', function ($transaction) {
                 if ($transaction->created_at) {
@@ -58,22 +88,50 @@ class ReportController extends Controller
                     return 'None';
                 }
             })->editColumn('transaction_id', function ($transaction) {
-            return $transaction->transaction->reference_number;
+            return $transaction->reference_number;
             })->editColumn('transaction_no', function ($transaction) {
-                return $transaction->transaction->payment_transaction_id;
+                return $transaction->payment_transaction_id;
             })->editColumn('receipt_no', function ($transaction) {
-                return $transaction->transaction->payment_receipt_no;
+                return $transaction->payment_receipt_no;
             })->editColumn('amount', function ($transaction) {
-                return number_format($transaction->amount,2);
+               
+                if($transaction->artistPermitTransaction()->exists() && $transaction->eventTransaction()->exists() )
+                {
+                    $total = (double)$transaction->artistPermitTransaction->sum('amount') + (double) $transaction->eventTransaction->sum('amount');
+                    return number_format($total,2);
+                }else if($transaction->artistPermitTransaction()->exists()) {
+                    return number_format($transaction->artistPermitTransaction->sum('amount'),2);
+                }else {
+                    return number_format($transaction->eventTransaction->sum('amount'),2);
+                }
             })->editColumn('vat', function ($transaction) {
-                return number_format($transaction->vat,2);
+                if($transaction->artistPermitTransaction()->exists() && $transaction->eventTransaction()->exists() )
+                {
+                    $total = (double) $transaction->artistPermitTransaction->sum('vat') + (double) $transaction->eventTransaction->sum('vat');
+                    return number_format($total,2);
+                }else if($transaction->artistPermitTransaction()->exists()) {
+                    return number_format($transaction->artistPermitTransaction->sum('vat'),2);
+                }else {
+                    return number_format($transaction->eventTransaction->sum('vat'),2);
+                }
             })->editColumn('total', function ($transaction) {
-                $total = (double)$transaction->amount + (double)$transaction->vat;
-                return number_format($total,2);
+                if($transaction->artistPermitTransaction()->exists() && $transaction->eventTransaction()->exists() )
+                {
+                    $total = (double)$transaction->artistPermitTransaction->sum('amount') + (double) $transaction->eventTransaction->sum('amount') + (double)$transaction->artistPermitTransaction->sum('vat') + (double) $transaction->eventTransaction->sum('vat');
+                    return number_format($total,2);
+                }else if($transaction->artistPermitTransaction()->exists()) {
+                    $total = (double)$transaction->artistPermitTransaction->sum('amount') +(double)$transaction->artistPermitTransaction->sum('vat');
+                    return number_format($total,2);
+                }else {
+                    $total = (double)$transaction->eventTransaction->sum('amount') +(double)$transaction->eventTransaction->sum('vat');
+                    return number_format($total,2);
+                }
+                // $total = (double)$transaction->amount + (double)$transaction->vat;
+                // return number_format($total,2);
             })->editColumn('from', function ($transaction) {
-                return ucwords($transaction->transaction->transaction_type);
+                return ucwords($transaction->transaction_type);
             })->addColumn('action', function ($transaction)  {
-                return  '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('report.view', ['id' => $transaction->transaction->transaction_id]) .  '"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">'.__('View').'</span></a>';
+                return  '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('report.view', ['id' => $transaction->transaction_id]) .  '"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">'.__('View').'</span></a>';
                 
             })->rawColumns(['action'])->make(true);
         }
@@ -87,6 +145,45 @@ class ReportController extends Controller
         $data['transaction'] = Transaction::with('artistPermitTransaction', 'eventTransaction')->where('transaction_id', $id)->latest()->first();
 
         return view('permits.reports.view_transaction', $data );
+    }
+
+    public function showevent(Request $request, $id){
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
+        $event = \App\Event::where('event_id', $id)->latest()->first();
+        if ($event->permit) {
+            $permit_id = $event->permit->permit_id;
+            $artist = \App\Permit::where('permit_id', $permit_id)->with('artistPermit')->where('created_by', Auth::user()->user_id)->first();
+        } else {
+            $artist = [];
+        }
+        $data['truck_req'] = \App\Requirement::where('requirement_type', 'truck')->get();
+        $data['liquor_req'] = \App\Requirement::where('requirement_type', 'liquor')->get();
+        $data['emirates'] = \App\Emirates::all()->sortBy('name_en');
+        $data['eventReq'] = $event->requirements()->get();
+        $data['event'] = $event;
+        $data['artist'] = $artist;
+        $data['tab'] =  $request->tab;
+        $data['eventImages']  = $event->otherUpload;
+    
+        return view('permits.reports.show_event', $data);
+    }
+
+    public function transactionprint(Request $request, $id)
+    {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
+        $transaction = Transaction::where('transaction_id', $id)->latest()->first();
+        $data['transaction'] = $transaction;
+        return view('permits.reports.voucher_print', $data);
+        // $pdf = PDF::loadView('permits.reports.voucher_print', $data, [], [
+        //     'title' => 'Payment Voucher',
+        //     'default_font_size' => 10
+        // ]);
+
+        // return $pdf->stream('Payment Voucher '.$transaction->transaction_id.'.pdf', "S");
     }
 
 }

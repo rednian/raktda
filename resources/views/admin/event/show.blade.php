@@ -208,7 +208,7 @@
             {{  Auth::user()->LanguageId == 1 ? ucfirst($event->venue_en) :  $event->venue_ar }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-30">{{__('Address')}}</span>: {{ $event->full_address }}</p>
-          <hr class="">
+          <hr class="kt-margin-t-30">
           <section class="kt-widget kt-widget--user-profile-3">
             <div class="kt-widget__bottom kt-margin-0" style="border:none;">
               <div class="kt-widget__item kt-padding-t-5">
@@ -269,7 +269,7 @@
           </section>
 
           {{-- <h6 class="kt-font-dark kt-margin-t-10">Event Map Location</h6> --}}
-          <iframe class="border kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 350px; width: 100%; margin-top: 1%; border-style: none;" >
+          <iframe class="border kt-margin-t-10 kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 400px; width: 100%; margin-top: 1%; border-style: none;" >
           </iframe>
         </div>
         <div class="col-md-5">
@@ -406,6 +406,23 @@
                                 <td>{{ $event->owner->company->addres }} {{ ucfirst($event->owner->company->area->area_ar)}} {{ ucfirst($event->owner->company->emirate->name_ar)}} {{ ucfirst($event->owner->company->country->name_ar)}}</td>
                                @endif
                             </tr>
+                        </table>
+                        <hr>
+                         <h6 class="kt-font-dark kt-font-transform-u">{{ __('Contact Information') }}</h6>
+                        <table class="table table-borderless table-sm table-display">
+                            <tr>
+                                <td class="no-wrap"><span style="font-size: large;" class="flaticon-profile-1"></span> </td>
+                                <td>{{ ucwords(Auth::user()->LanguageId == 1 ? ucfirst($event->owner->company->contact->contact_name_en) : $event->owner->company->contact->contact_name_ar ) }}</td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-size: large;" class="la la-suitcase"></span> </td>
+                                <td>{{ Auth::user()->LanguageId == 1 ? ucwords($event->owner->company->contact->designation_en) : ucwords($event->owner->company->contact->designation_ar) }}</td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-size: large;" class="la la-mobile-phone"></span> </td>
+                                <td>{{ $event->owner->company->contact->mobile_number }}</td>
+                            </tr>
+                            
                         </table>
                         @else
                         @empty
