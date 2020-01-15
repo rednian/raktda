@@ -20,7 +20,7 @@
                 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
                     role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#"
+                        <a class="nav-link active" data-toggle="tab" href="#applied"
                             data-target="#applied">{{__('Applied Artist Permit')}}</a>
                     </li>
                     <li class="nav-item">

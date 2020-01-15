@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('title', ' Happiness -- Artsit Permit -- Smart Government Rak')
+@section('style')
+<style>
+    ::placeholder {
+        font-style: italic;
+    }
+</style>
+@endsection
 @section('content')
 
 
@@ -18,7 +26,6 @@
 
             </div>
             <div class="kt-portlet__body kt-padding-t-0">
-
                 <!--begin: Form Wizard Step 5-->
                 <div class="kt-wizard-v3__content py-5" data-ktwizard-type="step-content">
 
@@ -47,10 +54,16 @@
                                     </div>
                                     <input type="hidden" id="permit_id" value={{$id}}>
                                 </div>
-                                <div>
-                                    <label for="" class="kt-margin-t-20 kt-font-dark">{{__('Comments')}} :</label>
-                                    <textarea name="remarks" id="remarks" class="form-control form-control-sm " rows="5"
-                                        placeholder="{{__('please enter your valueable comments')}}"></textarea>
+                                <div
+                                    class="form-group row form-group-marginless kt-margin-t-40 kt-margin-l-auto kt-margin-r-auto">
+                                    <label for=""
+                                        class="kt-font-dark col-md-3 col-lg-3 col-form-label text-right">{{__('Your Comments')}}
+                                        :</label>
+                                    <div class="col-md-8">
+                                        <textarea name="remarks" id="remarks" class="form-control form-control-sm "
+                                            rows="5"
+                                            placeholder="{{__('please enter your valueable comments')}}"></textarea>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -78,24 +91,12 @@
 
 @section('script')
 <script>
-    var happinessValidator =   $('#happiness_center').validate({
-                rules: {
-                    remarks: 'required'
-                },
-                messages: {
-                    remarks: '',
-                }
-            });
-   
-            
     $('#submit_btn').click((e) => {
 
                 var value =  $('#sel_value').val();
 
                 if(value)
                 {
-                    if(happinessValidator.form())   
-                    {
                         $.ajax({
                             url: "{{route('artist.submit_happiness')}}",
                             type: "POST",
@@ -109,7 +110,7 @@
                                     overlayColor: '#000000',
                                     type: 'v2',
                                     state: 'success',   
-                                    message: 'Please wait...'
+                                    message: '{{__("Please wait...")}}'
                                 });
                             },
                             success: function (result) {
@@ -119,7 +120,7 @@
                                 }
                             }
                         });
-                    }
+                    
                     
                 } else {
                     alert('Please select your experience');

@@ -123,7 +123,7 @@
                                         {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
                                     </td>
                                     @php
-                                    $noofmonths = ceil($noofdays ? $noofdays : 1 / 30) ;
+                                    $noofmonths = ceil($noofdays ? $noofdays/30 : 1 ) ;
                                     $artist_fee = $ap->profession['amount'] * $noofmonths;
                                     $artist_vat = $artist_fee * 0.05;
                                     $artist_total = $artist_fee + $artist_vat;
@@ -318,10 +318,22 @@
                     <input type="hidden" id="total">
 
 
+                    <div>
+                        <small>NB: {{__('Paid money will not be refunded')}}</small>
+                    </div>
+
+
 
                     <div class="d-flex justify-content-end">
+                        {{-- <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
+                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button> --}}
                         <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
+                            onclick="paymentDoneUpdation('x', 'y')">{{__('PAY')}}</button>
+
+                        <a
+                            href="{{URL::signedRoute('company.happiness_center', [ 'id' => $permit_details->permit_id])}}"><button
+                                class="btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u kt-hide"
+                                id="next_btn">{{__('Next')}}</button></a>
                     </div>
 
                 </div>
@@ -449,7 +461,8 @@
                     url: url,
                     type: 'GET',
                     success: function(res){
-                        console.log(res);
+                        // console.log(res);
+                        var res = JSON.parse(res);
                         var transactionId = res.transaction[0].transaction.acquirer.transactionId;
                         var receipt = res.transaction[0].transaction.receipt;
                         paymentDoneUpdation(transactionId, receipt);
@@ -474,7 +487,7 @@
                         overlayColor: '#000000',
                         type: 'v2',
                         state: 'success',
-                        message: 'Please wait...'
+                        message: '{{__("Please wait...")}}'
                     });
                 },
                 data: {
@@ -510,6 +523,10 @@
         $('#amount').val(artistTotalFee);
         $('#vat').val(artistVatTotal);
         $('#total').val(artistGTotal);
+        if(artistGTotal == 0){
+            $('#next_btn').removeClass('kt-hide');
+            $('#pay_btn').addClass('kt-hide');
+        }
     });
 
 
@@ -533,6 +550,13 @@
             $('#amount').val(totalFee);
             $('#vat').val(totalVat);
             $('#total').val(total);
+            if(total == 0){
+                $('#next_btn').removeClass('kt-hide');
+                $('#pay_btn').addClass('kt-hide');
+            }else {
+                $('#pay_btn').removeClass('kt-hide');
+                $('#next_btn').addClass('kt-hide');
+            }
         }else{
             $('#event_details_table').hide();
             $('#total_amt').html(parseInt(artistTotalFee).toFixed(2));
@@ -541,6 +565,13 @@
             $('#amount').val(artistTotalFee);
             $('#vat').val(artistVatTotal);
             $('#total').val(artistGTotal);
+            if(artistGTotal == 0){
+                $('#next_btn').removeClass('kt-hide');
+                $('#pay_btn').addClass('kt-hide');
+            }else {
+                $('#pay_btn').removeClass('kt-hide');
+                $('#next_btn').addClass('kt-hide');
+            }
         }
     }
 

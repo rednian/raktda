@@ -879,12 +879,12 @@ $language_id = \Auth::user()->LanguageId;
                                 }
                             }
                         });
-                    }else{
-                        var loadUrl = "{{route('company.resetUploadsSession', ':id')}}";
-                        loadUrl = loadUrl.replace(':id', $('#req_id_' + i).val());
+                    }else {
                         $.ajax({
-                            url: loadUrl
-                        });
+                            url: "{{route('artist.reset_req_in_session')}}",
+                            type: 'POST',
+                            data: { id: $('#req_id_'+i).val()}
+                        })
                     }
                 },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
@@ -948,9 +948,6 @@ $language_id = \Auth::user()->LanguageId;
                             cache: false,
                             url: "{{route('company.delete_pic_files_in_session')}}",
                             type: 'POST',
-                            success: function (data) {
-                                
-                            }
                     });
                 },
                 onLoad:function(obj)
@@ -1704,7 +1701,7 @@ function checkVisaRequired(){
                     overlayColor: '#000000',
                     type: 'v2',
                     state: 'success',
-                    message: 'Please wait...'
+                    message: '{{__("Please wait...")}}'
                 });
                 },
                 success: function(result){

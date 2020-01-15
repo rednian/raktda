@@ -1,7 +1,13 @@
 @extends('layouts.app')
 
 @section('title', ' Event Permit Draft - Smart Government Rak')
-
+@section('style')
+<style>
+    ::placeholder {
+        font-style: italic;
+    }
+</style>
+@endsection
 @section('content')
 
 <link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
@@ -449,7 +455,7 @@
                                                 data-parent="#permit-location-details" id="collapseTwo5">
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-5 form-group form-group-xs ">
                                                             <label for="venue_en"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Venue')}} <span
@@ -461,7 +467,7 @@
 
                                                         </div>
 
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-5 form-group form-group-xs ">
                                                             <label for="venue_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Venue (AR)')}} <span
@@ -475,18 +481,12 @@
 
 
 
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="emirate_id"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
-                                                            </label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                value="Ras Al Khaimah" readonly>
-                                                            <input type="hidden" name="emirate_id" id="emirate_id"
-                                                                value="5">
-                                                        </div>
+                                                        <input type="hidden" name="emirate_id" id="emirate_id"
+                                                            value="5">
 
 
-                                                        <div class="col-md-4 form-group form-group-xs ">
+
+                                                        <div class="col-md-2 form-group form-group-xs ">
                                                             <label for="area_id"
                                                                 class=" col-form-label kt-font-bold text-right">{{__('Area')}}
                                                                 <span class="text-danger">*</span>
@@ -502,15 +502,10 @@
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="country_id"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Country')}}
-                                                            </label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                value="United Arab Emirates" readonly>
-                                                            <input type="hidden" name="country_id" id="country_id"
-                                                                value="232">
-                                                        </div>
+
+                                                        <input type="hidden" name="country_id" id="country_id"
+                                                            value="232">
+
 
                                                     </div>
                                                 </div>
@@ -884,11 +879,16 @@
                                         <input type="hidden" id="rating">
                                         <input type="hidden" id="event" value="{{$event->event_id}}">
                                     </div>
-                                    <div>
-                                        <label for="" class="kt-margin-t-20 kt-font-dark">{{__('Comments')}} :</label>
-                                        <textarea name="remarks" id="remarks" class="form-control form-control-sm "
-                                            rows="5"
-                                            placeholder="{{__('please enter your valueable comments')}}"></textarea>
+                                    <div
+                                        class="form-group row form-group-marginless kt-margin-t-40 kt-margin-l-auto kt-margin-r-auto">
+                                        <label for=""
+                                            class="kt-font-dark col-md-3 col-lg-3 col-form-label text-right">{{__('Your Comments')}}
+                                            :</label>
+                                        <div class="col-md-8">
+                                            <textarea name="remarks" id="remarks" class="form-control form-control-sm "
+                                                rows="4"
+                                                placeholder="{{__('please enter your valueable comments')}}"></textarea>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -1661,16 +1661,7 @@
 
         }
 
-        var happinessValidator =   $('#happiness_center').validate({
-                rules: {
-                    rating: 'required',
-                    remarks: 'required'
-                },
-                messages: {
-                    remarks: '',
-                    rating: ''
-                }
-            });
+
 
             function go_back_truck_list()
             {
@@ -1820,8 +1811,6 @@
             var rating = $('#rating').val();
             if(rating)
             {
-                if(happinessValidator.form())
-                {
                     $('#submit_btn').css('pointer-events', 'none');
                     $.ajax({
                         url: "{{route('event.submit_happiness')}}",
@@ -1836,7 +1825,7 @@
                                 overlayColor: '#000000',
                                 type: 'v2',
                                 state: 'success',
-                                message: 'Please wait...'
+                                message: '{{__("Please wait...")}}'
                             });
                         },
                         success: function (result) {
@@ -1846,7 +1835,7 @@
                             }
                         }
                     });
-                }
+                
                
             }else{
                 alert('Please select your experience');

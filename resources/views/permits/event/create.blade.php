@@ -8,6 +8,14 @@
 
 {{-- {{dd(session()->flush())}} --}}
 {{-- {{dd(session()->all())}} --}}
+@php
+// $user_id = Auth::user()->user_id;
+// session()->forget($user_id . '_image_size');
+// session()->forget($user_id . '_image_file');
+// session()->forget($user_id . '_image_ext');
+// session()->forget($user_id . '_image_thumb');
+// dd(session()->all())
+@endphp
 
 <!-- begin:: Content -->
 {{-- <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"> --}}
@@ -408,7 +416,7 @@
                                 id="collapseTwo5">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6 form-group form-group-xs ">
+                                        <div class="col-md-5 form-group form-group-xs ">
                                             <label for="venue_en" class=" col-form-label kt-font-bold text-right">
                                                 {{__('Venue')}} <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control form-control-sm" name="venue_en"
@@ -416,7 +424,7 @@
 
                                         </div>
 
-                                        <div class="col-md-6 form-group form-group-xs ">
+                                        <div class="col-md-5 form-group form-group-xs ">
                                             <label for="venue_ar" class=" col-form-label kt-font-bold text-right">
                                                 {{__('Venue (AR)')}} <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control form-control-sm" name="venue_ar"
@@ -424,18 +432,12 @@
                                         </div>
 
 
-                                        <div class="col-md-4 form-group form-group-xs ">
-                                            <label for="emirate_id"
-                                                class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
-                                            </label>
-                                            <input type="text" class="form-control form-control-sm"
-                                                value="{{getLangId() == 1 ? 'Ras Al Khaimah' : 'رَأْس ٱلْخَيْمَة'}}"
-                                                readonly>
-                                            <input type="hidden" name="emirate_id" id="emirate_id" value="5">
-                                        </div>
+
+                                        <input type="hidden" name="emirate_id" id="emirate_id" value="5">
+                                        <input type="hidden" name="country_id" id="country_id" value="232">
 
 
-                                        <div class="col-md-4 form-group form-group-xs ">
+                                        <div class="col-md-2 form-group form-group-xs ">
                                             <label for="area_id"
                                                 class=" col-form-label kt-font-bold text-right">{{__('Area')}} <span
                                                     class="text-danger">*</span>
@@ -449,15 +451,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-4 form-group form-group-xs ">
-                                            <label for="country_id"
-                                                class=" col-form-label kt-font-bold text-right">{{__('Country')}}
-                                            </label>
-                                            <input type="text" class="form-control form-control-sm"
-                                                value="{{getLangId() == 1 ? 'United Arab Emirates' : 'الإمارات العربية المتحدة‎'}}"
-                                                readonly>
-                                            <input type="hidden" name="country_id" id="country_id" value="232">
-                                        </div>
+
 
                                     </div>
                                 </div>
@@ -681,6 +675,12 @@
         uploadFunction();
         picUploadFunction();
         imageUploadFunction();
+
+        $.ajax({
+            url: "{{route('event.forgotEventPicsSession')}}",
+            type: "POST",
+            success: function(){}
+        })
 
         // getRequirementsList(5);
         // wizard.goTo(3);
@@ -1109,7 +1109,7 @@
                                     overlayColor: '#000000',
                                     type: 'v2',
                                     state: 'success',
-                                    message: 'Please wait...'
+                                    message: '{{__("Please wait...")}}'
                                 });
                             },
                             success: function (result) {
@@ -1171,7 +1171,7 @@
                                 overlayColor: '#000000',
                                 type: 'v2',
                                 state: 'success',
-                                message: 'Please wait...'
+                                message: '{{__("Please wait...")}}'
                             });
                         },
                         success: function (result) {
@@ -1335,6 +1335,13 @@
         }
 
         $('.date-picker').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            orientation: "top left"
+        });
+        
+        $('#regis_issue_date , #regis_expiry_date').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
@@ -2117,9 +2124,20 @@
                     '_blank'
                     );
                 },
+                deleteCallback: function(data,pd)
+                {
+                    $.ajax({
+                        url: "{{route('event.deleteUploadedEventPic')}}",
+                        type: 'POST',
+                        data: {path: data.filepath, ext: data.ext },
+                        success: function (result) {
+                        }   
+                    });
+                }
             });
             $('#image_uploader div').attr('id', 'image-upload');
             $('#image_uploader + div').attr('id', 'image-file-upload');
+            $('#image-file-upload .ajax-file-upload-statusbar').css('margin-bottom', '5px !important');
         };
         
 

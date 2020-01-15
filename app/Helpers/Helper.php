@@ -419,6 +419,7 @@ function getPaymentOrderId($from, $id)
         $times = \App\ArtistPermitTransaction::where('artist_permit_id', $id)->distinct('transaction_id')->count('transaction_id');
         $times += 1;
     }
+
     return $pre.'-'.date('Y').'-'.$payment_no.'-'.$times;
 }
 

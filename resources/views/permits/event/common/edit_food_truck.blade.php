@@ -81,14 +81,14 @@
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}
                                 <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-control-sm date-picker" name="regis_issue_date"
+                            <input type="text" class="form-control form-control-sm " name="regis_issue_date"
                                 data-date-end-date="+0d" id="regis_issue_date" autocomplete="off"
                                 placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Expiry Date')}}
                                 <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-control-sm date-picker" name="regis_expiry_date"
+                            <input type="text" class="form-control form-control-sm " name="regis_expiry_date"
                                 data-date-start-date="+0d" id="regis_expiry_date" autocomplete="off"
                                 placeholder="DD-MM-YYYY">
                         </div>

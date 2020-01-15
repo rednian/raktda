@@ -446,7 +446,7 @@
                                                 data-parent="#permit-location-details" id="collapseTwo5">
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-5 form-group form-group-xs ">
                                                             <label for="venue_en"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Venue')}} <span
@@ -458,7 +458,7 @@
 
                                                         </div>
 
-                                                        <div class="col-md-6 form-group form-group-xs ">
+                                                        <div class="col-md-5 form-group form-group-xs ">
                                                             <label for="venue_ar"
                                                                 class=" col-form-label kt-font-bold text-right">
                                                                 {{__('Venue (AR)')}} <span
@@ -472,18 +472,12 @@
 
 
 
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="emirate_id"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
-                                                            </label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                value="Ras Al Khaimah" readonly>
-                                                            <input type="hidden" name="emirate_id" id="emirate_id"
-                                                                value="5">
-                                                        </div>
+                                                        <input type="hidden" name="emirate_id" id="emirate_id"
+                                                            value="5">
 
 
-                                                        <div class="col-md-4 form-group form-group-xs ">
+
+                                                        <div class="col-md-2 form-group form-group-xs ">
                                                             <label for="area_id"
                                                                 class=" col-form-label kt-font-bold text-right">{{__('Area')}}
                                                                 <span class="text-danger">*</span>
@@ -499,15 +493,8 @@
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-md-4 form-group form-group-xs ">
-                                                            <label for="country_id"
-                                                                class=" col-form-label kt-font-bold text-right">{{__('Country')}}
-                                                            </label>
-                                                            <input type="text" class="form-control form-control-sm"
-                                                                value="United Arab Emirates" readonly>
-                                                            <input type="hidden" name="country_id" id="country_id"
-                                                                value="232">
-                                                        </div>
+                                                        <input type="hidden" name="country_id" id="country_id"
+                                                            value="232">
 
                                                     </div>
                                                 </div>
@@ -635,7 +622,7 @@
                         <div class="kt-form__section kt-form__section--first ">
                             <form id="make_payment">
                                 <div class="kt-widget kt-widget--project-1">
-                                    <div class="kt-widget__body">
+                                    <div class="kt-widget__body  kt-padding-l-10">
                                         <div class="kt-widget__stats d-">
                                             <div class="kt-widget__item">
                                                 <span class="kt-widget__date">{{__('From Date')}}</span>
@@ -669,7 +656,7 @@
                                                 <div class="kt-widget__label">
                                                     <span
                                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                                        {{$event->type['name_en']}}
+                                                        {{getLangId() == 1 ? ucwords($event->type['name_en']) : $event->type['name_ar']}}
                                                     </span>
                                                 </div>
                                             </div>
@@ -678,12 +665,12 @@
                                                 <div class="kt-widget__label">
                                                     <span
                                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                                        {{$event->name_en}}
+                                                        {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="kt-widget__text">
+                                        <div class="kt-widget__text kt-margin-t-10">
                                             <strong>{{__('Venue')}} :</strong>
                                             {{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}
                                         </div>
@@ -727,10 +714,10 @@
                                             @if($event->request_type != 'amend' && $event->paid == 0)
                                             <tr>
                                                 <td class="text-left">
-                                                    {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
+                                                    {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
                                                 </td>
                                                 <td class="text-left">
-                                                    {{getLangId() == 1 ? $event->type['name_en'] : $event->type['name_ar']}}
+                                                    {{getLangId() == 1 ? ucwords($event->type['name_en']) : $event->type['name_ar']}}
                                                 </td>
                                                 @php
                                                 $event_fee = $event->type['amount'] * $noofdays;
@@ -827,7 +814,7 @@
                                                     {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
                                                 </td>
                                                 @php
-                                                $noofmonths = ceil($noofdays ? $noofdays : 1 / 30) ;
+                                                $noofmonths = ceil($noofdays ? $noofdays/30 : 1) ;
                                                 $artist_fee = $ap->profession['amount'] * $noofmonths;
                                                 $artist_vat = $artist_fee * 0.05;
                                                 $artist_total = $artist_fee + $artist_vat;
@@ -909,8 +896,13 @@
                                 <input type="hidden" id="amount">
                                 <input type="hidden" id="vat">
                                 <input type="hidden" id="total">
+
                             </form>
                         </div>
+                    </div>
+
+                    <div>
+                        <small>NB: {{__('Paid money will not be refunded')}}</small>
                     </div>
 
 
@@ -936,29 +928,43 @@
                         </div>
                         </a>
                         @else --}}
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            onclick="Checkout.showLightbox()" id="submit_btn">
+                        {{-- <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                            onclick="Checkout.showLightbox()" id="submit_btn" data-ktwizard-type="action-submit">
                             <i class="fa fa-check"></i>
                             {{__('Pay')}}
-                        </div>
+                    </div> --}}
 
-                        {{-- id="submit_btn" --}}
-                        {{-- @endif --}}
-
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-next" id="next_btn">
-                            {{__('Next')}}
-                        </div>
-
-
+                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        onclick="paymentDoneUpdation('x', 'y')" id="submit_btn" data-ktwizard-type="action-submit">
+                        <i class="fa fa-check"></i>
+                        {{__('Pay')}}
                     </div>
+
+
+
+                    <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
+                        class="kt-hide">
+                        <button class="btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u"
+                            data-ktwizard-type="action-submit">{{__('Next')}}</button>
+                    </a>
+
+                    {{-- id="submit_btn" --}}
+                    {{-- @endif --}}
+
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-next" id="next_btn">
+                        {{__('Next')}}
+                    </div>
+
 
                 </div>
 
-
             </div>
+
+
         </div>
     </div>
+</div>
 </div>
 </div>
 </div>
@@ -1094,7 +1100,8 @@ $output = json_decode($output);
                 url: url,
                 type: 'GET',
                 success: function(res){
-                    console.log(res);
+                    // console.log(res);
+                    var res = JSON.parse(res);
                     var transactionId = res.transaction[0].transaction.acquirer.transactionId;
                     var receipt = res.transaction[0].transaction.receipt;
                     paymentDoneUpdation(transactionId, receipt);
@@ -1130,7 +1137,7 @@ $output = json_decode($output);
                     overlayColor: '#000000',
                     type: 'v2',
                     state: 'success',
-                    message: 'Please wait...'
+                    message: '{{__("Please wait...")}}'
                 });
             },
             success: function (result) {
@@ -1188,6 +1195,10 @@ $output = json_decode($output);
         $('#amount').val(eventTotalAmount);
         $('#vat').val(eventVatTotal);
         $('#total').val(eventGrandTotal);
+        if(eventGrandTotal == 0){
+            $('#pay_next_btn').removeClass('kt-hide');
+            $('#submit_btn').addClass('kt-hide');
+        }
         var isTruck = $('#prev_val_isTruck').val();
         if(isTruck == 0){
             $('#truckEditBtn').hide();
@@ -1218,6 +1229,13 @@ $output = json_decode($output);
             $('#amount').val(total_amt);
             $('#vat').val(total_vat);
             $('#total').val(grand_total);
+            if(grand_total == 0){
+                $('#pay_next_btn').removeClass('kt-hide');
+                $('#submit_btn').addClass('kt-hide');
+            }else {
+                $('#submit_btn').removeClass('kt-hide');
+                $('#pay_next_btn').addClass('kt-hide');
+            }
         }else {
             $('#artist_pay_table').hide();
             $('#total_amt').html(parseInt(eventTotalAmount).toFixed(2));
@@ -1226,6 +1244,13 @@ $output = json_decode($output);
             $('#amount').val(eventTotalAmount);
             $('#vat').val(eventVatTotal);
             $('#total').val(eventGrandTotal);
+            if(eventGrandTotal == 0){
+                $('#pay_next_btn').removeClass('kt-hide');
+                $('#submit_btn').addClass('kt-hide');
+            }else {
+                $('#submit_btn').removeClass('kt-hide');
+                $('#pay_next_btn').addClass('kt-hide');
+            }
         }
     }
 
