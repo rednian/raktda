@@ -96,8 +96,6 @@
         border: navajowhite;
         border-bottom: 3px solid #8b0000b8;
     }
-
-
 </style>
 <div class="container" style="margin-top:-16px;margin-left: -10px">
     <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist"
@@ -126,8 +124,8 @@
             </a></li>
         <li>
             <button class="btn btn-warning btn-sm"
-                    style=" box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;border: none"
-                    id="filter_button">Filter
+                style=" box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;border: none"
+                id="filter_button">Filter
             </button>
         </li>
         <li>
@@ -140,144 +138,146 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 <table class="table  table-hover  table-borderless table-striped border" id="block-artist">
     <thead>
-    <tr id="filterTableCollapse" style="display: none">
-        <th colspan="2">
-            <div class="col-sm" style="display: inline-flex;width:100%">
-                <input type="text" class="form-control form-control-sm " name="search-artist-name"
-                       id="search-artist-name" placeholder="{{__('Name')}}">
-                <button class="fa fa-search" id="name_search_button"></button>
-            </div>
-        </th>
-        <th><select type="text" id="search_by_gender" style="width: 100%;margin-top: 1px"
+        <tr id="filterTableCollapse" style="display: none">
+            <th colspan="2">
+                <div class="col-sm" style="display: inline-flex;width:100%">
+                    <input type="text" class="form-control form-control-sm " name="search-artist-name"
+                        id="search-artist-name" placeholder="{{__('Name')}}">
+                    <button class="fa fa-search" id="name_search_button"></button>
+                </div>
+            </th>
+            <th><select type="text" id="search_by_gender" style="width: 100%;margin-top: 1px"
                     class="form-control form-control-sm custom-select-sm custom-select">
-                <option value="">{{__('Gender')}}</option>
-                @foreach($gender as $key => $genders)
-                    <option
-                        value="{{$genders->gender_id}}">{{Auth()->user()->LanguageId==1? ucwords($genders->name_en):ucwords($genders->name_ar)}}</option>
-                @endforeach
-            </select></th>
-        <th><select type="text" id="search_by_age" style="width: 100%"
+                    <option value="">{{__('Gender')}}</option>
+                    @foreach($gender as $key => $genders)
+                    <option value="{{$genders->gender_id}}">
+                        {{Auth()->user()->LanguageId==1? ucwords($genders->name_en):ucwords($genders->name_ar)}}
+                    </option>
+                    @endforeach
+                </select></th>
+            <th><select type="text" id="search_by_age" style="width: 100%"
                     class="form-control form-control-sm custom-select-sm custom-select" name="search_artist">
-                <option value="">{{__('Age')}}</option>
-                <option value="17">{{__('Minor')}}</option>
-                <option value="18">{{__('Adult')}}</option>
-            </select></th>
-        <th><select type="text" id="search_by_nationality"
+                    <option value="">{{__('Age')}}</option>
+                    <option value="17">{{__('Minor')}}</option>
+                    <option value="18">{{__('Adult')}}</option>
+                </select></th>
+            <th><select type="text" id="search_by_nationality"
                     class="form-control form-control-sm custom-select-sm custom-select" style="width: 90%"
                     name="search_artist">
-                <option value="">{{__('Nationality')}}</option>
+                    <option value="">{{__('Nationality')}}</option>
 
-                @foreach($country as $key => $nationality)
-                    <option
-                        value="{{$nationality->country_id}}">{{Auth()->user()->LanguageId==1? $nationality->nationality_en:$nationality->nationality_ar}}</option>
-                @endforeach
-            </select></th>
-        <th>
-            <select type="text" id="search_by_profession" style="width: 99px"
+                    @foreach($country as $key => $nationality)
+                    <option value="{{$nationality->country_id}}">
+                        {{Auth()->user()->LanguageId==1? $nationality->nationality_en:$nationality->nationality_ar}}
+                    </option>
+                    @endforeach
+                </select></th>
+            <th>
+                <select type="text" id="search_by_profession" style="width: 99px"
                     class="form-control form-control-sm custom-select-sm custom-select" name="search_artist">
-                <option value="">{{__('Profession')}}</option>
-                @foreach($profession as $key => $nationality)
-                    <option
-                        value="{{$nationality->profession_id}}">{{Auth()->user()->LanguageId==1? $nationality->name_en:$nationality->name_ar}}</option>
-                @endforeach
-            </select>
-        </th>
-        <th colspan="2">
-            <select type="text" id="search_by_visa" style="width:97px"
+                    <option value="">{{__('Profession')}}</option>
+                    @foreach($profession as $key => $nationality)
+                    <option value="{{$nationality->profession_id}}">
+                        {{Auth()->user()->LanguageId==1? $nationality->name_en:$nationality->name_ar}}</option>
+                    @endforeach
+                </select>
+            </th>
+            <th colspan="2">
+                <select type="text" id="search_by_visa" style="width:97px"
                     class="form-control form-control-sm custom-select-sm custom-select" name="search_artist">
-                <option value="">{{__('Visa Type')}}</option>
-                @foreach($visas as $key => $visa)
-                    <option
-                        value="{{$visa->id}}">{{Auth()->user()->LanguageId==1? $visa->visa_type_en:$visa->visa_type_ar}}</option>
-                @endforeach
-            </select>
-        </th>
-    </tr>
+                    <option value="">{{__('Visa Type')}}</option>
+                    @foreach($visas as $key => $visa)
+                    <option value="{{$visa->id}}">
+                        {{Auth()->user()->LanguageId==1? $visa->visa_type_en:$visa->visa_type_ar}}</option>
+                    @endforeach
+                </select>
+            </th>
+        </tr>
 
-    <tr style="font-size: 12px">
-        <th style="width: 18% !important;font-weight: bold;white-space: nowrap">{{ __('PERSON CODE') }}</th>
-        <th style="font-weight: bold;width: 18%;white-space: nowrap">{{ __('ARTIST NAME') }}</th>
-        <th style="font-weight: bold;width: 18%;white-space: nowrap">{{ __('PROFESSION') }}</th>
-        <th style="font-weight: bold;width: 18%;white-space: nowrap">{{ __('NATIONALITY') }}</th>
-        <th style="width: 18%;font-weight: bold;white-space: nowrap">{{ __('MOBILE') }}</th>
-        <th style="font-weight: bold;width:14%;white-space: nowrap">{{ __('EMAIL') }}</th>
-        <th style="font-weight: bold;white-space: nowrap">{{ __('IDENTIFICATION NUMBER') }}</th>
-        <th style="font-weight: bold;white-space: nowrap">{{ __('LANGUAGE') }}</th>
-        <th style="font-weight: bold;white-space: nowrap">{{ __('FAX NUMBER') }}</th>
-        <th style="font-weight: bold;white-space: nowrap">{{ __('PO-BOX') }}</th>
-        <th style="font-weight: bold;white-space: nowrap">{{ __('EMIRATE') }}</th>
-        <th style="font-weight: bold;white-space: nowrap">{{ __('ADDRESS') }}</th>
-        <th></th>
-    </tr>
+        <tr style="font-size: 12px">
+            <th style="width: 18% !important;font-weight: bold;white-space: nowrap">{{ __('PERSON CODE') }}</th>
+            <th style="font-weight: bold;width: 18%;white-space: nowrap">{{ __('ARTIST NAME') }}</th>
+            <th style="font-weight: bold;width: 18%;white-space: nowrap">{{ __('PROFESSION') }}</th>
+            <th style="font-weight: bold;width: 18%;white-space: nowrap">{{ __('NATIONALITY') }}</th>
+            <th style="width: 18%;font-weight: bold;white-space: nowrap">{{ __('MOBILE') }}</th>
+            <th style="font-weight: bold;width:14%;white-space: nowrap">{{ __('EMAIL') }}</th>
+            <th style="font-weight: bold;white-space: nowrap">{{ __('IDENTIFICATION NUMBER') }}</th>
+            <th style="font-weight: bold;white-space: nowrap">{{ __('LANGUAGE') }}</th>
+            <th style="font-weight: bold;white-space: nowrap">{{ __('FAX NUMBER') }}</th>
+            <th style="font-weight: bold;white-space: nowrap">{{ __('PO-BOX') }}</th>
+            <th style="font-weight: bold;white-space: nowrap">{{ __('EMIRATE') }}</th>
+            <th style="font-weight: bold;white-space: nowrap">{{ __('ADDRESS') }}</th>
+            <th></th>
+        </tr>
     </thead>
 </table>
 
 @foreach($artistPermit as $key =>$artists)
-    <?php
+<?php
     $artistWithThisId = \App\ArtistPermit::where('artist_permit_id', $artists->artist_permit_id)->with('profession')->first();
     ?>
 
-    <div class="modal fade" id="artist_modal_{{$artists->artist_id}}" tabindex="-1" role="dialog"
-         aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content" style="font-family: Arial;border: none;box-shadow: 1px 8px 24px -2px black;">
-                <div class="modal-header" style="background-color: #f7b100;">
-                    <h5 class="modal-title hover_title__{{$artists->artist_id}}" id="exampleModalLabel"
-                        style="font-weight:bold;margin-left:42%;color: white">
-                        {{__('Artist Report')}}
-                    </h5>
+<div class="modal fade" id="artist_modal_{{$artists->artist_id}}" tabindex="-1" role="dialog"
+    aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content" style="font-family: Arial;border: none;box-shadow: 1px 8px 24px -2px black;">
+            <div class="modal-header" style="background-color: #f7b100;">
+                <h5 class="modal-title hover_title__{{$artists->artist_id}}" id="exampleModalLabel"
+                    style="font-weight:bold;margin-left:42%;color: white">
+                    {{__('Artist Report')}}
+                </h5>
 
-                </div>
-                <div class="modal-body">
-                    <div class="container" id="tableToPrint_{{$artists->artist_id}}" style="margin-top: 10px">
+            </div>
+            <div class="modal-body">
+                <div class="container" id="tableToPrint_{{$artists->artist_id}}" style="margin-top: 10px">
 
-                        <table class="table table-borderless table-hover" id="artistTableHide_{{$artists->artist_id}}"
-                               style="font-family:arial;font-size: 11px;padding: 3px">
-                            <tr>
-                                <td colspan="8"><img style="
-                                     height: 59%;width: 99%" src='{{asset('img/raktdalogo.png')}}'/></td>
-                            </tr>
-                            <tr>
-                                <th colspan="12"
-                                      style="color: black;
+                    <table class="table table-borderless table-hover" id="artistTableHide_{{$artists->artist_id}}"
+                        style="font-family:arial;font-size: 11px;padding: 3px">
+                        <tr>
+                            <td colspan="8"><img style="
+                                     height: 59%;width: 99%" src='{{asset('img/raktdalogo.png')}}' /></td>
+                        </tr>
+                        <tr>
+                            <th colspan="12" style="color: black;
                                       padding: 6px;
                                       border-bottom: 1px solid #8c8c8c;
                                       text-align: center;">
-                                       Personal Details
-                                    - {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en  : $artists->firstname_ar. " ".$artistWithThisId->lastname_ar}}
-                                </th>
-                            </tr>
-                            <tr style="font-size: 10px;text-align: left">
-                                <th style=";padding: 9px;white-space: nowrap">{{__('PERSON CODE')}}</th>
-                                <th style=";padding: 9px;white-space: nowrap">{{__('PROFESSION')}}</th>
-                                <th style=";padding: 9px;width: 14%">{{__('NATIONALITY')}}</th>
-                                <th style="padding: 9px;white-space: nowrap">{{__('E-MAIL')}}</th>
-                                <th style=";padding: 9px;white-space: nowrap">{{__('PASSPORT NO.')}}</th>
-                                <th style="padding: 9px;white-space: nowrap">{{__('PASSPORT EXPIRY DATE')}}</th>
-                                <th style="padding: 9px;white-space: nowrap"><span> {{__('VISA NO.')}}</span></th>
-                            </tr>
-                            <tr align="left">
-                                <td style=";padding: 9px;width: 16%">{{$artistWithThisId->artist->person_code}}</td>
-                                <td style=";padding: 9px;width: 14%">{{$artistWithThisId->profession?$artistWithThisId->profession->name_en:''}}</td>
-                                <td style=";padding: 9px;width: 14%">{{$artistWithThisId->country?$artistWithThisId->country->nationality_en:''}}</td>
-                                <td style="padding: 9px;width: 20%">{{$artistWithThisId->email}}</td>
-                                <td style=";padding: 9px;width:17%">{{$artistWithThisId->passport_number}}</td>
-                                <?php
+                                Personal Details
+                                -
+                                {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en  : $artists->firstname_ar. " ".$artistWithThisId->lastname_ar}}
+                            </th>
+                        </tr>
+                        <tr style="font-size: 10px;text-align: left">
+                            <th style=";padding: 9px;white-space: nowrap">{{__('PERSON CODE')}}</th>
+                            <th style=";padding: 9px;white-space: nowrap">{{__('PROFESSION')}}</th>
+                            <th style=";padding: 9px;width: 14%">{{__('NATIONALITY')}}</th>
+                            <th style="padding: 9px;white-space: nowrap">{{__('E-MAIL')}}</th>
+                            <th style=";padding: 9px;white-space: nowrap">{{__('PASSPORT NO.')}}</th>
+                            <th style="padding: 9px;white-space: nowrap">{{__('PASSPORT EXPIRY DATE')}}</th>
+                            <th style="padding: 9px;white-space: nowrap"><span> {{__('VISA NO.')}}</span></th>
+                        </tr>
+                        <tr align="left">
+                            <td style=";padding: 9px;width: 16%">{{$artistWithThisId->artist->person_code}}</td>
+                            <td style=";padding: 9px;width: 14%">
+                                {{$artistWithThisId->profession?$artistWithThisId->profession->name_en:''}}</td>
+                            <td style=";padding: 9px;width: 14%">
+                                {{$artistWithThisId->country?$artistWithThisId->country->nationality_en:''}}</td>
+                            <td style="padding: 9px;width: 20%">{{$artistWithThisId->email}}</td>
+                            <td style=";padding: 9px;width:17%">{{$artistWithThisId->passport_number}}</td>
+                            <?php
                                 $passport_expire_date = \Illuminate\Support\Facades\Date::make($artistWithThisId->passport_expire_date)->format('d-M-Y');
                                 ?>
-                                <td style="padding: 9px;width: 18%">{{$passport_expire_date}}</td>
-                                <td style="padding: 9px;width:10%;">{{$artistWithThisId->visa_number}}</td>
-                            </tr>
-                        </table>
+                            <td style="padding: 9px;width: 18%">{{$passport_expire_date}}</td>
+                            <td style="padding: 9px;width:10%;">{{$artistWithThisId->visa_number}}</td>
+                        </tr>
+                    </table>
 
 
-                        <table class="table  table-hover table-borderless table-striped "
-                               style="font-size: 12px;margin-top:5%;font-family:Arial"
-                               id="printTable_{{$artists->artist_id}}">
-                            <thead>
+                    <table class="table  table-hover table-borderless table-striped "
+                        style="font-size: 12px;margin-top:5%;font-family:Arial" id="printTable_{{$artists->artist_id}}">
+                        <thead>
                             <tr>
-                                <th colspan="7"
-                                    style="font-size: 11px;
+                                <th colspan="7" style="font-size: 11px;
                                      padding: 6px;
                                      font-weight: bold;
                                      border-bottom: 1px solid #0000004d;
@@ -285,21 +285,33 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                      text-align: center;
                                      width: 100%;">
                                     Permit
-                                    Details {{--{{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en: $artists->firstname_ar." ".$artists->lastname_ar}}--}}
+                                    Details
+                                    {{--{{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en: $artists->firstname_ar." ".$artists->lastname_ar}}--}}
                                 </th>
                             </tr>
                             <tr align="center">
-                                <th style="width: 18% ;font-weight: bold;font-size: 10px;text-align: left;padding:13px">{{ __('NAME') }}</th>
-                                <th style="width: 14%; font-weight: bold;font-size: 10px ;text-align: left;padding:13px">{{ __('PERMIT NO.') }}</th>
-                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('REFERENCE NO.') }}</th>
-                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('ISSUED DATE') }}</th>
-                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('EXPIRY DATE') }}</th>
-                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('COMPANY') }}</th>
+                                <th style="width: 18% ;font-weight: bold;font-size: 10px;text-align: left;padding:13px">
+                                    {{ __('NAME') }}</th>
+                                <th
+                                    style="width: 14%; font-weight: bold;font-size: 10px ;text-align: left;padding:13px">
+                                    {{ __('PERMIT NO.') }}</th>
+                                <th
+                                    style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">
+                                    {{ __('REFERENCE NO.') }}</th>
+                                <th
+                                    style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">
+                                    {{ __('ISSUED DATE') }}</th>
+                                <th
+                                    style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">
+                                    {{ __('EXPIRY DATE') }}</th>
+                                <th
+                                    style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">
+                                    {{ __('COMPANY') }}</th>
                                 <th></th>
                             </tr>
-                            </thead>
+                        </thead>
 
-                            <tbody>
+                        <tbody>
 
                             <?php
                             $permits=\App\Permit::wherehas('artistPermit',function ($q) use ($artists){
@@ -308,18 +320,22 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             ?>
                             @foreach($permits as $permit)
 
-                                <tr align="center">
-                                    <td style="text-align: left;padding:14px;font-size: 10px">{{ Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en  : $artists->firstname_ar . ' ' . $artists->lastname_ar}}
-                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->permit_number}}</td>
-                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->reference_number}}</td>
-                                    <?php
+                            <tr align="center">
+                                <td style="text-align: left;padding:14px;font-size: 10px">
+                                    {{ Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en  : $artists->firstname_ar . ' ' . $artists->lastname_ar}}
+                                <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->permit_number}}
+                                </td>
+                                <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->reference_number}}
+                                </td>
+                                <?php
                                     $issued_date = \Illuminate\Support\Facades\Date::make($permit->issued_date)->format('d-M-Y');
                                     $expire_date = \Illuminate\Support\Facades\Date::make($permit->expired_date)->format('d-M-Y');
                                     ?>
-                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$issued_date}}</td>
-                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$expire_date}}</td>
-                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->company? $permit->company->name_en:''}}</td>
-                                </tr>
+                                <td style="text-align: left;padding:14px;font-size: 10px">{{$issued_date}}</td>
+                                <td style="text-align: left;padding:14px;font-size: 10px">{{$expire_date}}</td>
+                                <td style="text-align: left;padding:14px;font-size: 10px">
+                                    {{$permit->company? $permit->company->name_en:''}}</td>
+                            </tr>
 
                             @endforeach
                             <tr>
@@ -330,28 +346,27 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                     Total Permits : <span style="color: grey">{{$permits->count()}}</span>
                                 </th>
                             </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="modal-footer" id="modal_footer{{$artists->artist_id}}">
-                    <button class="btn btn-success"
-                            style="height: 26px; line-height: 3px; border-radius: 2px; box-shadow: 1px 3px 4px -4px black;"
-                            id="{{$artists->artist_id}}" onclick="printContent({{$artists->artist_id}})">Print
-                    </button>
-                    <button
-                        style="height: 26px; line-height: 3px; border-radius: 2px; box-shadow: 1px 3px 4px -4px black;"
-                        type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                    </button>
-                </div>
+            </div>
+            <div class="modal-footer" id="modal_footer{{$artists->artist_id}}">
+                <button class="btn btn-success"
+                    style="height: 26px; line-height: 3px; border-radius: 2px; box-shadow: 1px 3px 4px -4px black;"
+                    id="{{$artists->artist_id}}" onclick="printContent({{$artists->artist_id}})">Print
+                </button>
+                <button style="height: 26px; line-height: 3px; border-radius: 2px; box-shadow: 1px 3px 4px -4px black;"
+                    type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                </button>
             </div>
         </div>
     </div>
+</div>
 
 @endforeach
 @section('script')
-    <script>
-        function printContent(id) {
+<script>
+    function printContent(id) {
             var artistTableHide = '#artistTableHide_' + id;
             var tableToPrint = 'tableToPrint_' + id;
             $(artistTableHide).css({'display': 'block', 'text-align': 'center'})
@@ -1906,7 +1921,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 ],
                 "searching": false,
                 buttons: ['pageLength',
-
                     {
 
                         extend: 'print',
@@ -4237,6 +4251,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         },
                         {
                             extend: 'excel',
+                            action: '',
+                            className: 'btn-danger',
                             exportOptions: {
                                 columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
                             },
@@ -4511,7 +4527,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         $("#filter_event_button").click(function () {
             $("#filter_to_hide").toggle();
         });
-    </script>
+</script>
 @endsection
 {{--@include('admin.artist_permit.includes.artist-block-modal')--}}
-

@@ -332,6 +332,12 @@
                                 }
                             }
                         });
+                    }else {
+                        $.ajax({
+                            url: "{{route('artist.reset_req_in_session')}}",
+                            type: 'POST',
+                            data: { id: $('#req_id_'+i).val()}
+                        })
                     }
 
                 },
@@ -423,10 +429,7 @@
                     $.ajax({
                             cache: false,
                             url: "{{route('company.delete_pic_files_in_session')}}",
-                            type: 'POST',
-                            success: function (data) {
-                                
-                            }
+                            type: 'POST'
                     });
                 },
                 onError: function (files, status, errMsg, pd) {
@@ -812,7 +815,7 @@
                         overlayColor: '#000000',
                         type: 'v2',
                         state: 'success',
-                        message: 'Please wait...'
+                        message: '{{__("Please wait...")}}'
                     });
                 },
                 success: function(result){

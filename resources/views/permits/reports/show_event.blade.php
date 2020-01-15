@@ -16,14 +16,14 @@
         </div>
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
+                <a href="{{URL::signedRoute('report.view', [ 'id' => $event->transaction[0]->transaction_id])}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                     {{__('Back')}}
                 </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
+                <a href="{{URL::signedRoute('report.view', [ 'id' => $event->transaction[0]->transaction_id])}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
                 </a>
@@ -649,7 +649,6 @@
                         $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
                         $('#liquor_details .ajax-file-upload-red').trigger('click');
-                        console.log(data);
                         if(data.provided == 1)
                         {
                             checkLiquorVenue(1);

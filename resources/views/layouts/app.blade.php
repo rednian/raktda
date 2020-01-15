@@ -118,39 +118,40 @@
                 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
                     <!-- begin:: Content -->
                     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
-                    
+
                         @if (
-                            Auth::check() &&
-                            (Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now()->addDays(10)) 
-                            && !is_null(Auth::user()->company->registered_by) 
+                        Auth::check() &&
+                        (Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now()->addDays(10))
+                            && !is_null(Auth::user()->company->registered_by)
                             )
-                          <div class="alert alert-warning fade show kt-margin-b-5" role="alert">
-                              <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                              @php
-                              $words = Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now() ? __('already expired ') : __('will expire ') 
-                              @endphp
-                              <div class="alert-text">{{__('Your Business Trade License '.$words)}} 
-                                 <span title="{{Auth::user()->company->trade_license_expired_date->format('d-F-Y') }}" class="text-underline kt-font-bold">{{ humanDate(Auth::user()->company->trade_license_expired_date) }}</span>. <br>
-                              {{__('Please update your Business Trade License before the expiry date to avoid inconvenient in applying RAKTDA Services.')}}</div>
-                              <div class="alert-close">
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                      <span aria-hidden="true"><i class="la la-close"></i></span>
-                                  </button>
-                              </div>
-                          </div>
-                        @endif
-                
-                            <section class="row">
-                                <div class="col">
-                                    @yield('content')
-                                </div>
-                            </section>
+                            <div class="alert alert-warning fade show kt-margin-b-5" role="alert">
+                                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                @php
+                                $words = (Auth::user()->company->trade_license_expired_date < \Carbon\Carbon::now()) ?
+                                    __('already expired') : __('will expire') ; @endphp <div class="alert-text">
+                                    {{__('Your Business Trade License '.$words.' ')}}
+                                    <span
+                                        title="{{Auth::user()->company->trade_license_expired_date->format('d-F-Y') }}"
+                                        class="text-underline kt-font-bold">{{ humanDate(Auth::user()->company->trade_license_expired_date) }}</span>.
+                                    <br>
+                                    {{__('Please update your Business Trade License before the expiry date to avoid inconvenient in applying RAKTDA Services.')}}
+                            </div>
+                            <div class="alert-close">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><i class="la la-close"></i></span>
+                                </button>
+                            </div>
                     </div>
-                    <!-- end:: Content -->
-                </div>
-                {{-- @include('layouts.admin.footer') --}}
+                    @endif
+
+                    <section class="row">
+                        <div class="col">
+                            @yield('content') </div>
+                    </section>
+                </div> <!-- end:: Content -->
             </div>
         </div>
+    </div>
     </div>
     @if (Auth::check())
     <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
@@ -164,11 +165,14 @@
     <script src="{{ asset('/js/custom-pages.js') }}"></script>
     <script src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}"></script>
 
-    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/piexif.js') }}">
+    </script>
     <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/plugins/sortable.js') }}">
     </script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/js/fileinput.js') }}">
+    </script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/fas/theme.js') }}">
+    </script>
     <script type="text/javascript" src="{{ asset('assets/vendors/custom/fileupload/themes/explorer-fas/theme.js') }}">
     </script>
     {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script> --}}
@@ -216,6 +220,8 @@
     });
 
     $('.card-title').addClass('kt-padding-t-10').addClass('kt-padding-b-5');
+
+    
 </script>
 <!-- end::Body -->
 

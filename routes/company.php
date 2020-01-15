@@ -101,8 +101,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('artist/checkArtistProfession', 'Company\ArtistController@checkArtistProfession')->name('artist.checkArtistProfession');
     Route::post('artist/delete_files_in_session', 'Company\ArtistController@delete_files_in_session')->name('company.delete_files_in_session');
     Route::post('artist/delete_pic_files_in_session', 'Company\ArtistController@delete_pic_files_in_session')->name('company.delete_pic_files_in_session');
-    
-
+    Route::post('artist/reset_req_in_session', 'Company\ArtistController@reset_req_in_session')->name('artist.reset_req_in_session');
 
     Route::resource('event', 'Company\EventController');
     Route::post('event/update_event', 'Company\EventController@update_event')->name('company.event.update_event');
@@ -148,8 +147,6 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('event/fetch_truck_details', 'Company\EventController@fetch_truck_details')->name('event.fetch_truck_details');
     Route::get('event/fetch_truck_details_by_event_id/{id}', 'Company\EventController@fetch_truck_details_by_event_id')->name('event.fetch_truck_details_by_event_id');
 
-    Route::get('event/deleteEventPic/{id}', 'Company\EventController@deleteEventPic')->name('event.deleteEventPic');
-
     Route::get('event/delete_truck_details/{id}', 'Company\EventController@delete_truck_details')->name('event.delete_truck_details');
 
     Route::post('event/deleteTruckLiquor', 'Company\EventController@deleteTruckLiquor')->name('event.deleteTruckLiquor');
@@ -165,6 +162,9 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     // Route::get('event/eventpics/{id}', 'Company\EventController@eventpics')->name('event.eventpics');
     Route::get('event/get_event_sub_types/{id}', 'Company\EventController@get_event_sub_types')->name('event.get_event_sub_types');
     Route::post('event/delete_logo_in_session', 'Company\EventController@delete_logo_in_session')->name('event.delete_logo_in_session');
+    Route::post('event/deleteUploadedEventPic', 'Company\EventController@deleteUploadedEventPic')->name('event.deleteUploadedEventPic');
+    Route::post('event/forgotEventPicsSession', 'Company\EventController@forgotEventPicsSession')->name('event.forgotEventPicsSession');
+    
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 
     Route::get('event/getpaymentdetails/{orderid}', 'Company\EventController@get_payment_details')->name('company.getpaymentdetails');
@@ -172,4 +172,9 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('reports', 'Company\ReportController@index')->name('company.reports');
     Route::get('transactions', 'Company\ReportController@transactions')->name('company.transactions');
     Route::get('reports/transaction/view/{id}', 'Company\ReportController@show')->name('report.view');
+    Route::get('reports/event/view/{id}', 'Company\ReportController@showevent')->name('report.view_event');
+    Route::get('reports/transaction/print/{id}', 'Company\ReportController@transactionprint')->name('transaction.print');
+
+    
+    
 });
