@@ -19,7 +19,7 @@ class CompanyController extends Controller
    {
     if (!$request->hasValidSignature()) { abort(401); }
 
-      $new_company = Company::where('status', 'new')->count();
+      $new_company = Company::whereIn('status', ['new'])->count();
 
       return view('admin.company.index',[ 
          'page_title'=> __('Establishment'),
@@ -27,7 +27,7 @@ class CompanyController extends Controller
          'approved'=> Company::where('status', 'active')->count(),
          'blocked'=> Company::where('status', 'blocked')->count(),
          'types'=>  CompanyType::orderBy('name_en')->get(),
-         'areas'=>  Areas::has('company')->where('emirates_id', 5)->orderBy('area_en')->get(),
+         'areas'=>  Areas::whereHas('company', function($q){ $q->whereIn('status', ['new', 'pending']); })->where('emirates_id', 5)->orderBy('area_en')->get(),
       ]);
    }
 

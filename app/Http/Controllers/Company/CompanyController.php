@@ -281,7 +281,8 @@ class CompanyController extends Controller
 
            foreach ($request->files as $upload) {
              foreach ($upload as $page_number => $file) {
-                 $filename = $other->name_en.'_'.($page_number+1).'.'.$file->getClientOriginalExtension();
+                 $filename = $other->name_en.'_'.($page_number+1).'_'.time().'.'.$file->getClientOriginalExtension();
+
 
                  Storage::putFileAs($path, $file, $filename);
 
@@ -311,7 +312,7 @@ class CompanyController extends Controller
 
            foreach ($request->files as $upload) {
              foreach ($upload as $page_number => $file) {
-                 $filename = $requirement_name.'_'.($page_number+1).'.'.$file->getClientOriginalExtension();
+                 $filename = $requirement_name.'_'.($page_number+1).'_'.time().'.'.$file->getClientOriginalExtension();
 
                  Storage::putFileAs($path, $file, $filename);
 
@@ -375,7 +376,7 @@ class CompanyController extends Controller
           $name = __('Other Upload');
         }
         $html = '<a href="'.asset('/storage/'.$data->path).'"data-fancybox data-fancybox data-caption="'.$name.'">';
-        $html .= $name.'_'.$data->page_number;
+        $html .= $name;
         $html .= '</a>';
         return $html;
       })
