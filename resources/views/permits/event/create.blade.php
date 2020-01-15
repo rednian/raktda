@@ -2,6 +2,7 @@
 
 @section('title', 'Add Event Permit - Smart Government Rak')
 
+
 @section('content')
 
 <link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
@@ -731,10 +732,10 @@
                     },
                     onLoad:function(obj)
                     {
-                        var loadUrl = "{{route('company.resetUploadsSession', ':id')}}";
-                        loadUrl = loadUrl.replace(':id', $('#req_id_' + i).val());
                         $.ajax({
-                            url: loadUrl,
+                            url: "{{route('event.removeUploadedDocumentInSession')}}",
+                            type: 'POST',
+                            data: {reqId: $('#req_id_' + i).val()},
                             success: function(data)
                             {
                             }
@@ -1087,8 +1088,8 @@
         function call_this_to_submit(isArtist = null){
             var hasFile = docValidation();
                 if ((documentsValidator != '' ? documentsValidator.form() : 1) &&  hasFile ) {
-                    $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
-                    $('#submit--btn-group').css('pointer-events', 'none');
+                    // $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+                    // $('#submit--btn-group').css('pointer-events', 'none');
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
                     var dn = localStorage.getItem('documentNames');
@@ -1148,9 +1149,9 @@
         $('#draft_btn').click((e) => {
             var hasFile = docValidation();
                 if ((documentsValidator != '' ? documentsValidator.form() : 1) && hasFile) {
-                    $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
+                    // $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
-                    $('#submit--btn-group').css('pointer-events', 'none');
+                    // $('#submit--btn-group').css('pointer-events', 'none');
 
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');

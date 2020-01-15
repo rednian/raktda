@@ -812,3 +812,11 @@ img.ajax-file-upload-preview {
 .ajax-file-upload-error {
     color: #a00101;
 }
+
+#edit_one_food_truck .ajax-file-upload-statusbar {
+    width: 240px !important;
+}
+
+#liquor_details .ajax-file-upload-statusbar {
+    width: 240px !important;
+}

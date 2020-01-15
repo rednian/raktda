@@ -827,6 +827,12 @@ $language_id = Auth::user()->LanguageId;
                 onLoad:function(obj)
                 {
                     $code = $('#code').val();
+                    $.ajax({
+                        url: "{{route('artist.reset_req_in_session')}}",
+                        type: 'POST',
+                        data: { id: $('#req_id_'+i).val()}
+                    })
+
                     if($code){
                         $.ajaxSetup({
                         headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -851,13 +857,6 @@ $language_id = Auth::user()->LanguageId;
                                 }
                             }
                         });
-                    }else {
-                        $.ajax({
-                            url: "{{route('artist.reset_req_in_session')}}",
-                            type: 'POST',
-                            data: { id: $('#req_id_'+i).val()}
-                        });
-                    
                     }
                 },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true

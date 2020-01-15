@@ -169,7 +169,7 @@
                 {
                     extend: 'excel',
                     exportOptions: {
-                        columns: [0,1,2,3,4,5,6]
+                        columns: [0,1,2,3,4,5]
                     }
                 },
                 {
@@ -180,7 +180,7 @@
                     },
                     exportOptions: {
                         // columns: ':visible',
-                        columns: [0,1,2,3,4,5,6]
+                        columns: [0,1,2,3,4,5]
                     },
                     customize: function ( win ) {
                             $(win.document.body).prepend(

@@ -305,6 +305,11 @@
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();
+                    $.ajax({
+                        url: "{{route('artist.reset_req_in_session')}}",
+                        type: 'POST',
+                        data: { id: $('#req_id_'+i).val()}
+                    })
                     if(temp_id){
                         $.ajaxSetup({
                         headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -332,12 +337,6 @@
                                 }
                             }
                         });
-                    }else {
-                        $.ajax({
-                            url: "{{route('artist.reset_req_in_session')}}",
-                            type: 'POST',
-                            data: { id: $('#req_id_'+i).val()}
-                        })
                     }
 
                 },

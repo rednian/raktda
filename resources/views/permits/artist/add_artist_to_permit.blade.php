@@ -856,36 +856,33 @@ $language_id = \Auth::user()->LanguageId;
                 onLoad:function(obj)
                 {
                     var code = $('#code').val();
-                    if(code || $('#artist_permit_id').val())
-                    {
-                        $.ajax({
-                            cache: false,
-                            url: "{{route('company.get_files_uploaded')}}",
-                            type: 'POST',
-                            data: {artist_permit: $('#artist_permit_id').val(), reqId: $('#req_id_'+i).val()},
-                            dataType: "json",
-                            success: function(data)
-                            {
-                                // console.log('../../storage/'+data[0]["path"]);
-                                let id = obj[0].id;
-                                let number = id.split("_");
-                                let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                                let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                                obj.createProgress(data.requirement['requirement_name'],"{{url('storage')}}"+'/'+data.path,'');
-                                if(formatted_issue_date != NaN-NaN-NaN)
-                                {
-                                    $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
-                                    $('#doc_exp_date_'+number[1]).val(formatted_exp_date);
-                                }
-                            }
-                        });
-                    }else {
-                        $.ajax({
+                    $.ajax({
                             url: "{{route('artist.reset_req_in_session')}}",
                             type: 'POST',
                             data: { id: $('#req_id_'+i).val()}
-                        })
-                    }
+                    })
+                    $.ajax({
+                        cache: false,
+                        url: "{{route('company.get_files_uploaded')}}",
+                        type: 'POST',
+                        data: {artist_permit: $('#artist_permit_id').val(), reqId: $('#req_id_'+i).val()},
+                        dataType: "json",
+                        success: function(data)
+                        {
+                            // console.log('../../storage/'+data[0]["path"]);
+                            let id = obj[0].id;
+                            let number = id.split("_");
+                            let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                            let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                            obj.createProgress(data.requirement['requirement_name'],"{{url('storage')}}"+'/'+data.path,'');
+                            if(formatted_issue_date != NaN-NaN-NaN)
+                            {
+                                $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
+                                $('#doc_exp_date_'+number[1]).val(formatted_exp_date);
+                            }
+                        }
+                    });
+                    
                 },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
                 {

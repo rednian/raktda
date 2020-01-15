@@ -750,6 +750,13 @@
                         pd.progressbar.width('0%');
                     },
                     onLoad: function (obj) {
+
+                        $.ajax({
+                            url: "{{route('event.removeUploadedDocumentInSession')}}",
+                            type: 'POST',
+                            data: {reqId: requiId}
+                        });
+
                         $.ajax({
                             cache: false,
                             url: "{{route('company.event.get_uploaded_docs')}}",
