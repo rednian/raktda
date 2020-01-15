@@ -135,20 +135,27 @@
                                 {{ ucwords($artist_detail->artist_permit_status)}}
                             </td>
                             <td class="d-flex justify-content-center">
+                                @if($artist_detail->artist_permit_status == 'rejected')
                                 <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                     title="Edit">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('Edit')}}</button>
                                 </a>
+                                @endif
                                 <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                     title="View">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning  kt-margin-r-5">{{__('View')}}</button>
                                 </a>
                                 @if(count($artist_details) > 1)
+                                @if($artist_detail->artist_permit_status == 'rejected')
                                 <a href="#"
                                     onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-warning-hover  kt-margin-r-5">{{__('Remove')}}</button>
                                 </a>
+                                @endif
                                 @endif
                                 {{-- @if(count($staff_comments) > 0)
                                 <a href="#" onclick="getArtistComments({{$artist_detail->artist_permit_id}})">
@@ -297,7 +304,7 @@
                     overlayColor: '#000000',
                     type: 'v2',
                     state: 'success',
-                    message: 'Please wait...'
+                    message: '{{__("Please wait...")}}'
                 });
             },
             success: function(result) {

@@ -105,15 +105,16 @@
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
           role="tablist" id="artist-permit-nav">
           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-              data-target="#new-request">{{ __('New Requests') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
+              data-target="#new-request">{{ __('New Requests') }} <span
+                class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#pending-request"
-              data-target="#pending-request">{{ __('Pending Request') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
+              data-target="#pending-request">{{ __('Pending Request') }} <span
+                class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
               href="#processing-permit">{{ __('Processing Events') }}</a></li>
-          <li class="nav-item"><a class="nav-link " data-toggle="tab"
-              href="#active-permit">{{ __('Permit Action') }} <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
-          <li class="nav-item"><a class="nav-link" data-toggle="tab"
-              href="#archive-permit">{{ __('History') }}</a></li>
+          <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Permit Action') }}
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
+          <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }}</a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab"
               href="#calendar">{{ __('All Events Calendar') }}</a></li>
         </ul>
@@ -137,22 +138,28 @@
           <div class="col-8">
             <form class="form-row">
               <div class="col-4">
-                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="new-event-type-id" onchange="newEventTable.draw()">
+                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="new-event-type-id" onchange="newEventTable.draw()">
                   <option selected disabled>{{__('EVENT TYPE')}}</option>
                   @if ($types = App\EventType::whereHas('event', function($q){$q->where('status', 'new');})->get())
-                    @foreach ($types as $type)
-                      <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
-                    @endforeach
+                  @foreach ($types as $type)
+                  <option value="{{$type->event_type_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
+                  @endforeach
                   @endif
                 </select>
               </div>
               <div class="col-3">
-                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="new-event-type-sub-id" onchange="newEventTable.draw()">
+                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="new-event-type-sub-id" onchange="newEventTable.draw()">
                   <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
-                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->where('status', 'new');})->where('event_type_sub_id', '!=', 0)->get())
-                    @foreach ($subs as $sub)
-                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
-                    @endforeach
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->where('status',
+                  'new');})->where('event_type_sub_id', '!=', 0)->get())
+                  @foreach ($subs as $sub)
+                  <option value="{{$sub->event_type_sub_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}
+                  </option>
+                  @endforeach
                   @endif
                 </select>
               </div>
@@ -164,7 +171,7 @@
                   <option value="government">{{ __('Government') }}</option>
                 </select>
               </div>
-            
+
               <div class="col-2">
                 <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">{{ __('RESET') }}</button>
               </div>
@@ -224,28 +231,36 @@
           <div class="col-8">
             <form class="form-row">
               <div class="col-4">
-                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="pending-event-type-id" onchange="pendingEventTable.draw()">
+                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="pending-event-type-id" onchange="pendingEventTable.draw()">
                   <option selected disabled>{{__('EVENT TYPE')}}</option>
-                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['amended', 'checked']);})->get())
-                    @foreach ($types as $type)
-                      <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
-                    @endforeach
+                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['amended',
+                  'checked']);})->get())
+                  @foreach ($types as $type)
+                  <option value="{{$type->event_type_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
+                  @endforeach
                   @endif
                 </select>
               </div>
               <div class="col-3">
-                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="pending-event-type-sub-id" onchange="pendingEventTable.draw()">
+                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="pending-event-type-sub-id" onchange="pendingEventTable.draw()">
                   <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
-                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['amended', 'checked']);})->where('event_type_sub_id', '!=', 0)->get())
-                    @foreach ($subs as $sub)
-                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
-                    @endforeach
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status', ['amended',
+                  'checked']);})->where('event_type_sub_id', '!=', 0)->get())
+                  @foreach ($subs as $sub)
+                  <option value="{{$sub->event_type_sub_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}
+                  </option>
+                  @endforeach
                   @endif
                 </select>
               </div>
               <div class="col-3">
                 <select name="" id="pending-applicant-type"
-                  class="form-control-sm form-control custom-select custom-select-sm " onchange="pendingEventTable.draw()">
+                  class="form-control-sm form-control custom-select custom-select-sm "
+                  onchange="pendingEventTable.draw()">
                   <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
                   <option value="corporate">{{ __('Corporate') }}</option>
                   <option value="government">{{ __('Government') }}</option>
@@ -311,22 +326,30 @@
           <div class="col-8">
             <form class="form-row">
               <div class="col-4">
-                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="processing-event-type-id" onchange="eventProcessingTable.draw()">
+                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="processing-event-type-id" onchange="eventProcessingTable.draw()">
                   <option selected disabled>{{__('EVENT TYPE')}}</option>
-                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['approved-unpaid', 'processing', 'need approval', 'need modification']);})->get())
-                    @foreach ($types as $type)
-                      <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
-                    @endforeach
+                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['approved-unpaid',
+                  'processing', 'need approval', 'need modification']);})->get())
+                  @foreach ($types as $type)
+                  <option value="{{$type->event_type_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
+                  @endforeach
                   @endif
                 </select>
               </div>
               <div class="col-3">
-                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="processing-event-type-sub-id" onchange="eventProcessingTable.draw()">
+                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="processing-event-type-sub-id" onchange="eventProcessingTable.draw()">
                   <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
-                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['approved-unpaid', 'processing', 'need approval', 'need modification']);})->where('event_type_sub_id', '!=', 0)->get())
-                    @foreach ($subs as $sub)
-                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
-                    @endforeach
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',
+                  ['approved-unpaid', 'processing', 'need approval', 'need
+                  modification']);})->where('event_type_sub_id', '!=', 0)->get())
+                  @foreach ($subs as $sub)
+                  <option value="{{$sub->event_type_sub_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}
+                  </option>
+                  @endforeach
                   @endif
                 </select>
               </div>
@@ -357,7 +380,8 @@
             </div>
           </div>
         </section>
-        <table class="table table-head-noborder table-borderless table-sm table-striped border" id="new-event-processing">
+        <table class="table table-head-noborder table-borderless table-sm table-striped border"
+          id="new-event-processing">
           <thead>
             <tr>
               <th>{{ __('REFERENCE NO.') }}</th>
@@ -399,27 +423,35 @@
           <div class="col-8">
             <form class="form-row">
               <div class="col-4">
-                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="active-event-type-id" onchange="eventActiveTable.draw()">
+                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="active-event-type-id" onchange="eventActiveTable.draw()">
                   <option selected disabled>{{__('EVENT TYPE')}}</option>
-                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['active']);})->get())
-                    @foreach ($types as $type)
-                      <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
-                    @endforeach
+                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status',
+                  ['active']);})->get())
+                  @foreach ($types as $type)
+                  <option value="{{$type->event_type_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
+                  @endforeach
                   @endif
                 </select>
               </div>
               <div class="col-3">
-                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="active-event-type-sub-id" onchange="eventActiveTable.draw()">
+                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="active-event-type-sub-id" onchange="eventActiveTable.draw()">
                   <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
-                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['active']);})->where('event_type_sub_id', '!=', 0)->get())
-                    @foreach ($subs as $sub)
-                      <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
-                    @endforeach
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',
+                  ['active']);})->where('event_type_sub_id', '!=', 0)->get())
+                  @foreach ($subs as $sub)
+                  <option value="{{$sub->event_type_sub_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}
+                  </option>
+                  @endforeach
                   @endif
                 </select>
               </div>
               <div class="col-3">
-                <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm "
+                <select name="" id="active-applicant-type"
+                  class="form-control-sm form-control custom-select custom-select-sm "
                   onchange="eventActiveTable.draw()">
                   <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
                   <option value="corporate">{{ __('Corporate') }}</option>
@@ -429,183 +461,191 @@
               <div class="col-2">
                 <button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">{{ __('RESET') }}</button>
               </div>
-          </form>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group form-group-sm">
-            <div class="kt-input-icon kt-input-icon--right">
-              <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..."
-                id="search-active-request">
-              <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                <span><i class="la la-search"></i></span>
-              </span>
+            </form>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group form-group-sm">
+              <div class="kt-input-icon kt-input-icon--right">
+                <input autocomplete="off" type="search" class="form-control form-control-sm"
+                  placeholder="{{ __('Search') }}..." id="search-active-request">
+                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                  <span><i class="la la-search"></i></span>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
-        <thead>
-          <tr>
-            <th>{{ __('REFERENCE NO.') }}</th>
-            <th>{{ __('EVENT NAME') }}</th>
-            <th>{{ __('EVENT TYPE') }}</th>
-            <th>{{ __('ESTABLISHMENT NAME') }}</th>
-            <th>{{ __('EVENT DURATION') }}</th>
-            <th>{{ __('APPLICATION TYPE') }}</th>
-            <th>{{ __('APPROVED DATE') }}</th>
-            <th>{{ __('APPROVED BY') }}</th>
-            <th>{{ __('PERMIT NUMBER') }}</th>
-            <th>{{ __('START DATE') }}</th>
-            <th>{{ __('END DATE') }}</th>
-            <th>{{ __('TIME') }}</th>
-            <th>{{ __('OWNER NAME') }}</th>
-            <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
-            <th>{{ __('HAS LIQUOR') }}</th>
-            <th>{{ __('FOOD TRUCK') }}</th>
-            <th>{{ __('HAS ARTIST PERMIT?') }}</th>
-            <th>{{ __('SHOWN ON THE REGISTERED USERS\' CALENDARS') }}</th>
-            <th>{{ __('SHOWN ON PUBLIC WEBSITE CALENDAR') }}</th>
-            <th>{{ __('EVENT DETAILS') }}</th>
-            <th>{{ __('VENUE') }}</th>
-            <th>{{ __('EVENT LOCATION') }}</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-    <div class="tab-pane fade" id="archive-permit" role="tabpanel">
-      <section class="form-row">
-        <div class="col-1">
-          <div>
-            <select name="length_change" id="archive-length-change"
-              class="form-control-sm form-control custom-select custom-select-sm">
-              <option value='10'>10</option>
-              <option value='25'>25</option>
-              <option value='50'>50</option>
-              <option value='75'>75</option>
-              <option value='100'>100</option>
-            </select>
+        </section>
+        <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
+          <thead>
+            <tr>
+              <th>{{ __('REFERENCE NO.') }}</th>
+              <th>{{ __('EVENT NAME') }}</th>
+              <th>{{ __('EVENT TYPE') }}</th>
+              <th>{{ __('ESTABLISHMENT NAME') }}</th>
+              <th>{{ __('EVENT DURATION') }}</th>
+              <th>{{ __('APPLICATION TYPE') }}</th>
+              <th>{{ __('APPROVED DATE') }}</th>
+              <th>{{ __('APPROVED BY') }}</th>
+              <th>{{ __('PERMIT NUMBER') }}</th>
+              <th>{{ __('START DATE') }}</th>
+              <th>{{ __('END DATE') }}</th>
+              <th>{{ __('TIME') }}</th>
+              <th>{{ __('OWNER NAME') }}</th>
+              <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR') }}</th>
+              <th>{{ __('FOOD TRUCK') }}</th>
+              <th>{{ __('HAS ARTIST PERMIT?') }}</th>
+              <th>{{ __('SHOWN ON THE REGISTERED USERS\' CALENDARS') }}</th>
+              <th>{{ __('SHOWN ON PUBLIC WEBSITE CALENDAR') }}</th>
+              <th>{{ __('EVENT DETAILS') }}</th>
+              <th>{{ __('VENUE') }}</th>
+              <th>{{ __('EVENT LOCATION') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="archive-permit" role="tabpanel">
+        <section class="form-row">
+          <div class="col-1">
+            <div>
+              <select name="length_change" id="archive-length-change"
+                class="form-control-sm form-control custom-select custom-select-sm">
+                <option value='10'>10</option>
+                <option value='25'>25</option>
+                <option value='50'>50</option>
+                <option value='75'>75</option>
+                <option value='100'>100</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="col-8">
-          <form class="form-row">
-            <div class="col-4">
-              <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm" id="archieve-event-type-id" onchange="eventArchiveTable.draw()">
-                <option selected disabled>{{__('EVENT TYPE')}}</option>
-                @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['cancelled', 'rejected', 'expired']);})->get())
+          <div class="col-8">
+            <form class="form-row">
+              <div class="col-4">
+                <select name="event_type_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="archieve-event-type-id" onchange="eventArchiveTable.draw()">
+                  <option selected disabled>{{__('EVENT TYPE')}}</option>
+                  @if ($types = App\EventType::whereHas('event', function($q){$q->whereIn('status', ['cancelled',
+                  'rejected', 'expired']);})->get())
                   @foreach ($types as $type)
-                    <option value="{{$type->event_type_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
-                  @endforeach
-                @endif
-              </select>
-            </div>
-            <div class="col-3">
-              <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm" id="archieve-event-type-sub-id" onchange="eventArchiveTable.draw()">
-                <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
-                @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',  ['cancelled', 'rejected', 'expired']);})->where('event_type_sub_id', '!=', 0)->get())
-                  @foreach ($subs as $sub)
-                    <option value="{{$sub->event_type_sub_id}}">{{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}</option>
-                  @endforeach
-                @endif
-              </select>
-            </div>
-            <div class="col-3">
-              <select name="" id="archive-applicant-type"
-                class="form-control-sm form-control custom-select custom-select-sm " onchange="eventArchiveTable.draw()">
-                <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
-                <option value="corporate">{{ __('Corporate') }}</option>
-                <option value="government">{{ __('Government') }}</option>
-              </select>
-            </div>
-            <div class="col-2">
-              <button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">{{ __('RESET') }}</button>
-            </div>
-          </form>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group form-group-sm">
-            <div class="kt-input-icon kt-input-icon--right">
-              <input autocomplete="off" type="search" class="form-control form-control-sm"
-                placeholder="{{ __('Search') }}..." id="search-archive-request">
-              <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                <span><i class="la la-search"></i></span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <table class="table table-head-noborder table-hover table-sm table-striped table-borderless border"
-        id="new-event-archive">
-        <thead>
-          <tr>
-            <th>{{ __('REFERENCE NO.') }}</th>
-            <th>{{ __('EVENT NAME') }}</th>
-            <th>{{ __('EVENT TYPE') }}</th>
-            <th>{{ __('ESTABLISHMENT NAME') }}</th>
-            <th>{{ __('EVENT DURATION') }}</th>
-            <th>{{ __('APPLICATION TYPE') }}</th>
-            <th>{{ __('STATUS') }}</th>
-            <th>{{ __('APPROVED DATE') }}</th>
-            <th>{{ __('APPROVED BY') }}</th>
-            <th>{{ __('PERMIT NUMBER') }}</th>
-            <th>{{ __('START DATE') }}</th>
-            <th>{{ __('END DATE') }}</th>
-            <th>{{ __('TIME') }}</th>
-            <th>{{ __('OWNER NAME') }}</th>
-            <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
-            <th>{{ __('HAS LIQUOR') }}</th>
-            <th>{{ __('FOOD TRUCK') }}</th>
-            <th>{{ __('HAS ARTIST PERMIT?') }}</th>
-            <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
-            <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
-            <th>{{ __('EVENT DETAILS') }}</th>
-            <th>{{ __('VENUE') }}</th>
-            <th>{{ __('EVENT LOCATION') }}</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-<div class="tab-pane fade" id="calendar" role="tabpanel">
-  <section class="row">
-    <div class="col-md-3">
-      <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
-        <div class="card">
-          <div class="card-header" id="heading-address">
-            <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse"
-              data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
-              <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT LEGEND') }}</h6>
-            </div>
-          </div>
-          <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
-            data-parent="#accordion-address">
-            <div class="card-body" style="padding: 1px;">
-              <table class="table table-borderless ">
-                <tbody>
-                  @if (!empty($types))
-                  @foreach ($types as $type)
-                  <tr>
-                    <td>
-                      <span
-                        style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
-                        {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)) : ucfirst($type->name_ar)  }}
-                    </td>
-                    </span>
-                  </tr>
+                  <option value="{{$type->event_type_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($type->name_en) : ucfirst($type->name_ar) }}</option>
                   @endforeach
                   @endif
-                </tbody>
-              </table>
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
+                  id="archieve-event-type-sub-id" onchange="eventArchiveTable.draw()">
+                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
+                  @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status', ['cancelled',
+                  'rejected', 'expired']);})->where('event_type_sub_id', '!=', 0)->get())
+                  @foreach ($subs as $sub)
+                  <option value="{{$sub->event_type_sub_id}}">
+                    {{Auth::user()->LanguageId == 1 ? ucfirst($sub->sub_name_en) : ucfirst($sub->sub_name_ar) }}
+                  </option>
+                  @endforeach
+                  @endif
+                </select>
+              </div>
+              <div class="col-3">
+                <select name="" id="archive-applicant-type"
+                  class="form-control-sm form-control custom-select custom-select-sm "
+                  onchange="eventArchiveTable.draw()">
+                  <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
+                  <option value="corporate">{{ __('Corporate') }}</option>
+                  <option value="government">{{ __('Government') }}</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <button type="button" class="btn btn-sm btn-secondary" id="archive-btn-reset">{{ __('RESET') }}</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group form-group-sm">
+              <div class="kt-input-icon kt-input-icon--right">
+                <input autocomplete="off" type="search" class="form-control form-control-sm"
+                  placeholder="{{ __('Search') }}..." id="search-archive-request">
+                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                  <span><i class="la la-search"></i></span>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+        <table class="table table-head-noborder table-hover table-sm table-striped table-borderless border"
+          id="new-event-archive">
+          <thead>
+            <tr>
+              <th>{{ __('REFERENCE NO.') }}</th>
+              <th>{{ __('EVENT NAME') }}</th>
+              <th>{{ __('EVENT TYPE') }}</th>
+              <th>{{ __('ESTABLISHMENT NAME') }}</th>
+              <th>{{ __('EVENT DURATION') }}</th>
+              <th>{{ __('APPLICATION TYPE') }}</th>
+              <th>{{ __('STATUS') }}</th>
+              <th>{{ __('APPROVED DATE') }}</th>
+              <th>{{ __('APPROVED BY') }}</th>
+              <th>{{ __('PERMIT NUMBER') }}</th>
+              <th>{{ __('START DATE') }}</th>
+              <th>{{ __('END DATE') }}</th>
+              <th>{{ __('TIME') }}</th>
+              <th>{{ __('OWNER NAME') }}</th>
+              <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
+              <th>{{ __('HAS LIQUOR') }}</th>
+              <th>{{ __('FOOD TRUCK') }}</th>
+              <th>{{ __('HAS ARTIST PERMIT?') }}</th>
+              <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
+              <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
+              <th>{{ __('EVENT DETAILS') }}</th>
+              <th>{{ __('VENUE') }}</th>
+              <th>{{ __('EVENT LOCATION') }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="calendar" role="tabpanel">
+        <section class="row">
+          <div class="col-md-3">
+            <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
+              <div class="card">
+                <div class="card-header" id="heading-address">
+                  <div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse"
+                    data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
+                    <h6 class="kt-font-bold kt-font-transform-u kt-font-dark">{{ __('EVENT LEGEND') }}</h6>
+                  </div>
+                </div>
+                <div id="collapse-address" class="collapse show" aria-labelledby="heading-address"
+                  data-parent="#accordion-address">
+                  <div class="card-body" style="padding: 1px;">
+                    <table class="table table-borderless ">
+                      <tbody>
+                        @if (!empty($types))
+                        @foreach ($types as $type)
+                        <tr>
+                          <td>
+                            <span
+                              style="padding: 5px ; border-radius: 2px; color: #fff; background-color: {!! $type->color !!}">
+                              {{  Auth::user()->LanguageId == 1 ? ucfirst(substr($type->name_en, 0, 31)) : ucfirst($type->name_ar)  }}
+                          </td>
+                          </span>
+                        </tr>
+                        @endforeach
+                        @endif
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="col-md-9">
+            <section id="event-calendar"></section>
+          </div>
+        </section>
+      </div>
     </div>
-    <div class="col-md-9">
-      <section id="event-calendar"></section>
-    </div>
-  </section>
-</div>
-</div>
-</div>
+  </div>
 </section>
 {{-- cancel modal --}}
 <div class="modal fade" id="cancel-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -777,7 +817,7 @@
         columnDefs: [
           {targets: '_all', className: 'no-wrap'}
         ],
-        responsive:true,
+        // responsive:true,
         order: [[6, 'desc']],
         columns: [
           {data: 'reference_number'},

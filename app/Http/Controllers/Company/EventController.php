@@ -66,6 +66,7 @@ class EventController extends Controller
         if(!$request->hasValidSignature()){
             return abort(401);
         }
+        $this->clearImageEventImageSession();
         $data = $this->eventPreloadData();
         $user_id = Auth::user()->user_id;
         EventLiquor::whereNull('event_id')->where('created_by', $user_id)->delete();
@@ -464,10 +465,12 @@ class EventController extends Controller
                         ]);
                     }
                 }  
-                session()->forget([$userid . '_image_file', $userid . '_image_ext', $userid . '_image_thumb', $userid . '_image_size']);     
+                // session()->forget([$userid . '_image_file', $userid . '_image_ext', $userid . '_image_thumb', $userid . '_image_size']);     
+                $this->clearImageEventImageSession();
             }
         }
     }
+
 
     public function store(Request $request)
     {
@@ -508,7 +511,8 @@ class EventController extends Controller
             'owner_name' => $evd['owner_name'],
             'owner_name_ar' => $evd['owner_name_ar'],
             'additional_location_info' => trim($evd['addi_loc_info']),          
-            'event_type_sub_id' => $evd['event_sub_type_id']
+            'event_type_sub_id' => $evd['event_sub_type_id'],
+            'reference_number' => $this->generateReferenceNumber()
         );
 
         if ($from == 'new') {
@@ -517,7 +521,6 @@ class EventController extends Controller
             $input_Array['time_start'] = $evd['time_start'];
             $input_Array['time_end'] = $evd['time_end'];
             $input_Array['request_type'] = 'new request';
-            $input_Array['reference_number'] = $this->generateReferenceNumber();
             $input_Array['created_by'] = $userid;
             $input_Array['created_at'] = Carbon::now();
             $event = Event::create($input_Array);
@@ -530,7 +533,7 @@ class EventController extends Controller
             
         } else if ($from == 'draft') {
 
-            $toURL = URL::signedRoute('event.index').'#draft';
+            $toURL = URL::signedRoute('event.index').'#applied';
 
             $input_Array['issued_date'] = Carbon::parse($evd['issued_date'])->toDateTimeString();
             $input_Array['expired_date'] = Carbon::parse($evd['expired_date'])->toDateTimeString();
@@ -792,9 +795,7 @@ class EventController extends Controller
         $data['artist'] = $artist;
         $data['tab'] =  $request->tab;
         $data['eventImages']  = $event->otherUpload;
-        if (! $event) {
-           return abort(401);
-        }
+ 
         return view('permits.event.show', $data);
     }
 
@@ -2116,7 +2117,7 @@ class EventController extends Controller
                     'amount' => $total_fee,
                     'permit_id' => $permit_id,
                     'artist_permit_id' => $artistPermit->artist_permit_id,
-                    'transaction_id' => $trns->transaction_id
+                    'transaction_id' => $trns->transaction_id,
                 ]);
             }
 
@@ -2180,10 +2181,17 @@ class EventController extends Controller
             );
             Happiness::create($updateArray);
 
-            $event_firm = Event::where('event_id', $event_id)->first()->firm;
+            $event = Event::where('event_id', $event_id)->latest()->first();
 
-            if($event_firm == 'government') 
+            if($event->firm == 'government') 
             {
+                Event::where('event_id', $event_id)->update([
+                    'status' => 'active',
+                    'permit_number' => generateEventPermitNumber()
+                ]);
+            }
+
+            if($event->firm == 'corporate' && $event->status == 'approved-unpaid' && $event->permit_number == null) {
                 Event::where('event_id', $event_id)->update([
                     'status' => 'active',
                     'permit_number' => generateEventPermitNumber()
@@ -2282,17 +2290,40 @@ class EventController extends Controller
         return response()->json(['filepath' => $path, 'ext' => $ext]);
     }
 
-    public function deleteEventPic($id)
+    function clearImageEventImageSession()
     {
-        $del = \App\EventOtherUpload::where('event_other_upload_id', $id)->delete();
+        $user_id = Auth::user()->user_id;
+        session()->forget($user_id . '_image_size');
+        session()->forget($user_id . '_image_file');
+        session()->forget($user_id . '_image_ext');
+        session()->forget($user_id . '_image_thumb');
+        Storage::delete([$user_id . '_image_file', $user_id . '_image_thumb' ]);
+    }
 
-         if ($del) {
-            $result = ['success', __('Event Picture Deleted Successfully'), 'Success'];
-        } else {
-            $result = ['error', __('Error, Please Try Again'), 'Error'];
+    public function forgotEventPicsSession(Request $request){
+        $this->clearImageEventImageSession();
+    }
+
+    public function deleteUploadedEventPic(Request $request)
+    {
+        $user_id = Auth::user()->user_id;
+        $filename = $request->path;
+        $pic_size = session()->pull($user_id . '_image_size', []); 
+        $pic_file = session()->pull($user_id . '_image_file', []); 
+        $pic_ext = session()->pull($user_id . '_image_ext', []); 
+        $pic_thumb = session()->pull($user_id . '_image_thumb', []); 
+        if(($key = array_search($filename, $pic_file)) !== false) {
+            unset($pic_size[$key]);
+            unset($pic_file[$key]);
+            unset($pic_ext[$key]);
+            unset($pic_thumb[$key]);
+            Storage::delete([ $pic_file[$key], $pic_thumb[$key]]);
         }
-
-        return response()->json(['message' => $result]);
+        session()->put($user_id . '_image_size', $pic_size);
+        session()->put($user_id . '_image_file', $pic_file);
+        session()->put($user_id . '_image_ext', $pic_ext);
+        session()->put($user_id . '_image_thumb', $pic_thumb);
+        return;
     }
 
     public function uploadLiquor(Request $request)
@@ -2375,7 +2406,10 @@ class EventController extends Controller
 
     public function delete_logo_in_session(Request $request)
     {
-        $request->session()->forget([$user_id . '_event_pic_file', $user_id . '_event_ext', $user_id . '_event_thumb_file']);
+        $user_id = Auth::user()->user_id;
+        Storage::delete([ $user_id . '_event_pic_file' ,$user_id . '_event_thumb_file' ]);
+        session()->forget([$user_id . '_event_pic_file', $user_id . '_event_ext', $user_id . '_event_thumb_file']);
+        return ;
     }
 
     public function get_uploaded_logo($id)
@@ -2409,9 +2443,9 @@ class EventController extends Controller
         $filepath = $request->path;
         $ext = $request->ext;
         $reqId = $request->id;
-
-        $files = session()->pull(Auth::user()->user_id . '_event_doc_file_' . $reqId, []);
-        $exts = session()->pull(Auth::user()->user_id . '_event_ext_' . $reqId, []);
+        $user_id = Auth::user()->user_id;
+        $files = session()->pull($user_id . '_event_doc_file_' . $reqId, []);
+        $exts = session()->pull($user_id . '_event_ext_' . $reqId, []);
         if (($key = array_search($filepath, $files)) !== false) {
             unset($files[$key]);
         }
@@ -2419,8 +2453,8 @@ class EventController extends Controller
             unset($exts[$key]);
         }
         $path  = Storage::delete($filepath);
-        session()->put(Auth::user()->user_id . '_liquor_file_' . $reqId, $files);
-        session()->put(Auth::user()->user_id . '_liquor_ext_' . $reqId, $exts);
+        session()->put($user_id . '_liquor_file_' . $reqId, $files);
+        session()->put($user_id . '_liquor_ext_' . $reqId, $exts);
         return $filepath;
     }
 
@@ -2429,8 +2463,9 @@ class EventController extends Controller
         $filepath = $request->path;
         $ext = $request->ext;
         $id = $request->id;
-        $files = session()->pull(Auth::user()->user_id . '_truck_file_' . $id, []);
-        $exts = session()->pull(Auth::user()->user_id . '_truck_ext_' . $id, []);
+        $user_id = Auth::user()->user_id;
+        $files = session()->pull( $user_id. '_truck_file_' . $id, []);
+        $exts = session()->pull($user_id. '_truck_ext_' . $id, []);
         if (($key = array_search($filepath, $files)) !== false) {
             unset($files[$key]);
         }
@@ -2438,8 +2473,8 @@ class EventController extends Controller
             unset($exts[$key]);
         }
         $path  = Storage::delete($filepath);
-        session()->put(Auth::user()->user_id . '_truck_file_' .  $id, $files);
-        session()->put(Auth::user()->user_id . '_truck_ext_' . $id, $exts);
+        session()->put($user_id. '_truck_file_' .  $id, $files);
+        session()->put($user_id. '_truck_ext_' . $id, $exts);
         return $filepath;
     }
 
@@ -2468,7 +2503,7 @@ class EventController extends Controller
 
     public function get_payment_details($orderid)
     {
-        $url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/order/'+$orderid;
+        $url = 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/order/'.$orderid;
         $username = "merchant.NRSINFOWAYSL";
         $password = "aabf38b7ab511335ba2fb786206b1dc0";
         $curl = curl_init();
@@ -2482,7 +2517,7 @@ class EventController extends Controller
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         $output = curl_exec($curl);
         curl_close($curl);
-        $output = json_decode($output);
+        // $output = json_decode($output);
         return $output;
     }
 

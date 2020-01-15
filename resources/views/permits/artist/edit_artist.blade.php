@@ -298,10 +298,7 @@
                             cache: false,
                             url: "{{route('company.delete_files_in_session')}}",
                             type: 'POST',
-                            data: {requiredID : requiId},
-                            success: function (data) {
-                               
-                            }
+                            data: {requiredID : requiId}
                     });
                 },
                 downloadCallback:function(files,pd)
@@ -361,9 +358,6 @@
 							cache: false,
 							url: "{{route('company.delete_pic_files_in_session')}}",
 							type: 'POST',
-							success: function (data) {
-								
-							}
 					});
 				},
                 onLoad:function(obj)
@@ -774,7 +768,7 @@
                         overlayColor: '#000000',
                         type: 'v2',
                         state: 'success',
-                        message: 'Please wait...'
+                        message: '{{__("Please wait...")}}'
                     });
                 },
                 success: function(result){

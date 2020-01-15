@@ -804,7 +804,7 @@
                     overlayColor: '#000000',
                     type: 'v2',
                     state: 'success',
-                    message: 'Please wait...'
+                    message: '{{__("Please wait...")}}'
                 });
               }
             }).done(function(response, textStatus, xhr){
@@ -844,7 +844,7 @@
                 overlayColor: '#000000',
                 type: 'v2',
                 state: 'success',
-                message: 'Please wait...'
+                message: '{{__("Please wait...")}}'
             });
            },
          }).done(function(response, textStatus, xhr){

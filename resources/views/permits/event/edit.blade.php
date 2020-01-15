@@ -385,7 +385,7 @@
                                             data-parent="#location-details" id="collapseTwo5">
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-6 form-group form-group-xs ">
+                                                    <div class="col-md-5 form-group form-group-xs ">
                                                         <label for="venue_en"
                                                             class=" col-form-label kt-font-bold text-right">
                                                             {{__('Venue')}} <span class="text-danger">*</span></label>
@@ -395,7 +395,7 @@
 
                                                     </div>
 
-                                                    <div class="col-md-6 form-group form-group-xs ">
+                                                    <div class="col-md-5 form-group form-group-xs ">
                                                         <label for="venue_ar"
                                                             class=" col-form-label kt-font-bold text-right">
                                                             {{__('Venue (AR)')}} <span
@@ -409,18 +409,12 @@
 
 
 
-                                                    <div class="col-md-4 form-group form-group-xs ">
-                                                        <label for="emirate_id"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Emirate')}}
-                                                        </label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            value="Ras Al Khaimah" readonly>
-                                                        <input type="hidden" name="emirate_id" id="emirate_id"
-                                                            value="5">
-                                                    </div>
+
+                                                    <input type="hidden" name="emirate_id" id="emirate_id" value="5">
 
 
-                                                    <div class="col-md-4 form-group form-group-xs ">
+
+                                                    <div class="col-md-2 form-group form-group-xs ">
                                                         <label for="area_id"
                                                             class=" col-form-label kt-font-bold text-right">{{__('Area')}}
                                                             <span class="text-danger">*</span>
@@ -436,15 +430,8 @@
                                                         </select>
                                                     </div>
 
-                                                    <div class="col-md-4 form-group form-group-xs ">
-                                                        <label for="country_id"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Country')}}
-                                                        </label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            value="United Arab Emirates" readonly>
-                                                        <input type="hidden" name="country_id" id="country_id"
-                                                            value="232">
-                                                    </div>
+                                                    <input type="hidden" name="country_id" id="country_id" value="232">
+
 
                                                 </div>
                                             </div>
@@ -1254,7 +1241,7 @@
                                     overlayColor: '#000000',
                                     type: 'v2',
                                     state: 'success',
-                                    message: 'Please wait...'
+                                    message: '{{__("Please wait...")}}'
                                 });
                             },
                             success: function (result) {
@@ -1267,6 +1254,14 @@
                         });
                 }
 
+        });
+
+         
+        $('#regis_issue_date , #regis_expiry_date').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            orientation: "bottom left"
         });
 
         function givWarn()
@@ -2140,6 +2135,16 @@
                     '_blank'
                     );
                 },
+                deleteCallback: function(data,pd)
+                {
+                    $.ajax({
+                        url: "{{route('event.deleteUploadedEventPic')}}",
+                        type: 'POST',
+                        data: {path: data.filepath, ext: data.ext },
+                        success: function (result) {
+                        }   
+                    });
+                }
             });
             $('#image_uploader div').attr('id', 'image-upload');
             $('#image_uploader + div').attr('id', 'image-file-upload');
