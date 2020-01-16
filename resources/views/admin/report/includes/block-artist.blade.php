@@ -1912,6 +1912,101 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         var hash = window.location.hash;
 
         $(document).ready(function () {
+
+            transactions();
+            eventTable();
+
+
+           function eventTable(){
+               var currentdate = new Date();
+               var datetime = +currentdate.getDate() + "-"
+                   + (currentdate.getMonth() + 1) + "-"
+                   + currentdate.getFullYear() + "  "
+                   + currentdate.getHours() + ":"
+                   + currentdate.getMinutes() + ":"
+                   + currentdate.getSeconds();
+               table = $('#event-report').DataTable({
+                   dom: 'Bfrtip',
+                   "columnDefs": [
+                       {
+                           "targets": [4,5,6, 10],
+                           "visible": false,
+                           "searchable": false
+                       },
+
+                   ],
+                   buttons: ['pageLength',
+                       {
+                           extend: 'print',
+                           title: function () {
+                               return 'Active Events '+datetime
+                           },
+                           exportOptions: {
+                               columns: [0, 1, 3, 7, 8, 9]
+                           },
+                           customize: function (doc){
+                               $(doc.document.body).prepend('<h3 style="text-align: center">All Active Events</h3>')
+
+                               $(doc.document.body)
+                                   .css( 'font-size', '10pt' )
+                                   .prepend(
+                                       '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                                   );
+                               $(doc.document.body).find('h1')
+                                   .css( 'display', 'none');
+
+                               $(doc.document.body).find( 'table' )
+                                   .addClass( 'compact' )
+                                   .css({ 'font-size': 'inherit'});
+                           },
+                       },
+
+                       {
+                           extend: 'excel',
+                           exportOptions: {
+                               columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                           },
+                           title: function () {
+                               return 'Active Events' +datetime;
+                           },
+                       }
+                   ],
+                   lengthMenu: [
+                       [10, 25, 50, -1],
+                       ['10 rows', '25 rows', '50 rows', 'Show all']
+                   ],
+                   processing: true,
+                   language: {
+                       processing: '<span>Processing</span>',
+                   },
+                   serverSide: true,
+                   footer: true,
+                   ajax: {
+                       url: '{{ route('admin.event_reports.event_report')}}',
+                       method: 'get',
+                       data: function (d) {
+
+                       }
+                   },
+                   columns: [
+                       {data: 'reference_number', name: 'reference_number'},
+                       {data: 'application_type', name: 'application_type'},
+                       {data: 'event_type_id', name: 'event_type_id'},
+                       {data: 'name_en', name: 'name_en'},
+                       {data: 'description_en', name: 'description_en'},
+                       {data: 'venue_en', name: 'venue_en'},
+                       {data: 'address', name: 'address'},
+                       {data: 'company_id', name: 'company_id'},
+                       {data: 'issued_date', name: 'issued_date'},
+                       {data: 'expired_date', name: 'expired_date'},
+                       {data: 'status', name: 'status'},
+                       {data: 'event_id', name: 'event_id'},
+                   ],
+               });
+           }
+
+
+
             $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function () {
                 $('.nav-tabs a[href="#new-request"]').tab('show');
             });
@@ -3230,7 +3325,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
         // ARTIST TRANSACTIONS
 
-        $('.artist_transaction_tab').click(function () {
+        function transactions()
+        {
             var currentdate = new Date();
             var datetime = +currentdate.getDate() + "-"
                 + (currentdate.getMonth() + 1) + "-"
@@ -3242,9 +3338,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             var time = + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
-             table = $('#artist-transaction-table').DataTable({
+            table = $('#artist-transaction-table').DataTable({
 
-                 dom: 'Bfrtip',
+                dom: 'Bfrtip',
                 "columnDefs": [
                     {
                         "targets": [],
@@ -3260,16 +3356,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {
                         extend: 'print',
                         title: function () {
-                                return 'Transactions' +datetime;
+                            return 'Transactions' +datetime;
                         },
                         exportOptions: {
                             columns: [0,1,2,3,4],
                         },
                         customize: function ( win ) {
-                                $(win.document.body).prepend(
-                                    '<h3 style="font-family:arial;text-align:center"><span style="position: absolute">Transactions</span> <span class="text-dark pull-right font-weight-bolder" style="font-size: 16px;margin-top:3px;" id="totalAmountPrint">Total Amount :</span></h3>'
-                                );
-                           var totalAmount= $('#totalAmount').html();
+                            $(win.document.body).prepend(
+                                '<h3 style="font-family:arial;text-align:center"><span style="position: absolute">Transactions</span> <span class="text-dark pull-right font-weight-bolder" style="font-size: 16px;margin-top:3px;" id="totalAmountPrint">Total Amount :</span></h3>'
+                            );
+                            var totalAmount= $('#totalAmount').html();
                             $(win.document.body).find('#totalAmountPrint').append(totalAmount)
                             $(win.document.body).find('h1').css('display','none')
                             $(win.document.body)
@@ -3316,42 +3412,43 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {data: 'total', name: 'total'},
                     {data: 'action', name: 'action'},
                 ],
-                 footerCallback: function ( row, data, start, end, display ) {
-                     var api = this.api();
-                     // Remove the formatting to get integer data for summation
-                     var intVal = function ( i ) {
-                         return typeof i === 'string' ?
-                             i.replace(/[\$,]/g, '')*1 :
-                             typeof i === 'number' ?
-                                 i : 0;
-                     };
-                     // Total over all pages
+                footerCallback: function ( row, data, start, end, display ) {
+                    var api = this.api();
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '')*1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+                    // Total over all pages
 
-                     if (api.column(4).data().length){
-                         var total = api
-                             .column( 4 )
-                             .data()
-                             .reduce( function (a, b) {
-                                 return intVal(a) + intVal(b);
-                             } ) }
-                     else{ total = 0};
-                     if (api.column(4).data().length){
-                         var pageTotal = api
-                             .column( 4, { page: 'current'} )
-                             .data()
-                             .reduce( function (a, b) {
-                                 return intVal(a) + intVal(b);
-                             } ) }
-                     else{ pageTotal = 0};
+                    if (api.column(4).data().length){
+                        var total = api
+                            .column( 4 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            } ) }
+                    else{ total = 0};
+                    if (api.column(4).data().length){
+                        var pageTotal = api
+                            .column( 4, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            } ) }
+                    else{ pageTotal = 0};
 
-                     // Update footer
-                     $('#totalAmount').html(
-                         'AED '+pageTotal.toFixed(2)
-                     );
+                    // Update footer
+                    $('#totalAmount').html(
+                        'AED '+pageTotal.toFixed(2)
+                    );
 
-                 },
-             });
-        });
+                },
+            });
+        }
+        $('.artist_transaction_tab').click(transactions());
         $("#filter_event_button").click(function () {
             $("#filter_to_hide").toggle();
         });

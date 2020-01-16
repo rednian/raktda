@@ -7,27 +7,20 @@
                 <h3 class="kt-portlet__head-title  kt-font-transform-u">{{__('View Transaction Report')}}
                 </h3>
             </div>
-
-
-
             <div class="kt-portlet__head-toolbar">
 
-        {{--        <div class="my-auto float-right permit--action-bar">
-                    --}}{{-- <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id])}}"
-                    target="_blank">
-                    <button class="btn btn-sm btn--yellow"><i class="la la-print"></i> {{__('Print')}}
-                    </button>
-                    </a> --}}{{--
-                    <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id ])}}"
-                       target="_blank"> <button class="btn btn-sm btn--yellow"><i class="la la-print"></i> {{__('Print')}}
-                        </button>
-                    </a>
-                    <a href="{{URL::signedRoute('company.reports')}}"
-                       class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                <div class="my-auto float-right permit--action-bar">
+
+                    <a href="{{url('artist_reports#transaction-report-tab')}}"
+                       class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u" style="background-color: #b45454;
+                         color: white;
+                         box-shadow: -1px 2px 7px -3px black;
+                         border: none;
+                         border-radius: 3px;">
                         <i class="la la-arrow-left"></i>
                         {{__('Back')}}
                     </a>
-                </div>--}}
+                </div>
 
                 <div class="my-auto float-right permit--action-bar--mobile">
                     {{-- <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id])}}"

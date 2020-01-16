@@ -26,13 +26,12 @@
 </style>
 
 <section id="tabs">
-
     <div class="container-fluid col-12">
         <div class="container-fluid" style="    height: 31px;margin-left: -9px;">
             <div class="btn-group col-3 pull-left" style="margin-left: -8px">
                 <button type="button" style="" class="btn btn-sm col-6 btn-warning dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    FILTER
+                    {{__('FILTER')}}
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <div class="dropdown-menu" style="box-shadow: 5px 8px 11px -4px #afafaf">
