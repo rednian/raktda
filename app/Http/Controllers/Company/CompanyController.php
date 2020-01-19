@@ -34,27 +34,27 @@ class CompanyController extends Controller
     return view('permits.company.show', ['company'=>$company]);
    }
 
+
    public function store(Request $request)
    {
-
-      $company = Validator::make($request->all(), [
-        'name_en'=> 'required|max:255',
-        'trade_license'=> 'required|max:255',
-        'trade_license_issued_date'=> 'required|max:255|date',
-        'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::parse($request->trade_license_issued_date)->addYear(),
-        'company_email'=> 'required|max:255|email',
-        'phone_number'=> 'required|max:255',
-        'address'=> 'required|max:255',
-        'area_id'=> 'required|max:255',
-        'company_description_en'=> 'required|max:255', 
-        'g-recaptcha-response' => 'required|captcha',
-        'term_condition' => 'required'     ]
-    )->validate();
+    //   $company = Validator::make($request->all(), [
+    //     'name_en'=> 'required|max:255',
+    //     'trade_license'=> 'required|max:255',
+    //     'trade_license_expired_date'=> 'required|max:255|date',
+    //     'address'=> 'required|max:255',
+    //     'area_id'=> 'required|max:255',
+    //     'g-recaptcha-response' => 'required|captcha',
+    //     'term_condition' => 'required'
+    //     // 'trade_license_issued_date'=> 'required|max:255|date',
+    //     // 'company_email'=> 'required|max:255|email',
+    //     // 'phone_number'=> 'required|max:255',
+    //     // 'company_description_en'=> 'required|max:255', 
+    //   ]
+    // )->validate();
 
 
       try {
          DB::beginTransaction();
-         // dd($request->all());
 
          $request['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
          $company = Company::create(array_merge($request->all(), ['status'=>'draft'], $this->addressRelated() ));
@@ -66,15 +66,15 @@ class CompanyController extends Controller
          $user->sendEmailVerificationNotification();
 
          DB::commit();
-
-         return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))
-         ->with('success', 'Registration successful. Please login and verify your email.');
-
+         Auth::login($user);
+         $result = ['success', 'Successfully Registered.', 'Success'];
+         return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))->with('message', $result);
+         
+       
       } catch (Exception $e) {
 
          DB::rollBack();
          return redirect()->back()->with('error', $e->getMessage());
-
       }
    }
 
@@ -217,7 +217,6 @@ class CompanyController extends Controller
               $this->addressRelated()
             ));
             $result = ['success', 'Successfully submitted!', 'Success'];
-
             break;
          }
 
@@ -236,6 +235,7 @@ class CompanyController extends Controller
                  ]);
          }  
          else{
+          
              $company->contact()->create($request->all());
          }
 
@@ -448,7 +448,7 @@ class CompanyController extends Controller
 
    public function requirements(Request $request)
    {
-      $requirement = Requirement::where('requirement_type', 'company')->orderBy('requirement_name')->get();
+      $requirement = Requirement::where('requirement_type', 'company')->where('status', 1)->orderBy('requirement_name')->get();
       return response()->json($requirement);
    }
 

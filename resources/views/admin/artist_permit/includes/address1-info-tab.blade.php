@@ -1,12 +1,25 @@
 <section class="accordion accordion-solid accordion-toggle-plus  kt-margin-b-10" id="accordion-addres1">
-    <div class="card">
+    <div class="card border">
         <div class="card-header" id="heading-addres1">
             <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-addres1" aria-expanded="true" aria-controls="collapse-addres1">
-                <h6 class="kt-font-dark kt-font-transform-u">{{ __('Address Information') }}</h6>
+                <h6 class="kt-font-dark kt-font-transform-u">{{ __('Address details') }}</h6>
             </div>
         </div>
         <div id="collapse-addres1" class="collapse show" aria-labelledby="heading-addres1" data-parent="#accordion-addres1" style="">
             <section class="card-body">
+              <section class="kt-form kt-form--label-right ">
+                  <div class="form-group form-group-sm  row">
+                      <label class="col-4 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all artist address details </label>
+                      <div class="col-1">
+                          <span class="kt-switch kt-switch--outline kt-switch--sm  kt-switch--icon kt-switch--success">
+                              <label>
+                                  <input type="checkbox" id="checked-all-address" name="">
+                                  <span></span>
+                              </label>
+                          </span>
+                      </div>
+                  </div>
+              </section>
                 <div class="kt-form kt-form--label-right">
                                                                 <div class="form-group form-group-sm row">
                                                                     <label for="example-search-input" class="col-2 col-form-label kt-font-dark">{{ __('Address') }} <span

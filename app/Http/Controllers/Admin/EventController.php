@@ -857,14 +857,14 @@
 				})
 				->addColumn('expected_audience', function($event){ return $event->audience_number; })
 				->addColumn('owner',function($event) use ($request){ 
-					return $request->user()->LanguageId == 1 ? ucfirst($event->owner_name_en) : $event->owner_name_ar;
+					return $request->user()->LanguageId == 1 ? ucfirst($event->owner_name) : $event->owner_name_ar;
 				})
 				->editColumn('approved_date', function($event){
 					if ($event->approved_by) {
 						return '<span class="text-underline" title="'.$event->approved_date->format('l h:i A | d-F-Y').'">'.humanDate($event->approved_date).'</span>';
 					}
 					return null;
-				})
+				})	
 				->editColumn('approved_by', function($event) use ($user){
 					return $user->LanguageId == 1 ? ucwords($event->approved->NameEn) : ucwords($event->approved->NameAr);
 				})
