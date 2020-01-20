@@ -95,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="kt-user-card__badge"> <span class="btn btn-label-success btn-sm btn-bold btn-font-md kt-hide">1
+                    <div class="kt-user-card__badge"> <span class="btn btn-label-success btn-sm btn-bold btn-font-md ">1
                             {{ __('Notifications') }}</span> </div>
                 </div>
                 <!--end: Head -->

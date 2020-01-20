@@ -130,16 +130,16 @@
     <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist"
       id="artist-permit-nav">
       <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-          data-target="#new-request">{{ __('New Request') }} <span
+          data-target="#new-request">{{ __('New Requests') }} <span
             class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
       <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending-request"
-          data-target="#pending-request">{{ __('Pending Request') }} <span
+          data-target="#pending-request">{{ __('Pending Requests') }} <span
             class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
       <li class="nav-item"><a class="nav-link" data-toggle="tab"
           href="#processing-permit">{{ __('Processing Permits') }}</a></li>
-      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit">{{ __('Permit Action') }} <span
+      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-permit">{{ __('Actions') }} <span
             class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
-      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }} </a></li>
+      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('Artists History') }} </a></li>
       <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#active-artist">{{ __('Artist List') }}</a></li>
       {{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blocked-artist">{{ __('Blocked Artists') }}</a>
       </li> --}}

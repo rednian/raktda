@@ -112,22 +112,16 @@
                                      @endif
 
                             </div>
-                            <div class="form-group corporate @if( $errors->has('trade_license') ) has-error @endif">
-                                <label>Trade License Number <span class="text-danger">*</span></label>
-                                <input required value="{{old('trade_license')}}" type="text" name="trade_license"
-                                    class="form-control @error('trade_license') is-invalid @enderror"  autocomplete="off" autofocus >
-                                    @if ($errors->has('trade_license'))
-                                      <div class="help-block"> {{$errors->first('trade_license')}}</div>
-                                     @endif
-                            </div>
+                            
+
                             <section class="row corporate">
                                 <div class="col-sm-6">
-                                    <div class="form-group @if( $errors->has('trade_license_issued_date') ) has-error @endif">
-                                        <label>Trade License Issued Date <span class="text-danger">*</span></label>
-                                        <input required value="{{old('trade_license_issued_date', date('Y-m-d'))}}" type="date"
-                                            name="trade_license_issued_date" class="form-control @error('trade_license_issued_date') is-invalid @enderror" autocomplete="off">
-                                        @if ($errors->has('trade_license_issued_date'))
-                                          <div class="help-block"> {{$errors->first('trade_license_issued_date')}}</div>
+                                    <div class="form-group @if( $errors->has('trade_license') ) has-error @endif">
+                                        <label>Trade License Number <span class="text-danger">*</span></label>
+                                        <input required value="{{old('trade_license')}}" type="text"
+                                            name="trade_license" class="form-control @error('trade_license') is-invalid @enderror" autocomplete="off">
+                                        @if ($errors->has('trade_license'))
+                                          <div class="help-block"> {{$errors->first('trade_license')}}</div>
                                          @endif
 
                                     </div>
@@ -143,7 +137,7 @@
                                     </div>
                                 </div>
                             </section>
-                            <section class="row">
+                            {{-- <section class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group @if( $errors->has('phone_number') ) has-error @endif">
                                         <label>Phone Number <span class="text-danger">*</span></label>
@@ -164,30 +158,30 @@
                                          @endif
                                     </div>
                                 </div>
-                            </section>
+                            </section> --}}
 
-                            <section class="row">
+                            {{-- <section class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group @if( $errors->has('company_description_en') ) has-error @endif">
-                                        <label>{{__('Establishment Details')}} <span class="text-danger">*</span></label>
+                                        <label>{{__('Establishment Activity')}} <span class="text-danger">*</span></label>
                                         <textarea required name="company_description_en" rows="3" autocomplete="off"  class="form-control @error('company_description_en') is-invalid @enderror">{{old('company_description_en')}}</textarea>
                                         @if ($errors->has('company_description_en'))
                                           <div class="help-block"> {{$errors->first('company_description_en')}}</div>
                                          @endif
                                     </div>
                                 </div>
-                            </section>
+                            </section> --}}
                             
                             <section class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group @if( $errors->has('area_id') ) has-error @endif">
                                         <label>Area <span class="text-danger">*</span></label>
                                         <select required name="area_id" class="form-control @error('area_id') is-invalid @enderror">
-                                            <option selected disabled>{{__('Select Area in Ras Al Khaimah')}}</option>
+                                            {{-- <option >{{__('Select Area in Ras Al Khaimah')}}</option> --}}
+                                            <option ></option>
                                             @if (App\Areas::where('emirates_id', 5)->orderBy('area_en')->count() > 0)
-                                            @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as
-                                            $area)
-                                            <option value="{{$area->id}}">{{ucfirst($area->area_en)}}</option>
+                                            @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as $area)
+                                            <option value="{{ $area->id }}" >{{ucfirst($area->area_en)}}</option>
                                             @endforeach
                                             @endif
                                         </select>
@@ -201,7 +195,7 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>{{__('Address in Ras Al Khaimah')}} <span class="text-danger">*</span></label>
-                                        <textarea required name="address" rows="3" autocomplete="off" class="form-control @error('address') is-invalid @enderror">{{old('address')}}</textarea>
+                                        <textarea required name="address" rows="2" autocomplete="off" class="form-control @error('address') is-invalid @enderror">{{old('address')}}</textarea>
                                           @if ($errors->has('address'))
                                           <div class="help-block"> {{$errors->first('address')}}</div>
                                          @endif
@@ -263,14 +257,14 @@
                     </section>
                     <section class="panel">
                         <div class="panel-body">
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 {!! NoCaptcha::display() !!}
                                 @if ($errors->has('g-recaptcha-response'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('g-recaptcha-response') }}</strong>
                                     </span>
                                 @endif
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label>
                                     <input name="term_condition" required type="checkbox" required=""> By clicking Register, you agree to

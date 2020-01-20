@@ -1,12 +1,25 @@
 <section class="accordion accordion-solid accordion-toggle-plus  kt-margin-b-10" id="accordion-contact">
-    <div class="card">
+    <div class="card border">
         <div class="card-header" id="heading-contact">
             <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-contact" aria-expanded="true" aria-controls="collapse-contact">
-                <h6 class="kt-font-dark kt-font-transform-u">{{ __('Contact Information') }}</h6>
+                <h6 class="kt-font-dark kt-font-transform-u">{{ __('Contact details') }}</h6>
             </div>
         </div>
         <div id="collapse-contact" class="collapse show" aria-labelledby="heading-contact" data-parent="#accordion-contact" style="">
             <section class="card-body">
+              <section class="kt-form kt-form--label-right ">
+                  <div class="form-group form-group-sm  row">
+                      <label class="col-4 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all artist contact details </label>
+                      <div class="col-1">
+                          <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                              <label>
+                                  <input type="checkbox" id="checked-all-contact" name="">
+                                  <span></span>
+                              </label>
+                          </span>
+                      </div>
+                  </div>
+              </section>
                 <section class="row">
                     <div class="col-6">
                         <section class="kt-form kt-form--label-right">
