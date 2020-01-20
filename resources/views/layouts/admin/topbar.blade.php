@@ -15,26 +15,31 @@
                 class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg">
                 <form>
                     <!--begin: Head -->
-                    <div class="kt-head kt-head--skin-light kt-head--fit-x kt-head--fit-b">
+                    <div class="kt-head kt-head--fit-x kt-head--fit-b" style="padding-top:10px!important">
                         <h3 class="kt-head__title">
-                            User Notifications &nbsp; <span class="btn btn-label-primary btn-sm btn-bold btn-font-sm">1
-                                new</span>
+                            Notifications &nbsp; <span class="btn btn-label-primary btn-sm btn-bold btn-font-sm"><a href="{{ URL::signedRoute('admin.notifications') }}">See All</a></span>
                         </h3>
                     </div>
                     <!--end: Head -->
                     <div class="tab-content">
                         <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
                             <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll" data-scroll="true"
-                                data-height="300" data-mobile-height="200">
-                                <a href="#" class="kt-notification__item">
-                                    <div class="kt-notification__item-icon"> <i
-                                            class="flaticon2-pie-chart kt-font-success"></i> </div>
-                                    <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> AlHamra Forth Hotel and Beach Resort
-                                        </div>
-                                        <div class="kt-notification__item-time"> 3 days ago </div>
-                                    </div>
-                                </a>
+                                    data-height="300" data-mobile-height="200">
+                                    @if(Auth::user()->unreadNotifications->count() > 0)
+                                    @foreach(Auth::user()->unreadNotifications as $notification)
+                                        <a href="javascript:void(0)" data-id="{{ $notification->id }}" data-url="{{ $notification->data['url'] }}" class="kt-notification__item notification-item">
+                                            <div class="kt-notification__item-icon"> <i
+                                                    class="flaticon2-bell-2"></i> </div>
+                                            <div class="kt-notification__item-details">
+                                                <div class="kt-notification__item-title"> {!! $notification->data['title'] !!}
+                                                </div>
+                                                <div class="kt-notification__item-time"> {{ humanDate($notification->created_at) }}</div>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                    @else
+                                    <p class="text-center kt-padding-15">Relax, you're doing well. Notification is empty.</p>
+                                    @endif
                             </div>
                         </div>
                     </div>
