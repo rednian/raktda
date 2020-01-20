@@ -110,6 +110,26 @@
 					$event->permit->comment()->create($request->all());
 				}
 				$result = ['success',' ', 'Success'];
+
+				//SEND NOTIFICATION TO COMPANY FOR PERMIT CANCELLATION BY ADMIN
+		        $users = $event->owner->company->users;
+
+		        $subject = $event->reference_number . ' - Application Cancelled';
+				$title = 'Event Permit <b># ' . $event->reference_number . '</b> Application has been Approved';
+				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been cancelled by the administrator. To view the details, please click the button below.';
+				$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+				$buttonText = 'View Application';
+
+		        foreach ($users as $user) {
+					$user->notify(new AllNotification([
+						'subject' => $subject,
+						'title' => $title,
+						'content' => $content,
+						'button' => $buttonText,
+						'url' => $url
+					]));
+				}
+		        //END SEND NOTIFICATION COMPANY
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
 			}
