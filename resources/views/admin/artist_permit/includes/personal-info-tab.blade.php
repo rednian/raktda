@@ -310,7 +310,7 @@
                                 </div>
                             </div>
                             <div class="form-group form-group-sm row">
-                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Visa Expiry Date') }}<span class="kt-font-danger">*</span></label>
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Visa Expiry Date') }} </label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
                                         <input value="{{ $artist_permit->visa_number ? ucwords($artist_permit->visa_expire_date->format('d-M-Y')): null }}" readonly type="text" class="form-control form-control-sm">

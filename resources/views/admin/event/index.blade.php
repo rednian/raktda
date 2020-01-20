@@ -112,7 +112,7 @@
                 class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
           <li class="nav-item"><a class="nav-link " data-toggle="tab"
               href="#processing-permit">{{ __('Processing Events') }}</a></li>
-          <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Permit Action') }}
+          <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Permit Actions') }}
               <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }}</a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab"

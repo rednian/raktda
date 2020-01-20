@@ -1,48 +1,6 @@
 @extends('layouts.admin.admin-app')
 @section('style')
-<style>
-  .widget-toolbar {
-    cursor: pointer;
-  }
-</style>
-{{-- <style>
-  .twitter-typeahead {
-    display: inline !important;
-}
-
-.typeahead-content {
-    box-shadow: 0 1px 2px rgba(0,0,0,.26);
-    background-color: #fff;
-    cursor: pointer;
-    margin-top: -15px;
-    min-width: 100px;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    position: absolute;
-    white-space: nowrap;
-    z-index: 1001;
-    will-change: width,height;
-}
-
-.typeahead-highlight {
-    font-weight: 900;
-}
-
-.typeahead-suggestion {
-    padding: 5px 0px 10px 10px;
-}
-
-.typeahead-suggestion:hover {
-    background-color: #42A5F5;
-    color: #FFF;
-}
-
-.typeahead-notfound {
-    cursor:not-allowed;
-    padding: 5px 0px 10px 10px;
-}
-</style> --}}
+<style> .widget-toolbar { cursor: pointer; } </style>
 @endsection
 @section('content')
 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
@@ -192,6 +150,7 @@
   var activePermit = {};
   var archivePermit = {};
   var active_artist_table = {};
+  var active_permit_table = {};
 
   var hash = window.location.hash;
 
@@ -243,25 +202,6 @@
       }
     });
 
-
-    // var bestPictures = new Bloodhound({
-    //   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-    //   queryTokenizer: Bloodhound.tokenizers.whitespace,
-    //   // prefetch: '../data/films/post_1960.json',
-    //   remote: {
-    //     url: '{{ route('admin.artist_permit.search') }}',
-    //     // wildcard: '%QUERY'
-    //   }
-    // });
-
-    // $('#search-application .typeahead').typeahead(null, {
-    //   name: 'best-pictures',
-    //   display: 'value',
-    //   source: bestPictures
-    // });
-
-
-
     newRequest();
     setInterval(function(){ newRequest(); pendingRequest();}, 100000);
 
@@ -301,37 +241,48 @@
               d.country_id = $('select[name=country_id]').val();
            }
         },
-        columnDefs: [
-           {targets: [0, 1, 4, 5], className: 'no-wrap'},
-        //    {
-        //       targets:0,
-        //       orderable: false,
-        //       checkboxes: {
-        //          selectRow: true
-        //       }
-        //    }
-        ],
-        // select: {
-        //    style: 'multi'
-        // },
-        // order: [[1, 'asc']],
+        responsive:true,
+        columnDefs: [ {targets: '_all', className: 'no-wrap'} ],
         columns: [
-            // {data: 'artist_id'},
+            {render: function(){ return null;}},
+           {data: 'active_permit'},
            {data: 'person_code'},
            {data: 'name'},
            {data: 'profession'},
            {data: 'nationality'},
            {data: 'mobile_number'},
-           {data: 'active_permit'},
            {data: 'artist_status'},
+           {data: 'age'},
+           {data: 'birthdate'},
         ],
         createdRow: function (row, data, index) {
-           $('#active-artist-modal').on('shown.bs.modal', function () {
-           });
+            $('.btn-show-permit', row).click(function(e){
+              e.stopPropagation();
+            
+                active_permit_table = $('table#active-permit').DataTable({
+                  ajax: {
+                    url: '{{ url('permit/artist') }}/'+data.artist_id+'/activepermitdatatable'
+                  },
+                  responsive: true,
+                  columnDefs:[{targets:'_all', className: 'no-wrap'}],
+                  columns: [
+                  {data: 'reference_number'},
+                  {data: 'permit_number'},
+                  // {data: 'name'},
+                  // {data: 'duration'},
+                  // {data: 'start'},
+                  // {data: 'end'},
+                  // {data: 'location'},
+                  ]
+                });
 
-           $(row).click(function () {
-							location.href = data.show_link;
-        });
+            $('#active-artist-modal').modal('show');
+            });
+
+            // active_permit_table.responsive.recalc();
+                
+
+           $('td:not(:first-child)' ,row).click(function () { location.href = data.show_link; });
 
           }
      });
@@ -457,6 +408,7 @@
            {targets: '_all', className: 'no-wrap'},
            {targets: [5], sortable: false}
          ],
+           responsive: true,
          columns: [
            {data: 'reference_number'},
            {data: 'company_name'},
@@ -468,9 +420,8 @@
          ],
 
          createdRow: function (row, data, index) {
-           $(row).click(function () {
-             location.href = data.show_link;
-           });
+
+            $('td:not(:first-child)', row).click(function(){ location.href = data.show_link; });
          }
        });
        //clear fillte button

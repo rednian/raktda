@@ -119,11 +119,11 @@
                     <!-- begin:: Content -->
                     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
 
-                        @if (
-                        Auth::check() &&
-                        (Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now()->addDays(10))
-                            && !is_null(Auth::user()->company->registered_by)
-                            )
+                        @if ( 
+                            Auth::check() 
+                            && (Auth::user()->company->trade_license_expired_date < Carbon\Carbon::now()->addDays(10)) 
+                            && in_array(Auth::user()->company->status, ['active'])  
+                        )
                             <div class="alert alert-warning fade show kt-margin-b-5" role="alert">
                                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
                                 @php

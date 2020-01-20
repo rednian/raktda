@@ -186,27 +186,19 @@
                                                                 @endif
                                                            </div>
                                                        </section>
-                                                       <section id="trade-license-container" class="row form-group form-group-sm license {{ $company->company_type_id == 1 ? 'kt-hide': null }}">
-                                                           <div class="col-md-6">
-                                                               <label >Trade License Number <span class="text-danger">*</span></label>
-                                                               <input required name="trade_license"  autocomplete="off" 
-                                                               class="form-control form-control-sm @error('trade_license') is-invalid @enderror" 
-                                                               type="text" value="{{old('trade_license',$company->trade_license)}}">
-                                                               @if ($errors->has('trade_license'))
-                                                                <div class="invalid-feedback">{{$errors->first('trade_license')}}</div>
-                                                               @endif 
-                                                           </div>
+                                                       <section id="trade-license-container" class="row form-group form-group-sm license">
+                                                           
                                                            <div class="col-md-6">
                                                                <div class="row form-group form-group-sm">
                                                                    <div class="col-sm-6">
-                                                                       <label >Trade License Issued Date<span class="text-danger">*</span></label>
-                                                                       <input required name="trade_license_issued_date"  autocomplete="off" 
+                                                                       <label >Trade License Number <span class="text-danger">*</span></label>
+                                                                       <input required name="trade_license"  autocomplete="off" 
                                                                        class="date-picker start form-control form-control-sm 
-                                                                       @error('trade_license_issued_date') is-invalid @enderror" 
+                                                                       @error('trade_license') is-invalid @enderror" 
                                                                        type="text" 
-                                                                       value="{{$company->trade_license_issued_date ? $company->trade_license_issued_date->format('d-m-Y') :  null }}">
-                                                                       @if ($errors->has('trade_license_issued_date'))
-                                                                        <div class="invalid-feedback"> {{$errors->first('trade_license_issued_date')}}</div>
+                                                                       value="{{$company->trade_license }}">
+                                                                       @if ($errors->has('trade_license'))
+                                                                        <div class="invalid-feedback"> {{$errors->first('trade_license')}}</div>
                                                                        @endif
                                                                    </div>
                                                                    <div class="col-sm-6">
@@ -480,13 +472,11 @@
                                            </div>        
                                        </div>
                                        <div class="form-group row kt-margin-t-10">
-
-                                        
-                                        
                                           <div class="col-sm-12">
                                             @if ($company->status == 'draft')
                                                <button style="padding: 0.5rem 1rem;" type="submit" name="submit" value="draft" class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark">Save as Draft</button>
                                             @endif
+                                            
                                                <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted" class="btn btn--maroon btn-sm kt-font-transform-u">{{ $company->application_date ? 'Update Information' : 'Submit Application'}}</button>
                                            </div>
                                            
@@ -588,9 +578,6 @@
                             </div>
                         </form>
                 </div>
-
-
-                
             </div>
             
     </div>

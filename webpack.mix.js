@@ -115,7 +115,8 @@ mix.scripts([
     'public/assets/vendors/general/tooltip.js/dist/umd/tooltip.min.js',
     'public/assets/vendors/general/perfect-scrollbar/dist/perfect-scrollbar.js',
     'public/assets/vendors/general/sticky-js/dist/sticky.min.js',
-    'public/assets/vendors/general/wnumb/wNumb.js'
+    'public/assets/vendors/general/wnumb/wNumb.js',
+    'public/js/app.js'
 ], 'public/js/mandatory.js');
 
 mix.scripts([

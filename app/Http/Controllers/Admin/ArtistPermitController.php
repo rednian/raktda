@@ -342,7 +342,7 @@ class ArtistPermitController extends Controller
       $buttonText = 'View Application';
       if($type == 'approve'){
         $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Approved';
-        $title = 'Artist Permit Application has been Approved';
+        $title = 'Artist Permit <b># ' . $permit->reference_number . '</b> - Application Approved';
         $content = 'Your Artist Permit application with the reference number <b>' . $permit->reference_number . '</b> has been approved. To view the details, please click the button below.';
         $url = URL::signedRoute('company.make_payment', $permit->permit_id);
         $buttonText = 'Make Payment';
@@ -350,14 +350,14 @@ class ArtistPermitController extends Controller
 
       if($type == 'amend'){
         $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Requires Amendment';
-        $title = 'Artist Permit Applications Requires Amendment';
+        $title = 'Artist Permit <b># ' . $permit->reference_number . '</b> - Application Requires Amendment';
         $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
         $url = URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend']);
       }
 
       if($type == 'reject'){
         $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Rejected';
-        $title = 'Artist Permit Application has been Rejected';
+        $title = 'Artist Permit <b># ' . $permit->reference_number . '</b> - Application Rejected';
         $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been rejected. To view the details, please click the button below.';
         //$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
         $url = '#';
@@ -378,8 +378,8 @@ class ArtistPermitController extends Controller
 
     private function sendNotificationApproval($permit, $users){
 
-      $subject = 'Artist Permit For Approval';
-      $title = 'Artist Permit For Approval';
+      $subject = 'Artist Permit #' . $permit->reference_number . ' For Approval';
+      $title = 'Artist Permit <b>#' . $permit->reference_number . '</b> For Approval';
       $content = 'The artist permit with reference number <b>' . $permit->reference_number . '</b> needs to have an approval from your department. Please click the link below.';
       $url = URL::signedRoute('admin.artist_permit.applicationdetails', ['permit' => $permit->permit_id]);
 
@@ -396,8 +396,8 @@ class ArtistPermitController extends Controller
 
     private function sendNotificationChecked($permit, $users, $checked_by){
 
-      $subject = 'Artist Permit Has Been Checked';
-      $title = 'Artist Permit Has Been Checked';
+      $subject = 'Artist Permit #' . $permit->reference_number . ' Has Been Checked';
+      $title = 'Artist Permit <b>#' . $permit->reference_number . '</b> Has Been Checked';
       $content = 'The artist permit with reference number <b>' . $permit->reference_number . '</b> has been checked by '. $checked_by->NameEn .'.';
       $url = URL::signedRoute('admin.artist_permit.show', $permit->permit_id);
 
@@ -430,13 +430,7 @@ class ArtistPermitController extends Controller
     {
       try {
          DB::beginTransaction();
-         // $permit->update(['permit_status'=>'processing']);
 
-//	      if($permit->artistPermit()->where('artist_permit_status', 'reject')->count()){
-//
-//	      }
-//
-         // dd($request->all());
          $artistpermit->update(['artist_permit_status'=>$request->artist_permit_status]);
 
          //delete the last checklist and replace with recentb
@@ -627,12 +621,7 @@ class ArtistPermitController extends Controller
 			    	return $artist_permit->artist->person_code;
 			    })
 			    ->editColumn('artist_status', function($artist_permit){
-			    	$class_name = 'default';
-			    	$status = $artist_permit->artist_permit_status;
-			    	if($artist_permit->artist_permit_status == 'unchecked'){ $class_name = 'warning'; }
-			    	if($artist_permit->artist_permit_status == 'disapproved'){ $class_name = 'danger'; }
-			    	if($artist_permit->artist_permit_status == 'approved'){ $class_name = 'success'; }
-			    	return ' <span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($artist_permit->artist_permit_status).'</span>';
+            return permitStatus($artist_permit->artist_permit_status);
 			    })
 			    ->addColumn('is_allowed_multiple_permit', function($artist_permit){
 			    	return $artist_permit->profession->is_multiple ? true : false;

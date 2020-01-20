@@ -3771,9 +3771,9 @@
                 },
                 {
                     "name": "Abdelrahman Omran",
-                    "role": "Project Lead",
                     "email": "me@omranic.com",
-                    "homepage": "https://omranic.com"
+                    "homepage": "https://omranic.com",
+                    "role": "Project Lead"
                 },
                 {
                     "name": "The Generous Laravel Community",
