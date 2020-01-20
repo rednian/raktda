@@ -1,6 +1,5 @@
 <?php
-Route::get('/', function () {
-    return redirect()->route('login');
+Route::get('/', function () {return redirect()->route('login');
 })->name('default');
 
 Route::get('/test', function(){
@@ -105,6 +104,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 	Route::post('/permit/artist/{artist}/updatestatus', 'Admin\ArtistController@updateStatus')->name('admin.artist.update_status');
 	Route::get('/permit/artist/{artist}/permithistory', 'Admin\ArtistController@permithistory')->name('admin.artist.permit.history');
 	Route::get('/permit/artist/{artist}/status_history', 'Admin\ArtistController@statusHistory')->name('admin.artist.status_history');
+    Route::get('/permit/artist/{artist}/activepermitdatatable', 'Admin\ArtistController@activePermitDatatable')->name('admin.artist.activepermitdatatable');
 //
     Route::get('/permit/artist_permit/{artistpermit}/history', 'Admin\ArtistController@history')->name('admin.artist_permit.history');
     //admin.artist_block

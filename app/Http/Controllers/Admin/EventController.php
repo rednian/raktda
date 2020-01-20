@@ -568,8 +568,6 @@
 				$permit = [];
 			}
 
-
-
 			return DataTables::of($permit)
 			->addColumn('name', function($artist) use ($request){
 				$fname = $request->user()->LanguageId == 1 ? ucfirst($artist->firstname_en) : $artist->firstname_ar; 

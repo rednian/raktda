@@ -10,7 +10,6 @@
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\URL;
     use Yajra\DataTables\Facades\DataTables;
-    use function foo\func;
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
 
@@ -26,6 +25,7 @@
 				'permithistory',
 				'history',
 				'checked_list',
+				'activePermitDatatable',
 	        ]);
 	    }
 		public function artist_block(Request $request){
@@ -91,58 +91,75 @@
 			]);
 		}
 
+
+		public function activePermitDatatable(Request $request, Artist $artist)
+		{
+			 $permits = $artist->permit()
+//                ->where('permit_status', 'active')
+//                ->whereDate('expired_date', '<', Carbon::now())
+                ->get();
+			return Datatables::of($permits)
+			->addColumn('profession', function($permit){ })
+			->make(true);
+		}
+
+
 		public function datatable(Request $request)
 		{
-			if ($request->ajax()) {
-				$artist = Artist::has('artistpermit.profession')
-				->whereHas('permit', function($q){
-					$q->whereNotIn('permit_status',['draft', 'edit']);
-				})
-				->when($request->artist_status, function($q) use ($request){
-					$q->where('artist_status', $request->artist_status);
-				})
-				->when($request->profession_id, function($q) use ($request){
-					$q->whereHas('artistpermit', function($q) use ($request){
-						$q->where('profession_id', $request->profession_id);
-					});
-				})
-				->when($request->country_id, function($q) use ($request){
-					$q->whereHas('artistpermit', function($q) use ($request){
-						$q->where('country_id', $request->country_id);
-					});
-				})
-				->orderby('updated_at', 'desc')
-				->get();
+		    if ($request->ajax()) {
+		        $artist = Artist::has('artistpermit.profession')
+                    ->whereHas('permit', function($q){
+                        $q->whereNotIn('permit_status',['draft', 'edit']);
+                    })
+                    ->when($request->artist_status, function($q) use ($request){
+                        $q->where('artist_status', $request->artist_status);
+                    })
+                    ->when($request->profession_id, function($q) use ($request){
+                        $q->whereHas('artistpermit', function($q) use ($request){
+                            $q->where('profession_id', $request->profession_id);
+                        });
+                    })
+                    ->when($request->country_id, function($q) use ($request){
+                        $q->whereHas('artistpermit', function($q) use ($request){
+                            $q->where('country_id', $request->country_id);
+                        });
+                    })
+                    ->orderby('updated_at', 'desc')
+                    ->get();
 
-				return DataTables::of($artist)
-					 ->addColumn('name', function($artist){
-						 return ucwords($artist->artistpermit()->latest()->first()->fullname);
-					 })
-					 ->addColumn('nationality', function($artist){
-					 	return ucwords($artist->artistpermit()->first()->country->nationality_en);
-					 })
-
-					 ->addColumn('mobile_number', function($artist){
-						 return $artist->artistPermit()->latest()->first()->mobile_number;
-					 })
-
-					 ->addColumn('profession', function($artist){
-						 return ucwords($artist->artistpermit()->latest()->first()->profession->name_en);
-					 })
-					 ->editColumn('artist_status', function($artist){
-						 return permitStatus(ucfirst($artist->artist_status));
-					 })
-
-					 ->addColumn('active_permit', function($artist){
-						 return $artist->permit()->where('permit_status', 'active')->whereDate('expired_date', '>=', Carbon::now())->count();
-					 })
-					 ->addColumn('artist_status', function($artist){
-					 	return artistStatus($artist->artist_status);
-					 })
-					 ->addColumn('show_link', function($artist){
-					 	return URL::signedRoute('admin.artist.show', $artist->artist_id);
-					 })
-					 ->rawColumns(['name', 'nationality', 'artist_status'])
+		        return DataTables::of($artist)
+                    ->addColumn('name', function($artist){
+                        return ucwords($artist->artistpermit()->latest()->first()->fullname);
+                    })
+                    ->addColumn('nationality', function($artist){
+                        return ucwords($artist->artistpermit()->first()->country->nationality_en);
+                    })
+                    ->addColumn('mobile_number', function($artist){
+                        return $artist->artistPermit()->latest()->first()->mobile_number;
+                    })
+                    ->addColumn('profession', function($artist){
+                        return ucwords($artist->artistpermit()->latest()->first()->profession->name_en);
+                    })
+                    ->editColumn('artist_status', function($artist){
+                        return permitStatus(ucfirst($artist->artist_status));
+                    })
+                    ->addColumn('birthdate', function($artist){
+                        return $artist->artistPermit()->latest()->first()->birthdate->format('d-F-Y');
+                    })
+                    ->addColumn('age', function($artist){
+                        return $artist->artistPermit()->latest()->first()->age;
+                    })
+                    ->addColumn('active_permit', function($artist){
+                        $permit = $artist->permit()->where('permit_status', 'active')->whereDate('expired_date', '>=', Carbon::now())->count();
+                        return '<button type="button" class=" btn btn-show-permit btn-sm btn-secondary">'.__('View').' <span class="kt-badge kt-badge--outline kt-badge--info"> '.$permit.' </span></button>';
+                    })
+                    ->addColumn('artist_status', function($artist){
+                        return artistStatus($artist->artist_status);
+                    })
+                    ->addColumn('show_link', function($artist){
+                        return URL::signedRoute('admin.artist.show', $artist->artist_id);
+                    })
+                    ->rawColumns(['name', 'nationality', 'artist_status', 'active_permit'])
 					 // ->setTotalRecords($totalRecords)
 					 ->make(true);
 
@@ -203,27 +220,7 @@
 					 return ucwords($permit->owner->company->name_en);
 				 })
 				 ->editColumn('permit_status', function($permit){
-					 $class_name = 'default';
-					 $permit_status = $permit->permit_status;
-					 if (strtolower($permit->permit_status) == 'new' || strtolower($permit->permit_status) == 'approved-unpaid' || strtolower($permit->permit_status) == 'active') {
-						 $class_name = 'success';
-					 }
-					 if (strtolower($permit->permit_status) == 'processing' || strtolower($permit->permit_status) == 'modification request' || strtolower($permit->permit_status) == 'modified') {
-						 $class_name = 'warning';
-					 }
-					 if (strtolower($permit->permit_status) == 'pending from client') {
-						 $class_name = 'info';
-					 }
-					 if (strtolower($permit->permit_status) == 'new-update from client') {
-						 $class_name = 'info';
-					 }
-					 if (strtolower($permit->permit_status) == 'unprocessed' || strtolower($permit->permit_status) == 'expired' || strtolower($permit->permit_status) == 'rejected') {
-						 $class_name = 'danger';
-					 }
-					 if (strtolower($permit->permit_status) == 'modification request') {
-						 $permit_status = 'need modification';
-					 }
-					 return '<span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($permit_status).'</span>';
+				 	return permitStatus($permit->permit_status);
 				 })
 				 ->rawColumns(['permit_status', 'reference_number'])
 				 ->make(true);

@@ -147,7 +147,7 @@ class CompanyController extends Controller
 
    private function hasRequirement($company)
    {
-    $requirements = Requirement::where('requirement_type', 'company')->get();
+    $requirements = Requirement::where('requirement_type', 'company')->whereStatus('1')->get();
     $array = [];
     $data = null;
     if (!is_null($requirements)) {
@@ -174,12 +174,10 @@ class CompanyController extends Controller
           'name_en'=> 'required|max:255',
           'name_ar'=> 'required|max:255',
           'trade_license'=> 'required|max:255',
-          'trade_license_issued_date'=> 'required|max:255|date',
-          'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::parse($request->trade_license_issued_date)->addYear(),
+          'trade_license_expired_date'=> 'required|max:255|date',
           'company_email'=> 'required|max:255|email',
           'phone_number'=> 'required|max:255',
           'website'=> 'nullable|max:255',
-          'address'=> 'required|max:255',
           'address'=> 'required|max:255',
           'area_id'=> 'required|max:255',
           'company_description_en'=> 'required|max:255',
@@ -448,8 +446,19 @@ class CompanyController extends Controller
 
    public function requirements(Request $request)
    {
-      $requirement = Requirement::where('requirement_type', 'company')->where('status', 1)->orderBy('requirement_name')->get();
-      return response()->json($requirement);
+      $requirement = Requirement::where('requirement_type', 'company')
+        ->whereStatus(1)
+        ->orderBy('requirement_name')
+        ->get()
+        ->map(function($v){
+        return [
+            'requirement_name'=> ucfirst($v->requirement_name),
+            'requirement_id'=> $v->requirement_id,
+            'dates_required'=> $v->dates_required,
+          ];
+      });
+
+      return response()->json($requirement->all());
    }
 
    private function addressRelated()
@@ -467,8 +476,8 @@ class CompanyController extends Controller
          $last_reference = Company::where('company_id', '!=', $company->company_id)
          ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')
          ->first()->reference_number;
+         
          $reference_number = explode('-', $last_reference);
-         // dd($reference_number);
          $reference_number = $reference_number[2]+1 ;
          $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
        }

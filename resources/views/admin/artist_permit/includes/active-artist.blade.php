@@ -56,17 +56,19 @@
 		</div>
 	</div>
 </section>
-<table class="table table-hover table-borderless table-striped border" id="active-artist">
+<table class="table table-hover table-borderless table-striped border table-sm" id="active-artist">
 	 <thead>
 	 <tr>
-			{{-- <th></th> --}}
+			<th></th>
+			<th>{{ __('ACTIVE PERMITS') }}</th>
 			<th>{{ __('PERSON CODE') }}</th>
 			<th>{{ __('ARTIST NAME') }}</th>
 			<th>{{ __('PROFESSION') }}</th>
 			<th>{{ __('NATIONALITY') }}</th>
 			<th>{{ __('MOBILE NUMBER') }}</th>
-			<th>{{ __('ACTIVE PERMIT') }}</th>
 			<th>{{ __('STATUS') }}</th>
+			<th>{{ __('AGE') }}</th>
+			<th>{{ __('BIRTHDATE') }}</th>
 	 </tr>
 	 </thead>
 </table>
