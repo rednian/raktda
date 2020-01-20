@@ -34,27 +34,27 @@ class CompanyController extends Controller
     return view('permits.company.show', ['company'=>$company]);
    }
 
+
    public function store(Request $request)
    {
-
-      $company = Validator::make($request->all(), [
-        'name_en'=> 'required|max:255',
-        'trade_license'=> 'required|max:255',
-        'trade_license_issued_date'=> 'required|max:255|date',
-        'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::parse($request->trade_license_issued_date)->addYear(),
-        'company_email'=> 'required|max:255|email',
-        'phone_number'=> 'required|max:255',
-        'address'=> 'required|max:255',
-        'area_id'=> 'required|max:255',
-        'company_description_en'=> 'required|max:255', 
-        'g-recaptcha-response' => 'required|captcha',
-        'term_condition' => 'required'     ]
-    )->validate();
+    //   $company = Validator::make($request->all(), [
+    //     'name_en'=> 'required|max:255',
+    //     'trade_license'=> 'required|max:255',
+    //     'trade_license_expired_date'=> 'required|max:255|date',
+    //     'address'=> 'required|max:255',
+    //     'area_id'=> 'required|max:255',
+    //     'g-recaptcha-response' => 'required|captcha',
+    //     'term_condition' => 'required'
+    //     // 'trade_license_issued_date'=> 'required|max:255|date',
+    //     // 'company_email'=> 'required|max:255|email',
+    //     // 'phone_number'=> 'required|max:255',
+    //     // 'company_description_en'=> 'required|max:255', 
+    //   ]
+    // )->validate();
 
 
       try {
          DB::beginTransaction();
-         // dd($request->all());
 
          $request['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
          $company = Company::create(array_merge($request->all(), ['status'=>'draft'], $this->addressRelated() ));
@@ -66,15 +66,15 @@ class CompanyController extends Controller
          $user->sendEmailVerificationNotification();
 
          DB::commit();
-
-         return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))
-         ->with('success', 'Registration successful. Please login and verify your email.');
-
+         Auth::login($user);
+         $result = ['success', 'Successfully Registered.', 'Success'];
+         return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))->with('message', $result);
+         
+       
       } catch (Exception $e) {
 
          DB::rollBack();
          return redirect()->back()->with('error', $e->getMessage());
-
       }
    }
 
@@ -147,7 +147,7 @@ class CompanyController extends Controller
 
    private function hasRequirement($company)
    {
-    $requirements = Requirement::where('requirement_type', 'company')->get();
+    $requirements = Requirement::where('requirement_type', 'company')->whereStatus('1')->get();
     $array = [];
     $data = null;
     if (!is_null($requirements)) {
@@ -174,12 +174,10 @@ class CompanyController extends Controller
           'name_en'=> 'required|max:255',
           'name_ar'=> 'required|max:255',
           'trade_license'=> 'required|max:255',
-          'trade_license_issued_date'=> 'required|max:255|date',
-          'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::parse($request->trade_license_issued_date)->addYear(),
+          'trade_license_expired_date'=> 'required|max:255|date',
           'company_email'=> 'required|max:255|email',
           'phone_number'=> 'required|max:255',
           'website'=> 'nullable|max:255',
-          'address'=> 'required|max:255',
           'address'=> 'required|max:255',
           'area_id'=> 'required|max:255',
           'company_description_en'=> 'required|max:255',
@@ -217,7 +215,6 @@ class CompanyController extends Controller
               $this->addressRelated()
             ));
             $result = ['success', 'Successfully submitted!', 'Success'];
-
             break;
          }
 
@@ -236,6 +233,7 @@ class CompanyController extends Controller
                  ]);
          }  
          else{
+          
              $company->contact()->create($request->all());
          }
 
@@ -448,8 +446,19 @@ class CompanyController extends Controller
 
    public function requirements(Request $request)
    {
-      $requirement = Requirement::where('requirement_type', 'company')->orderBy('requirement_name')->get();
-      return response()->json($requirement);
+      $requirement = Requirement::where('requirement_type', 'company')
+        ->whereStatus(1)
+        ->orderBy('requirement_name')
+        ->get()
+        ->map(function($v){
+        return [
+            'requirement_name'=> ucfirst($v->requirement_name),
+            'requirement_id'=> $v->requirement_id,
+            'dates_required'=> $v->dates_required,
+          ];
+      });
+
+      return response()->json($requirement->all());
    }
 
    private function addressRelated()
@@ -467,8 +476,8 @@ class CompanyController extends Controller
          $last_reference = Company::where('company_id', '!=', $company->company_id)
          ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')
          ->first()->reference_number;
+         
          $reference_number = explode('-', $last_reference);
-         // dd($reference_number);
          $reference_number = $reference_number[2]+1 ;
          $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
        }

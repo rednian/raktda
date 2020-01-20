@@ -430,13 +430,7 @@ class ArtistPermitController extends Controller
     {
       try {
          DB::beginTransaction();
-         // $permit->update(['permit_status'=>'processing']);
 
-//	      if($permit->artistPermit()->where('artist_permit_status', 'reject')->count()){
-//
-//	      }
-//
-         // dd($request->all());
          $artistpermit->update(['artist_permit_status'=>$request->artist_permit_status]);
 
          //delete the last checklist and replace with recentb
@@ -627,12 +621,7 @@ class ArtistPermitController extends Controller
 			    	return $artist_permit->artist->person_code;
 			    })
 			    ->editColumn('artist_status', function($artist_permit){
-			    	$class_name = 'default';
-			    	$status = $artist_permit->artist_permit_status;
-			    	if($artist_permit->artist_permit_status == 'unchecked'){ $class_name = 'warning'; }
-			    	if($artist_permit->artist_permit_status == 'disapproved'){ $class_name = 'danger'; }
-			    	if($artist_permit->artist_permit_status == 'approved'){ $class_name = 'success'; }
-			    	return ' <span class="kt-badge kt-badge--'.$class_name.' kt-badge--inline">'.ucwords($artist_permit->artist_permit_status).'</span>';
+            return permitStatus($artist_permit->artist_permit_status);
 			    })
 			    ->addColumn('is_allowed_multiple_permit', function($artist_permit){
 			    	return $artist_permit->profession->is_multiple ? true : false;

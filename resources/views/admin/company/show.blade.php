@@ -174,7 +174,7 @@
               <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-2x" role="tablist">
               <li class="nav-item ">
                   <a class="nav-link active" data-toggle="tab" href="#action-history" role="tab">
-                      {{__('ACTION')}}
+                      {{__('ACTION HISTORY')}}
                       <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->comment()->count()}}</span>
                   </a>
               </li>

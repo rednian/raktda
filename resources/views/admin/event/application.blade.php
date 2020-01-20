@@ -88,6 +88,7 @@
 													</div>
 													<div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
 													<div class="card-body">
+														
 														<div class="row form-group form-group-sm">
 															<div class="col-sm-6">
 																<section class="row">
@@ -121,6 +122,21 @@
 																	</div>
 																	</div>
 																	</div>
+																</section>
+															</div>
+															<div class="col-6">
+																<section class="kt-form kt-form--label-right ">
+																    <div class="form-group form-group-sm  row">
+																        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event details </label>
+																        <div class="col-1">
+																            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+																                <label>
+																                    <input type="checkbox" id="checked-all-details" name="">
+																                    <span></span>
+																                </label>
+																            </span>
+																        </div>
+																    </div>
 																</section>
 															</div>
 														</div>
@@ -282,6 +298,21 @@
 																						</span>
 																				</div>
 																			</div>
+																	</div>
+																	<div class="col-6">
+																		<section class="kt-form kt-form--label-right ">
+																		    <div class="form-group form-group-sm  row">
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event date details </label>
+																		        <div class="col-1">
+																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+																		                <label>
+																		                    <input type="checkbox" id="checked-all-date" name="">
+																		                    <span></span>
+																		                </label>
+																		            </span>
+																		        </div>
+																		    </div>
+																		</section>
 																	</div>
 																	</div>
 																	<div class="row form-group form-group-sm">
@@ -626,11 +657,29 @@
 														<div class="card-header" id="heading-address">
 															<div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
 																		aria-expanded="true" aria-controls="collapse-address">
-																	<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('LOCATION DETAILS') }}</h6>
+																	<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('LOCATION & MAP DETAILS') }}</h6>
 															</div>
 														</div>
 														<div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
 															<div class="card-body">
+																<div class="row form-group form-group-sm">
+																	<div class="col-6"></div>
+																	<div class="col-6">
+																		<section class="kt-form kt-form--label-right ">
+																		    <div class="form-group form-group-sm  row">
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event location details </label>
+																		        <div class="col-1">
+																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+																		                <label>
+																		                    <input type="checkbox" id="checked-all-address" name="">
+																		                    <span></span>
+																		                </label>
+																		            </span>
+																		        </div>
+																		    </div>
+																		</section>
+																	</div>
+																</div>
 																	<div class="row form-group form-group-sm">
 																		<div class="col-6">
 																				<label class="kt-font-dark">{{ __('Venue') }}<span class="text-danger">*</span></label>
@@ -694,110 +743,60 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-3">
-																				<label class="kt-font-dark">{{ __('Emirate') }}</label>
-																				<div class="input-group input-group-sm">
-																					<input value="{{ ucfirst($event->emirate->name_en) }}" name="emirates" readonly="readonly" type="text"
-																									class="form-control">
-																					<div class="input-group-append">
-																							<span class="input-group-text">
-																								<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																										<input data-step="step-1" type="checkbox">
-																										<span></span>
-																								</label>
-																							</span>
-																					</div>
+																		<div class="col-sm-3">
+																			<label class="kt-font-dark">{{ __('Latitude') }} <span class="text-danger">*</span></label>
+																			<div class="input-group input-group-sm">
+																				<input value="{{$event->latitude}}" name="" readonly="readonly" type="text" class="form-control" > 
+																				<div class="input-group-append">
+																					<span class="input-group-text">
+																						<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																							<input data-step="step-1" type="checkbox"> 
+																							<span></span>
+																						</label>
+																					</span>
 																				</div>
+																			</div>
 																		</div>
-																		<div class="col-3">
-																				<label class="kt-font-dark">{{ __('Country') }}</label>
-																				<div class="input-group input-group-sm">
-																					<input value="{{ ucfirst($event->country->name_en) }}" name="country" readonly="readonly" type="text"
-																									class="form-control">
-																					<div class="input-group-append">
-																							<span class="input-group-text">
-																								<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																										<input data-step="step-1"  type="checkbox">
-																										<span></span>
-																								</label>
-																							</span>
-																					</div>
+																		<div class="col-sm-3">
+																			<label class="kt-font-dark">{{ __('Longitude') }} <span class="text-danger">*</span></label>
+																			<div class="input-group input-group-sm">
+																				<input value="{{$event->longitude}}" name="" readonly="readonly" type="text" class="form-control" > 
+																				<div class="input-group-append">
+																					<span class="input-group-text">
+																						<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+																							<input data-step="step-1" type="checkbox"> 
+																							<span></span>
+																						</label>
+																					</span>
 																				</div>
+																			</div>
+																		</div>
+																		
+																		
+																	</div>
+																	
+																	<div class="row form-group form-group-sm">
+																		<div class="col-md-6">
+																			<label for="">{{__('Address')}} <span>*</span></label>
+																			<textarea readonly rows="2" class="form-control form-control-sm">{{ucfirst($event->address)}}</textarea>
+																		</div>
+																		<div class="col-md-6">
+																			<label for="">{{__('Additional Location Information')}}</label>
+																			<textarea readonly rows="2" class="form-control form-control-sm">{{ucfirst($event->additional_location_info)}}</textarea>
 																		</div>
 																	</div>
+
+																	<section class="row">
+																		<div class="col">
+																			<iframe class="border kt-padding-5" width='100%' height='100%' id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 310px; padding: 1px; width: 100%; margin-top: 1%; border-style: none;" >
+																			</iframe>
+																		</div>
+																	</section>
 															</div>
 														</div>
 												</div>
 											</section>
-											<div class="accordion accordion-solid accordion-toggle-plus kt-margin-t-5 border" id="accordion-map">
-											<div class="card">
-												<div class="card-header" id="heading-map">
-													<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-map" aria-expanded="true" aria-controls="collapse-map">
-													<h6 class="kt-font-transform-u kt-font-dark kt-font-bolder">{{ __('MAP DETAILS') }}</h6>
-													</div>
-												</div>
-												<div id="collapse-map" class="collapse show" aria-labelledby="heading-map" data-parent="#accordion-map" style="">
-													<div class="card-body">
-														<div class="row">
-															<div class="col-sm-6">
-																<label class="kt-font-dark">{{ __('Address') }} <span class="text-danger">*</span></label>
-																<div class="input-group input-group-sm">
-																	<input value="{{$event->full_address}}" name="" readonly="readonly" type="text" class="form-control" > 
-																	<div class="input-group-append">
-																		<span class="input-group-text">
-																			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																				<input data-step="step-1" type="checkbox"> 
-																				<span></span>
-																			</label>
-																		</span>
-																	</div>
-																</div>
-															</div>
-															<div class="col-sm-3">
-																<label class="kt-font-dark">{{ __('Latitude') }} <span class="text-danger">*</span></label>
-																<div class="input-group input-group-sm">
-																	<input value="{{$event->latitude}}" name="" readonly="readonly" type="text" class="form-control" > 
-																	<div class="input-group-append">
-																		<span class="input-group-text">
-																			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																				<input data-step="step-1" type="checkbox"> 
-																				<span></span>
-																			</label>
-																		</span>
-																	</div>
-																</div>
-															</div>
-															<div class="col-sm-3">
-																<label class="kt-font-dark">{{ __('Longitude') }} <span class="text-danger">*</span></label>
-																<div class="input-group input-group-sm">
-																	<input value="{{$event->longitude}}" name="" readonly="readonly" type="text" class="form-control" > 
-																	<div class="input-group-append">
-																		<span class="input-group-text">
-																			<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																				<input data-step="step-1" type="checkbox"> 
-																				<span></span>
-																			</label>
-																		</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="row form-group form-group-sm">
-															<div class="col-md-12">
-																<label for="">{{__('Additional Location Information')}}</label>
-																<textarea rows="2" class="form-control form-control-sm">{{ucfirst($event->additional_location_info)}}</textarea>
-															</div>
-														</div>
-														<section class="row">
-															<div class="col">
-																<iframe class="border kt-padding-5" width='100%' height='100%' id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 310px; padding: 1px; width: 100%; margin-top: 1%; border-style: none;" >
-																</iframe>
-															</div>
-														</section>
-													</div>
-												</div>
-											</div>
-										</div>
+											
 									</div>
 									</section>
 							</div>
@@ -1145,6 +1144,8 @@
 	new Vue({ el: '#app-wizard', data: { comment: null } });
 
 	$(document).ready(function () {
+
+		checkAll();
 
 
 
@@ -1630,5 +1631,25 @@ function updateLock() {
 	}
 });
 }
-	</script>
+
+function checkAll(){
+	$('input[type=checkbox]#checked-all-details').change(function(){ checkedAttr($(this)); });
+	$('input[type=checkbox]#checked-all-date').change(function(){ checkedAttr($(this)); });
+	$('input[type=checkbox]#checked-all-address').change(function(){ checkedAttr($(this)); });
+}
+
+function checkedAttr(obj) {
+	if($(obj).is(':checked')){
+		$(obj).parents('.card-body').find('input[type=checkbox]').attr('checked', true);
+		$(obj).parents('.card-body').find('input[type=text]').addClass('is-valid').removeClass('is-invalid');
+		$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
+	}
+	else{
+		$(obj).parents('.card-body').find('input[type=checkbox]').removeAttr('checked', true);
+		$(obj).parents('.card-body').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
+		$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
+	}
+	
+}
+</script>
 @stop

@@ -1,5 +1,5 @@
 <section class="accordion accordion-solid accordion-toggle-plus kt-margin-b-10" id="accordion-personal">
-    <div class="card">
+    <div class="card border">
         <div class="card-header" id="heading-personal">
             <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-personal" aria-expanded="true" aria-controls="collapse-personal">
                 <h6 class="kt-font-dark kt-font-transform-u">{{ __('Artist Details') }}</h6>
@@ -7,6 +7,19 @@
         </div>
         <div id="collapse-personal" class="collapse show" aria-labelledby="heading-personal" data-parent="#accordion-personal" style="">
             <section class="card-body">
+                <section class="kt-form kt-form--label-right ">
+                    <div class="form-group form-group-sm  row">
+                        <label class="col-3 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all artist details </label>
+                        <div class="col-1">
+                            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                                <label>
+                                    <input type="checkbox" id="checked-all-detail" name="">
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </section>
                 <section class="row">
                     <div class="col-sm-6">
                         <section class="kt-form kt-form--label-right">
@@ -296,23 +309,24 @@
                                     </div>
                                 </div>
                             </div>
-                                <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Visa Expiry Date') }}<span class="kt-font-danger">*</span></label>
-                                    <div class="col-lg-8">
-                                        <div class="input-group input-group-sm">
-                                            <input value="{{ $artist_permit->visa_number ? ucwords($artist_permit->visa_expire_date->format('d-M-Y')): null }}" readonly type="text" class="form-control form-control-sm">
-                                            <div class="input-group-append">
-                                               <span class="input-group-text">
-                                                 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-step="step-1" value="{{ $artist_permit->visa_expire_date ? ucwords($artist_permit->visa_expire_date->format('d-M-Y')): null }}" type="checkbox" name="check[visa_expiry_date]">
-                                                   <span></span>
-                                                 </label>
-                                               </span>
-                                            </div>
+                            <div class="form-group form-group-sm row">
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Visa Expiry Date') }} </label>
+                                <div class="col-lg-8">
+                                    <div class="input-group input-group-sm">
+                                        <input value="{{ $artist_permit->visa_number ? ucwords($artist_permit->visa_expire_date->format('d-M-Y')): null }}" readonly type="text" class="form-control form-control-sm">
+                                        <div class="input-group-append">
+                                           <span class="input-group-text">
+                                             <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                               <input data-step="step-1" value="{{ $artist_permit->visa_expire_date ? ucwords($artist_permit->visa_expire_date->format('d-M-Y')): null }}" type="checkbox" name="check[visa_expiry_date]">
+                                               <span></span>
+                                             </label>
+                                           </span>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         </section>
+                        
                     </div>
                 </section>
             </section>

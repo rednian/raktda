@@ -27,7 +27,7 @@
 													<option value="approved-unpaid">{{ __('Approve Application and notify client for payment') }}</option>
 										 @endif
 
-										<option value="send_back">{{ __('Bounce back to client for amendments the artist information') }}</option>
+										<option value="send_back">{{ __('Bounce back to client for modification') }}</option>
 										<option value="need approval">{{ __('Need Approval') }}</option>
 										<option value="rejected">{{ __('Reject Application') }}</option>
 										@else

@@ -164,33 +164,25 @@ function permitStatus($status)
 {
     $status = strtolower($status);
     $classname = null;
-    if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active') {
-        $classname = 'success';
+    if (in_array($status, ['new', 'approved-unpaid', 'active', 'checked', 'approved'])) {
+         $classname = 'success';
     }
-    if ($status == 'send back for amendments' || $status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended' || $status == 'pending') {
+
+    if( in_array($status, [
+            'send back for amendments', 'processing', 'modification request', 
+            'modified', 'need modification', 'amended', 'pending', 'need approval', 'draft', 'unchecked'])){ 
         $classname = 'warning';
     }
-    if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled' || $status == 'blocked') {
+
+    if (in_array($status, ['unprocessed', 'expired', 'rejected', 'cancelled', 'blocked'])) {
         $classname = 'danger';
     }
-    if ($status == 'need approval') {
-        $classname = 'warning';
-    }
-    if ($status == 'draft') {
-        $classname = 'warning';
-    }
-    if ($status == 'modification request') {
-        $status = 'need modification';
-    }
-    if ($status == 'checked'){
-        $classname = 'success';
-    }
-    if($status == 'approved'){
-        $classname = 'success';
-    }
-    if($status == 'rejected'){
-        $classname = 'danger';
-    }
+
+ 
+    if ($status == 'modification request') { $status = 'Bounced Back'; }
+    if (in_array($status, ['modified', 'amended'])) { $status = 'Bounced Back Request'; }
+   
+   
 
     return '<span class="kt-badge kt-badge--' . $classname . ' kt-badge--inline">' . __(ucwords($status)) . '</span>';
 }
