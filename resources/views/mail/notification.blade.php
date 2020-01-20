@@ -1,6 +1,6 @@
 @component('mail::message')
 @if(array_key_exists('title', $data))
-# {{ $data['title'] }}
+# {!! $data['title'] !!}
 @endif
 
 @if(array_key_exists('content', $data))

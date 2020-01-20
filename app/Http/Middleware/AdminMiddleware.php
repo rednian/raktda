@@ -17,7 +17,7 @@ class AdminMiddleware
                 return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]));
             }
             else{
-            return redirect()->route('company.dashboard', str_replace(' ', '_', strtolower($company->name_en)));
+                return redirect()->route('company.dashboard', str_replace(' ', '_', strtolower($company->name_en)));
             }
         }
 

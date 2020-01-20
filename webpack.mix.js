@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 
-// mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/sass/js/app.js', 'public/js');
 //    .sass('resources/sass/app.scss', 'public/css');
 
 mix.styles([
@@ -116,7 +116,8 @@ mix.scripts([
     'public/assets/vendors/general/tooltip.js/dist/umd/tooltip.min.js',
     'public/assets/vendors/general/perfect-scrollbar/dist/perfect-scrollbar.js',
     'public/assets/vendors/general/sticky-js/dist/sticky.min.js',
-    'public/assets/vendors/general/wnumb/wNumb.js'
+    'public/assets/vendors/general/wnumb/wNumb.js',
+    'public/js/app.js'
 ], 'public/js/mandatory.js');
 
 mix.scripts([
