@@ -135,12 +135,16 @@
                                 {{ ucwords($artist_detail->artist_permit_status)}}
                             </td>
                             <td class="d-flex justify-content-center">
-                                @if($artist_detail->artist_permit_status == 'rejected')
+                                @if($artist_detail->artist_permit_status != 'approved')
                                 <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                     title="Edit">
                                     <button
                                         class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('Edit')}}</button>
                                 </a>
+                                @else
+                                <button style="visibility: hidden"
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">Edit</button>
+                                @endif
                                 @endif
                                 <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                     title="View">
@@ -148,13 +152,17 @@
                                         class="btn btn-sm btn-secondary btn-elevate btn-hover-warning  kt-margin-r-5">{{__('View')}}</button>
                                 </a>
                                 @if(count($artist_details) > 1)
-                                @if($artist_detail->artist_permit_status == 'rejected')
+                                @if($artist_detail->artist_permit_status != 'approved')
                                 <a href="#"
                                     onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
                                     <button
-                                        class="btn btn-sm btn-secondary btn-elevate btn-warning-hover  kt-margin-r-5">{{__('Remove')}}</button>
+                                        class="btn btn-sm btn-secondary btn-elevate btn-warning-hover">{{__('Remove')}}</button>
                                 </a>
+                                @else
+                                <button style="visibility: hidden"
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">Edit</button>
+                                @endif
                                 @endif
                                 @endif
                                 {{-- @if(count($staff_comments) > 0)

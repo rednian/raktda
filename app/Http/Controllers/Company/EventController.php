@@ -237,7 +237,7 @@ class EventController extends Controller
     {
        
         $liquor_details = $request->liquorDetails;
-        $liquorDocDetails = json_decode($request->liquorDocDetails,  true);
+        // $liquorDocDetails = json_decode($request->liquorDocDetails,  true);
         $type = $request->type;
         $event_liquor_id = '';
 
@@ -315,7 +315,7 @@ class EventController extends Controller
         $userid = Auth::user()->user_id;
         $date = date('d_m_Y_H_i_s');
 
-        if ($liquorDocDetails) {
+        // if ($liquorDocDetails) {
 
             for ($j = 0; $j < $total; $j++) {
 
@@ -349,8 +349,8 @@ class EventController extends Controller
                                     $newPathLink = $check_path . '/' . $next_file_no . '_' . $date . '.' . $ext;
 
                                     EventLiquorTruckRequirement::create([
-                                        'issue_date' =>  $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
-                                        'expired_date' => $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['exp_date'])->toDateTimeString() : '',
+                                        // 'issue_date' =>  $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
+                                        // 'expired_date' => $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['exp_date'])->toDateTimeString() : '',
                                         'created_at' =>  Carbon::now()->toDateTimeString(),
                                         'created_by' =>  Auth::user()->user_id,
                                         'requirement_id' => $l,
@@ -370,7 +370,7 @@ class EventController extends Controller
                 }
 
             }
-        }
+        // }
             DB::commit();
             if($old_event_liquor_id)
             {
@@ -1185,17 +1185,35 @@ class EventController extends Controller
         }
     }
 
+    public function fetch_expired(Request $request)
+    {
+        if($request->ajax()) {
+            return $this->datatable_function('expired');
+        }
+    }
+
+    public function fetch_cancelled(Request $request)
+    {
+        if($request->ajax()) {
+            return $this->datatable_function('cancelled');
+        }
+    }
+
 
     function datatable_function($status)
     {
         $permits = Event::orderBy('created_at', 'desc')->where('created_by', Auth::user()->user_id);
 
         if ($status == 'applied') {
-            $permits->whereNotIn('status', ['active', 'draft', 'expired']);
+            $permits->whereNotIn('status', ['active', 'draft', 'expired', 'cancelled', 'rejected']);
         } else if ($status == 'valid') {
-            $permits->whereIn('status', ['active', 'expired'])->OrderBy('updated_at', 'desc');
+            $permits->whereIn('status', ['active'])->OrderBy('updated_at', 'desc');
         } else if ($status == 'draft') {
             $permits->where('status', 'draft');
+        } else if ($status == 'expired') {
+            $permits->where('status', 'expired');
+        } else if ($status == 'cancelled') {
+            $permits->whereIn('status', ['cancelled', 'rejected']);
         }
 
         $permits->latest();
@@ -1230,11 +1248,7 @@ class EventController extends Controller
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.happiness', $permit->event_id) . '"  title="'.__('Happiness').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Happiness').'</span></a>';
                     }else if ($permit->status == 'approved-unpaid') {
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.payment', $permit->event_id) . '"  title="'.__('Payment').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
-                    } else if ($permit->status == 'rejected') {
-                        return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Rejected').'</span>';
-                    } else if ($permit->status == 'cancelled') {
-                        return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
-                    } else if ($permit->status == 'need modification') {
+                    }  else if ($permit->status == 'need modification') {
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a><a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
                     } else if ($permit->status == 'new') {
                         // return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
@@ -1254,6 +1268,13 @@ class EventController extends Controller
                 case 'draft':   
                     if ($permit->status == 'draft') {
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>&emsp;<span onClick="delete_draft(' . $permit->event_id . ')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Delete').'</span>';
+                    }
+                    break;
+                case 'cancelled':
+                    if ($permit->status == 'rejected') {
+                        return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Rejected').'</span>';
+                    } else if ($permit->status == 'cancelled') {
+                        return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
                     }
                     break;
             }
@@ -1284,6 +1305,12 @@ class EventController extends Controller
                 case 'draft':
                     $from = 'draft';
                     break;
+                case 'expired':
+                    $from = 'expired';
+                    break;
+                case 'cancelled':
+                    $from = 'cancelled';
+                    break;
             }
             return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.show',[ 'id' =>  $permit->event_id , 'tab' => $from]) .'" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
@@ -1294,6 +1321,7 @@ class EventController extends Controller
             }
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
+
 
     public function amend(Request $request, Event $event)
     {

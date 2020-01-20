@@ -185,17 +185,20 @@
                             <td class="d-flex justify-content-center">
                                 <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
                                     title="{{__('Edit')}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('Edit')}}</button>
                                 </a>
                                 <a href="{{URL::signedRoute('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'new'])}}"
                                     title="{{__('View')}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('View')}}</button>
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
                                     onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
                                 </a>
                                 @endif
                             </td>

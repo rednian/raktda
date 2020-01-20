@@ -8,35 +8,7 @@ $language_id = Auth::user()->LanguageId;
     <div class="kt-portlet__body kt-portlet__body--fit">
         <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
             <div class="kt-grid__item">
-                <div class="kt-wizard-v3__nav">
-                    <div class="kt-wizard-v3__nav-items">
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                            data-ktwizard-state="current" id="check_inst">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>01</span> {{__('Instructions')}}
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>02</span> {{__('Artist Details')}}
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> {{__('Upload Documents')}}
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+                @include('permits.artist.common.common-nav')
             </div>
 
             <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
@@ -128,7 +100,7 @@ $language_id = Auth::user()->LanguageId;
                                                                     <div class="input-group input-group-sm">
                                                                         <select class="form-control form-control-sm "
                                                                             name="nationality" id="nationality"
-                                                                            onchange="checkforArtist();checkVisaRequired()">
+                                                                            onchange="checkforArtist();">
                                                                             {{--   - class for search in select  --}}
                                                                             <option value="">{{__('Select')}}
                                                                             </option>
@@ -794,6 +766,31 @@ $language_id = Auth::user()->LanguageId;
         // fetchFromDrafts();
     });
 
+    function setExpiryMindate(i) {
+        var i = parseInt(i);
+        // req_name_
+        if ($("#doc_issue_date_" + i).length) {
+            $req_name = $('#req_name_'+i).val();
+            if($req_name.toLowerCase() == 'medical report')
+            {
+                if($("#doc_issue_date_" + i).val())
+                {
+                    var issuedate = moment($("#doc_issue_date_" + i).val(), 'DD-MM-YYYY').format('YYYY-MM-DD');
+                    var minDate = moment(issuedate)
+                        .add(6, "M").subtract(1, 'day');
+                    var expDate = moment(minDate).format('DD-MM-YYYY');
+                    $("#doc_exp_date_" + i).val(expDate).datepicker("update");
+                    $("#doc_exp_date_" + i).attr('disabled', true);
+                }else {
+                    $("#doc_exp_date_" + i).val('').datepicker("update");
+                    $("#doc_exp_date_" + i).attr('disabled', false);
+                }
+               
+            }
+        }
+    }
+
+
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
         for(var i = 1; i <= $('#requirements_count').val(); i++)
@@ -985,12 +982,12 @@ $language_id = Auth::user()->LanguageId;
             required: true,
             dateNL: true
         },
-        visa_type: "required",
-        visa_number: 'required',
-        visa_expiry: {
-            required: true,
-            dateNL: true
-        },
+        // visa_type: "required",
+        // visa_number: 'required',
+        // visa_expiry: {
+        //     required: true,
+        //     dateNL: true
+        // },
         gender: "required",
         nationality: "required",
         address: "required",

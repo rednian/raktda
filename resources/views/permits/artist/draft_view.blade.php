@@ -22,7 +22,8 @@
                     <i class="la la-plus"></i>
                     Add Artist
                 </button> --}}
-                <a href="{{url('company/artist/add_new/'.$artist_details[0]->permit_id.'/draft')}}">
+                <a
+                    href="{{URL::signedRoute('company.add_new_artist', [ 'id' => $artist_details[0]->permit_id, 'from' => 'draft'])}}">
                     <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                         <i class="la la-plus"></i>
                         {{__('Add Artist')}}
@@ -37,7 +38,8 @@
                     onclick="setCokkie()">
                     <i class="la la-plus"></i>
                 </button> --}}
-                <a href="{{url('company/artist/add_new/'.$artist_details[0]->permit_id.'/draft')}}">
+                <a
+                    href="{{URL::signedRoute('company.add_new_artist', [ 'id' => $artist_details[0]->permit_id, 'from' => 'draft'])}}">
                     <button id="add_artist_sm" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                         <i class="la la-plus"></i>
                     </button>
@@ -190,13 +192,15 @@
                             <td>{{$ad->mobile_number}}</td>
                             {{-- <td>{{$ad->email}}</td> --}}
                             <td>{{__($ad->artist_permit_status)}}</td>
-                            <td class="d-flex justify-content-center">
+                            <td class="text-center">
                                 <a href="{{URL::signedRoute('company.edit_artist_draft',[ 'id' =>  $ad->id])}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Edit')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('Edit')}}</button>
                                 </a>
                                 <a
                                     href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $ad->id , 'from' => 'draft'])}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('View')}}</button>
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"

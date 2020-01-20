@@ -9,36 +9,7 @@
             <div class="kt-grid__item">
 
                 <!--begin: Form Wizard Nav -->
-                <div class="kt-wizard-v3__nav">
-                    <div class="kt-wizard-v3__nav-items">
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                            data-ktwizard-state="current" id="check_inst">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>01</span> {{__('Instructions')}}
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>02</span> {{__('Artist Details')}}
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> {{__('Upload Documents')}}
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-
-                    </div>
-                </div>
+                @include('permits.artist.common.common-nav')
 
                 <!--end: Form Wizard Nav -->
             </div>
@@ -156,7 +127,7 @@
 
                     <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
 
-                    <a href="{{url('company/artist/view_draft_details').'/'.$artist_details->permit_id}}">
+                    <a href="{{URL::signedRoute('company.view_draft_details',[ 'id' => $artist_details->permit_id])}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                             {{__('Back')}}
                         </div>
@@ -225,6 +196,30 @@
         $('#city').val() ? getAreas($('#city').val(), $('#sel_area').val()) : '';
 
     });
+
+    function setExpiryMindate(i) {
+        var i = parseInt(i);
+        // req_name_
+        if ($("#doc_issue_date_" + i).length) {
+            $req_name = $('#req_name_'+i).val();
+            if($req_name.toLowerCase() == 'medical report')
+            {
+                if($("#doc_issue_date_" + i).val())
+                {
+                    var issuedate = moment($("#doc_issue_date_" + i).val(), 'DD-MM-YYYY').format('YYYY-MM-DD');
+                    var minDate = moment(issuedate)
+                        .add(6, "M").subtract(1, 'day');
+                    var expDate = moment(minDate).format('DD-MM-YYYY');
+                    $("#doc_exp_date_" + i).val(expDate).datepicker("update");
+                    $("#doc_exp_date_" + i).attr('disabled', true);
+                }else {
+                    $("#doc_exp_date_" + i).val('').datepicker("update");
+                    $("#doc_exp_date_" + i).attr('disabled', false);
+                }
+               
+            }
+        }
+    }
 
 
     const uploadFunction = () => {

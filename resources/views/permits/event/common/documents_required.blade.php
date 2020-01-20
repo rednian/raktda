@@ -7,7 +7,7 @@
                     $i = 1;
                     @endphp
                     @foreach($event_types as $et)
-                    <li class="nav-item">
+                    <li class="nav-item" style="width: 100%;">
                         <a class="nav-link {{$i == 1 ? 'active' : ''}} kt-padding-5" data-toggle="tab"
                             href="#kt_tabs_5_{{$i}}">{{ getLangId() == 1 ? ucwords($et->name_en) : $et->name_ar}}</a>
                     </li>
@@ -30,21 +30,21 @@
                             <tr class="kt-font-transform-u">
                                 <th>#</th>
                                 <th>{{__('Document Name')}}</th>
-                                <th>{{__('Description')}}</th>
+                                <th>{{__('Notes')}}</th>
                             </tr>
                             @php
-                            $i = 1;
+                            $j = 1;
                             @endphp
                             @foreach($et->event_type_requirements as $req)
                             <tr>
-                                <td>{{$i}}</td>
+                                <td>{{$j}}</td>
                                 <td>{{getLangId() == 1 ? ucwords($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
                                 </td>
                                 <td>{{getLangId() == 1 ? ucwords($req->requirement->requirement_description) : $req->requirement->requirement_description_ar}}
                                 </td>
                             </tr>
                             @php
-                            $i++;
+                            $j++;
                             @endphp
                             @endforeach
                             @if($et->event_type_requirements->count() == 0)

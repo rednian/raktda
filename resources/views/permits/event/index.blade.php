@@ -47,22 +47,29 @@
                     role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#applied"
-                            data-target="#applied">{{__('Applied Event Permits')}} </a>
+                            data-target="#applied">{{__('Applied Permits')}} </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#valid">{{__('Valid Event Permits')}}</a>
+                        <a class="nav-link" data-toggle="tab" href="#valid">{{__('Valid Permits')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#calendar">{{__('Event Calendar')}}</a>
+                        <a class="nav-link" data-toggle="tab" href="#calendar">{{__('Calendar')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#draft">{{__('Event Permit Drafts')}}</a>
+                        <a class="nav-link" data-toggle="tab" href="#expired">{{__('Expired Permits')}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#cancelled">{{__('History')}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#draft">{{__('Drafts')}}</a>
                     </li>
                     @if(check_is_blocked()['status'] != 'blocked' && check_is_blocked()['status'] != 'rejected')
                     <span class="nav-item"
                         style="position:absolute; {{Auth::user()->LanguageId == 1 ? 'right: 3%' : 'left: 3%' }}">
                         <a href="{{ URL::signedRoute('event.create')}}">
-                            <button class="btn btn--yellow kt-font-transform-u btn-sm" id="nav--new-permit-btn">
+                            <button class="btn btn--yellow kt-font-transform-u btn-sm kt-font-bold"
+                                id="nav--new-permit-btn">
                                 <i class="la la-plus"></i>
                                 {{__('Add New')}}
                             </button>
@@ -80,7 +87,6 @@
 
         <div class="tab-content">
             <div class="tab-pane show fade active" id="applied" role="tabpanel">
-
                 <table class="table table-striped table-borderless border display nowrap" id="applied-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
@@ -108,6 +114,42 @@
                             <th>{{__('Event Name')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="expired" role="tabpanel">
+                <table class="table table-striped table-borderless border" id="expired-events-table">
+                    <thead>
+                        <tr class="kt-font-transform-u">
+                            <th>{{__('REFERENCE NO.')}}</th>
+                            <th>{{__('Permit Number')}}</th>
+                            <th>{{__('Event Type')}}</th>
+                            <th class="text-center">{{__('From')}} </th>
+                            <th class="text-center">{{__('To')}} </th>
+                            <th>{{__('Event Name')}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="cancelled" role="tabpanel">
+                <table class="table table-striped table-borderless border" id="cancelled-events-table">
+                    <thead>
+                        <tr class="kt-font-transform-u">
+                            <th>{{__('REFERENCE NO.')}}</th>
+                            <th>{{__('Permit Number')}}</th>
+                            <th>{{__('Event Type')}}</th>
+                            <th class="text-center">{{__('From')}} </th>
+                            <th class="text-center">{{__('To')}} </th>
+                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('Status')}}</th>
+                            <th class="text-center">{{__('Action')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -266,10 +308,12 @@
         });
         
         $(document).ready(function(){
-            calendarEvents();
+            // calendarEvents();
             applied();
             valid();
             draft();
+            expired();
+            cancelled();
             setInterval(function(){ applied(); valid();}, 100000);
             var hash = window.location.hash;
             hash && $('ul.nav a[href="' + hash + '"]').tab('show');
@@ -287,6 +331,8 @@
                 if (current_tab == '#valid' ) { valid(); }
                 if (current_tab == '#calendar') { calendarEvents(); }
                 if (current_tab == '#draft' ) { draft(); }
+                if (current_tab == '#expired' ) { expired(); }
+                if (current_tab == '#cancelled' ) { cancelled(); }
             });
 
         }) 
@@ -408,6 +454,85 @@
 
             });
         }
+
+
+         function  expired(){
+            var table4 = $('#expired-events-table').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ordering: false,
+                // order:[[6,'desc']],
+                ajax:'{{route("company.event.fetch_expired")}}',
+                columns: [
+                    { data: 'reference_number', name: 'reference_number' },
+                    { data: 'permit_number', name: 'permit_number' },
+                    { data: 'type_name', name: 'type_name' },
+                    { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
+                    { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
+                    { data: 'name_en', name: 'name_en' },        
+                    { data: 'details', name: 'details' ,  className: "text-center"},
+                ],
+                responsive: true,
+                columnDefs: [
+                    { responsivePriority: 1, targets: 1 },
+                    { targets: '_all', className:'no-wrap'},
+                    {
+                        targets:-3,
+                        width: '10%',
+                        className: 'text-center',
+                        render: function(data, type, full, meta) {
+                            return `<span class="kt-font-transform-c text-center">${data}</span>`;
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: "No Expired Event Permits",
+                    searchPlaceholder: "{{__('Search')}}"
+                }
+                
+            });
+       }
+
+        function  cancelled(){
+            var table1 = $('#cancelled-events-table').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ordering: false,
+                // order:[[6,'desc']],
+                ajax:'{{route("company.event.fetch_cancelled")}}',
+                columns: [
+                    { data: 'reference_number', name: 'reference_number' },
+                    { data: 'permit_number', name: 'permit_number' },
+                    { data: 'type_name', name: 'type_name' },
+                    { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
+                    { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
+                    { data: 'name_en', name: 'name_en' },        
+                    { data: 'permit_status', name: 'permit_status' },
+                    { data: 'action', name: 'action' ,  className: "text-center"},
+                    { data: 'details', name: 'details' ,  className: "text-center"},
+                ],
+                responsive: true,
+                columnDefs: [
+                    { responsivePriority: 1, targets: 1 },
+                    { targets: '_all', className:'no-wrap'},
+                    {
+                        targets:-3,
+                        width: '10%',
+                        className: 'text-center',
+                        render: function(data, type, full, meta) {
+                            return `<span class="kt-font-transform-c text-center">${data}</span>`;
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: "No Cancelled or Rejected Permits",
+                    searchPlaceholder: "{{__('Search')}}"
+                }
+                
+            });
+       }
 
 
    

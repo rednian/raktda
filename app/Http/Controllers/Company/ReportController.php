@@ -9,6 +9,9 @@ use PDF;
 use App\Transaction;
 use App\EventTransaction;
 use App\ArtistPermitTransaction;
+use App\ArtistTempData;
+use App\Permit;
+use App\Event;
 use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -185,5 +188,22 @@ class ReportController extends Controller
 
         // return $pdf->stream('Payment Voucher '.$transaction->transaction_id.'.pdf', "S");
     }
+
+    public function dashboard()
+    {
+        $data['artist_applied'] = Permit::whereIn('permit_status',['new', 'modification-request', 'amended', 'approved-unpaid'])->count();
+        $data['artist_valid'] = Permit::where('permit_status', 'active')->count();
+        $data['artist_drafts'] = ArtistTempData::where('status', 5)->distinct('permit_id')->count();
+        $data['artist_expired'] = Permit::where('permit_status', 'expired')->count();
+        $data['artist_cancelled'] = Permit::whereIn('permit_status',['cancelled', 'rejected'])->count();
+
+        $data['event_applied'] = Event::whereIn('status', ['new', 'amended', 'amended', 'approved-unpaid'])->count();
+        $data['event_valid'] = Event::where('status', 'active')->count();
+        $data['event_drafts'] = Event::where('status','draft')->count();
+        $data['event_expired'] = Event::where('status','expired')->count();
+        $data['event_cancelled'] = Event::whereIn('status', ['cancelled', 'rejected'])->count();
+        return view('permits.dashboard', $data);
+    }
+
 
 }

@@ -21,9 +21,10 @@
     <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
         <div id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1"
             data-ktmenu-dropdown-timeout="500">
-            <ul class="kt-menu__nav ">
-                <li class="kt-menu__item kt-menu__item">
-                    <a href="#" class="kt-menu__link">
+            <ul class="kt-menu__nav">
+                <li
+                    class="kt-menu__item kt-menu__item {{ \Request::is('company/dashboard') ? 'kt-menu__item--active' : ''}}">
+                    <a href="{{route('company.dashboard')}}" class="kt-menu__link">
                         <span class="kt-menu__link-text">{{ __('Dashboard')}}</span>
                     </a>
                 </li>

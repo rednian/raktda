@@ -176,25 +176,6 @@
                                             </div>
                                         </div>
 
-                                        <div class=" form-group form-group-sm row">
-                                            <label for="language"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Language')}}
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <select class=" form-control form-control-sm " name="language"
-                                                        id="language">
-                                                        <option value=" ">{{__('Select')}}</option>
-                                                        @foreach ($languages as $lang)
-                                                        <option value={{$lang->id}}
-                                                            {{$lang->id == $artist_details->language ? 'selected' : ''}}>
-                                                            {{getLangId() == 1 ? $lang->name_en : $lang->name_ar}}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
 
 
                                     </section>
@@ -330,225 +311,242 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group form-group-sm row">
+                                        {{-- <div class="form-group form-group-sm row">
                                             <label for="id_no"
                                                 class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Identification No')}}
-                                                <span class="text-danger sh-uae">*</span></label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        name="id_no" id="id_no"
-                                                        value="{{$artist_details->emirates_id}}">
-                                                </div>
+                                        <span class="text-danger sh-uae">*</span></label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group input-group-sm">
+                                                <input type="text" class="form-control form-control-sm " name="id_no"
+                                                    id="id_no" value="{{$artist_details->emirates_id}}">
                                             </div>
                                         </div>
+                                </div> --}}
 
-                                        <div class="form-group form-group-sm row">
-                                            <label for="sp_name"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponsor Name')}}
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        name="sp_name" id="sp_name" placeholder="{{__('Sponsor Name')}}"
-                                                        value="{{$artist_details->sponsor_name_en}}">
-                                                </div>
-                                            </div>
+                                <input type="hidden" name="id_no" id="id_no" value="">
+
+                                <div class="form-group form-group-sm row">
+                                    <label for="sp_name"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponsor Name')}}
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm " name="sp_name"
+                                                id="sp_name" placeholder="{{__('Sponsor Name')}}"
+                                                value="{{$artist_details->sponsor_name_en}}">
                                         </div>
-
-
+                                    </div>
                                 </div>
 
 
+                                <div class=" form-group form-group-sm row">
+                                    <label for="language"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Language')}}
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <select class=" form-control form-control-sm " name="language"
+                                                id="language">
+                                                <option value=" ">{{__('Select')}}</option>
+                                                @foreach ($languages as $lang)
+                                                <option value={{$lang->id}}
+                                                    {{$lang->id == $artist_details->language ? 'selected' : ''}}>
+                                                    {{getLangId() == 1 ? $lang->name_en : $lang->name_ar}}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
+
+
                         </div>
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample7">
+    </div>
+    <br>
+    <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample7">
 
-                <div class="card">
-                    <div class="card-header" id="headingTwo6">
-                        <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
-                            aria-expanded="false" aria-controls="collapseTwo6">
-                            <h6 class="kt-font-transform-u">{{__('Contact Information')}}
-                            </h6>
+        <div class="card">
+            <div class="card-header" id="headingTwo6">
+                <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
+                    aria-expanded="false" aria-controls="collapseTwo6">
+                    <h6 class="kt-font-transform-u">{{__('Contact Information')}}
+                    </h6>
+                </div>
+            </div>
+            <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample7">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <section class="kt-form--label-right">
+
+                                <div class="form-group form-group-sm row">
+                                    <label for="mobile"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Mobile Number')}}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm " name="mobile"
+                                                id="mobile" placeholder="{{__('Mobile Number')}}"
+                                                value="{{$artist_details->mobile_number}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group form-group-sm row">
+                                    <label for="landline"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Phone Number')}}
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm " name="landline"
+                                                id="landline" placeholder="{{__('Phone Number')}}"
+                                                value="{{$artist_details->phone_number}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </section>
                         </div>
-                    </div>
-                    <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
-                        data-parent="#accordionExample7">
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <section class="kt-form--label-right">
-
-                                        <div class="form-group form-group-sm row">
-                                            <label for="mobile"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Mobile Number')}}
-                                                <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        name="mobile" id="mobile" placeholder="{{__('Mobile Number')}}"
-                                                        value="{{$artist_details->mobile_number}}">
-                                                </div>
-                                            </div>
+                        <div class="col-6">
+                            <section class="kt-form--label-right">
+                                <div class="form-group form-group-sm row">
+                                    <label for="email"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Email')}}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm "
+                                                placeholder="{{__('Email')}}" name="email" id="email"
+                                                value="{{$artist_details->email}}" />
                                         </div>
-
-
-                                        <div class="form-group form-group-sm row">
-                                            <label for="landline"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Phone Number')}}
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        name="landline" id="landline"
-                                                        placeholder="{{__('Phone Number')}}"
-                                                        value="{{$artist_details->phone_number}}">
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </section>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <section class="kt-form--label-right">
-                                        <div class="form-group form-group-sm row">
-                                            <label for="email"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Email')}}
-                                                <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        placeholder="{{__('Email')}}" name="email" id="email"
-                                                        value="{{$artist_details->email}}" />
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="form-group form-group-sm row">
-                                            <label for="fax_no"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Fax No')}}
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        name="fax_no" id="fax_no" placeholder="{{__('Fax No')}}"
-                                                        value="{{$artist_details->fax_number}}">
-                                                </div>
-                                            </div>
+                                <div class="form-group form-group-sm row">
+                                    <label for="fax_no"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Fax No')}}
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm " name="fax_no"
+                                                id="fax_no" placeholder="{{__('Fax No')}}"
+                                                value="{{$artist_details->fax_number}}">
                                         </div>
-                                    </section>
+                                    </div>
                                 </div>
-                            </div>
+                            </section>
                         </div>
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample8">
+        </div>
+    </div>
+    <br>
+    <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample8">
 
-                <div class="card">
-                    <div class="card-header" id="headingTwo7">
-                        <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
-                            aria-expanded="false" aria-controls="collapseTwo7">
-                            <h6 class="kt-font-transform-u">{{__('Address Information')}}
-                            </h6>
+        <div class="card">
+            <div class="card-header" id="headingTwo7">
+                <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
+                    aria-expanded="false" aria-controls="collapseTwo7">
+                    <h6 class="kt-font-transform-u">{{__('Address Information')}}
+                    </h6>
+                </div>
+            </div>
+            <div id="collapseTwo7" class="collapse show" aria-labelledby="headingTwo7" data-parent="#accordionExample8">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <section class="kt-form--label-right">
+                                <div class="form-group form-group-sm row">
+                                    <label for="address"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Address')}}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm " name="address"
+                                                id="address" placeholder="{{__('Address')}}"
+                                                value="{{$artist_details->address_en}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=" form-group form-group-sm row">
+                                    <label for="address"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Emirate')}}
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <select class=" form-control form-control-sm " name="city" id="city"
+                                                onChange="getAreas(this.value, {{$artist_details->area}}, {{getLangId()}})">
+                                                <option value="">{{__('Select')}}</option>
+                                                @foreach ($emirates as $em)
+                                                <option value="{{$em->id}}"
+                                                    {{$em->id == $artist_details->city ? 'selected' : '' }}>
+                                                    {{getLangId() == 1 ? $em->name_en : $em->name_ar}}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-6">
+                            <section class="kt-form--label-right">
+                                <div class="form-group form-group-sm row">
+                                    <label for="email"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('PO Box')}}
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm " name="po_box"
+                                                id="po_box" placeholder="{{__('PO Box')}}"
+                                                value="{{$artist_details->po_box}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group form-group-sm row">
+                                    <label for="address"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Area')}}
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <select class="  form-control form-control-sm " name="area" id="area">
+                                                <option value="">{{__('Select')}}</option>
+                                                @foreach ($areas as $ar)
+                                                <option value="{{$ar->id}}"
+                                                    {{$ar->id == $artist_details->area ? 'selected' : '' }}>
+                                                    {{getLangId() == 1 ? $ar->area_en : $ar->area_ar}}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </section>
                         </div>
                     </div>
-                    <div id="collapseTwo7" class="collapse show" aria-labelledby="headingTwo7"
-                        data-parent="#accordionExample8">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-6">
-                                    <section class="kt-form--label-right">
-                                        <div class="form-group form-group-sm row">
-                                            <label for="address"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Address')}}
-                                                <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        name="address" id="address" placeholder="{{__('Address')}}"
-                                                        value="{{$artist_details->address_en}}">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class=" form-group form-group-sm row">
-                                            <label for="address"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Emirate')}}
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <select class=" form-control form-control-sm " name="city" id="city"
-                                                        onChange="getAreas(this.value, {{$artist_details->area}}, {{getLangId()}})">
-                                                        <option value="">{{__('Select')}}</option>
-                                                        @foreach ($emirates as $em)
-                                                        <option value="{{$em->id}}"
-                                                            {{$em->id == $artist_details->city ? 'selected' : '' }}>
-                                                            {{getLangId() == 1 ? $em->name_en : $em->name_ar}}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
-                                <div class="col-6">
-                                    <section class="kt-form--label-right">
-                                        <div class="form-group form-group-sm row">
-                                            <label for="email"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('PO Box')}}
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        name="po_box" id="po_box" placeholder="{{__('PO Box')}}"
-                                                        value="{{$artist_details->po_box}}">
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="form-group form-group-sm row">
-                                            <label for="address"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Area')}}
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <div class="input-group input-group-sm">
-                                                    <select class="  form-control form-control-sm " name="area"
-                                                        id="area">
-                                                        <option value="">{{__('Select')}}</option>
-                                                        @foreach ($areas as $ar)
-                                                        <option value="{{$ar->id}}"
-                                                            {{$ar->id == $artist_details->area ? 'selected' : '' }}>
-                                                            {{getLangId() == 1 ? $ar->area_en : $ar->area_ar}}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+            </div>
 
 
 
-                </div> {{---end accordion---}}
+        </div> {{---end accordion---}}
         </form>
     </div>
 </div>

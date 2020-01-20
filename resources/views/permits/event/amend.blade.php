@@ -395,17 +395,17 @@
     var truckDocUploader = [];
     var liquorDocUploader = [];
     var truckDocValidator ;
-    var liquorDocDetails = {};
+    // var liquorDocDetails = {};
     var truckDetails = {};
     var liquorDetails = {};
-    var truckDocDetails = {};
+    // var truckDocDetails = {};
     var truckDocRules = {};
     var truckDocMessages = {};
     var docRules = {};
     var docMessages = {};
     var liquorNames= {};
-    var truckDocumentsValidator ;
-    var liquorDocumentsValidator ;
+    // var truckDocumentsValidator ;
+    // var liquorDocumentsValidator ;
 
     $(document).ready(function(){
         liquorDocUpload();
@@ -453,33 +453,33 @@
             }
         }
 
-        var truckDocRules = {};
-        var truckDocMessages = {};
+        // var truckDocRules = {};
+        // var truckDocMessages = {};
 
-        for(var i = 1; i <= $('#truck_document_count').val(); i++)
-        {
-            if($('#truckdatesRequiredCheck_'+i).val() == 1)
-            {
-                truckDocRules['truck_doc_issue_date_'+i] = 'required';
-                truckDocRules['truck_doc_exp_date_'+i] = 'required';
-                truckDocMessages['truck_doc_issue_date_'+i] = '';
-                truckDocMessages['truck_doc_exp_date_'+i] = '';
-            }
-        }
+        // for(var i = 1; i <= $('#truck_document_count').val(); i++)
+        // {
+        //     if($('#truckdatesRequiredCheck_'+i).val() == 1)
+        //     {
+        //         truckDocRules['truck_doc_issue_date_'+i] = 'required';
+        //         truckDocRules['truck_doc_exp_date_'+i] = 'required';
+        //         truckDocMessages['truck_doc_issue_date_'+i] = '';
+        //         truckDocMessages['truck_doc_exp_date_'+i] = '';
+        //     }
+        // }
 
-        var liquorDocRules = {};
-        var liquorDocMessages = {};
+        // var liquorDocRules = {};
+        // var liquorDocMessages = {};
 
-        for(var i = 1; i <= $('#liquor_document_count').val(); i++)
-        {
-            if($('#liquordatesRequiredCheck_'+i).val() == 1)
-            {
-                liquorDocRules['liquor_doc_issue_date_'+i] = 'required';
-                liquorDocRules['liquor_doc_exp_date_'+i] = 'required';
-                liquorDocMessages['liquor_doc_issue_date_'+i] = '';
-                liquorDocMessages['liquor_doc_exp_date_'+i] = '';
-            }
-        }
+        // for(var i = 1; i <= $('#liquor_document_count').val(); i++)
+        // {
+        //     if($('#liquordatesRequiredCheck_'+i).val() == 1)
+        //     {
+        //         liquorDocRules['liquor_doc_issue_date_'+i] = 'required';
+        //         liquorDocRules['liquor_doc_exp_date_'+i] = 'required';
+        //         liquorDocMessages['liquor_doc_issue_date_'+i] = '';
+        //         liquorDocMessages['liquor_doc_exp_date_'+i] = '';
+        //     }
+        // }
 
         
 
@@ -490,7 +490,7 @@
             if(isLiquor) {
                 type =  $("input:radio[name='isLiquorVenue']:checked").val();
             }
-            if(isLiquor == 1 ? type == 0 ? (liquorDocumentsValidator != '' ? liquorDocumentsValidator.form() : 1) && liquorValidator.form() && hasFile : liquorProvidedValidator.form() : 1)
+            if(isLiquor == 1 ? type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form() : 1)
             {
                 if(isLiquor) {
                     if(type == 0)
@@ -521,7 +521,7 @@
                         type: type,
                         time_end: $('#time_end').val(),
                         liquorDetails: liquorDetails,
-                        liquorDocDetails: JSON.stringify(liquorDocDetails),
+                        // liquorDocDetails: JSON.stringify(liquorDocDetails),
                         liquorNames: JSON.stringify(liquorNames),
                         event_liquor_id: $('#event_liquor_id').val()
                     }, 
@@ -630,10 +630,10 @@
                             hasFileArray[i] = true;
                             $("#truck-upload_" + i).css('border', '2px dotted #A5A5C7');
                         }
-                        truckDocDetails[i] = {
-                            issue_date: $('#truck_doc_issue_date_' + i).val(),
-                            exp_date: $('#truck_doc_exp_date_' + i).val()
-                        }
+                        // truckDocDetails[i] = {
+                        //     issue_date: $('#truck_doc_issue_date_' + i).val(),
+                        //     exp_date: $('#truck_doc_exp_date_' + i).val()
+                        // }
                     }
                 }
             }
@@ -642,7 +642,7 @@
             } else {
                 hasFile = true;
             }
-            localStorage.setItem('truck_doc_details', JSON.stringify(truckDocDetails));
+            // localStorage.setItem('truck_doc_details', JSON.stringify(truckDocDetails));
 
             return hasFile;
         }
@@ -731,10 +731,10 @@
                         $('#regis_expiry_date').val(moment(result.registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
                         $('#this_event_truck_id').val(result.event_truck_id);
                         $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
-                        truckDocumentsValidator = $('#truck_upload_form').validate({
-                            rules: truckDocRules,
-                            messages: truckDocMessages
-                        });
+                        // truckDocumentsValidator = $('#truck_upload_form').validate({
+                        //     rules: truckDocRules,
+                        //     messages: truckDocMessages
+                        // });
                         truckDocUpload();
                     }
                 }
@@ -755,16 +755,16 @@
             $('#add_new_td').show();
             $('#edit_food_truck').modal('hide');
             $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
-            truckDocumentsValidator = $('#truck_upload_form').validate({
-                rules: truckDocRules,
-                messages: truckDocMessages
-            });
+            // truckDocumentsValidator = $('#truck_upload_form').validate({
+            //     rules: truckDocRules,
+            //     messages: truckDocMessages
+            // });
             truckDocUpload();
         });
 
         $('#add_new_td').click(function(){
             var hasFile = truckDocValidation();
-            if((truckDocumentsValidator != '' ? truckDocumentsValidator.form() : 1 ) && truckValidator.form() && hasFile)
+            if(truckValidator.form() && hasFile)
             {
                 var truck_details = {
                     company_name_en: $('#company_name_en').val(),
@@ -774,7 +774,7 @@
                     regis_issue_date: $('#regis_issue_date').val(),
                     regis_expiry_date: $('#regis_expiry_date').val()
                 }
-                var truckDocDetails = localStorage.getItem('truck_doc_details');
+                // var truckDocDetails = localStorage.getItem('truck_doc_details');
                 if(truckDetails)
                 {
                     $.ajax({
@@ -783,7 +783,7 @@
                         data: {
                             event_id: $('#event_id').val(),
                             truckDetails: JSON.stringify(truck_details),
-                            truckDocDetails: truckDocDetails,
+                            // truckDocDetails: truckDocDetails,
                             truck_id: ''
                         },
                         success: function (result) {
@@ -803,7 +803,7 @@
 
         $('#update_this_td').click(function(){
             var hasFile = truckDocValidation();
-            if((truckDocumentsValidator != '' ? truckDocumentsValidator.form() : 1 ) && truckValidator.form() && hasFile)
+            if(truckValidator.form() && hasFile)
             {
                 var truck_details = {
                     company_name_en: $('#company_name_en').val(),
@@ -813,7 +813,7 @@
                     regis_issue_date: $('#regis_issue_date').val(),
                     regis_expiry_date: $('#regis_expiry_date').val()
                 }
-                var truckDocDetails = localStorage.getItem('truck_doc_details');
+                // var truckDocDetails = localStorage.getItem('truck_doc_details');
                 if(truckDetails)
                 {
                     $.ajax({
@@ -822,7 +822,7 @@
                         data: {
                             truck_id : $('#this_event_truck_id').val(),
                             truckDetails: JSON.stringify(truck_details),
-                            truckDocDetails: truckDocDetails,
+                            // truckDocDetails: truckDocDetails,
                             eventId: $('#event_id').val(),
                             from: 'amend'
                         },
@@ -1001,10 +1001,10 @@
                             hasFileArray[d] = true;
                             $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
                         }
-                        liquorDocDetails[d] = {
-                            issue_date: $('#liquor_doc_issue_date_' + d).length ? $('#liquor_doc_issue_date_' + d).val() : '',
-                            exp_date: $('#liquor_doc_exp_date_' + d).length ? $('#liquor_doc_exp_date_' + d).val() : '',
-                        }
+                        // liquorDocDetails[d] = {
+                        //     issue_date: $('#liquor_doc_issue_date_' + d).length ? $('#liquor_doc_issue_date_' + d).val() : '',
+                        //     exp_date: $('#liquor_doc_exp_date_' + d).length ? $('#liquor_doc_exp_date_' + d).val() : '',
+                        // }
 
                         liquorNames[d] = {
                             reqId: $('#liqour_req_id_'+d).val(),

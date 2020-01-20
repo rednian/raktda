@@ -81,13 +81,33 @@ class ArtistController extends Controller
         }
     }
 
+    public function fetch_expired(Request $request)
+    {
+        if($request->ajax())
+        {
+            return $this->datatable_function('expired');
+        }
+    }
+
+    public function fetch_cancelled(Request $request)
+    {
+        if($request->ajax())
+        {
+            return $this->datatable_function('cancelled');
+        }
+    }
+
     function datatable_function($status)
     {
         $permits = Permit::where('created_by', Auth::user()->user_id);
         if ($status == 'applied') {
-            $permits->whereNotIn('permit_status', ['active', 'expired']);
+            $permits->whereNotIn('permit_status', ['active', 'expired', 'cancelled', 'rejected']);
         } else if ($status == 'valid') {
-            $permits->whereIn('permit_status', ['active', 'expired']);
+            $permits->whereIn('permit_status', ['active']);
+        }else if ($status == 'expired') {
+            $permits->whereIn('permit_status', ['expired']);
+        }else if ($status == 'cancelled') {
+            $permits->whereIn('permit_status', ['cancelled', 'rejected']);
         }
         $permits->orderBy('created_at', 'desc')->get();
 
@@ -216,6 +236,12 @@ class ArtistController extends Controller
                     break;
                 case 'valid':
                     $from = 'valid';
+                    break;
+                case 'expired':
+                    $from = 'expired';
+                    break;
+                case 'cancelled':
+                    $from = 'cancelled';
                     break;
             }
             return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_permit_details', [ 'id' =>$permit->permit_id , 'tab' => $from ]).'" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
@@ -720,7 +746,7 @@ class ArtistController extends Controller
             $newThumbPathLink = $getArtistPics->thumbnail;
         }
 
-        if ($request->from == 'draft') {
+        if ($request->fromPage == 'draft') {
             $artistTempData->status = 5;
         } else {
             $artistTempData->status = 0;

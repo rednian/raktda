@@ -37,11 +37,12 @@ Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function()
 });
 
 
-
 Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_status']], function () {
     Route::get('/dashboard', function () {
         return redirect(URL::signedRoute('artist.index'));
     })->name('company.dashboard');
+
+    // Route::get('dashboard', 'Company\ReportController@dashboard')->name('company.dashboard');   
 
     Route::resource('artist', 'Company\ArtistController');
     Route::get('artist/new/{id}', 'Company\ArtistController@create')->name('company.add_new_permit');
@@ -50,6 +51,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('fetch_applied_artists', 'Company\ArtistController@fetch_applied')->name('company.fetch_applied_artists');
     Route::get('fetch_existing_artists', 'Company\ArtistController@fetch_valid')->name('company.fetch_existing_artists');
     Route::get('fetch_existing_drafts',  'Company\ArtistController@fetch_drafts')->name('company.fetch_existing_drafts');
+    Route::get('fetch_expired_permits',  'Company\ArtistController@fetch_expired')->name('company.fetch_expired_permits');
+    Route::get('fetch_cancelled_permits',  'Company\ArtistController@fetch_cancelled')->name('company.fetch_cancelled_permits');
     Route::post('delete_artist', 'Company\ArtistController@delete_artist')->name('company.delete_artist');
     Route::post('update_artist_temp', 'Company\ArtistController@update_artist_temp')->name('company.update_artist_temp');
     Route::post('get_files_uploaded', 'Company\ArtistController@get_files_uploaded')->name('company.get_files_uploaded');
@@ -116,6 +119,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('fetch_applied_events', 'Company\EventController@fetch_applied')->name('company.event.fetch_applied');
     Route::get('fetch_existing_events', 'Company\EventController@fetch_valid')->name('company.event.fetch_valid');
     Route::get('fetch_event_drafts',  'Company\EventController@fetch_draft')->name('company.event.fetch_draft');
+    Route::get('fetch_expired_events',  'Company\EventController@fetch_expired')->name('company.event.fetch_expired');
+    Route::get('fetch_cancelled_events',  'Company\EventController@fetch_cancelled')->name('company.event.fetch_cancelled');
     Route::post('event/fetch_requirements', 'Company\EventController@fetch_requirements')->name('company.event.get_requirements');
     Route::get('event/get_additional_requirements/{id}', 'Company\EventController@fetch_additional_requirements')->name('company.event.get_additional_requirements');
     Route::get('event/get_status/{id}', 'Company\EventController@get_status')->name('company.event.get_status');

@@ -184,6 +184,7 @@
     // }
 
 
+
     function windowBeforeUnload() {
 
         var permit_id = $('#permit_id').val();
