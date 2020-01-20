@@ -96,4 +96,9 @@ class Company extends Model
     public function users(){
         return $this->hasMany(User::class, 'EmpClientId', 'company_id');
     }
+
+    public function getNameAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->name_en) : ucfirst($this->name_ar);
+    }
 }

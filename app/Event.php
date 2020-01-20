@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -173,5 +173,10 @@ class Event extends Model
     public function setExpiredDateAttribute($date)
     {
         $this->attributes['expired_date'] = Carbon::parse($date)->format('Y-m-d');
+    }
+
+    public function getNameAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->name_en) : ucfirst($this->name_ar);
     }
 }
