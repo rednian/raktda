@@ -179,7 +179,7 @@ function permitStatus($status)
     }
 
  
-    if ($status == 'modification request') { $status = 'Bounced Back'; }
+    if (in_array($status, ['modification request', 'send back for amendments'])) { $status = 'Bounced Back'; }
     if (in_array($status, ['modified', 'amended'])) { $status = 'Bounced Back Request'; }
    
    

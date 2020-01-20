@@ -258,7 +258,7 @@
         createdRow: function (row, data, index) {
             $('.btn-show-permit', row).click(function(e){
               e.stopPropagation();
-            
+              $('span#artist-name').html(data.name);
                 active_permit_table = $('table#active-permit').DataTable({
                   ajax: {
                     url: '{{ url('permit/artist') }}/'+data.artist_id+'/activepermitdatatable'
@@ -268,12 +268,16 @@
                   columns: [
                   {data: 'reference_number'},
                   {data: 'permit_number'},
-                  // {data: 'name'},
-                  // {data: 'duration'},
-                  // {data: 'start'},
-                  // {data: 'end'},
-                  // {data: 'location'},
-                  ]
+                  {data: 'name'},
+                  {data: 'profession'},
+                  {data: 'expired_date'},
+                  {data: 'location'},
+                  ],
+                    createdRow: function(row, data, index){
+                      $('td:not(:first-child)', row).click(function(){
+                          location.href = data.link;
+                      });
+                    }
                 });
 
             $('#active-artist-modal').modal('show');

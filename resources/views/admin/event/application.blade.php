@@ -12,7 +12,7 @@
 <section id="app-wizard" class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
 <div class="kt-portlet__head kt-portlet__head--sm">
 	<div class="kt-portlet__head-label">
-		<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ Auth::user()->LanguageId == 1 ? ucwords($event->name_en) : $event->name_ar }}</span></h3>
+		<h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ $event->name }} - {!! permitStatus($event->status) !!}</span></h3>
 	</div>
 	<div class="kt-portlet__head-toolbar">
 		<a href="{{ URL::signedRoute('admin.event.index') }}" class="btn btn-sm btn-outline-secondary kt-margin-r-4 kt-font-transform-u">

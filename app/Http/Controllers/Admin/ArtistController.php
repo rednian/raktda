@@ -1,6 +1,5 @@
 <?php
-
-	namespace App\Http\Controllers\Admin;
+    namespace App\Http\Controllers\Admin;
 
 	use App\Permit;
 	use Carbon\Carbon;
@@ -92,14 +91,28 @@
 		}
 
 
-		public function activePermitDatatable(Request $request, Artist $artist)
+		public function activePermitDatatable(Artist $artist)
 		{
 			 $permits = $artist->permit()
-//                ->where('permit_status', 'active')
-//                ->whereDate('expired_date', '<', Carbon::now())
+                ->where('permit_status', 'active')
+                ->whereDate('expired_date', '>=', Carbon::now())
                 ->get();
 			return Datatables::of($permits)
-			->addColumn('profession', function($permit){ })
+                ->addColumn('profession', function($permit){
+                    return $permit->artistPermit()->latest()->first()->profession->name;
+                })
+                ->addColumn('name', function($permit){
+                    return $permit->owner->company->name;
+                })
+                ->editColumn('expired_date', function($permit){
+                    return $permit->expired_date->format('d-F-Y');
+                })
+                ->addColumn('location', function($permit){
+                    return $permit->location;
+                })
+                ->addColumn('link', function($permit){
+                    return URL::signedRoute('admin.artist_permit.show', ['permit' => $permit->permit_id]);
+                })
 			->make(true);
 		}
 
