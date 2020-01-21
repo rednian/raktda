@@ -127,7 +127,7 @@ class CompanyController extends Controller
      if (!$request->hasValidSignature()) { abort(401); }
       return view('admin.company.application', [
          'company'=>$company,
-         'page_title'=> ucfirst($request->user()->LanguageId == 1 ? $company->name_en : $company->name_ar).' | '.__('Application')
+         'page_title'=> 'RAKTDA | Proccessing Establishment'
       ]);
    }
 

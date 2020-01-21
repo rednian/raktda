@@ -168,7 +168,7 @@
                                <th>{{ __('PHONE NUMBER') }}</th>
                                <th>{{ __('EMAIL') }}</th>
                                <th>{{ __('REQUEST TYPE') }}</th>
-                               <th>{{ __('CHECKED STATUS') }}</th>
+                               <th>{{ __('LAST CHECKED STATUS') }}</th>
                                <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
                                <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
                                <th>{{ __('BOUNCED BACK REASON') }}</th>

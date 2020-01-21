@@ -198,6 +198,7 @@
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('SUBMITTED DATE') }}</th>
+              <th>{{ __('REQUEST TYPE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
               <th>{{ __('END DATE') }}</th>
@@ -292,7 +293,8 @@
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('SUBMITTED DATE') }}</th>
-              <th>{{ __('STATUS') }}</th>
+              <th>{{ __('REQUEST TYPE') }}</th>
+              <th>{{ __('LAST CHECKED STATUS') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
               <th>{{ __('END DATE') }}</th>
@@ -389,7 +391,8 @@
               <th>{{ __('EVENT TYPE') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
-              <th>{{ __('STATUS') }}</th>
+              <th>{{ __('LAST CHECKED STATUS') }}</th>
+              <th>{{ __('REQUEST TYPE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
               <th>{{ __('END DATE') }}</th>
@@ -969,6 +972,7 @@
           {data: 'establishment_name'},
           {data: 'duration'},
           {data: 'status'},
+          {data: 'request_type'},
           {data: 'type'},
           {data: 'start'},
           {data: 'end'},
@@ -1028,6 +1032,7 @@
            {data: 'establishment_name'},
            {data: 'duration'},
            {data: 'updated_at'},
+           {data: 'request_type'},
            {data: 'status'},
            {data: 'type'},
            {data: 'start'},
@@ -1089,6 +1094,7 @@
            {data: 'establishment_name'},
            {data: 'duration'},
            {data: 'updated_at'},
+           {data: 'request_type'},
            {data: 'type'},
            {data: 'start'},
            {data: 'end'},
