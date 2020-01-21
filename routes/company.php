@@ -3,6 +3,7 @@
 Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function(){
 
   Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
+  Route::get('/{company}/account', 'Company\CompanyController@account')->name('company.account')->middleware('signed');
   Route::get('/profile/{company}', 'Company\CompanyController@show')->name('company.show')->middleware('signed');
   Route::get('/{company}/profile-databtable', 'Company\CompanyController@commentDatatable')->name('company.comment.datatable');
   Route::post('/{company}/details', 'Company\CompanyController@update')->name('company.update');

@@ -3,7 +3,7 @@
 <section class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
    <div class="kt-portlet__head kt-portlet__head--sm">
       <div class="kt-portlet__head-label">
-         <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - {{ __('Application') }}</h3>
+         <h3 class="kt-portlet__head-title kt-font-dark">{{ $company->name }} - {!! permitStatus($company->request_type) !!}</h3>
       </div>
       <div class="kt-portlet__head-toolbar">
          <a href="{{ URL::signedRoute('admin.company.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">

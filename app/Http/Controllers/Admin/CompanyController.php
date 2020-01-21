@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CompanyArtist;
 use DB;
 use Carbon\Carbon;
 use DataTables;
@@ -27,6 +28,7 @@ class CompanyController extends Controller
          'approved'=> Company::where('status', 'active')->count(),
          'blocked'=> Company::where('status', 'blocked')->count(),
          'types'=>  CompanyType::orderBy('name_en')->get(),
+         'pending'=>Company::whereStatus('back')->count(),
          'areas'=>  Areas::whereHas('company', function($q){ $q->whereIn('status', ['new', 'pending']); })->where('emirates_id', 5)->orderBy('area_en')->get(),
       ]);
    }
@@ -400,7 +402,7 @@ class CompanyController extends Controller
          return '-';
       })
       ->addColumn('profile', function($company) use ($request){
-         $name = $request->user()->LanguageId == 1 ? ucfirst($company->name_en) : $company->name_ar; 
+         $name = $request->user()->LanguageId == 1 ? ucfirst($company->name_en) : $company->name_ar;
          $type = $request->user()->LanguageId == 1 ? ucfirst($company->type->name_en) : $company->type->name_ar; 
          return profileName($name, $type);
       })
@@ -411,7 +413,7 @@ class CompanyController extends Controller
         return $request->user()->LanguageId == 1 ? ucfirst($company->area->area_en) : $company->area->area_ar; 
       })
       ->addColumn('issued_date', function($company){
-         return $company->trade_license_issued_date->format('d-F-Y'); 
+         return null;
       })
        ->addColumn('expired_date', function($company){  
          return $company->trade_license_expired_date->format('d-F-Y'); 
@@ -438,10 +440,10 @@ class CompanyController extends Controller
          $area = $request->user()->LanguageId == 1 ? ucfirst($company->area->area_en) : $company->area->area_ar;
          return ucfirst($company->address).' '.$area.' '.$emirate.' '.$country;
       })
-      ->editColumn('website', function($company){
-         return $company->website ? '<a href="'.$company->webiste.'" target="_blank">'.$company->webiste.'</a>' :  '-';
+      ->editColumn('request_type', function($company){
+         return permitStatus($company->request_type);
       })
-      ->addColumn('status', function($company){
+      ->editColumn('status', function($company){
          return permitStatus($company->status);
       })
       ->addColumn('link', function($company){
@@ -461,7 +463,7 @@ class CompanyController extends Controller
         }
         return $comment;
       })
-      ->rawColumns(['date', 'status', 'profile', 'trade_expired_date', 'website'])
+      ->rawColumns(['date', 'status', 'profile', 'trade_expired_date', 'request_type', 'status'])
       ->make(true);
    }
 }
