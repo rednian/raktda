@@ -65,7 +65,7 @@ $language_id = \Auth::user()->LanguageId;
                     <input type="hidden" id="permit_from" value="{{$permit_details->issued_date}}">
                     <input type="hidden" id="permit_to" value="{{$permit_details->expired_date}}">
                     <!--begin: Permit Details Wizard-->
-                    <input type="hidden" id="artist_permit_id" value="{{$permit_details->artist_permit_id}}">
+                    <input type="hidden" id="artist_permit_id" value="">
                     {{-- Artist details wizard Start --}}
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first">
@@ -103,7 +103,7 @@ $language_id = \Auth::user()->LanguageId;
                                             data-parent="#accordionExample5">
                                             <div class="card-body">
                                                 <input type="hidden" id="artist_id" />
-                                                <input type="hidden" id="is_old_artist" value="1" />
+                                                <input type="hidden" id="is_old_artist" value="{{1}}" />
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <section class="kt-form--label-right">
@@ -805,7 +805,7 @@ $language_id = \Auth::user()->LanguageId;
         // console.log($('#artist_number_doc').val());
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
-            var reqId = $('#req_id_'+i).val() ;
+            let reqId = $('#req_id_'+i).val() ;
             fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
                 headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -852,7 +852,9 @@ $language_id = \Auth::user()->LanguageId;
                             let number = id.split("_");
                             let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                             let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-                            obj.createProgress(data.requirement['requirement_name'],"{{url('storage')}}"+'/'+data.path,'');
+                            const d = data["path"].split("/");
+                            let docName = d[d.length - 1];
+                            obj.createProgress(docName,"{{url('storage')}}"+'/'+data.path,'');
                             if(formatted_issue_date != NaN-NaN-NaN)
                             {
                                 $('#doc_issue_date_'+number[1]).val(formatted_issue_date);
@@ -876,12 +878,23 @@ $language_id = \Auth::user()->LanguageId;
                 },
                 downloadCallback:function(files,pd)
                 {
-                    let file_path = files.filepath;
-                    let path = file_path.replace('public/','');
-                    window.open(
-                    "{{url('storage')}}"+'/' + path,
-                    '_blank'
-                    );
+                    if(files.filepath) {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    } else {
+                        let user_id = $('#user_id').val();
+                        let artistpermitid = $('#artist_permit_id').val();
+                        let this_url = user_id + '/artist/' + artistpermitid +'/'+reqId+'/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+
+                    }
                 },
                 onError: function (files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
@@ -903,20 +916,20 @@ $language_id = \Auth::user()->LanguageId;
                 fileName: "pic_file",
                 multiple: false,
                 maxFileCount:1,
-                showPreview:true,
+                // showPreview:true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
                 showFileCounter: false,
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 abortStr: '',
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
+                // onSuccess: function (files, response, xhr, pd) {
+                //     pd.filename.html('');
+                // },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
                 {
                     $.ajax({
@@ -936,13 +949,37 @@ $language_id = \Auth::user()->LanguageId;
                             type: 'GET',
                             success: function(data)
                             {
-                                if(data[0].artist_permit[0].original)
+                                if(data[0])
                                 {
-                                    obj.createProgress('',"{{url('storage')}}"+'/'+data[0].artist_permit[0].original,'');
+                                    let len = data[0].artist_permit.length;
+                                    let i = data[0].artist_permit.length - 1;
+                                    if (data[0].artist_permit[i].thumbnail) {
+                                        // let ex = explode('/', data[0].artist_permit[i].thumbnail);
+                                        let ex = data[0].artist_permit[i].thumbnail.split('/').pop();
+                                        obj.createProgress(ex, "{{url('storage')}}"+'/'+ data[0].artist_permit[i].thumbnail, '');
+                                    }
                                 }
                             }
                         });
                     }
+                },
+                downloadCallback: function (files, pd) {
+                    if(files.filepath) {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }else{ 
+                        let user_id = $('#user_id').val();
+                        let artistpermitid = $('#artist_permit_id').val();
+                        let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    } 
                 },
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
@@ -1219,6 +1256,10 @@ function checkVisaRequired(){
                         $('#cnd_'+i).html('');
                         $('#cnd_'+i).removeClass('text-danger');
                     }
+                    if($('#req_name_'+i).val().toLowerCase() == 'other documents')
+                    {
+                        $('#cnd_'+i).html('');
+                    }
                 }
             }
     });
@@ -1245,7 +1286,10 @@ function checkVisaRequired(){
                         hasFileArray[i] = true;
                         $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
                     }
-
+                    if($('#req_name_'+i).val().toLowerCase() == 'other documents') {
+                        hasFileArray[i] = true;
+                        $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
+                    }
                 }
                 if(nationality == '232' && $('#req_id_'+i).val() == 6)
                 {

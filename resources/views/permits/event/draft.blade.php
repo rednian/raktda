@@ -904,22 +904,22 @@
                 method: "POST",
                 allowedTypes: "jpeg,jpg,png",
                 fileName: "pic_file",
-                multiple: false,
+                multiple: false,    
                 deleteStr: `<i class="la la-trash"></i>`,   
                 showFileSize: false,
                 maxFileSize: 5242880,
                 showFileCounter: false,
                 abortStr: '',
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                showPreview: true,
+                // showPreview: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
+                // onSuccess: function (files, response, xhr, pd) {
+                //     pd.filename.html('');
+                // },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
 				{
 					$.ajax({
@@ -2117,7 +2117,7 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data.length) 
+                    if(data) 
                     {
                         $('#event_liquor_id').val(data.event_liquor_id);
                         if(data.provided == 1)
@@ -2297,7 +2297,9 @@
                 });
             }
         }
-        
+
+
+    
 
 
 </script>

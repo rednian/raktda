@@ -78,7 +78,7 @@
                                                     class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
                                                     name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
                                                     onchange="checkFilled()"
-                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}" />
+                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}" disabled/>
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
                                                         <i class="la la-calendar"></i>
@@ -472,7 +472,7 @@
 
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
-            if(noofdays < 30) { term = 'short'; } else { term='long';}
+            if(noofdays <= 30) { term = 'short'; } else { term='long';}
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",
@@ -549,6 +549,9 @@
                 {
                     $('#showwarning').modal('show');
                 }
+                var permit_to = x.add(30, 'days').calendar();
+                var permit_to_date = moment(permit_to,'MM/DD/YYYY').format('DD-MM-YYYY');
+                $('#permit_to').val(permit_to_date).datepicker('update');
             }
         }
 

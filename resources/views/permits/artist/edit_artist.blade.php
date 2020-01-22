@@ -337,16 +337,16 @@
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
                 showFileCounter: false,
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 abortStr: '',
-                showPreview:true,
+                // showPreview:true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
+                // onSuccess: function (files, response, xhr, pd) {
+                //     pd.filename.html('');
+                // },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
 				{
 					$.ajax({
@@ -664,6 +664,10 @@
                     $('#cnd_'+i).html('');
                     $('#cnd_'+i).removeClass('text-danger');
                 }
+                if($('#req_name_'+i).val().toLowerCase() == 'other documents')
+                {
+                    $('#cnd_'+i).html('');
+                }
             }
         }
     });
@@ -691,6 +695,10 @@
                     else{
                         hasFileArray[i] = true;
                         $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
+                    }
+                    if($('#req_name_'+i).val().toLowerCase() == 'other documents') {
+                        hasFileArray[i] = true;
+                        $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
                     }
                 }
                 if(nationality == '232' && $('#req_id_'+i).val() == 6)

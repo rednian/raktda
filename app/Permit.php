@@ -96,7 +96,7 @@ class Permit extends Model
 
     public function artistPermit()
     {
-        return $this->hasMany(ArtistPermit::class, 'permit_id');
+        return $this->hasMany(ArtistPermit::class, 'permit_id')->whereNull('type');
     }
 
     public function artist()

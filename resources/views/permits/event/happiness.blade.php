@@ -1249,16 +1249,16 @@
                 showFileSize: false,
                 showFileCounter: false,
                 abortStr: '',
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                showPreview: true,
+                // showPreview: true,
                 showDelete: false,
                 uploadButtonClass: 'btn btn--default mb-2 mr-2',
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
+                // onSuccess: function (files, response, xhr, pd) {
+                //     pd.filename.html('');
+                // },
                 onLoad: function (obj) {
                     var url = "{{route('event.get_uploaded_logo',':id')}}" ;
                     url = url.replace(':id', $('#event_id').val() );
@@ -1827,7 +1827,7 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data.length) 
+                    if(data) 
                     {
                         $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);

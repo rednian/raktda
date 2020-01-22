@@ -191,6 +191,10 @@ class ReportController extends Controller
 
     public function dashboard()
     {
+        Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
+        ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
+        Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
+        
         $data['artist_applied'] = Permit::whereIn('permit_status',['new', 'modification-request', 'amended', 'approved-unpaid'])->count();
         $data['artist_valid'] = Permit::where('permit_status', 'active')->count();
         $data['artist_drafts'] = ArtistTempData::where('status', 5)->distinct('permit_id')->count();

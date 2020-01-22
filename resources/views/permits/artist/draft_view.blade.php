@@ -447,7 +447,7 @@
 
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
-            if(noofdays < 30) { term = 'short'; } else { term='long';}
+            if(noofdays <= 30) { term = 'short'; } else { term='long';}
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",

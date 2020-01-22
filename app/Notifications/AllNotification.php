@@ -63,7 +63,7 @@ class AllNotification extends Notification
         return [
             'title' => $this->data['title'],
             'content' => $this->data['content'],
-            'url' => $this->data['url']
+            'url' => $this->data['url'],
         ];
     }
 

@@ -39,136 +39,197 @@
     <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
 
     <div class="kt-portlet__body kt-padding-t-0">
+        <div class="kt-container col-md-12 kt-padding-0 kt-margin-b-15 row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Reference No.')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{$event->reference_number}}
+                        </p>
+                    </div>
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Est. Type')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{__(ucfirst($event->firm))}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Owner Name')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{$event->owner_name}}
+                        </p>
+                    </div>
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Owner Name - Ar')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{$event->owner_name_ar}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Name')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
+                        </p>
+                    </div>
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Type')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{getLangId() == 1 ? $event->type->name_en : $event->type->name_ar}}
 
-        <div class="kt-container col-md-12 ">
-            <div class="row">
-                <div class="col-md-4 col-sm-12 row">
-                    <label class="col col-md-6 col-form-label">{{__('Reference No.')}}</label>
-                    <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                        {{$event->reference_number}}
-                    </p>
+                    </div>
                 </div>
-                <div class="col-md-4 col-sm-12 row">
-                    <label class="col col-md-6 col-form-label">{{__('Est. Type')}}</label>
-                    <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                        {{__(ucwords($event->firm))}}</p>
+                <div class="row">
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event SubType')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{$event->subType->sub_name_en !== null ?  getLangId() == 1 ? $event->subType->sub_name_en : $event->subType->sub_name_ar : ''}}
+                        </p>
+                    </div>
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Exp. Audience')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{$event->audience_number}}
+                    </div>
                 </div>
-                <div class="col-md-4 col-sm-12 row">
-                    <label class="col col-md-6 col-form-label">{{__('Event Name')}}</label>
-                    <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                        {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
+                <div class="row">
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Longitude')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{$event->longitude}}
+                        </p>
+                    </div>
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Latitude')}}</label>
+                        <p class="col col-md-6 form-control-plaintext ">
+                            {{$event->latitude}}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Food Truck')}}</label>
+                        <div class="col col-md-6 d-flex">
+                            <span class="form-control-plaintext">
+                                {{$event->truck()->exists() ? 'Yes' : 'No'}}</span>
+                            @if(!$event->truck()->exists())
+                            {{-- <button type="button" class="btn btn-sm btn-secondary btn-hover-warning">{{__('Add')}}</button>
+                            --}}
+                            <i class="fa fa-pencil-alt fnt-16  kt-padding-t-10" id="add_new_truck"></i>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-6 row">
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Liquor')}}</label>
+                        <div class="col col-md-6 d-flex">
+                            <span class="form-control-plaintext ">
+                                {{$event->liquor()->exists() ? 'Yes' : 'No'}}</span>
+                            @if(!$event->liquor()->exists())
+                            {{-- <button type="button" class="btn btn-sm btn-secondary btn-hover-warning">{{__('Add')}}</button>
+                            --}}
+                            <i class="fa fa-pencil-alt fnt-16  kt-padding-t-10" onclick="addLiquor()"></i>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-12 row">
-                    <label class="col col-md-6 col-form-label">{{__('Event Type')}}</label>
-                    <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                        {{getLangId() == 1 ? $event->type->name_en : $event->type->name_ar}} <br />
-                        {{$event->subType->sub_name_en !== null ? getLangId() == 1 ? $event->subType->sub_name_en : $event->subType->sub_name_ar : ''}}
-                    </p>
-                </div>
-                <div class="col-md-4 col-sm-12 row">
-                    <label class="col col-md-6 col-form-label">{{__('Owner Name')}}</label>
-                    <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                        {{getLangId() == 1 ?  $event->owner_name : $event->owner_name_ar}}</p>
-                </div>
-                {{-- <div class="col-md-4 col-sm-12 row">
-                    <label class="col col-md-6 col-form-label">{{__('Venue')}}</label>
-                <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                    {{getLangId() == 1 ?  $event->venue_en : $event->venue_ar}}
-            </div> --}}
-            <div class="col-md-4 col-sm-12 row">
-                <label class="col col-md-6 col-form-label">{{__('Exp. Audience')}}</label>
-                <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                    {{$event->audience_number}}
-            </div>
-        </div>
-        {{-- <div class="col-md-4 pb-1 row">
-            <label class="col-md-6 text-left kt-font-dark kt-font-bold kt-font-transform-c">
-        </label>
-        <span class="col-md-6"></span>
-    </div> --}}
-        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-6 form-group form-group-xs ">
+                        <label for="issued_date" class=" col-form-label kt-font-bold text-right">
+                            {{__('From Date')}} <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-sm date">
+                            <div class="kt-input-icon kt-input-icon--right">
+                                <input type="text" class="form-control form-control-sm " name="issued_date"
+                                    id="issued_date" placeholder="DD-MM-YYYY"
+                                    value="{{date('d-m-Y', strtotime($event->issued_date))}}"
+                                    onchange="changeExpiry();givWarn()" />
+                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                    <span>
+                                        <i class="la la-calendar"></i>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    @php
+                    $issued_date = strtotime($event->issued_date);
+                    $expired_date = strtotime($event->expired_date);
+                    $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                    @endphp
+                    <input type="hidden" id="days" value="{{$diff}}">
+                    <input type="hidden" id="event_id" name="event_id" value="{{$event->event_id}}">
 
-            <div class="col-md-4 col-sm-12 row">
-                <label class="col col-md-6 col-form-label">{{__('From Date')}}
-                </label>
-                <input type="text" class="col col-md-6 form-control form-control-sm datepicker" name="issued_date"
-                    id="issued_date" value="{{date('d-m-Y', strtotime($event->issued_date))}}"
-                    onchange="changeExpiry();givWarn()" />
-            </div>
-            @php
-            $issued_date = strtotime($event->issued_date);
-            $expired_date = strtotime($event->expired_date);
-            $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
-            @endphp
-            <input type="hidden" id="days" value="{{$diff}}">
-            <input type="hidden" id="event_id" name="event_id" value="{{$event->event_id}}">
-            <div class="col-md-4 col-sm-12 row">
-                <label class="col col-md-6 col-form-label">{{__('To Date')}}
-                </label>
-                <input type="text" class="col-md-6 form-control form-control-sm datepicker" name="disp_expired_date"
-                    id="disp_expired_date" value="{{date('d-m-Y', strtotime($event->expired_date))}}" disabled />
-                <input type="hidden" name="expired_date" id="expired_date"
-                    value="{{date('d-m-Y', strtotime($event->expired_date))}}" />
-            </div>
-            <div class="col-md-4 pb-1 row">
-                <label class="col col-md-6 col-form-label">{{__('Longitude')}}</label>
-                <span class="col col-md-6 form-control-plaintext kt-font-bolder">{{$event->longitude}}</span>
-            </div>
-            <div class="col-md-4 pb-1 row">
-                <label class="col col-md-6 col-form-label">{{__('Start Time')}}
-                </label>
-                <input type="text" class="col-md-6 form-control form-control-sm" name="time_start" id="time_start"
-                    value="{{$event->time_start}}" />
-            </div>
-            <div class="col-md-4 pb-1 row">
-                <label class="col col-md-6 col-form-label">{{__('End Time')}}
-                </label>
-                <input type="text" class="col-md-6 form-control form-control-sm" name="time_end" id="time_end"
-                    value="{{$event->time_end}}" />
-            </div>
-            <div class="col-md-4 pb-1 row">
-                <label class="col col-md-6 col-form-label">{{__('Latitude')}}</label>
-                <span class="col col-md-6 form-control-plaintext kt-font-bolder">{{$event->latitude}}</span>
-            </div>
-            <div class="col-md-4 pb-1 row">
-                <label class="col col-md-6 col-form-label">{{__('Area')}}</label>
-                <span class="col col-md-6 form-control-plaintext kt-font-bolder">{{$event->area['area_en']}}</span>
-            </div>
-            <div class="col-md-4 pb-1 row">
-                <label class="col col-md-6 col-form-label">{{__('Food Truck')}}</label>
-                <span
-                    class="col col-md-6 form-control-plaintext kt-font-bolder">{{$event->truck()->exists() ? 'Yes' : 'No'}}</span>
-            </div>
-            <div class="col-md-4 pb-1 row">
-                <label class="col col-md-6 col-form-label">{{__('Liquor')}}</label>
-                <span
-                    class="col col-md-6 form-control-plaintext kt-font-bolder">{{$event->liquor()->exists() ? 'Yes' : 'No'}}</span>
+
+                    <div class="col-md-6 form-group form-group-xs ">
+                        <label for="issued_date" class=" col-form-label kt-font-bold text-right">
+                            {{__('To Date')}} <span class="text-danger">*</span></label>
+                        <div class="input-group input-group-sm date">
+                            <div class="kt-input-icon kt-input-icon--right">
+                                <input type="text" class="form-control form-control-sm" name="disp_expired_date"
+                                    id="disp_expired_date" value="{{date('d-m-Y', strtotime($event->expired_date))}}"
+                                    disabled />
+                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                    <span>
+                                        <i class="la la-calendar"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <input type="hidden" name="expired_date" id="expired_date"
+                                value="{{date('d-m-Y', strtotime($event->expired_date))}}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group form-group-xs ">
+                        <label for="time_start" class=" col-form-label kt-font-bold text-right">
+                            {{__('Start Time')}} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" name="time_start" id="time_start"
+                            value="{{$event->time_start}}" />
+                    </div>
+                    <div class="col-md-6 form-group form-group-xs ">
+                        <label for="time_start" class=" col-form-label kt-font-bold text-right">
+                            {{__('End Time')}} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" name="time_end" id="time_end"
+                            value="{{$event->time_end}}" />
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <label class="col col-md-2 kt-padding-r-0 col-form-label">{{__('Event Details')}}
-            </label>
-            <span
-                class="col form-control-plaintext kt-padding-l-0 kt-font-bolder">{{getLangId() == 1 ? $event->description_en : $event->description_ar}}</span>
-        </div>
-        <div class="row">
-            <label class="col col-md-2 kt-padding-r-0 col-form-label">{{__('Address')}}
-            </label>
-            <span class="col form-control-plaintext kt-padding-l-0 kt-font-bolder">{{$event->address}}</span>
-        </div>
-        <div class="row">
-            <label class="col col-md-2 col-form-label kt-padding-r-0">{{__('Venue')}}
-            </label>
-            <span
-                class="col form-control-plaintext kt-font-bolder kt-padding-l-0">{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}</span>
+
+
+        <div>
+            <table class="table table-borderless border">
+                <tbody>
+                    <tr>
+                        <td class="kt-font-bolder">{{__('Event Details')}}
+                        </td>
+                        <td>:</td>
+                        <td class="">{{getLangId() == 1 ? $event->description_en : $event->description_ar}}</td>
+                    </tr>
+                    <tr>
+                        <td class="kt-font-bolder">{{__('Address')}}
+                        </td>
+                        <td>:</td>
+                        <td class="">{{$event->address}}</td>
+                    </tr>
+                    <tr>
+                        <td class="kt-font-bolder">{{__('Venue')}}
+                        </td>
+                        <td>:</td>
+                        <td class="">{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div>
             @if($event->truck()->exists())
             <div class="d-flex kt-margin-b-10 justify-content-between kt-margin-t-15">
                 <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Food Truck Details')}}</h5>
-                <button class="btn btn-sm btn-default" id="add_new_truck">{{__('Add New Food Truck')}}</button>
+                <button class="btn btn-sm btn-secondary btn-hover-warning"
+                    id="add_new_truck">{{__('Add New Food Truck')}}</button>
             </div>
             <div class="table-responsive">
                 <table class="table table-borderless border table-striped">
@@ -207,31 +268,33 @@
                         <span></span>
                     </label>
                     <label class="kt-radio">
-                        <input type="radio" name="isLiquorVenue" onclick="checkLiquorVenue(0)" value="0" checked>
+                        <input type="radio" name="isLiquorVenue" onclick="checkLiquorVenue(0)" value="0">
                         {{__('No')}}
                         <span></span>
                     </label>
                 </div>
             </div>
+            <input type="hidden" id="liquor_provided" value="{{$event->liquor->provided}}">
             <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
                 <div class="row">
                     <div class="col-md-4 form-group form-group-xs">
                         <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
                                 class="text-danger">*</span></label>
                         <input type="text" class="form-control form-control-sm" name="l_company_name_en"
-                            id="l_company_name_en" autocomplete="off">
+                            id="l_company_name_en" value="{{$event->liquor->company_name_en}}" autocomplete="off">
                     </div>
                     <div class="col-md-4 form-group form-group-xs">
                         <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}} <span
                                 class="text-danger">*</span></label>
                         <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
-                            id="l_company_name_ar" dir="rtl" autocomplete="off">
+                            id="l_company_name_ar" dir="rtl" value="{{$event->liquor->company_name_ar}}"
+                            autocomplete="off">
                     </div>
                     <div class="col-md-4 form-group form-group-xs">
                         <label for="" class="col-form-label kt-font-bold">{{__('Purchase Receipt No')}} <span
                                 class="text-danger">*</span></label>
                         <input type="text" class="form-control form-control-sm" name="purchase_receipt"
-                            id="purchase_receipt" autocomplete="off">
+                            id="purchase_receipt" value="{{$event->liquor->purchase_receipt}}" autocomplete="off">
                     </div>
                     <div class="col-md-4 form-group form-group-xs">
                         <label for="" class="col-form-label kt-font-bold">{{__('Liquor Service')}} <span
@@ -239,15 +302,18 @@
                         <select class="form-control form-control-sm" name="liquor_service" id="liquor_service"
                             onchange="changeLiquorService()">
                             <option value="">{{__('Select')}}</option>
-                            <option value="limited">{{__('Limited')}}</option>
-                            <option value="unlimited">{{__('Unlimited')}}</option>
+                            <option value="limited" {{$event->liquor->liquor_service == 'limited' ? 'selected' : ''}}>
+                                {{__('Limited')}}</option>
+                            <option value="unlimited"
+                                {{$event->liquor->liquor_service == 'unlimited' ? 'selected' : ''}}>
+                                {{__('Unlimited')}}</option>
                         </select>
                     </div>
                     <div class="col-md-4 form-group form-group-xs" id="limited_types">
                         <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor')}} <span
                                 class="text-danger">*</span></label>
                         <textarea type="text" class="form-control form-control-sm" name="liquor_types" id="liquor_types"
-                            autocomplete="off"></textarea>
+                            autocomplete="off" value="{{$event->liquor->liquor_types}}"></textarea>
                     </div>
                     <input type="hidden" id="event_liquor_id" value="{{$event->liquor->event_liquor_id}}">
                 </div>
@@ -257,7 +323,9 @@
                     <label for="" class="col-form-label kt-font-bold">{{__('Liquor Permit No')}} <span
                             class="text-danger">*</span></label>
                     <input type="text" class="form-control form-control-sm" name="liquor_permit_no"
-                        id="liquor_permit_no" autocomplete="off">
+                        id="liquor_permit_no"
+                        value="{{$event->liquor->liquor_permit_no ? $event->liquor->liquor_permit_no : ''}}"
+                        autocomplete="off">
                 </div>
             </form>
         </div>
@@ -312,13 +380,13 @@
         </div>
 
         @endif
-    </div>
 
-    <div class="d-flex kt-margin-t-20 justify-content-md-end justify-content-sm-center">
-        <input type="submit" class="col-md-2 btn btn--yellow btn-sm kt-font-bold kt-font-transform-u" id="submit_btn"
-            value="{{__('submit')}}">
-    </div>
 
+        <div class="d-flex kt-margin-t-20 justify-content-md-end justify-content-sm-center">
+            <input type="submit" class="col-md-2 btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
+                id="submit_btn" value="{{__('submit')}}">
+        </div>
+    </div>
 </div>
 </div>
 
@@ -383,6 +451,8 @@
 
 @include('permits.event.common.amend_food_truck', ['truck_req'=>$truck_req])
 
+@include('permits.event.common.liquor', ['liquor_req'=>$liquor_req])
+
 @endsection
 
 @section('script')
@@ -390,6 +460,20 @@
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
+    });
+
+    $('#issued_date').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        startDate: '+1d',
+        orientation: "bottom left"
+    });
+    $('#expired_date').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        orientation: "bottom left"
     });
 
     var truckDocUploader = [];
@@ -410,9 +494,10 @@
     $(document).ready(function(){
         liquorDocUpload();
         editTruck();
-
-        $('#liquor_provided_form').hide();
-        $('#limited_types').hide();
+        var provided = $('#liquor_provided').val();
+        checkLiquorVenue(provided);
+        changeLiquorService();
+        $("input:radio[name='isLiquorVenue'][value='"+provided+"']").attr('checked', true);
     })
 
     $('.datepicker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, orientation: 'bottom' });
@@ -654,6 +739,10 @@
             $('#edit_one_food_truck').modal('hide');
         }
 
+        function addLiquor() {
+            $('#liquor_details').modal('show'); 
+            checkLiquorVenue(0);
+        }
 
         function editTruck(){
             var event_id = $('#event_id').val() ;
@@ -683,6 +772,53 @@
                 }
             });
         }
+
+        $('#update_lq').click(function(){
+            var hasFile = liqourDocValidation();
+            var type = $("input:radio[name='isLiquorVenue']:checked").val();
+            if(type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form())
+            {
+                if(type == 0)
+                {
+                    liquorDetails = {
+                        company_name_en: $('#l_company_name_en').val(),
+                        company_name_ar: $('#l_company_name_ar').val(),
+                        purchase_receipt: $('#purchase_receipt').val(),
+                        liquor_service: $('#liquor_service').val(),
+                    };
+                    if($('#liquor_service').val() == 'limited'){
+                        liquorDetails['liquor_types'] = $('#liquor_types').val()
+                    }
+                } else {
+                    liquorDetails = {
+                        liquor_permit_no: $('#liquor_permit_no').val(),
+                    };
+                }
+                $.ajax({
+                        url: "{{route('event.add_liquor')}}",
+                        type: "POST",
+                        data: {
+                            liquorDetails: liquorDetails,
+                            // liquorDocDetails: JSON.stringify(liquorDocDetails),
+                            liquorNames: JSON.stringify(liquorNames),
+                            type: type,
+                            event_id: $('#event_id').val(),
+                            event_liquor_id: $('#event_liquor_id').val()
+                        },  
+                        success: function (result) {
+                            if(result)
+                            {
+                                $('#event_liquor_id').val(result.event_liquor_id);
+                                $("input:radio[name='isLiquorVenue']:checked").val(result.provided);
+                                location.reload(true);
+                            }
+                        }
+                });
+                // localStorage.setItem('liquor_details', JSON.stringify(liquorDetails));
+                $('#liquor_details').modal('hide');
+            }
+        });
+
 
         function deleteThisTruck()
         {
@@ -794,6 +930,7 @@
                                 $('#edit_food_truck').modal('show');
                                 $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
+                                location.reload(true);
                             }
                         }
                     });
@@ -1154,37 +1291,38 @@
             }
         }
 
-        function editLiquor(){
-            var url = "{{route('event.fetch_liquor_details_by_event_id', ':id')}}";
-            url = url.replace(':id', $('#event_id').val());
-            $.ajax({
-                url:  url,
-                success: function (data) {
-                    if(data.length) 
-                    {
-                        $('#liquor_details .ajax-file-upload-red').trigger('click');
-                        $('#liquor_details').modal('show');
-                        $('#event_liquor_id').val(data.event_liquor_id);
-                        if(data.provided == 1)
-                        {
-                            checkLiquorVenue(1);
-                            $('#liquor_permit_no').val(data.liquor_permit_no);
-                            $("input:radio[name='isLiquorVenue'][value='1']").attr('checked', true);
-                        }else {
-                            checkLiquorVenue(0);
-                            $("input:radio[name='isLiquorVenue'][value='0']").attr('checked', true)
-                            $('#l_company_name_en').val(data.company_name_en);
-                            $('#l_company_name_ar').val(data.company_name_ar);
-                            $('#purchase_receipt').val(data.purchase_receipt);
-                            $('#liquor_service').val(data.liquor_service);
-                            changeLiquorService();
-                            $('#liquor_types').val(data.liquor_types);
-                            liquorDocUpload();
-                        }
-                    }
-                }
-            });
-        }
+        // function editLiquor(){
+        //     var url = "{{route('event.fetch_liquor_details_by_event_id', ':id')}}";
+        //     url = url.replace(':id', $('#event_id').val());
+        //     $.ajax({
+        //         url:  url,
+        //         success: function (data) {
+        //             console.log(data)
+        //             if(data.length) 
+        //             {
+        //                 $('#liquor_details .ajax-file-upload-red').trigger('click');
+        //                 // $('#liquor_details').modal('show');
+        //                 $('#event_liquor_id').val(data.event_liquor_id);
+        //                 if(data.provided == 1)
+        //                 {
+        //                     checkLiquorVenue(1);
+        //                     $('#liquor_permit_no').val(data.liquor_permit_no);
+        //                     $("input:radio[name='isLiquorVenue'][value='1']").attr('checked', true);
+        //                 }else {
+        //                     checkLiquorVenue(0);
+        //                     $("input:radio[name='isLiquorVenue'][value='0']").attr('checked', true)
+        //                     $('#l_company_name_en').val(data.company_name_en);
+        //                     $('#l_company_name_ar').val(data.company_name_ar);
+        //                     $('#purchase_receipt').val(data.purchase_receipt);
+        //                     $('#liquor_service').val(data.liquor_service);
+        //                     changeLiquorService();
+        //                     $('#liquor_types').val(data.liquor_types);
+        //                     liquorDocUpload();
+        //                 }
+        //             }
+        //         }
+        //     });
+        // }
 
         
 

@@ -536,6 +536,8 @@
             </div>
         </div>
 
+
+
         <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
 
         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
@@ -557,6 +559,7 @@
 
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -685,15 +688,13 @@
         uploadFunction();
         picUploadFunction();
         imageUploadFunction();
-
         $.ajax({
             url: "{{route('event.forgotEventPicsSession')}}",
             type: "POST",
             success: function(){}
         })
-
         // getRequirementsList(5);
-        // wizard.goTo(2);
+        // wizard.goTo(3);
 
         $('#event_id').val(0);
 
@@ -795,11 +796,12 @@
                 abortStr: '',
                 maxFileSize: 5242880,
                 showProgress: false,
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                showPreview: true,
+                showDownload: true,
+                // showPreview: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
                 onSuccess: function (files, response, xhr, pd) {
@@ -2128,12 +2130,9 @@
                     pd.filename.html('');
                 },
                 downloadCallback: function (files, pd) {
-                    let file_path = files;
-                    let path = file_path.replace('public/','');
-                        window.open(
-                    "{{url('storage')}}"+'/' + path,
-                    '_blank'
-                    );
+                    let path = files.filepath.replace('public/','');
+                    window.open("{{url('storage')}}"+'/' + path,
+                    '_blank');
                 },
                 deleteCallback: function(data,pd)
                 {
@@ -2150,8 +2149,14 @@
             $('#image_uploader + div').attr('id', 'image-file-upload');
             $('#image-file-upload .ajax-file-upload-statusbar').css('margin-bottom', '5px !important');
         };
-        
 
+        
+        $('.subtype_table').DataTable({
+            ordering: false,
+            dom:"<'row d-none'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        });
 
 </script>
 

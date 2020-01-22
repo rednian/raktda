@@ -9,6 +9,8 @@ use App\Company;
 use App\Country;
 use App\Emirates;
 use App\CompanyType;
+use App\Permit;
+use App\ArtistTempData;
 use Validator;
 use Carbon\Carbon;
 use App\CompanyRequirement;
@@ -31,7 +33,11 @@ class CompanyController extends Controller
 
    public function show(Request $request ,Company $company)
    {
-    return view('permits.company.show', ['company'=>$company]);
+      Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
+      ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
+      Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
+
+      return view('permits.company.show', ['company'=>$company]);
    }
 
 

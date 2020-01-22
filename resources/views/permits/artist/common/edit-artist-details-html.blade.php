@@ -21,7 +21,7 @@
                         data-parent="#accordionExample5">
                         <div class="card-body">
                             <input type="hidden" id="artist_id" value="{{$artist_details->artist_id}}" />
-                            <input type="hidden" id="is_old_artist" />
+                            <input type="hidden" id="is_old_artist" value="{{1}}" />
 
                             <div class="row">
                                 <div class="col-6">
@@ -219,7 +219,8 @@
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
                                                     <select class="form-control form-control-sm " name="profession"
-                                                        id="profession" placeholder="{{__('Profession')}}">
+                                                        id="profession" placeholder="{{__('Profession')}}"
+                                                        {{$from == 'amend_edit' ? 'disabled' : ''}}>
                                                         <option value="">{{__('Select')}}</option>
                                                         @foreach ($profession as $pt)
                                                         <option value="{{$pt->profession_id}}"

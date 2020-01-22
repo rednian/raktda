@@ -154,6 +154,10 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
 
     Route::get('event/delete_truck_details/{id}', 'Company\EventController@delete_truck_details')->name('event.delete_truck_details');
 
+    // Route::post('event/othersUpload', 'Company\EventController@othersUpload')->name('event.othersUpload');
+    // Route::post('del_other_upload_session', 'Company\EventController@del_other_upload_session')->name('event.del_other_upload_session');
+    // Route::get('event/get_uploaded_others', 'Company\EventController@get_uploaded_others')->name('event.get_uploaded_others');
+
     Route::post('event/deleteTruckLiquor', 'Company\EventController@deleteTruckLiquor')->name('event.deleteTruckLiquor');
 
     Route::get('event/fetch_this_truck_details/{id}', 'Company\EventController@fetch_this_truck_details')->name('event.fetch_this_truck_details');
@@ -176,12 +180,16 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
 
     Route::get('event/getpaymentdetails/{orderid}', 'Company\EventController@get_payment_details')->name('company.getpaymentdetails');
 
+    //REPORTS
     Route::get('reports', 'Company\ReportController@index')->name('company.reports');
     Route::get('transactions', 'Company\ReportController@transactions')->name('company.transactions');
     Route::get('reports/transaction/view/{id}', 'Company\ReportController@show')->name('report.view');
     Route::get('reports/event/view/{id}', 'Company\ReportController@showevent')->name('report.view_event');
     Route::get('reports/transaction/print/{id}', 'Company\ReportController@transactionprint')->name('transaction.print');
 
-    
+     //NOTIFICATIONS
+     Route::get('notifications', 'Company\CommonController@notifications')->name('company.notifications');
+     Route::get('notifications_dt', 'Company\CommonController@getNotificationsDatatable')->name('company.notifications.datatable');
+     Route::get('notifications/update_read', 'Company\CommonController@updateAsReadNotification')->name('company.notifications.update_read');
     
 });

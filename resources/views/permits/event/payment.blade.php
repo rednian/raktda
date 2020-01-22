@@ -1556,11 +1556,11 @@ $output = json_decode($output);
                 showFileSize: false,
                 showFileCounter: false,
                 abortStr: '',
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                showPreview: true,
+                // showPreview: true,
                 showDelete: false,
                 uploadButtonClass: 'btn btn--default mb-2 mr-2',
                 onSuccess: function (files, response, xhr, pd) {
@@ -1659,6 +1659,7 @@ $output = json_decode($output);
             if (wizard.currentStep == 3) {
                 $('#submit_btn').css('display', 'block');
                 // $('#submit_next_btn').css('display', 'block');
+                $('#pay_next_btn').css('display', 'block');
                 $('#next_btn').css('display', 'none');
             }
         });
@@ -1716,6 +1717,7 @@ $output = json_decode($output);
                 $('#next_btn').css('display', 'block');
             }
             $('#submit_btn').css('display', 'none');
+            $('#pay_next_btn').css('display', 'none');
             // $('#submit_next_btn').css('display', 'none');
         });
 

@@ -27,6 +27,7 @@
                 </button>
             </div>
             <div class="modal-body">
+                @include('permits.event.common.liquor-fee')
                 <div class="col-md-12 form-group form-group-xs d-flex">
                     <label class="col-form-label"> {{__('Provided by venue')}}
                         ?</label>

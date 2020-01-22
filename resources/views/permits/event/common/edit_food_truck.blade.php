@@ -16,7 +16,7 @@
                 </button>
             </div>
             <div class="modal-body">
-
+                @include('permits.event.common.food-truck-fee')
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead class="kt-font-transform-u no-wrap">

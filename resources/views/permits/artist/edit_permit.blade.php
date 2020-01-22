@@ -11,7 +11,12 @@
         <div class="kt-portlet__head-label">
             <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Edit Artist Permit')}}
             </h3>
-
+            @if(!$permit_details->event)
+            <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
+                <strong>{{$permit_details->reference_number}}
+                </strong>
+            </span>
+            @endif
         </div>
 
         <div class="kt-portlet__head-toolbar">
@@ -50,6 +55,7 @@
     <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-widget kt-widget--project-1">
             <div class="kt-widget__body kt-padding-l-0">
+                @if($permit_details->event)
                 <div class="kt-widget__stats d-">
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
@@ -85,21 +91,92 @@
                             </span>
                         </div>
                     </div>
-                    @if($permit_details->event)
+                    <input type="hidden" id="event_id" value="{{$permit_details->event->event_id}}">
+
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
                         <div class="kt-widget__label">
                             <span
                                 class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
-                                {{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}
+                                {{getLangId() == 1 ? ucfirst($permit_details->event->name_en) : $permit_details->event->name_ar}}
                             </span>
                         </div>
                     </div>
-                    @endif
+
                 </div>
                 <div class="kt-widget__text kt-margin-t-10">
                     <strong>{{__('Work Location')}} :</strong>
-                    {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
+                    {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
+                </div>
+                <input type="hidden" id="permit_from" value="" />
+                <input type="hidden" id="permit_to" value="" />
+                <input type="hidden" id="work_loc" value="" />
+                <input type="hidden" id="work_loc_ar" value="" />
+                @else
+                <input type="hidden" id="event_id" value="">
+                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                    <div class="kt-form__section kt-form__section--first">
+                        <div class="kt-wizard-v3__form">
+                            <form id="permit_details" method="POST" autocomplete="off">
+                                <div class="row">
+                                    <div class="form-group col-lg-2 kt-margin-b-0">
+                                        <label for="permit_from"
+                                            class="col-form-label col-form-label-sm ">{{__('From Date')}} <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group input-group-sm">
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text" class="form-control form-control-sm "
+                                                    name="permit_from" id="permit_from" placeholder="DD-MM-YYYY"
+                                                    data-date-start-date="+0d" onchange="givWarn()"
+                                                    value="{{date('d-m-Y',strtotime($permit_details->issued_date))}}" />
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                    <span>
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="artiststartafter"
+                                        value="{{getSettings()->artist_start_after}}" />
+                                    <div class="form-group col-lg-2 kt-margin-b-0">
+                                        <label for="permit_to"
+                                            class="col-form-label col-form-label-sm">{{__('To Date')}}<span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group input-group-sm">
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text" class="form-control form-control-sm "
+                                                    name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
+                                                    value="{{date('d-m-Y',strtotime($permit_details->expired_date))}}" />
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                    <span>
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group col-lg-3 kt-margin-b-0">
+                                        <label for="work_loc" class="col-form-label col-form-label-sm">
+                                            {{__('Work Location')}} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm" name="work_loc"
+                                            id="work_loc" value="{{ucfirst($permit_details->work_location)}}" />
+                                    </div>
+                                    <div class="form-group col-lg-3 kt-margin-b-0">
+                                        <label for="work_loc" class="col-form-label col-form-label-sm">
+                                            {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm" name="work_loc_ar"
+                                            id="work_loc_ar" dir="rtl" value="{{$permit_details->work_location_ar}}" />
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
             </div>
 
@@ -145,7 +222,6 @@
                                 <button style="visibility: hidden"
                                     class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">Edit</button>
                                 @endif
-                                @endif
                                 <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'edit'])}}"
                                     title="View">
                                     <button
@@ -162,7 +238,6 @@
                                 @else
                                 <button style="visibility: hidden"
                                     class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">Edit</button>
-                                @endif
                                 @endif
                                 @endif
                                 {{-- @if(count($staff_comments) > 0)
@@ -214,6 +289,7 @@
         </div>
     </div>
 
+    @include('permits.artist.modals.show_warning_modal',['day_count' =>getSettings()->artist_start_after ]);
 
 </div>
 
@@ -233,6 +309,14 @@
                 .on('mouseout', function () {
                 $(window).on('beforeunload', windowBeforeUnload);
             });
+            if($('#permit_from').length)
+            {
+               var minDate = $('#permit_from').val() ;
+               var maxDate = moment(minDate).add(3, 'M').toDate(); 
+               $('#permit_to').datepicker('setEndDate', maxDate );
+               $('#permit_to').datepicker('setStartDate', minDate );
+            }
+          
         })
 
         function stopNavigate(event) {
@@ -285,6 +369,29 @@
         }
     });
 
+    $('#permit_from').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        orientation: "bottom left",
+        zIndexOffset: 98
+    });
+    
+    $('#permit_to').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        orientation: "bottom left"
+    });
+
+    $('#permit_from').on('changeDate', function (selected) {
+        $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
+        var minDate = new Date(selected.date.valueOf());
+        var maxDate = moment(minDate).add(3, 'M').toDate();
+        $('#permit_to').datepicker('setEndDate', maxDate);
+        $('#permit_to').datepicker('setStartDate', minDate);
+    });
+
 
     function go_back_confirm_function(){
         var temp_permit_id =  $('#permit_id').val();
@@ -299,30 +406,59 @@
         });
     }
 
+    var event_id = $('#event_id').val();
+
+    if(!event_id)
+    {
+        var permit_detail_Validator = $('#permit_details').validate({
+            rules: {
+                permit_from: 'required',
+                permit_to: 'required',
+                work_loc: 'required',
+                work_loc_ar: 'required'
+            }, 
+            messages: {
+                permit_from: '',
+                permit_to: '',
+                work_loc: '',
+                work_loc_ar: ''
+            }
+        })
+    }
+
 
     $('#submit_btn').click(function() {
         // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
         // $('#submit_btn').css('pointer-events', 'none');
-        $.ajax({
-            url: '{{route("artist.update_permit")}}',
-            type: 'POST',
-            data: {permit_id: $('#permit_id').val()},
-            beforeSend: function() {
-                KTApp.blockPage({
-                    overlayColor: '#000000',
-                    type: 'v2',
-                    state: 'success',
-                    message: '{{__("Please wait...")}}'
-                });
-            },
-            success: function(result) {
-                if(result.message[0] == 'success')
-                {
-                    window.location.href=result.toURL;
-                    KTApp.unblockPage();
+        if(!event_id ? permit_detail_Validator.form() : true)
+        {
+            $.ajax({
+                url: '{{route("artist.update_permit")}}',
+                type: 'POST',
+                data: {
+                    permit_id: $('#permit_id').val(),
+                    from_date: $('#permit_from').val(),
+                    to_date: $('#permit_to').val(),
+                    work_loc: $('#work_loc').val(),
+                    work_loc_ar: $('#work_loc_ar').val()
+                },
+                beforeSend: function() {
+                    KTApp.blockPage({
+                        overlayColor: '#000000',
+                        type: 'v2',
+                        state: 'success',
+                        message: '{{__("Please wait...")}}'
+                    });
+                },
+                success: function(result) {
+                    if(result.message[0] == 'success')
+                    {
+                        window.location.href=result.toURL;
+                        KTApp.unblockPage();
+                    }
                 }
-            }
-        });
+            });
+       }
     });
 
     function delArtist(temp_id, permit_id, fname, lname) {
@@ -350,6 +486,29 @@
                 }
             }
         });
+    }
+
+    function givWarn()
+    {
+        
+        var from_date = $('#permit_from').val();
+        let start_days_count = $('#artiststartafter').val();
+        if(from_date)
+        {
+            var x = moment(from_date, "DD-MM-YYYY");
+            var to = moment();
+            var from = moment([x.format('YYYY'), x.month(), x.format('DD')]);
+            var today = moment([to.format('YYYY'), to.month(), to.format('DD')]);
+            var diff = from.diff(today, 'days');
+            if(diff <= start_days_count)
+            {
+                $('#showwarning').modal('show');
+            }
+            var permit_to = x.add(30, 'days').calendar();
+            var permit_to_date = moment(permit_to,'MM/DD/YYYY').format('DD-MM-YYYY');
+            $('#permit_to').datepicker('setStartDate', permit_to_date);
+            $('#permit_to').val(permit_to_date).datepicker('update');
+        }
     }
 
 

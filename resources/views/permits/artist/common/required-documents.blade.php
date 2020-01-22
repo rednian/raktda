@@ -16,12 +16,14 @@
                         <th style="width:50%">{{__('Notes')}}</th>
                     </tr>
                     @foreach($requirements as $req)
+                    @if(strtolower($req->requirement_name) != 'other documents')
                     <tr>
-                        <td>{{getLangId() == 1 ? $req->requirement_name : $req->requirement_name_ar}}
+                        <td>{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar}}
                         </td>
-                        <td>{{getLangId() == 1 ? $req->requirement_description : $req->requirement_description_ar}}
+                        <td>{{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                         </td>
                     </tr>
+                    @endif
                     @endforeach
                 </table>
 

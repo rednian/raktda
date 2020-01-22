@@ -863,7 +863,7 @@
         uploadFunction();
         PicUploadFunction();
 
-        // wizard.goTo(2);
+        // wizard.goTo(3);
         $('.hd-eu').hide();
         getAreas(5);
         wizard.on("change", function(wizard) {
@@ -915,16 +915,12 @@
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
         for (var i = 1; i <= $('#requirements_count').val(); i++) {
-            var requiredID = $('#req_id_' + i).val();
+            let requiId = $('#req_id_' + i).val();
             fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
-                // headers: {
-                //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                // },
                 url: "{{route('company.uploadDocument')}}",
                 method: "POST",
                 allowedTypes: "jpeg,jpg,png,pdf",
                 fileName: "doc_file_" + i,
-                // showDownload: true,
                 maxFileSize: 5242880,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
@@ -937,7 +933,7 @@
                 showDownload: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
-                formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
+                formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
                 onSuccess: function (files, response, xhr, pd) {
                         //You can control using PD
                     pd.progressDiv.show();
@@ -955,7 +951,7 @@
                             cache: false,
                             url: "{{route('company.get_files_uploaded')}}",
                             type: 'POST',
-                            data: {artist_permit: $('#artist_permit_id').val(), reqId: $('#req_id_' + i).val()},
+                            data: {artist_permit: $('#artist_permit_id').val(), reqId: requiId},
                             dataType: "json",
                             success: function (data) {
                                 if (data) {
@@ -965,8 +961,9 @@
                                     let exp_datetime = new Date(data['expired_date']);
                                     let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                     let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-
-                                    obj.createProgress(data.requirement['requirement_name'], "{{url('storage')}}"+'/' + data.path, '');
+                                    const d = data["path"].split("/");
+                                    let docName = d[d.length - 1];
+                                    obj.createProgress(docName, "{{url('storage')}}"+'/' + data.path, '');
                                     if (formatted_issue_date != NaN - NaN - NaN) {
                                         $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
                                         $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
@@ -974,20 +971,6 @@
                                 }
                             }
                         });
-                    
-
-                },
-                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
-                {
-                    $.ajax({
-                            cache: false,
-                            url: "{{route('company.delete_files_in_session')}}",
-                            type: 'POST',
-                            data: {requiredID : requiredID},
-                            success: function (data) {
-                               
-                            }
-                    });
                 },
                 onError: function (files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
@@ -995,22 +978,33 @@
                 },
                 downloadCallback: function (files, pd) {
                     if(files[0]) {
-                        let user_id = $('#user_id').val();
-                        let artistId = $('#artist_id').val();
-                        let this_url = user_id + '/artist/' + artistId +'/'+files;
+                    let user_id = $('#user_id').val();
+                    let artistpermitid = $('#artist_permit_id').val();
+                    let this_url = user_id + '/artist/' + artistpermitid +'/'+requiId+'/'+files;
+                    window.open(
+                    "{{url('storage')}}"+'/' + this_url,
+                    '_blank'
+                    ); } else {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
                         window.open(
-                        "{{url('storage')}}"+'/' + this_url,
-                        '_blank'
-                        );
-                    } else {
-                            let file_path = files.filepath;
-                            let path = file_path.replace('public/','');
-                            window.open(
-                        "{{url('storage')}}"+'/' + path,
-                        '_blank'
-                        );
+                    "{{url('storage')}}"+'/' + path,
+                    '_blank'
+                    );
                     }
-                }
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_files_in_session')}}",
+                            type: 'POST',
+                            data: {requiredID : requiId},
+                            success: function (data) {
+                               
+                            }
+                    });
+                },
             });
             $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
             $('#fileuploader_' + i + ' + div').attr('id', 'ajax-file-upload_' + i);
@@ -1032,16 +1026,22 @@
             maxFileSize: 5242880,
             showFileCounter: false,
             abortStr: '',
-            previewHeight: '100px',
-            previewWidth: "auto",
+            // previewHeight: '100px',
+            // previewWidth: "auto",
             returnType: "json",
             maxFileCount: 1,
-            showPreview: true,
+            // showPreview: true,
+            showDownload: true,
             showDelete: true,
             uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+            // onSuccess: function (files, response, xhr, pd) {
+            //     pd.filename.html('');
+            // },
             onSuccess: function (files, response, xhr, pd) {
-                pd.filename.html('');
-            },
+                    //You can control using PD
+                pd.progressDiv.show();
+                pd.progressbar.width('0%');
+            },    
             onLoad: function (obj) {
                 // console.log(obj);
                 $code = $('#code').val();
@@ -1052,15 +1052,39 @@
                         url: url,
                         type: 'GET',
                         success: function (data) {
-                            // console.log(data)
-                            if (data[0].artist_permit[0].original) {
-                                obj.createProgress('', "{{url('storage')}}"+'/'+ data[0].artist_permit[0].original, '');
+                          if(data[0])
+                          {
+                            let len = data[0].artist_permit.length;
+                            let i = data[0].artist_permit.length - 1;
+                            if (data[0].artist_permit[i].thumbnail) {
+                                // let ex = explode('/', data[0].artist_permit[i].thumbnail);
+                                let ex = data[0].artist_permit[i].thumbnail.split('/').pop();
+                                obj.createProgress(ex, "{{url('storage')}}"+'/'+ data[0].artist_permit[i].thumbnail, '');
                             }
+                          }
                         }
                     });
                 }
 
             }, 
+            downloadCallback: function (files, pd) {
+                if(files.filepath) {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
+                    "{{url('storage')}}"+'/' + path,
+                    '_blank'
+                    );
+                }else{ 
+                    let user_id = $('#user_id').val();
+                    let artistpermitid = $('#artist_permit_id').val();
+                    let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
+                    window.open(
+                    "{{url('storage')}}"+'/' + this_url,
+                    '_blank'
+                    );
+                } 
+            },
             deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
             {
                 $.ajax({
@@ -1074,16 +1098,16 @@
         $('#pic_uploader + div').attr('id', 'pic-file-upload');
     };
 
-    $.validator.addMethod("greaterThan", 
-    function(value, element, params) {
+    // $.validator.addMethod("greaterThan", 
+    // function(value, element, params) {
 
-        if (!/Invalid|NaN/.test(new Date(value))) {
-            return new Date(value) < new Date($(params).val());
-        }
+    //     if (!/Invalid|NaN/.test(new Date(value))) {
+    //         return new Date(value) < new Date($(params).val());
+    //     }
 
-        return isNaN(value) && isNaN($(params).val()) 
-            || (Number(value) < Number($(params).val())); 
-    },'Must be less than {0}.');
+    //     return isNaN(value) && isNaN($(params).val()) 
+    //         || (Number(value) < Number($(params).val())); 
+    // },'Must be less than {0}.');
 
     var detailsValidator = $("#artist_details").validate({
             ignore: [],
@@ -1370,6 +1394,10 @@
                         $('#cnd_'+i).html('');
                         $('#cnd_'+i).removeClass('text-danger');
                     }
+                    if($('#req_name_'+i).val().toLowerCase() == 'other documents')
+                    {
+                        $('#cnd_'+i).html('');
+                    }
                 }
             }
         });
@@ -1391,6 +1419,10 @@
                             hasFileArray[i] = false;
                             $("#ajax-upload_" + i).css('border', '2px dotted red');
                         } else {
+                            hasFileArray[i] = true;
+                            $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
+                        }
+                        if($('#req_name_'+i).val().toLowerCase() == 'other documents') {
                             hasFileArray[i] = true;
                             $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
                         }

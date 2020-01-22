@@ -397,6 +397,11 @@
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
+
+            table2
+                .column( '2:visible' )
+                .order( 'desc' )
+                .draw();
        }
 
        function draft()

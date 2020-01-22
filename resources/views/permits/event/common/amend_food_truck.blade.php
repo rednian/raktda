@@ -15,7 +15,7 @@
                     <div class="alert-icon">
                         <i class="flaticon-questions-circular-button"></i>
                     </div>
-                    <div class="alert-text">{{__('If you Add or Update Food Truck Details Permit will get Amended')}}
+                    <div class="alert-text">{{__('If you Add or Update Food Truck Details, Permit will get Amended')}}
                     </div>
                 </div>
                 <form class="col-md-12" id="truck_details_form">
